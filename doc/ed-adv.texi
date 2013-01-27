@@ -1,0 +1,2864 @@
+\input texinfo.tex
+@setfilename ed-adv.info
+
+@c Last modified: 2007-08-11 <alm@slewsys.org>
+
+@ifclear includefile
+
+@paragraphindent 3
+@firstparagraphindent insert
+
+@settitle Advanced Editing on UNIX
+@kbdinputstyle distinct
+@finalout
+
+@dircategory Text creation and manipulation
+@direntry
+* ed advanced topics: (ed-adv).Advanced Editing on UNIX.
+@end direntry
+
+@copying
+@emph{Advanced Editing on UNIX}
+@*
+Copyright @copyright{} Brian W. Kernighan, Lucent Laboratories
+@*
+Reprinted courtesy of Lucent Laboratories
+@end copying
+
+@c @smallbook
+
+@titlepage
+@center @titlefont{Advanced Editing on UNIX}
+@sp 1
+@center @emph{Brian W. Kernighan}
+@sp 3
+@center @emph{ABSTRACT}
+@sp 1
+This paper is meant to help secretaries, typists and programmers to
+make effective use of the UNIX@registeredsymbol{} facilities for
+preparing and editing text. It provides explanations and examples of
+
+@itemize @bullet
+@item
+special characters, line addressing and global commands in the editor
+@command{ed};
+
+@item
+commands for ``cut and paste'' operations on files and parts of files,
+including the @command{mv}, @command{cp},
+@command{cat} and @command{rm} commands,
+and the @kbd{r}, @kbd{w} , @kbd{m} and @kbd{t}
+commands of the editor;
+
+@item
+editing scripts and editor-based programs like @command{grep} and @command{sed}.
+@end itemize
+
+Although the treatment is aimed at non-programmers, new users with
+any background should find helpful hints on how to get their jobs done
+more easily.
+
+@page
+@vskip 0pt plus 1filll
+@insertcopying
+@end titlepage
+
+@c @contents
+
+@headings off
+@everyheading @| -@thispage- @|
+@setchapternewpage off
+@c @fonttextsize 10
+
+@ifnottex
+
+@node Top, INTRODUCTION, (dir), (dir)
+@comment  node-name,  next,  previous,  up
+@top Advanced Editing on UNIX
+
+by Brian W. Kernighan
+
+@end ifnottex
+@end ifclear
+
+@ifnottex
+
+This paper is meant to help secretaries, typists and programmers to
+make effective use of the UNIX@registeredsymbol{} facilities for
+preparing and editing text. It provides explanations and examples of
+
+@itemize @bullet
+@item
+special characters, line addressing and global commands in the editor
+@command{ed};
+
+@item
+commands for ``cut and paste'' operations on files and parts of files,
+including the @command{mv}, @command{cp},
+@command{cat} and @command{rm} commands,
+and the @kbd{r}, @kbd{w} , @kbd{m} and @kbd{t}
+commands of the editor;
+
+@item
+editing scripts and editor-based programs like @command{grep} and @command{sed}.
+@end itemize
+
+Although the treatment is aimed at non-programmers, new users with
+any background should find helpful hints on how to get their jobs done
+more easily.
+
+@end ifnottex
+
+@menu
+* INTRODUCTION::
+* SPECIAL CHARACTERS::
+* LINE ADDRESSING::
+* GLOBAL COMMANDS::
+* CUT AND PASTE WITH UNIX COMMANDS::
+* CUT AND PASTE WITH THE EDITOR::
+* SUPPORTING TOOLS::
+* Acknowledgement::
+* References::
+@end menu
+
+@node INTRODUCTION, SPECIAL CHARACTERS, Top, Top
+@comment  node-name,  next,  previous,  up
+@chapter INTRODUCTION
+
+Although UNIX provides remarkably effective  tools  for
+text  editing,  that by itself is no guarantee that everyone
+will automatically make the most effective use of them.   In
+particular,  people who are not computer specialists ---
+typists, secretaries, casual users ---
+often use the system less effectively than they might.
+
+This  document  is  intended  as a sequel to
+@emph{A Tutorial Introduction to the UNIX Text Editor} [1],
+providing explanations  and  examples  of how to edit
+with less effort.
+(You should also be familiar with the material in
+@emph{UNIX For Beginners}  [2].)
+Further  information on all commands discussed
+here can be found in
+@emph{The UNIX Programmer's Manual} [3].
+
+Examples are based on observations  of  users  and  the
+difficulties they encounter.  Topics covered include special
+characters  in  searches  and  substitute   commands,   line
+addressing,  the  global commands, and line moving and copying.
+There are also brief discussions of effective  use  of
+related  tools,  like those for file manipulation, and those
+based on @command{ed}, like @command{grep} and @command{sed}.
+
+A word of caution.  There is only one way to  learn  to
+use something, and that is to @emph{use} it.  Reading a description
+is no substitute for trying something.  A  paper  like  this
+one  should  give you ideas about what to try, but until you
+actually try something, you will not learn it.
+
+@node SPECIAL CHARACTERS, LINE ADDRESSING, INTRODUCTION, Top
+@comment  node-name,  next,  previous,  up
+@chapter SPECIAL CHARACTERS
+
+The editor @command{ed} is the primary interface  to  the  system
+for  many people, so it is worthwhile to know how to get the
+most out of @command{ed} for the least effort.
+
+The next few sections will discuss shortcuts and
+labor-saving  devices.   Not all of these will be instantly useful
+to any one person, of course, but a few  will  be,  and  the
+others  should  give you ideas to store away for future use.
+And as always, until you try these things, they will  remain
+theoretical knowledge, not something you have confidence in.
+
+@menu
+* The List Command:: `@kbd{l}'
+* The Substitute Command:: `@kbd{s}'
+* The Undo Command:: `@kbd{u}'
+* The Metacharacter:: `@kbd{.}'
+* The Backslash:: `@kbd{\}'
+* The Dollar Sign:: `@kbd{$}'
+* The Circumflex:: `@kbd{^}'
+* The Star:: `@kbd{*}'
+* The Brackets:: `@kbd{[]}'
+* The Ampersand:: `@kbd{&}'
+* Substituting Newlines::
+* Joining Lines::
+* Rearranging a Line:: @kbd{\(@dots{}\)}
+@end menu
+
+@node The List Command, The Substitute Command, SPECIAL CHARACTERS, SPECIAL CHARACTERS
+@comment  node-name,  next,  previous,  up
+@heading The List Command `@kbd{l}'
+
+@command{ed} provides two commands for printing the  contents  of
+the  lines you're editing.  Most people are familiar with @kbd{p},
+in combinations like
+
+@example
+1,$p
+@end example
+
+@noindent
+to print all the lines you're editing, or
+
+@example
+s/abc/def/p
+@end example
+
+@noindent
+to change `abc' to `def' on the current line. Less familiar is the
+@dfn{list} command @kbd{l} (the letter `@emph{l}'), which gives slightly more
+information than @kbd{p}. In particular, @kbd{l} makes visible
+characters that are normally invisible, such as tabs and backspaces.
+If you list a line that contains some of these, @kbd{l} will print
+each tab as @code{>} and each backspace as @code{<}. This makes it
+much easier to correct the sort of typing mistake that inserts extra
+spaces adjacent to tabs, or inserts a backspace followed by a space.
+
+The @kbd{l} command also `folds' long lines for  printing  ---
+any  line  that exceeds 72 characters is printed on multiple
+lines; each printed line except the last is terminated by  a
+backslash  @code{\}, so you can tell it was folded.  This is useful
+for printing long lines on short terminals.
+
+Occasionally the @kbd{l} command  will  print  in  a  line  a
+string  of  numbers  preceded by a backslash, such as @code{\07} or
+@code{\16}.  These combinations are used to make visible characters
+that normally don't print, like form feed or vertical tab or
+bell.  Each such combination is a  single  character.   When
+you see such characters, be wary --- they may have surprising
+meanings when printed on some terminals.  Often their
+presence  means  that your finger slipped while you were typing;
+you almost never want them.
+
+
+@node The Substitute Command, The Undo Command, The List Command, SPECIAL CHARACTERS
+@comment  node-name,  next,  previous,  up
+@heading The Substitute Command `@kbd{s}'
+
+Most of the next few sections will be taken up  with  a
+discussion  of  the substitute command @kbd{s}.  Since this is the
+command for changing the contents of  individual  lines,  it
+probably  has the most complexity of any @command{ed} command, and the
+most potential for effective use.
+
+As the simplest place to begin, recall the meaning of a
+trailing @kbd{g} after a substitute command.  With
+
+@example
+s/this/that/
+@end example
+
+@noindent
+and
+
+@example
+s/this/that/g
+@end example
+
+@noindent
+the  first  one  replaces  the @emph{first} `this' on the line with
+`that'.  If there is more than one `this' on the  line,  the
+second form with the trailing @kbd{g} changes @emph{all} of them.
+
+Either  form of the @kbd{s} command can be followed by @kbd{p} or @kbd{l}
+to `print' or `list' (as described in the previous  section)
+the contents of the line:
+
+@example
+@group
+s/this/that/p
+s/this/that/l
+s/this/that/gp
+s/this/that/gl
+@end group
+@end example
+
+@noindent
+are  all  legal,  and  mean slightly different things.  Make
+sure you know what the differences are.
+
+
+Of course, any @kbd{s} command can be preceded by one or  two
+`line  numbers'  to specify that the substitution is to take
+place on a group of lines.  Thus
+
+@example
+1,$s/mispell/misspell/
+@end example
+
+@noindent
+changes the @emph{first} occurrence of `mispell' to  `misspell'  on
+every line of the file.  But
+
+@example
+1,$s/mispell/misspell/g
+@end example
+
+@noindent
+changes  @emph{every} occurrence  in  every line (and this is more
+likely to be what you wanted in this particular case).
+
+
+You should also notice that if you add a @kbd{p} or @kbd{l} to  the
+end  of any of these substitute commands, only the last line
+that got changed will be printed, not  all  the  lines.   We
+will  talk  later about how to print all the lines that were
+modified.
+
+@node The Undo Command, The Metacharacter, The Substitute Command, SPECIAL CHARACTERS
+@comment  node-name,  next,  previous,  up
+@heading The Undo Command `@kbd{u}'
+
+Occasionally you will make a substitution  in  a  line,
+only to realize too late that it was a ghastly mistake.  The
+`undo' command @kbd{u} lets you `undo' the last substitution:  the
+last line that was substituted can be restored to its
+previous state by typing the command
+
+@example
+u
+@end example
+
+@node The Metacharacter, The Backslash, The Undo Command, SPECIAL CHARACTERS
+@comment  node-name,  next,  previous,  up
+@heading The Metacharacter `@strong{@kbd{.}}'
+
+As you have undoubtedly noticed when you use  @command{ed},
+certain  characters have unexpected meanings when they occur in
+the left side of a substitute command, or in a search for  a
+particular line.  In the next several sections, we will talk
+about these  special  characters,  which  are  often  called
+`metacharacters'.
+
+The first one is the period `@strong{.}'.  On the left side of a
+substitute command, or in a search with `/@dots{}/', `@strong{.}'  stands
+for @emph{any} single character.  Thus the search
+
+@example
+/x@strong{.}y/
+@end example
+
+@noindent
+finds any line where `x' and `y' occur separated by a single
+character, as in
+
+@example
+@group
+x+y
+x-y
+x@math{_\sqcup}y
+x@strong{.}y
+@end group
+@end example
+
+@noindent
+and so on.  (We will use @math{_\sqcup} to stand for a space whenever  we
+need to make it visible.)
+
+
+Since  `@strong{.}' matches a single character, that gives you a
+way to deal with funny characters printed by @kbd{l}.  Suppose you
+have  a  line that, when printed with the @kbd{l} command, appears
+as
+
+@example
+@dots{} th\07is @dots{}
+@end example
+
+@noindent
+and you want to get rid of the  @code{\07}  (which  represents  the
+bell character, by the way).
+
+The most obvious solution is to try
+
+@example
+s/\07//
+@end example
+
+@noindent
+but  this  will  fail.  (Try it.)  The brute force solution,
+which most people would now take, is to re-type  the  entire
+line.   This  is guaranteed, and is actually quite a
+reasonable tactic if the line in question isn't too big, but for a
+very  long  line,  re-typing  is  a bore.  This is where the
+metacharacter `@strong{.}' comes in handy.  Since `@code{\07}' really
+represents a single character, if we say
+
+@example
+s/th@strong{.}is/this/
+@end example
+
+@noindent
+the  job  is done.  The `@strong{.}' matches the mysterious character
+between the `h' and the `i', @emph{whatever} it is.
+
+
+Bear in mind that since `@strong{.}' matches any single
+character, the command
+
+@example
+s/@strong{.}/,/
+@end example
+
+@noindent
+converts  the  first  character  on a line into a `,', which
+very often is not what you intended.
+
+As is true of many characters in @command{ed}, the `@strong{.}'  has
+several  meanings,  depending  on its context.  This line shows
+all three:
+
+@example
+@strong{.}s/@strong{.}/@strong{.}/
+@end example
+
+@noindent
+The first `@strong{.}' is a line number, the number of  the  line  we
+are  editing,  which is called `line dot'.  (We will discuss
+line dot more in Section 3.)  The second `@strong{.}' is a
+metacharacter  that  matches any single character on that line.  The
+third `@strong{.}' is the only one that really is an  honest  literal
+period.   On  the  @emph{right} side of a substitution, `@strong{.}'  is not
+special.  If you apply this command to the line
+
+@example
+Now is the time@strong{.}
+@end example
+
+@noindent
+the result will be
+
+@example
+@strong{.}ow is the time@strong{.}
+@end example
+
+@noindent
+which is probably not what you intended.
+
+
+@node The Backslash, The Dollar Sign, The Metacharacter, SPECIAL CHARACTERS
+@comment  node-name,  next,  previous,  up
+@heading The Backslash `@strong{\}'
+
+Since a period means `any character', the question
+naturally  arises  of what to do when you really want a period.
+For example, how do you convert the line
+
+@example
+Now is the time@strong{.}
+@end example
+
+@noindent
+into
+
+@example
+Now is the time?
+@end example
+
+@noindent
+The backslash `\' does the job.  A backslash turns  off  any
+special  meaning that the next character might have; in
+particular, `\@strong{.}' converts the `@strong{.}' from a `match anything'  into
+a period, so you can use it to replace the period in
+
+@example
+Now is the time@strong{.}
+@end example
+
+@noindent
+like this:
+
+@example
+s/\@strong{.}/?/
+@end example
+
+@noindent
+The pair of characters `\@strong{.}' is considered by @command{ed} to be a
+single real period.
+
+
+The backslash can also be used when searching for lines
+that  contain  a special character.  Suppose you are looking
+for a line that contains
+
+@example
+@strong{.}PP
+@end example
+
+@noindent
+The search
+
+@example
+/@strong{.}PP/
+@end example
+
+@noindent
+isn't adequate, for it will find a line like
+
+@example
+THE APPLICATION OF @dots{}
+@end example
+
+@noindent
+because the `@strong{.}' matches the letter `A'.  But if you say
+
+@example
+/\@strong{.}PP/
+@end example
+
+@noindent
+you will find only lines that contain `@strong{.}PP'.
+
+The backslash can also be  used  to  turn  off  special
+meanings  for  characters other than `@strong{.}'.  For example,
+consider finding a line that contains a backslash.  The search
+
+@example
+/\/
+@end example
+
+@noindent
+won't work, because the `\' isn't a literal `\', but instead
+means  that  the  second  `/' no longer delimits the search.
+But by preceding a  backslash  with  another  one,  you  can
+search for a literal backslash.  Thus
+
+@example
+/\\/
+@end example
+
+@noindent
+does  work.   Similarly,  you can search for a forward slash
+`/' with
+
+@example
+/\//
+@end example
+
+@noindent
+The backslash turns off the meaning of the immediately
+following  `/' so that it doesn't terminate the /@dots{}/
+construction prematurely.
+
+As an exercise, before reading further, find  two
+substitute commands each of which will convert the line
+
+@example
+\x\@strong{.}\y
+@end example
+
+@noindent
+into the line
+
+@example
+\x\y
+@end example
+
+Here  are  several solutions; verify that each works as
+advertised.
+
+@example
+@group
+s/\\\@strong{.}//
+s/x@strong{.}@strong{.}/x/
+s/@strong{.}@strong{.}y/y/
+@end group
+@end example
+
+A couple of miscellaneous notes about  backslashes  and
+special  characters.   First,  you  can use any character to
+delimit the pieces of an @kbd{s} command: there is nothing  sacred
+about  slashes.   (But  you  must  use  slashes  for context
+searching.)  For instance, in a line that contains a lot  of
+slashes already, like
+
+@example
+//exec //sys.fort.go // etc@dots{}
+@end example
+
+@noindent
+you  could use a colon as the delimiter --- to delete all the
+slashes, type
+
+@example
+s:/::g
+@end example
+
+
+Second, if @emph{#} and @emph{@@} are your character  erase  and  line
+kill  characters,  you  have to type @emph{\#} and @emph{\@@}; this is true
+whether you're talking to @command{ed} or any other program.
+
+When you are adding text with @kbd{a} or @kbd{i} or @kbd{c}, backslash is
+not  special,  and  you should only put in one backslash for
+each one you really want.
+
+
+@node The Dollar Sign, The Circumflex, The Backslash, SPECIAL CHARACTERS
+@comment  node-name,  next,  previous,  up
+@heading The Dollar Sign `@kbd{$}'
+
+The next metacharacter, the `$', stands for `the end of
+the  line'.   As  its most obvious use, suppose you have the
+line
+
+@example
+Now is the
+@end example
+
+@noindent
+and you wish to add the word `time' to the end.  Use  the  $
+like this:
+
+@example
+s/$/@math{_\sqcup}time/
+@end example
+
+@noindent
+to get
+
+@example
+Now is the time
+@end example
+
+@noindent
+Notice  that  a space is needed before `time' in the
+substitute command, or you will get
+
+@example
+Now is thetime
+@end example
+
+
+As another example, replace the  second  comma  in  the
+following line with a period without altering the first:
+
+@example
+Now is the time, for all good men,
+@end example
+
+@noindent
+The command needed is
+
+@example
+s/,$/@strong{.}/
+@end example
+
+@noindent
+The  $  sign  here  provides  context to make specific which
+comma we mean.  Without it, of course, the @kbd{s}  command  would
+operate on the first comma to produce
+
+@example
+Now is the time@strong{.} for all good men,
+@end example
+
+
+As another example, to convert
+
+@example
+Now is the time@strong{.}
+@end example
+
+@noindent
+into
+
+@example
+Now is the time?
+@end example
+
+@noindent
+as we did earlier, we can use
+
+@example
+s/@strong{.}$/?/
+@end example
+
+
+Like  `@strong{.}',  the  `$' has multiple meanings depending on
+context.  In the line
+
+@example
+$s/$/$/
+@end example
+
+@noindent
+the first `$' refers to the last line of the file, the
+second  refers to the end of that line, and the third is a
+literal dollar sign, to be added to that line.
+
+
+@node The Circumflex, The Star, The Dollar Sign, SPECIAL CHARACTERS
+@comment  node-name,  next,  previous,  up
+@heading The Circumflex `@kbd{^}'
+
+The circumflex (or hat or caret)  `^'  stands  for  the
+beginning of the line.  For example, suppose you are looking
+for a line that begins with `the'.  If you simply say
+
+@example
+/the/
+@end example
+
+@noindent
+you will in all likelihood find several lines  that  contain
+`the'  in  the  middle  before arriving at the one you want.
+But with
+
+@example
+/^the/
+@end example
+
+@noindent
+you narrow the context, and thus arrive at the  desired  one
+more easily.
+
+
+The  other  use  of  `^'  is of course to enable you to
+insert something at the beginning of a line:
+
+@example
+s/^/@math{_\sqcup}/
+@end example
+
+@noindent
+places a space at the beginning of the current line.
+
+
+Metacharacters can be combined. To search  for  a  line
+that contains @emph{only} the characters
+
+@example
+@strong{.}PP
+@end example
+
+@noindent
+you can use the command
+
+@example
+/^\@strong{.}PP$/
+@end example
+
+
+@node The Star, The Brackets, The Circumflex, SPECIAL CHARACTERS
+@comment  node-name,  next,  previous,  up
+@heading The Star `@kbd{*}'
+
+Suppose you have a line that looks like this:
+
+@display
+@emph{text}  @code{x}@strong{@code{        }}@code{y}  @emph{text}
+@end display
+
+@noindent
+where @emph{text} stands for lots of text, and there are some
+indeterminate number of spaces between the @code{x} and the @code{y}.  Suppose
+the  job  is  to replace all the spaces between @code{x} and @code{y} by a
+single space.  The line is too long to retype, and there are
+too many spaces to count.  What now?
+
+
+This  is where the metacharacter `*' comes in handy.  A
+character followed by a star stands for as many  consecutive
+occurrences  of that character as possible.  To refer to all
+the spaces at once, say
+
+@example
+s/x@math{_\sqcup}*y/x@math{_\sqcup}y/
+@end example
+
+@noindent
+The construction `@math{_\sqcup}*' means `as many  spaces  as  possible'.
+Thus  `x@math{_\sqcup}*y' means `an x, as many spaces as possible, then a
+y'.
+
+The star can be  used  with  any  character,  not  just
+space.  If the original example was instead
+
+@display
+@emph{text}  @code{x}@strong{@code{--------}}@code{y}  @emph{text}
+@end display
+
+@noindent
+then  all  `-'  signs can be replaced by a single space with
+the command
+
+@example
+s/x-*y/x@math{_\sqcup}y/
+@end example
+
+
+Finally, suppose that the line was
+
+@display
+@emph{text}  @code{x}@strong{@code{........}}@code{y}  @emph{text}
+@end display
+
+@noindent
+Can you see what trap lies in wait for the unwary?   If  you
+blindly type
+
+@example
+s/x@strong{.}*y/x@math{_\sqcup}y/
+@end example
+
+@noindent
+what  will  happen?   The  answer,  naturally,  is  that  it
+depends.  If there are no other x's or y's on the line, then
+everything  works, but it's blind luck, not good management.
+Remember that `@strong{.}' matches any single character?   Then  `@strong{.}*'
+matches  as  many  single characters as possible, and unless
+you're careful, it can eat up a lot more of  the  line  than
+you expected.  If the line was, for example, like this:
+
+@display
+@emph{text}  @code{x}  @emph{text}   @code{x}@strong{@code{........}}@code{y}   @emph{text}  @code{y}  @emph{text}
+@end display
+
+@noindent
+then saying
+
+@example
+s/x@strong{.}*y/x@math{_\sqcup}y/
+@end example
+
+@noindent
+will  take  everything  from  the @emph{first} `x' to the @emph{last} `y',
+which, in this example, is undoubtedly more than you wanted.
+
+
+The  solution,  of  course,  is to turn off the special
+meaning of `@strong{.}' with `\@strong{.}':
+
+@example
+s/x\@strong{.}*y/x@math{_\sqcup}y/
+@end example
+
+@noindent
+Now everything works, for `\@strong{.}*' means `as  many  @emph{periods}  as
+possible'.
+
+There  are  times when the pattern `@strong{.}*' is exactly what
+you want.  For example, to change
+
+@example
+Now is the time for all good men @dots{}
+@end example
+
+@noindent
+into
+
+@example
+Now is the time@strong{.}
+@end example
+
+@noindent
+use `@strong{.}*' to eat up everything after the `for':
+
+@example
+s/@math{_\sqcup}for@strong{.}*/@strong{.}/
+@end example
+
+There are a couple of  additional  pitfalls  associated
+with  `*'  that you should be aware of.  Most notable is the
+fact that `as many as possible' means  @emph{zero}  or  more.   The
+fact  that  zero  is  a  legitimate possibility is sometimes
+rather surprising.  For example, if our line contained
+
+@display
+@emph{text}  @code{xy}  @emph{text}  @code{x}@strong{@code{        }}@code{y}  @emph{text}
+@end display
+
+@noindent
+and we said
+
+@example
+s/x@math{_\sqcup}*y/x@math{_\sqcup}y/
+@end example
+
+@noindent
+the @emph{first} `xy' matches this pattern, for it consists  of  an
+`x', zero spaces, and a `y'.  The result is that the
+substitute acts on the first `xy', and does not  touch  the  later
+one that actually contains some intervening spaces.
+
+The  way  around  this,  if it matters, is to specify a
+pattern like
+
+@example
+/x@math{_\sqcup}@math{_\sqcup}*y/
+@end example
+
+@noindent
+which says `an x, a space, then as many more spaces as
+possible, then a y', in other words, one or more spaces.
+
+The other startling behavior of `*' is again related to
+the fact that zero is a legitimate number of occurrences  of
+something followed by a star. The command
+
+@example
+s/x*/y/g
+@end example
+
+@noindent
+when applied to the line
+
+@example
+abcdef
+@end example
+
+@noindent
+produces
+
+@example
+yaybycydyeyfy
+@end example
+
+@noindent
+which is almost certainly not what was intended.  The reason
+for this behavior is that zero is a legal number of matches,
+and  there  are no x's at the beginning of the line (so that
+gets converted into a `y'), nor between the `a' and the  `b'
+(so  that  gets  converted  into a `y'), nor ...  and so on.
+Make sure you really want zero matches; if not, in this case
+write
+
+@example
+s/xx*/y/g
+@end example
+
+@noindent
+`xx*' is one or more x's.
+
+
+@node The Brackets, The Ampersand, The Star, SPECIAL CHARACTERS
+@comment  node-name,  next,  previous,  up
+@heading The Brackets `@kbd{[]}'
+
+Suppose that you want to delete any numbers that appear
+at the beginning of all lines of a file.   You  might  first
+think of trying a series of commands like
+
+@example
+@group
+1,$s/^1*//
+1,$s/^2*//
+1,$s/^3*//
+@end group
+@end example
+
+@noindent
+and  so on, but this is clearly going to take forever if the
+numbers are at all long.  Unless you want to repeat the
+commands  over and over until finally all numbers are gone, you
+must get all the digits on one pass.  This is the purpose of
+the brackets @kbd{[} and @kbd{]}.
+
+The construction
+
+@example
+[0123456789]
+@end example
+
+@noindent
+matches  any  single  digit  ---  the whole thing is called a
+`character class'.  With a character class, the job is easy.
+The  pattern `[0123456789]*' matches zero or more digits (an
+entire number), so
+
+@example
+1,$s/^[0123456789]*//
+@end example
+
+@noindent
+deletes all digits from the beginning of all lines.
+
+Any characters can appear within a character class, and
+just  to  confuse the issue there are essentially no special
+characters inside the brackets; even the  backslash  doesn't
+have  a  special meaning.  To search for special characters,
+for example, you can say
+
+@example
+/[@strong{.}\$^[]/
+@end example
+
+@noindent
+Within [@dots{}], the `[' is not special.  To get a `]'  into  a
+character class, make it the first character.
+
+
+It's a nuisance to have to spell out the digits, so you
+can abbreviate them as [0-9]; similarly,  [a-z]  stands  for
+the lower case letters, and [A-Z] for upper case.
+
+As  a final frill on character classes, you can specify
+a class that means `none of the following characters'.  This
+is done by beginning the class with a `^':
+
+@example
+[^0-9]
+@end example
+
+@noindent
+stands  for  `any character @emph{except} a digit'.  Thus you might
+find the first line that doesn't begin with a tab  or  space
+by a search like
+
+@example
+/^[^(space)(tab)]/
+@end example
+
+
+Within  a character class, the circumflex has a special
+meaning only if it occurs at the beginning.   Just  to
+convince yourself, verify that
+
+@example
+/^[^^]/
+@end example
+
+@noindent
+finds a line that doesn't begin with a circumflex.
+
+@node The Ampersand, Substituting Newlines, The Brackets, SPECIAL CHARACTERS
+@comment  node-name,  next,  previous,  up
+@heading The Ampersand `@kbd{&}'
+
+The  ampersand  `&'  is  used primarily to save typing.
+Suppose you have the line
+
+@example
+Now is the time
+@end example
+
+@noindent
+and you want to make it
+
+@example
+Now is the best time
+@end example
+
+@noindent
+Of course you can always say
+
+@example
+s/the/the best/
+@end example
+
+@noindent
+but it seems silly to have to repeat the `the'.  The `&'  is
+used  to  eliminate  the repetition.  On the @emph{right side} of a
+substitute, the ampersand means `whatever was just matched',
+so you can say
+
+@example
+s/the/& best/
+@end example
+
+@noindent
+and the `&' will stand for `the'.  Of course this isn't much
+of a saving if the thing matched is just `the', but if it is
+something  truly  long  or awful, or if it is something like
+`@strong{.}*' which matches a lot of text, you can save some  tedious
+typing.   There  is also much less chance of making a typing
+error in the replacement text.  For example, to parenthesize
+a line, regardless of its length,
+
+@example
+s/@strong{.}*/(&)/
+@end example
+
+
+The  ampersand  can  occur  more than once on the right
+side:
+
+@example
+s/the/& best and & worst/
+@end example
+
+@noindent
+makes
+
+@example
+Now is the best and the worst time
+@end example
+
+@noindent
+and
+
+@example
+s/@strong{.}*/&? &!!/
+@end example
+
+@noindent
+converts the original line into
+
+@example
+Now is the time? Now is the time!!
+@end example
+
+
+To get a literal ampersand, naturally the backslash  is
+used to turn off the special meaning:
+
+@example
+s/ampersand/\&/
+@end example
+
+@noindent
+converts  the  word into the symbol.  Notice that `&' is not
+special on the left side of a substitute, only on the  @emph{right}
+side.
+
+
+@node Substituting Newlines, Joining Lines, The Ampersand, SPECIAL CHARACTERS
+@comment  node-name,  next,  previous,  up
+@heading Substituting Newlines
+
+@command{ed} provides a facility for splitting a single line into
+two or more shorter lines by `substituting  in  a  newline'.
+As the simplest example, suppose a line has gotten
+unmanageably long because of  editing  (or  merely  because  it  was
+unwisely typed).  If it looks like
+
+@display
+@emph{text}    @code{xy}   @emph{text}
+@end display
+
+@noindent
+you can break it between the `x' and the `y' like this:
+
+@example
+@group
+s/xy/x\
+y/
+@end group
+@end example
+
+@noindent
+This  is  actually a single command, although it is typed on
+two lines.  Bearing in mind that `\' turns off special
+meanings, it seems relatively intuitive that a `\' at the end of
+a line would make the newline there no longer special.
+
+You can in fact make a single line into  several  lines
+with  this  same  mechanism.   As  a large example, consider
+underlining the word `very' in  a  long  line  by  splitting
+`very' onto a separate line, and preceding it by the @command{roff} or
+@command{nroff} formatting command `.ul'.
+
+@display
+@emph{text}  @code{a very big}  @emph{text}
+@end display
+
+@noindent
+The command
+
+@example
+@group
+s/@math{_\sqcup}very@math{_\sqcup}/\
+.ul\
+very\
+/
+@end group
+@end example
+
+@noindent
+converts the line into four  shorter  lines,  preceding  the
+word  `very'  by  the line `.ul', and eliminating the spaces
+around the `very', all at the same time.
+
+When a newline is substituted in, dot is left  pointing
+at the last line created.
+
+@node Joining Lines, Rearranging a Line, Substituting Newlines, SPECIAL CHARACTERS
+@comment  node-name,  next,  previous,  up
+@heading Joining Lines
+
+Lines  may  also  be  joined together, but this is done
+with the @kbd{j} command instead of @kbd{s}.  Given the lines
+
+@example
+@group
+Now is
+@math{_\sqcup}the time
+@end group
+@end example
+
+@noindent
+and supposing that dot is set to the first of them, then the
+command
+
+@example
+j
+@end example
+
+@noindent
+joins  them  together.  No blanks are added, which is why we
+carefully showed a blank at  the  beginning  of  the  second
+line.
+
+
+All  by  itself,  a  @kbd{j}  command  joins line dot to line
+dot+1, but any contiguous set of lines can be joined.   Just
+specify the starting and ending line numbers.  For example,
+
+@example
+1,$jp
+@end example
+
+@noindent
+joins  all  the lines into one big one and prints it.  (More
+on line numbers in Section 3.)
+
+
+@node Rearranging a Line,, Joining Lines, SPECIAL CHARACTERS
+@comment  node-name,  next,  previous,  up
+@heading Rearranging a Line with `@kbd{\(@dots{}\)}'
+
+(This section should  be  skipped  on  first  reading.)
+Recall  that `&' is a shorthand that stands for whatever was
+matched by the left side of an @kbd{s} command.  In much the  same
+way you can capture separate pieces of what was matched; the
+only difference is that you have to specify on the left side
+just what pieces you're interested in.
+
+     Suppose,  for  instance,  that you have a file of lines
+that consist of names in the form
+
+@example
+@group
+Smith, A. B.
+Jones, C.
+@end group
+@end example
+
+@noindent
+and so on, and you want the initials to precede the name, as
+in
+
+@example
+@group
+A. B. Smith
+C. Jones
+@end group
+@end example
+
+@noindent
+It is possible to do this with a series of editing commands,
+but it is tedious and error-prone.  (It  is  instructive  to
+figure out how it is done, though.)
+
+
+The  alternative  is to `tag' the pieces of the pattern
+(in this case, the last name, and the  initials),  and  then
+rearrange  the  pieces.  On the left side of a substitution,
+if part of the pattern is enclosed between \( and \),
+whatever  matched that part is remembered, and available for use
+on the right side.  On  the  right  side,  the  symbol  `\1'
+refers  to  whatever matched the first \(@dots{}\) pair, `\2' to
+the second \(@dots{}\), and so on.
+
+The command
+
+@example
+1,$s/^\([^,]*\),@math{_\sqcup}*\(@strong{.}*\)/\2@math{_\sqcup}\1/
+@end example
+
+@noindent
+although hard to read, does  the  job.   The  first  \(@dots{}\)
+matches  the last name, which is any string up to the comma;
+this is referred to on the right side with `\1'.  The second
+\(@dots{}\) is whatever follows the comma and any spaces, and is
+referred to as `\2'.
+
+
+Of course, with any editing sequence this  complicated,
+it's  foolhardy  to simply run it and hope.  The global
+commands @kbd{g} and @kbd{v} discussed in section 4 provide a way  for  you
+to print exactly those lines which were affected by the
+substitute command, and thus verify that it did what you wanted
+in all cases.
+
+@node LINE ADDRESSING, GLOBAL COMMANDS, SPECIAL CHARACTERS, Top
+@comment  node-name,  next,  previous,  up
+@chapter LINE ADDRESSING IN THE EDITOR
+
+The  next  general area we will discuss is that of line
+addressing in @command{ed}, that is, how you specify what lines are to
+be  affected by editing commands.  We have already used constructions like
+
+@example
+1,$s/x/y/
+@end example
+
+@noindent
+to specify a change on all lines.  And most users  are  long
+since  familiar  with  using a single newline (or return) to
+print the next line, and with
+
+@example
+/thing/
+@end example
+
+@noindent
+to find a line that contains `thing'.  Less  familiar,  surprisingly enough, is the use of
+
+@example
+?thing?
+@end example
+
+@noindent
+to  scan  @emph{backwards}  for the previous occurrence of `thing'.
+This is especially handy when you realize that the thing you
+want  to  operate  on is back up the page from where you are
+currently editing.
+
+
+The slash and question mark are the only characters you
+can  use  to  delimit  a  context search, though you can use
+essentially any character in a substitute command.
+
+@menu
+* Address Arithmetic::
+* Repeated Searches::
+* Default Addresses:: Default Line Numbers and the Value of Dot
+* Semicolon:: `@kbd{;}'
+* Interrupting the Editor::
+@end menu
+
+@node Address Arithmetic, Repeated Searches, LINE ADDRESSING, LINE ADDRESSING
+@comment  node-name,  next,  previous,  up
+@heading Address Arithmetic
+
+The next step is to combine the line numbers like  `.',
+`$', `/@dots{}/' and `?@dots{}?'  with `+' and `-'.  Thus
+
+@example
+$-1
+@end example
+
+@noindent
+is  a  command to print the next to last line of the current
+file (that is, one line before line `$').  For  example,  to
+recall how far you got in a previous editing session,
+
+@example
+$-5,$p
+@end example
+
+@noindent
+prints the last six lines.  (Be sure you understand why it's
+six, not five.)  If there aren't six, of course, you'll  get
+an error message.
+
+
+As another example,
+
+@example
+@strong{.}-3,@strong{.}+3p
+@end example
+
+@noindent
+prints  from  three  lines before where you are now (at line
+dot) to three lines after, thus giving you a bit of context.
+By the way, the `+' can be omitted:
+
+@example
+@strong{.}-3,@strong{.}3p
+@end example
+
+@noindent
+is absolutely identical in meaning.
+
+Another  area  in  which  you can save typing effort in
+specifying lines is to use `-' and `+' as  line  numbers  by
+themselves.
+
+@example
+-
+@end example
+
+@noindent
+by itself is a command to move back up one line in the file.
+In fact, you can string several minus signs together to move
+back up that many lines:
+
+@example
+---
+@end example
+
+@noindent
+moves up three lines, as does `-3'.  Thus
+
+@example
+-3,+3p
+@end example
+
+@noindent
+is also identical to the examples above.
+
+
+Since `-' is shorter than `@strong{.}-1', constructions like
+
+@example
+-,@strong{.}s/bad/good/
+@end example
+
+@noindent
+are  useful.  This  changes  `bad' to `good' on the previous
+line and on the current line.
+
+
+`+' and `-' can be used in  combination  with  searches
+using `/@dots{}/' and `?@dots{}?', and with `$'.  The search
+
+@example
+/thing/--
+@end example
+
+@noindent
+finds  the  line  containing  `thing', and positions you two
+lines before it.
+
+
+@node Repeated Searches, Default Addresses, Address Arithmetic, LINE ADDRESSING
+@comment  node-name,  next,  previous,  up
+@heading Repeated Searches
+
+Suppose you ask for the search
+
+@example
+/horrible thing/
+@end example
+
+@noindent
+and when the line is printed you discover that it isn't  the
+horrible thing that you wanted, so it is necessary to repeat
+the search again.  You don't have to re-type the search, for
+the construction
+
+@example
+//
+@end example
+
+@noindent
+is  a  shorthand  for  `the previous thing that was searched
+for', whatever it was.  This can be repeated as  many  times
+as necessary.  You can also go backwards:
+
+@example
+??
+@end example
+
+@noindent
+searches for the same thing, but in the reverse direction.
+
+
+Not  only  can  you  repeat the search, but you can use
+`//' as the left side of a substitute command, to mean  `the
+most recent pattern'.
+
+@display
+@group
+@code{/horrible thing/}
+@dots{} @emph{ed prints line with `horrible thing'} @dots{}
+@code{s//good/p}
+@end group
+@end display
+
+@noindent
+To go backwards and change a line, say
+
+@example
+??s//good/
+@end example
+
+@noindent
+Of  course, you can still use the `&' on the right hand side
+of a substitute to stand for whatever got matched:
+
+@example
+//s//&@math{_\sqcup}&/p
+@end example
+
+@noindent
+finds the next occurrence of whatever you searched for last,
+replaces  it  by  two copies of itself, then prints the line
+just to verify that it worked.
+
+@node Default Addresses, Semicolon, Repeated Searches, LINE ADDRESSING
+@comment  node-name,  next,  previous,  up
+@heading Default Line Numbers and the Value of Dot
+
+One of the most effective ways to speed up your editing
+is  always  to know what lines will be affected by a command
+if you don't specify the lines it is to act on, and on  what
+line  you will be positioned (i.e., the value of dot) when a
+command finishes.  If you can edit without specifying
+unnecessary line numbers, you can save a lot of typing.
+
+As the most obvious example, if you issue a search
+command like
+
+@example
+/thing/
+@end example
+
+@noindent
+you are  left  pointing  at  the  next  line  that  contains
+`thing'.   Then  no address is required with commands like @kbd{s}
+to make a substitution on that line, or @kbd{p} to print it, or  @kbd{l}
+to list it, or @kbd{d} to delete it, or @kbd{a} to append text after it,
+or @kbd{c} to change it, or @kbd{i} to insert text before it.
+
+
+What happens if there was no  `thing'?   Then  you  are
+left right where you were --- dot is unchanged.  This is also
+true if you were sitting on the only `thing' when you issued
+the  command.   The  same  rules  hold for searches that use
+`?@dots{}?'; the only difference is the direction in  which  you
+search.
+
+The  delete  command  @kbd{d} leaves dot pointing at the line
+that followed the last deleted line.   When  line  `$'  gets
+deleted, however, dot points at the @emph{new} line `$'.
+
+The  line-changing  commands  @kbd{a}, @kbd{c} and @kbd{i} by default all
+affect the current line --- if you give no line  number  with
+them,  @kbd{a}  appends text after the current line, @kbd{c} changes the
+current line, and @kbd{i} inserts text before the current line.
+
+@kbd{a}, @kbd{c}, and @kbd{i} behave identically in one respect  ---  when
+you stop appending, changing or inserting, dot points at the
+last line entered.  This is exactly what you want for typing
+and editing on the fly.  For example, you can say
+
+@c Reserve 1.3 inches (1300 milli inches) for following table.
+@need 1300
+@multitable {llll} {@dots{} more text @dots{}} {(fix botched line)}
+@item
+@tab @code{a}
+@item
+@tab @dots{} @emph{text} @dots{}
+@item
+@tab @dots{} @emph{botch} @dots{}
+@tab (minor error)
+@item
+@tab @strong{.}
+@item
+@tab @code{s/}@emph{botch}@code{/}@emph{correct}@code{/}
+@tab (fix botched line)
+@item
+@tab @code{a}
+@item
+@tab @dots{} @emph{more text} @dots{}
+@end multitable
+
+@noindent
+without  specifying  any line number for the substitute com-
+mand or for the second append command.  Or you can say
+
+@c Reserve 1.1 inches (1100 milli inches) for following table.
+@need 1100
+@multitable {llll} {@dots{} @emph{horrible botch} @dots{}} {(replace entire line)}
+@item
+@tab @code{a}
+@item
+@tab @dots{} @emph{text} @dots{}
+@item
+@tab @dots{} @emph{horrible botch} @dots{}
+@tab (major error)
+@item
+@tab @strong{.}
+@item
+@tab @code{c}
+@tab (replace entire line)
+@item
+@tab @dots{} @emph{fixed up line} @dots{}
+@end multitable
+
+You should experiment to determine what happens if  you
+add @emph{no} lines with @kbd{a}, @kbd{c} or @kbd{i}.
+
+The  @kbd{r}  command  will  read  a file into the text being
+edited, either at the end if you give no address,  or  after
+the specified line if you do.  In either case, dot points at
+the last line read in.  Remember that you can even say @kbd{0r} to
+read  a file in at the beginning of the text.  (You can also
+say @kbd{0a} or @kbd{1i} to start adding text at the beginning.)
+
+The @kbd{w} command writes out the entire file.  If you
+precede  the  command by one line number, that line is written,
+while if you precede it by two line numbers, that  range  of
+lines  is  written.   The @kbd{w} command does @emph{not} change dot: the
+current line remains the same, regardless of what lines  are
+written.  This is true even if you say something like
+
+@example
+/^\.AB/,/^\.AE/w abstract
+@end example
+
+@noindent
+which involves a context search.
+
+
+Since  the @kbd{w} command is so easy to use, you should save
+what you are editing regularly as you go along just in  case
+the  system  crashes,  or  in case you do something foolish,
+like clobbering what you're editing.
+
+The least intuitive behavior, in a sense,  is  that  of
+the  @kbd{s}  command.  The rule is simple --- you are left sitting
+on the last  line  that  got  changed.   If  there  were  no
+changes, then dot is unchanged.
+
+To  illustrate,  suppose  that there are three lines in
+the buffer, and you are sitting on the middle one:
+
+@example
+@group
+x1
+x2
+x3
+@end group
+@end example
+
+@noindent
+Then the command
+
+@example
+-,+s/x/y/p
+@end example
+
+@noindent
+prints the third line, which is the last one  changed.   But
+if the three lines had been
+
+@example
+@group
+x1
+y2
+y3
+@end group
+@end example
+
+@noindent
+and  the  same  command had been issued while dot pointed at
+the second line, then the result  would  be  to  change  and
+print  only  the  first line, and that is where dot would be
+set.
+
+@node Semicolon, Interrupting the Editor, Default Addresses, LINE ADDRESSING
+@comment  node-name,  next,  previous,  up
+@heading Semicolon `;'
+
+Searches with `/@dots{}/' and `?@dots{}?' start at the  current
+line  and  move  forward or backward respectively until they
+either find the pattern or get back  to  the  current  line.
+Sometimes this is not what is wanted.  Suppose, for example,
+that the buffer contains lines like this:
+
+@example
+@group
+@strong{.}
+@strong{.}
+@strong{.}
+ab
+@strong{.}
+@strong{.}
+@strong{.}
+bc
+@strong{.}
+@strong{.}
+@end group
+@end example
+
+@noindent
+Starting at line 1, one would expect that the command
+
+@example
+/a/,/b/p
+@end example
+
+@noindent
+prints all the lines from the `ab' to  the  `bc'  inclusive.
+Actually  this  is not what happens.  @emph{Both} searches (for `a'
+and for `b') start from the same point, and thus  they  both
+find  the line that contains `ab'.  The result is to print a
+single line.  Worse, if there had been a line with a `b'  in
+it  before the `ab' line, then the print command would be in
+error, since the second line number would be less  than  the
+first,  and  it  is illegal to try to print lines in reverse
+order.
+
+
+This is because the comma separator  for  line  numbers
+doesn't  set  dot  as each address is processed; each search
+starts from the same place.  In @command{ed}, the semicolon `;' can be
+used just like comma, with the single difference that use of
+a semicolon forces dot to be set at that point as  the  line
+numbers  are  being  evaluated.   In  effect,  the semicolon
+`moves' dot.  Thus in our example above, the command
+
+@example
+/a/;/b/p
+@end example
+
+@noindent
+prints the range of lines from `ab' to `bc',  because  after
+the  `a'  is found, dot is set to that line, and then `b' is
+searched for, starting beyond that line.
+
+
+This property is most often useful  in  a  very  simple
+situation.   Suppose  you want to find the @emph{second} occurrence
+of `thing'.  You could say
+
+@example
+/thing/
+//
+@end example
+
+@noindent
+but this prints the first occurrence as well as the  second,
+and  is  a  nuisance when you know very well that it is only
+the second one you're interested in.  The solution is to say
+
+@example
+/thing/;//
+@end example
+
+@noindent
+This  says  to find the first occurrence of `thing', set dot
+to that line, then find the second and print only that.
+
+
+Closely related is searching for  the  second  previous
+occurrence of something, as in
+
+@example
+?something?;??
+@end example
+
+@noindent
+Printing  the third or fourth or @dots{}  in either direction is
+left as an exercise.
+
+Finally, bear in mind that if  you  want  to  find  the
+first  occurrence  of  something  in  a file, starting at an
+arbitrary place within the file, it is not sufficient to say
+
+@example
+1;/thing/
+@end example
+
+@noindent
+because  this  fails if `thing' occurs on line 1.  But it is
+possible to say
+
+@example
+0;/thing/
+@end example
+
+@noindent
+(one of the few places where 0 is a legal line number),  for
+this starts the search at line 1.
+
+
+@node Interrupting the Editor,, Semicolon, LINE ADDRESSING
+@comment  node-name,  next,  previous,  up
+@heading Interrupting the Editor
+
+As  a final note on what dot gets set to, you should be
+aware that if you hit the interrupt or delete or  rubout  or
+break  key  while @command{ed} is doing a command, things are put back
+together again and your state is restored as much as
+possible  to  what  it  was before the command began.  Naturally,
+some changes are irrevocable --- if you are reading or
+writing  a file or making substitutions or deleting lines, these
+will be stopped in some clean but unpredictable state in the
+middle  (which  is why it is not usually wise to stop them).
+Dot may or may not be changed.
+
+Printing is more clear cut.  Dot is not  changed  until
+the  printing  is  done.  Thus if you print until you see an
+interesting line, then hit delete, you are  not  sitting  on
+that  line  or  even near it.  Dot is left where it was when
+the @kbd{p} command was started.
+
+@node GLOBAL COMMANDS, CUT AND PASTE WITH UNIX COMMANDS, LINE ADDRESSING, Top
+@comment  node-name,  next,  previous,  up
+@chapter GLOBAL COMMANDS
+
+The global commands @kbd{g} and @kbd{v} are used to perform one  or
+more  editing  commands on all lines that either contain (@kbd{g})
+or don't contain (@kbd{v}) a specified pattern.
+
+@menu
+* The Global Command List::
+* Multi-line Global Commands::
+@end menu
+
+@ifnottex
+@node The Global Command List, Multi-line Global Commands, GLOBAL COMMANDS, GLOBAL COMMANDS
+@comment  node-name,  next,  previous,  up
+@heading The Global Command List
+@end ifnottex
+
+As the simplest example, the command
+
+@example
+g/UNIX/p
+@end example
+
+@noindent
+prints all lines that contain the word `UNIX'.  The  pattern
+that  goes between the slashes can be anything that could be
+used in a line search or in a  substitute  command;  exactly
+the same rules and limitations apply.
+
+As another example, then,
+
+@example
+g/^\@strong{.}/p
+@end example
+
+@noindent
+prints  all  the  formatting  commands in a file (lines that
+begin with `@strong{.}').
+
+
+The @kbd{v} command is identical to @kbd{g}, except that  it  operates
+on those line that do @emph{not} contain an occurrence of the
+pattern.  (Don't look too hard for mnemonic significance  to
+the letter `v'.)  So
+
+@example
+v/^\./p
+@end example
+
+@noindent
+prints all the lines that don't begin with `@strong{.}' --- the actual
+text lines.
+
+The command that follows @kbd{g} or @kbd{v} can be anything:
+
+@example
+g/^\@strong{.}/d
+@end example
+
+@noindent
+deletes all lines that begin with `@strong{.}', and
+
+@example
+g/^$/d
+@end example
+
+@noindent
+deletes all empty lines.
+
+Probably the most useful  command  that  can  follow  a
+global  is  the  substitute command, for this can be used to
+make a change and print each affected line for verification.
+For  example,  we  could  change  the  word `Unix' to `UNIX'
+everywhere, and verify that it really worked, with
+
+@example
+g/Unix/s//UNIX/gp
+@end example
+
+Notice that we used `//' in the substitute command  to  mean
+`the previous pattern', in this case, `Unix'.  The @kbd{p} command
+is done on every line that matches  the  pattern,  not  just
+those on which a substitution took place.
+
+The  global  command operates by making two passes over
+the file.  On the first pass, all lines that match the  pattern
+are  marked.   On the second pass, each marked line in
+turn is examined, dot is set to that line, and  the  command
+executed.   This  means  that it is possible for the command
+that follows a @kbd{g} or @kbd{v} to use addresses, set dot, and so  on,
+quite freely.
+
+@example
+g/^\@strong{.}PP/+
+@end example
+
+@noindent
+prints  the line that follows each `.PP' command (the signal
+for a new paragraph in some formatting packages).   Remember
+that `+' means `one line past dot'.  And
+
+@example
+g/topic/?^\@strong{.}SH?1
+@end example
+
+@noindent
+searches  for  each  line that contains `topic', scans
+backwards until it finds a line that  begins  `.SH'  (a  section
+heading) and prints the line that follows that, thus showing
+the section  headings  under  which  `topic'  is  mentioned.
+
+Finally,
+
+@example
+g/^\@strong{.}EQ/+,/^\@strong{.}EN/-p
+@end example
+
+@noindent
+prints  all  the lines that lie between lines beginning with
+`.EQ' and `.EN' formatting commands.
+
+
+The @kbd{g} and @kbd{v} commands can also be preceded by line  numbers,
+in which case the lines searched are only those in the
+range specified.
+
+@node Multi-line Global Commands,, The Global Command List, GLOBAL COMMANDS
+@comment  node-name,  next,  previous,  up
+@heading Multi-line Global Commands
+
+It is possible to do more than one  command  under  the
+control  of  a  global  command,  although  the  syntax  for
+expressing the operation is not especially natural or
+pleasant.   As  an  example, suppose the task is to change `x' to
+`y' and `a' to `b' on all lines that contain `thing'.  Then
+
+@example
+@group
+g/thing/s/x/y/\
+s/a/b/
+@end group
+@end example
+
+@noindent
+is sufficient.  The `\' signals the @kbd{g} command that  the  set
+of commands continues on the next line; it terminates on the
+first line that does not end with `\'.  (As a minor blemish,
+you  can't  use  a  substitute  command  to insert a newline
+within a g command.)
+
+You should watch out for this problem: the command
+
+@example
+@group
+g/x/s//y/\
+s/a/b/
+@end group
+@end example
+
+@noindent
+does not work as you expect.  The remembered pattern is  the
+last  pattern  that  was  actually executed, so sometimes it
+will be `x' (as expected), and sometimes it will be `a' (not
+expected).  You must spell it out, like this:
+
+@example
+@group
+g/x/s/x/y/\
+s/a/b/
+@end group
+@end example
+
+It  is  also  possible  to  execute @kbd{a}, @kbd{c} and @kbd{i} commands
+under a global command; as with other  multi-line
+constructions, all that is needed is to add a `\' at the end of each
+line except the last.  Thus to add a `.nf' and `.sp' command
+before each `.EQ' line, type
+
+@example
+@group
+g/^\.EQ/i\
+.nf\
+.sp
+@end group
+@end example
+
+@noindent
+There is no need for a final line containing a `.' to
+terminate the @kbd{i} command, unless there are further commands  being
+done  under  the global.  On the other hand, it does no harm
+to put it in either.
+
+@node CUT AND PASTE WITH UNIX COMMANDS, CUT AND PASTE WITH THE EDITOR, GLOBAL COMMANDS, Top
+@comment  node-name,  next,  previous,  up
+@chapter CUT AND PASTE WITH UNIX COMMANDS
+
+One editing area in which non-programmers seem not very
+confident  is in what might be called `cut and paste' operations
+--- changing the name of a file, making  a  copy  of  a
+file  somewhere  else,  moving a few lines from one place to
+another in a file, inserting  one  file  in  the  middle  of
+another,  splitting  a file into pieces, and splicing two or
+more files together.
+
+Yet most of these operations are actually  quite  easy,
+if you keep your wits about you and go cautiously.  The next
+several sections talk about cut and paste.   We  will  begin
+with  the UNIX commands for moving entire files around, then
+discuss @command{ed} commands for operating on pieces of files.
+
+@menu
+* Changing the Name of a File::
+* Making a Copy of a File::
+* Removing a File::
+* Putting Two or More Files Together::
+* Adding Something to the End of a File::
+@end menu
+
+@node Changing the Name of a File, Making a Copy of a File, CUT AND PASTE WITH UNIX COMMANDS, CUT AND PASTE WITH UNIX COMMANDS
+@comment  node-name,  next,  previous,  up
+@heading Changing the Name of a File
+
+You have a file named `memo' and  you  want  it  to  be
+called `paper' instead.  How is it done?
+
+The  UNIX  program that renames files is called @command{mv} (for
+`move'); it `moves' the file from one name to another,  like
+this:
+
+@example
+mv  memo  paper
+@end example
+
+@noindent
+That's  all  there is to it: @command{mv} from the old name to the new
+name.
+
+@example
+mv  oldname  newname
+@end example
+
+@noindent
+Warning: if there is already a  file  around  with  the  new
+name, its present contents will be silently clobbered by the
+information from the other file.  The one exception is  that
+you can't move a file to itself ---
+
+@example
+mv  x  x
+@end example
+
+@noindent
+is illegal.
+
+@node Making a Copy of a File, Removing a File, Changing the Name of a File, CUT AND PASTE WITH UNIX COMMANDS
+@comment  node-name,  next,  previous,  up
+@heading Making a Copy of a File
+
+Sometimes  what  you  want  is  a  copy of a file --- an
+entirely fresh version.  This might be because you  want  to
+work  on  a file, and yet save a copy in case something gets
+fouled up, or just because you're paranoid.
+
+In any case, the way to do it is with the  @command{cp}  command.
+(@command{cp}  stands  for  `copy'; the system is big on short command
+names, which are appreciated by heavy users, but sometimes a
+strain  for novices.)  Suppose you have a file called `good'
+and you want to save a copy before you  make  some  dramatic
+editing  changes.   Choose  a  name  ---  `savegood' might be
+acceptable --- then type
+
+@example
+cp  good  savegood
+@end example
+
+@noindent
+This copies `good' onto `savegood', and  you  now  have  two
+identical  copies of the file `good'.  (If `savegood'
+previously contained something, it gets overwritten.)
+
+Now if you decide at some time that  you  want  to  get
+back to the original state of `good', you can say
+
+@example
+mv  savegood  good
+@end example
+
+@noindent
+(if you're not interested in `savegood' any more), or
+
+@example
+cp  savegood  good
+@end example
+
+@noindent
+if you still want to retain a safe copy.
+
+
+In  summary,  @command{mv} just renames a file; @command{cp} makes a
+duplicate copy.  Both of them clobber the  `target'  file  if  it
+already  exists,  so  you had better be sure that's what you
+want to do @emph{before} you do it.
+
+@node Removing a File, Putting Two or More Files Together, Making a Copy of a File, CUT AND PASTE WITH UNIX COMMANDS
+@comment  node-name,  next,  previous,  up
+@heading Removing a File
+
+If you decide you are really done with a file  forever,
+you can remove it with the @command{rm} command:
+
+@example
+rm  savegood
+@end example
+
+@noindent
+throws away (irrevocably) the file called `savegood'.
+
+@node Putting Two or More Files Together, Adding Something to the End of a File, Removing a File, CUT AND PASTE WITH UNIX COMMANDS
+@comment  node-name,  next,  previous,  up
+@heading Putting Two or More Files Together
+
+The  next step is the familiar one of collecting two or
+more files into one big one.  This will be needed, for
+example,  when  the  author of a paper decides that several
+sections need to be combined into one.  There are several  ways
+to do it, of which the cleanest, once you get used to it, is
+a program called @command{cat}.  (Not  @emph{all}  programs  have  two-letter
+names.)   @command{cat}  is  short for `concatenate', which is exactly
+what we want to do.
+
+Suppose the job is to combine  the  files  `file1'  and
+`file2' into a single file called `bigfile'.  If you say
+
+@example
+cat  file
+@end example
+
+@noindent
+the  contents  of  `file' will get printed on your terminal.
+
+If you say
+
+@example
+cat  file1  file2
+@end example
+
+@noindent
+the contents of `file1' and then  the  contents  of  `file2'
+will  @emph{both}  be  printed on your terminal, in that order.  So
+@command{cat} combines the files, all right, but it's not much help to
+print them on the terminal --- we want them in `bigfile'.
+
+Fortunately,  there  is a way.  You can tell the system
+that instead of printing on your terminal, you want the same
+information  put  in  a file.  The way to do it is to add to
+the command line the character @kbd{>} and the name  of  the  file
+where you want the output to go.  Then you can say
+
+@example
+cat  file1  file2  >bigfile
+@end example
+
+@noindent
+and  the  job  is  done.  (As with @command{cp} and @command{mv}, you're putting
+something into `bigfile',  and  anything  that  was  already
+there is destroyed.)
+
+This  ability  to  `capture' the output of a program is
+one of the most useful aspects of the  system.   Fortunately
+it's  not  limited to the @command{cat} program --- you can use it with
+@emph{any} program that prints on your terminal.   We'll  see  some
+more uses for it in a moment.
+
+Naturally, you can combine several files, not just two:
+
+@example
+cat  file1  file2  file3  @dots{}  >bigfile
+@end example
+
+@noindent
+collects a whole bunch.
+
+
+Question: is there any difference between
+
+@example
+cp  good  savegood
+@end example
+
+@noindent
+and
+
+@example
+cat  good  >savegood
+@end example
+
+@noindent
+Answer: for most purposes, no.  You might reasonably ask why
+there  are two programs in that case, since @command{cat} is obviously
+all you need.  The answer is that  @command{cp}  will  do  some  other
+things  as  well,  which you can investigate for yourself by
+reading the manual.  For now we'll stick to simple usages.
+
+@node Adding Something to the End of a File,, Putting Two or More Files Together, CUT AND PASTE WITH UNIX COMMANDS
+@comment  node-name,  next,  previous,  up
+@heading Adding Something to the End of a File
+
+
+Sometimes you want to  add  one  file  to  the  end  of
+another.  We have enough building blocks now that you can do
+it; in fact before reading further it would be  valuable  if
+you  figured out how.  To be specific, how would you use @command{cp},
+@command{mv} and/or @command{cat} to add the file `good1' to the end of the file
+`good'?
+
+You could try
+
+@example
+@group
+cat  good  good1  >temp
+mv  temp  good
+@end group
+@end example
+
+@noindent
+which  is  probably most direct.  You should also understand
+why
+
+@example
+cat  good  good1  >good
+@end example
+
+@noindent
+doesn't work.  (Don't practice with a good `good'!)
+
+
+The easy way is to use a variant of @kbd{>}, called  @kbd{>>}.   In
+fact, @kbd{>>} is identical to @kbd{>} except that instead of clobbering
+the old file, it simply tacks stuff on at the end.  Thus you
+could say
+
+@example
+cat  good1  >>good
+@end example
+
+@noindent
+and  `good1'  is added to the end of `good'.  (And if `good'
+didn't exist, this makes a copy of `good1' called `good'.)
+
+@node CUT AND PASTE WITH THE EDITOR, SUPPORTING TOOLS, CUT AND PASTE WITH UNIX COMMANDS, Top
+@comment  node-name,  next,  previous,  up
+@chapter CUT AND PASTE WITH THE EDITOR
+
+Now we move on to manipulating pieces of files ---
+individual lines or groups of lines.  This is another area where
+new users seem unsure of themselves.
+
+@menu
+* Filenames::
+* Inserting One File into Another::
+* Writing Out Part of a File::
+* Moving Lines Around::
+* Marks::
+* Copying Lines::
+* The Temporary Escape:: `@kbd{!}'
+@end menu
+
+@node Filenames, Inserting One File into Another, CUT AND PASTE WITH THE EDITOR, CUT AND PASTE WITH THE EDITOR
+@comment  node-name,  next,  previous,  up
+@heading Filenames
+
+The first step is to ensure that you know the  @command{ed}
+commands for reading and writing files.  Of course you can't go
+very far without knowing @kbd{r} and @kbd{w}.  Equally useful, but  less
+well known, is the `edit' command @kbd{e}.  Within ed, the command
+
+@example
+e  newfile
+@end example
+
+@noindent
+says `I want to edit a  new  file  called  @emph{newfile},  without
+leaving the editor.'  The @kbd{e} command discards whatever you're
+currently working on  and  starts  over  on  @emph{newfile}.   It's
+exactly the same as if you had quit with the @kbd{q} command, then
+re-entered @command{ed} with a new file name, except that if you  have
+a  pattern  remembered,  then  a  command like // will still
+work.
+
+
+If you enter @command{ed} with the command
+
+@example
+ed  file
+@end example
+
+@noindent
+@command{ed} remembers the name of the file, and any subsequent  @kbd{e},  @kbd{r}
+or  @kbd{w}  commands  that don't contain a filename will refer to
+this remembered file.  Thus
+
+@c Reserve 1.1 inches (1100 milli inches) for following table.
+@need 1100
+@multitable {llll} {@dots{} (editing on file2) @dots{}} {(edit new file, without leaving editor)}
+@item
+@tab @code{ed  file1}
+@item
+@tab @dots{} (editing) @dots{}
+@item
+@tab @code{w}
+@tab (writes back in file1)
+@item
+@tab @code{e  file2}
+@tab (edit new file, without leaving editor)
+@item
+@tab @dots{} (editing on file2) @dots{}
+@item
+@tab @code{w}
+@tab (writes back on file2)
+@end multitable
+
+@noindent
+(and so on) does a series of edits on various files  without
+ever leaving @command{ed} and without typing the name of any file more
+than once.  (As an aside, if you  examine  the  sequence  of
+commands  here, you can see why many UNIX systems use @kbd{e} as a
+synonym for @command{ed}.)
+
+
+You can find out the remembered file name at  any  time
+with  the  @kbd{f}  command; just type @kbd{f} without a file name.  You
+can also change the name of the remembered file name with @kbd{f};
+a useful sequence is
+
+@display
+@group
+@code{ed  precious}
+@code{f  junk}
+@dots{} (editing) @dots{}
+@end group
+@end display
+
+@noindent
+which gets a copy of a precious file, then uses @kbd{f} to
+guarantee that a careless @kbd{w} command won't clobber the original.
+
+@node Inserting One File into Another, Writing Out Part of a File, Filenames, CUT AND PASTE WITH THE EDITOR
+@comment  node-name,  next,  previous,  up
+@heading Inserting One File into Another
+
+Suppose you have a file called `memo', and you want the
+file  called `table' to be inserted just after the reference
+to Table 1.  That is, in `memo' somewhere  is  a  line  that
+says
+
+@example
+Table 1 shows that @dots{}
+@end example
+
+@noindent
+and  the data contained in `table' has to go there, probably
+so it will be formatted properly by  @command{nroff}  or  @command{troff}.   Now
+what?
+
+This one is easy.  Edit `memo', find `Table 1', and add
+the file `table' right there:
+
+@display
+@group
+@code{ed  memo}
+@code{/Table 1/}
+@code{Table 1 shows that} @dots{} @emph{[response from ed]}
+@strong{.}@code{r  table}
+@end group
+@end display
+
+@noindent
+The critical line is the last one.  As we said earlier,  the
+@kbd{r}  command reads a file; here you asked for it to be read in
+right after line dot.  An @kbd{r} command without any address adds
+lines at the end, so it is the same as @kbd{$r}.
+
+@node Writing Out Part of a File, Moving Lines Around, Inserting One File into Another, CUT AND PASTE WITH THE EDITOR
+@comment  node-name,  next,  previous,  up
+@heading Writing Out Part of a File
+
+The  other  side of the coin is writing out part of the
+document you're editing.  For example,  maybe  you  want  to
+split  out into a separate file that table from the previous
+example, so it can be formatted and tested separately.
+Suppose that in the file being edited we have
+
+@display
+@group
+@strong{.}@code{TS}
+@dots{} @emph{[lots of stuff]}
+@strong{.}@code{TE}
+@end group
+@end display
+
+@noindent
+which  is the way a table is set up for the @command{tbl} program.  To
+isolate the table in a separate file called  `table',  first
+find the start of the table (the `.TS' line), then write out
+the interesting part:
+
+@example
+@group
+/^\@strong{.}@code{TS/}
+@strong{.}@code{TS}  @emph{[ed prints the line it found]}
+@strong{.}@code{,/^\}@strong{.}@code{TE/w table}
+@end group
+@end example
+
+@noindent
+and the job is done.  If you are confident, you  can  do  it
+all at once with
+
+@example
+/^\@strong{.}TS/;/^\@strong{.}TE/w table
+@end example
+
+The  point  is that the @kbd{w} command can write out a group
+of lines, instead of the whole file.  In fact, you can write
+out  a  single  line  if you like; just give one line number
+instead of two.  For example, if you have just typed a
+horribly  complicated  line  and you know that it (or something
+like it) is going to be needed later, then save it ---  don't
+re-type it.  In the editor, say
+
+@display
+@group
+@code{a}
+@dots{} @emph{lots of stuff} @dots{}
+@dots{} @emph{horrible line} @dots{}
+@strong{.}
+@strong{.}@code{w  temp}
+@code{a}
+@dots{} @emph{more stuff} @dots{}
+@strong{.}
+@strong{.}@code{r temp}
+@code{a}
+@dots{} @emph{more stuff} @dots{}
+@strong{.}
+@end group
+@end display
+
+@noindent
+This last example is worth studying, to be sure you
+appreciate what's going on.
+
+@node Moving Lines Around, Marks, Writing Out Part of a File, CUT AND PASTE WITH THE EDITOR
+@comment  node-name,  next,  previous,  up
+@heading Moving Lines Around
+
+Suppose you want to move a paragraph from  its  present
+position  in a paper to the end.  How would you do it?  As a
+concrete example, suppose each paragraph in the paper begins
+with the formatting command `.PP'.  Think about it and write
+down the details before reading on.
+
+The brute force way (not necessarily bad) is  to  write
+the paragraph onto a temporary file, delete it from its
+current position, then read in the temporary file at  the  end.
+Assuming  that  you  are  sitting  on the `.PP' command that
+begins the paragraph, this is the sequence of commands:
+
+@example
+@group
+@strong{.},/^\@strong{.}PP/-w temp
+@strong{.},//-d
+$r temp
+@end group
+@end example
+
+@noindent
+That is, from where you are now (`@strong{.}')  until one line before
+the  next `@strong{.}PP' (`/^\@strong{.}PP/-') write onto `temp'.  Then delete
+the same lines.  Finally, read `temp' at the end.
+
+As we said, that's the brute force way.  The easier way
+(often)  is to use the @emph{move} command @kbd{m} that @command{ed} provides --- it
+lets you do the whole set of operations at one crack,
+without any temporary file.
+
+The @kbd{m} command is like many other @command{ed} commands in that it
+takes up to two line numbers in front that tell  what  lines
+are  to  be  affected.  It is also @emph{followed} by a line number
+that tells where the lines are to go.  Thus
+
+@example
+line1, line2 m line3
+@end example
+
+@noindent
+says to move all the lines between `line1' and `line2' after
+`line3'.   Naturally,  any  of `line1' etc., can be patterns
+between slashes, $ signs, or other ways to specify lines.
+
+Suppose again that you're sitting at the first line  of
+the paragraph.  Then you can say
+
+@example
+@strong{.},/^\@strong{.}PP/-m$
+@end example
+
+@noindent
+That's all.
+
+As  another  example  of  a frequent operation, you can
+reverse the order of two adjacent lines by moving the  first
+one to after the second.  Suppose that you are positioned at
+the first.  Then
+
+@example
+m+
+@end example
+
+@noindent
+does it.  It says to move line dot to after one  line  after
+line dot.  If you are positioned on the second line,
+
+@example
+m--
+@end example
+
+@noindent
+does the interchange.
+
+
+As  you  can  see,  the  @kbd{m} command is more succinct and
+direct than writing, deleting and re-reading.  When is brute
+force  better anyway?  This is a matter of personal taste ---
+do what you have most confidence in.   The  main  difficulty
+with  the  @kbd{m}  command is that if you use patterns to specify
+both the lines you are moving and the target,  you  have  to
+take  care  that  you specify them properly, or you may well
+not move the lines you thought you did.   The  result  of  a
+botched  @kbd{m}  command  can be a ghastly mess.  Doing the job a
+step at a time makes it easier for you  to  verify  at  each
+step  that you accomplished what you wanted to.  It's also a
+good idea to issue a @kbd{w} command before doing anything
+complicated;  then  if you goof, it's easy to back up to where you
+were.
+
+@node Marks, Copying Lines, Moving Lines Around, CUT AND PASTE WITH THE EDITOR
+@comment  node-name,  next,  previous,  up
+@heading Marks
+
+@command{ed} provides a facility for marking a line with  a
+particular  name  so you can later reference it by name
+regardless of its actual line number.  This can be handy for
+moving  lines, and for keeping track of them as they move.  The
+@emph{mark} command is @kbd{k}; the command
+
+@example
+kx
+@end example
+
+@noindent
+marks the current line with the name `x'.  If a line  number
+precedes the @kbd{k}, that line is marked.  (The mark name must be
+a single lower case letter.)   Now  you  can  refer  to  the
+marked line with the address
+
+@example
+'x
+@end example
+
+
+Marks  are  most useful for moving things around.  Find
+the first line of the block to be moved, and  mark  it  with
+'a.  Then find the last line and mark it with 'b.  Now
+position yourself at the place where the stuff is to go and say
+
+@example
+'a,'bm.
+@end example
+
+Bear in mind that only one line can have  a  particular
+mark name associated with it at any given time.
+
+@node Copying Lines, The Temporary Escape, Marks, CUT AND PASTE WITH THE EDITOR
+@comment  node-name,  next,  previous,  up
+@heading Copying Lines
+
+We mentioned earlier the idea of saving a line that was
+hard to type or used often, so as  to  cut  down  on  typing
+time.   Of course this could be more than one line; then the
+saving is presumably even greater.
+
+@command{ed} provides another command, called @kbd{t} (for  `transfer')
+for  making  a  copy  of a group of one or more lines at any
+point.  This is often easier than writing and reading.
+
+The @kbd{t} command is identical to  the  @kbd{m}  command,  except
+that  instead  of  moving lines it simply duplicates them at
+the place you named.  Thus
+
+@example
+1,$t$
+@end example
+
+@noindent
+duplicates the entire contents that you are editing.  A more
+common use for @kbd{t} is for creating a series of lines that
+differ only slightly.  For example, you can say
+
+@c Reserve 1.3 inches (1300 milli inches) for following table.
+@need 1300
+@multitable {llll} {@dots{}@dots{}  x  @dots{}@dots{}} {(make third copy)}
+@item
+@tab @code{a}
+@item
+@tab @dots{}@dots{}  x  @dots{}@dots{}
+@tab (long line)
+@item
+@tab @strong{.}
+@item
+@tab @code{t@strong{.}}
+@tab (make a copy)
+@item
+@tab @code{s/x/y/}
+@tab (change it a bit)
+@item
+@tab @code{t@strong{.}}
+@tab (make third copy)
+@item
+@tab @code{s/y/z/}
+@tab (change it a bit)
+@end multitable
+
+@noindent
+and so on.
+
+@node The Temporary Escape,, Copying Lines, CUT AND PASTE WITH THE EDITOR
+@comment  node-name,  next,  previous,  up
+@heading The Temporary Escape `!'
+
+
+Sometimes it is convenient to be  able  to  temporarily
+escape  from  the editor to do some other UNIX command,
+perhaps one of the file copy or move commands discussed in
+section  5, without leaving the editor.  The `escape' command @kbd{!}
+provides a way to do this.
+
+If you say
+
+@example
+!any UNIX command
+@end example
+
+
+@noindent
+your current editing state is suspended, and the  UNIX
+command  you asked for is executed.  When the command finishes,
+@command{ed} will signal you by printing another @kbd{!}; at that point  you
+can resume editing.
+
+You  can  really do any UNIX command, including another
+@command{ed}.  (This is quite common, in fact.)  In this case, you can
+even do another @kbd{!}.
+
+@node SUPPORTING TOOLS, Acknowledgement, CUT AND PASTE WITH THE EDITOR, Top
+@comment  node-name,  next,  previous,  up
+@chapter SUPPORTING TOOLS
+
+There  are  several  tools and techniques that go along
+with the editor, all of which are relatively easy  once  you
+know how @command{ed} works, because they are all based on the editor.
+In this section we will give some fairly cursory examples of
+these  tools,  more to indicate their existence than to
+provide a complete tutorial.  More information on each  can  be
+found in [3].
+
+@menu
+* Grep::
+* Editing Scripts::
+* Sed::
+@end menu
+
+@node Grep, Editing Scripts, SUPPORTING TOOLS, SUPPORTING TOOLS
+@comment  node-name,  next,  previous,  up
+@heading Grep
+
+Sometimes you want to find all occurrences of some word
+or pattern in a set of files, to edit them or  perhaps  just
+to  verify their presence or absence.  It may be possible to
+edit each file separately and look for the pattern of
+interest,  but if there are many files this can get very tedious,
+and if the files  are  really  big,  it  may  be  impossible
+because of limits in @command{ed}.
+
+The program @command{grep} was invented to get around these
+limitations.  The search patterns that we have described in  the
+paper  are  often  called  `regular expressions', and `grep'
+stands for
+
+@example
+g/re/p
+@end example
+
+@noindent
+That describes exactly what @command{grep} does  ---  it  prints  every
+line  in  a set of files that contains a particular pattern.
+Thus
+
+@example
+grep  'thing'  file1  file2  file3  @dots{}
+@end example
+
+@noindent
+finds `thing'  wherever  it  occurs  in  any  of  the  files
+`file1',  `file2',  etc.   @command{grep}  also  indicates the file in
+which the line was found, so you can later edit  it  if  you
+like.
+
+The  pattern  represented by `thing' can be any pattern
+you can use in the editor, since @command{grep} and @command{ed} use exactly the
+same  mechanism  for pattern searching.  It is wisest always
+to enclose the pattern in the single quotes '@dots{}' if it
+contains any non-alphabetic characters, since many such
+characters also mean something special to the UNIX command
+interpreter  (the `shell').  If you don't quote them, the command
+interpreter will try to interpret them before  @command{grep}  gets  a
+chance.
+
+There  is also a way to find lines that @emph{don't} contain a
+pattern:
+
+@example
+grep  -v  'thing'  file1  file2  @dots{}
+@end example
+
+@noindent
+finds all lines that don't contains `thing'.   The  @kbd{-v}  must
+occur  in the position shown.  Given @command{grep} and @command{grep -v}, it is
+possible to do things like selecting all lines that  contain
+some combination of patterns.  For example, to get all lines
+that contain `x' but not `y':
+
+@example
+grep  x  file @dots{}  |  grep  -v  y
+@end example
+
+@noindent
+(The notation @kbd{|} is a `pipe', which causes the output of  the
+first command to be used as input to the second command; see
+[2].)
+
+
+@node Editing Scripts, Sed, Grep, SUPPORTING TOOLS
+@comment  node-name,  next,  previous,  up
+@heading Editing Scripts
+
+If a fairly complicated set of editing operations is to
+be  done on a whole set of files, the easiest thing to do is
+to make up a `script', i.e., a file that contains the
+operations  you  want  to perform, then apply this script to each
+file in turn.
+
+For example, suppose you want to change every `Unix' to
+`UNIX'  and  every  `Gcos'  to  `GCOS'  in a large number of
+files.  Then put into the file `script' the lines
+
+@example
+@group
+g/Unix/s//UNIX/g
+g/Gcos/s//GCOS/g
+w
+q
+@end group
+@end example
+
+@noindent
+Now you can say
+
+@example
+@group
+ed file1 <script
+ed file2 <script
+@dots{}
+@end group
+@end example
+
+@noindent
+This causes @command{ed}  to  take  its  commands  from  the  prepared
+script.   Notice  that  the  whole  job has to be planned in
+advance.
+
+And of course by using the  UNIX  command  interpreter,
+you  can  cycle  through  a set of files automatically, with
+varying degrees of ease.
+
+@node Sed,, Editing Scripts, SUPPORTING TOOLS
+@comment  node-name,  next,  previous,  up
+@heading Sed
+
+
+@command{sed} (`stream editor') is a version of the  editor  with
+restricted  capabilities  but which is capable of processing
+unlimited amounts of input.  Basically @command{sed} copies its  input
+to its output, applying one or more editing commands to each
+line of input.
+
+As an example, suppose that we want to do the `Unix' to
+`UNIX'  part of the example given above, but without
+rewriting the files.  Then the command
+
+@example
+sed  's/Unix/UNIX/g'  file1  file2  @dots{}
+@end example
+
+@noindent
+applies  the  command  `s/Unix/UNIX/g'  to  all  lines  from
+`file1',  `file2', etc., and copies all lines to the output.
+The advantage of using @command{sed} in such a case is that it can  be
+used  with input too large for @command{ed} to handle.  All the output
+can be collected in one place, either in a file  or  perhaps
+piped into another program.
+
+If  the  editing  transformation is so complicated that
+more than one editing command is  needed,  commands  can  be
+supplied  from  a  file,  or  on  the  command  line, with a
+slightly more complex syntax.  To take commands from a file,
+for example,
+
+@example
+sed  -f  cmdfile  input-files @dots{}
+@end example
+
+
+@command{sed}  has  further  capabilities,  including conditional
+testing and branching, which we cannot go into here.
+
+@node Acknowledgement, References, SUPPORTING TOOLS, Top
+@comment  node-name,  next,  previous,  up
+@chapheading Acknowledgement
+
+I am grateful to Ted Dolotta for  his  careful  reading
+and valuable suggestions.
+
+@node References,, Acknowledgement, Top
+@comment  node-name,  next,  previous,  up
+@chapheading References
+
+@c Reserve 0.93 inches (930 milli inches) for following table.
+@need 930
+@multitable @columnfractions .03 .97
+@item [1]
+@tab Brian W. Kernighan, @emph{A Tutorial Introduction to the UNIX Text Editor},
+Bell Laboratories internal memorandum.
+@item [2]
+@tab Brian W. Kernighan, @emph{UNIX For Beginners}, Bell Laboratories internal
+memorandum.
+@item [3]
+@tab Ken L. Thompson and Dennis M. Ritchie, @emph{The UNIX Programmer's Manual}.
+Bell Laboratories.
+@end multitable
+
+@bye
+
+@c Local variables:
+@c mode: texinfo
+@c eval: (add-hook 'write-file-functions 'time-stamp)
+@c time-stamp-start: "Last modified: "
+@c time-stamp-format: "%:y-%02m-%02d <%u@%h>"
+@c time-stamp-end: "$"
+@c End:

@@ -1,0 +1,206 @@
+# cut-and-paste.patch: This patch adds the `y' (yank in the vi(1) sense) and
+# `x' (paste) commands and enables some testsuite tests. To apply it, use:
+#
+#    $ cd $top_srcdir && patch <contrib/cut-and-paste.patch && ./configure
+#
+Index: buf.c
+===================================================================
+--- src/buf.c.orig
++++ src/buf.c
+@@ -243,7 +243,6 @@
+   if (open_buffer () < 0)
+     return FATAL;
+   REQUE (&buffer_head, &buffer_head);
++  REQUE (&yank_buffer_head, &yank_buffer_head);
+   for (i = 0; i < 256; ++i)
+     char_table[i] = i;
+ 
+Index: exec.c
+===================================================================
+--- src/exec.c.orig
++++ src/exec.c
+@@ -203,7 +203,6 @@
+         }
+       if ((status = delete_lines (1, addr_last)) < 0)
+         return status;
++      delete_yank_lines ();
+       clear_undo_stack ();
+       binary_data = 0;
+       if ((status = close_buffer ()) < 0
+@@ -633,6 +632,25 @@
+        }
+      return (cc != 'q' && cc != 'Q') ? 0 : (cc == 'Q') ? EOF
+        : (buffer_modified && !scripted) ? EMOD : EOF_NXT;
++    case 'x':
++      if (addr_last < second_addr)
++        {
++          err_msg = _("Address out of range");
++          return ERR;
++        }
++      GET_COMMAND_SUFFIX ();
++      if (!global_state)
++        clear_undo_stack ();
++      if ((status = put_lines (second_addr)) < 0)
++        return status;
++      break;
++    case 'y':
++      if ((status = check_addr_range (current_addr, current_addr)) < 0)
++        return status;
++      GET_COMMAND_SUFFIX ();
++      if ((status = yank_lines (first_addr, second_addr)) < 0)
++        return status;
++      break;
+     case 'Z':
+       if (posixly_correct || traditional)
+         {
+Index: cmds.c
+===================================================================
+--- src/cmds.c.orig
++++ cmds.c
+@@ -124,8 +124,6 @@
+ {
+   line_t *n, *p;
+ 
++  if (yank_lines (from, to) < 0)
++    return ERR;
+   SPL1 ();
+   if (push_undo_stack (UDEL, from, to) == NULL)
+     {
+@@ -430,81 +428,6 @@
+ }
+ 
+ 
++line_t yank_buffer_head;        /* head of yank buffer */
++
++/* yank_lines: Copy a range of lines to yank buffer. */
++int
++yank_lines (from, to)
++     size_t from;
++     size_t to;
++{
++  line_t *bp, *cp, *ep, *lp;
++
++  delete_yank_lines ();
++  ep = get_addressed_line_node (INC_MOD (to, addr_last));
++  bp = get_addressed_line_node (from);
++  for (lp = &yank_buffer_head; bp != ep; bp = bp->q_forw, lp = cp)
++    {
++      SPL1 ();
++      if ((cp = dup_line_node (bp)) == NULL)
++        {
++          SPL0 ();
++          return ERR;
++        }
++      INSQUE (cp, lp);
++      SPL0 ();
++    }
++  return 0;
++}
++
++
++/* delete_yank_lines: Delete lines from the yank buffer. */
++void
++delete_yank_lines ()
++{
++  line_t *cp, *lp;
++
++  for (lp = yank_buffer_head.q_forw; lp != &yank_buffer_head; lp = cp)
++    {
++      SPL1 ();
++      cp = lp->q_forw;
++      REQUE (lp->q_back, lp->q_forw);
++      free (lp);
++      SPL0 ();
++    }
++}
++
++
++/* put_lines: Append lines from the yank buffer. */
++int
++put_lines (addr)
++     size_t addr;
++{
++  undo_t *up = NULL;
++  line_t *lp, *cp;
++
++  if ((lp = yank_buffer_head.q_forw) == &yank_buffer_head)
++    {
++      err_msg = _("Buffer empty");
++      return ERR;
++    }
++  current_addr = addr;
++  for (; lp != &yank_buffer_head; lp = lp->q_forw)
++    {
++      SPL1 ();
++      if ((cp = dup_line_node (lp)) == NULL || add_line_node (cp) < 0)
++        {
++          SPL0 ();
++          return ERR;
++        }
++      PUSH_UNDO (cp, up, current_addr);
++      buffer_modified = 1;
++      SPL0 ();
++    }
++  return 0;
++}
++
++
+ #define MARK_MAX 26             /* max number of marks */
+ 
+ const line_t *mark[MARK_MAX];   /* line markers */
+Index: ed.h
+===================================================================
+--- src/ed.h.orig
++++ src/ed.h
+@@ -360,7 +360,6 @@
+ int close_buffer __P ((void));
+ int copy_lines __P ((size_t));
+ int delete_lines __P ((size_t, size_t));
++void delete_yank_lines __P ((void));
+ int display_lines __P ((size_t, size_t, int));
+ line_t *dup_line_node __P ((const line_t *));
+ int exec_command __P ((void));
+@@ -400,7 +399,6 @@
+ char *parse_char_class __P ((const char *));
+ int pop_undo_stack __P ((void));
+ undo_t *push_undo_stack __P ((int, size_t, size_t));
++int put_lines __P ((size_t));
+ char *put_buffer_line __P ((const char *));
+ int put_stdout_line __P ((const char *, size_t, size_t, int, size_t *));
+ int put_stream_line __P ((FILE *, const char *, int));
+@@ -422,7 +420,6 @@
+ void usage __P ((int));
+ int write_file __P ((const char *, const char *, size_t, size_t, size_t *));
+ int write_stream __P ((FILE *, size_t, size_t, off_t *));
++int yank_lines __P ((size_t, size_t));
+ 
+ /* global buffers */
+ extern char *cb_p;
+@@ -433,7 +430,6 @@
+ extern const char *prompt;
+ extern char version_string[];
+ extern char *script_file_name;
++extern line_t yank_buffer_head;
+ 
+ /* global flags */
+ extern int binary_data;
+--- testsuite/Makefile.am.orig
++++ testsuite/Makefile.am
+@@ -93,7 +93,7 @@
+ 	c2.t comment.t d.t e1.t e2.t e3.t e4.t e5.t g1.t g2.t g3.t	      \
+ 	g4.t g5.t i1.t i2.t j.t k.t l.t m.t n.t nl1.t nl2.t nl3.t	      \
+ 	nl4.t p.t q2.t r1.t r2.t r3.t s1.t s2.t s3.t s4.t s5.t t1.t	      \
+-	t2.t u.t v.t w.t
++	t2.t u.t v.t w.t x.t
+ 
+ ED_AT_SRCS_OK = $(ED_AT_TEMPLATES_OK:%=$(srcdir)/%)
+ ED_AT_SCRIPTS_OK = $(ED_AT_SRCS_OK:%.t=%-ok.at) 
+@@ -106,7 +106,7 @@
+ 	d.err e1.err e2.err e3.err f1.err f2.err g1.err g2.err g3.err	      \
+ 	h.err i2.err k2.err k3.err k4.err m.err q1.err r2.err s1.err	      \
+ 	s10.err s3.err s4.err s5.err s6.err s7.err s8.err s9.err	      \
+-	t1.err t2.err u.err w1.err w2.err w3.err z.err
++	t1.err t2.err u.err w1.err w2.err w3.err x.err z.err
+ 
+ ED_AT_SRCS_ERR = $(ED_AT_TEMPLATES_ERR:%=$(srcdir)/%)
+ ED_AT_SCRIPTS_ERR = $(ED_AT_SRCS_ERR:%.err=%-err.at) 

@@ -1,0 +1,13 @@
+Ed is an 8-bit clean, SUSv3-compliant line editor with 64-bit
+addressing. Extensions to and deviations from SUSv3 are described in
+the file `doc/SUSv3'.
+
+Brian W. Kernighan's ed tutorials are included courtesy of Lucent
+Laboratories. See `doc/tutorial/' or, from within ed, type:
+
+  !info ed RET m tutorial RET
+
+The ed algorithm is described in Kernighan and Plauger's book
+"Software Tools in Pascal," Addison-Wesley, 1981.
+
+Send bug reports to: bug-ed@gnu.org

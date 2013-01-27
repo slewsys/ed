@@ -1,0 +1,218 @@
+/* signal.c: Signal handlers for the ed line editor.
+
+   Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
+
+   Last modified: 2012-12-11 <alm@buttercup.local>
+
+   This file is part of ed. */
+
+#include "ed.h"
+
+#ifdef HAVE_TERMIOS_H
+# include <termios.h>
+#endif
+
+#ifdef HAVE_SYS_IOCTL_H
+# include <sys/ioctl.h>
+#endif
+
+
+/* Signal handlers, indexed by signal number (less one), initialized
+   to default signal, SIG_DFL == (signal_t) 0. */
+signal_t sighandler[NSIG];
+
+
+/* Static function declarations. */
+static void handle_hup (int);
+static void handle_int (int);
+static void handle_winch (int);
+static signal_t reliable_signal (int, signal_t);
+
+
+/* Global declarations */
+int _sigactive = 0;
+int _sigflags = 0;
+
+
+void
+activate_signals (void)
+{
+  _sigactive = 1;
+}
+
+
+static void
+handle_hup (signo)
+     int signo;
+{
+  extern ed_state_t _ed;
+
+  ed_state_t *ed = &_ed;
+  char template[] = "ed.hup";
+  char *hup = NULL;             /* hup file name */
+  char *s;
+  off_t addr = 0;
+  off_t size;
+  size_t len;
+  int m = 0;
+
+  if (!_sigactive)
+    quit (1);
+  _sigflags &= ~(1 << (signo - 1));
+  if (ed->buf[0].addr_last
+      && write_file ("ed.hup", 0, 1, ed->buf[0].addr_last,
+                     &addr, &size, "w", ed) < 0
+      && (s = getenv ("HOME")))
+    {
+      m = *(s + (len = strlen (s)) - 1) != '/';
+      if (!(hup = (char *) malloc ((size_t) (len + m + sizeof template))))
+        quit (2);
+      memcpy (hup, s, len);
+      memcpy (hup + len, m ? "/" : "", 1);
+      memcpy (hup + len + m, template, sizeof template);
+      write_file (hup, 0, 1, ed->buf[0].addr_last, &addr, &size, "w", ed);
+    }
+  quit (2);
+}
+
+
+static void
+handle_int (signo)
+     int signo;
+{
+  if (!_sigactive)
+    quit (1);
+  _sigflags &= ~(1 << (signo - 1));
+  LONGJMP (env, -1);
+}
+
+
+static void
+handle_winch (signo)
+     int signo;
+{
+  int saved_errno = errno;
+
+#ifdef TIOCGWINSZ
+  struct winsize ws;            /* window size structure */
+#endif
+
+  if (_sigactive)
+    _sigflags &= ~(1 << (signo - 1));
+#ifdef TIOCGWINSZ
+  if (ioctl (0, TIOCGWINSZ, &ws) >= 0)
+    {
+      /* Sanity check values of environment vars */
+      if (1 < ws.ws_row && ws.ws_row < ROWS_MAX)
+        window_rows = ws.ws_row;
+      if (TAB_WIDTH < ws.ws_col && ws.ws_col < COLUMNS_MAX)
+        window_columns = ws.ws_col;
+    }
+#endif
+
+  errno = saved_errno;
+}
+
+
+int
+init_signal_handler (ed)
+     ed_state_t *ed;
+{
+  /* Override signo-indexed LUT for handlers of interest. */
+  sighandler[SIGHUP - 1] = handle_hup;
+  sighandler[SIGINT - 1] = handle_int;
+#ifdef SIGWINCH
+  sighandler[SIGWINCH - 1] = handle_winch;
+#endif
+
+  /* Register handlers of interest. */
+  if (reliable_signal (SIGHUP, signal_handler) == SIG_ERR
+      || reliable_signal (SIGQUIT, SIG_IGN) == SIG_ERR
+      || reliable_signal (SIGINT, signal_handler) == SIG_ERR
+#ifdef SIGWINCH
+      || (isatty (0) && reliable_signal (SIGWINCH, signal_handler) == SIG_ERR)
+#endif
+      )
+    {
+      fprintf (stderr, "%s\n", strerror (errno));
+      ed->exec.err = _("Signal error");
+      return ERR;
+    }
+  return 0;
+}
+
+
+static signal_t
+reliable_signal (signo, handler)
+     int signo;
+     signal_t handler;
+{
+#ifndef HAVE_SIGACTION
+  return signal (signo, handler);
+#else
+  struct sigaction sa, osa;
+
+  sa.sa_handler = handler;
+  sigemptyset (&sa.sa_mask);
+  sa.sa_flags = 0;
+# ifdef SA_RESTART
+  sa.sa_flags |= SA_RESTART;
+# endif  /* SA_RESTART */
+  return (sigaction (signo, &sa, &osa) < 0 ? SIG_ERR : osa.sa_handler);
+#endif  /* HAVE_SIGACTION */
+}
+
+
+
+/* Global declarations */
+int _mutex = 0;
+
+
+/* signal_handler: If signaling blocked (see spl1), register for
+   handling when signaling resumed. Otherwise, call signal-indexed
+   handler. */
+void
+signal_handler (signo)
+     int signo;
+{
+  /* Assert: _sigactive == 1 */
+  if (_mutex)
+    _sigflags |= (1 << (signo - 1));
+  else
+    (sighandler[signo - 1]) (signo);
+}
+
+
+/* sp11: Raise priority level and disable signals. */
+void
+spl1 (void)
+{
+  /* Assert: _sigactive == 1 */
+  ++_mutex;
+}
+ 
+
+/* spl0: Lower priority level and enable signals if level is nominal. */
+void
+spl0 (void)
+{
+  /* Assert: _sigactive == 1 */
+  if (!--_mutex)
+    {
+      if ((_sigflags & (1 << (SIGHUP - 1)))) handle_hup (SIGHUP);
+      if ((_sigflags & (1 << (SIGINT - 1)))) handle_int (SIGINT);
+#ifdef SIGWINCH
+      if ((_sigflags & (1 << (SIGWINCH - 1)))) handle_winch (SIGWINCH);
+#endif
+    }
+}
+
+/*
+ * Local variables:
+ * mode: c
+ * eval: (add-hook 'write-file-functions 'time-stamp)
+ * time-stamp-start: "Last modified: "
+ * time-stamp-format: "%:y-%02m-%02d <%u@%h>"
+ * time-stamp-end: "$"
+ * End:
+ */

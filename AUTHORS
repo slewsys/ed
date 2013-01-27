@@ -1,0 +1,25 @@
+AUTHORS: Authors of the ed line editor.
+
+Last modified: 2011-09-12 <alm@slewsys.org>
+
+* Program and Documentation
+Andrew L. Moore authored the ed program and documentation.
+
+* Tutorials
+Brian W. Kernighan authored the ed tutorials. They are included in
+this distribution courtesy of Lucent Laboratories.
+
+* GNU Port
+François Pinard ported FreeBSD ed to GNU, adding a texinfo manual, GNU
+getopt-long support and ed 0.2's autoconf build system.
+
+* Contributors
+Futher acknowledgements are in the file THANKS.
+
+# Local variables:
+# mode: outline
+# eval: (add-hook 'write-file-functions 'time-stamp)
+# time-stamp-start: "Last modified: "
+# time-stamp-format: "%:y-%02m-%02d <%u@%h>"
+# time-stamp-end: "$"
+# End:

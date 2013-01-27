@@ -1,0 +1,34 @@
+# proto-err.at.in: Autotest template for the ed testsuite.
+
+# Copyright © 2005-2013 Andrew L. Moore, SlewSys Research
+
+# Last modified: 2013-01-27 <alm@buttercup.lan>
+
+# Process this file with autotest to create testsuite (see also Makefile.am).
+
+AT_SETUP([Pipe: @SCRIPT_NAME@.err])
+
+cat >script-@SCRIPT_NAME@ <<_ATEOF_ED
+H
+r @SCRIPT_SRC@.err
+$(test -s @SCRIPT_SRC@.err &&
+cat @SCRIPT_SRC@.err ||
+echo "@SCRIPT_NAME@")
+w @SCRIPT_NAME@.ro
+_ATEOF_ED
+
+AT_CHECK([cat script-@SCRIPT_NAME@ | ed - && exit 255 ||
+cmp @SCRIPT_SRC@.rr @SCRIPT_NAME@.ro],
+0, [ignore], [ignore], [], [])
+
+AT_CLEANUP()
+
+
+# Local variables:
+# mode: autotest
+# eval: (add-hook 'write-file-functions 'time-stamp)
+# time-stamp-start: "Last modified: "
+# time-stamp-format: "%:y-%02m-%02d <%u@%h>"
+# time-stamp-end: "$"
+# End:
+

@@ -1,0 +1,1782 @@
+\input texinfo.tex
+@setfilename ed-intro.info
+
+@c Last modified: 2007-08-09 <alm@slewsys.org>
+
+@ifclear includefile
+
+@paragraphindent 3
+@firstparagraphindent insert
+
+@settitle A Tutorial Introduction to the UNIX Text Editor
+@kbdinputstyle distinct
+@finalout
+
+@dircategory Text creation and manipulation
+@direntry
+* ed introduction: (ed-intro).Introduction to the Unix Text Editor.
+@end direntry
+
+@copying
+@emph{A Tutorial Introduction  to the UNIX Text Editor}
+@*
+Copyright @copyright{} Brian W. Kernighan, Lucent Laboratories
+@*
+Reprinted courtesy of Lucent Laboratories
+@end copying
+
+@c @smallbook
+
+@titlepage
+@center @titlefont{A Tutorial Introduction to the UNIX Text Editor}
+@sp 1
+@center @emph{Brian W. Kernighan}
+@sp 3
+@center @emph{ABSTRACT}
+@sp 1
+Almost all text input on the UNIX operating system is done with the
+text-editor @command{ed}. This memorandum is a tutorial guide to help
+beginners get started with text editing.
+
+Although it does not cover everything, it does discuss enough for most
+users' day-to-day needs. This includes printing, appending, changing,
+deleting, moving and inserting entire lines of text; reading and writing
+files; context searching and line addressing; the substitute command;
+the global commands; and the use of special characters for advanced
+editing.
+@page
+@vskip 0pt plus 1filll
+@insertcopying
+@end titlepage
+
+@c Preserve appearance of historical document
+@headings off
+@everyheading @| -@thispage- @|
+@c @fonttextsize 10
+
+@ifnottex
+
+@node Top, Introduction, (dir), (dir)
+@comment  node-name,  next,  previous,  up
+@top A Tutorial Introduction to the UNIX Text Editor
+
+by Brian W. Kernighan
+
+@end ifnottex
+@end ifclear
+
+@ifnottex
+
+Almost all text input on the UNIX operating system is done with the
+text-editor @command{ed}. This memorandum is a tutorial guide to help beginners
+get started with text editing.
+
+Although it does not cover everything,  it  does
+discuss  enough  for most users' day-to-day needs.
+This  includes  printing,   appending,   changing,
+deleting,  moving  and  inserting  entire lines of
+text; reading and writing files; context searching
+and  line  addressing; the substitute command; the
+global commands; and the use of special characters
+for advanced editing.
+
+@end ifnottex
+
+@menu
+* Introduction:: The purpose of this tutorial.
+* Disclaimer:: What you need to know.
+* Getting Started:: Invoking @command{ed}.
+* Creating Text:: The Append command ``@kbd{a}''
+* Error Messages:: ``@kbd{?}''
+* Writing to a file:: The Write command ``@kbd{w}''
+* Leaving ed:: The Quit command ``@kbd{q}''
+* Exercise 1:: Create a text file.
+* Reading text from a file:: The Edit command ``@kbd{e}''
+* Inserting text from a file:: The Read command ``@kbd{r}''
+* Exercise 2:: Open text files.
+* Printing the buffer:: The Print command ``@kbd{p}''
+* Exercise 3:: Display the contents of the buffer.
+* The current line:: ``Dot'' or ``@strong{.}''
+* Deleting lines:: The Delete command ``@kbd{d}''
+* Exercise 4:: Open, create, view and write files.
+* Modifying text:: The Substitute command ``@kbd{s}''
+* Exercise 5:: Modify text in the buffer.
+* Context searching:: ``@kbd{/@dots{}/}''
+* Exercise 6:: Search for text in the buffer.
+* Change and Insert:: The Change and Insert, ``@kbd{c}'' and ``@kbd{i}''
+* Exercise 7:: Change and insert text.
+* Moving text around:: The Move command ``@kbd{m}''
+* The global commands:: The global commands ``@kbd{g}'' and ``@kbd{v}''
+* Special Characters:: ``@kbd{^}'', ``@strong{.}'', ``@kbd{$}'', ``@kbd{[}'', ``@kbd{*}'', ``@kbd{\}''
+* Summary:: Summary of Commands and Line Numbers.
+@end menu
+
+@node Introduction, Disclaimer, Top, Top
+@comment  node-name,  next,  previous,  up
+@c @centerchap {A Tutorial Introduction to the UNIX Text Editor}
+@c @fonttextsize 10
+@c @sp 1
+@c @center @emph{Brian W. Kernighan}
+@heading Introduction
+@command{Ed} is a ``text editor'', that is, an interactive program for
+creating and modifying ``text'', using directions provided by a user at
+a terminal. The text is often a document like this one, or a program or
+perhaps data for a program.
+
+This introduction is meant to simplify learning @command{ed}. The recommended
+way to learn @command{ed} is to read this document, simultaneously using @command{ed} to
+follow the examples, then to read the description in section I of the
+@emph{UNIX Programmer's Manual}, all the while experimenting with @command{ed}.
+(Solicitation of advice from experienced users is also useful.)
+
+Do the exercises! They cover material not completely discussed in the
+actual text. An appendix summarizes the commands.
+
+@node Disclaimer, Getting Started, Introduction, Top
+@comment  node-name,  next,  previous,  up
+@heading Disclaimer
+This is an introduction and a tutorial. For this reason, no attempt is
+made to cover more than a part of the facilities that @command{ed} offers
+(although this fraction includes the most useful and frequently used
+parts). When you have mastered the Tutorial, try @emph{Advanced Editing on
+UNIX}. Also, there is not enough space to explain basic UNIX procedures.
+We will assume that you know how to log on to UNIX, and that you have at
+least a vague understanding of what a file is. For more on that, read
+@emph{UNIX for Beginners}.
+
+You must also know what character to type as the end-of-line on your
+particular terminal. This character is the @kbd{RETURN} key on most terminals.
+Throughout, we will refer to this character, whatever it is, as @kbd{RETURN}.
+
+@node Getting Started, Creating Text, Disclaimer, Top
+@comment  node-name,  next,  previous,  up
+@heading Getting Started
+We'll assume that you have logged in to your system and it
+has just printed the prompt character, usually either a @kbd{$} or
+a @kbd{%}.  The easiest way to get @command{ed} is to type
+
+@display
+@code{ed}   (followed by a return)
+@end display
+
+@noindent
+You are now ready to go --- @command{ed} is waiting for you to  tell  it
+what to do.
+
+@node Creating Text, Error Messages, Getting Started, Top
+@comment  node-name,  next,  previous,  up
+@heading Creating Text --- the Append command ``@kbd{a}''
+As your first problem, suppose you want to create some text starting
+from scratch. Perhaps you are typing the very first draft of a paper;
+clearly it will have to start somewhere, and undergo modifications
+later. This section will show how to get some text in, just to get
+started. Later we'll talk about how to change it.
+
+When @command{ed} is first started, it is rather like working with a
+blank  piece  of  paper  ---  there  is no text or information
+present.  This must be supplied by the person using  @command{ed};  it
+is usually done by typing in the text, or by reading it into
+@command{ed} from a file.  We will start by typing in some  text,  and
+return shortly to how to read files.
+
+First a bit of terminology. In @command{ed} jargon, the text being worked on is
+said to be ``kept in a buffer.'' Think of the buffer as a work space, if
+you like, or simply as the information that you are going to be editing.
+In effect the buffer is like the piece of paper, on which we will write
+things, then change some of them, and finally file the whole thing away
+for another day.
+
+The user tells @command{ed} what to do to his text by typing instructions called
+``commands.'' Most commands consist of a single letter, which must be
+typed in lower case. Each command is typed on a separate line.
+(Sometimes the command is preceded by information about what line or
+lines of text are to be affected --- we will discuss these shortly.) @command{Ed}
+makes no response to most commands --- there is no prompting or typing of
+messages like ``ready''. (This silence is preferred by experienced
+users, but sometimes a hangup for beginners.)
+
+The first command is @dfn{append}, written as the letter
+
+@example
+a
+@end example
+
+@noindent
+all by itself.  It means ``append (or add) text lines to the
+buffer, as I type them in.''  Appending is rather like writing fresh material on a piece of paper.
+
+So to enter lines of text into the buffer, just type an  @kbd{a}
+followed  by  a  @kbd{RETURN},  followed  by the lines of text you
+want, like this:
+
+@example
+@group
+a
+Now is the time
+for all good men
+to come to the aid of their party.
+@strong{.}
+@end group
+@end example
+
+The only way to stop appending is to type a line that contains only a
+period. The ``@strong{.}'' is used to tell @command{ed} that you have finished appending.
+(Even experienced users forget that terminating ``@strong{.}'' sometimes. If @command{ed}
+seems to be ignoring you, type an extra line with just ``@strong{.}'' on it. You
+may then find you've added some garbage lines to your text, which you'll
+have to take out later.)
+
+After the append command has been done,  the  buffer  will
+contain the three lines
+
+@example
+@group
+Now is the time
+for all good men
+to come to the aid of their party.
+@end group
+@end example
+
+@noindent
+The ``@kbd{a}'' and ``@strong{.}'' aren't there, because they are not text.
+
+To add more text to what  you  already  have,  just  issue
+another @kbd{a} command, and continue typing.
+
+@node Error Messages, Writing to a file, Creating Text, Top
+@comment  node-name,  next,  previous,  up
+@heading Error Messages --- ``@kbd{?}''
+If  at any time you make an error in the commands you type
+to @command{ed}, it will tell you by typing
+
+@example
+?
+@end example
+
+@noindent
+This is about as cryptic as it can be,  but  with  practice,
+you can usually figure out how you goofed.
+
+@node Writing to a file, Leaving ed, Error Messages, Top
+@heading Writing text out as a file --- the Write command ``@kbd{w}''
+It's  likely  that you'll want to save your text for later
+use.  To write out the contents of the buffer onto  a  file,
+use the @dfn{write} command
+
+@example
+w
+@end example
+
+@noindent
+followed by the filename you want to write on. This will copy the
+buffer's contents onto the specified file (destroying any previous
+information on the file). To save the text on a file named @kbd{junk}, for
+example, type
+
+@example
+w junk
+@end example
+
+@noindent
+Leave a space between @kbd{w} and the file name.  @command{Ed} will  respond
+by  printing the number of characters it wrote out.  In this
+case, @command{ed} would respond with
+
+@example
+68
+@end example
+
+@noindent
+(Remember that blanks and the return character at the end of each line
+are included in the character count.) Writing a file just makes a copy
+of the text --- the buffer's contents are not disturbed, so you can go on
+adding lines to it. This is an important point. @command{Ed} at all times works on
+a copy of a file, not the file itself. No change in the contents of a
+file takes place until you give a @kbd{w} command. (Writing out the text onto
+a file from time to time as it is being created is a good idea, since if
+the system crashes or if you make some horrible mistake, you will lose
+all the text in the buffer but any text that was written onto a file is
+relatively safe.)
+
+@node Leaving ed, Exercise 1, Writing to a file, Top
+@comment  node-name,  next,  previous,  up
+@heading Leaving ed --- the Quit command ``@kbd{q}''
+To terminate a session with @command{ed}, save the text you're working on by
+writing it onto a file using the @kbd{w} command, and then type the command
+
+@example
+q
+@end example
+
+@noindent
+which stands for @dfn{quit}. The system will respond with the prompt character
+(@kbd{$} or @kbd{%}). At this point your buffer vanishes, with all its text,
+which is why you want to write it out before
+quitting.@footnote{Actually, @command{ed} will print @kbd{?} if you try to quit without
+writing. At that point, write if you want; if not, another @kbd{q} will get
+you out regardless.}
+
+@node Exercise 1, Reading text from a file, Leaving ed, Top
+@comment  node-name,  next,  previous,  up
+@heading Exercise 1:
+Enter @command{ed} and create some text using
+
+@display
+@group
+@code{a}
+@dots{} @emph{text} @dots{}
+@strong{.}
+@end group
+@end display
+
+@noindent
+Write it out using @kbd{w}.  Then leave @command{ed} with the @kbd{q} command, and
+print the file, to see that everything worked.  (To print  a
+file, say
+
+
+@example
+pr filename
+@end example
+
+@noindent
+or
+
+@example
+cat filename
+@end example
+
+@noindent
+in response to the prompt character.  Try both.)
+
+@node Reading text from a file, Inserting text from a file, Exercise 1, Top
+@comment  node-name,  next,  previous,  up
+@heading Reading text from a file --- the Edit command ``@kbd{e}''
+A common way to get text into the buffer is to read it from a file in
+the file system. This is what you do to edit text that you saved with
+the @kbd{w} command in a previous session. The @dfn{edit} command @kbd{e} fetches the
+entire contents of a file into the buffer. So if you had saved the three
+lines ``Now is the time'', etc., with a @kbd{w} command in an earlier session,
+the @command{ed} command
+
+@example
+e junk
+@end example
+
+@noindent
+would  fetch  the  entire contents of the file junk into the
+buffer, and respond
+
+@example
+68
+@end example
+
+@noindent
+which is the number of characters in junk.  @emph{If anything  was
+already in the buffer, it is deleted first.}
+
+If you use the @kbd{e} command to read a file into the buffer, then you need
+not use a file name after a subsequent @kbd{w} command; @command{ed} remembers the last
+file name used in an @kbd{e} command, and @kbd{w} will write on this file. Thus a
+good way to operate is
+
+@display
+@group
+@code{ed}
+@code{e file}
+[editing session]
+@code{w}
+@code{q}
+@end group
+@end display
+
+@noindent
+This  way,  you  can  simply say @kbd{w} from time to time, and be
+secure in the knowledge that if you got the file name  right
+at  the beginning, you are writing into the proper file each
+time.
+
+You can find out at any time what file name @command{ed} is remembering by
+typing the @dfn{file} command @kbd{f}. In this example, if you typed
+
+@example
+f
+@end example
+
+@command{ed} would reply
+
+@example
+junk
+@end example
+
+@node Inserting text from a file, Exercise 2, Reading text from a file, Top
+@comment  node-name,  next,  previous,  up
+@heading Inserting text from a file --- the Read command ``@kbd{r}''
+Sometimes you want to read a file into the buffer  without
+destroying  anything that is already there.  This is done by
+the @dfn{read} command @kbd{r}.  The command
+
+@example
+r junk
+@end example
+
+@noindent
+will read the file @kbd{junk} into the buffer; it adds it  to  the
+end  of  whatever  is already in the buffer.  So if you do a
+read after an edit:
+
+@example
+@group
+e junk
+r junk
+@end group
+@end example
+
+@noindent
+the buffer will contain @emph{two} copies of the text (six  lines).
+
+@example
+@group
+Now is the time
+for all good men
+to come to the aid of their party.
+Now is the time
+for all good men
+to come to the aid of their party.
+@end group
+@end example
+
+@noindent
+Like the @kbd{w} and @kbd{e} commands, @kbd{r} prints the number of characters
+read in, after the reading operation is complete.
+
+Generally speaking, @kbd{r} is much less used than @kbd{e}.
+
+@node Exercise 2, Printing the buffer, Inserting text from a file, Top
+@comment  node-name,  next,  previous,  up
+@heading Exercise 2:
+Experiment with the @kbd{e} command --- try reading and printing various
+files. You may get an error @kbd{?name}, where @kbd{name} is the name of a file;
+this means that the file doesn't exist, typically because you spelled
+the file name wrong, or perhaps that you are not allowed to read or
+write it. Try alternately reading and appending to see that they work
+similarly. Verify that
+
+@example
+ed filename
+@end example
+
+@noindent
+is exactly equivalent to
+
+@example
+@group
+ed
+e filename
+@end group
+@end example
+
+@noindent
+What does
+
+@example
+f filename
+@end example
+
+@noindent
+do?
+
+@node Printing the  buffer, Exercise 3, Exercise 2, Top
+@comment  node-name,  next,  previous,  up
+@heading Printing the contents of the  buffer  ---  the  Print  command ``@kbd{p}''
+To  @dfn{print}  or list the contents of the buffer (or parts of
+it) on the terminal, use the print command
+
+@example
+p
+@end example
+
+@noindent
+The way this is done is as follows.  Specify the lines where
+you  want  printing  to  begin and where you want it to end,
+separated by a comma, and followed by the letter @kbd{p}.  Thus to
+print  the first two lines of the buffer, for example, (that
+is, lines 1 through 2) say
+
+@display
+@code{1,2p} (starting line=1, ending line=2 @code{p})
+@end display
+
+@noindent
+@command{Ed} will respond with
+
+@example
+@group
+Now is the time
+for all good men
+@end group
+@end example
+
+Suppose you want to print @emph{all} the lines in the buffer. You could use
+@kbd{1,3p} as above if you knew there were exactly 3 lines in the buffer. But
+in general, you don't know how many there are, so what do you use for
+the ending line number? @command{Ed} provides a shorthand symbol for ``line number
+of last line in buffer'' --- the dollar sign @kbd{$}. Use it this way:
+
+@example
+1,$p
+@end example
+
+@noindent
+This will print @emph{all} the lines in the buffer (line 1 to last line.) If
+you want to stop the printing before it is finished, push the @kbd{DEL} or
+@kbd{Delete} key; @command{ed} will type
+
+@example
+?
+@end example
+
+@noindent
+and wait for the next command.
+
+To print the @emph{last} line of the buffer, you could use
+
+@example
+$,$p
+@end example
+
+@noindent
+but @command{ed} lets you abbreviate this to
+
+@example
+$p
+@end example
+
+@noindent
+You can print any single line by typing the line number followed by a @kbd{p}.
+Thus
+
+@example
+1p
+@end example
+
+@noindent
+produces the response
+
+@example
+Now is the time
+@end example
+
+@noindent
+which is the first line of the buffer.
+
+In  fact,  @command{ed}  lets  you  abbreviate even further: you can
+print any single line by typing @emph{just} the line  number  ---  no
+need to type the letter @kbd{p}.  So if you say
+
+@example
+$
+@end example
+
+@noindent
+@command{ed} will print the last line of the buffer.
+
+You can also use @kbd{$} in combinations like
+
+@example
+$-1,$p
+@end example
+
+@noindent
+which  prints  the last two lines of the buffer.  This helps
+when you want to see how far you got in typing.
+
+@node Exercise 3, The current line, Printing the buffer, Top
+@comment  node-name,  next,  previous,  up
+@heading Exercise 3:
+As before, create some text using the @kbd{a} command and experiment with
+the @kbd{p} command. You will find, for example, that you can't print line 0
+or a line beyond the end of the buffer, and that attempts to print a
+buffer in reverse order by saying
+
+@example
+3,1p
+@end example
+
+@noindent
+don't work.
+
+@node The current line, Deleting lines, Exercise 3, Top
+@comment  node-name,  next,  previous,  up
+@heading The current line --- ``Dot'' or ``@strong{.}''
+Suppose your buffer still contains the six lines as above,
+that you have just typed
+
+@example
+1,3p
+@end example
+
+@noindent
+and @command{ed} has printed the three lines for you.  Try typing just
+
+@display
+@code{p}    (no line numbers)
+@end display
+
+@noindent
+This will print
+
+@example
+to come to the aid of their party.
+@end example
+
+@noindent
+which is the third line of the buffer. In fact it is the last (most
+recent) line that you have done anything with. (You just printed it!)
+You can repeat this @kbd{p} command without line numbers, and it will continue
+to print line 3.
+
+The  reason is that @command{ed} maintains a record of the last line
+that you did anything to (in this case, line  3,  which  you
+just  printed) so that it can be used instead of an explicit
+line number.  This most recent line is referred  to  by  the
+shorthand symbol
+
+@display
+@strong{.}    (pronounced ``dot'').
+@end display
+
+@noindent
+Dot  is  a  line  number in the same way that @kbd{$} is; it means
+exactly ``the current line'', or  loosely,  ``the  line  you
+most recently did something to.''  You can use it in several
+ways --- one possibility is to say
+
+@example
+@strong{.},$p
+@end example
+
+@noindent
+This will print all the lines from (including)  the  current
+line  to  the  end  of the buffer.  In our example these are
+lines 3 through 6.
+
+Some commands change the value of  dot,  while  others  do
+not.   The @kbd{p} command sets dot to the number of the last line
+printed; the last command will set both @strong{.} and @kbd{$} to 6.
+
+Dot is most useful when used  in  combinations  like  this
+one:
+
+@display
+@strong{.}@code{+1}  (or equivalently, @strong{.}@code{+1p})
+@end display
+
+@noindent
+This  means  ``print  the  next line'' and is a handy way to
+step slowly through a buffer.  You can also say
+
+@display
+@strong{.}@code{-1}  (or @strong{.}@code{-1p})
+@end display
+
+@noindent
+which means ``print the line @emph{before} the current line.'' This enables you
+to go backwards if you wish. Another useful one is something like
+
+@example
+@strong{.}-3,.-1p
+@end example
+
+@noindent
+which prints the previous three lines.
+
+Don't forget that all of these change the  value  of  dot.
+You can find out what dot is at any time by typing
+
+@example
+@strong{.}=
+@end example
+
+@noindent
+@command{Ed} will respond by printing the value of dot.
+
+Let's summarize some things about the @kbd{p} command and dot. Essentially @kbd{p}
+can be preceded by 0, 1, or 2 line numbers. If there is no line number
+given, it prints the ``current line'', the line that dot refers to. If
+there is one line number given (with or without the letter @kbd{p}), it prints
+that line (and dot is set there); and if there are two line numbers, it
+prints all the lines in that range (and sets dot to the last line
+printed.) If two line numbers are specified the first can't be bigger
+than the second (see Exercise 2.)
+
+Typing a single return will cause  printing  of  the  next
+line  ---  it's  equivalent to @strong{.}@kbd{+1p}.  Try it.  Try typing a @kbd{-};
+you will find that it's equivalent to @strong{.}@kbd{-1p}.
+
+@node Deleting lines, Exercise 4, The current line, Top
+@comment  node-name,  next,  previous,  up
+@heading Deleting lines: the ``@kbd{d}'' command
+Suppose you want to get rid of the three  extra  lines  in
+the buffer.  This is done by the @dfn{delete} command
+
+@example
+d
+@end example
+
+@noindent
+Except  that  @kbd{d}  deletes lines instead of printing them, its
+action is similar to that of @kbd{p}.  The lines to be deleted are
+specified for @kbd{d} exactly as they are for @kbd{p}:
+
+@display
+@emph{starting line, ending line} @code{d}
+@end display
+
+@noindent
+Thus the command
+
+@example
+4,$d
+@end example
+
+@noindent
+deletes  lines 4 through the end.  There are now three lines
+left, as you can check by using
+
+@example
+1,$p
+@end example
+
+@noindent
+And notice that @kbd{$} now is line 3!  Dot is  set  to  the  next
+line  after  the  last  line  deleted,  unless the last line
+deleted is the last line in the buffer.  In that  case,  dot
+is set to @kbd{$}.
+
+@node Exercise 4, Modifying text, Deleting lines, Top
+@comment  node-name,  next,  previous,  up
+@heading Exercise 4:
+Experiment  with  @kbd{a},  @kbd{e},  @kbd{r}, @kbd{w}, @kbd{p} and @kbd{d} until you are sure
+that you know what they do, and  until  you  understand  how
+dot, @kbd{$}, and line numbers are used.
+
+If  you  are adventurous, try using line numbers with @kbd{a}, @kbd{r}
+and @kbd{w} as well.  You will find that a will append lines @emph{after}
+the  line  number  that you specify (rather than after dot);
+that @kbd{r} reads a file in @emph{after} the  line  number  you  specify
+(not  necessarily at the end of the buffer); and that @kbd{w} will
+write out exactly the lines you specify, not necessarily the
+whole  buffer.   These  variations are sometimes handy.  For
+instance you can insert a file at the beginning of a  buffer
+by saying
+
+@example
+0r filename
+@end example
+
+@noindent
+and  you  can  enter lines at the beginning of the buffer by
+saying
+
+@display
+@group
+@code{0a}
+@dots{} @emph{text} @dots{}
+@strong{.}
+@end group
+@end display
+
+@noindent
+Notice that @strong{.}@kbd{w} is very different from
+
+@example
+@strong{.}
+w
+@end example
+
+@node Modifying text, Exercise 5, Exercise 4, Top
+@comment  node-name,  next,  previous,  up
+@heading Modifying text --- the Substitute command ``@kbd{s}''
+We are now ready to try one of the most important  of  all
+commands --- the substitute command
+
+@example
+s
+@end example
+
+@noindent
+This is the command that is used to change individual words or letters
+within a line or group of lines. It is what you use, for example, for
+correcting spelling mistakes and typing errors.
+
+Suppose that by a typing error, line 1 says
+
+@example
+Now is th time
+@end example
+
+@noindent
+--- the @emph{e} has been left off @emph{the}.  You can use @kbd{s} to fix this up
+as follows:
+
+@example
+1s/th/the/
+@end example
+
+@noindent
+This says: ``in line 1, substitute for the characters @emph{th} the
+characters @emph{the}.''  To verify that  it  works  (@command{ed}  will  not
+print the result automatically) say
+
+@example
+p
+@end example
+
+@noindent
+and get
+
+@example
+Now is the time
+@end example
+
+@noindent
+which  is  what  you wanted.  Notice that dot must have been
+set to the line where the substitution took place, since the
+@kbd{p}  command  printed  that  line.  Dot is always set this way
+with the @kbd{s} command.
+
+The general way to use the substitute command is
+
+@display
+@emph{starting-line, ending-line} @code{s/}@emph{change this}@code{/}@emph{to this}@code{/}
+@end display
+
+@noindent
+Whatever string of characters is between the first  pair  of
+slashes  is replaced by whatever is between the second pair,
+in all the  lines  between  @emph{starting-line}  and  @emph{ending-line}.
+Only  the first occurrence on each line is changed, however.
+If you want to change @emph{every} occurrence, see Exercise 5.  The
+rules  for  line numbers are the same as those for @kbd{p}, except
+that dot is set to the last line changed.  (But there  is  a
+trap  for  the unwary: if no substitution took place, dot is
+@emph{not} changed.  This causes an error @kbd{?}  as a warning.)
+
+Thus you can say
+
+@example
+1,$s/speling/spelling/
+@end example
+
+@noindent
+and correct the first spelling mistake on each line in the text. (This
+is useful for people who are consistent misspellers!)
+
+If no line numbers are given, the  @kbd{s}  command  assumes  we
+mean  ``make  the  substitution on line dot'', so it changes
+things only on the current line.  This  leads  to  the  very
+common sequence
+
+@display
+@code{s/}@emph{something}@code{/}@emph{something else}@code{/p}
+@end display
+
+@noindent
+which  makes  some  correction on the current line, and then
+prints it, to make sure it worked out right.  If it  didn't,
+you  can  try  again.  (Notice that there is a @kbd{p} on the same
+line as the @kbd{s} command.  With few exceptions,  @kbd{p}  can  follow
+any command; no other multi-command lines are legal.)
+
+It's also legal to say
+
+@example
+s/@dots{}//
+@end example
+
+@noindent
+which  means  ``change  the  first  string  of characters to
+``@emph{nothing}'', i.e., remove them.  This is useful for deleting
+extra  words in a line or removing extra letters from words.
+For instance, if you had
+
+@example
+Nowxx is the time
+@end example
+
+@noindent
+you can say
+
+@example
+s/xx//p
+@end example
+
+@noindent
+to get
+
+@example
+Now is the time
+@end example
+
+@noindent
+Notice that @kbd{//} (two adjacent slashes) means ``no characters'', not a
+blank. There @emph{is} a difference! (See below for another meaning of @kbd{//}.)
+
+@node Exercise 5, Context searching, Modifying text, Top
+@comment  node-name,  next,  previous,  up
+@heading Exercise 5:
+Experiment with the substitute command.  See what  happens
+if  you  substitute  for  some  word  on a line with several
+occurrences of that word.  For example, do this:
+
+@example
+@group
+a
+the other side of the coin
+@strong{.}
+s/the/on the/p
+@end group
+@end example
+
+@noindent
+You will get
+
+@example
+on the other side of the coin
+@end example
+
+@noindent
+A substitute command changes only the  first  occurrence  of
+the  first string.  You can change all occurrences by adding
+a @kbd{g} (for ``global'') to the @kbd{s} command, like this:
+
+@example
+s/@dots{}/@dots{}/gp
+@end example
+
+@noindent
+Try other characters instead of slashes to delimit  the  two
+sets  of  characters in the @kbd{s} command --- anything should work
+except blanks or tabs.
+
+(If you get funny results using any of the characters
+
+@example
+^    @strong{.}    $    [    *    \    &
+@end example
+
+@noindent
+read the section on ``Special Characters''.)
+
+@node Context searching, Exercise 6, Exercise 5, Top
+@comment  node-name,  next,  previous,  up
+@heading Context searching --- ``@kbd{/@dots{}/}''
+With the substitute command mastered, you can move  on  to
+another highly important idea of @command{ed} --- context searching.
+
+Suppose  you  have  the  original  three  line text in the
+buffer:
+
+@example
+@group
+Now is the time
+for all good men
+to come to the aid of their party.
+@end group
+@end example
+
+@noindent
+Suppose you want to find the line that contains @emph{their} so you can change
+it to @emph{the}. Now with only three lines in the buffer, it's pretty easy to
+keep track of what line the word @emph{their} is on. But if the buffer
+contained several hundred lines, and you'd been making changes, deleting
+and rearranging lines, and so on, you would no longer really know what
+this line number would be. Context searching is simply a method of
+specifying the desired line, regardless of what its number is, by
+specifying some context on it.
+
+The way to say ``search for a line that contains this particular
+string of characters'' is to type
+
+@display
+@code{/}@emph{string of characters we want to find}@code{/}
+@end display
+
+@noindent
+For example, the @command{ed} command
+
+@example
+/their/
+@end example
+
+@noindent
+is  a context search which is sufficient to find the desired
+line --- it will locate the next occurrence of the  characters
+between  slashes (``their'').  It also sets dot to that line
+and prints the line for verification:
+
+@example
+to come to the aid of their party.
+@end example
+
+@noindent
+``Next occurrence'' means that @command{ed} starts looking for the string at line
+@strong{.}@kbd{+1}, searches to the end of the buffer, then continues at line 1 and
+searches to line dot. (That is, the search ``wraps around'' from @kbd{$} to
+1.) It scans all the lines in the buffer until it either finds the
+desired line or gets back to dot again. If the given string of
+characters can't be found in any line, @command{ed} types the error message
+
+@example
+?
+@end example
+
+@noindent
+Otherwise it prints the line it found.
+
+You can do both the search for the desired line @emph{and} a substitution all
+at once, like this:
+
+@example
+/their/s/their/the/p
+@end example
+
+@noindent
+which will yield
+
+@example
+to come to the aid of the party.
+@end example
+
+@noindent
+There  were three parts to that last command: context search
+for the desired line, make the substitution, print the line.
+
+The expression @kbd{/their/} is a context search expression. In their
+simplest form, all context search expressions are like this --- a string
+of characters surrounded by slashes. Context searches are
+interchangeable with line numbers, so they can be used by themselves to
+find and print a desired line, or as line numbers for some other
+command, like @kbd{s}. They were used both ways in the examples above.
+
+Suppose the buffer contains the three familiar lines
+
+@example
+@group
+Now is the time
+for all good men
+to come to the aid of their party.
+@end group
+@end example
+
+@noindent
+Then the @command{ed} line numbers
+
+@example
+@group
+/Now/+1
+/good/
+/party/-1
+@end group
+@end example
+
+@noindent
+are  all  context  search expressions, and they all refer to
+the same line (line 2).  To make a change  in  line  2,  you
+could say
+
+@example
+/Now/+1s/good/bad/
+@end example
+
+@noindent
+or
+
+@example
+/good/s/good/bad/
+@end example
+
+@noindent
+or
+
+@example
+/party/-1s/good/bad/
+@end example
+
+@noindent
+The choice is dictated only by convenience.  You could print
+all three lines by, for instance
+
+@example
+/Now/,/party/p
+@end example
+
+@noindent
+or
+
+@example
+/Now/,/Now/+2p
+@end example
+
+@noindent
+or by any number of similar combinations.  The first one  of
+these  might  be better if you don't know how many lines are
+involved.  (Of course, if there were only three lines in the
+buffer, you'd use
+
+@example
+1,$p
+@end example
+
+@noindent
+but not if there were several hundred.)
+
+The basic rule is: a context search expression is @emph{the same
+as} a line number, so it can be used wherever a  line  number
+is needed.
+
+@node Exercise 6, Change and Insert, Context searching, Top
+@comment  node-name,  next,  previous,  up
+@heading Exercise 6:
+Experiment  with  context  searching.   Try a body of text
+with several occurrences of the same string  of  characters,
+and scan through it using the same context search.
+
+Try using context searches as line numbers for the substitute, print
+and delete commands. (They can also be used with @kbd{r}, @kbd{w}, and @kbd{a}.)
+
+Try  context  searching  using  @kbd{?text?}  instead of @kbd{/text/}.
+This scans lines in the buffer in reverse order rather  than
+normal.   This  is  sometimes useful if you go too far while
+looking for some string of characters --- it's an easy way  to
+back up.
+
+(If you get funny results with any of the characters
+
+@example
+^    @strong{.}    $    [    *    \    &
+@end example
+
+@noindent
+read the section on ``Special Characters''.)
+
+@command{Ed} provides a shorthand for repeating a context search for
+the same string.  For example, the @command{ed} line number
+
+@example
+/string/
+@end example
+
+@noindent
+will find the next occurrence of @kbd{string}.  It  often  happens
+that  this  is  not  the desired line, so the search must be
+repeated.  This can be done by typing merely
+
+@example
+//
+@end example
+
+@noindent
+This shorthand stands for ``the most recently  used  context
+search  expression.''   It  can  also  be  used as the first
+string of the substitute command, as in
+
+@example
+/string1/s//string2/
+@end example
+
+@noindent
+which will find the next occurrence of @kbd{string1}  and  replace
+it by @kbd{string2}.  This can save a lot of typing.  Similarly
+
+@example
+??
+@end example
+
+@noindent
+means ``scan backwards for the same expression.''
+
+@node Change and Insert, Exercise 7, Exercise 6, Top
+@comment  node-name,  next,  previous,  up
+@heading Change and Insert --- ``@kbd{c}'' and ``@kbd{i}''
+This section discusses the @dfn{change} command
+
+@example
+c
+@end example
+
+@noindent
+which  is  used  to change or replace a group of one or more
+lines, and the @dfn{insert} command
+
+@example
+i
+@end example
+
+@noindent
+which is used for inserting a group of one or more lines.
+
+``Change'', written as
+
+@example
+c
+@end example
+
+@noindent
+is used to replace a number of lines with  different  lines,
+which  are typed in at the terminal.  For example, to change
+lines @strong{.}@kbd{+1} through @kbd{$} to something else, type
+
+@display
+@group
+@strong{.}@code{+1,$c}
+@dots{} @emph{type the lines of text you want here} @dots{}
+@strong{.}
+@end group
+@end display
+
+@noindent
+The lines you type between the @kbd{c} command and the @strong{.} will take the place
+of the original lines between start line and end line. This is most
+useful in replacing a line or several lines which have errors in them.
+
+If only one line is specified in the @kbd{c} command, then just that line is
+replaced. (You can type in as many replacement lines as you like.)
+Notice the use of @strong{.} to end the input --- this works just like the @strong{.} in the
+append command and must appear by itself on a new line. If no line
+number is given, line dot is replaced. The value of dot is set to the
+last line you typed in.
+
+``Insert'' is similar to append --- for instance
+
+@display
+@group
+@code{/string/i}
+@dots{} @emph{type the lines to be inserted here} @dots{}
+@strong{.}
+@end group
+@end display
+
+@noindent
+will insert the given text @emph{before} the next line that contains
+``string''. The text between @kbd{i} and @strong{.} is @emph{inserted before} the specified
+line. If no line number is specified dot is used. Dot is set to the last
+line inserted.
+
+@node Exercise 7, Moving text around, Change and Insert, Top
+@comment  node-name,  next,  previous,  up
+@heading Exercise 7:
+``Change'' is rather like a combination of delete followed
+by insert.  Experiment to verify that
+
+@display
+@group
+@emph{start, end} @code{d}
+@code{i}
+@dots{} @emph{text} @dots{}
+@strong{.}
+@end group
+@end display
+
+@noindent
+is almost the same as
+
+@display
+@group
+@emph{start, end} @code{c}
+@dots{} @emph{text} @dots{}
+@strong{.}
+@end group
+@end display
+
+@noindent
+These  are  not  @emph{precisely}  the same if line @kbd{$} gets deleted.
+Check this out.  What is dot?
+
+Experiment with @kbd{a} and @kbd{i}, to see that they are similar, but
+not the same.  You will observe that
+
+@display
+@group
+@emph{line-number} @code{a}
+@dots{} @emph{text} @dots{}
+@strong{.}
+@end group
+@end display
+
+@noindent
+appends @emph{after} the given line, while
+
+@display
+@group
+@emph{line-number} @code{i}
+@dots{} @emph{text} @dots{}
+@strong{.}
+@end group
+@end display
+
+@noindent
+inserts @emph{before} it.  Observe that if no line number is given,
+@kbd{i} inserts before line dot, while @kbd{a} appends after line dot.
+
+@node Moving text around, The global commands, Exercise 7, Top
+@comment  node-name,  next,  previous,  up
+@heading Moving text around --- ``@kbd{m}''
+The @dfn{move} command @kbd{m} is used for cutting and pasting --- it lets you move
+a group of lines from one place to another in the buffer. Suppose you
+want to put the first three lines of the buffer at the end instead. You
+could do it by saying:
+
+@example
+@group
+1,3w temp
+$r temp
+1,3d
+@end group
+@end example
+
+@noindent
+(Do you see why?)  but you can do it a lot easier with the m
+command:
+
+@example
+1,3m$
+@end example
+
+@noindent
+The general case is
+
+@display
+@emph{start line, end line} @code{m} @emph{after this line}
+@end display
+
+@noindent
+Notice  that  there  is  a  third line to be specified --- the
+place where the moved stuff gets put.  Of course  the  lines
+to be moved can be specified by context searches; if you had
+
+@example
+@group
+First paragraph
+@dots{}
+end of first paragraph.
+Second paragraph
+@dots{}
+end of second paragraph.
+@end group
+@end example
+
+@noindent
+you could reverse the two paragraphs like this:
+
+@example
+/Second/,/end of second/m/First/-1
+@end example
+
+@noindent
+Notice the @kbd{-1}: the moved text goes @emph{after} the line mentioned.
+Dot gets set to the last line moved.
+
+@node The global commands, Special Characters, Moving text around, Top
+@heading The global commands ``@kbd{g}'' and ``@kbd{v}''
+The  @dfn{global}  command  @kbd{g}  is used to execute one or more @command{ed}
+commands on all those lines in the buffer  that  match  some
+specified string.  For example
+
+@example
+g/peling/p
+@end example
+
+@noindent
+prints all lines that contain @kbd{peling}.  More usefully,
+
+@example
+g/peling/s//pelling/gp
+@end example
+
+@noindent
+makes  the  substitution everywhere on the line, then prints
+each corrected line.  Compare this to
+
+@example
+1,$s/peling/pelling/gp
+@end example
+
+@noindent
+which only prints the last line substituted. Another subtle difference
+is that the @kbd{g} command does not give a @kbd{?} if @kbd{peling} is not found where the
+@kbd{s} command will.
+
+There may be several commands (including @kbd{a}, @kbd{c},  @kbd{i},  @kbd{r},  @kbd{w},
+but  not  @kbd{g});  in that case, every line except the last must
+end with a backslash @kbd{\}:
+
+@example
+@group
+g/xxx/.-1s/abc/def/\
+@strong{.}+2s/ghi/jkl/\
+@strong{.}-2,@strong{.}p
+@end group
+@end example
+
+@noindent
+makes changes in the lines before and after each  line  that
+contains @kbd{xxx}, then prints all three lines.
+
+The  @kbd{v}  command is the same as @kbd{g}, except that the commands
+are executed on every line that does @emph{not}  match  the  string
+following @kbd{v}:
+
+@example
+v/ /d
+@end example
+
+@noindent
+deletes every line that does not contain a blank.
+
+@node Special Characters, Summary, The global commands, Top
+@comment  node-name,  next,  previous,  up
+@heading Special Characters
+You  may  have  noticed  that things just don't work right
+when you used some characters like @strong{.}, @kbd{*}, @kbd{$},  and  others  in
+context  searches and the substitute command.  The reason is
+rather complex, although the cure is simple.  Basically,  @command{ed}
+treats  these  characters as special, with special meanings.
+For instance, @emph{in a context search or the first string of the
+substitute  command  only},  @strong{.} means ``any character,'' not a
+period, so
+
+@example
+/x@strong{.}y/
+@end example
+
+@noindent
+means ``a line with an @kbd{x}, @emph{any character}, and a @kbd{y},'' @emph{not} just ``a line
+with an @kbd{x}, a period, and a @kbd{y}.'' A complete list of the special
+characters that can cause trouble is the following:
+
+@example
+^    @strong{.}    $    [    *    \
+@end example
+
+@noindent
+@emph{Warning:}  The  backslash  character @kbd{\} is special to @command{ed}.  For
+safety's sake, avoid it where possible.  If you have to  use
+one  of  the special characters in a substitute command, you
+can turn off its magic meaning temporarily by  preceding  it
+with the backslash.  Thus
+
+@example
+s/\\\@strong{.}\*/backslash dot star/
+@end example
+
+@noindent
+will change @kbd{\}@strong{.}@kbd{*} into ``backslash dot star''.
+
+Here is a hurried synopsis of the other special characters. First, the
+circumflex @kbd{^} signifies the beginning of a line. Thus
+
+@example
+/^string/
+@end example
+
+@noindent
+finds  @kbd{string}  only  if it is at the beginning of a line: it
+will find
+
+@example
+string
+@end example
+
+@noindent
+but not
+
+@example
+the string @dots{}
+@end example
+
+@noindent
+The dollar-sign @kbd{$} is just the opposite of the circumflex; it
+means the end of a line:
+
+@example
+/string$/
+@end example
+
+@noindent
+will only find an occurrence of @kbd{string} that is at the end of
+some line.  This implies, of course, that
+
+@example
+/^string$/
+@end example
+
+@noindent
+will find only a line that contains just @kbd{string}, and
+
+@example
+/^@strong{.}$/
+@end example
+
+@noindent
+finds a line containing exactly one character.
+
+The character @strong{.}, as we mentioned above, matches anything;
+
+@example
+/x@strong{.}y/
+@end example
+
+@noindent
+matches any of
+
+@example
+@group
+x+y
+x-y
+x@math{_\sqcup}y
+x@strong{.}y
+@end group
+@end example
+
+@noindent
+This is useful in conjunction with @kbd{*}, which is a  repetition
+character;  @kbd{a*}  is a shorthand for ``any number of @kbd{a}'s,'' so
+@strong{.}@kbd{*} matches any number of anythings.  This is used like this:
+
+@example
+s/@strong{.}*/stuff/
+@end example
+
+@noindent
+which changes an entire line, or
+
+@example
+s/@strong{.}*,//
+@end example
+
+@noindent
+which deletes all characters in the line up to and including
+the last comma.  (Since @strong{.}@kbd{*} finds the longest possible match,
+this goes up to the last comma.)
+
+@kbd{[} is used with @kbd{]} to form ``character classes''; for example,
+
+@example
+/[0123456789]/
+@end example
+
+@noindent
+matches any single digit --- any one of the characters  inside
+the  braces  will cause a match.  This can be abbreviated to
+@kbd{[0-9]}.
+
+Finally, the @kbd{&} is another shorthand character --- it is used
+only on the right-hand part of a substitute command where it
+means ``whatever was matched on the left-hand side''.  It is
+used to save typing.  Suppose the current line contained
+
+@example
+Now is the time
+@end example
+
+@noindent
+and you wanted to put parentheses around it.  You could just
+retype the line, but this is tedious.  Or you could say
+
+@example
+@group
+s/^/(/
+s/$/)/
+@end group
+@end example
+
+@noindent
+using your knowledge of @kbd{^} and @kbd{$}.  But the easiest  way  uses
+the @kbd{&}:
+
+@example
+s/@strong{.}*/(&)/
+@end example
+
+@noindent
+This  says  ``match the whole line, and replace it by itself
+surrounded by parentheses.''  The  @kbd{&}  can  be  used  several
+times in a line; consider using
+
+@example
+s/@strong{.}*/&?  &!!/
+@end example
+
+@noindent
+to produce
+
+@example
+Now is the time?  Now is the time!!
+@end example
+
+You  don't have to match the whole line, of course: if the
+buffer contains
+
+@example
+the end of the world
+@end example
+
+@noindent
+you could type
+
+@example
+/world/s//& is at hand/
+@end example
+
+@noindent
+to produce
+
+@example
+the end of the world is at hand
+@end example
+
+@noindent
+Observe this expression carefully, for it illustrates how to
+take  advantage  of  @command{ed}  to save typing.  The string @kbd{/world/}
+found the desired line; the shorthand @kbd{//} found the same word
+in the line; and the @kbd{&} saves you from typing it again.
+
+The  @kbd{&}  is a special character only within the replacement
+text of a substitute command, and  has  no  special  meaning
+elsewhere.   You  can  turn  off the special meaning of @kbd{&} by
+preceding it with a @kbd{\}:
+
+@example
+s/ampersand/\&/
+@end example
+
+@noindent
+will convert the word ``ampersand'' into the literal  symbol
+@kbd{&} in the current line.
+
+@node Summary,, Special Characters, Top
+@comment  node-name,  next,  previous,  up
+@heading  Summary of Commands and Line Numbers
+The general form of @command{ed} commands is the command name, perhaps preceded
+by one or two line numbers, and, in the case of @kbd{e}, @kbd{r}, and @kbd{w}, followed by
+a file name. Only one command is allowed per line, but a @kbd{p} command may
+follow any other command (except for @kbd{e}, @kbd{r}, @kbd{w} and @kbd{q}).
+@table @kbd
+@item a
+Append,  that  is, add lines to the buffer (at line dot,
+unless a different line is specified).  Appending  continues
+until @strong{.} is typed on a new line.  Dot is set to the last line
+appended.
+
+@item c
+Change the specified lines to the new text which follows.
+The new lines are terminated by a @strong{.}, as with @kbd{a}.  If no lines
+are specified, replace line dot.  Dot is set  to  last  line
+changed.
+
+@item d
+Delete  the  lines  specified.   If  none are specified,
+delete line dot.  Dot is set to the  first  undeleted  line,
+unless @kbd{$} is deleted, in which case dot is set to @kbd{$}.
+
+@item e
+Edit  new file.  Any previous contents of the buffer are
+thrown away, so issue a @kbd{w} beforehand.
+
+@item f
+Print remembered filename.   If  a  name  follows  @kbd{f}  the
+remembered name will be set to it.
+
+@item g
+The command
+
+@example
+g/---/commands
+@end example
+
+@noindent
+will  execute  the commands on those lines that contain ---,
+which can be any context search expression.
+
+@item i
+Insert lines before specified line (or dot) until a @strong{.}  is
+typed on a new line.  Dot is set to last line inserted.
+
+@item m
+Move  lines  specified  to after the line named after @kbd{m}.
+Dot is set to the last line moved.
+
+@item p
+Print specified lines.  If  none  specified,  print  line
+dot.   A  single line number is equivalent to @emph{line-number} @kbd{p}.
+A single return prints @strong{.}@kbd{+1}, the next line.
+
+@item q
+Quit @command{ed}.  Wipes out all text in buffer  if  you  give  it
+twice in a row without first giving a @kbd{w} command.
+
+@item r
+Read a file into buffer (at end unless specified elsewhere.) Dot set
+to last line read.
+
+@item s
+The command
+
+@example
+s/string1/string2/
+@end example
+
+@noindent
+if no substitution took place, dot is not changed. @kbd{s} changes only the
+first occurrence of @kbd{string1} on a line; to change all of them, type a @kbd{g}
+after the final slash.
+
+@item v
+The command
+
+@example
+v/---/commands
+@end example
+
+@noindent
+executes commands on those lines that do not contain ---.
+
+@item w
+Write out buffer onto a file.  Dot is not changed.
+
+@item .=
+Print value of dot.  (@kbd{=} by itself prints  the  value  of
+@kbd{$}.)
+
+@item !
+The line
+
+@display
+!@emph{command-line}
+@end display
+
+@noindent
+causes @emph{command-line} to be executed as a UNIX command.
+
+@item /----/
+Context search. Search for next line which contains this string
+of characters. Print it. Dot is set to the line where string was found.
+Search starts at @strong{.}@kbd{+1}, wraps around from @kbd{$} to 1, and continues to dot,
+if necessary.
+
+@item ?----?
+Context search in reverse direction.  Start search
+at @strong{.}@kbd{-1}, scan to 1, wrap around to @kbd{$}.
+@end table
+
+@bye
+
+@c Local variables:
+@c mode: texinfo
+@c eval: (add-hook 'write-file-functions 'time-stamp)
+@c time-stamp-start: "Last modified: "
+@c time-stamp-format: "%:y-%02m-%02d <%u@%h>"
+@c time-stamp-end: "$"
+@c End:

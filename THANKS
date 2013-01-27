@@ -1,0 +1,69 @@
+THANKS: Acknowledgements for help with the ed line editor.
+
+Last modified: 2011-04-14 <alm@slewsys.org>
+
+* CSRG
+Ed was originally written and released as part of a whirlwind
+effort to complete the first public release of CSRG's BSD Unix.
+
+* Algorithm
+The editor algorithm is from Brian W. Kernighan & P. J. Plauger's
+wonderful book "Software Tools in Pascal," Addison-Wesley, 1981.
+
+* Contributors
+Over the years, ed has benefited from the contributions of many
+people, including:
+
+Eric Backus             <ericb*lsid.hp*com>
+Miles Bader             <miles*lsi.nec.co*jp>
+Karl Berry              <kb.cs*umb*edu>
+Jan Brittenson          <bson.ai.mit*edu>
+Philippe Charnier       <charnier*FreeBSD*org>
+Andrey A. Chernov       <ache.FreeBSD*org>
+Chris G. Demetriou      <cgd.NetBSD.org>
+Ruslan Ermilov          <ru.FreeBSD*org>
+Claudio Fontana         <sick_soul.yahoo*it>
+Todd T. Fries           <todd.OpenBSD*org>
+Thomas Gellekum         <tg.FreeBSD*org>
+Kaveh R. Ghazi          <ghazi*noc*rutgers*edu>
+Ulf Härnhammar          <ulf*elektron*se>
+Charles M. Hannum       <mycroft.NetBSD.org>
+Mike Haertel            <mike.ichips.intel*com>
+Jun-ichiro Itoh Hagino  <itojun.NetBSD*org>
+Wolfgang Helbig         <helbig*FreeBSD*org>
+Paul Jackson            <pj*sgi*com>
+Dan Jacobson            <jidanni@jidanni.org>
+Paul Janzen             <pjanzen.OpenBSD*org>
+Brian W. Kernighan      <bwk*research*bell-labs.com>
+Todd C. Miller          <millert.OpenBSD*org>
+Juan Romero Pardines    <xtraeme.NetBSD*org>
+François Pinard         <pinard*iro.umontreal*ca>
+Barry Pollack           <barryp*hurnontel.on*ca>
+Theo de Raadt           <deraadt*newt*fsa*ca>
+Marc Rochkind           <marc.basepath*com>
+Rodney Ruddock          <rodney*nowhite.cis.uoguelph*ca>
+Bradford C Smith        <bradford.smith*usermail*com>
+Mike Silbersack         <mike*FreeBSD.org>
+Jason R. Thorpe         <thorpej.NetBSD*org>
+Assar Westerlund        <assar.stacken*kth.se>
+Christos Zoulas         <christos.NetBSD*org>
+
+* Original authors
+Ed is largely unchanged from Ken Thompson's original 1969 version. Its
+design was influenced by QED, a complex programmable editor written
+by Peter L. Deutsch and Butler Lampson of UC Berkeley (ca. 1966). Ken
+Thompson introduced regular expressions to QED (ca. 1967). Dennis
+Ritchie extended regular expression syntax (ca. 1969?).
+
+* FSF
+Richard Stallman and the FSF's tireless efforts in promoting Free
+software have done more than perhaps any other factor to improve
+software quality for all of us.
+
+# Local variables:
+# mode: outline
+# eval: (add-hook 'write-file-functions 'time-stamp)
+# time-stamp-start: "Last modified: "
+# time-stamp-format: "%:y-%02m-%02d <%u@%h>"
+# time-stamp-end: "$"
+# End:

@@ -1,0 +1,19 @@
+#! @SHELL@
+
+# Last modified: 2011-04-14 <alm@slewsys.org>
+
+# @configure_input@
+
+# Process this file with configure to create ed wrapper.
+
+# Invoke ed from source distribution.
+exec '@abs_top_builddir@/src/ed' ${1+"$@"}
+
+# Local variables:
+# mode: autotest
+# eval: (add-hook 'write-file-functions 'time-stamp)
+# time-stamp-start: "Last modified: "
+# time-stamp-format: "%:y-%02m-%02d <%u@%h>"
+# time-stamp-end: "$"
+# End:
+

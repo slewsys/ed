@@ -1,0 +1,50 @@
+TODO: Possible improvements for the ed line editor.
+
+Last modified: 2011-03-09 <alm@slewsys.org>
+
+These are more or less in decreasing order of priority.
+
+* Pre-release
+** Coordinate man and info pages
+** Submit ed.pot to translation group
+** Update testsuite
+** Allow editing of wide-char and UTF-8 text.
+** Implement named registers
+
+   (.,.)m|t>[>][k] where optional k = 0, 1, ..., 9. Moves or copies,
+   respectively, the addressed lines to register k (or default
+   anonymous register, if k is not given). If `>>' lines are appended
+   to end of register. Otherwise, any previous register contents are
+   overwritten.
+   
+   <[k]m|t(.) where optional k = 0, 1, ..., 9. Moves or copies,
+   respectively, contents of register k (or default anonymous
+   register, if k is not given) to after the addressed line.
+
+   <[k]m|t>[>][j] where optional k = 0, 1, ..., 9 and j = 0, 1, ...,
+   9. Moves or copies, respectively, contents of register k (or
+   default anonymous register, if k is not given) to register j (or
+   default anonymous register, if j is not given). If `>>' lines are
+   appended to end of register. Otherwise, any previous register
+   contents are overwritten.
+
+* I/O
+** Speed up file I/O  via mmap(2), database and/or in-core buffer.
+
+* File warnings
+** Warn if disk file has changed since last write.
+** Command-line option to force advisory lock warning on write.
+
+* Limits
+** get_path_max () should identify per filesystem limits, not POSIX limits.
+
+* Undo
+** Add multiple undo.
+
+# Local variables:
+# mode: org
+# eval: (add-hook 'write-file-functions 'time-stamp)
+# time-stamp-start: "Last modified: "
+# time-stamp-format: "%:y-%02m-%02d <%u@%h>"
+# time-stamp-end: "$"
+# End:

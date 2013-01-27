@@ -1,0 +1,16 @@
+#! @ED_COMMAND@ -vf
+#
+# @(#) ts-am-sw.ed    1.1
+#
+# This script toggles $top_srcdir/testsuite/Makefile.am between
+# generating location-dependent and independent versions of
+# testsuite script.
+#
+# Since it relies on regular expression matching of rules in
+# Makefile.am, changes to that file may break this script. So please
+# check back here when you are done!
+#  
+e Makefile.am
+/^# .t.ok-at:/;/^# .err.fail-at:/+4s;^# ;;
+/^.t.ok-at:/;/^.err.fail-at:/+4s;^;# ;
+wq
