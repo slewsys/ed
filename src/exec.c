@@ -2,7 +2,7 @@
 
    Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2012-12-11 <alm@buttercup.local>
+   Last modified: 2013-05-27 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -131,8 +131,8 @@ exec_command (ed)
 
   ed->display.is_paging = paging;
   paging = 0;
-  SKIP_BLANKS ();
-  
+  SKIP_WHITESPACE ();
+
   if (ed->file.is_glob = (c = *ed->stdin++) == '~')
     c = *ed->stdin++;
   switch (c)
@@ -209,7 +209,7 @@ exec_command (ed)
           ed->exec.err = _("Command suffix unexpected");
           return ERR;
         }
-      SKIP_BLANKS ();
+      SKIP_WHITESPACE ();
       FILE_NAME (fn, len, cy, 1);
 
       spl1 ();
@@ -291,7 +291,7 @@ exec_command (ed)
           ed->exec.err = _("Command suffix unexpected");
           return ERR;
         }
-      SKIP_BLANKS ();
+      SKIP_WHITESPACE ();
 
       /* Don't set the default file name to a shell command when
          reading and writing, but why not allow setting it explicitly?
@@ -502,7 +502,7 @@ exec_command (ed)
           ed->exec.err = _("Command suffix unexpected");
           return ERR;
         }
-      SKIP_BLANKS ();
+      SKIP_WHITESPACE ();
       FILE_NAME (fn, len, 0, !ed->file.name);
 
       spl1 ();
@@ -677,7 +677,7 @@ exec_command (ed)
           ed->exec.err = _("Command suffix unexpected");
           return ERR;
         }
-      SKIP_BLANKS ();
+      SKIP_WHITESPACE ();
 
       cz = *ed->stdin == '!';
 #ifdef WANT_SAFE_WRITE

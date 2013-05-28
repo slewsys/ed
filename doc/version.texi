@@ -1,4 +1,4 @@
-@set UPDATED 27 January 2013
-@set UPDATED-MONTH January 2013
-@set EDITION 0.271-beta
-@set VERSION 0.271-beta
+@set UPDATED 26 March 2013
+@set UPDATED-MONTH March 2013
+@set EDITION 0.271-b2
+@set VERSION 0.271-b2

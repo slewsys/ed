@@ -2,7 +2,7 @@
 
    Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2012-12-11 <alm@buttercup.local>
+   Last modified: 2013-05-28 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -331,7 +331,7 @@ struct ed_core
   ed_line_node_t in_core_head;  /* Head of in-core buffer. */
   ed_line_node_t *reg[REG_MAX]; /* List of register buffers. */
   ed_text_node_t text_head;     /* Head of text buffer. */
-  ed_undo_node_t undo_head;        /* Head of undo buffer. */
+  ed_undo_node_t undo_head;     /* Head of undo buffer. */
 };
 
 /* Display parameters */
@@ -393,7 +393,7 @@ struct ed_region
   int addrs;                    /* Number of region addresses. */
 };
  
-/* Ed substitution parameters.  */
+/* Ed substitution parameters. */
 struct ed_substitute
 {
   regex_t *lhs;                 /* Substitution pattern buffer */
@@ -638,8 +638,8 @@ enum search_type
     }                                                                         \
   while (0)
 
-/* SKIP_BLANKS: Scan command buffer for next non-space char. */
-#define SKIP_BLANKS()                                                         \
+/* SKIP_WHITESPACE: Scan command buffer for next non-space char. */
+#define SKIP_WHITESPACE()                                                     \
   do                                                                          \
     {                                                                         \
      while (isspace ((unsigned char) *ed->stdin) && *ed->stdin != '\n')       \

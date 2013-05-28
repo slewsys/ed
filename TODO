@@ -1,11 +1,11 @@
 TODO: Possible improvements for the ed line editor.
 
-Last modified: 2011-03-09 <alm@slewsys.org>
+Last modified: 2013-05-27 <alm@slewsys.org>
 
 These are more or less in decreasing order of priority.
 
 * Pre-release
-** Coordinate man and info pages
+** Sync man and info pages
 ** Submit ed.pot to translation group
 ** Update testsuite
 ** Allow editing of wide-char and UTF-8 text.

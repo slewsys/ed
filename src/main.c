@@ -2,7 +2,7 @@
 
    Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2012-12-14 <alm@buttercup.local>
+   Last modified: 2013-05-28 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -49,15 +49,12 @@ ed_state_t _ed;          /* command parameters */
 
 
 /* Static function declarations. */
+#ifdef WANT_ED_ENVAR
+static char **getenv_init_argv __P ((const char *, int *, ed_state_t *));
+#endif
 static int next_edit __P ((int, ed_state_t *));
 static void script_die __P ((int, ed_state_t *));
 static void usage __P ((int, ed_state_t *));
-
-#ifdef WANT_ED_ENVAR
-static char ** getenv_init_argv __P ((const char *, int *,
-                                      ed_state_t *));
-#endif
-
 
 /* ed: line editor */
 int
@@ -425,8 +422,7 @@ getenv_init_argv (s, argc, ed)
     }
   return (char **) (*argc ? argv : 0);
 }
-#endif  /* WANT_ED_ENVAR */
-
+#endif
 
 /* usage: Print usage. */
 static void

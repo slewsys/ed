@@ -2,7 +2,7 @@
 
    Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2012-12-11 <alm@buttercup.local>
+   Last modified: 2013-05-26 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -34,7 +34,7 @@ address_range (ed)
 
   ed->region.addrs = 0;
   first = second = dot = ed->buf[0].dot;
-  SKIP_BLANKS ();
+  SKIP_WHITESPACE ();
   have_dc = IS_DELIMITER (*ed->stdin);
   do
     {
@@ -85,7 +85,7 @@ next_address (addr, ed)
   char *s_prev;
   int status;
 
-  SKIP_BLANKS ();
+  SKIP_WHITESPACE ();
   s_prev = ed->stdin;
   return (((status = line_address (addr, ed)) < 0
            || (status = address_offset (addr, ed)) < 0)
@@ -189,7 +189,7 @@ address_offset (addr, ed)
         break;
       case ' ':
       case '\t':
-        SKIP_BLANKS ();
+        SKIP_WHITESPACE ();
         if (isdigit ((unsigned char) *ed->stdin))
           {
             STRTOLL_THROW (n, ed->stdin, &ed->stdin, ERR);

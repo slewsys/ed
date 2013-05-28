@@ -158,6 +158,7 @@ SOURCES = \
   printf.c \
   setlocale.c \
   version.c \
+  xsize.c \
   osdep.c \
   os2compat.c \
   intl-exports.c \
@@ -190,6 +191,7 @@ OBJECTS = \
   printf.$lo \
   setlocale.$lo \
   version.$lo \
+  xsize.$lo \
   osdep.$lo \
   intl-compat.$lo
 OBJECTS_RES_yes = libintl.res.$lo
@@ -201,7 +203,8 @@ DISTFILES.generated = plural.c
 DISTFILES.normal = VERSION
 DISTFILES.gettext = COPYING.LIB libintl.glibc README.woe32
 DISTFILES.obsolete = xopen-msg.sed linux-msg.sed po2tbl.sed.in cat-compat.c \
-COPYING.LIB-2 gettext.h libgettext.h plural-eval.c libgnuintl.h \
+COPYING.LIB-2 COPYING.LIB-2.0 COPYING.LIB-2.1 \
+gettext.h libgettext.h plural-eval.c libgnuintl.h \
 libgnuintl.h_vms Makefile.vms libgnuintl.h.msvc-static \
 libgnuintl.h.msvc-shared Makefile.msvc
 
@@ -298,6 +301,8 @@ setlocale.lo: $(srcdir)/setlocale.c
 	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC --mode=compile $(COMPILE) $(srcdir)/setlocale.c
 version.lo: $(srcdir)/version.c
 	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC --mode=compile $(COMPILE) $(srcdir)/version.c
+xsize.lo: $(srcdir)/xsize.c
+	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC --mode=compile $(COMPILE) $(srcdir)/xsize.c
 osdep.lo: $(srcdir)/osdep.c
 	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC --mode=compile $(COMPILE) $(srcdir)/osdep.c
 intl-compat.lo: $(srcdir)/intl-compat.c
@@ -456,7 +461,7 @@ install-data: all
 	  $(mkdir_p) $(DESTDIR)$(gettextsrcdir); \
 	  $(INSTALL_DATA) VERSION $(DESTDIR)$(gettextsrcdir)/VERSION; \
 	  $(INSTALL_DATA) ChangeLog.inst $(DESTDIR)$(gettextsrcdir)/ChangeLog; \
-	  dists="COPYING.LIB-2.0 COPYING.LIB-2.1 $(DISTFILES.common)"; \
+	  dists="COPYING.LIB $(DISTFILES.common)"; \
 	  for file in $$dists; do \
 	    $(INSTALL_DATA) $(srcdir)/$$file \
 			    $(DESTDIR)$(gettextsrcdir)/$$file; \
@@ -566,7 +571,7 @@ uninstall:
 	  : ; \
 	fi
 	if test "$(PACKAGE)" = "gettext-tools"; then \
-	  for file in VERSION ChangeLog COPYING.LIB-2.0 COPYING.LIB-2.1 $(DISTFILES.common) $(DISTFILES.generated); do \
+	  for file in VERSION ChangeLog COPYING.LIB $(DISTFILES.common) $(DISTFILES.generated); do \
 	    rm -f $(DESTDIR)$(gettextsrcdir)/$$file; \
 	  done; \
 	else \
@@ -585,7 +590,7 @@ dcigettext.$lo: $(srcdir)/eval-plural.h
 localcharset.$lo: $(srcdir)/localcharset.h
 bindtextdom.$lo dcigettext.$lo finddomain.$lo loadmsgcat.$lo localealias.$lo lock.$lo log.$lo: $(srcdir)/lock.h
 localealias.$lo localcharset.$lo relocatable.$lo: $(srcdir)/relocatable.h
-printf.$lo: $(srcdir)/printf-args.h $(srcdir)/printf-args.c $(srcdir)/printf-parse.h $(srcdir)/wprintf-parse.h $(srcdir)/xsize.h $(srcdir)/printf-parse.c $(srcdir)/vasnprintf.h $(srcdir)/vasnwprintf.h $(srcdir)/vasnprintf.c
+printf.$lo: $(srcdir)/printf-args.h $(srcdir)/printf-args.c $(srcdir)/printf-parse.h $(srcdir)/wprintf-parse.h $(srcdir)/xsize.h $(srcdir)/xsize.c $(srcdir)/printf-parse.c $(srcdir)/vasnprintf.h $(srcdir)/vasnwprintf.h $(srcdir)/vasnprintf.c
 
 # A bison-2.1 generated plural.c includes <libintl.h> if ENABLE_NLS.
 PLURAL_DEPS_yes = libintl.h
