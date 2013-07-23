@@ -2,7 +2,7 @@
 
    Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2012-12-11 <alm@buttercup.local>
+   Last modified: 2013-07-06 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -22,12 +22,9 @@
 /* Global declarations */
 volatile sig_atomic_t window_columns = 80; /* default screen width: ws_col  */
 volatile sig_atomic_t window_rows = 24;    /* default screen length: ws_row */
-struct ed_core ec;
 
 /* Static function declarations. */
 static int init_stdio __P ((ed_state_t *));
-static void init_text_queue __P ((ed_text_node_t **));
-
 
 /* one_time_init: Open ed buffer file; initialize queues, I/O buffers
    and translation table; read environment variables. */
@@ -41,8 +38,9 @@ one_time_init (argc, argv, ed)
   long l;
   int status;
 
-  if ((status = init_stdio(ed)) < 0
-      || (status = open_buffer (ed)) < 0)
+  if ((status = init_stdio (ed)) < 0
+      || (status = create_disk_buffer (&ed->core.fp,
+                                       &ed->core.pathname, ed)) < 0)
     return status;
 
   /* If ed is invoked with file args, any file globbing is done at the
@@ -59,11 +57,10 @@ one_time_init (argc, argv, ed)
   init_ed_buffer (0, &ed->buf[0]);
   init_ed_buffer (-1, &ed->buf[1]);
 
-  /* Initialize deques -- aka doubly-linked circular queues. */
-  LINK_NODES (&ec.in_core_head, &ec.in_core_head);
-  LINK_NODES (&ec.global_head, &ec.global_head);
-  LINK_NODES (&ec.text_head, &ec.text_head);
-  LINK_NODES (&ec.undo_head, &ec.undo_head);
+  /* Initialize buffer meta data deques. */
+  INIT_DEQUE (&ed->core.buffer_head);
+  INIT_DEQUE (&ed->core.global_head);
+  INIT_DEQUE (&ed->core.undo_head);
 
   /* Sanity check values of environment vars */
   if ((ls = getenv ("LINES")))
@@ -80,18 +77,18 @@ one_time_init (argc, argv, ed)
     }
 
   /* Assign a default command prompt. */
-  if (!ed->prompt)
-    ed->prompt = DEFAULT_PROMPT;
+  if (!ed->exec.prompt)
+    ed->exec.prompt = DEFAULT_PROMPT;
 
   /* Check environment for POSIXLY_CORRECT */
   if (getenv ("POSIXLY_CORRECT"))
-    ed->opt |= POSIXLY_CORRECT;
+    ed->exec.opt |= POSIXLY_CORRECT;
   
 #ifdef HAVE_REG_SYNTAX_T
-  re_syntax_options =  (ed->opt & (POSIXLY_CORRECT | TRADITIONAL)
-                        ? (ed->opt & REGEX_EXTENDED
+  re_syntax_options =  (ed->exec.opt & (POSIXLY_CORRECT | TRADITIONAL)
+                        ? (ed->exec.opt & REGEX_EXTENDED
                            ? RE_SYNTAX_POSIX_EXTENDED : RE_SYNTAX_POSIX_BASIC)
-                        : (ed->opt & REGEX_EXTENDED
+                        : (ed->exec.opt & REGEX_EXTENDED
                            ? RE_SYNTAX_ED_EXTENDED : RE_SYNTAX_ED_BASIC));
 #endif
 
@@ -105,9 +102,9 @@ init_stdio (ed)
      ed_state_t *ed;
 {
   /* Redirect command script to stdin. */
-  if (ed->script_name && !freopen (ed->script_name, "r", stdin))
+  if (ed->exec.pathname && !freopen (ed->exec.pathname, "r", stdin))
     {
-      fprintf (stderr, "%s: %s\n", ed->script_name, strerror (errno));
+      fprintf (stderr, "%s: %s\n", ed->exec.pathname, strerror (errno));
       ed->exec.err = _("Buffer open error");
       return FATAL;
     }
@@ -130,8 +127,8 @@ init_stdio (ed)
 #endif   /* !HAVE_SETBUFFER */
 
   /* Don't exit on errors if stdin is non-seekable, e.g., piped, or tty. */
-  if (lseek (0, 0, SEEK_CUR) != -1 && (ed->opt & SCRIPTED || !isatty (0)))
-    ed->opt |= EXIT_ON_ERROR;
+  if (lseek (0, 0, SEEK_CUR) != -1 && (ed->exec.opt & SCRIPTED || !isatty (0)))
+    ed->exec.opt |= EXIT_ON_ERROR;
   return 0;
 }
 
@@ -192,12 +189,13 @@ init_ed_buffer (addr, buf)
 
 /* init_global_queue: Initialize ed_core global queue. */
 void
-init_global_queue (aq, lq)
+init_global_queue (aq, lq, ed)
      ed_global_node_t **aq;
      ed_line_node_t **lq;
+     ed_state_t *ed;
 {
-  *aq = &ec.global_head;
-  *lq = &ec.in_core_head;
+  *aq = &ed->core.global_head;
+  *lq = &ed->core.buffer_head;
 }
 
 
@@ -218,33 +216,42 @@ init_register_queue (rq, qno, ed)
     }
 
   LINK_NODES (rq[qno], rq[qno]);
-  ec.reg[qno] = rq[qno];
+  ed->core.reg[qno] = rq[qno];
   spl0 ();
   return 0;
 }
 
 
-/* init_text_queue: Initialize ed_core text queue. */
-static void
-init_text_queue (tq)
-     ed_text_node_t **tq;
-{
-  *tq = &ec.text_head;
-}
-
-
 /* init_undo_queue: Initialize ed_core undo queue. */
 void
-init_undo_queue (uq)
+init_undo_queue (uq, ed)
      ed_undo_node_t **uq;
+     ed_state_t *ed;
 {
-  *uq = &ec.undo_head;
+  *uq = &ed->core.undo_head;
 }
 
 
-/* open_buffer: Open ed buffer. */
+/* reopen_ed_buffer: Close on-disk buffer and create new one. */
 int
-open_buffer (ed)
+reopen_ed_buffer (ed)
+     ed_state_t *ed;
+{
+  int status;
+
+  if ((status = close_ed_buffer (ed)) < 0
+      || (status = create_disk_buffer (&ed->core.fp,
+                                       &ed->core.pathname, ed)) < 0)
+    return status;
+  return 0;
+}
+
+
+/* create_disk_buffer: Open an on-disk buffer. */
+int
+create_disk_buffer (fp, buf, ed)
+     FILE **fp;                 /* buffer file pointer */
+     char **buf;                /* buffer pathname */
      ed_state_t *ed;
 {
   STAT_T sb;
@@ -262,59 +269,63 @@ open_buffer (ed)
     {
       fprintf (stderr, "%s/%s: %s\n", s, template, _("File name too long"));
       ed->exec.err = _("Invalid buffer name");
-      return FATAL;
+      return ERR;
     }
-  REALLOC_THROW (ec.pathname, ec.pathname_size,
-                 len + sizeof template + 1, FATAL);
-  memcpy (ec.pathname, s, len);
-  memcpy (ec.pathname + len, m ? "/" : "", 1);
-  memcpy (ec.pathname + len + m, template, sizeof template);
+  if (!(*buf = (char *) realloc (*buf, len + sizeof template + 1)))
+    {
+      fprintf (stderr, "%s\n", strerror (errno));
+      ed->exec.err = _("Memory exhausted");
+      return ERR;
+    }
+  strcpy (*buf, s);
+  strcpy (*buf + len, m ? "/" : "");
+  strcpy (*buf + len + m, template);
 
   /* NB: Don't unlink(2) buffer upon opening in case it resides on NFS. */
-  if (!mktemp (ec.pathname)
-      || (fd = open (ec.pathname, O_CREAT | O_EXCL | O_RDWR, 0600)) < 0
+  if (!mktemp (*buf)
+      || (fd = open (*buf, O_CREAT | O_EXCL | O_RDWR, 0600)) < 0
       || FSTAT (fd, &sb) < 0
-      || !(ec.fp = fdopen (fd, "w+")))
+      || !(*fp = fdopen (fd, "w+")))
     {
-      fprintf (stderr, "%s: %s\n", ec.pathname, strerror (errno));
+      fprintf (stderr, "%s: %s\n", *buf, strerror (errno));
       ed->exec.err = _("Buffer open error");
-      return FATAL;
+      return ERR;
     }
 
-  /* fstat(3) is supposed to fail if any subpath of `ec.pathname' is not a
+  /* fstat(3) is supposed to fail if any subpath of `buf' is not a
      directory. Even on systems for which this does not hold, if the
      default `/tmp' folder is used, it's reasonable to assume that all
-     is well. So it only remains to verify that `ec.pathname' itself is not a
-     symlink on systems where `open (ec.pathname, O_EXCL)' is not considered
+     is well. So it only remains to verify that `buf' itself is not a
+     symlink on systems where `open (buf, O_EXCL)' is not considered
      an error. */
   if (!S_ISREG (sb.st_mode))
     {
-      fprintf (stderr, "%s: Not a regular file\n", ec.pathname);
+      fprintf (stderr, "%s: Not a regular file\n", *buf);
       ed->exec.err = _("Buffer open error");
-      return FATAL;
+      return ERR;
     }
   return 0;
 }
 
 
-/* close_buffer: Close buffer file. */
+/* close_ed_buffer: Close on-disk buffer file. */
 int
-close_buffer (ed)
+close_ed_buffer (ed)
      ed_state_t *ed;
 {
   int status = 0;
   
-  if (ec.fp && fclose (ec.fp) < 0)
+  if (ed->core.fp && fclose (ed->core.fp) < 0)
     {
-      fprintf (stderr, "%s: %s\n", ec.pathname, strerror (errno));
+      fprintf (stderr, "%s: %s\n", ed->core.pathname, strerror (errno));
       ed->exec.err = _("Buffer close error");
       status = ERR;
     }
-  ec.fp = NULL;
-  ec.offset = 0;
-  ec.seek_on_write = 0;
-  if (ec.pathname)
-    unlink (ec.pathname);
+  ed->core.fp = NULL;
+  ed->core.offset = 0;
+  ed->core.seek_on_write = 0;
+  if (ed->core.pathname)
+    unlink (ed->core.pathname);
   return 0;
 }
 
@@ -329,35 +340,35 @@ get_buffer_line (lp, ed)
   static size_t tb_size = 0;    /* Buffer size. */
 
   /* Permit writing the "contents" ('\n') of an empty buffer. */
-  if (lp == &ec.in_core_head)
+  if (lp == &ed->core.buffer_head)
     {
-      REALLOC_THROW (tb, tb_size, 1, NULL);
+      REALLOC_THROW (tb, tb_size, 1, NULL, ed);
       tb[0] = '\0';
       return tb;
     }
-  ec.seek_on_write = 1;         /* Force seek on write. */
+  ed->core.seek_on_write = 1;         /* Force seek on write. */
 
   /* out of position */
-  if (ec.offset != lp->seek)
+  if (ed->core.offset != lp->seek)
     {
-      ec.offset = lp->seek;
-      if (FSEEK (ec.fp, ec.offset, SEEK_SET) == -1)
+      ed->core.offset = lp->seek;
+      if (FSEEK (ed->core.fp, ed->core.offset, SEEK_SET) == -1)
         {
-          fprintf (stderr, "%s: %s\n", ec.pathname, strerror (errno));
+          fprintf (stderr, "%s: %s\n", ed->core.pathname, strerror (errno));
           ed->exec.err = _("Buffer seek error");
           return NULL;
         }
     }
 
   /* Allocate lp->len + '\0' (or '\n', as per write_stream ()). */
-  REALLOC_THROW (tb, tb_size, lp->len + 1, NULL);
-  if (fread (tb, sizeof (char), lp->len, ec.fp) != lp->len)
+  REALLOC_THROW (tb, tb_size, lp->len + 1, NULL, ed);
+  if (fread (tb, sizeof (char), lp->len, ed->core.fp) != lp->len)
     {
-      fprintf (stderr, "%s: %s\n", ec.pathname, strerror (errno));
+      fprintf (stderr, "%s: %s\n", ed->core.pathname, strerror (errno));
       ed->exec.err = _("Buffer read error");
       return NULL;
     }
-  ec.offset += lp->len;         /* Update current offset in buffer file. */
+  ed->core.offset += lp->len;         /* Update current offset in buffer file. */
   *(tb + lp->len) = '\0';
   return tb;
 }
@@ -374,16 +385,16 @@ put_buffer_line (t, len, ed)
 {
   /* If ed buffer file was read since last write, seek to end of file
      before writing. */
-  if (ec.seek_on_write)
+  if (ed->core.seek_on_write)
     {
-      if (FSEEK (ec.fp, 0L, SEEK_END) == -1
-          || (ec.offset = FTELL (ec.fp)) == -1)
+      if (FSEEK (ed->core.fp, 0L, SEEK_END) == -1
+          || (ed->core.offset = FTELL (ed->core.fp)) == -1)
         {
-          fprintf (stderr, "%s: %s\n", ec.pathname, strerror (errno));
+          fprintf (stderr, "%s: %s\n", ed->core.pathname, strerror (errno));
           ed->exec.err = _("Buffer seek error");
           return NULL;
         }
-      ec.seek_on_write = 0;
+      ed->core.seek_on_write = 0;
     }
 
   /* Assert: spl1 () */
@@ -392,23 +403,23 @@ put_buffer_line (t, len, ed)
   --len;                        /* Don't write `\n'. */
 
   /* NB: We are testing buffer file here, not file it represents. */
-  if (ec.offset > OFF_T_MAX - len)
+  if (ed->core.offset > OFF_T_MAX - len)
     {
       ed->exec.err = _("Buffer full");
       return NULL;
     }
-  if (fwrite (t, sizeof (char), len, ec.fp) != len)
+  if (fwrite (t, sizeof (char), len, ed->core.fp) != len)
     {
-      ec.offset = -1;
-      fprintf (stderr, "%s: %s\n", ec.pathname, strerror (errno));
+      ed->core.offset = -1;
+      fprintf (stderr, "%s: %s\n", ed->core.pathname, strerror (errno));
       ed->exec.err = _("Buffer write error");
       return NULL;
     }
-  if (!append_line_node (len, ec.offset, ed->buf[0].dot, ed))
+  if (!append_line_node (len, ed->core.offset, ed->buf[0].dot, ed))
     return NULL;
 
   ++ed->buf[0].dot;
-  ec.offset += len;             /* Update current offset in buffer file. */
+  ed->core.offset += len;             /* Update current offset in buffer file. */
   return (char *) t + ++len;
 }
 
@@ -440,7 +451,7 @@ append_line_node (len, offset, addr, ed)
   lp->seek = offset;
 
   /* This get_line_node last! */
-  np = get_line_node (addr, ed->buf);
+  np = get_line_node (addr, ed);
   APPEND_NODE (lp, np);
   ++ed->buf[0].addr_last;
   return lp;
@@ -449,22 +460,25 @@ append_line_node (len, offset, addr, ed)
 
 /* get_line_node: Return pointer to line node in the ed buffer. */
 ed_line_node_t *
-get_line_node (n, buf)
+get_line_node (n, ed)
      off_t n;
-     struct ed_buffer *buf;
+     ed_state_t *ed;
 {
-  static ed_line_node_t *lp = &ec.in_core_head;
+  static ed_line_node_t *lp = NULL;
   static off_t n_prev = 0;
+
+  if (!lp)
+    lp =  &ed->core.buffer_head;
 
   if (n > n_prev)
     {
-      if (n <= (n_prev + buf->addr_last) >> 1)
+      if (n <= (n_prev + ed->buf[0].addr_last) >> 1)
         for (; n_prev < n; ++n_prev)
           lp = lp->q_forw;
       else
         {
-          lp = ec.in_core_head.q_back;
-          for (n_prev = buf->addr_last; n_prev > n; --n_prev)
+          lp = ed->core.buffer_head.q_back;
+          for (n_prev = ed->buf[0].addr_last; n_prev > n; --n_prev)
             lp = lp->q_back;
         }
     }
@@ -475,7 +489,7 @@ get_line_node (n, buf)
           lp = lp->q_back;
       else
         {
-          lp = &ec.in_core_head;
+          lp = &ed->core.buffer_head;
           for (n_prev = 0; n_prev < n; ++n_prev)
             lp = lp->q_forw;
         }
@@ -491,11 +505,12 @@ get_line_node_address (lp, addr, ed)
      off_t *addr;
      ed_state_t *ed;
 {
-  ed_line_node_t *cp = &ec.in_core_head;
+  ed_line_node_t *cp = &ed->core.buffer_head;
 
-  for (*addr = 0; cp != lp && (cp = cp->q_forw) != &ec.in_core_head; ++*addr)
-    ;
-  if (*addr && cp == &ec.in_core_head)
+  *addr = 0;
+  while (cp != lp && (cp = cp->q_forw) != &ed->core.buffer_head)
+    ++*addr;
+  if (*addr && cp == &ed->core.buffer_head)
     {
       ed->exec.err = _("Address out of range");
       return ERR;
@@ -506,13 +521,14 @@ get_line_node_address (lp, addr, ed)
 
 /* quit: Unlink buffer file and exit. */
 void
-quit (n)
+quit (n, ed)
      int n;
+     ed_state_t *ed;
 {
-  if (ec.fp)
+  if (ed->core.fp)
     {
-      (void) fclose (ec.fp);
-      unlink (ec.pathname);
+      (void) fclose (ed->core.fp);
+      unlink (ed->core.pathname);
     }
   _exit (n);
 }
@@ -559,38 +575,37 @@ realloc_buffer (b, n, i, ed)
 }
 
 
-#ifdef WANT_EXTERNAL_FILTER
+/* init_text_deque: Initialize text deque and free any prior elements. */
+void init_text_deque (th)
+     ed_text_node_t *th;
+{
+  char *t;
+  size_t len;
 
-/* Global declarations */
-ed_text_node_t *text_head = NULL; /* head of text queue */
-ed_text_node_t *tn_p = NULL;      /* text queue pointer */
+  while ((t = shift_text_node (th, &len)))
+    free (t);
+  INIT_DEQUE (th);
+}
 
 
-/* append_text_node: Append text to end of text queue.
-   Return status. */
+/* append_text_node: Append text to end of text deque.
+   Return pointer to new node, or NULL is out of memory. */
 ed_text_node_t *
-append_text_node (tb, len, ed)
+append_text_node (th, tb, len)
+     ed_text_node_t *th;        /* head of text deque */
      const char *tb;
-     size_t len;
-     ed_state_t *ed;
+     const size_t len;
 {
   ed_text_node_t *tp;
-  ed_text_node_t *last = text_head->q_back;
+  ed_text_node_t *last = th->q_back;
   size_t text_size = 0;
 
   spl1 ();
-  
+
   /* Allocate node to push onto text queue */
   if (!(tp = (ed_text_node_t *) malloc (ED_TEXT_NODE_T_SIZE)))
-    {
-      fprintf (stderr, "%s\n", strerror (errno));
-      ed->exec.err = _("Memory exhausted");
-      spl0 ();
-      return NULL;
-    }
-  tp->text = NULL;
-  REALLOC_THROW (tp->text, text_size, len + 1, NULL);
-  memcpy (tp->text, tb, len + 1);
+    return NULL;
+  tp->text = (char *) tb;
   tp->text_i = len;
   APPEND_NODE (tp, last);
   spl0 ();
@@ -598,40 +613,54 @@ append_text_node (tb, len, ed)
 }
 
 
-/* next_text_node: Return next node of text queue, otherwise NULL. */
+/* pop_text_node: Remove last node of text queue and return pointer to
+   copy of its text, otherwise NULL. */
 char *
-next_text_node (len)
+pop_text_node (th, len)
+     ed_text_node_t *th;        /* head of text deque */
      size_t *len;
 {
-  static ed_text_node_t *tp = NULL;
+  static char *s;
 
-  if ((tp = tn_p = tn_p->q_forw) == text_head)
-    return NULL;
+  ed_text_node_t *tp = th->q_back;
+
+  /* Uninitialized or no more elements. */
+  if (!tp || tp == th)
+      return NULL;
+
+  spl1 ();
+  UNLINK_NODE (tp);
   *len = tp->text_i;
-  return tp->text;
+  s = tp->text;
+  free (tp);
+  spl0 ();
+  return s;
 }
 
 
-/* clear_text_queue: Release nodes of text queue. */
-void
-reset_text_queue ()
+/* shift_text_node: Remove first node of text queue and return pointer to
+   copy of its text, otherwise NULL. */
+char *
+shift_text_node (th, len)
+     ed_text_node_t *th;        /* head of text deque */
+     size_t *len;
 {
-  ed_text_node_t *tp, *next;
+  static char *s;
 
-  /* Assert: spl1 () */
+  ed_text_node_t *tp = th->q_forw;
 
-  if (!text_head)
-    init_text_queue (&text_head);
+  /* Uninitialized or no more elements. */
+  if (!tp || tp == th)
+      return NULL;
 
-  for (tp = (tn_p = text_head)->q_forw; tp != text_head; tp = next)
-    {
-      next = tp->q_forw;
-      UNLINK_NODE (tp);
-      free (tp);
-    }
+  spl1 ();
+  UNLINK_NODE (tp);
+  *len = tp->text_i;
+  s = tp->text;
+  free (tp);
+  spl0 ();
+  return s;
 }
-
-#endif  /* WANT_EXTERNAL_FILTER */
 
 /*
  * Local variables:

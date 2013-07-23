@@ -2,7 +2,7 @@
 
    Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2013-05-27 <alm@slewsys.org>
+   Last modified: 2013-07-06 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -51,7 +51,7 @@ filter_lines (from, to, sc, ed)
      ed_state_t *ed;
 {
   FILE *ipp, *opp;
-  ed_line_node_t *lp = get_line_node (from, ed->buf);
+  ed_line_node_t *lp = get_line_node (from, ed);
   off_t n = from ? to - from + 1 : 0;
   pid_t shell_pid, write_pid;
   off_t size = 0;
@@ -159,7 +159,7 @@ filter_lines (from, to, sc, ed)
   if ((status = read_stream_r (opp, ed->buf[0].dot, &size, ed)) < 0)
     goto err;
  
-  printf (ed->opt & SCRIPTED ? "" : "%" OFF_T_FORMAT_STRING "\n", size);
+  printf (ed->exec.opt & SCRIPTED ? "" : "%" OFF_T_FORMAT_STRING "\n", size);
 
   if (fclose (opp) < 0)
     {
@@ -288,7 +288,7 @@ read_register (qno, addr, ed)
           spl0 ();
           return ERR;
         }
-      APPEND_UNDO_NODE (np, up, ed->buf[0].dot);
+      APPEND_UNDO_NODE (np, up, ed->buf[0].dot, ed);
       ed->buf[0].is_modified = 1;
       spl0 ();
     }
@@ -331,7 +331,7 @@ write_register (qno, from, to, overwrite, ed)
      ed_state_t *ed;
 {
 
-  ed_line_node_t *lp = get_line_node (from, ed->buf);
+  ed_line_node_t *lp = get_line_node (from, ed);
   off_t n = from ? to - from + 1 : 0;
 
   if (!register_head[qno] && init_register_queue (register_head, qno, ed) < 0)

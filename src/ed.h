@@ -2,7 +2,7 @@
 
    Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2013-05-28 <alm@slewsys.org>
+   Last modified: 2013-07-23 <alm@buttercup.local>
 
    This file is part of ed. */
 
@@ -238,7 +238,7 @@ enum utf8_char_constant
 # define STAT(x, y)  stat ((x), (y))
 #endif  /* !HAVE_STAT64 */
 
-/* In-core and hold buffer node. */
+/* In-core and hold node. */
 typedef struct ed_line_node
 {
   struct ed_line_node *q_forw;
@@ -249,7 +249,7 @@ typedef struct ed_line_node
 
 #define ED_LINE_NODE_T_SIZE (sizeof (ed_line_node_t))
 
-/* Frame buffer node. */
+/* Console frame node. */
 typedef struct ed_frame_node
 {
   ed_line_node_t *lp;           /* Line pointer. */
@@ -262,17 +262,36 @@ typedef struct ed_frame_node
 
 #define ED_FRAME_NODE_T_SIZE (sizeof (ed_frame_node_t))
 
-/* Global buffer node. */
+/* Console frame parameters. */
+typedef struct ed_frame_buffer
+{
+  ed_frame_node_t *prev_first;  /* Pointer to first row in previous frame. */
+  ed_frame_node_t *prev_last;   /* Pointer to last row of previous frame. */
+  ed_frame_node_t *row;         /* Pointer to a row in frame buffer. */
+  int row_i;                    /* Index of current row in frame buffer. */
+  int first_i;                  /* Index of first frame buffer row to print. */
+  int last_i;                   /* Index of first frame buffer row to print. */
+  int fill_i;                   /* Index to fill to when half-scrolling. */
+
+  size_t ff_offset;             /* Offset of first row in frame. */
+  size_t rem_chars;             /* Remaining chars in source text. */
+  int columns;                  /* Number of columns in frame. */
+  int rows;                     /* Number of rows in frame. */
+  int is_full;                  /* If set, frame buffer full. */
+  int wraps;                    /* If set, text wraps around top of frame. */
+} ed_frame_buffer_t;
+
+/* Global mark node. */
 typedef struct ed_global_node
 {
   struct ed_global_node *q_forw;
   struct ed_global_node *q_back;
-  ed_line_node_t *lp;              /* Marked node pointer. */
+  ed_line_node_t *lp;           /* Marked node pointer. */
 } ed_global_node_t;
 
 #define ED_GLOBAL_NODE_T_SIZE (sizeof (ed_global_node_t))
 
-/* Text buffer node. */
+/* In-core text node. */
 typedef struct ed_text_node
 {
   struct ed_text_node *q_forw;
@@ -283,13 +302,13 @@ typedef struct ed_text_node
 
 #define ED_TEXT_NODE_T_SIZE (sizeof (ed_text_node_t))
 
-/* Undo buffer node. */
+/* Undo node. */
 typedef struct ed_undo_node
 {
   struct ed_undo_node *q_forw;
   struct ed_undo_node *q_back;
-  ed_line_node_t *h;            /* First modified line pointer. */
-  ed_line_node_t *t;            /* Last modified line pointer. */
+  ed_line_node_t *h;            /* Address of first modified line. */
+  ed_line_node_t *t;            /* Address of last modified line. */
 
 /* Undo nodes types - inverse derived by toggling last bit. */
 # define UADD    0
@@ -301,9 +320,9 @@ typedef struct ed_undo_node
 } ed_undo_node_t;
 
 #define ED_UNDO_NODE_T_SIZE (sizeof (ed_undo_node_t))
-#define REG_MAX  27              /* Max number of registers */
+#define REG_MAX  27             /* Max number of registers */
 
-/* Buffer parameters -- initialized via init_ed_buffer(). */
+/* Ed buffer state parameters. */
 struct ed_buffer
 {
   off_t addr_last;              /* Number of last line. */
@@ -314,9 +333,10 @@ struct ed_buffer
   int newline_appended;         /* if set, newline appended to buffer. */
   int input_wants_newline;      /* If set, newline needed on input.  */
   int input_is_binary;          /* If set, binary data on input. */
+  int addr_last_len;            /* strlen (addr_last). */
 };
 
-/* Buffer meta data and storage parameters. */
+/* Ed buffer meta data and storage parameters. */
 struct ed_core
 {
   /* Buffer storage */
@@ -327,10 +347,9 @@ struct ed_core
   int seek_on_write;            /* If set, seek before writing. */
 
   /* Edit-processing buffers. */
+  ed_line_node_t buffer_head;   /* Head of in-core buffer. */
   ed_global_node_t global_head; /* Head of global command buffer. */
-  ed_line_node_t in_core_head;  /* Head of in-core buffer. */
   ed_line_node_t *reg[REG_MAX]; /* List of register buffers. */
-  ed_text_node_t text_head;     /* Head of text buffer. */
   ed_undo_node_t undo_head;     /* Head of undo buffer. */
 };
 
@@ -341,15 +360,30 @@ struct ed_display
   int is_paging;                /* If set, displaying a page of text. */
   int underflow;                /* If set, line truncated at top page. */
   int overflow;                 /* If set, line truncated at bottom of page. */
+  int off;                      /* If set, do not print frame buffer. */
 };
 
 /* Execution parameters. */
 struct ed_execute
 {
+  FILE *fp;                     /* Command script file pointer - after
+                                 * concatenating all scripts, associated file,
+                                 * ed->exec.pathname, is redirected to stdin.
+                                 */
+  char *file_script;            /* File argument of `-f script' option. */
+  char *pathname;               /* Pathname of concatenation of command-line
+                                 * and file scripts.
+                                 */
+
   const char *err;              /* Error message. */
   off_t line_no;                /* Script line number. */
   int first_pass;               /* If set, first global command iteration. */
   int global;                   /* If set, global command (GLBL [| GLBI]). */
+  int opt;                      /* Command-line switch bitmap. */
+
+#define DEFAULT_PROMPT "*"
+
+  char *prompt;                 /* Interactive command prompt. */
   int status;                   /* Command status. */
 };
 
@@ -369,23 +403,7 @@ struct ed_file
 #endif  /* WANT_FILE_LOCK */
 };
 
-/* Frame buffer parameters. */
-struct ed_frame_buffer
-{
-  ed_frame_node_t *prev_first;  /* Pointer to first row in previous frame. */
-  ed_frame_node_t *prev_last;   /* Pointer to last row of previous frame. */
-  ed_frame_node_t *row;         /* Pointer to a row in frame buffer. */
-  int row_i;                    /* Index of current row in frame buffer. */
-
-  size_t ff_offset;             /* Offset of first row in frame. */
-  size_t rem_chars;             /* Remaining chars in source text. */
-  int columns;                  /* Number of columns in frame. */
-  int rows;                     /* Number of rows in frame. */
-  int is_full;                  /* If set, frame buffer full. */
-  int wraps;                    /* If set, text wraps around top of frame. */
-};
-
-/* Region parameters. */
+/* Address range parameters. */
 struct ed_region
 {
   off_t start;                  /* Region start address. */
@@ -393,7 +411,7 @@ struct ed_region
   int addrs;                    /* Number of region addresses. */
 };
  
-/* Ed substitution parameters. */
+/* Substitution parameters. */
 struct ed_substitute
 {
   regex_t *lhs;                 /* Substitution pattern buffer */
@@ -411,32 +429,27 @@ struct ed_substitute
 enum ed_command_flags
 {
   ANSI_COLOR        = 0x0001,   /* If set, filter ANSI color codes. */
-  PRINT_HELP        = 0x0002,   /* If set, display help. */
-  PRINT_CONFIG      = 0x0004,   /* If set, display configuration info. */
-  EXIT_ON_ERROR     = 0x0008,   /* If set, exit on errors. */
-  POSIXLY_CORRECT   = 0x0010,   /* If set, adhere to SUSv3, 2004 standards. */
-  PRINT_FIRST_FILE  = 0x0020,   /* If set, print first filename in a list. */
-  PROMPT            = 0x0040,   /* If set, print command prompt. */
-  RESTRICTED        = 0x0080,   /* If set, restricted mode enabled. */
+  EXIT_ON_ERROR     = 0x0002,   /* If set, exit on errors. */
+  POSIXLY_CORRECT   = 0x0004,   /* If set, adhere to SUSv3, 2004 standards. */
+  PRINT_CONFIG      = 0x0008,   /* If set, display configuration info. */
+  PRINT_FIRST_FILE  = 0x0010,   /* If set, print first filename in a list. */
+  PRINT_HELP        = 0x0020,   /* If set, display help. */
+  PRINT_VERSION     = 0x0040,   /* If set, print ed version. */
+  PROMPT            = 0x0080,   /* If set, print command prompt. */
   REGEX_EXTENDED    = 0x0100,   /* If set, use extended regexps. */
-  SCRIPTED          = 0x0200,   /* If set, script mode enabled. */
-  TRADITIONAL       = 0x0400,   /* If set, be backwards compatible. */
-  VERBOSE           = 0x0800,   /* If set, print error diagnostics. */
-  PRINT_VERSION     = 0x1000    /* If set, print ed version. */
+  RESTRICTED        = 0x0200,   /* If set, restricted mode enabled. */
+  SCRIPTED          = 0x0400,   /* If set, script mode enabled. */
+  TRADITIONAL       = 0x0800,   /* If set, be backwards compatible. */
+  VERBOSE           = 0x1000    /* If set, print error diagnostics. */
 };
 
 /* Ed state parameters. */
 typedef struct ed_state
 {
-  int opt;                      /* Command-line switch bitmap. */
-
-#define DEFAULT_PROMPT "*"
-
-  char *prompt;                 /* Interactive command prompt. */
-  char *script_name;            /* Name of ed script. */
   char *stdin;                  /* Standard input pointer. */
 
-  struct ed_buffer buf[2];      /* Buffer parameters. */
+  struct ed_buffer buf[2];      /* Buffer state parameters. */
+  struct ed_core core;          /* Meta data and storage parameters. */
   struct ed_display display;    /* Display parameters. */
   struct ed_execute exec;       /* Command execution parameters. */
   struct ed_file file;          /* File parameters. */
@@ -476,11 +489,15 @@ enum ed_modifier_flags
                                    'G', 'g', 'V' or 'v'. */
     GLBI = 0x04000,             /* Global interactive command, e.g.,
                                    'G' or 'V'. */
-    ZFWD = 0x08000,             /* Page forward, e.g.,
-                                   `z' or ']'. */
-    ZBCK = 0x10000,             /* Page back, e.g.,
+    ZFWD = 0x08000,             /* Scroll forward one screen, i.e.,
+                                   `z'. */
+    ZBWD = 0x10000,             /* Scroll backward one screen, i.e.,
+                                   `Z'. */
+    ZHFW = 0x20000,             /* Scroll forward one half screen, i.e.,
+                                   `]'. */
+    ZHBW = 0x40000,             /* Scroll backward one half screen, i.e.,
                                    `['. */
-    OFFB = 0x20000              /* Frame buffer text offset. */
+    OFFB = 0x80000              /* Frame buffer text offset. */
   };
 
 /* Ed error flags. */
@@ -544,7 +561,6 @@ enum search_type
 # define ROWS_MAX 127           /* Lower limit of SIG_ATOMIC_MAX per C99. */
 #endif  /* !defined (HAVE_SIG_ATOMIC_T) || !defined (HAVE_STDINT_H) */
 
-
 /* Assert: 256 <= BUFSIZ <= 512KB and that 2 ^ BUFSIZ_LOG2 == BUFSIZ */
 #define BUFSIZ_LOG2                                                           \
   ((BUFSIZ & 0x100) ? 8 :                                                     \
@@ -587,12 +603,12 @@ enum search_type
 #define DEC_MOD(l, k)   ((l) == 0 ? (k) : (l) - 1)
 
 /* APPEND_UNDO_NODE: Push added line onto undo queue.  */
-#define APPEND_UNDO_NODE(lp, up, addr)                                        \
+#define APPEND_UNDO_NODE(lp, up, addr, ed)                                    \
   do                                                                          \
     {                                                                         \
       if (up)                                                                 \
         (up)->t = (lp);                                                       \
-      else if (!((up) = append_undo_node (UADD, (addr), (addr), ed)))         \
+      else if (!((up) = append_undo_node (UADD, (addr), (addr), (ed))))       \
         {                                                                     \
           spl0 ();                                                            \
           return ERR;                                                         \
@@ -600,9 +616,13 @@ enum search_type
     }                                                                         \
   while (0)
 
+
 /* LINK_NODES: Link prev and next nodes. */
 #define LINK_NODES(prev, next)                                                \
   ((prev)->q_forw = (next), (next)->q_back = (prev))
+
+/* INIT_DEQUE: Link node to itself. */
+#define INIT_DEQUE(node) LINK_NODES ((node), (node))
 
 /* APPEND_NODE: Append node after prev. */
 #define APPEND_NODE(node, prev)                                               \
@@ -617,33 +637,32 @@ enum search_type
 #define UNLINK_NODE(node)                                                     \
   LINK_NODES ((node)->q_back, (node)->q_forw)
 
-
 /* REVERSE_LINKS: Reverse direction node pointers. */
 #define REVERSE_LINKS(node, node_type)                                        \
   do                                                                          \
     {                                                                         \
       node_type *_np;                                                         \
-      _np = node->q_forw;                                                     \
-      node->q_forw = node->q_back;                                            \
-      node->q_back = _np;                                                     \
+      _np = (node)->q_forw;                                                   \
+      (node)->q_forw = (node)->q_back;                                        \
+      (node)->q_back = _np;                                                   \
     }                                                                         \
   while (0)
 
 /* REALLOC_THROW: Assure at least a minimum size for buffer b. */
-#define REALLOC_THROW(b, n, i, err)                                           \
+#define REALLOC_THROW(b, n, i, err, ed)                                       \
   do                                                                          \
     {                                                                         \
-      if (!realloc_buffer ((void **) &(b), &(n), (off_t) (i), ed))            \
+      if (!realloc_buffer ((void **) &(b), &(n), (off_t) (i), (ed)))          \
         return (err);                                                         \
     }                                                                         \
   while (0)
 
 /* SKIP_WHITESPACE: Scan command buffer for next non-space char. */
-#define SKIP_WHITESPACE()                                                     \
+#define SKIP_WHITESPACE(ed)                                                   \
   do                                                                          \
     {                                                                         \
-     while (isspace ((unsigned char) *ed->stdin) && *ed->stdin != '\n')       \
-       ++ed->stdin;                                                           \
+      while (isspace ((unsigned char) *(ed)->stdin) && *(ed)->stdin != '\n')  \
+        ++(ed)->stdin;                                                        \
     }                                                                         \
   while (0)
 
@@ -681,7 +700,6 @@ enum search_type
     }                                                                         \
   while (0)
 #endif  /* !HAVE_STRTOL */
-
 
 #ifdef HAVE_STRTOLL
   /* STRTOLL_THROW: Convert a string to long long, or return err. */
@@ -753,24 +771,25 @@ enum search_type
   while (0)
 #endif  /* !HAVE_STRTOUL */
 
-
 /* Global function declarations. */
 void activate_signals __P ((void));
 int address_offset __P ((off_t *, ed_state_t *));
 int address_range __P ((ed_state_t *));
+int append_script_expression __P ((const char *, ed_state_t *ed));
+int append_script_file __P ((char *, ed_state_t *ed));
 ed_line_node_t *append_line_node __P ((size_t, off_t, off_t,
                                     ed_state_t *));
 int append_lines __P ((off_t, ed_state_t *));
-ed_text_node_t *append_text_node __P ((const char *, size_t,
-                                    ed_state_t *));
+ed_text_node_t *append_text_node __P ((ed_text_node_t *, const char *, size_t));
 ed_undo_node_t *append_undo_node __P ((int, off_t, off_t, ed_state_t *));
-int close_buffer __P ((ed_state_t *));
+int close_ed_buffer __P ((ed_state_t *));
 int copy_lines __P ((off_t, off_t, off_t, ed_state_t *));
 int copy_register __P ((int, int, int, ed_state_t *));
-void delete_global_nodes __P ((const ed_line_node_t *,
-                               const ed_line_node_t *));
+int create_disk_buffer __P ((FILE **, char **, ed_state_t *));
+void delete_global_nodes __P ((const ed_line_node_t *, const ed_line_node_t *,
+                               ed_state_t *));
 int delete_lines __P ((off_t, off_t, ed_state_t *));
-int display_lines __P ((off_t, off_t, unsigned, ed_state_t *));
+int display_lines __P ((off_t, off_t, unsigned int, ed_state_t *));
 int exec_command __P ((ed_state_t *));
 int exec_global __P ((unsigned, ed_state_t *));
 char *file_glob __P ((size_t *, int, int, ed_state_t *));
@@ -779,34 +798,36 @@ int filter_lines __P ((off_t, off_t, const char *, ed_state_t *));
 char *get_buffer_line __P ((const ed_line_node_t *, ed_state_t *));
 regex_t *get_compiled_regex __P ((unsigned, int, ed_state_t *));
 char *get_extended_line __P ((size_t *, int, ed_state_t *));
-ed_line_node_t *get_line_node __P ((off_t, struct ed_buffer *));
+ed_line_node_t *get_line_node __P ((off_t, ed_state_t *));
 int get_line_node_address __P ((const ed_line_node_t *, off_t *,
                                 ed_state_t *));
 int get_marked_node_address __P ((int, off_t *, ed_state_t *));
 int get_matching_node_address __P ((const regex_t *, int, off_t *,
                                     ed_state_t *));
 size_t get_path_max __P ((const char *));
-#define get_stdin_line(len) get_stream_line (stdin, (len), ed)
+#define get_stdin_line(len, ed) get_stream_line (stdin, len, ed)
 char *get_stream_line __P ((FILE *, size_t *, ed_state_t *));
+int has_trailing_escape __P ((const char *, const char *));
 void init_ed_command __P ((int, ed_state_t *));
 void init_ed_buffer __P ((off_t, struct ed_buffer *));
-void init_global_queue __P ((ed_global_node_t **, ed_line_node_t **));
+void init_global_queue __P ((ed_global_node_t **, ed_line_node_t **,
+                             ed_state_t *));
 int init_register_queue __P ((ed_line_node_t **, int, ed_state_t *));
 int init_signal_handler __P ((ed_state_t *));
 void init_substitute __P ((regex_t **, unsigned *, off_t *, off_t *,
                            unsigned *, struct ed_substitute *));
-void init_undo_queue __P ((ed_undo_node_t **));
+void init_text_deque __P ((ed_text_node_t *));
+void init_undo_queue __P ((ed_undo_node_t **, ed_state_t *));
 int join_lines __P ((off_t, off_t, ed_state_t *));
 int mark_global_nodes __P ((int, ed_state_t *));
 int mark_line_node __P ((const ed_line_node_t *, int, ed_state_t *));
 int move_lines __P ((off_t, off_t, off_t, ed_state_t *));
 int move_register __P ((int, int, int, ed_state_t *));
 int next_address __P ((off_t *, ed_state_t *));
-char *next_text_node __P ((size_t *));
 int one_time_init __P ((int, char **, ed_state_t *));
-int open_buffer __P ((ed_state_t *));
+char *pop_text_node __P ((ed_text_node_t *, size_t *));
 char *put_buffer_line __P ((const char *, size_t, ed_state_t *));
-void quit __P ((int));
+void quit __P ((int, ed_state_t *));
 int read_file __P ((const char *, off_t, off_t *, off_t *, int,
                     ed_state_t *));
 int read_pipe __P ((const char *, off_t, off_t *, off_t *,
@@ -815,15 +836,9 @@ int read_register __P ((int, off_t, ed_state_t *));
 int read_stream_r __P ((FILE *, off_t, off_t *, ed_state_t *));
 void *realloc_buffer __P ((void **, size_t *, off_t, ed_state_t *));
 char *regular_expression __P ((unsigned, size_t *, ed_state_t *));
-void reset_global_queue __P ((void));
+int reopen_ed_buffer __P ((ed_state_t *));
+void reset_global_queue __P ((ed_state_t *));
 int reset_register_queue __P ((int, ed_state_t *));
-
-#ifdef WANT_EXTERNAL_FILTER
-void reset_text_queue __P ((void));
-#else
-# define reset_text_queue()
-#endif  /* !WANT_EXTERNAL_FILTER */
-
 void reset_undo_queue __P ((ed_state_t *));
 int resubstitute __P ((off_t *, off_t *, unsigned *, unsigned *,
                                 ed_state_t *));
@@ -835,6 +850,7 @@ int set_file_lock __P ((FILE *, int));
 #endif
 
 char *shell_command __P ((size_t *, int *, ed_state_t *));
+char *shift_text_node __P ((ed_text_node_t *, size_t *));
 void signal_handler __P ((int));
 void spl0 __P ((void));
 void spl1 __P ((void));

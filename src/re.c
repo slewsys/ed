@@ -2,7 +2,7 @@
 
    Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2012-12-11 <alm@buttercup.local>
+   Last modified: 2013-06-06 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -179,12 +179,12 @@ get_compiled_regex (dc, re_type, ed)
   /* BSD regcomp () accepts pattern with NUL chars via REG_PEND, but
      has no equivalent of GNU's re_syntax_options. */
   re->re_endp = pattern + len;
-  if (status = regcomp (re, pattern, (REG_PEND | (ed->opt & REGEX_EXTENDED
+  if (status = regcomp (re, pattern, (REG_PEND | (ed->exec.opt & REGEX_EXTENDED
                                                   ? REG_EXTENDED : 0))))
 # else
 
   /* Use generic POSIX regular expression library. */
-  if (status = regcomp (re, pattern, (ed->opt & REGEX_EXTENDED
+  if (status = regcomp (re, pattern, (ed->exec.opt & REGEX_EXTENDED
                                       ? REG_EXTENDED : 0)))
 # endif /* !defined (REG_PEND) */
     {
@@ -240,7 +240,7 @@ get_matching_node_address (re, dir, addr, ed)
       if ((*addr = (dir ? INC_MOD (*addr, ed->buf[0].addr_last)
                     : DEC_MOD (*addr, ed->buf[0].addr_last))))
         {
-          lp = get_line_node (*addr, ed->buf);
+          lp = get_line_node (*addr, ed);
           if (!(s = get_buffer_line (lp, ed)))
             return ERR;
 #ifdef REG_STARTEND

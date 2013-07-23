@@ -2,7 +2,7 @@
 
    Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2013-05-28 <alm@slewsys.org>
+   Last modified: 2013-07-12 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -10,7 +10,6 @@
 char *copyright =
   "@(#) Copyright © 1993-2013 Andrew L. Moore, SlewSys Research.\n";
 #endif  /* not lint */
-
 
 #include <pwd.h>
 
@@ -20,33 +19,14 @@ char *copyright =
 
 #define STDIN "/dev/stdin"
 
-struct option long_options[] = {
-  {"ansi-color", no_argument, NULL, 'R'},
-  {"file", required_argument, NULL, 'f'},
-  {"help", no_argument, NULL, 'h'},
-  {"info", no_argument, NULL, 'i'},
-  {"prompt", required_argument, NULL, 'p'},
-  {"quiet", no_argument, NULL, 's'},           /* Deprecated long option */
-  {"regexp-extended", no_argument, NULL, 'E'}, /* BSD extended regexp option */
-  {"regexp-extended", no_argument, NULL, 'r'}, /* GNU extended regexp option */
-  {"scripted", no_argument, NULL, 's'},
-  {"silent", no_argument, NULL, 's'},          /* Deprecated long option */
-  {"traditional", no_argument, NULL, 'G'},
-  {"verbose", no_argument, NULL, 'v'},
-  {"version", no_argument, NULL, 'V'},
-  {0, 0, 0, 0},
-};
-
 #ifdef HAVE_SIGLONGJMP
 sigjmp_buf env;
 #else
 jmp_buf env;
 #endif  /* !HAVE_SIGLONGJMP */
 
-
 /* Global declarations */
 ed_state_t _ed;          /* command parameters */
-
 
 /* Static function declarations. */
 #ifdef WANT_ED_ENVAR
@@ -54,7 +34,7 @@ static char **getenv_init_argv __P ((const char *, int *, ed_state_t *));
 #endif
 static int next_edit __P ((int, ed_state_t *));
 static void script_die __P ((int, ed_state_t *));
-static void usage __P ((int, ed_state_t *));
+static void ed_usage __P ((int, ed_state_t *));
 
 /* ed: line editor */
 int
@@ -62,6 +42,23 @@ main (argc, argv)
      volatile int argc;
      char **volatile argv;
 {
+  struct option long_options[15] =
+    {
+      {"ansi-color", no_argument, NULL, 'R'},
+      {"expression", required_argument, NULL, 'e'},
+      {"file", required_argument, NULL, 'f'},
+      {"help", no_argument, NULL, 'h'},
+      {"info", no_argument, NULL, 'i'},
+      {"prompt", required_argument, NULL, 'p'},
+      {"quiet", no_argument, NULL, 's'},           /* Deprecated long option */
+      {"regexp-extended", no_argument, NULL, 'E'}, /* BSD extended regexp */
+      {"regexp-extended", no_argument, NULL, 'r'}, /* GNU extended regexp */
+      {"scripted", no_argument, NULL, 's'},
+      {"traditional", no_argument, NULL, 'G'},
+      {"verbose", no_argument, NULL, 'v'},
+      {"version", no_argument, NULL, 'V'},
+      {0, 0, 0, 0},
+    };
   ed_state_t *ed = &_ed;
   char **argv_new;
   char **argv_prev = NULL;
@@ -74,7 +71,7 @@ main (argc, argv)
   int signal_status = 0;
 
   if ((len = strlen (*argv)) > 2 && *(*argv + len - 3) == 'r')
-    ed->opt |= RESTRICTED;
+    ed->exec.opt |= RESTRICTED;
 
 #ifdef WANT_ED_ENVAR
   /* Check `ED' environment variable (enabled with configure
@@ -87,86 +84,71 @@ main (argc, argv)
 #endif
 
 top:
-  while ((c = getopt_long (argc, argv, "Ef:Ghip:RrsVv",
+  while ((c = getopt_long (argc, argv, "Ee:f:Ghip:RrsVv",
                            long_options, NULL)) != -1)
     switch (c)
       {
       default:
-        usage (2, ed);
+        ed_usage (2, ed);
       case 0:
         break;
       case 'E':                 /* Enable extended regular expressions. */
-        ed->opt |=  REGEX_EXTENDED;
+        ed->exec.opt |=  REGEX_EXTENDED;
+        break;
+      case 'e':
+        ed->exec.opt |=  SCRIPTED;
+        if (append_script_expression (optarg, ed) < 0)
+              script_die (3, ed);
         break;
       case 'f':                 /* Read commands from file arg. */
-        ed->opt |= SCRIPTED;
-
-        /* Protect optarg from longjmp(3) if volatile insufficient. */
-        if ((len = strlen (optarg)) == 1 && *optarg == '-')
-          {
-            buf_size = ed->script_name ? strlen (STDIN) + 1 : 0;
-            if (!realloc_buffer ((void **) &ed->script_name,
-                                 &buf_size, len + 1, ed))
-              script_die (3, ed);
-            memcpy (ed->script_name, STDIN, len + 1);
-          }
-        else if (len)
-          {
-            buf_size =
-              ed->script_name ? strlen (ed->script_name) + 1 : 0;
-            if (!realloc_buffer ((void **) &ed->script_name,
-                                 &buf_size, len + 1, ed))
-              script_die (3, ed);
-            memcpy (ed->script_name, optarg, len + 1);
-          }
+        ed->exec.opt |= SCRIPTED;
+        if (append_script_file (optarg, ed) < 0)
+          script_die (3, ed);
         break;
       case 'G':                 /* Compatibility mode. */
-        ed->opt |= TRADITIONAL;
+        ed->exec.opt |= TRADITIONAL;
         break;
       case 'h':                 /* Display help, then exit. */
-        ed->opt |= PRINT_HELP;
-        usage (0, ed);
+        ed->exec.opt |= PRINT_HELP;
+        ed_usage (0, ed);
         break;
       case 'i':                 /* Display configuration info, then exit. */
-        ed->opt |= PRINT_CONFIG;
-        usage (0, ed);
+        ed->exec.opt |= PRINT_CONFIG;
+        ed_usage (0, ed);
         break;
       case 'p':                 /* Set ed command prompt. */
-        ed->opt |= PROMPT;
+        ed->exec.opt |= PROMPT;
 
         /* Protect optarg from longjmp(3) if volatile insufficient. */
         if ((len = strlen (optarg)) >= 0)
           {
-            buf_size = (ed->prompt
-                        ? strlen (ed->prompt) + 1 : 0);
-            if (!realloc_buffer ((void **) &ed->prompt,
-                                 &buf_size, len + 1, ed))
+            if (!(ed->exec.prompt = realloc (ed->exec.prompt, len + 1)))
               script_die (3, ed);
-            memcpy (ed->prompt, optarg, len + 1);
+            strcpy (ed->exec.prompt, optarg);
           }
         break;
       case 'R':                 /* Filter ANSI SGR (color) codes. */
-        ed->opt |= ANSI_COLOR;
+        ed->exec.opt |= ANSI_COLOR;
         break;
       case 'r':                 /* Enable extended regular expressions. */
-        ed->opt |= REGEX_EXTENDED;
+        ed->exec.opt |= REGEX_EXTENDED;
         break;
       case 's':                 /* Suppress interactive diagnostics. */
-        ed->opt |= SCRIPTED;
+        ed->exec.opt |= SCRIPTED;
         break;
       case 'V':                 /* Print version, then exit. */
-        ed->opt |= PRINT_VERSION;
-        usage (0, ed);
+        ed->exec.opt |= PRINT_VERSION;
+        ed_usage (0, ed);
         break;
       case 'v':                 /* Verbose mode. */
-        ed->opt |= VERBOSE;
+        ed->exec.opt |= VERBOSE;
         break;
       }
   argv += optind;
   argc -= optind;
   if (argc && **argv == '-')
     {
-      ed->opt |= SCRIPTED;
+      ed->exec.opt |= SCRIPTED;
       if (argc > 1)
         {
           optind = 0;
@@ -211,13 +193,15 @@ top:
     {
       ed->exec.err = _("Interrupted");
       status = ERR;
+
+      /* Re-enable stdout. */
+      ed->display.off = 0;
       goto error;
     }
 
   /* Initialize editor buffer and globals. */
   if ((status = one_time_init (argc, argv, ed)) < 0)
     goto error;
-
 
 #ifdef WANT_FILE_GLOB
 
@@ -226,7 +210,7 @@ top:
      editing. For SUSv3 compatibility, suppress printing the name if
      only one file arg is given. */
   if (argc > 0)
-    ed->opt |= PRINT_FIRST_FILE;
+    ed->exec.opt |= PRINT_FIRST_FILE;
 #endif
 
   /* Enable signal handlers.  */
@@ -237,13 +221,13 @@ top:
   /* If more files in list, edit next per status. */
   if (ed->file.list.gl_pathc)
     {
-      if ((status = next_edit (status, ed)) >= 0)
-        status = exec_command (ed);
-      ed->opt &= ~PRINT_FIRST_FILE;
-
-      if (status < 0)
+      /* Open file. */
+      if ((status = next_edit (status, ed)) < 0
+          || (status = exec_command (ed)) < 0)
         goto error;
-      else if (signal_status < 0)
+      ed->exec.opt &= ~PRINT_FIRST_FILE;
+
+      if (signal_status < 0)
         {
           status = signal_status;
           signal_status = 0;
@@ -254,25 +238,25 @@ top:
   /*  Main command loop. */
   for (;;)
     {
-
-      if (ed->opt & PROMPT && !(ed->opt & SCRIPTED))
+      if (ed->exec.opt & PROMPT && !(ed->exec.opt & SCRIPTED))
         {
-          fputs (ed->prompt, stdout);
+          fputs (ed->exec.prompt, stdout);
           fflush (stdout);
         }
 
       /* End of input. */
-      if (!(ed->stdin = get_stream_line (stdin, &len, ed)))
+      if (!(ed->stdin = get_stdin_line (&len, ed)))
         {
-          status = (!feof (stdin) ? ERR
-                    : (ed->buf[0].is_modified && !(ed->opt & SCRIPTED) ? EMOD
-                       : EOF));
+          status = (!feof (stdin)
+                    ? ERR : (ed->buf[0].is_modified
+                             && !(ed->exec.opt & SCRIPTED)
+                             ? EMOD : EOF));
           clearerr (stdin);
           goto error;
         }
 
       /* Input not newline ('\n') terminated. */
-      if (*(ed->stdin + len - 1) != '\n')
+      else if (*(ed->stdin + len - 1) != '\n')
         {
           ed->exec.err = _("End-of-file unexpected");
           status = ERR;
@@ -301,18 +285,18 @@ top:
         case EOF_NXT:
         case EOF_PRV:
 #ifdef WANT_FILE_GLOB
-          if (!(ed->opt & (POSIXLY_CORRECT | TRADITIONAL)))
+          if (!(ed->exec.opt & (POSIXLY_CORRECT | TRADITIONAL)))
             goto next;
 #endif
           /* FALLTHROUGH */
         case EOF:
-          quit (ed->exec.status);
+          quit (ed->exec.status, ed);
         case EMOD:
           ed->exec.err = _("WARNING: Buffer modified since last write");
           ed->buf[0].is_modified = 0;
           puts ("?");
-          if (!(ed->opt & EXIT_ON_ERROR))
-            printf (ed->opt & VERBOSE ? "%s\n" : "", ed->exec.err);
+          if (!(ed->exec.opt & EXIT_ON_ERROR))
+            printf (ed->exec.opt & VERBOSE ? "%s\n" : "", ed->exec.err);
           else
             script_die (2, ed);
           break;
@@ -320,10 +304,11 @@ top:
           script_die (3, ed);
         default:
           puts ("?");
-          if (!(ed->opt & EXIT_ON_ERROR))
-            printf (ed->opt & VERBOSE ? "%s\n" : "", ed->exec.err);
+          if (!(ed->exec.opt & EXIT_ON_ERROR))
+            printf (ed->exec.opt & VERBOSE ? "%s\n" : "", ed->exec.err);
           else
             script_die (4, ed);
+          ed->display.off = 0;
           break;
         }
 
@@ -352,7 +337,7 @@ next_edit (status, ed)
       ed->exec.err = _("File name too long");
       return ERR;
     }
-  REALLOC_THROW (buf, buf_size, len + 4, ERR);
+  REALLOC_THROW (buf, buf_size, len + 4, ERR, ed);
 
 #ifdef WANT_FILE_GLOB
   sprintf (ed->stdin = buf,
@@ -402,8 +387,8 @@ getenv_init_argv (s, argc, ed)
           return NULL;
         }
       
-      REALLOC_THROW (env, env_size, len + 1, NULL);
-      memcpy (env, u, len + 1);
+      REALLOC_THROW (env, env_size, len + 1, NULL, ed);
+      strcpy (env, u);
       for (v = strtok (env, sep); v; v = strtok (NULL, sep))
         {
           /* In addition to max length (ARG_MAX), check max number of
@@ -414,7 +399,7 @@ getenv_init_argv (s, argc, ed)
               return NULL;
             }
           REALLOC_THROW (argv, argv_size,
-                         (*argc + 2) * sizeof (char **), NULL);
+                         (*argc + 2) * sizeof (char **), NULL, ed);
           *((char **) argv + ++*argc) = v;
         }
       *((char **) argv + ++*argc) = NULL;
@@ -422,11 +407,121 @@ getenv_init_argv (s, argc, ed)
     }
   return (char **) (*argc ? argv : 0);
 }
-#endif
+#endif /* WANT_ED_ENVAR */
 
-/* usage: Print usage. */
+
+/* append_script_expression: Append expression to script. */
+int
+append_script_expression (s, ed)
+     const char *s;
+     ed_state_t *ed;
+{
+  size_t n;
+  int status;
+
+  if (!ed->exec.fp
+      && (status = create_disk_buffer (&ed->exec.fp,
+                                       &ed->exec.pathname, ed)) < 0)
+    return status;
+  if (fseek (ed->exec.fp, 0L, SEEK_END) == -1)
+    {
+      fprintf (stderr, "%s: %s\n", ed->exec.pathname, strerror (errno));
+      ed->exec.err = _("File seek error");
+      return ERR;
+    }
+  n = strlen (s);
+  if (fwrite (s, 1, n, ed->exec.fp) != n
+      || s[n - 1] != '\n' && fwrite ("\n", 1, 1, ed->exec.fp) != 1)
+    {  
+      fprintf (stderr, "%s: %s\n", ed->exec.pathname, strerror (errno));
+      ed->exec.err = _("File write error");
+      return ERR;
+    }
+  if (fseek (ed->exec.fp, 0L, SEEK_SET) == -1)
+    {
+      fprintf (stderr, "%s: %s\n", ed->exec.pathname, strerror (errno));
+      ed->exec.err = _("File seek error");
+      return ERR;
+    }
+  return 0;
+}
+
+
+/* append_script_file: Append file contents to script. */
+int
+append_script_file (fn, ed)
+     char *fn;
+     ed_state_t *ed;
+{
+  FILE *fp;
+  char *filename;
+  char buf[BUFSIZ];
+  size_t len;
+  size_t n, m;
+  int status;
+
+  /* Save filename. */
+  filename = ((len = strlen (fn)) == 1 && *fn == '-' ? STDIN : fn);
+  if (len && !ed->exec.file_script)
+      {
+        if (!(ed->exec.file_script = (char *) malloc (len + 1)))
+          {
+            fprintf (stderr, "%s\n", strerror (errno));
+            ed->exec.err = _("Memory exhausted");
+            return ERR;
+          }
+        strcpy (ed->exec.file_script, filename);
+      }
+  if (!(fp = fopen (filename, "r")))
+    {
+      fprintf (stderr, "%s: %s\n", filename, strerror (errno));
+      ed->exec.err = _("File open error");
+      return ERR;
+    }
+  if (!ed->exec.fp
+      && (status = create_disk_buffer (&ed->exec.fp,
+                                       &ed->exec.pathname, ed)) < 0)
+    return status;
+  if (fseek (ed->exec.fp, 0L, SEEK_END) == -1)
+    {
+      fprintf (stderr, "%s: %s\n", ed->exec.pathname, strerror (errno));
+      ed->exec.err = _("File seek error");
+      return ERR;
+    }
+  while ((n = fread (buf, 1, BUFSIZ, fp)) > 0
+         && (m = fwrite (buf, 1, n, ed->exec.fp)) == n)
+    ;
+  if (n < BUFSIZ)
+    {
+      if (feof (fp) && buf[m - 1] != '\n')
+          m = fwrite ("\n", 1, n = 1, ed->exec.fp);
+      else if (!feof (fp))
+        {
+          fprintf (stderr, "%s: %s\n", filename, strerror (errno));
+          ed->exec.err = _("File read error");
+          return ERR;
+        }
+    }
+  if (n > 0 && m != n)
+    {  
+      fprintf (stderr, "%s: %s\n", filename, strerror (errno));
+      ed->exec.err = _("File write error");
+      return ERR;
+    }
+  fclose (fp);
+  if (fseek (ed->exec.fp, 0L, SEEK_SET) == -1)
+    {
+      fprintf (stderr, "%s: %s\n", ed->exec.pathname, strerror (errno));
+      ed->exec.err = _("File seek error");
+      return ERR;
+    }
+  return 0;
+}
+
+
+/* ed_usage: Print ed usage. */
 static void
-usage (status, ed)
+ed_usage (status, ed)
      int status;
      ed_state_t *ed;
 {
@@ -434,16 +529,17 @@ usage (status, ed)
 
   if (status)
     printf (_("Usage: %s [-] [-EGhirsVv] [-f SCRIPT] [-p PROMPT] [FILE]\n"),
-            ed->opt & RESTRICTED ? "red" : "ed");
-  else if (ed->opt & (PRINT_VERSION | PRINT_CONFIG))
-    printf ("ed %s\n%s", version_string, ed->opt & PRINT_CONFIG
+            ed->exec.opt & RESTRICTED ? "red" : "ed");
+  else if (ed->exec.opt & (PRINT_VERSION | PRINT_CONFIG))
+    printf ("ed %s\n%s", version_string, ed->exec.opt & PRINT_CONFIG
             ? CONFIGURE_ARGS : "");
-  else if (ed->opt & PRINT_HELP)
+  else if (ed->exec.opt & PRINT_HELP)
     {
-      printf (_("Usage: %s [OPTION...] [FILE]\n"), (ed->opt & RESTRICTED
+      printf (_("Usage: %s [OPTION...] [FILE]\n"), (ed->exec.opt & RESTRICTED
                                                     ? "red" : "ed"));
       printf (_("Options:\n\
   -E, --regexp-extended     Enable extended regular expression syntax.\n\
+  -e, --expression=COMMAND  Add COMMAND to scripted input; implies `-s'.\n\
   -f, --file=SCRIPT         Read commands from file SCRIPT.\n\
   -G, --traditional         Enable backward compatibility.\n\
   -h, --help                Dispaly (this) help, then exit.\n\
@@ -471,15 +567,15 @@ script_die (status, ed)
      int status;
      ed_state_t *ed;
 {
-  if (ed->opt & (POSIXLY_CORRECT | TRADITIONAL) || !ed->script_name)
-    fprintf (stderr, (ed->opt & VERBOSE
+  if (ed->exec.opt & (POSIXLY_CORRECT | TRADITIONAL) || !ed->exec.file_script)
+    fprintf (stderr, (ed->exec.opt & VERBOSE
                       ? _("script, line %" OFF_T_FORMAT_STRING ": %s\n") : ""),
              ed->exec.line_no, ed->exec.err);
   else
-    fprintf (stderr, (ed->opt & VERBOSE
+    fprintf (stderr, (ed->exec.opt & VERBOSE
                       ? "%s:%" OFF_T_FORMAT_STRING ": %s\n" : ""),
-             ed->script_name, ed->exec.line_no, ed->exec.err);
-  quit (status);
+             ed->exec.file_script, ed->exec.line_no, ed->exec.err);
+  quit (status, ed);
 }
 
 /*

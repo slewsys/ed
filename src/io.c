@@ -2,7 +2,7 @@
 
    Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2012-12-11 <alm@buttercup.local>
+   Last modified: 2013-07-06 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -28,7 +28,6 @@
 
 
 /* Static function declarations. */
-static int has_trailing_escape __P ((const char *, const char *));
 static int put_stream_line __P ((FILE *, const char *, int,
                                  ed_state_t *));
 static int read_stream __P ((FILE *, off_t, off_t *, ed_state_t *));
@@ -83,11 +82,12 @@ read_file (fn, after, addr, size, is_default, ed)
       }
   /* Assert: File lock released on file close. */
   if (set_file_lock (fp, 1) != 0 && isatty (0))
-    fprintf (stderr, (ed->opt & VERBOSE
+    fprintf (stderr, (ed->exec.opt & VERBOSE
                       ? _("WARNING: File already locked\n") : ""));
 #endif  /* HAVE_FILE_LOCK */
   if ((status = read_stream (fp, after, size, ed)) < 0)
     return status;
+  *addr = ed->buf[0].dot - after;
 
 #ifdef WANT_FILE_LOCK
   if (!is_default)
@@ -98,9 +98,6 @@ read_file (fn, after, addr, size, is_default, ed)
         ed->exec.err = _("File close error");
         return ERR;
       }
-
-  /* Don't call fclose (fp) here -- see init_ed_buffer (). */
-  *addr = ed->buf[0].dot - after;
   return 0;
 }
 
@@ -119,6 +116,7 @@ read_pipe (fn, after, addr, size, ed)
   int status;
 
   *addr = 0;
+
   if (!(fp = popen (fn + 1, "r")))
     {
       fprintf (stderr, "%s: %s\n", fn, strerror (errno));
@@ -127,13 +125,11 @@ read_pipe (fn, after, addr, size, ed)
     }
   if ((status = read_stream (fp, after, size, ed)) < 0)
     return status;
-  if (pclose (fp) < 0)
-    {
-      fprintf (stderr, "%s: %s\n", fn, strerror (errno));
-      ed->exec.err = _("File close error");
-      return ERR;
-    }
   *addr = ed->buf[0].dot - after;
+
+  /* Ignore "no child" error. */
+  pclose (fp);
+  printf (ed->exec.opt & SCRIPTED ? "" : "!\n");
   return 0;
 }
 
@@ -148,7 +144,7 @@ read_pipe (fn, after, addr, size, ed)
           return ERR;                                                         \
         }                                                                     \
       (lp) = (lp)->q_forw;                                                    \
-      APPEND_UNDO_NODE ((lp), (up), (addr));                                  \
+      APPEND_UNDO_NODE ((lp), (up), (addr), ed);                              \
       spl0 ();                                                                \
     }                                                                         \
   while (0)
@@ -163,7 +159,7 @@ read_stream (fp, after, size, ed)
      off_t *size;
      ed_state_t *ed;
 {
-  ed_line_node_t *lp = get_line_node (after, ed->buf);
+  ed_line_node_t *lp = get_line_node (after, ed);
   ed_undo_node_t *up = NULL;
   char *tb;
   size_t len;
@@ -245,6 +241,19 @@ read_stream (fp, after, size, ed)
 
 #ifdef WANT_EXTERNAL_FILTER
 
+#  define APPEND_TEXT_NODE(th, s, len, ed)                                    \
+  do                                                                          \
+    {                                                                         \
+      char *_t;                                                               \
+      if (!(_t = strdup (s)) || !append_text_node ((th), _t, (len)))          \
+        {                                                                     \
+          fprintf (stderr, "%s\n", strerror (errno));                         \
+          (ed)->exec.err = _("Memory exhausted");                             \
+          return ERR;                                                         \
+        }                                                                     \
+    }                                                                         \
+  while (0)
+
 /* read_stream_r: Read a stream into memory and then into editor
    buffer after the given address; return bytes read. */
 int
@@ -254,9 +263,12 @@ read_stream_r (fp, after, size, ed)
      off_t *size;
      ed_state_t *ed;
 {
+  static ed_text_node_t th;     /* text deque head */
+
   ed_line_node_t *lp;
   ed_undo_node_t *up = NULL;
-  char *tb;
+  char *s;
+  char *t;
   size_t len = 0;
   int newline_inserted = 0;
   int newline_appended_already = ed->buf[0].newline_appended;
@@ -264,14 +276,12 @@ read_stream_r (fp, after, size, ed)
 
   ed->buf[0].input_is_binary = 0;
   ed->buf[0].input_wants_newline = 0;
-  spl1 ();
-  reset_text_queue ();
-  spl0 ();
+
+  init_text_deque (&th);
 
   /* Read stream into memory to avoid reentrant calls to buffer file I/O. */
-  for (*size = 0; (tb = get_stream_line (fp, &len, ed)); *size += len)
-    if (!append_text_node (tb, len, ed))
-      return ERR;
+  for (*size = 0; (s = get_stream_line (fp, &len, ed)); *size += len)
+    APPEND_TEXT_NODE (&th, s, len, ed);
   if (feof (fp))
     {
       fflush (fp);
@@ -280,8 +290,7 @@ read_stream_r (fp, after, size, ed)
       /* Empty file into empty buffer. */
       if (!*size && !ed->buf[0].addr_last)
         {
-          if (!append_text_node ("\n", 1, ed))
-            return ERR;
+          APPEND_TEXT_NODE (&th, "\n", 1, ed);
 
           /* First time only! */
           if (!newline_appended_already)
@@ -291,18 +300,21 @@ read_stream_r (fp, after, size, ed)
             }
         }
     }
-  else if (ferror (fp) || !tb)
+  else if (ferror (fp) || !s)
     {
       clearerr (fp);
       return ERR;
     }
 
-  lp = get_line_node (after, ed->buf);
+  lp = get_line_node (after, ed);
   ed->buf[0].dot = after;
 
   /* Write stream input to buffer file. */
-  while ((tb = next_text_node (&len)))
-    PUT_BUFFER_LINE (lp, tb, len, up, ed->buf[0].dot);
+  while ((t = shift_text_node (&th, &len)))
+    {
+      PUT_BUFFER_LINE (lp, t, len, up, ed->buf[0].dot);
+      free (t);
+    }
 
   /* A newline is appended to an empty file read into an empty buffer,
      but the buffer is still considered `empty' in the sense that a
@@ -364,9 +376,9 @@ get_extended_line (len, nonl, ed)
 
   for (*len = 0; *(ed->stdin + (*len)++) != '\n';)
     ;
-  REALLOC_THROW (xl, xl_size, *len + 1, NULL);
+  REALLOC_THROW (xl, xl_size, *len + 1, NULL, ed);
 
-  /* NB: Don't assume that ed->stdin is NUL terminated. */
+  /* NB: Don't assume that ed->stdin is NUL-terminated. */
   memcpy (xl, ed->stdin, *len);
 
   /* Shell escapes set nonl, so we are only interested in a trailing
@@ -375,7 +387,7 @@ get_extended_line (len, nonl, ed)
          : has_trailing_escape (xl, xl + *len - 1))
     {
       *(xl + --*len - 1) = '\n'; /* strip trailing backslash */
-      if (!(ed->stdin = get_stdin_line (&n)))
+      if (!(ed->stdin = get_stdin_line (&n, ed)))
 
         /* Propagate stream status. */
         return NULL;
@@ -384,7 +396,7 @@ get_extended_line (len, nonl, ed)
           ed->exec.err = _("End-of-file unexpected");
           return NULL;
         }
-      REALLOC_THROW (xl, xl_size, *len + n + 1, NULL);
+      REALLOC_THROW (xl, xl_size, *len + n + 1, NULL, ed);
       memcpy (xl + *len, ed->stdin, n);
       *len += n;
       ++ed->exec.line_no;
@@ -415,12 +427,12 @@ get_stream_line (fp, len, ed)
  top:
   for (; (c = getc (fp)) != EOF && c != '\n'; ++*len)
     {
-      REALLOC_THROW (tb, tb_size, *len + 1, NULL);
+      REALLOC_THROW (tb, tb_size, *len + 1, NULL, ed);
       ed->buf[0].input_is_binary |= !(*(tb + *len) = c);
     }
   if (feof (fp))
     {
-      /* Propagate stream status */
+      /* Propagate stream status - don't call clearerr(3). */
       if (!*len)
         return NULL;
     }
@@ -438,7 +450,7 @@ get_stream_line (fp, len, ed)
         return NULL;
       }
 
-  REALLOC_THROW (tb, tb_size, *len + 2, NULL);
+  REALLOC_THROW (tb, tb_size, *len + 2, NULL, ed);
   if (fp == stdin)
     {
       *(tb + *len) = '\n';
@@ -468,7 +480,7 @@ write_file (fn, is_default, from, to, addr, size, mode, ed)
      ed_state_t *ed;
 {
   FILE *fp;
-  ed_line_node_t *lp = get_line_node (from, ed->buf);
+  ed_line_node_t *lp = get_line_node (from, ed);
   off_t n = from ? to - from + 1 : 0;
   INO_T inode;
   int file_already_open = 0;
@@ -523,12 +535,16 @@ write_file (fn, is_default, from, to, addr, size, mode, ed)
           spl0 ();
         }
       if (set_file_lock (fp, 1) != 0 && isatty (0))
-        fprintf (stderr, (ed->opt & VERBOSE
+        fprintf (stderr, (ed->exec.opt & VERBOSE
                           ? _("WARNING: File already locked\n") : ""));
     }
 #endif  /* WANT_FILE_LOCK */
   if ((status = write_stream (fp, lp, n, size, ed)) < 0)
     return status;
+
+  /* Allow writing an empty buffer. */
+  *addr = n;
+
 #ifdef WANT_FILE_LOCK
   if (!is_default)
 #endif
@@ -538,9 +554,6 @@ write_file (fn, is_default, from, to, addr, size, mode, ed)
         ed->exec.err = _("File close error");
         return ERR;
       }
-
-  /* Allow writing an empty buffer. */
-  *addr = n;
   return 0;
 }
 
@@ -556,10 +569,9 @@ write_pipe (fn, from, to, addr, size, ed)
      ed_state_t *ed;
 {
   FILE *fp;
-  ed_line_node_t *lp = get_line_node (from, ed->buf);
+  ed_line_node_t *lp = get_line_node (from, ed);
   off_t n = from ? to - from + 1 : 0;
   int status;
-
 
   if (!(fp = popen (fn + 1, "w")))
     {
@@ -569,15 +581,13 @@ write_pipe (fn, from, to, addr, size, ed)
     }
   if ((status = write_stream (fp, lp, n, size, ed)) < 0)
     return status;
-  if (pclose (fp) < 0)
-    {
-      fprintf (stderr, "%s: %s\n", fn, strerror (errno));
-      ed->exec.err = _("File close error");
-      return ERR;
-    }
 
   /* Allow writing an empty buffer. */
   *addr = n;
+
+  /* Ignore "no child" error. */
+  pclose (fp);
+  printf (ed->exec.opt & SCRIPTED ? "" : "!\n");
   return 0;
 }
 
@@ -651,17 +661,6 @@ put_stream_line (fp, s, len, ed)
 }
 
 
-/* has_trailing_escape: Return the parity of escapes preceding a
-   character in a string. */
-static int
-has_trailing_escape (s, t)
-     const char *s;
-     const char *t;
-{
-  return (s == t || *(t - 1) != '\\' ? 0 : !has_trailing_escape (s, t - 1));
-}
-
-
 /* get_inode: Get file inode, return status. */
 static int
 get_inode (fn, inode, ed)
@@ -686,7 +685,7 @@ get_inode (fn, inode, ed)
     }
 
   /* XXX: Potential race condition -- status may change before open(2). */
-  if (ed->opt & RESTRICTED && !S_ISREG (sb.st_mode))
+  if (ed->exec.opt & RESTRICTED && !S_ISREG (sb.st_mode))
     {
       ed->exec.err = _("Access restricted to regular files");
       return ERR;

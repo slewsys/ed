@@ -2,7 +2,7 @@
 
    Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2013-05-26 <alm@slewsys.org>
+   Last modified: 2013-07-23 <alm@buttercup.local>
 
    This file is part of ed. */
 
@@ -12,7 +12,7 @@
 /* Static function declarations. */
 static char *character_class __P ((const char *, ed_state_t *));
 static int check_address_bounds __P ((off_t, ed_state_t *));
-static char *escaped_strtok __P ((char *, const char *));
+static char *strtok_with_delimiters __P ((char *, const char *));
 static char *is_valid_name __P ((const char *, ed_state_t *));
 static int line_address __P ((off_t *, ed_state_t *));
 
@@ -34,7 +34,7 @@ address_range (ed)
 
   ed->region.addrs = 0;
   first = second = dot = ed->buf[0].dot;
-  SKIP_WHITESPACE ();
+  SKIP_WHITESPACE (ed);
   have_dc = IS_DELIMITER (*ed->stdin);
   do
     {
@@ -82,14 +82,14 @@ next_address (addr, ed)
      off_t *addr;
      ed_state_t *ed;
 {
-  char *s_prev;
+  char *stdin_prev;
   int status;
 
-  SKIP_WHITESPACE ();
-  s_prev = ed->stdin;
+  SKIP_WHITESPACE (ed);
+  stdin_prev = ed->stdin;
   return (((status = line_address (addr, ed)) < 0
            || (status = address_offset (addr, ed)) < 0)
-          ? status : ed->stdin != s_prev);
+          ? status : ed->stdin != stdin_prev);
 }
 
 
@@ -189,7 +189,7 @@ address_offset (addr, ed)
         break;
       case ' ':
       case '\t':
-        SKIP_WHITESPACE ();
+        SKIP_WHITESPACE (ed);
         if (isdigit ((unsigned char) *ed->stdin))
           {
             STRTOLL_THROW (n, ed->stdin, &ed->stdin, ERR);
@@ -246,7 +246,7 @@ file_glob (len, cm, replace, ed)
     return NULL;
 
   /* XXX - Too restrictive, e.g., "./foo" should be permissible... */
-  if (ed->opt & RESTRICTED && (!strcmp (xl, "..") || strchr (xl, '/')))
+  if (ed->exec.opt & RESTRICTED && (!strcmp (xl, "..") || strchr (xl, '/')))
     {
       ed->exec.err = _("Access restricted to working directory");
       return NULL;
@@ -255,7 +255,7 @@ file_glob (len, cm, replace, ed)
 
   /* Process xl for zero or more whitespace-delimited file globs.
      Whitespace within a file glob must be back slash-escaped (\). */
-  if ((pattern = escaped_strtok (xl, WHITE_SPACE)))
+  if ((pattern = strtok_with_delimiters (xl, WHITE_SPACE)))
     {
       /* Preserve file_glob by using one_time_glob instead. */
       if (ed->file.list.gl_pathv && !replace)
@@ -286,7 +286,8 @@ file_glob (len, cm, replace, ed)
           gp = &ed->file.list;
         }
 
-      for (s = pattern; pattern; pattern = escaped_strtok (NULL, WHITE_SPACE))
+      for (s = pattern; pattern;
+           pattern = strtok_with_delimiters (NULL, WHITE_SPACE))
         {
 
           /* glob(3) may not properly handle excessively long patterns. */
@@ -301,7 +302,8 @@ file_glob (len, cm, replace, ed)
                     NULL, gp) < 0)
 #else
           if (glob (pattern, (GLOB_NOCHECK | GLOB_ERR
-                              | (s == pattern ? 0 : GLOB_APPEND)), NULL, gp) < 0)
+                              | (s == pattern ? 0 : GLOB_APPEND)),
+                    NULL, gp) < 0)
 #endif  /* !GLOB_TILDE */
             {
               fprintf (stderr, "%s: %s\n", pattern, strerror (errno));
@@ -343,16 +345,19 @@ file_glob (len, cm, replace, ed)
 }
 
 
-/* escaped_strtok: strtok(3) with escape processing. */
+/* strtok_with_delimiters: Parse `s' into `delims'-separated tokens.
+   Tokens may themselves contain `delims' chars provided the chars are
+   preceded by a backslash (\) escape. In this case, the backslash is
+   removed from the returned token.
+   NB: Only ASCII `delims' are supported. */
 static char *
-escaped_strtok (s, ws)
+strtok_with_delimiters (s, delims)
      char *s;
-     const char *ws;
+     const char *delims;
 {
   static char *t = NULL;
 
   char *tok;
-  int escaped;
 
   if (s)
     t = s;
@@ -361,12 +366,15 @@ escaped_strtok (s, ws)
   else if (!t || *++t == '\0')
     return NULL;
 
-  /* Strip leading token delimiters. */
-  if (*(t += strspn (t, ws)) == '\0')
+  /* Strip leading `delims' chars. */
+  if (*(t += strspn (t, delims)) == '\0')
     return NULL;
 
-  for (tok = s = t; (*s = ((escaped = *t == '\\') ? *++t : *t)); ++s, ++t)
-    if (!escaped && strchr (ws, (unsigned char) *t))
+  /* Remove escapes preceding `delims'; break on unescaped `delims' char. */
+  for (tok = s = t;; ++t, ++s)
+    if (*t == '\\' && strchr (delims, (unsigned char) *(t + 1)))
+        *s = *++t;
+    else if ((*s = *t) == '\0' || strchr (delims, (unsigned char) *s))
       break;
 
   /* No more tokens. */
@@ -394,9 +402,9 @@ is_valid_name (name, ed)
   len = strlen (ed->stdin = (char *) name);
   if (name[len - 1] != '\n')
     {
-      REALLOC_THROW (fn, fn_size, len + 2, NULL);
-      memcpy (ed->stdin = fn, name, len);
-      memcpy (fn + len, "\n", 2);
+      REALLOC_THROW (fn, fn_size, len + 2, NULL, ed);
+      strcpy (ed->stdin = fn, name);
+      strcpy (fn + len, "\n");
     }
   if ((s = file_name (&len, ed)) && strcmp (name, s))
     {
@@ -425,14 +433,14 @@ file_name (len, ed)
     return NULL;
 
   /* XXX - Too restrictive, e.g., "./foo" should be permissible... */
-  if (ed->opt & RESTRICTED && (!strcmp (xl, "..") || strchr (xl, '/')))
+  if (ed->exec.opt & RESTRICTED && (!strcmp (xl, "..") || strchr (xl, '/')))
     {
       ed->exec.err = _("Access restricted to working directory");
       return NULL;
     }
   ed->stdin += *len + 1;
-  REALLOC_THROW (fn, fn_size, *len + 1, NULL);
-  memcpy (fn, xl, *len + 1);
+  REALLOC_THROW (fn, fn_size, *len + 1, NULL, ed);
+  strcpy (fn, xl);
   return fn;
 }
 
@@ -472,7 +480,7 @@ regular_expression (dc, len, ed)
       }
 
   *len = ed->stdin - s;
-  REALLOC_THROW (lhs, lhs_size, *len + 1, NULL);
+  REALLOC_THROW (lhs, lhs_size, *len + 1, NULL, ed);
   memcpy (lhs, s, *len);
   *(lhs + *len) = '\0';
 #if !defined REG_PEND && !defined HAVE_REG_SYNTAX_T
@@ -523,7 +531,7 @@ shell_command (len, subs, ed)
   char *xl, *fn = NULL;
   size_t m, n;
 
-  if (ed->opt & RESTRICTED)
+  if (ed->exec.opt & RESTRICTED)
     {
       ed->exec.err = _("Shell access restricted");
       return NULL;
@@ -535,39 +543,39 @@ shell_command (len, subs, ed)
 
   /* Preserve unexpanded command so that `%' gets expanded to current
      file name when repeated via `!!'. */
-  REALLOC_THROW (sc_curr, sc_curr_size, n + 1, NULL);
-  memcpy (sc_curr, xl, n + 1);
+  REALLOC_THROW (sc_curr, sc_curr_size, n + 1, NULL, ed);
+  strcpy (sc_curr, xl);
 
   ed->stdin += n + 1;
   for (*subs = *len = 0; *xl != '\0'; ++xl)
     switch (*xl)
       {
       default:
-        REALLOC_THROW (sc, sc_size, *len + 1, NULL);
+        REALLOC_THROW (sc, sc_size, *len + 1, NULL, ed);
 
         /* Substitute '\%' with `%'. */
         *(sc + (*len)++) = *xl == '\\' && *(xl + 1) == '%' ? *++xl : *xl;
         break;
       case '%':
 
-        /*  Substitute '%%' with ed->script_name. */
+        /*  Substitute '%%' with ed->exec.file_script. */
         if (*(xl + 1) == '%')
           {
-            fn = ed->script_name ? ed->script_name : "(stdin)";
+            fn = ed->exec.file_script ? ed->exec.file_script : "(stdin)";
             ++xl;
           }
         /*  Substitute '%' with ed->file_name. */
         else if (!(fn = ed->file.name))
           {
             /* Preserve current (unexpanded) shell command. */
-            REALLOC_THROW (sc_prev, sc_prev_size, sc_curr_size, NULL);
+            REALLOC_THROW (sc_prev, sc_prev_size, sc_curr_size, NULL, ed);
             memcpy (sc_prev, sc_curr, sc_curr_size);
 
             ed->exec.err = _("File name not set");
             return NULL;
           }
         m = strlen (fn);
-        REALLOC_THROW (sc, sc_size, *len + m + 1, NULL);
+        REALLOC_THROW (sc, sc_size, *len + m + 1, NULL, ed);
         memcpy (sc + *len, fn, m);
         *len += m;
         ++*subs;
@@ -577,10 +585,10 @@ shell_command (len, subs, ed)
         /* Replace only leading `!!' with previous `!command'. */
         if (*len || *(xl + 1) != '!')
           {
-            REALLOC_THROW (sc, sc_size, *len + 1, NULL);
+            REALLOC_THROW (sc, sc_size, *len + 1, NULL, ed);
             *(sc + (*len)++) = *xl;
           }
-        else if (!sc_prev || (ed->opt & (POSIXLY_CORRECT | TRADITIONAL)
+        else if (!sc_prev || (ed->exec.opt & (POSIXLY_CORRECT | TRADITIONAL)
                               && !*(sc_prev + 1)))
           {
             ed->exec.err = _("No previous shell command");
@@ -592,14 +600,14 @@ shell_command (len, subs, ed)
             m = strlen (sc_prev);
 
             /* Append sc_curr without `!!' prefix to sc_prev. */
-            REALLOC_THROW (sc_curr, sc_curr_size, n + m - 1, NULL);
+            REALLOC_THROW (sc_curr, sc_curr_size, n + m - 1, NULL, ed);
             memmove (sc_curr + m, sc_curr + 2, n - 1);
             memcpy (sc_curr, sc_prev, m);
             xl = sc_curr;
             n += m - 2;         /* Update (unused) strlen of xl. */
 
             /* Assert: xl now begins with a single `!'. */
-            REALLOC_THROW (sc, sc_size, *len + 1, NULL);
+            REALLOC_THROW (sc, sc_size, *len + 1, NULL, ed);
             *(sc + (*len)++) = *xl;
             ++*subs;
           }
@@ -607,10 +615,21 @@ shell_command (len, subs, ed)
       }
 
   /* Preserve current (unexpanded) shell command. */
-  REALLOC_THROW (sc_prev, sc_prev_size, sc_curr_size, NULL);
+  REALLOC_THROW (sc_prev, sc_prev_size, sc_curr_size, NULL, ed);
   memcpy (sc_prev, sc_curr, sc_curr_size);
   *(sc + *len) = '\0';
   return sc;
+}
+
+
+/* has_trailing_escape: Return the parity of escapes preceding a
+   character *t, in a string, s. */
+int
+has_trailing_escape (s, t)
+     const char *s;
+     const char *t;
+{
+  return (s == t || *(t - 1) != '\\' ? 0 : !has_trailing_escape (s, t - 1));
 }
 
 /*
