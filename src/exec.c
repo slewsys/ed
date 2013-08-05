@@ -2,7 +2,11 @@
 
    Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
 
+<<<<<<< HEAD
    Last modified: 2013-08-05 <alm@slewsys.org>
+=======
+   Last modified: 2013-07-23 <alm@buttercup.local>
+>>>>>>> 0203499153ad98ad8e4e5f53fa80ade5eb9af80f
 
    This file is part of ed. */
 
@@ -1009,7 +1013,7 @@ exec_one_off (cmd, modifier, ed)
   char *saved_modifier = modifier;
   int input_len;
   int status;
-  
+
   /* Allocate for `start,end' + cmd + modifier. */
   if (strlen (cmd) != 1
       || (input_len = 2 * OFF_T_LEN + strlen (modifier) + 3) > SIZE_T_MAX)

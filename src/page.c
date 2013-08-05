@@ -2,7 +2,7 @@
 
    Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2013-07-20 <alm@buttercup.local>
+   Last modified: 2013-08-05 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -270,8 +270,8 @@ init_frame_buffer (fb, io_f, ed)
       fb->columns = window_columns;
     }
 
-  /* Don't reset row_i if scrolling forward. Append to end of frame
-     buffer instead. */
+  /* Don't reset row_i if scrolling forward in half-pages. Append to
+     end of frame buffer instead. */
   if (!(io_f & ZHFW))
     fb->row_i = 0;
   fb->fill_i = (fb->row_i + (fb->rows >> 1)) % (fb->rows - 1);
@@ -356,7 +356,6 @@ put_frame_buffer_line (lp, addr, io_f, fb, ed)
   size_t len = 0;
   unsigned int sgr_len = 0;     /* length of ANSI sgr sequence */
   int form_feed = 0;
-  /* int left_margin = 0;          /\* addr_last_len - 1 *\/ */
 
   /* As per SUSv3, 2004, the `$' (dollar sign) character is output by
      the `l' (literal) command as the escape sequence `\$' */

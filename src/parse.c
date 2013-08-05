@@ -12,7 +12,7 @@
 /* Static function declarations. */
 static char *character_class __P ((const char *, ed_state_t *));
 static int check_address_bounds __P ((off_t, ed_state_t *));
-static char *expand_glob __P ((char *, int, glob_t *, ed_state_t *));
+static glob_t *expand_glob __P ((char *, int, glob_t *, ed_state_t *));
 static char *is_valid_name __P ((const char *, ed_state_t *));
 static int line_address __P ((off_t *, ed_state_t *));
 static char *strtok_with_delimiters __P ((char *, const char *));
@@ -337,7 +337,7 @@ file_glob (len, cm, replace, ed)
 /* strtok_with_delimiters: Parse `s' into `delims'-separated tokens.
    Tokens may themselves contain `delims' chars provided the chars are
    preceded by a backslash (\) escape. In this case, the backslash is
-   removed from the returned token. 
+   removed from the returned token.
    NB: Only ASCII `delims' are supported. */
 static char *
 strtok_with_delimiters (s, delims)
@@ -379,19 +379,13 @@ strtok_with_delimiters (s, delims)
    expansion does not match any existing files, then try expanding
    just the directory name, if any. If that succeeds, then append the
    filename to each directory in expansion. */
-static char *
+glob_t *
 expand_glob (pattern, append, gp, ed)
      char *pattern;
      int append;
      glob_t *gp;
      ed_state_t *ed;
 {
-  /* static char *fnv = NULL;      /\* gl_pathv replacement.  *\/ */
-  /* static size_t fn_size = 0; */
-  /* static pathname = NULL; */
-  /* static pathname_size = 0; */
-  /* static first = 1; */
-  
   struct stat sb;
   char **pathv = NULL;
   char *sep = NULL;
@@ -489,6 +483,7 @@ expand_glob (pattern, append, gp, ed)
             }
         }
     }
+  return gp;
 }
 
 

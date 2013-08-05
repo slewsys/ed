@@ -2,7 +2,7 @@
 
 # Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
 
-# Last modified: 2013-05-27 <alm@slewsys.org>
+# Last modified: 2013-08-05 <alm@slewsys.org>
 
 # Process this file with autoconf to produce a configure script.
 
@@ -11,6 +11,7 @@ AC_INIT([ed],[0.271-b2],[bug-ed@gnu.org])
 AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_LIBOBJ_DIR([lib])
+AC_CONFIG_MACRO_DIR([m4])
 AC_USE_SYSTEM_EXTENSIONS
 AM_INIT_AUTOMAKE([gnits])
 
@@ -106,8 +107,9 @@ AC_SUBST(GNU_MAKE_COMMAND, [$ac_cv_path_GNU_MAKE_COMMAND])
 
 AC_PROG_INSTALL
 AC_PROG_MKDIR_P
-AC_PROG_RANLIB
 AC_PROG_YACC
+
+LT_INIT
 
 #
 # Checks feature requests.
@@ -222,7 +224,7 @@ AM_CONDITIONAL([LIBADD_GETOPT_LONG],
 
 AC_PROG_LIBTOOL
 
-AM_GNU_GETTEXT([libtool], [need-formatstring-macros], [../intl])
+AM_GNU_GETTEXT([no-libtool], [need-formatstring-macros], [../intl])
 AM_GNU_GETTEXT_VERSION([0.18.2])
 AM_CONDITIONAL([LDADD_LIBINTL], [test "_$LTLIBINTL" != _])
 AM_COND_IF([LDADD_LIBINTL], [],
@@ -294,11 +296,12 @@ AC_CONFIG_FILES([testsuite/ts-am-sw.ed],
 # Generate configure helper.
 AM_MISSING_PROG([AUTOM4TE], [autom4te])
 
+dnl intl/Makefile
+
 # Generate Makefiles and conditional headers.
 AC_CONFIG_FILES([Makefile                                                     \
   doc/Makefile                                                                \
   doc/bwk/Makefile                                                            \
-  intl/Makefile                                                               \
   lib/Makefile                                                                \
   po/Makefile.in                                                              \
   src/Makefile                                                                \

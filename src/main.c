@@ -2,7 +2,7 @@
 
    Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2013-08-04 <alm@slewsys.org>
+   Last modified: 2013-08-05 <alm@slewsys.org>
 
    This file is part of ed. */
 

@@ -2,7 +2,7 @@
 
 # Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
 
-# Last modified: 2012-10-07 <alm@slewsys.org>
+# Last modified: 2013-08-05 <alm@slewsys.org>
 
 # Process this file with automake to create Makefile.in
 
@@ -14,9 +14,9 @@ if LDADD_LIBED
 SUBDIRS += lib
 endif LDADD_LIBED
 
-if LDADD_LIBINTL
-SUBDIRS += intl
-endif
+# if LDADD_LIBINTL
+# SUBDIRS += intl
+# endif
 
 SUBDIRS += po
 

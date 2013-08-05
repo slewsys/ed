@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 2013-08-05  Andrew L. Moore  <alm@slewsys.org>
 
 	* src/parse.c (expand_glob): Support file-glob expansion of
@@ -38,6 +39,23 @@
 	  *w
 	  29
 	  *
+=======
+2013-07-22  Andrew L. Moore  <alm@buttercup.local>
+
+	* src/page.c (put_frame_buffer_line): Condition line enumeration
+	format on addr_last.
+	(INC_MOD_FB_ROW): Rename COND_WRAP_FB_ROW () =>  INC_MOD_FB_ROW ().
+	(display_frame_buffer): Revisit calculation of first and last
+	frame buffer rows to print to support half-page scrolling.
+
+	* src/page.c (display_frame_buffer, put_frame_buffer_line, init_frame_buffer):
+	* src/exec.c (exec_command):
+	(exec_one_off): Add half-page scrolling commands, '[' (backward)
+	and ']' (forward), to complement to full-page scrolling, `Z'
+	(backward) and 'z' (forward). Implementation of half-page scrolling
+	depends on "normalized" frame buffer, so load page preceding given
+	address in background (display.off = 1), then scroll from there.
+>>>>>>> 0203499153ad98ad8e4e5f53fa80ade5eb9af80f
 
 2013-06-08  Andrew L. Moore  <alm@slewsys.org>
 
@@ -61,8 +79,16 @@
 
 	* src/buf.c (create_disk_buffer): Rename open_buffer =>
 	create_disk_buffer. Add file pointer to function parameters.
+<<<<<<< HEAD
 	(append_text_node): Add deque pointer to function parameters.
 	(shift_text_node): Rename next_text_node => shift_text_node.
+=======
+	(reopen_ed_buffer): Abstract initialization of ed buffer when
+	opening new file.
+	(append_text_node): Add deque pointer to function parameters.
+	(shift_text_node): Rename next_text_node => shift_text_node.
+	(pop_text_node): Pop element from text node "stack" (unused).
+>>>>>>> 0203499153ad98ad8e4e5f53fa80ade5eb9af80f
 	Add deque pointer to function parameters.
 	(get_line_node): Change ed->buf parameter to ed.
 
