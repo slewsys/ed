@@ -1,4 +1,35 @@
-<<<<<<< HEAD
+2013-08-05  gettextize  <bug-gnu-gettext@gnu.org>
+
+	* m4/gettext.m4: Upgrade to gettext-0.18.3.
+	* m4/iconv.m4: Upgrade to gettext-0.18.3.
+	* m4/lib-ld.m4: Upgrade to gettext-0.18.3.
+	* m4/lib-link.m4: Upgrade to gettext-0.18.3.
+	* m4/lib-prefix.m4: Upgrade to gettext-0.18.3.
+	* m4/nls.m4: Upgrade to gettext-0.18.3.
+	* m4/progtest.m4: Upgrade to gettext-0.18.3.
+	* m4/codeset.m4: Upgrade to gettext-0.18.3.
+	* m4/fcntl-o.m4: Upgrade to gettext-0.18.3.
+	* m4/glibc2.m4: Upgrade to gettext-0.18.3.
+	* m4/glibc21.m4: Upgrade to gettext-0.18.3.
+	* m4/intdiv0.m4: Upgrade to gettext-0.18.3.
+	* m4/intldir.m4: Upgrade to gettext-0.18.3.
+	* m4/intlmacosx.m4: Upgrade to gettext-0.18.3.
+	* m4/intmax.m4: Upgrade to gettext-0.18.3.
+	* m4/inttypes_h.m4: Upgrade to gettext-0.18.3.
+	* m4/inttypes-pri.m4: Upgrade to gettext-0.18.3.
+	* m4/lcmessage.m4: Upgrade to gettext-0.18.3.
+	* m4/lock.m4: Upgrade to gettext-0.18.3.
+	* m4/longlong.m4: Upgrade to gettext-0.18.3.
+	* m4/printf-posix.m4: Upgrade to gettext-0.18.3.
+	* m4/size_max.m4: Upgrade to gettext-0.18.3.
+	* m4/stdint_h.m4: Upgrade to gettext-0.18.3.
+	* m4/threadlib.m4: Upgrade to gettext-0.18.3.
+	* m4/uintmax_t.m4: Upgrade to gettext-0.18.3.
+	* m4/visibility.m4: Upgrade to gettext-0.18.3.
+	* m4/wchar_t.m4: Upgrade to gettext-0.18.3.
+	* m4/wint_t.m4: Upgrade to gettext-0.18.3.
+	* m4/xsize.m4: Upgrade to gettext-0.18.3.
+
 2013-08-05  Andrew L. Moore  <alm@slewsys.org>
 
 	* src/parse.c (expand_glob): Support file-glob expansion of
@@ -24,7 +55,7 @@
 	generated file list includes two additional non-existent
 	pathnames. This seems preferable, nonetheless, to restricting such
 	expansions since a file list can be generated prior to saving or
-	editing. In the example above, ./temp2/o.dat, could have been
+	editing. In the example above, ./temp2/o.dat could have been
 	selected as follows:
 
 	  $ ed -p \* \!date
@@ -36,10 +67,11 @@
 	  ./temp3/o.dat
 	  *fn
 	  ./temp2/o.dat
-	  *w
+	  *~w
+	  ./temp2/o.dat
 	  29
 	  *
-=======
+
 2013-07-22  Andrew L. Moore  <alm@buttercup.local>
 
 	* src/page.c (put_frame_buffer_line): Condition line enumeration
@@ -48,14 +80,14 @@
 	(display_frame_buffer): Revisit calculation of first and last
 	frame buffer rows to print to support half-page scrolling.
 
-	* src/page.c (display_frame_buffer, put_frame_buffer_line, init_frame_buffer):
+	* src/page.c (display_frame_buffer, put_frame_buffer_line)
+	(init_frame_buffer):
 	* src/exec.c (exec_command):
 	(exec_one_off): Add half-page scrolling commands, '[' (backward)
 	and ']' (forward), to complement to full-page scrolling, `Z'
 	(backward) and 'z' (forward). Implementation of half-page scrolling
 	depends on "normalized" frame buffer, so load page preceding given
 	address in background (display.off = 1), then scroll from there.
->>>>>>> 0203499153ad98ad8e4e5f53fa80ade5eb9af80f
 
 2013-06-08  Andrew L. Moore  <alm@slewsys.org>
 
@@ -79,16 +111,11 @@
 
 	* src/buf.c (create_disk_buffer): Rename open_buffer =>
 	create_disk_buffer. Add file pointer to function parameters.
-<<<<<<< HEAD
-	(append_text_node): Add deque pointer to function parameters.
-	(shift_text_node): Rename next_text_node => shift_text_node.
-=======
 	(reopen_ed_buffer): Abstract initialization of ed buffer when
 	opening new file.
 	(append_text_node): Add deque pointer to function parameters.
 	(shift_text_node): Rename next_text_node => shift_text_node.
 	(pop_text_node): Pop element from text node "stack" (unused).
->>>>>>> 0203499153ad98ad8e4e5f53fa80ade5eb9af80f
 	Add deque pointer to function parameters.
 	(get_line_node): Change ed->buf parameter to ed.
 
@@ -709,13 +736,20 @@
                                 printed to stdout.
 
 
-                                If no files match `pattern', then
-                                `pattern' is used instead. If pattern
-                                begins with exclamation mark (!), it is
-                                interpreted as a shell command and affects
-                                neither the `default file name' nor
-                                default `default file list' -- i.e., it is
-                                equivalent to the command:
+                                If no files match `PATTERN' then PATTERN
+	                        is modified by removing the basename
+	                        portion, if any, and expansion of the
+	                        remaining directory glob is attempted. If
+	                        this succeeds, then a fictitious pathname
+	                        list is constructed by appending the
+	                        basename glob (unexpanded) to each
+	                        directory in the expansion.
+
+                                If pattern begins with exclamation mark
+	                        (!), it is interpreted as a shell command
+	                        and affects neither the `default file
+	                        name' nor default `default file list', i.e.,
+	                        it is equivalent to the command:
                                     e !shell command
                                 (q.v.).
 
@@ -749,9 +783,10 @@
                                 error. The new `default file name' is
                                 printed to stdout.
 
-        ($)~r                   Reads first file in `default file list' to
-                                after the addressed line. The `default
-                                file name' is unchanged.
+        ($)~r                   Reads current file in `default file list'
+	                        to after the addressed line. The `default
+                                file name' is unchanged. The name and size
+	                        of the file read are printed to stdout.
 
         ($)~r PATTERN           Reads first file in list generated by
                                 glob (PATTERN) to after the addressed
@@ -769,30 +804,37 @@
                                     r !shell command
                                 (q.v.).
 
-        wn or Wn                Equivalent to a `w' (or `W') command fol-
+        (1,$)wn or Wn           Equivalent to a `w' (or `W') command fol-
                                 lowed by an `en' command. The name and
                                 size of the file written to are printed to
                                 stdout.
 
-        wp or Wp                Equivalent to a `w' (or `W') command fol-
+        (1,$)wp or Wp           Equivalent to a `w' (or `W') command fol-
                                 lowed by an `ep' command. The name and
                                 size of the file written to are printed to
                                 stdout.
 
-        ~w or ~W                Writes to the first file in `default
-                                file list'. `default file name' is unchanged.
+        (1,$)~w or ~W           Writes to current file in `default file
+	                        list'. The `default file name' is unchanged.
                                 The name and size of the file written to are
                                 printed to stdout.
 
-        ~w PATTERN or           Writes to the first file matching PATTERN.
-        ~W PATTERN              `define file name' is set if and only if
-                                it was not previously set. The name and
+        (1,$)~w PATTERN or      Writes to the first file matching PATTERN.
+        ~W PATTERN              The `define file name' is set if and only
+	                        if it was not previously set. The name and
                                 size of the file written to are printed
                                 to stdout.
 
-                                If no files match `PATTERN', then
-                                `PATTERN' is used instead. If PATTERN
-                                begins with exclamation mark (!),
+                                If no files match `PATTERN' then PATTERN
+	                        is modified by removing the basename
+	                        portion, if any, and expansion of the
+	                        remaining directory glob is attempted. If
+	                        this succeeds, then a fictitious pathname
+	                        list is constructed by appending the
+	                        basename glob (unexpanded) to each
+	                        directory in the expansion.
+
+                                If PATTERN begins with exclamation mark (!),
                                 then it is equivalent to the command:
                                     w !shell command
                                 (q.v.).

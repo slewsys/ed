@@ -1,3 +1,18 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"PO-Revision-Date: 2013-08-05 20:05+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
 # es.po: Traducciones al Espanol para el paquete ed.
 #
 # Copyright © 2007-2013 Andrew L. Moore, SlewSys Research
@@ -8,7 +23,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ed 0.271-b2\n"
 "Report-Msgid-Bugs-To: bug-ed@gnu.org\n"
-"POT-Creation-Date: 2013-07-20 16:26-0400\n"
+"POT-Creation-Date: 2013-08-05 14:50-0400\n"
 "PO-Revision-Date: 2013-08-05 12:44+0000\n"
 "Last-Translator: Andrew L. Moore <alm@slewsys.org>\n"
 "Language-Team: Spanish <es@li.org>\n"
@@ -22,7 +37,7 @@ msgstr ""
 msgid "Buffer open error"
 msgstr "Error abrir búfer"
 
-#: src/buf.c:213 src/buf.c:277 src/buf.c:446 src/buf.c:567 src/glbl.c:161
+#: src/buf.c:213 src/buf.c:277 src/buf.c:449 src/buf.c:570 src/glbl.c:161
 #: src/io.c:251 src/main.c:470 src/re.c:155 src/undo.c:31 lib/regcomp.c:168
 msgid "Memory exhausted"
 msgstr "Memoria agotada"
@@ -55,11 +70,11 @@ msgstr "Búfer agotada"
 msgid "Buffer write error"
 msgstr "Error escribir búfer"
 
-#: src/buf.c:515 src/exec.c:86 src/exec.c:419 src/exec.c:1043
+#: src/buf.c:518 src/exec.c:90 src/exec.c:423 src/exec.c:1053
 msgid "Address out of range"
 msgstr "Dirección fuera del intervalo"
 
-#: src/buf.c:560
+#: src/buf.c:563
 msgid "Memory request too big"
 msgstr "Pedirse demasiada memoria"
 
@@ -71,53 +86,53 @@ msgstr "Inesperado final de archivo"
 msgid "Invalid address mark"
 msgstr "Marca inválida de la dirección"
 
-#: src/exec.c:30 src/exec.c:209 src/exec.c:292 src/exec.c:508 src/exec.c:666
-#: src/exec.c:678 src/exec.c:686
+#: src/exec.c:34 src/exec.c:213 src/exec.c:296 src/exec.c:512 src/exec.c:673
+#: src/exec.c:685 src/exec.c:693
 msgid "Command suffix unexpected"
 msgstr "Sufijo del comando inesperado"
 
-#: src/exec.c:81
+#: src/exec.c:85
 msgid "Destination address required"
 msgstr "Dirección de destinación requerida"
 
-#: src/exec.c:200 src/exec.c:283 src/exec.c:359 src/exec.c:375 src/exec.c:474
-#: src/exec.c:499 src/exec.c:644 src/exec.c:956
+#: src/exec.c:204 src/exec.c:287 src/exec.c:363 src/exec.c:379 src/exec.c:478
+#: src/exec.c:503 src/exec.c:651 src/exec.c:966
 msgid "Address unexpected"
 msgstr "Dirección inesperada"
 
-#: src/exec.c:311
+#: src/exec.c:315
 msgid "Invalid redirection"
 msgstr "Cambio de dirección inválido"
 
-#: src/exec.c:330
+#: src/exec.c:334
 msgid "File name not set"
 msgstr "Nombre de archivo no definir"
 
-#: src/exec.c:340
+#: src/exec.c:344
 msgid "Recursive global command"
-msgstr "Commando global es recursivo"
+msgstr "Comando global es recursivo"
 
-#: src/exec.c:379
+#: src/exec.c:383
 msgid "No previous error"
 msgstr "Ningún error previa"
 
-#: src/exec.c:447
+#: src/exec.c:451
 msgid "Invalid destination address"
 msgstr "Dirección de destinación inválida"
 
-#: src/exec.c:814 src/exec.c:851 src/exec.c:862 src/exec.c:900 src/exec.c:986
+#: src/exec.c:824 src/exec.c:861 src/exec.c:872 src/exec.c:910 src/exec.c:996
 msgid "Unknown command"
 msgstr "Comando desconocido"
 
-#: src/exec.c:985
+#: src/exec.c:995
 msgid "Invalid address"
 msgstr "Dirección inválida"
 
-#: src/exec.c:1011
+#: src/exec.c:1021
 msgid "Command too long"
-msgstr ""
+msgstr "Comando demasiado largo"
 
-#: src/exec.c:1048
+#: src/exec.c:1058
 msgid "Invalid address range"
 msgstr "Intervalo de dirección inválida"
 
@@ -145,11 +160,11 @@ msgstr "Error cerrar archivo"
 
 #: src/io.c:233 src/io.c:353
 msgid "Newline inserted"
-msgstr "Newline insertado"
+msgstr "Nueva línea insertado"
 
 #: src/io.c:236 src/io.c:356
 msgid "Newline appended"
-msgstr "Newline añadido"
+msgstr "Nueva línea añadido"
 
 #: src/io.c:449 src/main.c:501
 msgid "File read error"
@@ -194,7 +209,7 @@ msgstr "Lista de argumentos llena"
 #: src/main.c:531
 #, c-format
 msgid "Usage: %s [-] [-EGhirsVv] [-f SCRIPT] [-p PROMPT] [FILE]\n"
-msgstr "Modo de empleo: %s [-] [-EGhirsVv] [-f SCRIPT] [-p AVISO] [ARCHIVO]\n"
+msgstr "Modo de empleo: %s [-] [-EGhirsVv] [-f PROGRAMA] [-p AVISO] [ARCHIVO]\n"
 
 #: src/main.c:538
 #, c-format
@@ -244,9 +259,9 @@ msgstr ""
 "\n"
 "Comunicar bichos a: <bug-ed@gnu.org>.\n"
 
-#: src/main.c:568
+#: src/main.c:572
 msgid "script, line %"
-msgstr "script, línea %"
+msgstr "programa, línea %"
 
 #: src/re.c:37
 msgid "Invalid pattern delimiter"

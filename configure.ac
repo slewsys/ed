@@ -7,7 +7,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.65])
-AC_INIT([ed],[0.271-b2],[bug-ed@gnu.org])
+AC_INIT([ed],[0.271-b3],[bug-ed@gnu.org])
 AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_LIBOBJ_DIR([lib])
@@ -108,8 +108,6 @@ AC_SUBST(GNU_MAKE_COMMAND, [$ac_cv_path_GNU_MAKE_COMMAND])
 AC_PROG_INSTALL
 AC_PROG_MKDIR_P
 AC_PROG_YACC
-
-LT_INIT
 
 #
 # Checks feature requests.
@@ -225,7 +223,7 @@ AM_CONDITIONAL([LIBADD_GETOPT_LONG],
 AC_PROG_LIBTOOL
 
 AM_GNU_GETTEXT([no-libtool], [need-formatstring-macros], [../intl])
-AM_GNU_GETTEXT_VERSION([0.18.2])
+AM_GNU_GETTEXT_VERSION([0.18.3])
 AM_CONDITIONAL([LDADD_LIBINTL], [test "_$LTLIBINTL" != _])
 AM_COND_IF([LDADD_LIBINTL], [],
     [AM_GNU_GETTEXT([external])]
