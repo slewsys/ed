@@ -2,7 +2,7 @@
 
    Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2012-12-11 <alm@buttercup.local>
+   Last modified: 2013-07-06 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -259,7 +259,7 @@ substitution_template (dc, ed)
 
   for (rhs_i = 0; *ed->stdin != dc; ++rhs_i, ++ed->stdin)
     {
-      REALLOC_THROW (rhs, rhs_size, rhs_i + 2, ERR);
+      REALLOC_THROW (rhs, rhs_size, rhs_i + 2, ERR, ed);
 
       /* Only process escape sequences of the form `\dc' or `\\' here. */
       if ((*(rhs + rhs_i) = *ed->stdin) == '\n' &&  *(ed->stdin + 1) == '\0')
@@ -271,7 +271,7 @@ substitution_template (dc, ed)
       else if (*(ed->stdin + 1) == '\\')
         *(rhs + ++rhs_i) = *++ed->stdin;
     }
-  REALLOC_THROW (rhs, rhs_size, rhs_i + 1, ERR);
+  REALLOC_THROW (rhs, rhs_size, rhs_i + 1, ERR, ed);
   *(rhs + rhs_i) = '\0';
   return 0;
 }
@@ -423,7 +423,7 @@ substitute_lines (from, to, re, s_nth, s_mod, s_f, ed)
   for (lc = 0; lc <= to - from; ++lc)
     {
       /* Can't use lp->q_forw because replacement may be multiple lines. */
-      lp = get_line_node (++ed->buf[0].dot, ed->buf);
+      lp = get_line_node (++ed->buf[0].dot, ed);
       if ((status =
            substitute_matching (re, lp, &len, s_nth, s_mod, s_f, ed)) < 0)
         return status;
@@ -447,8 +447,8 @@ substitute_lines (from, to, re, s_nth, s_mod, s_f, ed)
                   spl0 ();
                   return ERR;
                 }
-              lp = get_line_node (ed->buf[0].dot, ed->buf);
-              APPEND_UNDO_NODE (lp, up, ed->buf[0].dot);
+              lp = get_line_node (ed->buf[0].dot, ed);
+              APPEND_UNDO_NODE (lp, up, ed->buf[0].dot, ed);
             }
           while (txt != eot);
           ++nsubs;
@@ -537,7 +537,7 @@ substitute_matching (re, lp, len, s_nth, s_mod,  s_f, ed)
           if (!*txt)
             break;
           j = 1;
-          REALLOC_THROW (rb, rb_size, *len + j, ERR);
+          REALLOC_THROW (rb, rb_size, *len + j, ERR, ed);
 #ifndef REG_STARTEND
           if (ed->buf[0].is_binary)
             NEWLINE_TO_NUL (txt, j);
@@ -551,7 +551,7 @@ substitute_matching (re, lp, len, s_nth, s_mod,  s_f, ed)
       else if ((!nil_next || nil_prev) && ++k >= s_nth 
                && !((k - s_nth)  % s_mod))
         {
-          REALLOC_THROW (rb, rb_size, *len + i, ERR);
+          REALLOC_THROW (rb, rb_size, *len + i, ERR, ed);
 #ifndef REG_STARTEND
           if (ed->buf[0].is_binary)
             NEWLINE_TO_NUL (txt, j);
@@ -571,7 +571,7 @@ substitute_matching (re, lp, len, s_nth, s_mod,  s_f, ed)
           if (nil_next && !*txt)
             break;
           j = max (1, j);
-          REALLOC_THROW (rb, rb_size, *len + j, ERR);
+          REALLOC_THROW (rb, rb_size, *len + j, ERR, ed);
 #ifndef REG_STARTEND
           if (ed->buf[0].is_binary)
             NEWLINE_TO_NUL (txt, j);
@@ -584,7 +584,7 @@ substitute_matching (re, lp, len, s_nth, s_mod,  s_f, ed)
   if (!changed)
     return *len = 0;
   i = max (0, eot - txt);
-  REALLOC_THROW (rb, rb_size, *len + i + 2, ERR);
+  REALLOC_THROW (rb, rb_size, *len + i + 2, ERR, ed);
 #ifndef REG_STARTEND
   if (ed->buf[0].is_binary)
     NEWLINE_TO_NUL (txt, i);
@@ -594,7 +594,7 @@ substitute_matching (re, lp, len, s_nth, s_mod,  s_f, ed)
   /* put_buffer_line() requires newline. For binary data, setting flag
      ed->buf[0].newline_appended suppresses its output.
      (See also read_stream() comments.) */
-  memcpy (rb + *len + i, "\n", 2);
+  strcpy (rb + *len + i, "\n");
   *len += i + 1;                /* `\n' => +1. */
   return 0;
 }
@@ -681,7 +681,7 @@ apply_subst_template (boln, rm, re_nsub, len, ed)
       {
         j = rm[0].rm_so;
         k = rm[0].rm_eo;
-        REALLOC_THROW (rb, rb_size, *len + k - j, ERR);
+        REALLOC_THROW (rb, rb_size, *len + k - j, ERR, ed);
         while (j < k)
           *(rb + (*len)++) = *(boln + j++);
       }
@@ -690,16 +690,16 @@ apply_subst_template (boln, rm, re_nsub, len, ed)
       {
         j = rm[n].rm_so;
         k = rm[n].rm_eo;
-        REALLOC_THROW (rb, rb_size, *len + k - j, ERR);
+        REALLOC_THROW (rb, rb_size, *len + k - j, ERR, ed);
         while (j < k)
           *(rb + (*len)++) = *(boln + j++);
       }
     else
       {
-        REALLOC_THROW (rb, rb_size, *len + 1, ERR);
+        REALLOC_THROW (rb, rb_size, *len + 1, ERR, ed);
         *(rb + (*len)++) = *sub;
       }
-  REALLOC_THROW (rb, rb_size, *len + 1, ERR);
+  REALLOC_THROW (rb, rb_size, *len + 1, ERR, ed);
   *(rb + *len) = '\0';
   return 0;
 }

@@ -2,7 +2,7 @@
 
    Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2012-12-11 <alm@buttercup.local>
+   Last modified: 2013-06-28 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -40,7 +40,6 @@ activate_signals (void)
   _sigactive = 1;
 }
 
-
 static void
 handle_hup (signo)
      int signo;
@@ -57,7 +56,7 @@ handle_hup (signo)
   int m = 0;
 
   if (!_sigactive)
-    quit (1);
+    quit (1, ed);
   _sigflags &= ~(1 << (signo - 1));
   if (ed->buf[0].addr_last
       && write_file ("ed.hup", 0, 1, ed->buf[0].addr_last,
@@ -66,13 +65,13 @@ handle_hup (signo)
     {
       m = *(s + (len = strlen (s)) - 1) != '/';
       if (!(hup = (char *) malloc ((size_t) (len + m + sizeof template))))
-        quit (2);
+        quit (2, ed);
       memcpy (hup, s, len);
       memcpy (hup + len, m ? "/" : "", 1);
       memcpy (hup + len + m, template, sizeof template);
       write_file (hup, 0, 1, ed->buf[0].addr_last, &addr, &size, "w", ed);
     }
-  quit (2);
+  quit (2, ed);
 }
 
 
@@ -80,8 +79,12 @@ static void
 handle_int (signo)
      int signo;
 {
+  extern ed_state_t _ed;
+
+  ed_state_t *ed = &_ed;
+
   if (!_sigactive)
-    quit (1);
+    quit (1, ed);
   _sigflags &= ~(1 << (signo - 1));
   LONGJMP (env, -1);
 }
@@ -126,9 +129,10 @@ init_signal_handler (ed)
 #endif
 
   /* Register handlers of interest. */
-  if (reliable_signal (SIGHUP, signal_handler) == SIG_ERR
-      || reliable_signal (SIGQUIT, SIG_IGN) == SIG_ERR
+  if (reliable_signal (SIGCHLD, SIG_IGN) == SIG_ERR
+      || reliable_signal (SIGHUP, signal_handler) == SIG_ERR
       || reliable_signal (SIGINT, signal_handler) == SIG_ERR
+      || reliable_signal (SIGQUIT, SIG_IGN) == SIG_ERR
 #ifdef SIGWINCH
       || (isatty (0) && reliable_signal (SIGWINCH, signal_handler) == SIG_ERR)
 #endif
@@ -140,7 +144,6 @@ init_signal_handler (ed)
     }
   return 0;
 }
-
 
 static signal_t
 reliable_signal (signo, handler)
@@ -161,7 +164,6 @@ reliable_signal (signo, handler)
   return (sigaction (signo, &sa, &osa) < 0 ? SIG_ERR : osa.sa_handler);
 #endif  /* HAVE_SIGACTION */
 }
-
 
 
 /* Global declarations */

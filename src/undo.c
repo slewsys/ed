@@ -2,7 +2,7 @@
 
    Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2012-12-11 <alm@buttercup.local>
+   Last modified: 2013-06-06 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -33,8 +33,8 @@ append_undo_node (type, from, to, ed)
       return NULL;
     }
   up->type = type;
-  up->h = get_line_node (from, ed->buf);
-  up->t = get_line_node (to, ed->buf);
+  up->h = get_line_node (from, ed);
+  up->t = get_line_node (to, ed);
   APPEND_NODE (up, undo_last);
   spl0 ();
   return up;
@@ -56,7 +56,7 @@ undo_last_command (ed)
       return ERR;
     }
   spl1 ();
-  get_line_node (0, ed->buf);   /* this get_line_node last! */
+  get_line_node (0, ed);        /* this get_line_node last! */
 
   while ((up = up->q_back) != undo_head)
     {
@@ -94,7 +94,7 @@ undo_last_command (ed)
   while ((up = next) != undo_head);
 
   if (ed->exec.global)
-    reset_global_queue ();
+    reset_global_queue (ed);
   ed->buf[0] = ed->buf[1], ed->buf[1] = saved_buf;
   spl0 ();
   return 0;
@@ -111,7 +111,7 @@ reset_undo_queue (ed)
 
   spl1 ();
   if (!undo_head)
-    init_undo_queue (&undo_head);
+    init_undo_queue (&undo_head, ed);
 
   for (up = undo_head->q_forw; up != undo_head; up = up_next)
     {

@@ -1,3 +1,79 @@
+2013-08-05  Andrew L. Moore  <alm@slewsys.org>
+
+	* src/parse.c (expand_glob): Support file-glob expansion of
+	non-existent pathnames. For example, `~w ~/o.tmp' writes to o.tmp
+	in user's home directory, creating it if it did not already exist.
+
+	Unfortunately, this leads to some surprises. For instance, given
+	some empty directories, say, ./temp{1,2,3} and the commands:
+
+	  $ ed -p \* \!date
+	  !
+	  29
+	  *~w ./temp*/o.dat
+	  ./temp1/o.dat
+	  29
+	  *~f
+	  ./temp1/o.dat
+	  ./temp2/o.dat
+	  ./temp3/o.dat
+	  *
+
+	Although only the first pathname, ./temp1/o.dat, is created, the
+	generated file list includes two additional non-existent
+	pathnames. This seems preferable, nonetheless, to restricting such
+	expansions since a file list can be generated prior to saving or
+	editing. In the example above, ./temp2/o.dat, could have been
+	selected as follows:
+
+	  $ ed -p \* \!date
+	  !
+	  29
+	  *~f ./temp*/o.dat
+	  ./temp1/o.dat
+	  ./temp2/o.dat
+	  ./temp3/o.dat
+	  *fn
+	  ./temp2/o.dat
+	  *w
+	  29
+	  *
+
+2013-06-08  Andrew L. Moore  <alm@slewsys.org>
+
+	* src/io.c (write_pipe):
+	* src/signal.c (enable_sigpipe): Ignore SIGPIPE while writing
+	to shell command - e.g., `w !exit'.
+
+	* src/parse.c (strtok_with_delimiters): Rename escaped_strtok =>
+	strtok_with_delimiters. Convert only escape sequences containing
+	token delimiters.
+
+2013-06-05  Andrew L. Moore  <alm@slewsys.org>
+
+	* src/main.c (append_script_expression):
+	* src/main.c (main): Add command-line scripting option `-e
+	COMMAND'. Unlike stream editing, only addressed lines are
+	processed. For example, the command:
+	    $ sed -n -e 's/old/new/p' input-file
+	in ed dialect is now:
+	    $ ed -e 'g/old/s//new/p' input-file
+
+	* src/buf.c (create_disk_buffer): Rename open_buffer =>
+	create_disk_buffer. Add file pointer to function parameters.
+	(append_text_node): Add deque pointer to function parameters.
+	(shift_text_node): Rename next_text_node => shift_text_node.
+	Add deque pointer to function parameters.
+	(get_line_node): Change ed->buf parameter to ed.
+
+	* src/ed.h (ed_state): Code cleanup and data structure refactoring:
+	ec->*          => ed->core.*
+	ed->script     => ed->exec.pathname
+	ed->script_fp  => ed->exec.fp
+	etc.
+	(INIT_DEQUE): Initialize queue with
+	INIT_DEQUE (x) == LINK_NODES (x, x).
+
 2013-01-27  gettextize  <bug-gnu-gettext@gnu.org>
 
 	* m4/gettext.m4: Upgrade to gettext-0.18.2.
@@ -895,11 +971,17 @@
         (get_line_node_addr): Change return type to int.  Return address
         as reference.
 
-        * src/exec.c (exec_command): `Z' command displays the addressed
+        * src/exec.c (exec_command): `]' command displays the addressed
         line (current address, by default) in the center of the page and
         sets the current address to the last line displayed. Its syntax is
-        `(.)Zn', where n is scroll length.  NB: To view the buffer with an
+        `(.)]n', where n is scroll length.  NB: To view the buffer with an
         external pager, use, e.g.,  `w !more'
+
+        `[' command displays the addressed line (current address, by
+	default) in the center of the page and sets the current address to
+	the first line displayed. Its syntax is `(.)[n', where n is scroll
+	length. NB: To view the buffer with an external pager, use, e.g.,
+	`w !more'
 
 2006-10-31  Andrew L. Moore  <alm@SlewSys.org>
 

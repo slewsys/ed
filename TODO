@@ -1,6 +1,6 @@
 TODO: Possible improvements for the ed line editor.
 
-Last modified: 2013-05-27 <alm@slewsys.org>
+Last modified: 2013-06-10 <alm@slewsys.org>
 
 These are more or less in decreasing order of priority.
 
@@ -10,13 +10,13 @@ These are more or less in decreasing order of priority.
 ** Update testsuite
 ** Allow editing of wide-char and UTF-8 text.
 ** Implement named registers
-
+   
    (.,.)m|t>[>][k] where optional k = 0, 1, ..., 9. Moves or copies,
    respectively, the addressed lines to register k (or default
    anonymous register, if k is not given). If `>>' lines are appended
    to end of register. Otherwise, any previous register contents are
    overwritten.
-   
+
    <[k]m|t(.) where optional k = 0, 1, ..., 9. Moves or copies,
    respectively, contents of register k (or default anonymous
    register, if k is not given) to after the addressed line.

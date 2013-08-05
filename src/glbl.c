@@ -2,7 +2,7 @@
 
    Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2012-12-11 <alm@buttercup.local>
+   Last modified: 2013-07-06 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -12,7 +12,7 @@
 /* Static function declarations. */
 static ed_global_node_t *append_global_node __P ((const ed_line_node_t *,
                                                ed_state_t *));
-static ed_line_node_t *next_global_node __P ((void));
+static ed_line_node_t *next_global_node __P ((ed_state_t *));
 
 
 /* mark_global_nodes: Add lines matching a pattern to global queue. */
@@ -38,9 +38,9 @@ mark_global_nodes (want_match, ed)
     }
   if (*ed->stdin == dc && *ed->stdin != '\n')
     ++ed->stdin;
-  reset_global_queue ();
+  reset_global_queue (ed);
   spl0 ();
-  lp = get_line_node (from, ed->buf);
+  lp = get_line_node (from, ed);
   for (; n; --n, lp = lp->q_forw)
     {
       if (!(s = get_buffer_line (lp, ed)))
@@ -88,7 +88,7 @@ exec_global (io_f, ed)
       clearerr (stdin);
       return status;
     }
-  for (ed->exec.first_pass = 1; (lp = next_global_node ());
+  for (ed->exec.first_pass = 1; (lp = next_global_node (ed));
        ed->stdin = gcb, ed->exec.first_pass = 0)
     {
       if ((status = get_line_node_address (lp, &ed->buf[0].dot, ed)) < 0
@@ -97,9 +97,9 @@ exec_global (io_f, ed)
                                           ed->buf[0].dot, io_f, ed)) < 0))
         return status;
 
-      /* Read from buffer or stdin if `g/v' or `G/V' command, respectively. */
+      /* If `G/V' command, then read from stdin. */
       if (interactive
-          && (!(ed->stdin = get_stdin_line (&len))
+          && (!(ed->stdin = get_stdin_line (&len, ed))
               || !(ed->stdin = get_extended_line (&len, 0, ed))))
         {
           /* For an interactive global command, permit EOF to cancel. */
@@ -127,9 +127,11 @@ exec_global (io_f, ed)
         }
       else
         {
-          /* Preserve gcb since get_extended_line () is non-reentrant. */
-          REALLOC_THROW (gcb, gcb_size, len + 1, ERR);
-          memcpy (gcb, ed->stdin, len + 1);
+          /* get_extended_line () isn't reentrant, so save ed->stdin. */
+          REALLOC_THROW (gcb, gcb_size, len + 1, ERR, ed);
+
+          /* Assert: ed->stdin is NUL-terminated! */
+          strcpy (gcb, ed->stdin);
           first_time = 0;
         }
       for (ed->stdin = gcb; *ed->stdin;)
@@ -142,11 +144,6 @@ exec_global (io_f, ed)
 }
 
 
-/* Global declarations */
-ed_global_node_t *global_head;  /* head of global queue */
-ed_line_node_t *in_core_head;   /* head of line queue */
-
-
 /* append_global_node: Append node to end of global queue. Return node
    pointer. */
 static ed_global_node_t *
@@ -155,7 +152,7 @@ append_global_node (lp, ed)
      ed_state_t *ed;
 {
   ed_global_node_t *ap;
-  ed_global_node_t *global_last = global_head->q_back;
+  ed_global_node_t *global_last = ed->core.global_head.q_back;
 
   spl1 ();
   if (!(ap = (ed_global_node_t *) malloc (ED_GLOBAL_NODE_T_SIZE)))
@@ -175,12 +172,13 @@ append_global_node (lp, ed)
 /* next_global_node: Pop node from top of global queue; return line
    node pointer. */
 static ed_line_node_t *
-next_global_node ()
+next_global_node (ed)
+     ed_state_t *ed;
 {
-  ed_global_node_t *ap = global_head->q_forw;
+  ed_global_node_t *ap = ed->core.global_head.q_forw;
   ed_line_node_t *lp = ap->lp;
 
-  if (ap != global_head)
+  if (ap != &ed->core.global_head)
     {
       spl1 ();
       UNLINK_NODE (ap);
@@ -193,14 +191,13 @@ next_global_node ()
 
 /* reset_global_queue: Initialize and reset global queue. */
 void
-reset_global_queue ()
+reset_global_queue (ed)
+     ed_state_t *ed;
 {
   /* Assert: spl1 () */
 
-  if (!global_head)
-    init_global_queue (&global_head, &in_core_head);
-
-  delete_global_nodes (global_head->q_forw->lp, global_head->lp);
+  delete_global_nodes (ed->core.global_head.q_forw->lp,
+                       ed->core.global_head.lp, ed);
 }
 
 
@@ -209,7 +206,8 @@ reset_global_queue ()
   do                                                                          \
     {                                                                         \
       global = head;                                                          \
-      while (global->lp != min && (global = global->q_forw) != global_head)   \
+      while (global->lp != min                                                \
+             && (global = global->q_forw) != &ed->core.global_head)           \
         ;                                                                     \
       if (global->lp == min || min == max)                                    \
         break;                                                                \
@@ -220,9 +218,10 @@ reset_global_queue ()
 
 /* delete_global_nodes: Delete range of global nodes, excluding end. */
 void
-delete_global_nodes (begin, end)
+delete_global_nodes (begin, end, ed)
      const ed_line_node_t *begin;
      const ed_line_node_t *end;
+     ed_state_t *ed;
 {
   ed_line_node_t *first = (ed_line_node_t *) begin;
   ed_line_node_t *last = (ed_line_node_t *) end;
@@ -230,14 +229,14 @@ delete_global_nodes (begin, end)
 
   /* Assert: get_line_node_address (first) <= get_line_node_address (last) */
 
-  SEEK_GLOBAL_LINE (from, global_head, first, last);
+  SEEK_GLOBAL_LINE (from, &ed->core.global_head, first, last);
 
   if (first != last)
-    SEEK_GLOBAL_LINE (to, from->q_forw, last, in_core_head);
+    SEEK_GLOBAL_LINE (to, from->q_forw, last, &ed->core.buffer_head);
 
   /* Assert: spl1 () */
 
-  for (; from != global_head && from->lp != last; from = next)
+  for (; from != &ed->core.global_head && from->lp != last; from = next)
     {
       next = from->q_forw;
       UNLINK_NODE (from);
