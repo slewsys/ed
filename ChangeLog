@@ -1,3 +1,11 @@
+2013-08-05  Andrew L. Moore  <alm@slewsys.org>
+
+	* src/exec.c (exec_command): Don't set init_glob param of
+	init_ed_command () if ed `e' command has no arguments.
+
+	* src/parse.c (file_glob): Don't loose file.glob by assigning
+	file.list to it.
+
 2013-08-05  gettextize  <bug-gnu-gettext@gnu.org>
 
 	* m4/gettext.m4: Upgrade to gettext-0.18.3.

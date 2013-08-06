@@ -2,7 +2,7 @@
 
    Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2013-08-05 <alm@slewsys.org>
+   Last modified: 2013-08-06 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -240,6 +240,7 @@ file_glob (len, cm, replace, ed)
   static glob_t one_time_glob;  /* one-time file glob */
 
   glob_t *gp = NULL;
+  size_t offs = 0;
   char *pattern;
   char *xl;
   char *s;
@@ -300,37 +301,49 @@ file_glob (len, cm, replace, ed)
           if (!expand_glob (pattern, s == pattern ? 0 : GLOB_APPEND, gp, ed))
             return NULL;
         }
-      if (replace && gp && gp->gl_pathv)
+      if (replace && gp && *gp->gl_pathv)
         ed->file.glob = *gp;
     }
   else if (cm == 'n' && *ed->file.list.gl_pathv && ed->file.list.gl_pathc > 1)
     {
       --ed->file.list.gl_pathc;
       ++ed->file.list.gl_pathv;
-      gp = &ed->file.list;
+      /* gp = &ed->file.list; */
+      offs = ed->file.glob.gl_pathc - ed->file.list.gl_pathc;
+      gp = &ed->file.glob;
     }
   else if (cm == 'p' && *ed->file.list.gl_pathv
            && ed->file.list.gl_pathc < ed->file.glob.gl_pathc)
     {
       ++ed->file.list.gl_pathc;
       --ed->file.list.gl_pathv;
-      gp = &ed->file.list;
+      /* gp = &ed->file.list; */
+      offs = ed->file.glob.gl_pathc - ed->file.list.gl_pathc;
+      gp = &ed->file.glob;
     }
+  /* ed-0.271-b3: don't rewind file list if no argument given. */
+  /*
   else if (ed->file.is_glob && *ed->file.glob.gl_pathv)
     {
       if (replace)
         ed->file.list = ed->file.glob;
       gp = &ed->file.glob;
     }
-  if (!gp || !gp->gl_pathv || !*gp->gl_pathv)
+  */
+  else
+    {
+      offs = ed->file.glob.gl_pathc - ed->file.list.gl_pathc;
+      gp = &ed->file.glob;
+    }
+  if (!gp || !gp->gl_pathv || !*(gp->gl_pathv + offs))
     {
       ed->exec.err = _("No more files");
       return NULL;
     }
-  if (!is_valid_name (*gp->gl_pathv, ed))
+  if (!is_valid_name (*(gp->gl_pathv + offs), ed))
     return NULL;
-  *len = strlen (*gp->gl_pathv);
-  return *gp->gl_pathv;
+  *len = strlen (*(gp->gl_pathv + offs));
+  return *(gp->gl_pathv + offs);
 }
 
 
@@ -388,6 +401,7 @@ expand_glob (pattern, append, gp, ed)
 {
   struct stat sb;
   char **pathv = NULL;
+  char **pv = NULL;
   char *sep = NULL;
   char *pathname = NULL;
   size_t len;
@@ -431,11 +445,11 @@ expand_glob (pattern, append, gp, ed)
 
       /* Assert: dirname expansion succceeded, so amend gl_pathv. */
 
-      for (offs = 0, pathv = gp->gl_pathv; *pathv; ++pathv, ++offs)
+      for (pathv = gp->gl_pathv; *pathv; ++pathv)
         {
 
           /* Skip prior expansions in gl_pathv. */
-          if (offs < gloff)
+          if (pathv - gp->gl_pathv < gloff)
             continue;
           else if (stat (*pathv, &sb) == -1)
             {
@@ -472,11 +486,13 @@ expand_glob (pattern, append, gp, ed)
             {
               spl1 ();
 
-              while (*pathv)
+              /* Move remaining elements of pathv forward. */
+              free (*(pv = pathv--));
+              do
                 {
-                  free (*pathv);
-                  *pathv = *++pathv;
+                  *pv = *(pv + 1);
                 }
+              while (*++pv);
               --gp->gl_pathc;
               
               spl0 ();

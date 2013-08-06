@@ -2,11 +2,7 @@
 
    Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
 
-<<<<<<< HEAD
    Last modified: 2013-08-05 <alm@slewsys.org>
-=======
-   Last modified: 2013-07-23 <alm@buttercup.local>
->>>>>>> 0203499153ad98ad8e4e5f53fa80ade5eb9af80f
 
    This file is part of ed. */
 
@@ -214,6 +210,7 @@ exec_command (ed)
           return ERR;
         }
       SKIP_WHITESPACE (ed);
+      cx = *ed->stdin;
       FILE_NAME (fn, len, cy, 1, ed);
 
       spl1 ();
@@ -232,7 +229,7 @@ exec_command (ed)
           return status;
         }
 
-      init_ed_command (cy != 'n' && cy != 'p', ed);
+      init_ed_command (cx != '\n' /* && cy != 'n' && cy != 'p'*/, ed);
       init_ed_buffer (0, &ed->buf[0]);
       init_ed_buffer (-1, &ed->buf[1]);
       spl0 ();
@@ -513,10 +510,7 @@ exec_command (ed)
           return ERR;
         }
       SKIP_WHITESPACE (ed);
-      if (*ed->stdin == '\n' && ed->file.name)
-        fn = ed->file.name;
-      else
-        FILE_NAME (fn, len, 0, !ed->file.name, ed);
+      FILE_NAME (fn, len, 0, !ed->file.name, ed);
 
       spl1 ();
       if (!ed->exec.global)
@@ -696,14 +690,11 @@ exec_command (ed)
       SKIP_WHITESPACE (ed);
 
       cz = *ed->stdin == '!';
-      if (*ed->stdin == '\n' && ed->file.name)
-        fn = ed->file.name;
-      else
 #ifdef WANT_SAFE_WRITE
-        FILE_NAME (fn, len, ed->file.is_glob,
-                   ed->file.is_glob ? *ed->stdin != '\n' : !ed->file.name, ed);
+      FILE_NAME (fn, len, ed->file.is_glob,
+                 ed->file.is_glob ? *ed->stdin != '\n' : !ed->file.name, ed);
 #else
-        FILE_NAME (fn, len, ed->file.is_glob, !ed->file.name, ed);
+      FILE_NAME (fn, len, ed->file.is_glob, !ed->file.name, ed);
 #endif  /* !WANT_SAFE_WRITE */
 
       if (*fn == '!'
