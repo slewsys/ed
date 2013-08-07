@@ -2,7 +2,7 @@
 
    Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2013-07-06 <alm@slewsys.org>
+   Last modified: 2013-08-06 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -19,13 +19,12 @@
 #        define LOCK_UN 8            /* unlock */
 #      endif /* !LOCK_SH */
 #    endif  /* HAVE_SYS_FILE_H */
-#  else
-#    ifdef HAVE_FCNTL_H
-#      include <fcntl.h>
-#    endif  /* HAVE_FCNTL_H */
 #  endif   /* !HAVE_FLOCK */
 #endif    /* WANT_FILE_LOCK */
 
+#ifdef HAVE_FCNTL_H
+#  include <fcntl.h>
+#endif  /* HAVE_FCNTL_H */
 
 /* Static function declarations. */
 static int put_stream_line __P ((FILE *, const char *, int,
@@ -418,6 +417,8 @@ get_stream_line (fp, len, ed)
   static size_t tb_size = 0;    /* buffer size */
 
   int c;
+  char fb[PATH_MAX];
+  char *fn;
 
   /* NB: stdin is not buffered to avoid I/O contention (see buf.c),
      but other file I/O is buffered. */
@@ -445,7 +446,16 @@ get_stream_line (fp, len, ed)
       default:
 
         /* Propagate stream status */
+
+#ifdef F_GETPATH
+
+        /* Recover file name from pointer. */
+        fcntl (fileno (fp), F_GETPATH, fb);
+        fn = (fn = strrchr (fb, '/')) ? fn + 1 : fb;
+        fprintf (stderr, "%s: %s\n", fn, strerror (errno));
+#else
         fprintf (stderr, "%s\n", strerror (errno));
+#endif
         ed->exec.err = _("File read error");
         return NULL;
       }

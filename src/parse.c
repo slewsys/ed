@@ -2,7 +2,7 @@
 
    Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2013-08-06 <alm@slewsys.org>
+   Last modified: 2013-08-07 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -240,11 +240,10 @@ file_glob (len, cm, replace, ed)
   static glob_t one_time_glob;  /* one-time file glob */
 
   glob_t *gp = NULL;
-  size_t offs = 0;
   char *pattern;
   char *xl;
   char *s;
-  char *sep;                    /* Handle glob of no-existent pathnames. */
+  off_t offs = 0;
 
   if (!(xl = get_extended_line (len, 1, ed)))
 
@@ -263,14 +262,15 @@ file_glob (len, cm, replace, ed)
      Whitespace within a file glob must be back slash-escaped (\). */
   if ((pattern = strtok_with_delimiters (xl, WHITE_SPACE)))
     {
-      /* Preserve file_glob by using one_time_glob instead. */
+      /* Not updating file_glob, so use  one_time_glob instead. */
       if (ed->file.list.gl_pathv && !replace)
         {
           if (one_time_glob.gl_pathv)
             {
               globfree (&one_time_glob);
-              one_time_glob.gl_pathc = 0;
               one_time_glob.gl_offs = 0;
+              one_time_glob.gl_pathc = 0;
+              one_time_glob.gl_pathv = NULL;
             }
           gp = &one_time_glob;
         }
@@ -287,7 +287,7 @@ file_glob (len, cm, replace, ed)
         {
           /* globfree(3) wants the original pathv allocated by glob(3). */
           ed->file.list = ed->file.glob;
-          if (*ed->file.list.gl_pathv)
+          if (ed->file.list.gl_pathv && *ed->file.list.gl_pathv)
             globfree (&ed->file.list);
           ed->file.list.gl_offs = 0;
           ed->file.list.gl_pathc = 0;
@@ -299,43 +299,62 @@ file_glob (len, cm, replace, ed)
            pattern = strtok_with_delimiters (NULL, WHITE_SPACE))
         {
           if (!expand_glob (pattern, s == pattern ? 0 : GLOB_APPEND, gp, ed))
-            return NULL;
+            {
+              /* Reinitialize ed->file.glob/list to known state. */
+              if (gp == &ed->file.list)
+                {
+                  gp->gl_offs = 0;
+                  gp->gl_pathc = 0;
+                  gp->gl_pathv = NULL;
+                  ed->file.glob = ed->file.list = *gp;
+                }
+              return NULL;
+            }
         }
-      if (replace && gp && *gp->gl_pathv)
+      if (replace && gp && gp->gl_pathv && *gp->gl_pathv)
         ed->file.glob = *gp;
     }
-  else if (cm == 'n' && *ed->file.list.gl_pathv && ed->file.list.gl_pathc > 1)
-    {
-      --ed->file.list.gl_pathc;
-      ++ed->file.list.gl_pathv;
-      /* gp = &ed->file.list; */
-      offs = ed->file.glob.gl_pathc - ed->file.list.gl_pathc;
-      gp = &ed->file.glob;
-    }
-  else if (cm == 'p' && *ed->file.list.gl_pathv
-           && ed->file.list.gl_pathc < ed->file.glob.gl_pathc)
-    {
-      ++ed->file.list.gl_pathc;
-      --ed->file.list.gl_pathv;
-      /* gp = &ed->file.list; */
-      offs = ed->file.glob.gl_pathc - ed->file.list.gl_pathc;
-      gp = &ed->file.glob;
-    }
-  /* ed-0.271-b3: don't rewind file list if no argument given. */
-  /*
-  else if (ed->file.is_glob && *ed->file.glob.gl_pathv)
-    {
-      if (replace)
-        ed->file.list = ed->file.glob;
-      gp = &ed->file.glob;
-    }
-  */
+  /* Select from existing file list. */
   else
-    {
-      offs = ed->file.glob.gl_pathc - ed->file.list.gl_pathc;
-      gp = &ed->file.glob;
-    }
-  if (!gp || !gp->gl_pathv || !*(gp->gl_pathv + offs))
+    switch (cm)
+      {
+      case 'n':
+        if (!ed->file.list.gl_pathv
+            || ed->file.list.gl_pathc <= 1)
+          {
+            ed->exec.err = _("No more files");
+            return NULL;
+          }
+        --ed->file.list.gl_pathc;
+        ++ed->file.list.gl_pathv;
+        offs = ed->file.glob.gl_pathc - ed->file.list.gl_pathc;
+        gp = &ed->file.glob;
+        break;
+
+      case 'p':
+        if (!ed->file.list.gl_pathv
+            || ed->file.list.gl_pathc >= ed->file.glob.gl_pathc)
+          {
+            ed->exec.err = _("No more files");
+            return NULL;
+          }
+        ++ed->file.list.gl_pathc;
+        --ed->file.list.gl_pathv;
+        offs = ed->file.glob.gl_pathc - ed->file.list.gl_pathc;
+        gp = &ed->file.glob;
+
+      default:
+        offs = ed->file.glob.gl_pathc - ed->file.list.gl_pathc;
+        gp = &ed->file.glob;
+
+        /* Return default file name if file list empty. */
+        if (!gp->gl_pathc && ed->file.name)
+          return ed->file.name;
+        break;
+      }
+
+  if (!(gp && gp->gl_pathv && *gp->gl_pathv)
+      || !(0 <= offs && offs <= ed->file.glob.gl_pathc - 1))
     {
       ed->exec.err = _("No more files");
       return NULL;
@@ -402,7 +421,7 @@ expand_glob (pattern, append, gp, ed)
   struct stat sb;
   char **pathv = NULL;
   char **pv = NULL;
-  char *sep = NULL;
+  char *basename = NULL;
   char *pathname = NULL;
   size_t len;
   int gloff = gp->gl_pathc;
@@ -415,88 +434,95 @@ expand_glob (pattern, append, gp, ed)
       return NULL;
     }
 
-#ifdef GLOB_TILDE
-  if (glob (pattern, GLOB_TILDE | append, NULL, gp) < 0)
-#else
-  if (glob (pattern, append, NULL, gp) < 0)
-#endif  /* !GLOB_TILDE */
+#ifndef GLOB_TILDE
+# define GLOB_TILDE 0
+#endif
+
+  /* If cannot match existing file or directory... */
+  if (glob (pattern, GLOB_TILDE | append, NULL, gp) != 0)
     {
 
-      /* Filename expansion failed, so try dirname expansion. */
-      if ((sep = strrchr (pattern, '/')) != NULL)
+      /* If not a directory pattern, then return unchecked glob. */
+      if ((basename = strrchr (pattern, '/')) == NULL)
         {
-          errno = 0;
-          *sep = '\0';
-        }
-
-#ifdef GLOB_TILDE
-      if (glob (pattern, GLOB_TILDE | append, NULL, gp) < 0
-          || !(sep && gp && gp->gl_pathv))
-#else
-      if (glob (pattern, append, NULL, gp) < 0
-          || !(sep && gp && gp->gl_pathv))
-
-#endif  /* !GLOB_TILDE */
-        {
-          fprintf (stderr, "%s: %s\n", pattern, strerror (errno));
-          ed->exec.err = _("Pathname expansion error");
-          return NULL;
-        }
-
-      /* Assert: dirname expansion succceeded, so amend gl_pathv. */
-
-      for (pathv = gp->gl_pathv; *pathv; ++pathv)
-        {
-
-          /* Skip prior expansions in gl_pathv. */
-          if (pathv - gp->gl_pathv < gloff)
-            continue;
-          else if (stat (*pathv, &sb) == -1)
+          if (glob (pattern, GLOB_NOCHECK | GLOB_TILDE | append, NULL, gp) != 0)
             {
-              fprintf (stderr, "%s: %s\n", *pathv, strerror (errno));
-              ed->exec.err = _("File stat error");
+              fprintf (stderr, "%s: %s\n", pattern, strerror (errno));
+              ed->exec.err = _("Pathname expansion error");
               return NULL;
             }
 
-          /* Append filename part of pattern to new directory expansions. */
-          else if (S_ISDIR(sb.st_mode))
+        }
+      /* Otherwise, glob pattern less basename. */
+      else
+        {
+          *basename++ = '\0';
+          errno = 0;
+
+          if (glob (pattern, GLOB_TILDE | append, NULL, gp) != 0)
             {
- 
-             /* dirname + '/' + basename */
-              len = strlen (*pathv) + strlen (sep + 1) + 1;
+              fprintf (stderr, "%s: %s\n", pattern, strerror (errno));
+              ed->exec.err = _("Pathname expansion error");
+              return NULL;
+            }
 
-              spl1 ();
+          /* If any directories matched, then append basename to gl_pathv. */
+          for (pathv = gp->gl_pathv; *pathv; ++pathv)
+            {
 
-              if ((pathname = (char *) malloc (len + 1)) == NULL)
+              /* Skip prior expansions in gl_pathv. */
+              if (pathv - gp->gl_pathv < gloff)
+                continue;
+              else if (stat (*pathv, &sb) == -1)
                 {
-                  fprintf (stderr, "%s\n", strerror (errno));
-                  ed->exec.err = _("Memory exhausted");
-                  spl0 ();
+                  fprintf (stderr, "%s: %s\n", *pathv, strerror (errno));
+                  ed->exec.err = _("File stat error");
                   return NULL;
                 }
-              snprintf (pathname, len + 1, "%s/%s", *pathv, sep + 1);
-              free (*pathv);
-              *pathv = pathname;
-
-              spl0 ();
-            }
-
-          /* Remove non-directory entries. */
-          else
-            {
-              spl1 ();
-
-              /* Move remaining elements of pathv forward. */
-              free (*(pv = pathv--));
-              do
+              else if (S_ISDIR(sb.st_mode))
                 {
-                  *pv = *(pv + 1);
+ 
+                  /* dirname + '/' + basename */
+                  len = strlen (*pathv) + strlen (basename) + 1;
+
+                  spl1 ();
+
+                  if ((pathname = (char *) malloc (len + 1)) == NULL)
+                    {
+                      fprintf (stderr, "%s\n", strerror (errno));
+                      ed->exec.err = _("Memory exhausted");
+                      spl0 ();
+                      return NULL;
+                    }
+                  snprintf (pathname, len + 1, "%s/%s", *pathv, basename);
+                  free (*pathv);
+                  *pathv = pathname;
+
+                  spl0 ();
                 }
-              while (*++pv);
-              --gp->gl_pathc;
+
+              else
+                {
+                  spl1 ();
+
+                  /* Remove non-directory entry in pathv. */
+                  free (*(pv = pathv--));
+
+                  /* Fill void with remaining elements in pathv. */
+                  do
+                    {
+                      *pv = *(pv + 1);
+                    }
+                  while (*++pv);
+                  --gp->gl_pathc;
               
-              spl0 ();
+                  spl0 ();
+                }
             }
+
+          /* No directories in expansion. */
+          if (gp->gl_pathc <= 0)
+            return NULL;
         }
     }
   return gp;

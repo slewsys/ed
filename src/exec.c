@@ -2,7 +2,7 @@
 
    Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2013-08-05 <alm@slewsys.org>
+   Last modified: 2013-08-07 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -229,7 +229,7 @@ exec_command (ed)
           return status;
         }
 
-      init_ed_command (cx != '\n' /* && cy != 'n' && cy != 'p'*/, ed);
+      init_ed_command (cx != '\n', ed);
       init_ed_buffer (0, &ed->buf[0]);
       init_ed_buffer (-1, &ed->buf[1]);
       spl0 ();
@@ -265,7 +265,7 @@ exec_command (ed)
             fprintf (stderr, (ed->exec.opt & VERBOSE
                               ? "%s: Read-only file permission\n" : ""),
                      ed->file.name);
-          else if (ed->file.is_glob || cy == 'n' || cy == 'p')
+          else if (ed->file.is_glob || cx == '\n')
             printf (ed->exec.opt & SCRIPTED ? "" : "%s\n", fn);
         }
       printf (ed->exec.opt & SCRIPTED ? "" : "%" OFF_T_FORMAT_STRING "\n",
