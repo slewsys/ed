@@ -69,16 +69,16 @@ if $verbose; then
              $ $top_srcdir/configure
              $ make
 
-      To test, iff $top_srcdir == $top_builddir, use:
+      The distributed testsuite, `$top_srcdir/testsuite/testsuite-dist',
+      must be run from $top_srcdir.  It is invoked via:
 
              $ make quick-check
 
-      Otherwise, `$top_builddir/testsuite/testsuite' must be rebuilt
-      with GNU make(1), invoke test via:
+      To run testsuite from another build directory, GNU autoconf(1)
+      and GNU make(1) are required. In this case, use:
 
              $ gnumake check
 
-      bash(1) is recommended for building/running ed's testsuite.
       Report bugs to: bug-ed@gnu.org
 
 ------------------------------------------------------------------------

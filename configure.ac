@@ -2,12 +2,13 @@
 
 # Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
 
-# Last modified: 2013-08-05 <alm@slewsys.org>
+# Last modified: 2013-08-08 <alm@slewsys.org>
 
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.65])
-AC_INIT([ed],[0.271-b3],[bug-ed@gnu.org])
+AC_INIT([ed],[0.271-b4],[bug-ed@gnu.org])
+AC_CONFIG_AUX_DIR([.])
 AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_LIBOBJ_DIR([lib])
@@ -302,6 +303,7 @@ AC_CONFIG_FILES([Makefile                                                     \
   doc/bwk/Makefile                                                            \
   lib/Makefile                                                                \
   po/Makefile.in                                                              \
+  po/ed.pot                                                                   \
   src/Makefile                                                                \
   testsuite/Makefile])
 

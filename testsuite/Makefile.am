@@ -2,7 +2,7 @@
 
 # Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
 
-# Last modified: 2011-04-14 <alm@slewsys.org>
+# Last modified: 2013-08-08 <alm@slewsys.org>
 
 # Process this file with automake to create Makefile.in.
 
@@ -29,23 +29,23 @@ SUFFIXES = .t .err .ok-at .err-at .fail-at
 # Please update $(top_srcdir)/testsuite/ts-am-sw.in to reflect any
 # changes in the format of this file.
 #
-# .t.ok-at:
-# 	sed -e "s^@SCRIPT_NAME@^$*^g"                                         \
-# 	    -e "s^@SCRIPT_SRC@^$(abs_srcdir)/$*^g" "$(AT_PROTO_OK)"           \
-# 	    >"$@".tmp
-# 	mv "$@".tmp "$@"
-# 
-# .err.err-at:
-# 	sed -e "s^@SCRIPT_NAME@^$*^g"                                         \
-# 	    -e "s^@SCRIPT_SRC@^$(abs_srcdir)/$*^g" "$(AT_PROTO_ERR)"          \
-# 	    >"$@".tmp
-# 	mv "$@".tmp "$@"
-# 
-# .err.fail-at:
-# 	sed -e "s^@SCRIPT_NAME@^$$(basename $*)^g"                            \
-# 	    -e "s^@SCRIPT_SRC@^$(abs_srcdir)/$*^g" "$(AT_PROTO_FAIL)"         \
-# 	    >"$@".tmp
-# 	mv "$@".tmp "$@"
+.t.ok-at:
+	sed -e "s^@SCRIPT_NAME@^$*^g"                                         \
+	    -e "s^@SCRIPT_SRC@^$(abs_srcdir)/$*^g" "$(AT_PROTO_OK)"           \
+	    >"$@".tmp
+	mv "$@".tmp "$@"
+
+.err.err-at:
+	sed -e "s^@SCRIPT_NAME@^$*^g"                                         \
+	    -e "s^@SCRIPT_SRC@^$(abs_srcdir)/$*^g" "$(AT_PROTO_ERR)"          \
+	    >"$@".tmp
+	mv "$@".tmp "$@"
+
+.err.fail-at:
+	sed -e "s^@SCRIPT_NAME@^$$(basename $*)^g"                            \
+	    -e "s^@SCRIPT_SRC@^$(abs_srcdir)/$*^g" "$(AT_PROTO_FAIL)"         \
+	    >"$@".tmp
+	mv "$@".tmp "$@"
 
 # The following GNU make rules generate a location-dependent version
 # of testsuite, `testsuite-dist'. Iff the distribution is built from
@@ -62,23 +62,23 @@ SUFFIXES = .t .err .ok-at .err-at .fail-at
 # Please update $(top_srcdir)/testsuite/ts-am-sw.in to reflect any
 # changes in the format of this file.
 #
-.t.ok-at:
-	sed -e "s^@SCRIPT_NAME@^$*^g"                                         \
-	    -e "s^@SCRIPT_SRC@^../../$*^g" "$(AT_PROTO_OK)"                   \
-	>"$@".tmp
-	mv "$@".tmp "$@"
-
-.err.err-at:
-	sed -e "s^@SCRIPT_NAME@^$*^g"                                         \
-	    -e "s^@SCRIPT_SRC@^../../$*^g" "$(AT_PROTO_ERR)"                  \
-	>"$@".tmp
-	mv "$@".tmp "$@"
-
-.err.fail-at:
-	sed -e "s^@SCRIPT_NAME@^$*^g"                                         \
-	    -e "s^@SCRIPT_SRC@^../../$*^g" "$(AT_PROTO_FAIL)"                 \
-	>"$@".tmp
-	mv "$@".tmp "$@"
+# .t.ok-at:
+# 	sed -e "s^@SCRIPT_NAME@^$*^g"                                         \
+# 	    -e "s^@SCRIPT_SRC@^../../$*^g" "$(AT_PROTO_OK)"                   \
+# 	>"$@".tmp
+# 	mv "$@".tmp "$@"
+# 
+# .err.err-at:
+# 	sed -e "s^@SCRIPT_NAME@^$*^g"                                         \
+# 	    -e "s^@SCRIPT_SRC@^../../$*^g" "$(AT_PROTO_ERR)"                  \
+# 	>"$@".tmp
+# 	mv "$@".tmp "$@"
+# 
+# .err.fail-at:
+# 	sed -e "s^@SCRIPT_NAME@^$*^g"                                         \
+# 	    -e "s^@SCRIPT_SRC@^../../$*^g" "$(AT_PROTO_FAIL)"                 \
+# 	>"$@".tmp
+# 	mv "$@".tmp "$@"
 
 # Ed scripts which should complete sucessfully.
 ED_SCRIPTS_OK =                                                               \

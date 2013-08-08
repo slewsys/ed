@@ -1,4 +1,4 @@
 @set UPDATED 26 March 2013
 @set UPDATED-MONTH March 2013
-@set EDITION 0.271-b3
-@set VERSION 0.271-b3
+@set EDITION 0.271-b4
+@set VERSION 0.271-b4

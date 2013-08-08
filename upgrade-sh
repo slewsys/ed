@@ -1,10 +1,10 @@
-#! /bin/bash
+#! /bin/bash -
 #
 # @(#)upgrade-sh
 #
 # Copyright © 2006-2013 Andrew L. Moore, SlewSys Research
 #
-# Last modified: 2013-01-27 <alm@buttercup.lan>
+# Last modified: 2013-08-08 <alm@slewsys.org>
 #
 # This script invokes `configure' with options listed by `ed --info'.
 #
@@ -51,6 +51,7 @@ if [[ ."$1" = .-* ]]; then
 fi
 
 srcdir="${0%/*}"
+
 $verbose && cat >&2 <<EOF
 $PGM: Running:
   ( cd "$srcdir" && ./bootstrap-sh --silent )
@@ -69,6 +70,7 @@ EOF
 process_output=$("${srcdir}/configure" $(ed --info | tail -n +3 | tr -d '\n'))
 _exit_status=$?
 check_exit_status
+
 
 # If no args, try just compiling.
 if [ $# -eq 0 ]; then
@@ -89,11 +91,21 @@ $PGM: Running:
 
 EOF
 
-    process_output=$(make maintainer-update-dist &&
-        "${srcdir}/configure" $(ed --info | tail -n +3 | tr -d '\n') 2>&1)
+    process_output=$(make maintainer-update-dist)
+    _exit_status=$?
+    check_exit_status
+
+    # Update ed.pot.in
+    ed - po/ed.pot <<'EOF'
+/^\("Project-Id-Version:\).*/s;;\1 @PACKAGE@ @VERSION@\\n";
+wq po/ed.pot.in
+EOF
+
+    process_output=$("${srcdir}/configure" $(ed --info | tail -n +3 | tr -d '\n') 2>&1)
     _exit_status=$?
 fi
 check_exit_status
+
 
 # Try Invoking testsuite.
 abs_srcdir="$(cd "$srcdir" && pwd)"

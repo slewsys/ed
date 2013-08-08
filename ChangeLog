@@ -1,5 +1,13 @@
 2013-08-08  Andrew L. Moore  <alm@slewsys.org>
 
+	* Makefile.am: Ignore errors from update-po in
+	maintainer-update-dist target.
+
+	* upgrade-sh (_exit_status): Update ed.pot.in from ed.pot after
+	running msg-merge.
+
+	* configure.ac: Create po/ed.pot from po/ed.pot.in.
+
 	* src/parse.c (expand_glob): glob () on GNU/Linux platform does
 	not set errno.
 	(shell_command): Expand `%' to empty string if filename unset.

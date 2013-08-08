@@ -87,8 +87,10 @@ build_triplet = @build@
 host_triplet = @host@
 subdir = doc
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
-	$(top_srcdir)/mkinstalldirs $(ed_TEXINFOS) mdate-sh \
-	$(srcdir)/version.texi $(srcdir)/stamp-vti texinfo.tex
+	$(top_srcdir)/mkinstalldirs $(ed_TEXINFOS) \
+	$(top_srcdir)/mdate-sh $(srcdir)/version.texi \
+	$(srcdir)/stamp-vti $(top_srcdir)/texinfo.tex mdate-sh \
+	texinfo.tex
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/codeset.m4 \
 	$(top_srcdir)/m4/fcntl-o.m4 $(top_srcdir)/m4/gettext.m4 \
@@ -159,7 +161,8 @@ am__v_texidevnull_0 = > /dev/null
 am__v_texidevnull_1 = 
 INFO_DEPS = $(srcdir)/ed.info $(srcdir)/ed-intro.info \
 	$(srcdir)/ed-adv.info
-am__TEXINFO_TEX_DIR = $(srcdir)
+TEXINFO_TEX = $(top_srcdir)/texinfo.tex
+am__TEXINFO_TEX_DIR = $(top_srcdir)
 DVIS = ed.dvi ed-intro.dvi ed-adv.dvi
 PDFS = ed.pdf ed-intro.pdf ed-adv.pdf
 PSS = ed.ps ed-intro.ps ed-adv.ps
@@ -563,7 +566,7 @@ ed.html: ed.texi $(srcdir)/version.texi $(ed_TEXINFOS)
 $(srcdir)/version.texi:  $(srcdir)/stamp-vti
 $(srcdir)/stamp-vti: ed.texi $(top_srcdir)/configure
 	@(dir=.; test -f ./ed.texi || dir=$(srcdir); \
-	set `$(SHELL) $(srcdir)/mdate-sh $$dir/ed.texi`; \
+	set `$(SHELL) $(top_srcdir)/mdate-sh $$dir/ed.texi`; \
 	echo "@set UPDATED $$1 $$2 $$3"; \
 	echo "@set UPDATED-MONTH $$2 $$3"; \
 	echo "@set EDITION $(VERSION)"; \

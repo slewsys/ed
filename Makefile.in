@@ -18,7 +18,7 @@
 
 # Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
 
-# Last modified: 2013-08-05 <alm@slewsys.org>
+# Last modified: 2013-08-08 <alm@slewsys.org>
 
 # Process this file with automake to create Makefile.in
 VPATH = @srcdir@
@@ -92,7 +92,7 @@ DIST_COMMON = INSTALL NEWS README AUTHORS ChangeLog THANKS \
 	$(top_srcdir)/configure $(am__configure_deps) \
 	$(srcdir)/config.h.in mkinstalldirs ABOUT-NLS COPYING TODO \
 	compile config.guess config.rpath config.sub depcomp \
-	install-sh missing ltmain.sh
+	install-sh mdate-sh missing texinfo.tex ltmain.sh
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/codeset.m4 \
 	$(top_srcdir)/m4/fcntl-o.m4 $(top_srcdir)/m4/gettext.m4 \
@@ -177,7 +177,7 @@ am__define_uniq_tagged_files = \
 ETAGS = etags
 CTAGS = ctags
 CSCOPE = cscope
-DIST_SUBDIRS = doc lib po src testsuite
+DIST_SUBDIRS = lib src po doc testsuite
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 distdir = $(PACKAGE)-$(VERSION)
 top_distdir = $(distdir)
@@ -393,11 +393,7 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 ACLOCAL_AMFLAGS = -I m4
-
-# if LDADD_LIBINTL
-# SUBDIRS += intl
-# endif
-SUBDIRS = doc $(am__append_1) po src testsuite
+SUBDIRS = $(am__append_1) src po doc testsuite
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
 
@@ -885,39 +881,47 @@ uninstall-am:
 	uninstall-am
 
 
-.PHONY: quick-check
+.PHONY: quick-check maintainer-update-dist update-testsuite-dist update-po
 
 quick-check: all
 	cd $(top_builddir)/testsuite && $(MAKE) $(AM_MAKEFLAGS) $@
 
-maintainer-update-dist:
+maintainer-update-dist: update-testsuite-dist update-po
+
+update-testsuite-dist:
 	@if test ."$(top_srcdir)" != ."$(top_builddir)"; then		      \
 	    echo "$@: $(top_builddir): Must run from \$(top_srcdir)";	      \
 	    exit 1;							      \
-	fi
-	@if test ! -w "$(top_srcdir)"; then				      \
+	fi;								      \
+	if test ! -w "$(top_srcdir)"; then				      \
 	    echo "$@: $(top_srcdir): Permission denied.";		      \
 	    exit 1;							      \
-	fi
-	chmod +x $(top_srcdir)/bootstrap-sh
-	chmod +x $(top_srcdir)/testsuite/ts-am-sw.ed
-	if test ! -f $(top_srcdir)/testsuite/.ts-am-sw; then                  \
-	  cd $(top_srcdir)/testsuite && ./ts-am-sw.ed && touch ./.ts-am-sw;   \
-	fi
-	cd $(top_srcdir)/ && ./bootstrap-sh
-	-$(MAKE) $(AM_MAKEFLAGS) all
-	rm -f $(top_srcdir)/testsuite/testsuite
-	-$(MAKE) $(AM_MAKEFLAGS) check
+	fi;								      \
+	chmod +x $(top_srcdir)/bootstrap-sh;				      \
+	chmod +x $(top_srcdir)/testsuite/ts-am-sw.ed;			      \
+	if test -f $(top_srcdir)/testsuite/.ts-am-sw; then		      \
+	  (cd $(top_srcdir)/testsuite && ./ts-am-sw.ed && rm -f ./ts-am-sw);  \
+	fi;								      \
+	if test ! -f $(top_srcdir)/testsuite/.ts-am-sw; then		      \
+	  (cd $(top_srcdir)/testsuite && ./ts-am-sw.ed && touch ./.ts-am-sw); \
+	fi;								      \
+	(cd $(top_srcdir)/ && ./bootstrap-sh);				      \
+	$(MAKE) $(AM_MAKEFLAGS) all
+	-rm -f $(top_srcdir)/testsuite/testsuite;			      \
+	$(MAKE) $(AM_MAKEFLAGS) check;					      \
 	cp $(top_srcdir)/testsuite/testsuite				      \
 	  $(top_srcdir)/testsuite/testsuite-dist
-	cd $(top_srcdir)/po && $(MAKE) $(AM_MAKEFLAGS) update-po
+
+update-po:
+	-(cd $(top_srcdir)/po && $(MAKE) $(AM_MAKEFLAGS) update-po);	      \
 	if test -f $(top_srcdir)/testsuite/.ts-am-sw; then		      \
-	  cd $(top_srcdir)/testsuite && ./ts-am-sw.ed && rm -f ./ts-am-sw;    \
-	fi
-	cd $(top_srcdir)/ && ./bootstrap-sh
+	  (cd $(top_srcdir)/testsuite && ./ts-am-sw.ed && rm -f ./ts-am-sw);  \
+	fi;								      \
+	(cd $(top_srcdir)/ && ./bootstrap-sh);				      \
 	$(MAKE) $(AM_MAKEFLAGS) distclean
 
 distclean-local:
+	rm -f configure.orig
 	rm -rf  testsuite/.ts-am-sw autom4te.cache 
 	rm -rf GPATH GRTAGS GSYMS GTAGS
 	find . -name '[Tt][Aa][Gg][Ss]' -type f -delete
