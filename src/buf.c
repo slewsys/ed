@@ -2,7 +2,7 @@
 
    Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2013-08-05 <alm@slewsys.org>
+   Last modified: 2013-08-08 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -157,15 +157,19 @@ init_ed_command (init_glob, ed)
 
   /* File info */
 #ifdef WANT_FILE_LOCK
+
+  /* GNU/Linux double-frees on fclose() here... */
+#if __linux__
   if (ed->file.handle)
 
     /* Assert: No writes since fopen(3). */
     (void) fclose (ed->file.handle);
+#endif  /* __linux__ */
 
   ed->file.handle = NULL;
   ed->file.inode = 0;
   ed->file.is_writable = 0;
-#endif
+#endif  /* WANT_FILE_LOCK */
 }
 
 
@@ -326,7 +330,7 @@ close_ed_buffer (ed)
   ed->core.seek_on_write = 0;
   if (ed->core.pathname)
     unlink (ed->core.pathname);
-  return 0;
+  return status;
 }
 
 

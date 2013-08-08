@@ -2,7 +2,7 @@
 
    Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2013-08-06 <alm@slewsys.org>
+   Last modified: 2013-08-08 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -388,7 +388,7 @@ get_extended_line (len, nonl, ed)
       *(xl + --*len - 1) = '\n'; /* strip trailing backslash */
       if (!(ed->stdin = get_stdin_line (&n, ed)))
 
-        /* Propagate stream status. */
+        /* Propagate stream status - don't call clearerr(3). */
         return NULL;
       if (*(ed->stdin + n - 1) != '\n')
         {
@@ -433,8 +433,9 @@ get_stream_line (fp, len, ed)
     }
   if (feof (fp))
     {
-      /* Propagate stream status - don't call clearerr(3). */
       if (!*len)
+
+        /* Propagate stream status - don't call clearerr(3). */
         return NULL;
     }
   else if (ferror (fp))
@@ -444,9 +445,6 @@ get_stream_line (fp, len, ed)
         clearerr (fp);
         goto top;
       default:
-
-        /* Propagate stream status */
-
 #ifdef F_GETPATH
 
         /* Recover file name from pointer. */
@@ -457,6 +455,8 @@ get_stream_line (fp, len, ed)
         fprintf (stderr, "%s\n", strerror (errno));
 #endif
         ed->exec.err = _("File read error");
+
+        /* Propagate stream status - don't call clearerr(3). */
         return NULL;
       }
 
@@ -661,10 +661,10 @@ put_stream_line (fp, s, len, ed)
         clearerr (fp);
         goto top;
       default:
-
-        /* Propagate stream status */
         fprintf (stderr, "%s\n", strerror (errno));
         ed->exec.err = _("File write error");
+
+        /* Propagate stream status - don't call clearerr(3). */
         return ERR;
       }
   return 0;
@@ -713,22 +713,26 @@ set_file_lock (fp, exclusive)
      FILE *fp;
      int exclusive;             /* If set, get exclusive lock. */
 {
+  int status1 = 0;
+  int status2 = 0;
+
+#  ifdef F_SETLK
+  struct flock l;
+#  endif  /* F_SETLK */
 
 #  ifdef HAVE_FLOCK
-  return flock (fileno (fp), (exclusive ? LOCK_EX : LOCK_SH) | LOCK_NB);
-#  else
-#    ifdef F_SETLK
-  struct flock l;
+  status1 = flock (fileno (fp), (exclusive ? LOCK_EX : LOCK_SH) | LOCK_NB);
+#  endif  /* HAVE_FLOCK */
 
+#  ifdef F_SETLK
   l.l_type = exclusive ? F_WRLCK : F_RDLCK;
   l.l_whence = 0;
   l.l_start = 0;
   l.l_len = 0;
-  return fcntl (fileno (fp), F_SETLK, &l);
-#    else
-  return 0;
-#    endif /* !F_SETLK */
-#  endif  /* !HAVE_FLOCK */
+  status2 = fcntl (fileno (fp), F_SETLK, &l);
+#  endif  /* F_SETLK */
+
+  return status1 || status2 ? -1 : 0;
 }
 
 #endif  /* WANT_FILE_LOCK */

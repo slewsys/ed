@@ -1,3 +1,15 @@
+2013-08-08  Andrew L. Moore  <alm@slewsys.org>
+
+	* src/parse.c (expand_glob): glob () on GNU/Linux platform does
+	not set errno.
+	(shell_command): Expand `%' to empty string if filename unset.
+
+	* src/io.c (get_file_lock): Set both fcntl (2) and flock (2)
+	locks, if available.
+
+	* src/buf.c (init_ed_command): fclose () on GNU/Linux
+	platform results in double free.
+
 2013-08-07  Andrew L. Moore  <alm@slewsys.org>
 
 	* src/parse.c (file_glob): Reinitialize file.glob/list when

@@ -2,7 +2,7 @@
 
    Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2013-08-07 <alm@slewsys.org>
+   Last modified: 2013-08-08 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -426,6 +426,7 @@ expand_glob (pattern, append, gp, ed)
   size_t len;
   int gloff = gp->gl_pathc;
   int offs;
+  int status = 0;
 
   /* glob(3) may not properly handle excessively long patterns. */
   if (strlen (pattern) >= get_path_max (pattern))
@@ -439,15 +440,22 @@ expand_glob (pattern, append, gp, ed)
 #endif
 
   /* If cannot match existing file or directory... */
-  if (glob (pattern, GLOB_TILDE | append, NULL, gp) != 0)
+  if ((status = glob (pattern, GLOB_TILDE | append, NULL, gp)) != 0)
     {
 
       /* If not a directory pattern, then return unchecked glob. */
       if ((basename = strrchr (pattern, '/')) == NULL)
         {
-          if (glob (pattern, GLOB_NOCHECK | GLOB_TILDE | append, NULL, gp) != 0)
+          if ((status = glob (pattern, GLOB_NOCHECK | GLOB_TILDE | append,
+                              NULL, gp)) != 0)
             {
+#if __linux__
+              /* GNU/Linux does not set errno. */
+              fprintf (stderr, "%s: %s\n", pattern,
+                       _("Pathname expansion error"));
+#else
               fprintf (stderr, "%s: %s\n", pattern, strerror (errno));
+#endif
               ed->exec.err = _("Pathname expansion error");
               return NULL;
             }
@@ -459,9 +467,15 @@ expand_glob (pattern, append, gp, ed)
           *basename++ = '\0';
           errno = 0;
 
-          if (glob (pattern, GLOB_TILDE | append, NULL, gp) != 0)
+          if ((status = glob (pattern, GLOB_TILDE | append, NULL, gp)) != 0)
             {
+#if __linux__
+              /* GNU/Linux does not set errno. */
+              fprintf (stderr, "%s: %s\n", pattern,
+                       _("No such file or directory"));
+#else
               fprintf (stderr, "%s: %s\n", pattern, strerror (errno));
+#endif
               ed->exec.err = _("Pathname expansion error");
               return NULL;
             }
@@ -684,8 +698,8 @@ shell_command (len, subs, ed)
     /* Propagate stream status */
     return NULL;
 
-  /* Preserve unexpanded command so that `%' gets expanded to current
-     file name when repeated via `!!'. */
+  /* Preserve unexpanded command so that `%' and `%%' get expanded to
+     current file name when repeated via `!!'. */
   REALLOC_THROW (sc_curr, sc_curr_size, n + 1, NULL, ed);
   strcpy (sc_curr, xl);
 
@@ -704,19 +718,12 @@ shell_command (len, subs, ed)
         /*  Substitute '%%' with ed->exec.file_script. */
         if (*(xl + 1) == '%')
           {
-            fn = ed->exec.file_script ? ed->exec.file_script : "(stdin)";
+            fn = ed->exec.file_script ? ed->exec.file_script : "stdin";
             ++xl;
           }
         /*  Substitute '%' with ed->file_name. */
-        else if (!(fn = ed->file.name))
-          {
-            /* Preserve current (unexpanded) shell command. */
-            REALLOC_THROW (sc_prev, sc_prev_size, sc_curr_size, NULL, ed);
-            memcpy (sc_prev, sc_curr, sc_curr_size);
-
-            ed->exec.err = _("File name not set");
-            return NULL;
-          }
+        else
+          fn = ed->file.name ? ed->file.name : "";
         m = strlen (fn);
         REALLOC_THROW (sc, sc_size, *len + m + 1, NULL, ed);
         memcpy (sc + *len, fn, m);
