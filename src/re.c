@@ -2,7 +2,7 @@
 
    Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2013-08-05 <alm@slewsys.org>
+   Last modified: 2013-08-09 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -41,7 +41,7 @@ get_compiled_regex (dc, re_type, ed)
   /* Assert: spl1 () */
 
   /* Use previous pattern. */
-  if (dc == '\n' || *++ed->stdin == '\n' || *ed->stdin == dc)
+  if (dc == '\n' || *++ed->input == '\n' || *ed->input == dc)
     {
       /* 
          For a substitution command, there may be two patterns

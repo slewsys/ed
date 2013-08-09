@@ -2,7 +2,7 @@
 
    Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2013-08-07 <alm@slewsys.org>
+   Last modified: 2013-08-09 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -13,7 +13,7 @@
 #define COMMAND_SUFFIX(io_f, ed)                                              \
   do                                                                          \
     {                                                                         \
-      switch (*(ed)->stdin)                                                   \
+      switch (*(ed)->input)                                                   \
         {                                                                     \
         case 'p':                                                             \
           io_f |= PRNT;                                                       \
@@ -25,7 +25,7 @@
           io_f |= NMBR;                                                       \
           break;                                                              \
         default:                                                              \
-          if (*(ed)->stdin != '\n')                                           \
+          if (*(ed)->input != '\n')                                           \
             {                                                                 \
               (ed)->exec.err = _("Command suffix unexpected");                \
               return ERR;                                                     \
@@ -33,7 +33,7 @@
           break;                                                              \
         }                                                                     \
     }                                                                         \
-  while (*(ed)->stdin++ != '\n')
+  while (*(ed)->input++ != '\n')
 
 
 /* FILE_NAME: Get shell command or file name or file glob from the
@@ -42,7 +42,7 @@
   do                                                                          \
     {                                                                         \
       int _subs;                                                              \
-      if (*(ed)->stdin == '!')                                                \
+      if (*(ed)->input == '!')                                                \
         {                                                                     \
           if (!((fn) = shell_command (&(len), &_subs, (ed))))                 \
             {                                                                 \
@@ -133,8 +133,8 @@ exec_command (ed)
   paging = 0;
   SKIP_WHITESPACE (ed);
 
-  if (ed->file.is_glob = (c = *ed->stdin++) == '~')
-    c = *ed->stdin++;
+  if (ed->file.is_glob = (c = *ed->input++) == '~')
+    c = *ed->input++;
   switch (c)
     {
     case 'a':
@@ -201,16 +201,16 @@ exec_command (ed)
           return ERR;
         }
 #ifdef WANT_FILE_GLOB
-      if ((cy = *ed->stdin) == 'n' || cy == 'p')
-        ++ed->stdin;
+      if ((cy = *ed->input) == 'n' || cy == 'p')
+        ++ed->input;
 #endif
-      if (!isspace ((unsigned char) *ed->stdin))
+      if (!isspace ((unsigned char) *ed->input))
         {
           ed->exec.err = _("Command suffix unexpected");
           return ERR;
         }
       SKIP_WHITESPACE (ed);
-      cx = *ed->stdin;
+      cx = *ed->input;
       FILE_NAME (fn, len, cy, 1, ed);
 
       spl1 ();
@@ -285,10 +285,10 @@ exec_command (ed)
           return ERR;
         }
 #ifdef WANT_FILE_GLOB
-      if ((cy = *ed->stdin) == 'n' || cy == 'p')
-        ++ed->stdin;
+      if ((cy = *ed->input) == 'n' || cy == 'p')
+        ++ed->input;
 #endif
-      if (!isspace ((unsigned char) *ed->stdin))
+      if (!isspace ((unsigned char) *ed->input))
         {
           ed->exec.err = _("Command suffix unexpected");
           return ERR;
@@ -307,14 +307,14 @@ exec_command (ed)
              f !cat >`filename generator`
              w
       */
-      if (ed->exec.opt & (POSIXLY_CORRECT | TRADITIONAL) && *ed->stdin == '!')
+      if (ed->exec.opt & (POSIXLY_CORRECT | TRADITIONAL) && *ed->input == '!')
         {
           ed->exec.err = _("Invalid redirection");
           return ERR;
         }
 
-      if (*ed->stdin == '\n' && cy != 'n' && cy != 'p')
-        ++ed->stdin;
+      if (*ed->input == '\n' && cy != 'n' && cy != 'p')
+        ++ed->input;
       else
         {
           FILE_NAME (fn, len, cy, 1, ed);
@@ -414,7 +414,7 @@ exec_command (ed)
         return status;
       break;
     case 'k':
-      cx = *ed->stdin++;
+      cx = *ed->input++;
       if (ed->region.end == 0)
         {
           ed->exec.err = _("Address out of range");
@@ -504,7 +504,7 @@ exec_command (ed)
       return (c == 'q' && ed->buf[0].is_modified && !(ed->exec.opt & SCRIPTED)
               ? EMOD : EOF);
     case 'r':
-      if (!isspace ((unsigned char) *ed->stdin))
+      if (!isspace ((unsigned char) *ed->input))
         {
           ed->exec.err = _("Command suffix unexpected");
           return ERR;
@@ -662,16 +662,16 @@ exec_command (ed)
       else if ((status = is_valid_range (1, ed->buf[0].addr_last, ed)) < 0)
         return status;
       if (ed->exec.opt & POSIXLY_CORRECT
-          && !isspace ((unsigned char) *ed->stdin))
+          && !isspace ((unsigned char) *ed->input))
         {
           ed->exec.err = _("Command suffix unexpected");
           return ERR;
         }
 #ifdef WANT_FILE_GLOB
-      else if ((cy = *ed->stdin) == 'n' || cy == 'p')
-        ++ed->stdin;
+      else if ((cy = *ed->input) == 'n' || cy == 'p')
+        ++ed->input;
 #endif
-      else if ((cx = *ed->stdin) == 'q')
+      else if ((cx = *ed->input) == 'q')
         {
 #ifdef WANT_SAFE_WRITE
           if (ed->file.is_glob)
@@ -680,19 +680,19 @@ exec_command (ed)
               return ERR;
             }
 #endif
-          ++ed->stdin;
+          ++ed->input;
         }
-      if (!isspace ((unsigned char) *ed->stdin))
+      if (!isspace ((unsigned char) *ed->input))
         {
           ed->exec.err = _("Command suffix unexpected");
           return ERR;
         }
       SKIP_WHITESPACE (ed);
 
-      cz = *ed->stdin == '!';
+      cz = *ed->input == '!';
 #ifdef WANT_SAFE_WRITE
       FILE_NAME (fn, len, ed->file.is_glob,
-                 ed->file.is_glob ? *ed->stdin != '\n' : !ed->file.name, ed);
+                 ed->file.is_glob ? *ed->input != '\n' : !ed->file.name, ed);
 #else
       FILE_NAME (fn, len, ed->file.is_glob, !ed->file.name, ed);
 #endif  /* !WANT_SAFE_WRITE */
@@ -826,7 +826,7 @@ exec_command (ed)
          frame buffer, so load page preceding given address in
          background (display.off = 1), then scroll from there. */
       ed->display.off = 1;
-      if ((status = exec_one_off ("Z", ed->stdin, ed)) < 0)
+      if ((status = exec_one_off ("Z", ed->input, ed)) < 0)
         {
           ed->display.off = 0;
           return status;
@@ -836,7 +836,7 @@ exec_command (ed)
       /* At start or end of buffer, so display it. */
       if (!ed->display.is_paging && ed->region.end < ed->buf[0].dot
           || ed->buf[0].dot == ed->buf[0].addr_last)
-        return exec_one_off ("Z", ed->stdin, ed);
+        return exec_one_off ("Z", ed->input, ed);
 
       /* XXX - Required, so explain why */
       ed->region.addrs = 0;
@@ -853,7 +853,7 @@ exec_command (ed)
           return ERR;
         }
       if (c == ']' && (ed->region.addrs || !ed->display.is_paging))
-          return exec_one_off ("[", ed->stdin, ed);
+          return exec_one_off ("[", ed->input, ed);
       io_f |= ZHFW;
 
       /* FALLTHROUGH */
@@ -875,9 +875,9 @@ exec_command (ed)
       addr = ed->buf[0].dot + !(ed->exec.global || ed->display.underflow);
       if ((status = is_valid_range (ed->region.start = 1, addr, ed)) < 0)
         return status;
-      if (isdigit ((unsigned char) *ed->stdin))
+      if (isdigit ((unsigned char) *ed->input))
         {
-          STRTOUL_THROW (len, ed->stdin, &ed->stdin, ERR);
+          STRTOUL_THROW (len, ed->input, &ed->input, ERR);
 
           /* Sanity check window size. */
           if (1 < len && len < ROWS_MAX)
@@ -916,9 +916,9 @@ exec_command (ed)
         }
       if ((status = is_valid_range (ed->region.start = 1, addr, ed)) < 0)
         return status;
-      if (isdigit ((unsigned char) *ed->stdin))
+      if (isdigit ((unsigned char) *ed->input))
         {
-          STRTOUL_THROW (len, ed->stdin, &ed->stdin, ERR);
+          STRTOUL_THROW (len, ed->input, &ed->input, ERR);
 
           /* Sanity check window size. */
           if (1 < len && len < ROWS_MAX)
@@ -941,7 +941,7 @@ exec_command (ed)
       if (ed->region.addrs
           && (status = is_valid_range (ed->buf[0].dot, ed->buf[0].dot, ed)) < 0)
         return status;
-      --ed->stdin;
+      --ed->input;
       FILE_NAME (fn, len, cx, 0, ed);
       if (!ed->region.addrs)
         {
@@ -977,7 +977,7 @@ exec_command (ed)
         return status;
       return display_lines (ed->region.end, ed->region.end, 0, ed);
     case '#':
-      while (*ed->stdin++ != '\n')
+      while (*ed->input++ != '\n')
         ;
       return 0;
     default:
@@ -1018,11 +1018,11 @@ exec_one_off (cmd, modifier, ed)
               ed->region.end, cmd, modifier);
   else
     snprintf (input, input_len, "%s%s", cmd, modifier);
-  ed->stdin = input;
+  ed->input = input;
   if ((status = address_range (ed)) < 0
       || (status = exec_command (ed)) < 0)
     return status;
-  ed->stdin = saved_modifier;
+  ed->input = saved_modifier;
   return 0;
 }
 

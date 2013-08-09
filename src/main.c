@@ -2,7 +2,7 @@
 
    Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2013-08-05 <alm@slewsys.org>
+   Last modified: 2013-08-09 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -245,7 +245,7 @@ top:
         }
 
       /* End of input. */
-      if (!(ed->stdin = get_stdin_line (&len, ed)))
+      if (!(ed->input = get_stdin_line (&len, ed)))
         {
           status = (!feof (stdin)
                     ? ERR : (ed->buf[0].is_modified
@@ -256,7 +256,7 @@ top:
         }
 
       /* Input not newline ('\n') terminated. */
-      else if (*(ed->stdin + len - 1) != '\n')
+      else if (*(ed->input + len - 1) != '\n')
         {
           ed->exec.err = _("End-of-file unexpected");
           status = ERR;
@@ -320,7 +320,7 @@ top:
 }
 
 
-/* next_edit: Construct ed command per status, pointed to by ed->stdin.
+/* next_edit: Construct ed command per status, pointed to by ed->input.
    Return status. */
 static int
 next_edit (status, ed)
@@ -340,7 +340,7 @@ next_edit (status, ed)
   REALLOC_THROW (buf, buf_size, len + 4, ERR, ed);
 
 #ifdef WANT_FILE_GLOB
-  sprintf (ed->stdin = buf,
+  sprintf (ed->input = buf,
 # ifdef WANT_SAFE_WRITE
            status == EOF_GLB ? "~E\n" :
 # endif           
@@ -349,7 +349,7 @@ next_edit (status, ed)
            "r %s\n",
            *ed->file.list.gl_pathv);
 #else
-  sprintf (ed->stdin = buf, "r %s\n", *ed->file.list.gl_pathv);
+  sprintf (ed->input = buf, "r %s\n", *ed->file.list.gl_pathv);
 #endif  /* !WANT_FILE_GLOB */
 
   ed->region.addrs = 0;

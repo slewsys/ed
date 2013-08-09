@@ -2,7 +2,7 @@
 
    Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2013-08-08 <alm@slewsys.org>
+   Last modified: 2013-08-09 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -37,21 +37,21 @@ address_range (ed)
   ed->region.addrs = 0;
   first = second = dot = ed->buf[0].dot;
   SKIP_WHITESPACE (ed);
-  have_dc = IS_DELIMITER (*ed->stdin);
+  have_dc = IS_DELIMITER (*ed->input);
   do
     {
       if (have_dc)
         {
           if (ed->region.addrs)
-            first = *ed->stdin == ';' ? (dot = second) : second;
+            first = *ed->input == ';' ? (dot = second) : second;
           else
             {
-              first = *ed->stdin == ';' ? dot : 1;
+              first = *ed->input == ';' ? dot : 1;
               second = ed->buf[0].addr_last;
               ed->region.addrs = 2;
             }
         }
-      ed->stdin += have_dc;
+      ed->input += have_dc;
       addr = dot;
       if ((status = next_address (&addr, ed)) < 0)
         return status;
@@ -61,7 +61,7 @@ address_range (ed)
           ++ed->region.addrs;
         }
     }
-  while ((have_dc = IS_DELIMITER (*ed->stdin)));
+  while ((have_dc = IS_DELIMITER (*ed->input)));
 
   if ((ed->region.addrs = min (2, ed->region.addrs)) < 2)
     first = second;
@@ -84,14 +84,14 @@ next_address (addr, ed)
      off_t *addr;
      ed_state_t *ed;
 {
-  char *stdin_prev;
+  char *input_prev;
   int status;
 
   SKIP_WHITESPACE (ed);
-  stdin_prev = ed->stdin;
+  input_prev = ed->input;
   return (((status = line_address (addr, ed)) < 0
            || (status = address_offset (addr, ed)) < 0)
-          ? status : ed->stdin != stdin_prev);
+          ? status : ed->input != input_prev);
 }
 
 
@@ -105,7 +105,7 @@ line_address (addr, ed)
   int c;
   int status = 0;
 
-  switch (c = *ed->stdin)
+  switch (c = *ed->input)
     {
     case '0':
     case '1':
@@ -117,13 +117,13 @@ line_address (addr, ed)
     case '7':
     case '8':
     case '9':
-      STRTOLL_THROW (*addr, ed->stdin, &ed->stdin, ERR);
+      STRTOLL_THROW (*addr, ed->input, &ed->input, ERR);
       break;
     case '$':
       *addr = ed->buf[0].addr_last;
       /* FALLTHROUGH */
     case '.':
-      ++ed->stdin;
+      ++ed->input;
       break;
     case '/':
     case '?':
@@ -139,12 +139,12 @@ line_address (addr, ed)
           return status;
         }
       spl0 ();
-      if (*ed->stdin == c)
-        ++ed->stdin;
+      if (*ed->input == c)
+        ++ed->input;
       break;
     case '\'':
-      ++ed->stdin;
-      if ((status = get_marked_node_address (*ed->stdin++, addr, ed)) < 0)
+      ++ed->input;
+      if ((status = get_marked_node_address (*ed->input++, addr, ed)) < 0)
         return status;
       break;
     default:
@@ -163,7 +163,7 @@ address_offset (addr, ed)
   off_t n = 1;
 
   for (;; n = 1)
-    switch ((unsigned char) *ed->stdin)
+    switch ((unsigned char) *ed->input)
       {
       case '0':
       case '1':
@@ -175,26 +175,26 @@ address_offset (addr, ed)
       case '7':
       case '8':
       case '9':
-        STRTOLL_THROW (n, ed->stdin, &ed->stdin, ERR);
+        STRTOLL_THROW (n, ed->input, &ed->input, ERR);
         *addr += n;
         break;
       case '+':
-        if (isdigit ((unsigned char) *++ed->stdin))
-          STRTOLL_THROW (n, ed->stdin, &ed->stdin, ERR);
+        if (isdigit ((unsigned char) *++ed->input))
+          STRTOLL_THROW (n, ed->input, &ed->input, ERR);
         *addr += n;
         break;
       case '-':
       case '^':
-        if (isdigit ((unsigned char) *++ed->stdin))
-          STRTOLL_THROW (n, ed->stdin, &ed->stdin, ERR);
+        if (isdigit ((unsigned char) *++ed->input))
+          STRTOLL_THROW (n, ed->input, &ed->input, ERR);
         *addr -= n;
         break;
       case ' ':
       case '\t':
         SKIP_WHITESPACE (ed);
-        if (isdigit ((unsigned char) *ed->stdin))
+        if (isdigit ((unsigned char) *ed->input))
           {
-            STRTOLL_THROW (n, ed->stdin, &ed->stdin, ERR);
+            STRTOLL_THROW (n, ed->input, &ed->input, ERR);
             *addr += n;
           }
         break;
@@ -256,7 +256,7 @@ file_glob (len, cm, replace, ed)
       ed->exec.err = _("Access restricted to working directory");
       return NULL;
     }
-  ed->stdin += *len + 1;
+  ed->input += *len + 1;
 
   /* Process xl for zero or more whitespace-delimited file globs.
      Whitespace within a file glob must be back slash-escaped (\). */
@@ -556,11 +556,11 @@ is_valid_name (name, ed)
   size_t len;
 
   /* Push file name onto command buffer. Append newline if missing. */
-  len = strlen (ed->stdin = (char *) name);
+  len = strlen (ed->input = (char *) name);
   if (name[len - 1] != '\n')
     {
       REALLOC_THROW (fn, fn_size, len + 2, NULL, ed);
-      strcpy (ed->stdin = fn, name);
+      strcpy (ed->input = fn, name);
       strcpy (fn + len, "\n");
     }
   if ((s = file_name (&len, ed)) && strcmp (name, s))
@@ -595,7 +595,7 @@ file_name (len, ed)
       ed->exec.err = _("Access restricted to working directory");
       return NULL;
     }
-  ed->stdin += *len + 1;
+  ed->input += *len + 1;
   REALLOC_THROW (fn, fn_size, *len + 1, NULL, ed);
   strcpy (fn, xl);
   return fn;
@@ -613,22 +613,22 @@ regular_expression (dc, len, ed)
   static char *lhs = NULL;      /* substitution template buffer */
   static size_t lhs_size = 0;   /* buffer size */
 
-  char *s = ed->stdin;
+  char *s = ed->input;
 
-  for (; (unsigned char) *ed->stdin != dc && *ed->stdin != '\n'; ++ed->stdin)
-    switch (*ed->stdin)
+  for (; (unsigned char) *ed->input != dc && *ed->input != '\n'; ++ed->input)
+    switch (*ed->input)
       {
       default:
         break;
       case '[':
-        if (!(ed->stdin = character_class (++ed->stdin, ed)))
+        if (!(ed->input = character_class (++ed->input, ed)))
           {
             ed->exec.err = _("Brackets ([]) unbalanced");
             return NULL;
           }
         break;
       case '\\':
-        if (*++ed->stdin == '\n')
+        if (*++ed->input == '\n')
           {
             ed->exec.err = _("Backslash (\\) unexpected");
             return NULL;
@@ -636,7 +636,7 @@ regular_expression (dc, len, ed)
         break;
       }
 
-  *len = ed->stdin - s;
+  *len = ed->input - s;
   REALLOC_THROW (lhs, lhs_size, *len + 1, NULL, ed);
   memcpy (lhs, s, *len);
   *(lhs + *len) = '\0';
@@ -703,7 +703,7 @@ shell_command (len, subs, ed)
   REALLOC_THROW (sc_curr, sc_curr_size, n + 1, NULL, ed);
   strcpy (sc_curr, xl);
 
-  ed->stdin += n + 1;
+  ed->input += n + 1;
   for (*subs = *len = 0; *xl != '\0'; ++xl)
     switch (*xl)
       {

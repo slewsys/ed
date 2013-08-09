@@ -2,7 +2,7 @@
 
    Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2013-08-08 <alm@slewsys.org>
+   Last modified: 2013-08-09 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -373,12 +373,12 @@ get_extended_line (len, nonl, ed)
 
   size_t n;
 
-  for (*len = 0; *(ed->stdin + (*len)++) != '\n';)
+  for (*len = 0; *(ed->input + (*len)++) != '\n';)
     ;
   REALLOC_THROW (xl, xl_size, *len + 1, NULL, ed);
 
-  /* NB: Don't assume that ed->stdin is NUL-terminated. */
-  memcpy (xl, ed->stdin, *len);
+  /* NB: Don't assume that ed->input is NUL-terminated. */
+  memcpy (xl, ed->input, *len);
 
   /* Shell escapes set nonl, so we are only interested in a trailing
      escape in this case. */
@@ -386,17 +386,17 @@ get_extended_line (len, nonl, ed)
          : has_trailing_escape (xl, xl + *len - 1))
     {
       *(xl + --*len - 1) = '\n'; /* strip trailing backslash */
-      if (!(ed->stdin = get_stdin_line (&n, ed)))
+      if (!(ed->input = get_stdin_line (&n, ed)))
 
         /* Propagate stream status - don't call clearerr(3). */
         return NULL;
-      if (*(ed->stdin + n - 1) != '\n')
+      if (*(ed->input + n - 1) != '\n')
         {
           ed->exec.err = _("End-of-file unexpected");
           return NULL;
         }
       REALLOC_THROW (xl, xl_size, *len + n + 1, NULL, ed);
-      memcpy (xl + *len, ed->stdin, n);
+      memcpy (xl + *len, ed->input, n);
       *len += n;
       ++ed->exec.line_no;
     }

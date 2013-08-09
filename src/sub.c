@@ -2,7 +2,7 @@
 
    Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2013-07-06 <alm@slewsys.org>
+   Last modified: 2013-08-09 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -38,19 +38,19 @@ resubstitute (s_nth, s_mod, s_f, sgpr_f, ed)
   int status;
   int g_f = 0;                  /* Set if global toggled - e.g. `sg' */
 
-  /* Return unless ed->stdin contains short-form substitution. */
-  if (!strchr (SGPR_CHARS, (unsigned) *ed->stdin))
+  /* Return unless ed->input contains short-form substitution. */
+  if (!strchr (SGPR_CHARS, (unsigned) *ed->input))
     return 0;
 
   *sgpr_f = SGPR;               /* Flag short-form substitution. */
 
   for (;;)
-    switch ((unsigned char) *ed->stdin)
+    switch ((unsigned char) *ed->input)
       {
       case '\n':
         return 0;
       case '$':
-        ++ed->stdin;
+        ++ed->input;
         if (g_f)
           {
             *s_f |= SMLR;       /* Select frequency: (match_count - s_mod). */
@@ -115,15 +115,15 @@ resubstitute (s_nth, s_mod, s_f, sgpr_f, ed)
       case 'g':
         g_f = 1;
         *sgpr_f ^= TGSG;
-        ++ed->stdin;
+        ++ed->input;
         break;
       case 'p':
         *sgpr_f ^= TGSP;
-        ++ed->stdin;
+        ++ed->input;
         break;
       case 'r':
         *sgpr_f ^= TGSR;
-        ++ed->stdin;
+        ++ed->input;
         break;
       default:
         if (*sgpr_f)
@@ -148,7 +148,7 @@ substitution_lhs (lhs_p, sgpr_f, ed)
   regex_t *re;
 
   /* Short form of substitution with unknown modifier, e.g., `sw'. */
-  if (*ed->stdin != '\n' && *(ed->stdin + 1) == '\n')
+  if (*ed->input != '\n' && *(ed->input + 1) == '\n')
     {
       ed->exec.err = _("Unknown command suffix");
       return ERR;
@@ -159,7 +159,7 @@ substitution_lhs (lhs_p, sgpr_f, ed)
 
   /* If r_f, use regex from last search. */
   if (((ed->subst.r_f = (*sgpr_f & TGSR)) || !*sgpr_f)
-      && !(re = get_compiled_regex (*ed->stdin, RE_SUBST, ed)))
+      && !(re = get_compiled_regex (*ed->input, RE_SUBST, ed)))
     {
       spl0 ();
       return ERR;
@@ -202,7 +202,7 @@ substitution_rhs (s_nth, s_mod, s_f, sio_f, ed)
 
 
   /* Don't clobber command buffer if any ed->exec.global set. */
-  if (!ed->exec.global && !(ed->stdin = get_extended_line (&len, 0, ed)))
+  if (!ed->exec.global && !(ed->input = get_extended_line (&len, 0, ed)))
     {
       /* EOF here always flags error. */
       status = ERR;
@@ -211,7 +211,7 @@ substitution_rhs (s_nth, s_mod, s_f, sio_f, ed)
     }
 
   /* Newline-delimited pattern. */
-  if ((dc = *ed->stdin) == '\n')
+  if ((dc = *ed->input) == '\n')
     {
       rhs_i = 0;
       *sio_f = PRNT;
@@ -221,13 +221,13 @@ substitution_rhs (s_nth, s_mod, s_f, sio_f, ed)
     return status;
 
   /* Newline-delimited pattern. */
-  if (*ed->stdin == '\n')
+  if (*ed->input == '\n')
     {
       *sio_f = PRNT;
       return 0;
     }
-  if (*ed->stdin == dc)
-    ++ed->stdin;
+  if (*ed->input == dc)
+    ++ed->input;
   return substitution_modifiers (s_nth, s_mod, s_f, ed);
 }
 
@@ -239,10 +239,10 @@ substitution_template (dc, ed)
      unsigned dc;               /* Pattern delimiting char */
      ed_state_t *ed;
 {
-  if (*++ed->stdin == '%'
-      && (*(ed->stdin + 1) == dc || *(ed->stdin + 1) == '\n'))
+  if (*++ed->input == '%'
+      && (*(ed->input + 1) == dc || *(ed->input + 1) == '\n'))
     {
-      ++ed->stdin;
+      ++ed->input;
       if (!rhs)
         {
           ed->exec.err = _("No previous substitution");
@@ -257,19 +257,19 @@ substitution_template (dc, ed)
       rhs_size = 0;
     }
 
-  for (rhs_i = 0; *ed->stdin != dc; ++rhs_i, ++ed->stdin)
+  for (rhs_i = 0; *ed->input != dc; ++rhs_i, ++ed->input)
     {
       REALLOC_THROW (rhs, rhs_size, rhs_i + 2, ERR, ed);
 
       /* Only process escape sequences of the form `\dc' or `\\' here. */
-      if ((*(rhs + rhs_i) = *ed->stdin) == '\n' &&  *(ed->stdin + 1) == '\0')
+      if ((*(rhs + rhs_i) = *ed->input) == '\n' &&  *(ed->input + 1) == '\0')
         break;
-      if (*ed->stdin != '\\')
+      if (*ed->input != '\\')
         ;
-      else if (*(ed->stdin + 1) == dc)
-        *(rhs + rhs_i) = *++ed->stdin;
-      else if (*(ed->stdin + 1) == '\\')
-        *(rhs + ++rhs_i) = *++ed->stdin;
+      else if (*(ed->input + 1) == dc)
+        *(rhs + rhs_i) = *++ed->input;
+      else if (*(ed->input + 1) == '\\')
+        *(rhs + ++rhs_i) = *++ed->input;
     }
   REALLOC_THROW (rhs, rhs_size, rhs_i + 1, ERR, ed);
   *(rhs + rhs_i) = '\0';
@@ -288,10 +288,10 @@ substitution_modifiers (s_nth, s_mod, s_f, ed)
   int status;
 
   for (;;)
-    switch ((unsigned char) *ed->stdin)
+    switch ((unsigned char) *ed->input)
       {
       case '$':
-        ++ed->stdin;
+        ++ed->input;
         if (*s_f & GSUB)
           {
             *s_f |= SMLR;       /* Select frequency: (match_count - s_mod). */
@@ -339,7 +339,7 @@ substitution_modifiers (s_nth, s_mod, s_f, ed)
         break;
       case 'g':
         *s_f |= GSUB;
-        ++ed->stdin;
+        ++ed->input;
         break;
       default:
         return 0;

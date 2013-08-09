@@ -2,7 +2,7 @@
 
    Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2013-07-06 <alm@slewsys.org>
+   Last modified: 2013-08-09 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -27,7 +27,7 @@ append_lines (after, ed)
     {
       if (!ed->exec.global)
         {
-          if (!(ed->stdin = get_stdin_line (&len, ed)))
+          if (!(ed->input = get_stdin_line (&len, ed)))
             {
               /* Permit EOF (i.e., key stroke: CTL + D) at beginning of
                  line as alternative to `.' */
@@ -35,7 +35,7 @@ append_lines (after, ed)
               clearerr (stdin);
               return status;
             }
-          if (*(ed->stdin + len - 1) != '\n')
+          if (*(ed->input + len - 1) != '\n')
             {
               ed->exec.err = _("End-of-file unexpected");
               clearerr (stdin);
@@ -43,21 +43,21 @@ append_lines (after, ed)
             }
           ++ed->exec.line_no;
         }
-      else if (*ed->stdin == '\0')
+      else if (*ed->input == '\0')
         return 0;
-      if (*ed->stdin == '.' && *(ed->stdin + 1) == '\n')
+      if (*ed->input == '.' && *(ed->input + 1) == '\n')
         return 0;
       if (ed->exec.global)
         {
-          for (s = ed->stdin; *s++ != '\n';)
+          for (s = ed->input; *s++ != '\n';)
             ;
-          len = s - ed->stdin;
+          len = s - ed->input;
         }
       spl1 ();
       ed->buf[0].is_binary |= ed->buf[0].input_is_binary;
       if (after == ed->buf[0].addr_last)
         ed->buf[0].newline_appended = 0;
-      if (!(ed->stdin = put_buffer_line (ed->stdin, len, ed)))
+      if (!(ed->input = put_buffer_line (ed->input, len, ed)))
         {
           spl0 ();
           return ERR;

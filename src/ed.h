@@ -2,7 +2,7 @@
 
    Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2013-08-05 <alm@slewsys.org>
+   Last modified: 2013-08-09 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -446,7 +446,7 @@ enum ed_command_flags
 /* Ed state parameters. */
 typedef struct ed_state
 {
-  char *stdin;                  /* Standard input pointer. */
+  char *input;                  /* Standard input pointer. */
 
   struct ed_buffer buf[2];      /* Buffer state parameters. */
   struct ed_core core;          /* Meta data and storage parameters. */
@@ -661,8 +661,8 @@ enum search_type
 #define SKIP_WHITESPACE(ed)                                                   \
   do                                                                          \
     {                                                                         \
-      while (isspace ((unsigned char) *(ed)->stdin) && *(ed)->stdin != '\n')  \
-        ++(ed)->stdin;                                                        \
+      while (isspace ((unsigned char) *(ed)->input) && *(ed)->input != '\n')  \
+        ++(ed)->input;                                                        \
     }                                                                         \
   while (0)
 

@@ -2,7 +2,7 @@
 
    Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2013-07-06 <alm@slewsys.org>
+   Last modified: 2013-08-09 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -27,7 +27,7 @@ mark_global_nodes (want_match, ed)
   off_t from = ed->region.start;
   off_t to = ed->region.end;
   off_t n = from ? to - from + 1 : 0;
-  char dc = *ed->stdin;              /* pattern delimiting char */
+  char dc = *ed->input;              /* pattern delimiting char */
   char *s;
 
   spl1 ();
@@ -36,8 +36,8 @@ mark_global_nodes (want_match, ed)
       spl0 ();
       return ERR;
     }
-  if (*ed->stdin == dc && *ed->stdin != '\n')
-    ++ed->stdin;
+  if (*ed->input == dc && *ed->input != '\n')
+    ++ed->input;
   reset_global_queue (ed);
   spl0 ();
   lp = get_line_node (from, ed);
@@ -82,14 +82,14 @@ exec_global (io_f, ed)
 
   /* If non-interactive, read command before entering loop in the
      event of empty global queue. */
-  if (!interactive && !(ed->stdin = get_extended_line (&len, 0, ed)))
+  if (!interactive && !(ed->input = get_extended_line (&len, 0, ed)))
     {
       status = ERR;
       clearerr (stdin);
       return status;
     }
   for (ed->exec.first_pass = 1; (lp = next_global_node (ed));
-       ed->stdin = gcb, ed->exec.first_pass = 0)
+       ed->input = gcb, ed->exec.first_pass = 0)
     {
       if ((status = get_line_node_address (lp, &ed->buf[0].dot, ed)) < 0
           || (interactive
@@ -99,8 +99,8 @@ exec_global (io_f, ed)
 
       /* If `G/V' command, then read from stdin. */
       if (interactive
-          && (!(ed->stdin = get_stdin_line (&len, ed))
-              || !(ed->stdin = get_extended_line (&len, 0, ed))))
+          && (!(ed->input = get_stdin_line (&len, ed))
+              || !(ed->input = get_extended_line (&len, 0, ed))))
         {
           /* For an interactive global command, permit EOF to cancel. */
           status = feof (stdin) ? 0 : ERR;
@@ -109,7 +109,7 @@ exec_global (io_f, ed)
         }
 
       /* Global non-interactive command already set. */
-      if (ed->stdin == gcb)
+      if (ed->input == gcb)
         ;
 
       /* Skip to next line */
@@ -117,7 +117,7 @@ exec_global (io_f, ed)
         continue;
 
       /* Repeat previous command. */
-      else if (len == 2 && *ed->stdin == '&' && interactive)
+      else if (len == 2 && *ed->input == '&' && interactive)
         {
           if (first_time)
             {
@@ -127,14 +127,14 @@ exec_global (io_f, ed)
         }
       else
         {
-          /* get_extended_line () isn't reentrant, so save ed->stdin. */
+          /* get_extended_line () isn't reentrant, so save ed->input. */
           REALLOC_THROW (gcb, gcb_size, len + 1, ERR, ed);
 
-          /* Assert: ed->stdin is NUL-terminated! */
-          strcpy (gcb, ed->stdin);
+          /* Assert: ed->input is NUL-terminated! */
+          strcpy (gcb, ed->input);
           first_time = 0;
         }
-      for (ed->stdin = gcb; *ed->stdin;)
+      for (ed->input = gcb; *ed->input;)
         if ((status =
              address_range (ed)) < 0
             || (status = exec_command (ed)) < 0)
