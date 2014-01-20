@@ -16,7 +16,7 @@
 
 # Makefile.am: Doc/tutorial automake template for the ed line editor.
 
-# Copyright © 2006-2013 Andrew L. Moore, SlewSys Research
+# Copyright © 2006-2014 Andrew L. Moore, SlewSys Research
 
 # Last modified: 2013-01-27 <alm@buttercup.lan>
 

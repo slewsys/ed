@@ -1,8 +1,8 @@
 /* exec.c: Command switch for the ed line editor.
 
-   Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
+   Copyright © 1993-2014 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2013-08-09 <alm@slewsys.org>
+   Last modified: 2014-01-20 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -27,7 +27,7 @@
         default:                                                              \
           if (*(ed)->input != '\n')                                           \
             {                                                                 \
-              (ed)->exec.err = _("Command suffix unexpected");                \
+              (ed)->exec->err = _("Command suffix unexpected");               \
               return ERR;                                                     \
             }                                                                 \
           break;                                                              \
@@ -50,11 +50,11 @@
               clearerr (stdin);                                               \
               return ERR;                                                     \
             }                                                                 \
-          if (_subs && !((ed)->exec.opt & SCRIPTED))                          \
+          if (_subs && !((ed)->exec->opt & SCRIPTED))                         \
             puts ((fn) + 1);                                                  \
         }                                                                     \
       else if (!((fn) =                                                       \
-                 ((ed)->file.is_glob || (cm) == 'n' || (cm) == 'p'            \
+                 ((ed)->file->is_glob || (cm) == 'n' || (cm) == 'p'           \
                   ? file_glob (&(len), (cm), (replace), (ed))                 \
                   : file_name (&(len), (ed)))))                               \
         {                                                                     \
@@ -70,25 +70,25 @@
 #define DESTINATION_ADDRESS(addr, ed)                                         \
   do                                                                          \
     {                                                                         \
-      off_t _start = (ed)->region.start;                                      \
-      off_t _end = (ed)->region.end;                                          \
+      off_t _start = (ed)->region->start;                                     \
+      off_t _end = (ed)->region->end;                                         \
       int _status;                                                            \
       if ((_status = address_range (ed)) < 0)                                 \
         return _status;                                                       \
-      if ((ed)->exec.opt & (POSIXLY_CORRECT | TRADITIONAL)                    \
-          && !(ed)->region.addrs)                                             \
+      if ((ed)->exec->opt & (POSIXLY_CORRECT | TRADITIONAL)                   \
+          && !(ed)->region->addrs)                                            \
         {                                                                     \
-          (ed)->exec.err = _("Destination address required");                 \
+          (ed)->exec->err = _("Destination address required");                \
           return ERR;                                                         \
         }                                                                     \
-      if ((ed)->buf[0].addr_last < (ed)->region.end)                          \
+      if ((ed)->buf[0].addr_last < (ed)->region->end)                         \
         {                                                                     \
-          (ed)->exec.err = _("Address out of range");                         \
+          (ed)->exec->err = _("Address out of range");                        \
           return ERR;                                                         \
         }                                                                     \
-      (addr) = (ed)->region.end;                                              \
-      (ed)->region.end = _end;                                                \
-      (ed)->region.start = _start;                                            \
+      (addr) = (ed)->region->end;                                             \
+      (ed)->region->end = _end;                                               \
+      (ed)->region->start = _start;                                           \
     }                                                                         \
   while (0)
 
@@ -129,11 +129,11 @@ exec_command (ed)
   int is_default = 0;
   int status = 0;               /* Return status */
 
-  ed->display.is_paging = paging;
+  ed->display->is_paging = paging;
   paging = 0;
   SKIP_WHITESPACE (ed);
 
-  if (ed->file.is_glob = (c = *ed->input++) == '~')
+  if (ed->file->is_glob = (c = *ed->input++) == '~')
     c = *ed->input++;
   switch (c)
     {
@@ -144,9 +144,9 @@ exec_command (ed)
       if (!ed->buf[0].is_empty || !ed->buf[0].addr_last)
         {
           COMMAND_SUFFIX (io_f, ed);
-          if (!ed->exec.global)
+          if (!ed->exec->global)
             reset_undo_queue (ed);
-          if ((status = append_lines (ed->region.end, ed)) < 0)
+          if ((status = append_lines (ed->region->end, ed)) < 0)
             return status;
           break;
         }
@@ -154,15 +154,15 @@ exec_command (ed)
     case 'c':
 
       /* As per SUSv3, 2004, 0c => 1c, so 0,0c => 1,1c. */
-      ed->region.start += !ed->region.start;
-      ed->region.end += !ed->region.end;
+      ed->region->start += !ed->region->start;
+      ed->region->end += !ed->region->end;
       if ((status = is_valid_range (ed->buf[0].dot, ed->buf[0].dot, ed)) < 0)
         return status;
       COMMAND_SUFFIX (io_f, ed);
-      if (!ed->exec.global)
+      if (!ed->exec->global)
         reset_undo_queue (ed);
       spl1 ();
-      if ((status = delete_lines (ed->region.start, ed->region.end, ed)) < 0)
+      if ((status = delete_lines (ed->region->start, ed->region->end, ed)) < 0)
         {
           spl0 ();
           return status;
@@ -175,11 +175,11 @@ exec_command (ed)
       if ((status = is_valid_range (ed->buf[0].dot, ed->buf[0].dot, ed)) < 0)
         return status;
       COMMAND_SUFFIX (io_f, ed);
-      if (!ed->exec.global)
+      if (!ed->exec->global)
         reset_undo_queue (ed);
 
       spl1 ();
-      if ((status = delete_lines (ed->region.start, ed->region.end, ed)) < 0)
+      if ((status = delete_lines (ed->region->start, ed->region->end, ed)) < 0)
         {
           spl0 ();
           return status;
@@ -191,13 +191,13 @@ exec_command (ed)
       spl0 ();
       break;
     case 'e':
-      if (ed->buf[0].is_modified && !(ed->exec.opt & SCRIPTED))
+      if (ed->buf[0].is_modified && !(ed->exec->opt & SCRIPTED))
         return EMOD;
       /* FALLTHROUGH */
     case 'E':
-      if (ed->region.addrs)
+      if (ed->region->addrs)
         {
-          ed->exec.err = _("Address unexpected");
+          ed->exec->err = _("Address unexpected");
           return ERR;
         }
 #ifdef WANT_FILE_GLOB
@@ -206,7 +206,7 @@ exec_command (ed)
 #endif
       if (!isspace ((unsigned char) *ed->input))
         {
-          ed->exec.err = _("Command suffix unexpected");
+          ed->exec->err = _("Command suffix unexpected");
           return ERR;
         }
       SKIP_WHITESPACE (ed);
@@ -235,9 +235,9 @@ exec_command (ed)
       spl0 ();
 
       if (*fn == '!' ||
-          (*fn == '\0' && ed->file.name && *ed->file.name == '!'))
+          (*fn == '\0' && ed->file->name && *ed->file->name == '!'))
         {
-          if ((status = read_pipe (*fn == '!' ? fn : ed->file.name,
+          if ((status = read_pipe (*fn == '!' ? fn : ed->file->name,
                                    0, &addr, &size, ed)) < 0)
             return status;
         }
@@ -246,42 +246,42 @@ exec_command (ed)
           /* As per SUSv3, file name changes unconditionally. */
           if (*fn != '\0')
             {
-              REALLOC_THROW (ed->file.name, ed->file.name_size,
+              REALLOC_THROW (ed->file->name, ed->file->name_size,
                              len + 1, ERR, ed);
-              strcpy (ed->file.name, fn);
+              strcpy (ed->file->name, fn);
               ++is_default;
             }
-          else if (ed->file.name && *ed->file.name != '\0')
+          else if (ed->file->name && *ed->file->name != '\0')
             ++is_default;
 
           /* As per SUSv3, file argument is optional. Though not
              mandated by SUSv3, if default file name is not set,
              trivially succeed by reading from `/dev/null'. */
-          if ((status = read_file (is_default ? ed->file.name : "/dev/null",
+          if ((status = read_file (is_default ? ed->file->name : "/dev/null",
                                    0, &addr, &size, is_default, ed)) < 0)
             return status;
-          if (!(ed->exec.opt & (POSIXLY_CORRECT | TRADITIONAL | SCRIPTED))
-              && access (ed->file.name, W_OK) < 0)
-            fprintf (stderr, (ed->exec.opt & VERBOSE
+          if (!(ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL | SCRIPTED))
+              && access (ed->file->name, W_OK) < 0)
+            fprintf (stderr, (ed->exec->opt & VERBOSE
                               ? "%s: Read-only file permission\n" : ""),
-                     ed->file.name);
-          else if (ed->file.is_glob || cx == '\n')
-            printf (ed->exec.opt & SCRIPTED ? "" : "%s\n", fn);
+                     ed->file->name);
+          else if (ed->file->is_glob || cx == '\n')
+            printf (ed->exec->opt & SCRIPTED ? "" : "%s\n", fn);
         }
-      printf (ed->exec.opt & SCRIPTED ? "" : "%" OFF_T_FORMAT_STRING "\n",
+      printf (ed->exec->opt & SCRIPTED ? "" : "%" OFF_T_FORMAT_STRING "\n",
               size);
 
       /* As per SUSv3, exit_status cannot be reset. We'll do it anyhow ... */
-      if (!(ed->exec.opt
+      if (!(ed->exec->opt
             & (POSIXLY_CORRECT|TRADITIONAL|SCRIPTED|EXIT_ON_ERROR)))
-        ed->exec.status = 0;
+        ed->exec->status = 0;
         
 
       return 0;
     case 'f':
-      if (ed->region.addrs)
+      if (ed->region->addrs)
         {
-          ed->exec.err = _("Address unexpected");
+          ed->exec->err = _("Address unexpected");
           return ERR;
         }
 #ifdef WANT_FILE_GLOB
@@ -290,7 +290,7 @@ exec_command (ed)
 #endif
       if (!isspace ((unsigned char) *ed->input))
         {
-          ed->exec.err = _("Command suffix unexpected");
+          ed->exec->err = _("Command suffix unexpected");
           return ERR;
         }
       SKIP_WHITESPACE (ed);
@@ -307,9 +307,9 @@ exec_command (ed)
              f !cat >`filename generator`
              w
       */
-      if (ed->exec.opt & (POSIXLY_CORRECT | TRADITIONAL) && *ed->input == '!')
+      if (ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL) && *ed->input == '!')
         {
-          ed->exec.err = _("Invalid redirection");
+          ed->exec->err = _("Invalid redirection");
           return ERR;
         }
 
@@ -318,17 +318,17 @@ exec_command (ed)
       else
         {
           FILE_NAME (fn, len, cy, 1, ed);
-          REALLOC_THROW (ed->file.name, ed->file.name_size, len + 1, ERR, ed);
-          strcpy (ed->file.name, fn);
+          REALLOC_THROW (ed->file->name, ed->file->name_size, len + 1, ERR, ed);
+          strcpy (ed->file->name, fn);
         }
-      if (ed->file.is_glob && ed->file.glob.gl_pathc > 0)
-        for (cx = 0; cx < ed->file.glob.gl_pathc; ++cx)
-          puts (ed->file.glob.gl_pathv[cx]);
-      else if (ed->file.name)
-        puts (ed->file.name);
-      else if (ed->exec.opt & (POSIXLY_CORRECT | TRADITIONAL))
+      if (ed->file->is_glob && ed->file->glob->gl_pathc > 0)
+        for (cx = 0; cx < ed->file->glob->gl_pathc; ++cx)
+          puts (ed->file->glob->gl_pathv[cx]);
+      else if (ed->file->name)
+        puts (ed->file->name);
+      else if (ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL))
         {
-          ed->exec.err = _("File name not set");
+          ed->exec->err = _("File name not set");
           return ERR;
         }
       return 0;
@@ -336,9 +336,9 @@ exec_command (ed)
     case 'g':
     case 'V':
     case 'v':
-      if (ed->exec.global)
+      if (ed->exec->global)
         {
-          ed->exec.err = _("Recursive global command");
+          ed->exec->err = _("Recursive global command");
           return ERR;
         }
       if ((status = is_valid_range (1, ed->buf[0].addr_last, ed)) < 0
@@ -346,82 +346,82 @@ exec_command (ed)
         return status;
       if (c == 'G' || c == 'V')
         {
-          ed->exec.global = GLBI;
+          ed->exec->global = GLBI;
           COMMAND_SUFFIX (io_f, ed);
         }
-      ed->exec.global |= GLBL;
+      ed->exec->global |= GLBL;
 
       if ((status = exec_global (io_f, ed)) < 0)
         return status;
       break;
     case 'H':
-      if (ed->region.addrs)
+      if (ed->region->addrs)
         {
-          ed->exec.err = _("Address unexpected");
+          ed->exec->err = _("Address unexpected");
           return ERR;
         }
       COMMAND_SUFFIX (io_f, ed);
 
       /* Toggle VERBOSE setting. */
-      ed->exec.opt ^= ed->exec.opt & VERBOSE;
-      if (ed->exec.opt & VERBOSE && ed->exec.err)
-        puts (ed->exec.err);
+      ed->exec->opt ^= ed->exec->opt & VERBOSE;
+      if (ed->exec->opt & VERBOSE && ed->exec->err)
+        puts (ed->exec->err);
       break;
     case 'h':
 
       /* Of all commands, at least `h' should be forgiving, but
          SUSv3, 2004 says otherwise... */
-      if (ed->region.addrs)
+      if (ed->region->addrs)
         {
-          ed->exec.err = _("Address unexpected");
+          ed->exec->err = _("Address unexpected");
           return ERR;
         }
       COMMAND_SUFFIX (io_f, ed);
-      puts (ed->exec.err ? ed->exec.err : _("No previous error"));
+      puts (ed->exec->err ? ed->exec->err : _("No previous error"));
       break;
     case 'i':
 
       /* As per SUSv3, 2004, 0i => 1i. */
-      ed->region.end += !ed->region.end;
+      ed->region->end += !ed->region->end;
       COMMAND_SUFFIX (io_f, ed);
-      if (!ed->exec.global)
+      if (!ed->exec->global)
         reset_undo_queue (ed);
-      if ((status = append_lines (ed->region.end - 1, ed)) < 0)
+      if ((status = append_lines (ed->region->end - 1, ed)) < 0)
         return status;
 
       /* Per SUSv3, 2004, empty insert sets dot to addressed line. */
-      if (ed->buf[0].dot == ed->region.end - 1)
-        ed->buf[0].dot = ed->region.end;
+      if (ed->buf[0].dot == ed->region->end - 1)
+        ed->buf[0].dot = ed->region->end;
       break;
     case 'j':
 
       /* Allow joining an empty buffer provided no addresses are
          specified. */
-      if (!(ed->region.addrs || ed->buf[0].addr_last))
+      if (!(ed->region->addrs || ed->buf[0].addr_last))
         {
-          ed->region.start = 0;
-          ed->region.end = 0;
+          ed->region->start = 0;
+          ed->region->end = 0;
         }
       else
         if ((status =
              is_valid_range (ed->buf[0].dot, ed->buf[0].dot + 1, ed)) < 0)
           return status;
       COMMAND_SUFFIX (io_f, ed);
-      if (!ed->exec.global)
+      if (!ed->exec->global)
         reset_undo_queue (ed);
-      if (ed->region.start != ed->region.end
-          && (status = join_lines (ed->region.start, ed->region.end, ed)) < 0)
+      if (ed->region->start != ed->region->end
+          && (status = join_lines (ed->region->start, ed->region->end, ed)) < 0)
         return status;
       break;
     case 'k':
       cx = *ed->input++;
-      if (ed->region.end == 0)
+      if (ed->region->end == 0)
         {
-          ed->exec.err = _("Address out of range");
+          ed->exec->err = _("Address out of range");
           return ERR;
         }
       COMMAND_SUFFIX (io_f, ed);
-      if ((status = mark_line_node (get_line_node (ed->region.end, ed),
+      if ((status = mark_line_node (get_line_node (ed->region->end, ed),
                                     cx, ed)) < 0)
         return status;
       break;
@@ -429,91 +429,94 @@ exec_command (ed)
 
       /* Allow printing an empty buffer provided no addresses are
          specified. */
-      if (!(ed->region.addrs || ed->buf[0].addr_last))
+      if (!(ed->region->addrs || ed->buf[0].addr_last))
         {
-          ed->region.start = 0;
-          ed->region.end = 0;
+          ed->region->start = 0;
+          ed->region->end = 0;
         }
       else if ((status =
                 is_valid_range (ed->buf[0].dot, ed->buf[0].dot, ed)) < 0)
         return status;
       COMMAND_SUFFIX (io_f, ed);
-      return display_lines (ed->region.start, ed->region.end, io_f | LIST, ed);
+      return display_lines (ed->region->start, ed->region->end,
+                            io_f | LIST, ed);
     case 'm':
       if ((status = is_valid_range (ed->buf[0].dot, ed->buf[0].dot, ed)) < 0)
         return status;
       DESTINATION_ADDRESS (addr, ed);
-      if (ed->region.start <= addr && addr < ed->region.end)
+      if (ed->region->start <= addr && addr < ed->region->end)
         {
-          ed->exec.err = _("Invalid destination address");
+          ed->exec->err = _("Invalid destination address");
           return ERR;
         }
       COMMAND_SUFFIX (io_f, ed);
-      if (!ed->exec.global)
+      if (!ed->exec->global)
         reset_undo_queue (ed);
       if ((status =
-           move_lines (ed->region.start, ed->region.end, addr, ed)) < 0)
+           move_lines (ed->region->start, ed->region->end, addr, ed)) < 0)
         return status;
       break;
     case 'n':
 
       /* Allow printing an empty buffer provided no addresses are
          specified. */
-      if (!(ed->region.addrs || ed->buf[0].addr_last))
+      if (!(ed->region->addrs || ed->buf[0].addr_last))
         {
-          ed->region.start = 0;
-          ed->region.end = 0;
+          ed->region->start = 0;
+          ed->region->end = 0;
         }
       else if ((status =
                 is_valid_range (ed->buf[0].dot, ed->buf[0].dot, ed)) < 0)
         return status;
       COMMAND_SUFFIX (io_f, ed);
-      return display_lines (ed->region.start, ed->region.end, io_f | NMBR, ed);
+      return display_lines (ed->region->start, ed->region->end,
+                            io_f | NMBR, ed);
     case 'P':
-      if (ed->region.addrs)
+      if (ed->region->addrs)
         {
-          ed->exec.err = _("Address unexpected");
+          ed->exec->err = _("Address unexpected");
           return ERR;
         }
       COMMAND_SUFFIX (io_f, ed);
 
       /* Toggle PROMPT settings. */
-      ed->exec.opt ^= ed->exec.opt & PROMPT;
+      ed->exec->opt ^= ed->exec->opt & PROMPT;
       break;
     case 'p':
       /* Allow printing an empty buffer provided no addresses are
          specified. */
-      if (!(ed->region.addrs || ed->buf[0].addr_last))
+      if (!(ed->region->addrs || ed->buf[0].addr_last))
         {
-          ed->region.start = 0;
-          ed->region.end = 0;
+          ed->region->start = 0;
+          ed->region->end = 0;
         }
       else if ((status =
                 is_valid_range (ed->buf[0].dot, ed->buf[0].dot, ed)) < 0)
         return status;
       COMMAND_SUFFIX (io_f, ed);
-      return display_lines (ed->region.start, ed->region.end, io_f | PRNT, ed);
+      return display_lines (ed->region->start, ed->region->end,
+                            io_f | PRNT, ed);
     case 'Q':
     case 'q':
-      if (ed->region.addrs)
+      if (ed->region->addrs)
         {
-          ed->exec.err = _("Address unexpected");
+          ed->exec->err = _("Address unexpected");
           return ERR;
         }
       COMMAND_SUFFIX (io_f, ed);
-      return (c == 'q' && ed->buf[0].is_modified && !(ed->exec.opt & SCRIPTED)
+      return (c == 'q' && ed->buf[0].is_modified && !(ed->exec->opt & SCRIPTED)
               ? EMOD : EOF);
     case 'r':
       if (!isspace ((unsigned char) *ed->input))
         {
-          ed->exec.err = _("Command suffix unexpected");
+          ed->exec->err = _("Command suffix unexpected");
           return ERR;
         }
       SKIP_WHITESPACE (ed);
-      FILE_NAME (fn, len, 0, !ed->file.name, ed);
+      FILE_NAME (fn, len, 0, !ed->file->name, ed);
 
       spl1 ();
-      if (!ed->exec.global)
+      if (!ed->exec->global)
         reset_undo_queue (ed);
 
       /* Reading a sequence of files is similar to concatenation,
@@ -530,65 +533,65 @@ exec_command (ed)
           return status;
         }
       ed->buf[0].newline_appended = cx;
-      if (!(ed->region.addrs && ed->buf[0].addr_last))
-        ed->region.end = ed->buf[0].addr_last;
+      if (!(ed->region->addrs && ed->buf[0].addr_last))
+        ed->region->end = ed->buf[0].addr_last;
       spl0 ();
 
       if (*fn == '!'
-          || (*fn == '\0' && ed->file.name && *ed->file.name == '!'))
+          || (*fn == '\0' && ed->file->name && *ed->file->name == '!'))
         {
-          if ((status = read_pipe (*fn == '!' ? fn : ed->file.name,
-                                   ed->region.end, &addr, &size, ed)) < 0)
+          if ((status = read_pipe (*fn == '!' ? fn : ed->file->name,
+                                   ed->region->end, &addr, &size, ed)) < 0)
             return status;
         }
       else
         {
-          /* Save filename as default iff ed->file.name not set. */
-          if (!ed->file.name && *fn != '\0')
+          /* Save filename as default iff ed->file->name not set. */
+          if (!ed->file->name && *fn != '\0')
             {
-              REALLOC_THROW (ed->file.name, ed->file.name_size,
+              REALLOC_THROW (ed->file->name, ed->file->name_size,
                              len + 1, ERR, ed);
-              strcpy (ed->file.name, fn);
+              strcpy (ed->file->name, fn);
               ++is_default;
             }
-          else if (*fn == '\0' && ed->file.name && *ed->file.name != '\0')
+          else if (*fn == '\0' && ed->file->name && *ed->file->name != '\0')
             ++is_default;
 
           /* As per SUSv3, file argument is optional. Though not mandated
              by SUSv3, if default file name is not set, trivially
              succeed by reading from `/dev/null'. */
           if ((status =
-               read_file ((is_default ? ed->file.name
+               read_file ((is_default ? ed->file->name
                            : (*fn != '\0' ? fn : "/dev/null")),
-                          ed->region.end, &addr, &size, is_default, ed)) < 0)
+                          ed->region->end, &addr, &size, is_default, ed)) < 0)
             return status;
 
-          if (!(ed->exec.opt & (POSIXLY_CORRECT | TRADITIONAL | SCRIPTED))
-                && access (ed->file.name, W_OK) < 0)
-            fprintf (stderr, (ed->exec.opt & VERBOSE
+          if (!(ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL | SCRIPTED))
+                && access (ed->file->name, W_OK) < 0)
+            fprintf (stderr, (ed->exec->opt & VERBOSE
                               ? "%s: Read-only access\n" : ""), fn);
-          else if (ed->file.is_glob)
-            printf (ed->exec.opt & SCRIPTED ? "" : "%s\n", fn);
+          else if (ed->file->is_glob)
+            printf (ed->exec->opt & SCRIPTED ? "" : "%s\n", fn);
 
           /* Reading `/dev/null' to the end of a binary file is a special
              case for removing any trailing newline. */
           if (ed->buf[0].is_binary
-              && !strcmp ((cz ? ed->file.name
+              && !strcmp ((cz ? ed->file->name
                            : (*fn != '\0' ? fn : "/dev/null")), "/dev/null"))
             ed->buf[0].newline_appended = 1;
         }
 
       /* If multiple file args on command line, print first one. */
-      if (ed->exec.opt & PRINT_FIRST_FILE && ed->file.list.gl_pathc > 1)
-        printf (ed->exec.opt & SCRIPTED ? "" : "%s\n", ed->file.name);
+      if (ed->exec->opt & PRINT_FIRST_FILE && ed->file->list->gl_pathc > 1)
+        printf (ed->exec->opt & SCRIPTED ? "" : "%s\n", ed->file->name);
 
-      printf (ed->exec.opt & SCRIPTED ? "" : "%" OFF_T_FORMAT_STRING "\n",
+      printf (ed->exec->opt & SCRIPTED ? "" : "%" OFF_T_FORMAT_STRING "\n",
               size);
       if (addr && addr != ed->buf[0].addr_last)
         ed->buf[0].is_modified = 1;
       return 0;
     case 's':
-      init_substitute (&lhs, &s_f, &s_nth, &s_mod, &sio_f, &ed->subst);
+      init_substitute (&lhs, &s_f, &s_nth, &s_mod, &sio_f, ed->subst);
       if ((status = is_valid_range (ed->buf[0].dot, ed->buf[0].dot, ed)) < 0
           || (status = resubstitute (&s_nth, &s_mod, &s_f, &sgpr_f, ed)) < 0
           || (status = substitution_lhs (&lhs, &sgpr_f, ed)) < 0)
@@ -598,8 +601,8 @@ exec_command (ed)
       if (sgpr_f)
         {
           /* Ignore after first iteration of non-interactive global. */
-          if (!ed->exec.global || ed->exec.first_pass
-              || (ed->exec.global & GLBI))
+          if (!ed->exec->global || ed->exec->first_pass
+              || (ed->exec->global & GLBI))
             {
               if (sgpr_f & TGSG)
                 s_f ^= GSUB;
@@ -619,10 +622,10 @@ exec_command (ed)
                 substitution_rhs (&s_nth, &s_mod, &s_f, &sio_f, ed)) < 0)
         return status;
       COMMAND_SUFFIX (sio_f, ed);
-      if (!ed->exec.global)
+      if (!ed->exec->global)
         reset_undo_queue (ed);
-      save_substitute (lhs, s_f, s_nth, s_mod, sio_f, &ed->subst);
-      if ((status = substitute_lines (ed->region.start, ed->region.end,
+      save_substitute (lhs, s_f, s_nth, s_mod, sio_f, ed->subst);
+      if ((status = substitute_lines (ed->region->start, ed->region->end,
                                       lhs, s_nth, s_mod, s_f, ed)) < 0)
         return status;
       if (sio_f && !(s_f & PRSW))
@@ -633,16 +636,16 @@ exec_command (ed)
         return status;
       DESTINATION_ADDRESS (addr, ed);
       COMMAND_SUFFIX (io_f, ed);
-      if (!ed->exec.global)
+      if (!ed->exec->global)
         reset_undo_queue (ed);
       if ((status =
-           copy_lines (ed->region.start, ed->region.end, addr, ed)) < 0)
+           copy_lines (ed->region->start, ed->region->end, addr, ed)) < 0)
         return status;
       break;
     case 'u':
-      if (ed->region.addrs)
+      if (ed->region->addrs)
         {
-          ed->exec.err = _("Address unexpected");
+          ed->exec->err = _("Address unexpected");
           return ERR;
         }
       COMMAND_SUFFIX (io_f, ed);
@@ -654,17 +657,17 @@ exec_command (ed)
 
       /* Allow writing an empty buffer provided no addresses are
          specified. */
-      if (!(ed->region.addrs || ed->buf[0].addr_last))
+      if (!(ed->region->addrs || ed->buf[0].addr_last))
         {
-          ed->region.start = 0;
-          ed->region.end = 0;
+          ed->region->start = 0;
+          ed->region->end = 0;
         }
       else if ((status = is_valid_range (1, ed->buf[0].addr_last, ed)) < 0)
         return status;
-      if (ed->exec.opt & POSIXLY_CORRECT
+      if (ed->exec->opt & POSIXLY_CORRECT
           && !isspace ((unsigned char) *ed->input))
         {
-          ed->exec.err = _("Command suffix unexpected");
+          ed->exec->err = _("Command suffix unexpected");
           return ERR;
         }
 #ifdef WANT_FILE_GLOB
@@ -674,9 +677,9 @@ exec_command (ed)
       else if ((cx = *ed->input) == 'q')
         {
 #ifdef WANT_SAFE_WRITE
-          if (ed->file.is_glob)
+          if (ed->file->is_glob)
             {
-              ed->exec.err = _("Command suffix unexpected");
+              ed->exec->err = _("Command suffix unexpected");
               return ERR;
             }
 #endif
@@ -684,57 +687,57 @@ exec_command (ed)
         }
       if (!isspace ((unsigned char) *ed->input))
         {
-          ed->exec.err = _("Command suffix unexpected");
+          ed->exec->err = _("Command suffix unexpected");
           return ERR;
         }
       SKIP_WHITESPACE (ed);
 
       cz = *ed->input == '!';
 #ifdef WANT_SAFE_WRITE
-      FILE_NAME (fn, len, ed->file.is_glob,
-                 ed->file.is_glob ? *ed->input != '\n' : !ed->file.name, ed);
+      FILE_NAME (fn, len, ed->file->is_glob,
+                 ed->file->is_glob ? *ed->input != '\n' : !ed->file->name, ed);
 #else
-      FILE_NAME (fn, len, ed->file.is_glob, !ed->file.name, ed);
+      FILE_NAME (fn, len, ed->file->is_glob, !ed->file->name, ed);
 #endif  /* !WANT_SAFE_WRITE */
 
       if (*fn == '!'
-          || (*fn == '\0' && ed->file.name && *ed->file.name == '!'))
+          || (*fn == '\0' && ed->file->name && *ed->file->name == '!'))
         {
-          if ((status = write_pipe (*fn == '!' ? fn : ed->file.name,
-                                    ed->region.start, ed->region.end,
+          if ((status = write_pipe (*fn == '!' ? fn : ed->file->name,
+                                    ed->region->start, ed->region->end,
                                     &addr, &size, ed)) < 0)
             return status;
         }
       else
         {
 #ifdef WANT_SAFE_WRITE
-          if (ed->file.is_glob)
+          if (ed->file->is_glob)
             {
-              if (ed->file.name)
+              if (ed->file->name)
                 ++is_default;
               else
                 fn = "";
             }
           else
 #endif
-            /* Save filename as default iff ed->file.name not set. */
-            if (!ed->file.name && *fn != '\0')
+            /* Save filename as default iff ed->file->name not set. */
+            if (!ed->file->name && *fn != '\0')
               {
-                REALLOC_THROW (ed->file.name, ed->file.name_size,
+                REALLOC_THROW (ed->file->name, ed->file->name_size,
                                len + 1, ERR, ed);
-                strcpy (ed->file.name, fn);
+                strcpy (ed->file->name, fn);
                 ++is_default;
               }
-            else if (*fn == '\0' && ed->file.name && *ed->file.name != '\0')
+            else if (*fn == '\0' && ed->file->name && *ed->file->name != '\0')
               ++is_default;
 
           /* As per SUSv3, file argument is optional. Though not
              mandated by SUSv3, if default file name is not set,
              trivially succeed by writing to `/dev/null'. */
           if ((status =
-               write_file ((is_default ? ed->file.name
+               write_file ((is_default ? ed->file->name
                             : (*fn != '\0' ? fn : "/dev/null")),
-                           is_default, ed->region.start, ed->region.end,
+                           is_default, ed->region->start, ed->region->end,
                            &addr, &size, (c == 'W' ? "a" : "w"), ed)) < 0)
             return status;
 
@@ -746,16 +749,16 @@ exec_command (ed)
 
               /* As per SUSv3, exit_status cannot be reset. We'll do
                  it anyhow ... */
-              if (!(ed->exec.opt
+              if (!(ed->exec->opt
                     & (POSIXLY_CORRECT|TRADITIONAL|SCRIPTED|EXIT_ON_ERROR)))
-                ed->exec.status = 0;
+                ed->exec->status = 0;
             }
-          if (ed->file.is_glob || cy == 'n' || cy == 'p')
-            printf (ed->exec.opt & SCRIPTED ? "" : "%s\n",
-                    (is_default ? ed->file.name
+          if (ed->file->is_glob || cy == 'n' || cy == 'p')
+            printf (ed->exec->opt & SCRIPTED ? "" : "%s\n",
+                    (is_default ? ed->file->name
                      : (*fn != '\0' ? fn : "/dev/null")));
         }
-      printf (ed->exec.opt & SCRIPTED ? "" : "%" OFF_T_FORMAT_STRING "\n",
+      printf (ed->exec->opt & SCRIPTED ? "" : "%" OFF_T_FORMAT_STRING "\n",
               size);
 
       /*
@@ -785,13 +788,13 @@ exec_command (ed)
 #ifdef WANT_FILE_GLOB
       return (
 # ifdef WANT_SAFE_WRITE
-              (ed->file.is_glob || cy == 'n' || cy == 'p' || cx == 'q')
-              && ed->buf[0].is_modified && !(ed->exec.opt & SCRIPTED) ? EMOD
-              : ed->file.is_glob ? EOF_GLB
+              (ed->file->is_glob || cy == 'n' || cy == 'p' || cx == 'q')
+              && ed->buf[0].is_modified && !(ed->exec->opt & SCRIPTED) ? EMOD
+              : ed->file->is_glob ? EOF_GLB
               
 # else
               (cy == 'n' || cy == 'p' || cx == 'q')
-              && ed->buf[0].is_modified && !(ed->exec.opt & SCRIPTED) ? EMOD
+              && ed->buf[0].is_modified && !(ed->exec->opt & SCRIPTED) ? EMOD
 # endif  /* !WANT_SAFE_WRITE */
               : cy == 'n' ? EOF_NXT
               : cy == 'p' ? EOF_PRV
@@ -799,7 +802,7 @@ exec_command (ed)
               : 0);
 #else
       return (cx == 'q'
-              ? (ed->buf[0].is_modified && !(ed->exec.opt & SCRIPTED)
+              ? (ed->buf[0].is_modified && !(ed->exec->opt & SCRIPTED)
                  ? EMOD : EOF) : 0);
 #endif  /* !WANT_FILE_GLOB */
 
@@ -809,37 +812,37 @@ exec_command (ed)
          line, where `n' defaults to current window size. The current
          address is set to the last line displayed. A subsequent `['
          command, therefore, scrolls backward one-half page. */
-      /* ed->buf[0].dot = ed->display.page_addr; */
-      if (ed->exec.opt & (POSIXLY_CORRECT | TRADITIONAL))
+      /* ed->buf[0].dot = ed->display->page_addr; */
+      if (ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL))
         {
-          ed->exec.err = _("Unknown command");
+          ed->exec->err = _("Unknown command");
           return ERR;
         }
-      if ((status = is_valid_range (ed->display.page_addr,
-                                    ed->display.page_addr, ed)) < 0)
+      if ((status = is_valid_range (ed->display->page_addr,
+                                    ed->display->page_addr, ed)) < 0)
         return status;
 
       /* XXX - Required, so explain why */
-      ed->region.addrs = 1;
+      ed->region->addrs = 1;
 
       /* Half-page scrolling implemenation requires "normalized"
          frame buffer, so load page preceding given address in
-         background (display.off = 1), then scroll from there. */
-      ed->display.off = 1;
+         background (display->off = 1), then scroll from there. */
+      ed->display->off = 1;
       if ((status = exec_one_off ("Z", ed->input, ed)) < 0)
         {
-          ed->display.off = 0;
+          ed->display->off = 0;
           return status;
         }
-      ed->display.off = 0;
+      ed->display->off = 0;
 
       /* At start or end of buffer, so display it. */
-      if (!ed->display.is_paging && ed->region.end < ed->buf[0].dot
+      if (!ed->display->is_paging && ed->region->end < ed->buf[0].dot
           || ed->buf[0].dot == ed->buf[0].addr_last)
         return exec_one_off ("Z", ed->input, ed);
 
       /* XXX - Required, so explain why */
-      ed->region.addrs = 0;
+      ed->region->addrs = 0;
 
       /* FALLTHROUGH */
     case ']':
@@ -847,33 +850,33 @@ exec_command (ed)
          line, where `n' defaults to current window size. The current
          address is set to the last line printed. A subsequent `]'
          command, therefore, scrolls forward one-half page. */
-      if (ed->exec.opt & (POSIXLY_CORRECT | TRADITIONAL))
+      if (ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL))
         {
-          ed->exec.err = _("Unknown command");
+          ed->exec->err = _("Unknown command");
           return ERR;
         }
-      if (c == ']' && (ed->region.addrs || !ed->display.is_paging))
+      if (c == ']' && (ed->region->addrs || !ed->display->is_paging))
           return exec_one_off ("[", ed->input, ed);
       io_f |= ZHFW;
 
       /* FALLTHROUGH */
     case 'z':                   /* scroll forward */
-      if (ed->exec.opt & POSIXLY_CORRECT)
+      if (ed->exec->opt & POSIXLY_CORRECT)
         {
-          ed->exec.err = _("Unknown command");
+          ed->exec->err = _("Unknown command");
           return ERR;
         }
 
       /* If address provided, ignore frame buffer status. */
-      if (ed->region.addrs)
+      if (ed->region->addrs)
         {
-          ed->display.underflow = 0;
-          ed->display.overflow = 0;
+          ed->display->underflow = 0;
+          ed->display->overflow = 0;
         }
 
-      /* is_valid_range () assigns addr to ed->region.end by default. */
-      addr = ed->buf[0].dot + !(ed->exec.global || ed->display.underflow);
-      if ((status = is_valid_range (ed->region.start = 1, addr, ed)) < 0)
+      /* is_valid_range () assigns addr to ed->region->end by default. */
+      addr = ed->buf[0].dot + !(ed->exec->global || ed->display->underflow);
+      if ((status = is_valid_range (ed->region->start = 1, addr, ed)) < 0)
         return status;
       if (isdigit ((unsigned char) *ed->input))
         {
@@ -887,34 +890,35 @@ exec_command (ed)
       ++paging;
       if (c != 'z')
         addr = min (ed->buf[0].addr_last,
-                    ed->region.end + (window_rows >> 1) - 1);
+                    ed->region->end + (window_rows >> 1) - 1);
       else
         addr = min (ed->buf[0].addr_last,
-                    ed->region.end + window_rows - 2);
+                    ed->region->end + window_rows - 2);
       io_f |= c == '[' ? ZBWD : ZFWD;
-      return display_lines (ed->region.end, addr, io_f, ed);
+      return display_lines (ed->region->end, addr, io_f, ed);
       break;
 
     case 'Z':                   /* scroll backward */
-      if (ed->exec.opt & (TRADITIONAL | POSIXLY_CORRECT))
+      if (ed->exec->opt & (TRADITIONAL | POSIXLY_CORRECT))
         {
-          ed->exec.err = _("Unknown command");
+          ed->exec->err = _("Unknown command");
           return ERR;
         }
       
       /* Determine address of last line to print. */
-      if (ed->region.addrs)
+      if (ed->region->addrs)
         {
-          addr = ed->buf[0].dot - !ed->exec.global;
-          ed->display.underflow = 0;
-          ed->display.overflow = 0;
+          addr = ed->buf[0].dot - !ed->exec->global;
+          ed->display->underflow = 0;
+          ed->display->overflow = 0;
         }
       else
         {
-          addr = ed->display.is_paging ? ed->display.page_addr : ed->buf[0].dot;
-          addr -= !(ed->exec.global || ed->display.overflow);
+          addr = (ed->display->is_paging ? ed->display->page_addr
+                  : ed->buf[0].dot);
+          addr -= !(ed->exec->global || ed->display->overflow);
         }
-      if ((status = is_valid_range (ed->region.start = 1, addr, ed)) < 0)
+      if ((status = is_valid_range (ed->region->start = 1, addr, ed)) < 0)
         return status;
       if (isdigit ((unsigned char) *ed->input))
         {
@@ -929,53 +933,54 @@ exec_command (ed)
 
       /* Display page preceding either given line or already displayed page.
          Otherwise, display page preceding current address. */
-      return display_lines (max (1, (off_t) ed->region.end - window_rows + 2),
-                            ed->region.end, io_f | ZBWD, ed);
+      return display_lines (max (1, (off_t) ed->region->end - window_rows + 2),
+                            ed->region->end, io_f | ZBWD, ed);
       break;
     case '=':
       COMMAND_SUFFIX (io_f, ed);
       printf ("%" OFF_T_FORMAT_STRING "\n",
-              (ed->region.addrs ? ed->region.end : ed->buf[0].addr_last));
+              (ed->region->addrs ? ed->region->end : ed->buf[0].addr_last));
       break;
     case '!':
-      if (ed->region.addrs
-          && (status = is_valid_range (ed->buf[0].dot, ed->buf[0].dot, ed)) < 0)
+      if (ed->region->addrs
+          && (status =
+              is_valid_range (ed->buf[0].dot, ed->buf[0].dot, ed)) < 0)
         return status;
       --ed->input;
       FILE_NAME (fn, len, cx, 0, ed);
-      if (!ed->region.addrs)
+      if (!ed->region->addrs)
         {
           /* system(3) blocks SIGCHLD. */
           system (++fn);
-          printf (ed->exec.opt & SCRIPTED ? "" : "!\n");
+          printf (ed->exec->opt & SCRIPTED ? "" : "!\n");
         }
       else
 #if defined (HAVE_FORK) && defined (WANT_EXTERNAL_FILTER)
-        if (ed->exec.opt & (POSIXLY_CORRECT | TRADITIONAL))
+        if (ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL))
 #endif
           {
-            ed->exec.err = _("Address unexpected");
+            ed->exec->err = _("Address unexpected");
             return ERR;
           }
 #if defined (HAVE_FORK) && defined (WANT_EXTERNAL_FILTER)
         else
           {
-            if (!ed->exec.global)
+            if (!ed->exec->global)
               reset_undo_queue (ed);
             addr = ed->buf[0].addr_last;
-            if ((status =
-                 filter_lines (ed->region.start, ed->region.end, ++fn, ed)) < 0)
+            if ((status = filter_lines (ed->region->start,
+                                        ed->region->end, ++fn, ed)) < 0)
               return status;
-            ed->buf[0].dot = ed->region.end + ed->buf[0].addr_last - addr;
+            ed->buf[0].dot = ed->region->end + ed->buf[0].addr_last - addr;
           }
 #endif  /* defined HAVE_FORK && defined WANT_EXTERNAL_FILTER */
       return 0;
     case '\n':
-      addr = (ed->buf[0].dot + (ed->exec.opt & (POSIXLY_CORRECT | TRADITIONAL)
-                                ? 1 : !ed->exec.global));
-      if ((status = is_valid_range (ed->region.start = 1, addr, ed)) < 0)
+      addr = (ed->buf[0].dot + (ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL)
+                                ? 1 : !ed->exec->global));
+      if ((status = is_valid_range (ed->region->start = 1, addr, ed)) < 0)
         return status;
-      return display_lines (ed->region.end, ed->region.end, 0, ed);
+      return display_lines (ed->region->end, ed->region->end, 0, ed);
     case '#':
       while (*ed->input++ != '\n')
         ;
@@ -983,7 +988,7 @@ exec_command (ed)
     default:
 
       /* Check for out-of-sequence address. */
-      ed->exec.err = (next_address (&dot, ed) > 0 ? _("Invalid address")
+      ed->exec->err = (next_address (&dot, ed) > 0 ? _("Invalid address")
                       : _("Unknown command"));
       return ERR;
     }
@@ -1009,13 +1014,13 @@ exec_one_off (cmd, modifier, ed)
   if (strlen (cmd) != 1
       || (input_len = 2 * OFF_T_LEN + strlen (modifier) + 3) > SIZE_T_MAX)
     {
-      ed->exec.err = _("Command too long");
+      ed->exec->err = _("Command too long");
       return ERR;
     }
   REALLOC_THROW (input, input_size, input_len, ERR, ed);
-  if (ed->region.addrs)
-    snprintf (input, input_len, "%ld,%ld%s%s", ed->region.start,
-              ed->region.end, cmd, modifier);
+  if (ed->region->addrs)
+    snprintf (input, input_len, "%ld,%ld%s%s", ed->region->start,
+              ed->region->end, cmd, modifier);
   else
     snprintf (input, input_len, "%s%s", cmd, modifier);
   ed->input = input;
@@ -1033,20 +1038,20 @@ is_valid_range (from, to, ed)
      off_t to;
      ed_state_t *ed;
 {
-  if (!ed->region.addrs)
+  if (!ed->region->addrs)
     {
-      ed->region.start = from;
-      ed->region.end = to;
+      ed->region->start = from;
+      ed->region->end = to;
     }
-  if (ed->region.start < 1 || ed->buf[0].addr_last < ed->region.start
-      || ed->region.end < 1 || ed->buf[0].addr_last < ed->region.end)
+  if (ed->region->start < 1 || ed->buf[0].addr_last < ed->region->start
+      || ed->region->end < 1 || ed->buf[0].addr_last < ed->region->end)
     {
-      ed->exec.err = _("Address out of range");
+      ed->exec->err = _("Address out of range");
       return ERR;
     }
-  if (ed->region.start > ed->region.end)
+  if (ed->region->start > ed->region->end)
     {
-      ed->exec.err = _("Invalid address range");
+      ed->exec->err = _("Invalid address range");
       return ERR;
     }
   return 0;

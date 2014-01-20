@@ -1,8 +1,8 @@
 /* io.c: I/O routines for the ed line editor.
 
-   Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
+   Copyright © 1993-2014 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2013-08-09 <alm@slewsys.org>
+   Last modified: 2014-01-20 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -53,12 +53,12 @@ read_file (fn, after, addr, size, is_default, ed)
     return ERR;
 
   /* File already open. */
-  if (inode && inode == ed->file.inode)
+  if (inode && inode == ed->file->inode)
     {
-      if (FSEEK (fp = ed->file.handle, 0, SEEK_SET) == -1)
+      if (FSEEK (fp = ed->file->handle, 0, SEEK_SET) == -1)
         {
           fprintf (stderr, "%s: %s\n", fn, strerror (errno));
-          ed->exec.err = _("File seek error");
+          ed->exec->err = _("File seek error");
           return ERR;
         }
     }
@@ -67,21 +67,21 @@ read_file (fn, after, addr, size, is_default, ed)
     if (!(fp = fopen (fn, "r")))
       {
         fprintf (stderr, "%s: %s\n", fn, strerror (errno));
-        ed->exec.err = _("File open error");
+        ed->exec->err = _("File open error");
         return ERR;
       }
 #ifdef WANT_FILE_LOCK
     else if (is_default)
       {
         spl1 ();
-        ed->file.inode = inode;
-        ed->file.handle = fp;
-        ed->file.is_writable = 0;
+        ed->file->inode = inode;
+        ed->file->handle = fp;
+        ed->file->is_writable = 0;
         spl0 ();
       }
   /* Assert: File lock released on file close. */
   if (set_file_lock (fp, 1) != 0 && isatty (0))
-    fprintf (stderr, (ed->exec.opt & VERBOSE
+    fprintf (stderr, (ed->exec->opt & VERBOSE
                       ? _("WARNING: File already locked\n") : ""));
 #endif  /* HAVE_FILE_LOCK */
   if ((status = read_stream (fp, after, size, ed)) < 0)
@@ -94,7 +94,7 @@ read_file (fn, after, addr, size, is_default, ed)
     if (fclose (fp) < 0)
       {
         fprintf (stderr, "%s: %s\n", fn, strerror (errno));
-        ed->exec.err = _("File close error");
+        ed->exec->err = _("File close error");
         return ERR;
       }
   return 0;
@@ -119,7 +119,7 @@ read_pipe (fn, after, addr, size, ed)
   if (!(fp = popen (fn + 1, "r")))
     {
       fprintf (stderr, "%s: %s\n", fn, strerror (errno));
-      ed->exec.err = _("File open error");
+      ed->exec->err = _("File open error");
       return ERR;
     }
   if ((status = read_stream (fp, after, size, ed)) < 0)
@@ -128,7 +128,7 @@ read_pipe (fn, after, addr, size, ed)
 
   /* Ignore "no child" error. */
   pclose (fp);
-  printf (ed->exec.opt & SCRIPTED ? "" : "!\n");
+  printf (ed->exec->opt & SCRIPTED ? "" : "!\n");
   return 0;
 }
 
@@ -247,7 +247,7 @@ read_stream (fp, after, size, ed)
       if (!(_t = strdup (s)) || !append_text_node ((th), _t, (len)))          \
         {                                                                     \
           fprintf (stderr, "%s\n", strerror (errno));                         \
-          (ed)->exec.err = _("Memory exhausted");                             \
+          (ed)->exec->err = _("Memory exhausted");                            \
           return ERR;                                                         \
         }                                                                     \
     }                                                                         \
@@ -392,13 +392,13 @@ get_extended_line (len, nonl, ed)
         return NULL;
       if (*(ed->input + n - 1) != '\n')
         {
-          ed->exec.err = _("End-of-file unexpected");
+          ed->exec->err = _("End-of-file unexpected");
           return NULL;
         }
       REALLOC_THROW (xl, xl_size, *len + n + 1, NULL, ed);
       memcpy (xl + *len, ed->input, n);
       *len += n;
-      ++ed->exec.line_no;
+      ++ed->exec->line_no;
     }
   *len -= nonl;                 /* strip newline, if nonl */
   *(xl + *len) = '\0';
@@ -454,7 +454,7 @@ get_stream_line (fp, len, ed)
 #else
         fprintf (stderr, "%s\n", strerror (errno));
 #endif
-        ed->exec.err = _("File read error");
+        ed->exec->err = _("File read error");
 
         /* Propagate stream status - don't call clearerr(3). */
         return NULL;
@@ -501,29 +501,29 @@ write_file (fn, is_default, from, to, addr, size, mode, ed)
     return ERR;
 
   /* File already open and writable. */
-  if ((file_already_open = (inode && inode == ed->file.inode))
-      && ed->file.is_writable)
+  if ((file_already_open = (inode && inode == ed->file->inode))
+      && ed->file->is_writable)
     {
-      if (FSEEK (fp = ed->file.handle, 0,
+      if (FSEEK (fp = ed->file->handle, 0,
                  *mode == 'a' ? SEEK_END : SEEK_SET) == -1)
         {
-          fprintf (stderr, "%s: %s\n", ed->file.name, strerror (errno));
-          ed->exec.err = _("File seek error");
+          fprintf (stderr, "%s: %s\n", ed->file->name, strerror (errno));
+          ed->exec->err = _("File seek error");
           return ERR;
         }
       if (*mode == 'w' && ftruncate (fileno (fp), 0) == -1)
         {
-          fprintf (stderr, "%s: %s\n", ed->file.name, strerror (errno));
-          ed->exec.err = _("File truncate error");
+          fprintf (stderr, "%s: %s\n", ed->file->name, strerror (errno));
+          ed->exec->err = _("File truncate error");
           return ERR;
         }
     }
 
   /* XXX Potential race: Reopening file for writing may lose lock. */
-  else if (file_already_open && fclose (ed->file.handle) < 0)
+  else if (file_already_open && fclose (ed->file->handle) < 0)
     {
-      fprintf (stderr, "%s: %s\n", ed->file.name, strerror (errno));
-      ed->exec.err = _("File close error");
+      fprintf (stderr, "%s: %s\n", ed->file->name, strerror (errno));
+      ed->exec->err = _("File close error");
       return ERR;
     }
   else
@@ -532,20 +532,20 @@ write_file (fn, is_default, from, to, addr, size, mode, ed)
       if (!(fp = fopen (fn, mode)))
         {
           fprintf (stderr, "%s: %s\n", fn, strerror (errno));
-          ed->exec.err = _("File open error");
+          ed->exec->err = _("File open error");
           return ERR;
         }
 #ifdef WANT_FILE_LOCK
       if (is_default)
         {
           spl1 ();
-          ed->file.inode = inode;
-          ed->file.handle = fp;
-          ed->file.is_writable = 1;
+          ed->file->inode = inode;
+          ed->file->handle = fp;
+          ed->file->is_writable = 1;
           spl0 ();
         }
       if (set_file_lock (fp, 1) != 0 && isatty (0))
-        fprintf (stderr, (ed->exec.opt & VERBOSE
+        fprintf (stderr, (ed->exec->opt & VERBOSE
                           ? _("WARNING: File already locked\n") : ""));
     }
 #endif  /* WANT_FILE_LOCK */
@@ -561,7 +561,7 @@ write_file (fn, is_default, from, to, addr, size, mode, ed)
     if (fclose (fp) < 0)
       {
         fprintf (stderr, "%s: %s\n", fn, strerror (errno));
-        ed->exec.err = _("File close error");
+        ed->exec->err = _("File close error");
         return ERR;
       }
   return 0;
@@ -586,7 +586,7 @@ write_pipe (fn, from, to, addr, size, ed)
   if (!(fp = popen (fn + 1, "w")))
     {
       fprintf (stderr, "%s: %s\n", fn, strerror (errno));
-      ed->exec.err = _("File open error");
+      ed->exec->err = _("File open error");
       return ERR;
     }
   if ((status = write_stream (fp, lp, n, size, ed)) < 0)
@@ -597,7 +597,7 @@ write_pipe (fn, from, to, addr, size, ed)
 
   /* Ignore "no child" error. */
   pclose (fp);
-  printf (ed->exec.opt & SCRIPTED ? "" : "!\n");
+  printf (ed->exec->opt & SCRIPTED ? "" : "!\n");
   return 0;
 }
 
@@ -626,7 +626,7 @@ write_stream (fp, lp, n, size, ed)
                          && ed->buf[0].newline_appended);
       if (*size >= OFF_T_MAX - len - append_newline)
         {
-          ed->exec.err = _("File too big");
+          ed->exec->err = _("File too big");
           return ERR;
         }
       if (append_newline)
@@ -662,7 +662,7 @@ put_stream_line (fp, s, len, ed)
         goto top;
       default:
         fprintf (stderr, "%s\n", strerror (errno));
-        ed->exec.err = _("File write error");
+        ed->exec->err = _("File write error");
 
         /* Propagate stream status - don't call clearerr(3). */
         return ERR;
@@ -690,14 +690,14 @@ get_inode (fn, inode, ed)
           return 0;
         }
       fprintf (stderr, "%s: %s\n", fn, strerror (errno));
-      ed->exec.err = _("File status error");
+      ed->exec->err = _("File status error");
       return ERR;
     }
 
   /* XXX: Potential race condition -- status may change before open(2). */
-  if (ed->exec.opt & RESTRICTED && !S_ISREG (sb.st_mode))
+  if (ed->exec->opt & RESTRICTED && !S_ISREG (sb.st_mode))
     {
-      ed->exec.err = _("Access restricted to regular files");
+      ed->exec->err = _("Access restricted to regular files");
       return ERR;
     }
   *inode = sb.st_ino;

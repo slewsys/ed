@@ -1,6 +1,6 @@
 \input texinfo
 
-@c Last modified: 2013-01-27 <alm@buttercup.lan>
+@c Last modified: 2014-01-20 <alm@slewsys.org>
 
 @c %**start of header
 @setfilename ed.info
@@ -41,9 +41,9 @@ Reprinted courtesy of Lucent Laboratories
 @setchapternewpage on
 
 @titlepage
-@title{Ed}
-@subtitle{The Standard Unix Text Editor}
-@subtitle{Updated for @command{Ed} Version @value{PROGRAM-VERSION}}
+@title Ed
+@subtitle The Standard Unix Text Editor
+@subtitle Updated for @command{Ed} Version @value{PROGRAM-VERSION}
 @author Andrew L. Moore
 @page
 @vskip 0pt plus 1filll

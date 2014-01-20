@@ -1,8 +1,8 @@
 /* parse.c: Editor command-parsing routines for the ed line editor.
 
-   Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
+   Copyright © 1993-2014 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2013-08-09 <alm@slewsys.org>
+   Last modified: 2014-01-20 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -34,7 +34,7 @@ address_range (ed)
   int have_dc;                  /* If set, have address delimiter char. */
   int status;
 
-  ed->region.addrs = 0;
+  ed->region->addrs = 0;
   first = second = dot = ed->buf[0].dot;
   SKIP_WHITESPACE (ed);
   have_dc = IS_DELIMITER (*ed->input);
@@ -42,13 +42,13 @@ address_range (ed)
     {
       if (have_dc)
         {
-          if (ed->region.addrs)
+          if (ed->region->addrs)
             first = *ed->input == ';' ? (dot = second) : second;
           else
             {
               first = *ed->input == ';' ? dot : 1;
               second = ed->buf[0].addr_last;
-              ed->region.addrs = 2;
+              ed->region->addrs = 2;
             }
         }
       ed->input += have_dc;
@@ -58,21 +58,21 @@ address_range (ed)
       if (status > 0)
         {
           second = addr;
-          ++ed->region.addrs;
+          ++ed->region->addrs;
         }
     }
   while ((have_dc = IS_DELIMITER (*ed->input)));
 
-  if ((ed->region.addrs = min (2, ed->region.addrs)) < 2)
+  if ((ed->region->addrs = min (2, ed->region->addrs)) < 2)
     first = second;
   if ((status = check_address_bounds (first, ed)) < 0
       || (status = check_address_bounds (second, ed)) < 0
       || (status = check_address_bounds (dot, ed)) < 0)
     return status;
-  ed->region.start = first;
-  ed->region.end = second;
+  ed->region->start = first;
+  ed->region->end = second;
   ed->buf[0].dot = dot;
-  return ed->region.addrs;
+  return ed->region->addrs;
 }
 
 
@@ -214,7 +214,7 @@ check_address_bounds (addr, ed)
 {
   if (addr < 0 || ed->buf[0].addr_last < addr)
     {
-      ed->exec.err = _("Address out of range");
+      ed->exec->err = _("Address out of range");
       return ERR;
     }
   return 0;
@@ -235,8 +235,6 @@ file_glob (len, cm, replace, ed)
      int replace;
      ed_state_t *ed;
 {
-  char *fn = NULL;              /* Glob expansion of non-existent pathname. */
-  size_t fn_size = 0;
   static glob_t one_time_glob;  /* one-time file glob */
 
   glob_t *gp = NULL;
@@ -251,9 +249,9 @@ file_glob (len, cm, replace, ed)
     return NULL;
 
   /* XXX - Too restrictive, e.g., "./foo" should be permissible... */
-  if (ed->exec.opt & RESTRICTED && (!strcmp (xl, "..") || strchr (xl, '/')))
+  if (ed->exec->opt & RESTRICTED && (!strcmp (xl, "..") || strchr (xl, '/')))
     {
-      ed->exec.err = _("Access restricted to working directory");
+      ed->exec->err = _("Access restricted to working directory");
       return NULL;
     }
   ed->input += *len + 1;
@@ -263,7 +261,7 @@ file_glob (len, cm, replace, ed)
   if ((pattern = strtok_with_delimiters (xl, WHITE_SPACE)))
     {
       /* Not updating file_glob, so use  one_time_glob instead. */
-      if (ed->file.list.gl_pathv && !replace)
+      if (ed->file->list->gl_pathv && !replace)
         {
           if (one_time_glob.gl_pathv)
             {
@@ -276,23 +274,23 @@ file_glob (len, cm, replace, ed)
         }
 
       /* First time, gl_pathv == argv, so re-initialize file_glob. */
-      else if (ed->file.list.gl_offs > 0)
+      else if (ed->file->list->gl_offs > 0)
         {
-          ed->file.list.gl_offs = 0;
-          ed->file.list.gl_pathc = 0;
-          ed->file.list.gl_pathv = NULL;
-          gp = &ed->file.list;
+          ed->file->list->gl_offs = 0;
+          ed->file->list->gl_pathc = 0;
+          ed->file->list->gl_pathv = NULL;
+          gp = ed->file->list;
         }
       else
         {
           /* globfree(3) wants the original pathv allocated by glob(3). */
-          ed->file.list = ed->file.glob;
-          if (ed->file.list.gl_pathv && *ed->file.list.gl_pathv)
-            globfree (&ed->file.list);
-          ed->file.list.gl_offs = 0;
-          ed->file.list.gl_pathc = 0;
-          ed->file.list.gl_pathv = NULL;
-          gp = &ed->file.list;
+          ed->file->list = ed->file->glob;
+          if (ed->file->list->gl_pathv && *ed->file->list->gl_pathv)
+            globfree (ed->file->list);
+          ed->file->list->gl_offs = 0;
+          ed->file->list->gl_pathc = 0;
+          ed->file->list->gl_pathv = NULL;
+          gp = ed->file->list;
         }
 
       for (s = pattern; pattern;
@@ -300,63 +298,63 @@ file_glob (len, cm, replace, ed)
         {
           if (!expand_glob (pattern, s == pattern ? 0 : GLOB_APPEND, gp, ed))
             {
-              /* Reinitialize ed->file.glob/list to known state. */
-              if (gp == &ed->file.list)
+              /* Reinitialize ed->file->glob/list to known state. */
+              if (gp == ed->file->list)
                 {
                   gp->gl_offs = 0;
                   gp->gl_pathc = 0;
                   gp->gl_pathv = NULL;
-                  ed->file.glob = ed->file.list = *gp;
+                  ed->file->glob = ed->file->list = gp;
                 }
               return NULL;
             }
         }
       if (replace && gp && gp->gl_pathv && *gp->gl_pathv)
-        ed->file.glob = *gp;
+        ed->file->glob = gp;
     }
   /* Select from existing file list. */
   else
     switch (cm)
       {
       case 'n':
-        if (!ed->file.list.gl_pathv
-            || ed->file.list.gl_pathc <= 1)
+        if (!ed->file->list->gl_pathv
+            || ed->file->list->gl_pathc <= 1)
           {
-            ed->exec.err = _("No more files");
+            ed->exec->err = _("No more files");
             return NULL;
           }
-        --ed->file.list.gl_pathc;
-        ++ed->file.list.gl_pathv;
-        offs = ed->file.glob.gl_pathc - ed->file.list.gl_pathc;
-        gp = &ed->file.glob;
+        --ed->file->list->gl_pathc;
+        ++ed->file->list->gl_pathv;
+        offs = ed->file->glob->gl_pathc - ed->file->list->gl_pathc;
+        gp = ed->file->glob;
         break;
 
       case 'p':
-        if (!ed->file.list.gl_pathv
-            || ed->file.list.gl_pathc >= ed->file.glob.gl_pathc)
+        if (!ed->file->list->gl_pathv
+            || ed->file->list->gl_pathc >= ed->file->glob->gl_pathc)
           {
-            ed->exec.err = _("No more files");
+            ed->exec->err = _("No more files");
             return NULL;
           }
-        ++ed->file.list.gl_pathc;
-        --ed->file.list.gl_pathv;
-        offs = ed->file.glob.gl_pathc - ed->file.list.gl_pathc;
-        gp = &ed->file.glob;
+        ++ed->file->list->gl_pathc;
+        --ed->file->list->gl_pathv;
+        offs = ed->file->glob->gl_pathc - ed->file->list->gl_pathc;
+        gp = ed->file->glob;
 
       default:
-        offs = ed->file.glob.gl_pathc - ed->file.list.gl_pathc;
-        gp = &ed->file.glob;
+        offs = ed->file->glob->gl_pathc - ed->file->list->gl_pathc;
+        gp = ed->file->glob;
 
         /* Return default file name if file list empty. */
-        if (!gp->gl_pathc && ed->file.name)
-          return ed->file.name;
+        if (!gp->gl_pathc && ed->file->name)
+          return ed->file->name;
         break;
       }
 
   if (!(gp && gp->gl_pathv && *gp->gl_pathv)
-      || !(0 <= offs && offs <= ed->file.glob.gl_pathc - 1))
+      || !(0 <= offs && offs <= ed->file->glob->gl_pathc - 1))
     {
-      ed->exec.err = _("No more files");
+      ed->exec->err = _("No more files");
       return NULL;
     }
   if (!is_valid_name (*(gp->gl_pathv + offs), ed))
@@ -425,13 +423,12 @@ expand_glob (pattern, append, gp, ed)
   char *pathname = NULL;
   size_t len;
   int gloff = gp->gl_pathc;
-  int offs;
   int status = 0;
 
   /* glob(3) may not properly handle excessively long patterns. */
   if (strlen (pattern) >= get_path_max (pattern))
     {
-      ed->exec.err = _("File glob too long");
+      ed->exec->err = _("File glob too long");
       return NULL;
     }
 
@@ -456,7 +453,7 @@ expand_glob (pattern, append, gp, ed)
 #else
               fprintf (stderr, "%s: %s\n", pattern, strerror (errno));
 #endif
-              ed->exec.err = _("Pathname expansion error");
+              ed->exec->err = _("Pathname expansion error");
               return NULL;
             }
 
@@ -476,7 +473,7 @@ expand_glob (pattern, append, gp, ed)
 #else
               fprintf (stderr, "%s: %s\n", pattern, strerror (errno));
 #endif
-              ed->exec.err = _("Pathname expansion error");
+              ed->exec->err = _("Pathname expansion error");
               return NULL;
             }
 
@@ -490,7 +487,7 @@ expand_glob (pattern, append, gp, ed)
               else if (stat (*pathv, &sb) == -1)
                 {
                   fprintf (stderr, "%s: %s\n", *pathv, strerror (errno));
-                  ed->exec.err = _("File stat error");
+                  ed->exec->err = _("File stat error");
                   return NULL;
                 }
               else if (S_ISDIR(sb.st_mode))
@@ -504,7 +501,7 @@ expand_glob (pattern, append, gp, ed)
                   if ((pathname = (char *) malloc (len + 1)) == NULL)
                     {
                       fprintf (stderr, "%s\n", strerror (errno));
-                      ed->exec.err = _("Memory exhausted");
+                      ed->exec->err = _("Memory exhausted");
                       spl0 ();
                       return NULL;
                     }
@@ -565,7 +562,7 @@ is_valid_name (name, ed)
     }
   if ((s = file_name (&len, ed)) && strcmp (name, s))
     {
-      ed->exec.err = _("Invalid file name");
+      ed->exec->err = _("Invalid file name");
       return NULL;
     }
   return s;
@@ -590,9 +587,9 @@ file_name (len, ed)
     return NULL;
 
   /* XXX - Too restrictive, e.g., "./foo" should be permissible... */
-  if (ed->exec.opt & RESTRICTED && (!strcmp (xl, "..") || strchr (xl, '/')))
+  if (ed->exec->opt & RESTRICTED && (!strcmp (xl, "..") || strchr (xl, '/')))
     {
-      ed->exec.err = _("Access restricted to working directory");
+      ed->exec->err = _("Access restricted to working directory");
       return NULL;
     }
   ed->input += *len + 1;
@@ -623,14 +620,14 @@ regular_expression (dc, len, ed)
       case '[':
         if (!(ed->input = character_class (++ed->input, ed)))
           {
-            ed->exec.err = _("Brackets ([]) unbalanced");
+            ed->exec->err = _("Brackets ([]) unbalanced");
             return NULL;
           }
         break;
       case '\\':
         if (*++ed->input == '\n')
           {
-            ed->exec.err = _("Backslash (\\) unexpected");
+            ed->exec->err = _("Backslash (\\) unexpected");
             return NULL;
           }
         break;
@@ -688,9 +685,9 @@ shell_command (len, subs, ed)
   char *xl, *fn = NULL;
   size_t m, n;
 
-  if (ed->exec.opt & RESTRICTED)
+  if (ed->exec->opt & RESTRICTED)
     {
-      ed->exec.err = _("Shell access restricted");
+      ed->exec->err = _("Shell access restricted");
       return NULL;
     }
   if (!(xl = get_extended_line (&n, 1, ed)))
@@ -715,15 +712,15 @@ shell_command (len, subs, ed)
         break;
       case '%':
 
-        /*  Substitute '%%' with ed->exec.file_script. */
+        /*  Substitute '%%' with ed->exec->file_script. */
         if (*(xl + 1) == '%')
           {
-            fn = ed->exec.file_script ? ed->exec.file_script : "stdin";
+            fn = ed->exec->file_script ? ed->exec->file_script : "stdin";
             ++xl;
           }
         /*  Substitute '%' with ed->file_name. */
         else
-          fn = ed->file.name ? ed->file.name : "";
+          fn = ed->file->name ? ed->file->name : "";
         m = strlen (fn);
         REALLOC_THROW (sc, sc_size, *len + m + 1, NULL, ed);
         memcpy (sc + *len, fn, m);
@@ -738,10 +735,10 @@ shell_command (len, subs, ed)
             REALLOC_THROW (sc, sc_size, *len + 1, NULL, ed);
             *(sc + (*len)++) = *xl;
           }
-        else if (!sc_prev || (ed->exec.opt & (POSIXLY_CORRECT | TRADITIONAL)
+        else if (!sc_prev || (ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL)
                               && !*(sc_prev + 1)))
           {
-            ed->exec.err = _("No previous shell command");
+            ed->exec->err = _("No previous shell command");
             return NULL;
           }
 

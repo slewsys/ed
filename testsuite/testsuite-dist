@@ -1023,7 +1023,7 @@ fi
 # List of tests.
 if $at_list_p; then
   cat <<_ATEOF || at_write_fail=1
-ed 0.271-b4 test suite test groups:
+ed 0.271-b5 test suite test groups:
 
  NUM: FILE-NAME:LINE     TEST-GROUP-NAME
       KEYWORDS
@@ -1064,7 +1064,7 @@ _ATEOF
   exit $at_write_fail
 fi
 if $at_version_p; then
-  $as_echo "$as_me (ed 0.271-b4)" &&
+  $as_echo "$as_me (ed 0.271-b5)" &&
   cat <<\_ATEOF || at_write_fail=1
 
 Copyright (C) 2012 Free Software Foundation, Inc.
@@ -1241,11 +1241,11 @@ exec 5>>"$at_suite_log"
 
 # Banners and logs.
 $as_echo "## ----------------------- ##
-## ed 0.271-b4 test suite. ##
+## ed 0.271-b5 test suite. ##
 ## ----------------------- ##"
 {
   $as_echo "## ----------------------- ##
-## ed 0.271-b4 test suite. ##
+## ed 0.271-b5 test suite. ##
 ## ----------------------- ##"
   echo
 
@@ -2089,7 +2089,7 @@ _ASBOX
   $as_echo "Please send $at_msg and all information you think might help:
 
    To: <bug-ed@gnu.org>
-   Subject: [ed 0.271-b4] $as_me: $at_fail_list${at_fail_list:+ failed${at_xpass_list:+, }}$at_xpass_list${at_xpass_list:+ passed unexpectedly}
+   Subject: [ed 0.271-b5] $as_me: $at_fail_list${at_fail_list:+ failed${at_xpass_list:+, }}$at_xpass_list${at_xpass_list:+ passed unexpectedly}
 
 You may investigate any problem if you feel able to do so, in which
 case the test suite provides a good starting point.  Its output may
@@ -2114,19 +2114,19 @@ at_xfail=no
 
 cat >script-a <<_ATEOF_ED
 H
-r ../../a.d
-$(test -s ../../a.t &&
-cat ../../a.t ||
+r /opt/src/alm/ed-piq/ed/testsuite/a.d
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/a.t &&
+cat /opt/src/alm/ed-piq/ed/testsuite/a.t ||
 echo "w a.o")
 wq a.o
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/a.ok-at:20: ed -f script-a &&
-cmp ../../a.r a.o"
+cmp /opt/src/alm/ed-piq/ed/testsuite/a.r a.o"
 at_fn_check_prepare_notrace 'an embedded newline' "a.ok-at:20"
 ( $at_check_trace; ed -f script-a &&
-cmp ../../a.r a.o
+cmp /opt/src/alm/ed-piq/ed/testsuite/a.r a.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -2153,19 +2153,19 @@ at_xfail=no
 
 cat >script-addr <<_ATEOF_ED
 H
-r ../../addr.d
-$(test -s ../../addr.t &&
-cat ../../addr.t ||
+r /opt/src/alm/ed-piq/ed/testsuite/addr.d
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/addr.t &&
+cat /opt/src/alm/ed-piq/ed/testsuite/addr.t ||
 echo "w addr.o")
 wq addr.o
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/addr.ok-at:20: ed -f script-addr &&
-cmp ../../addr.r addr.o"
+cmp /opt/src/alm/ed-piq/ed/testsuite/addr.r addr.o"
 at_fn_check_prepare_notrace 'an embedded newline' "addr.ok-at:20"
 ( $at_check_trace; ed -f script-addr &&
-cmp ../../addr.r addr.o
+cmp /opt/src/alm/ed-piq/ed/testsuite/addr.r addr.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -2192,19 +2192,19 @@ at_xfail=no
 
 cat >script-ascii <<_ATEOF_ED
 H
-r ../../ascii.d
-$(test -s ../../ascii.t &&
-cat ../../ascii.t ||
+r /opt/src/alm/ed-piq/ed/testsuite/ascii.d
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/ascii.t &&
+cat /opt/src/alm/ed-piq/ed/testsuite/ascii.t ||
 echo "w ascii.o")
 wq ascii.o
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/ascii.ok-at:20: ed -f script-ascii &&
-cmp ../../ascii.r ascii.o"
+cmp /opt/src/alm/ed-piq/ed/testsuite/ascii.r ascii.o"
 at_fn_check_prepare_notrace 'an embedded newline' "ascii.ok-at:20"
 ( $at_check_trace; ed -f script-ascii &&
-cmp ../../ascii.r ascii.o
+cmp /opt/src/alm/ed-piq/ed/testsuite/ascii.r ascii.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -2231,19 +2231,19 @@ at_xfail=no
 
 cat >script-bang1 <<_ATEOF_ED
 H
-r ../../bang1.d
-$(test -s ../../bang1.t &&
-cat ../../bang1.t ||
+r /opt/src/alm/ed-piq/ed/testsuite/bang1.d
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/bang1.t &&
+cat /opt/src/alm/ed-piq/ed/testsuite/bang1.t ||
 echo "w bang1.o")
 wq bang1.o
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/bang1.ok-at:20: ed -f script-bang1 &&
-cmp ../../bang1.r bang1.o"
+cmp /opt/src/alm/ed-piq/ed/testsuite/bang1.r bang1.o"
 at_fn_check_prepare_notrace 'an embedded newline' "bang1.ok-at:20"
 ( $at_check_trace; ed -f script-bang1 &&
-cmp ../../bang1.r bang1.o
+cmp /opt/src/alm/ed-piq/ed/testsuite/bang1.r bang1.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -2270,19 +2270,19 @@ at_xfail=no
 
 cat >script-c1 <<_ATEOF_ED
 H
-r ../../c1.d
-$(test -s ../../c1.t &&
-cat ../../c1.t ||
+r /opt/src/alm/ed-piq/ed/testsuite/c1.d
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/c1.t &&
+cat /opt/src/alm/ed-piq/ed/testsuite/c1.t ||
 echo "w c1.o")
 wq c1.o
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/c1.ok-at:20: ed -f script-c1 &&
-cmp ../../c1.r c1.o"
+cmp /opt/src/alm/ed-piq/ed/testsuite/c1.r c1.o"
 at_fn_check_prepare_notrace 'an embedded newline' "c1.ok-at:20"
 ( $at_check_trace; ed -f script-c1 &&
-cmp ../../c1.r c1.o
+cmp /opt/src/alm/ed-piq/ed/testsuite/c1.r c1.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -2309,19 +2309,19 @@ at_xfail=no
 
 cat >script-c2 <<_ATEOF_ED
 H
-r ../../c2.d
-$(test -s ../../c2.t &&
-cat ../../c2.t ||
+r /opt/src/alm/ed-piq/ed/testsuite/c2.d
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/c2.t &&
+cat /opt/src/alm/ed-piq/ed/testsuite/c2.t ||
 echo "w c2.o")
 wq c2.o
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/c2.ok-at:20: ed -f script-c2 &&
-cmp ../../c2.r c2.o"
+cmp /opt/src/alm/ed-piq/ed/testsuite/c2.r c2.o"
 at_fn_check_prepare_notrace 'an embedded newline' "c2.ok-at:20"
 ( $at_check_trace; ed -f script-c2 &&
-cmp ../../c2.r c2.o
+cmp /opt/src/alm/ed-piq/ed/testsuite/c2.r c2.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -2348,19 +2348,19 @@ at_xfail=no
 
 cat >script-comment <<_ATEOF_ED
 H
-r ../../comment.d
-$(test -s ../../comment.t &&
-cat ../../comment.t ||
+r /opt/src/alm/ed-piq/ed/testsuite/comment.d
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/comment.t &&
+cat /opt/src/alm/ed-piq/ed/testsuite/comment.t ||
 echo "w comment.o")
 wq comment.o
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/comment.ok-at:20: ed -f script-comment &&
-cmp ../../comment.r comment.o"
+cmp /opt/src/alm/ed-piq/ed/testsuite/comment.r comment.o"
 at_fn_check_prepare_notrace 'an embedded newline' "comment.ok-at:20"
 ( $at_check_trace; ed -f script-comment &&
-cmp ../../comment.r comment.o
+cmp /opt/src/alm/ed-piq/ed/testsuite/comment.r comment.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -2387,19 +2387,19 @@ at_xfail=no
 
 cat >script-d <<_ATEOF_ED
 H
-r ../../d.d
-$(test -s ../../d.t &&
-cat ../../d.t ||
+r /opt/src/alm/ed-piq/ed/testsuite/d.d
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/d.t &&
+cat /opt/src/alm/ed-piq/ed/testsuite/d.t ||
 echo "w d.o")
 wq d.o
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/d.ok-at:20: ed -f script-d &&
-cmp ../../d.r d.o"
+cmp /opt/src/alm/ed-piq/ed/testsuite/d.r d.o"
 at_fn_check_prepare_notrace 'an embedded newline' "d.ok-at:20"
 ( $at_check_trace; ed -f script-d &&
-cmp ../../d.r d.o
+cmp /opt/src/alm/ed-piq/ed/testsuite/d.r d.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -2426,19 +2426,19 @@ at_xfail=no
 
 cat >script-e1 <<_ATEOF_ED
 H
-r ../../e1.d
-$(test -s ../../e1.t &&
-cat ../../e1.t ||
+r /opt/src/alm/ed-piq/ed/testsuite/e1.d
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/e1.t &&
+cat /opt/src/alm/ed-piq/ed/testsuite/e1.t ||
 echo "w e1.o")
 wq e1.o
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/e1.ok-at:20: ed -f script-e1 &&
-cmp ../../e1.r e1.o"
+cmp /opt/src/alm/ed-piq/ed/testsuite/e1.r e1.o"
 at_fn_check_prepare_notrace 'an embedded newline' "e1.ok-at:20"
 ( $at_check_trace; ed -f script-e1 &&
-cmp ../../e1.r e1.o
+cmp /opt/src/alm/ed-piq/ed/testsuite/e1.r e1.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -2465,19 +2465,19 @@ at_xfail=no
 
 cat >script-e2 <<_ATEOF_ED
 H
-r ../../e2.d
-$(test -s ../../e2.t &&
-cat ../../e2.t ||
+r /opt/src/alm/ed-piq/ed/testsuite/e2.d
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/e2.t &&
+cat /opt/src/alm/ed-piq/ed/testsuite/e2.t ||
 echo "w e2.o")
 wq e2.o
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/e2.ok-at:20: ed -f script-e2 &&
-cmp ../../e2.r e2.o"
+cmp /opt/src/alm/ed-piq/ed/testsuite/e2.r e2.o"
 at_fn_check_prepare_notrace 'an embedded newline' "e2.ok-at:20"
 ( $at_check_trace; ed -f script-e2 &&
-cmp ../../e2.r e2.o
+cmp /opt/src/alm/ed-piq/ed/testsuite/e2.r e2.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -2504,19 +2504,19 @@ at_xfail=no
 
 cat >script-e3 <<_ATEOF_ED
 H
-r ../../e3.d
-$(test -s ../../e3.t &&
-cat ../../e3.t ||
+r /opt/src/alm/ed-piq/ed/testsuite/e3.d
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/e3.t &&
+cat /opt/src/alm/ed-piq/ed/testsuite/e3.t ||
 echo "w e3.o")
 wq e3.o
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/e3.ok-at:20: ed -f script-e3 &&
-cmp ../../e3.r e3.o"
+cmp /opt/src/alm/ed-piq/ed/testsuite/e3.r e3.o"
 at_fn_check_prepare_notrace 'an embedded newline' "e3.ok-at:20"
 ( $at_check_trace; ed -f script-e3 &&
-cmp ../../e3.r e3.o
+cmp /opt/src/alm/ed-piq/ed/testsuite/e3.r e3.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -2543,19 +2543,19 @@ at_xfail=no
 
 cat >script-e4 <<_ATEOF_ED
 H
-r ../../e4.d
-$(test -s ../../e4.t &&
-cat ../../e4.t ||
+r /opt/src/alm/ed-piq/ed/testsuite/e4.d
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/e4.t &&
+cat /opt/src/alm/ed-piq/ed/testsuite/e4.t ||
 echo "w e4.o")
 wq e4.o
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/e4.ok-at:20: ed -f script-e4 &&
-cmp ../../e4.r e4.o"
+cmp /opt/src/alm/ed-piq/ed/testsuite/e4.r e4.o"
 at_fn_check_prepare_notrace 'an embedded newline' "e4.ok-at:20"
 ( $at_check_trace; ed -f script-e4 &&
-cmp ../../e4.r e4.o
+cmp /opt/src/alm/ed-piq/ed/testsuite/e4.r e4.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -2582,19 +2582,19 @@ at_xfail=no
 
 cat >script-e5 <<_ATEOF_ED
 H
-r ../../e5.d
-$(test -s ../../e5.t &&
-cat ../../e5.t ||
+r /opt/src/alm/ed-piq/ed/testsuite/e5.d
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/e5.t &&
+cat /opt/src/alm/ed-piq/ed/testsuite/e5.t ||
 echo "w e5.o")
 wq e5.o
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/e5.ok-at:20: ed -f script-e5 &&
-cmp ../../e5.r e5.o"
+cmp /opt/src/alm/ed-piq/ed/testsuite/e5.r e5.o"
 at_fn_check_prepare_notrace 'an embedded newline' "e5.ok-at:20"
 ( $at_check_trace; ed -f script-e5 &&
-cmp ../../e5.r e5.o
+cmp /opt/src/alm/ed-piq/ed/testsuite/e5.r e5.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -2621,19 +2621,19 @@ at_xfail=no
 
 cat >script-g1 <<_ATEOF_ED
 H
-r ../../g1.d
-$(test -s ../../g1.t &&
-cat ../../g1.t ||
+r /opt/src/alm/ed-piq/ed/testsuite/g1.d
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/g1.t &&
+cat /opt/src/alm/ed-piq/ed/testsuite/g1.t ||
 echo "w g1.o")
 wq g1.o
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/g1.ok-at:20: ed -f script-g1 &&
-cmp ../../g1.r g1.o"
+cmp /opt/src/alm/ed-piq/ed/testsuite/g1.r g1.o"
 at_fn_check_prepare_notrace 'an embedded newline' "g1.ok-at:20"
 ( $at_check_trace; ed -f script-g1 &&
-cmp ../../g1.r g1.o
+cmp /opt/src/alm/ed-piq/ed/testsuite/g1.r g1.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -2660,19 +2660,19 @@ at_xfail=no
 
 cat >script-g2 <<_ATEOF_ED
 H
-r ../../g2.d
-$(test -s ../../g2.t &&
-cat ../../g2.t ||
+r /opt/src/alm/ed-piq/ed/testsuite/g2.d
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/g2.t &&
+cat /opt/src/alm/ed-piq/ed/testsuite/g2.t ||
 echo "w g2.o")
 wq g2.o
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/g2.ok-at:20: ed -f script-g2 &&
-cmp ../../g2.r g2.o"
+cmp /opt/src/alm/ed-piq/ed/testsuite/g2.r g2.o"
 at_fn_check_prepare_notrace 'an embedded newline' "g2.ok-at:20"
 ( $at_check_trace; ed -f script-g2 &&
-cmp ../../g2.r g2.o
+cmp /opt/src/alm/ed-piq/ed/testsuite/g2.r g2.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -2699,19 +2699,19 @@ at_xfail=no
 
 cat >script-g3 <<_ATEOF_ED
 H
-r ../../g3.d
-$(test -s ../../g3.t &&
-cat ../../g3.t ||
+r /opt/src/alm/ed-piq/ed/testsuite/g3.d
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/g3.t &&
+cat /opt/src/alm/ed-piq/ed/testsuite/g3.t ||
 echo "w g3.o")
 wq g3.o
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/g3.ok-at:20: ed -f script-g3 &&
-cmp ../../g3.r g3.o"
+cmp /opt/src/alm/ed-piq/ed/testsuite/g3.r g3.o"
 at_fn_check_prepare_notrace 'an embedded newline' "g3.ok-at:20"
 ( $at_check_trace; ed -f script-g3 &&
-cmp ../../g3.r g3.o
+cmp /opt/src/alm/ed-piq/ed/testsuite/g3.r g3.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -2738,19 +2738,19 @@ at_xfail=no
 
 cat >script-g4 <<_ATEOF_ED
 H
-r ../../g4.d
-$(test -s ../../g4.t &&
-cat ../../g4.t ||
+r /opt/src/alm/ed-piq/ed/testsuite/g4.d
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/g4.t &&
+cat /opt/src/alm/ed-piq/ed/testsuite/g4.t ||
 echo "w g4.o")
 wq g4.o
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/g4.ok-at:20: ed -f script-g4 &&
-cmp ../../g4.r g4.o"
+cmp /opt/src/alm/ed-piq/ed/testsuite/g4.r g4.o"
 at_fn_check_prepare_notrace 'an embedded newline' "g4.ok-at:20"
 ( $at_check_trace; ed -f script-g4 &&
-cmp ../../g4.r g4.o
+cmp /opt/src/alm/ed-piq/ed/testsuite/g4.r g4.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -2777,19 +2777,19 @@ at_xfail=no
 
 cat >script-g5 <<_ATEOF_ED
 H
-r ../../g5.d
-$(test -s ../../g5.t &&
-cat ../../g5.t ||
+r /opt/src/alm/ed-piq/ed/testsuite/g5.d
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/g5.t &&
+cat /opt/src/alm/ed-piq/ed/testsuite/g5.t ||
 echo "w g5.o")
 wq g5.o
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/g5.ok-at:20: ed -f script-g5 &&
-cmp ../../g5.r g5.o"
+cmp /opt/src/alm/ed-piq/ed/testsuite/g5.r g5.o"
 at_fn_check_prepare_notrace 'an embedded newline' "g5.ok-at:20"
 ( $at_check_trace; ed -f script-g5 &&
-cmp ../../g5.r g5.o
+cmp /opt/src/alm/ed-piq/ed/testsuite/g5.r g5.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -2816,19 +2816,19 @@ at_xfail=no
 
 cat >script-i1 <<_ATEOF_ED
 H
-r ../../i1.d
-$(test -s ../../i1.t &&
-cat ../../i1.t ||
+r /opt/src/alm/ed-piq/ed/testsuite/i1.d
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/i1.t &&
+cat /opt/src/alm/ed-piq/ed/testsuite/i1.t ||
 echo "w i1.o")
 wq i1.o
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/i1.ok-at:20: ed -f script-i1 &&
-cmp ../../i1.r i1.o"
+cmp /opt/src/alm/ed-piq/ed/testsuite/i1.r i1.o"
 at_fn_check_prepare_notrace 'an embedded newline' "i1.ok-at:20"
 ( $at_check_trace; ed -f script-i1 &&
-cmp ../../i1.r i1.o
+cmp /opt/src/alm/ed-piq/ed/testsuite/i1.r i1.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -2855,19 +2855,19 @@ at_xfail=no
 
 cat >script-i2 <<_ATEOF_ED
 H
-r ../../i2.d
-$(test -s ../../i2.t &&
-cat ../../i2.t ||
+r /opt/src/alm/ed-piq/ed/testsuite/i2.d
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/i2.t &&
+cat /opt/src/alm/ed-piq/ed/testsuite/i2.t ||
 echo "w i2.o")
 wq i2.o
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/i2.ok-at:20: ed -f script-i2 &&
-cmp ../../i2.r i2.o"
+cmp /opt/src/alm/ed-piq/ed/testsuite/i2.r i2.o"
 at_fn_check_prepare_notrace 'an embedded newline' "i2.ok-at:20"
 ( $at_check_trace; ed -f script-i2 &&
-cmp ../../i2.r i2.o
+cmp /opt/src/alm/ed-piq/ed/testsuite/i2.r i2.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -2894,19 +2894,19 @@ at_xfail=no
 
 cat >script-j <<_ATEOF_ED
 H
-r ../../j.d
-$(test -s ../../j.t &&
-cat ../../j.t ||
+r /opt/src/alm/ed-piq/ed/testsuite/j.d
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/j.t &&
+cat /opt/src/alm/ed-piq/ed/testsuite/j.t ||
 echo "w j.o")
 wq j.o
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/j.ok-at:20: ed -f script-j &&
-cmp ../../j.r j.o"
+cmp /opt/src/alm/ed-piq/ed/testsuite/j.r j.o"
 at_fn_check_prepare_notrace 'an embedded newline' "j.ok-at:20"
 ( $at_check_trace; ed -f script-j &&
-cmp ../../j.r j.o
+cmp /opt/src/alm/ed-piq/ed/testsuite/j.r j.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -2933,19 +2933,19 @@ at_xfail=no
 
 cat >script-k <<_ATEOF_ED
 H
-r ../../k.d
-$(test -s ../../k.t &&
-cat ../../k.t ||
+r /opt/src/alm/ed-piq/ed/testsuite/k.d
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/k.t &&
+cat /opt/src/alm/ed-piq/ed/testsuite/k.t ||
 echo "w k.o")
 wq k.o
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/k.ok-at:20: ed -f script-k &&
-cmp ../../k.r k.o"
+cmp /opt/src/alm/ed-piq/ed/testsuite/k.r k.o"
 at_fn_check_prepare_notrace 'an embedded newline' "k.ok-at:20"
 ( $at_check_trace; ed -f script-k &&
-cmp ../../k.r k.o
+cmp /opt/src/alm/ed-piq/ed/testsuite/k.r k.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -2972,19 +2972,19 @@ at_xfail=no
 
 cat >script-l <<_ATEOF_ED
 H
-r ../../l.d
-$(test -s ../../l.t &&
-cat ../../l.t ||
+r /opt/src/alm/ed-piq/ed/testsuite/l.d
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/l.t &&
+cat /opt/src/alm/ed-piq/ed/testsuite/l.t ||
 echo "w l.o")
 wq l.o
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/l.ok-at:20: ed -f script-l &&
-cmp ../../l.r l.o"
+cmp /opt/src/alm/ed-piq/ed/testsuite/l.r l.o"
 at_fn_check_prepare_notrace 'an embedded newline' "l.ok-at:20"
 ( $at_check_trace; ed -f script-l &&
-cmp ../../l.r l.o
+cmp /opt/src/alm/ed-piq/ed/testsuite/l.r l.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -3011,19 +3011,19 @@ at_xfail=no
 
 cat >script-m <<_ATEOF_ED
 H
-r ../../m.d
-$(test -s ../../m.t &&
-cat ../../m.t ||
+r /opt/src/alm/ed-piq/ed/testsuite/m.d
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/m.t &&
+cat /opt/src/alm/ed-piq/ed/testsuite/m.t ||
 echo "w m.o")
 wq m.o
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/m.ok-at:20: ed -f script-m &&
-cmp ../../m.r m.o"
+cmp /opt/src/alm/ed-piq/ed/testsuite/m.r m.o"
 at_fn_check_prepare_notrace 'an embedded newline' "m.ok-at:20"
 ( $at_check_trace; ed -f script-m &&
-cmp ../../m.r m.o
+cmp /opt/src/alm/ed-piq/ed/testsuite/m.r m.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -3050,19 +3050,19 @@ at_xfail=no
 
 cat >script-n <<_ATEOF_ED
 H
-r ../../n.d
-$(test -s ../../n.t &&
-cat ../../n.t ||
+r /opt/src/alm/ed-piq/ed/testsuite/n.d
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/n.t &&
+cat /opt/src/alm/ed-piq/ed/testsuite/n.t ||
 echo "w n.o")
 wq n.o
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/n.ok-at:20: ed -f script-n &&
-cmp ../../n.r n.o"
+cmp /opt/src/alm/ed-piq/ed/testsuite/n.r n.o"
 at_fn_check_prepare_notrace 'an embedded newline' "n.ok-at:20"
 ( $at_check_trace; ed -f script-n &&
-cmp ../../n.r n.o
+cmp /opt/src/alm/ed-piq/ed/testsuite/n.r n.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -3089,19 +3089,19 @@ at_xfail=no
 
 cat >script-nl1 <<_ATEOF_ED
 H
-r ../../nl1.d
-$(test -s ../../nl1.t &&
-cat ../../nl1.t ||
+r /opt/src/alm/ed-piq/ed/testsuite/nl1.d
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/nl1.t &&
+cat /opt/src/alm/ed-piq/ed/testsuite/nl1.t ||
 echo "w nl1.o")
 wq nl1.o
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/nl1.ok-at:20: ed -f script-nl1 &&
-cmp ../../nl1.r nl1.o"
+cmp /opt/src/alm/ed-piq/ed/testsuite/nl1.r nl1.o"
 at_fn_check_prepare_notrace 'an embedded newline' "nl1.ok-at:20"
 ( $at_check_trace; ed -f script-nl1 &&
-cmp ../../nl1.r nl1.o
+cmp /opt/src/alm/ed-piq/ed/testsuite/nl1.r nl1.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -3128,19 +3128,19 @@ at_xfail=no
 
 cat >script-nl2 <<_ATEOF_ED
 H
-r ../../nl2.d
-$(test -s ../../nl2.t &&
-cat ../../nl2.t ||
+r /opt/src/alm/ed-piq/ed/testsuite/nl2.d
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/nl2.t &&
+cat /opt/src/alm/ed-piq/ed/testsuite/nl2.t ||
 echo "w nl2.o")
 wq nl2.o
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/nl2.ok-at:20: ed -f script-nl2 &&
-cmp ../../nl2.r nl2.o"
+cmp /opt/src/alm/ed-piq/ed/testsuite/nl2.r nl2.o"
 at_fn_check_prepare_notrace 'an embedded newline' "nl2.ok-at:20"
 ( $at_check_trace; ed -f script-nl2 &&
-cmp ../../nl2.r nl2.o
+cmp /opt/src/alm/ed-piq/ed/testsuite/nl2.r nl2.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -3167,19 +3167,19 @@ at_xfail=no
 
 cat >script-nl3 <<_ATEOF_ED
 H
-r ../../nl3.d
-$(test -s ../../nl3.t &&
-cat ../../nl3.t ||
+r /opt/src/alm/ed-piq/ed/testsuite/nl3.d
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/nl3.t &&
+cat /opt/src/alm/ed-piq/ed/testsuite/nl3.t ||
 echo "w nl3.o")
 wq nl3.o
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/nl3.ok-at:20: ed -f script-nl3 &&
-cmp ../../nl3.r nl3.o"
+cmp /opt/src/alm/ed-piq/ed/testsuite/nl3.r nl3.o"
 at_fn_check_prepare_notrace 'an embedded newline' "nl3.ok-at:20"
 ( $at_check_trace; ed -f script-nl3 &&
-cmp ../../nl3.r nl3.o
+cmp /opt/src/alm/ed-piq/ed/testsuite/nl3.r nl3.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -3206,19 +3206,19 @@ at_xfail=no
 
 cat >script-nl4 <<_ATEOF_ED
 H
-r ../../nl4.d
-$(test -s ../../nl4.t &&
-cat ../../nl4.t ||
+r /opt/src/alm/ed-piq/ed/testsuite/nl4.d
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/nl4.t &&
+cat /opt/src/alm/ed-piq/ed/testsuite/nl4.t ||
 echo "w nl4.o")
 wq nl4.o
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/nl4.ok-at:20: ed -f script-nl4 &&
-cmp ../../nl4.r nl4.o"
+cmp /opt/src/alm/ed-piq/ed/testsuite/nl4.r nl4.o"
 at_fn_check_prepare_notrace 'an embedded newline' "nl4.ok-at:20"
 ( $at_check_trace; ed -f script-nl4 &&
-cmp ../../nl4.r nl4.o
+cmp /opt/src/alm/ed-piq/ed/testsuite/nl4.r nl4.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -3245,19 +3245,19 @@ at_xfail=no
 
 cat >script-p <<_ATEOF_ED
 H
-r ../../p.d
-$(test -s ../../p.t &&
-cat ../../p.t ||
+r /opt/src/alm/ed-piq/ed/testsuite/p.d
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/p.t &&
+cat /opt/src/alm/ed-piq/ed/testsuite/p.t ||
 echo "w p.o")
 wq p.o
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/p.ok-at:20: ed -f script-p &&
-cmp ../../p.r p.o"
+cmp /opt/src/alm/ed-piq/ed/testsuite/p.r p.o"
 at_fn_check_prepare_notrace 'an embedded newline' "p.ok-at:20"
 ( $at_check_trace; ed -f script-p &&
-cmp ../../p.r p.o
+cmp /opt/src/alm/ed-piq/ed/testsuite/p.r p.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -3284,19 +3284,19 @@ at_xfail=no
 
 cat >script-q2 <<_ATEOF_ED
 H
-r ../../q2.d
-$(test -s ../../q2.t &&
-cat ../../q2.t ||
+r /opt/src/alm/ed-piq/ed/testsuite/q2.d
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/q2.t &&
+cat /opt/src/alm/ed-piq/ed/testsuite/q2.t ||
 echo "w q2.o")
 wq q2.o
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/q2.ok-at:20: ed -f script-q2 &&
-cmp ../../q2.r q2.o"
+cmp /opt/src/alm/ed-piq/ed/testsuite/q2.r q2.o"
 at_fn_check_prepare_notrace 'an embedded newline' "q2.ok-at:20"
 ( $at_check_trace; ed -f script-q2 &&
-cmp ../../q2.r q2.o
+cmp /opt/src/alm/ed-piq/ed/testsuite/q2.r q2.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -3323,19 +3323,19 @@ at_xfail=no
 
 cat >script-r1 <<_ATEOF_ED
 H
-r ../../r1.d
-$(test -s ../../r1.t &&
-cat ../../r1.t ||
+r /opt/src/alm/ed-piq/ed/testsuite/r1.d
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/r1.t &&
+cat /opt/src/alm/ed-piq/ed/testsuite/r1.t ||
 echo "w r1.o")
 wq r1.o
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/r1.ok-at:20: ed -f script-r1 &&
-cmp ../../r1.r r1.o"
+cmp /opt/src/alm/ed-piq/ed/testsuite/r1.r r1.o"
 at_fn_check_prepare_notrace 'an embedded newline' "r1.ok-at:20"
 ( $at_check_trace; ed -f script-r1 &&
-cmp ../../r1.r r1.o
+cmp /opt/src/alm/ed-piq/ed/testsuite/r1.r r1.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -3362,19 +3362,19 @@ at_xfail=no
 
 cat >script-r2 <<_ATEOF_ED
 H
-r ../../r2.d
-$(test -s ../../r2.t &&
-cat ../../r2.t ||
+r /opt/src/alm/ed-piq/ed/testsuite/r2.d
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/r2.t &&
+cat /opt/src/alm/ed-piq/ed/testsuite/r2.t ||
 echo "w r2.o")
 wq r2.o
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/r2.ok-at:20: ed -f script-r2 &&
-cmp ../../r2.r r2.o"
+cmp /opt/src/alm/ed-piq/ed/testsuite/r2.r r2.o"
 at_fn_check_prepare_notrace 'an embedded newline' "r2.ok-at:20"
 ( $at_check_trace; ed -f script-r2 &&
-cmp ../../r2.r r2.o
+cmp /opt/src/alm/ed-piq/ed/testsuite/r2.r r2.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -3401,19 +3401,19 @@ at_xfail=no
 
 cat >script-r3 <<_ATEOF_ED
 H
-r ../../r3.d
-$(test -s ../../r3.t &&
-cat ../../r3.t ||
+r /opt/src/alm/ed-piq/ed/testsuite/r3.d
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/r3.t &&
+cat /opt/src/alm/ed-piq/ed/testsuite/r3.t ||
 echo "w r3.o")
 wq r3.o
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/r3.ok-at:20: ed -f script-r3 &&
-cmp ../../r3.r r3.o"
+cmp /opt/src/alm/ed-piq/ed/testsuite/r3.r r3.o"
 at_fn_check_prepare_notrace 'an embedded newline' "r3.ok-at:20"
 ( $at_check_trace; ed -f script-r3 &&
-cmp ../../r3.r r3.o
+cmp /opt/src/alm/ed-piq/ed/testsuite/r3.r r3.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -3440,19 +3440,19 @@ at_xfail=no
 
 cat >script-s1 <<_ATEOF_ED
 H
-r ../../s1.d
-$(test -s ../../s1.t &&
-cat ../../s1.t ||
+r /opt/src/alm/ed-piq/ed/testsuite/s1.d
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/s1.t &&
+cat /opt/src/alm/ed-piq/ed/testsuite/s1.t ||
 echo "w s1.o")
 wq s1.o
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/s1.ok-at:20: ed -f script-s1 &&
-cmp ../../s1.r s1.o"
+cmp /opt/src/alm/ed-piq/ed/testsuite/s1.r s1.o"
 at_fn_check_prepare_notrace 'an embedded newline' "s1.ok-at:20"
 ( $at_check_trace; ed -f script-s1 &&
-cmp ../../s1.r s1.o
+cmp /opt/src/alm/ed-piq/ed/testsuite/s1.r s1.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -3479,19 +3479,19 @@ at_xfail=no
 
 cat >script-s2 <<_ATEOF_ED
 H
-r ../../s2.d
-$(test -s ../../s2.t &&
-cat ../../s2.t ||
+r /opt/src/alm/ed-piq/ed/testsuite/s2.d
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/s2.t &&
+cat /opt/src/alm/ed-piq/ed/testsuite/s2.t ||
 echo "w s2.o")
 wq s2.o
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/s2.ok-at:20: ed -f script-s2 &&
-cmp ../../s2.r s2.o"
+cmp /opt/src/alm/ed-piq/ed/testsuite/s2.r s2.o"
 at_fn_check_prepare_notrace 'an embedded newline' "s2.ok-at:20"
 ( $at_check_trace; ed -f script-s2 &&
-cmp ../../s2.r s2.o
+cmp /opt/src/alm/ed-piq/ed/testsuite/s2.r s2.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -3518,19 +3518,19 @@ at_xfail=no
 
 cat >script-s3 <<_ATEOF_ED
 H
-r ../../s3.d
-$(test -s ../../s3.t &&
-cat ../../s3.t ||
+r /opt/src/alm/ed-piq/ed/testsuite/s3.d
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/s3.t &&
+cat /opt/src/alm/ed-piq/ed/testsuite/s3.t ||
 echo "w s3.o")
 wq s3.o
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/s3.ok-at:20: ed -f script-s3 &&
-cmp ../../s3.r s3.o"
+cmp /opt/src/alm/ed-piq/ed/testsuite/s3.r s3.o"
 at_fn_check_prepare_notrace 'an embedded newline' "s3.ok-at:20"
 ( $at_check_trace; ed -f script-s3 &&
-cmp ../../s3.r s3.o
+cmp /opt/src/alm/ed-piq/ed/testsuite/s3.r s3.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -3557,19 +3557,19 @@ at_xfail=no
 
 cat >script-s4 <<_ATEOF_ED
 H
-r ../../s4.d
-$(test -s ../../s4.t &&
-cat ../../s4.t ||
+r /opt/src/alm/ed-piq/ed/testsuite/s4.d
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/s4.t &&
+cat /opt/src/alm/ed-piq/ed/testsuite/s4.t ||
 echo "w s4.o")
 wq s4.o
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/s4.ok-at:20: ed -f script-s4 &&
-cmp ../../s4.r s4.o"
+cmp /opt/src/alm/ed-piq/ed/testsuite/s4.r s4.o"
 at_fn_check_prepare_notrace 'an embedded newline' "s4.ok-at:20"
 ( $at_check_trace; ed -f script-s4 &&
-cmp ../../s4.r s4.o
+cmp /opt/src/alm/ed-piq/ed/testsuite/s4.r s4.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -3596,19 +3596,19 @@ at_xfail=no
 
 cat >script-s5 <<_ATEOF_ED
 H
-r ../../s5.d
-$(test -s ../../s5.t &&
-cat ../../s5.t ||
+r /opt/src/alm/ed-piq/ed/testsuite/s5.d
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/s5.t &&
+cat /opt/src/alm/ed-piq/ed/testsuite/s5.t ||
 echo "w s5.o")
 wq s5.o
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/s5.ok-at:20: ed -f script-s5 &&
-cmp ../../s5.r s5.o"
+cmp /opt/src/alm/ed-piq/ed/testsuite/s5.r s5.o"
 at_fn_check_prepare_notrace 'an embedded newline' "s5.ok-at:20"
 ( $at_check_trace; ed -f script-s5 &&
-cmp ../../s5.r s5.o
+cmp /opt/src/alm/ed-piq/ed/testsuite/s5.r s5.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -3635,19 +3635,19 @@ at_xfail=no
 
 cat >script-t1 <<_ATEOF_ED
 H
-r ../../t1.d
-$(test -s ../../t1.t &&
-cat ../../t1.t ||
+r /opt/src/alm/ed-piq/ed/testsuite/t1.d
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/t1.t &&
+cat /opt/src/alm/ed-piq/ed/testsuite/t1.t ||
 echo "w t1.o")
 wq t1.o
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/t1.ok-at:20: ed -f script-t1 &&
-cmp ../../t1.r t1.o"
+cmp /opt/src/alm/ed-piq/ed/testsuite/t1.r t1.o"
 at_fn_check_prepare_notrace 'an embedded newline' "t1.ok-at:20"
 ( $at_check_trace; ed -f script-t1 &&
-cmp ../../t1.r t1.o
+cmp /opt/src/alm/ed-piq/ed/testsuite/t1.r t1.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -3674,19 +3674,19 @@ at_xfail=no
 
 cat >script-t2 <<_ATEOF_ED
 H
-r ../../t2.d
-$(test -s ../../t2.t &&
-cat ../../t2.t ||
+r /opt/src/alm/ed-piq/ed/testsuite/t2.d
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/t2.t &&
+cat /opt/src/alm/ed-piq/ed/testsuite/t2.t ||
 echo "w t2.o")
 wq t2.o
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/t2.ok-at:20: ed -f script-t2 &&
-cmp ../../t2.r t2.o"
+cmp /opt/src/alm/ed-piq/ed/testsuite/t2.r t2.o"
 at_fn_check_prepare_notrace 'an embedded newline' "t2.ok-at:20"
 ( $at_check_trace; ed -f script-t2 &&
-cmp ../../t2.r t2.o
+cmp /opt/src/alm/ed-piq/ed/testsuite/t2.r t2.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -3713,19 +3713,19 @@ at_xfail=no
 
 cat >script-u <<_ATEOF_ED
 H
-r ../../u.d
-$(test -s ../../u.t &&
-cat ../../u.t ||
+r /opt/src/alm/ed-piq/ed/testsuite/u.d
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/u.t &&
+cat /opt/src/alm/ed-piq/ed/testsuite/u.t ||
 echo "w u.o")
 wq u.o
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/u.ok-at:20: ed -f script-u &&
-cmp ../../u.r u.o"
+cmp /opt/src/alm/ed-piq/ed/testsuite/u.r u.o"
 at_fn_check_prepare_notrace 'an embedded newline' "u.ok-at:20"
 ( $at_check_trace; ed -f script-u &&
-cmp ../../u.r u.o
+cmp /opt/src/alm/ed-piq/ed/testsuite/u.r u.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -3752,19 +3752,19 @@ at_xfail=no
 
 cat >script-v <<_ATEOF_ED
 H
-r ../../v.d
-$(test -s ../../v.t &&
-cat ../../v.t ||
+r /opt/src/alm/ed-piq/ed/testsuite/v.d
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/v.t &&
+cat /opt/src/alm/ed-piq/ed/testsuite/v.t ||
 echo "w v.o")
 wq v.o
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/v.ok-at:20: ed -f script-v &&
-cmp ../../v.r v.o"
+cmp /opt/src/alm/ed-piq/ed/testsuite/v.r v.o"
 at_fn_check_prepare_notrace 'an embedded newline' "v.ok-at:20"
 ( $at_check_trace; ed -f script-v &&
-cmp ../../v.r v.o
+cmp /opt/src/alm/ed-piq/ed/testsuite/v.r v.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -3791,19 +3791,19 @@ at_xfail=no
 
 cat >script-w <<_ATEOF_ED
 H
-r ../../w.d
-$(test -s ../../w.t &&
-cat ../../w.t ||
+r /opt/src/alm/ed-piq/ed/testsuite/w.d
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/w.t &&
+cat /opt/src/alm/ed-piq/ed/testsuite/w.t ||
 echo "w w.o")
 wq w.o
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/w.ok-at:20: ed -f script-w &&
-cmp ../../w.r w.o"
+cmp /opt/src/alm/ed-piq/ed/testsuite/w.r w.o"
 at_fn_check_prepare_notrace 'an embedded newline' "w.ok-at:20"
 ( $at_check_trace; ed -f script-w &&
-cmp ../../w.r w.o
+cmp /opt/src/alm/ed-piq/ed/testsuite/w.r w.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -3830,19 +3830,19 @@ at_xfail=no
 
 cat >script-a2 <<_ATEOF_ED
 H
-r ../../a2.err
-$(test -s ../../a2.err &&
-cat ../../a2.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/a2.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/a2.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/a2.err ||
 echo "a2")
 w a2.ro
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/a2.err-at:20: cat script-a2 | ed - && exit 255 ||
-cmp ../../a2.rr a2.ro"
+cmp /opt/src/alm/ed-piq/ed/testsuite/a2.rr a2.ro"
 at_fn_check_prepare_notrace 'an embedded newline' "a2.err-at:20"
 ( $at_check_trace; cat script-a2 | ed - && exit 255 ||
-cmp ../../a2.rr a2.ro
+cmp /opt/src/alm/ed-piq/ed/testsuite/a2.rr a2.ro
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -3869,19 +3869,19 @@ at_xfail=no
 
 cat >script-addr1 <<_ATEOF_ED
 H
-r ../../addr1.err
-$(test -s ../../addr1.err &&
-cat ../../addr1.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/addr1.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/addr1.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/addr1.err ||
 echo "addr1")
 w addr1.ro
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/addr1.err-at:20: cat script-addr1 | ed - && exit 255 ||
-cmp ../../addr1.rr addr1.ro"
+cmp /opt/src/alm/ed-piq/ed/testsuite/addr1.rr addr1.ro"
 at_fn_check_prepare_notrace 'an embedded newline' "addr1.err-at:20"
 ( $at_check_trace; cat script-addr1 | ed - && exit 255 ||
-cmp ../../addr1.rr addr1.ro
+cmp /opt/src/alm/ed-piq/ed/testsuite/addr1.rr addr1.ro
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -3908,19 +3908,19 @@ at_xfail=no
 
 cat >script-addr2 <<_ATEOF_ED
 H
-r ../../addr2.err
-$(test -s ../../addr2.err &&
-cat ../../addr2.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/addr2.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/addr2.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/addr2.err ||
 echo "addr2")
 w addr2.ro
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/addr2.err-at:20: cat script-addr2 | ed - && exit 255 ||
-cmp ../../addr2.rr addr2.ro"
+cmp /opt/src/alm/ed-piq/ed/testsuite/addr2.rr addr2.ro"
 at_fn_check_prepare_notrace 'an embedded newline' "addr2.err-at:20"
 ( $at_check_trace; cat script-addr2 | ed - && exit 255 ||
-cmp ../../addr2.rr addr2.ro
+cmp /opt/src/alm/ed-piq/ed/testsuite/addr2.rr addr2.ro
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -3947,19 +3947,19 @@ at_xfail=no
 
 cat >script-bang1 <<_ATEOF_ED
 H
-r ../../bang1.err
-$(test -s ../../bang1.err &&
-cat ../../bang1.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/bang1.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/bang1.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/bang1.err ||
 echo "bang1")
 w bang1.ro
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/bang1.err-at:20: cat script-bang1 | ed - && exit 255 ||
-cmp ../../bang1.rr bang1.ro"
+cmp /opt/src/alm/ed-piq/ed/testsuite/bang1.rr bang1.ro"
 at_fn_check_prepare_notrace 'an embedded newline' "bang1.err-at:20"
 ( $at_check_trace; cat script-bang1 | ed - && exit 255 ||
-cmp ../../bang1.rr bang1.ro
+cmp /opt/src/alm/ed-piq/ed/testsuite/bang1.rr bang1.ro
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -3986,19 +3986,19 @@ at_xfail=no
 
 cat >script-bang2 <<_ATEOF_ED
 H
-r ../../bang2.err
-$(test -s ../../bang2.err &&
-cat ../../bang2.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/bang2.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/bang2.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/bang2.err ||
 echo "bang2")
 w bang2.ro
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/bang2.err-at:20: cat script-bang2 | ed - && exit 255 ||
-cmp ../../bang2.rr bang2.ro"
+cmp /opt/src/alm/ed-piq/ed/testsuite/bang2.rr bang2.ro"
 at_fn_check_prepare_notrace 'an embedded newline' "bang2.err-at:20"
 ( $at_check_trace; cat script-bang2 | ed - && exit 255 ||
-cmp ../../bang2.rr bang2.ro
+cmp /opt/src/alm/ed-piq/ed/testsuite/bang2.rr bang2.ro
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -4025,19 +4025,19 @@ at_xfail=no
 
 cat >script-c1 <<_ATEOF_ED
 H
-r ../../c1.err
-$(test -s ../../c1.err &&
-cat ../../c1.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/c1.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/c1.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/c1.err ||
 echo "c1")
 w c1.ro
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/c1.err-at:20: cat script-c1 | ed - && exit 255 ||
-cmp ../../c1.rr c1.ro"
+cmp /opt/src/alm/ed-piq/ed/testsuite/c1.rr c1.ro"
 at_fn_check_prepare_notrace 'an embedded newline' "c1.err-at:20"
 ( $at_check_trace; cat script-c1 | ed - && exit 255 ||
-cmp ../../c1.rr c1.ro
+cmp /opt/src/alm/ed-piq/ed/testsuite/c1.rr c1.ro
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -4064,19 +4064,19 @@ at_xfail=no
 
 cat >script-d <<_ATEOF_ED
 H
-r ../../d.err
-$(test -s ../../d.err &&
-cat ../../d.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/d.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/d.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/d.err ||
 echo "d")
 w d.ro
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/d.err-at:20: cat script-d | ed - && exit 255 ||
-cmp ../../d.rr d.ro"
+cmp /opt/src/alm/ed-piq/ed/testsuite/d.rr d.ro"
 at_fn_check_prepare_notrace 'an embedded newline' "d.err-at:20"
 ( $at_check_trace; cat script-d | ed - && exit 255 ||
-cmp ../../d.rr d.ro
+cmp /opt/src/alm/ed-piq/ed/testsuite/d.rr d.ro
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -4103,19 +4103,19 @@ at_xfail=no
 
 cat >script-e1 <<_ATEOF_ED
 H
-r ../../e1.err
-$(test -s ../../e1.err &&
-cat ../../e1.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/e1.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/e1.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/e1.err ||
 echo "e1")
 w e1.ro
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/e1.err-at:20: cat script-e1 | ed - && exit 255 ||
-cmp ../../e1.rr e1.ro"
+cmp /opt/src/alm/ed-piq/ed/testsuite/e1.rr e1.ro"
 at_fn_check_prepare_notrace 'an embedded newline' "e1.err-at:20"
 ( $at_check_trace; cat script-e1 | ed - && exit 255 ||
-cmp ../../e1.rr e1.ro
+cmp /opt/src/alm/ed-piq/ed/testsuite/e1.rr e1.ro
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -4142,19 +4142,19 @@ at_xfail=no
 
 cat >script-e2 <<_ATEOF_ED
 H
-r ../../e2.err
-$(test -s ../../e2.err &&
-cat ../../e2.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/e2.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/e2.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/e2.err ||
 echo "e2")
 w e2.ro
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/e2.err-at:20: cat script-e2 | ed - && exit 255 ||
-cmp ../../e2.rr e2.ro"
+cmp /opt/src/alm/ed-piq/ed/testsuite/e2.rr e2.ro"
 at_fn_check_prepare_notrace 'an embedded newline' "e2.err-at:20"
 ( $at_check_trace; cat script-e2 | ed - && exit 255 ||
-cmp ../../e2.rr e2.ro
+cmp /opt/src/alm/ed-piq/ed/testsuite/e2.rr e2.ro
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -4181,19 +4181,19 @@ at_xfail=no
 
 cat >script-e3 <<_ATEOF_ED
 H
-r ../../e3.err
-$(test -s ../../e3.err &&
-cat ../../e3.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/e3.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/e3.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/e3.err ||
 echo "e3")
 w e3.ro
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/e3.err-at:20: cat script-e3 | ed - && exit 255 ||
-cmp ../../e3.rr e3.ro"
+cmp /opt/src/alm/ed-piq/ed/testsuite/e3.rr e3.ro"
 at_fn_check_prepare_notrace 'an embedded newline' "e3.err-at:20"
 ( $at_check_trace; cat script-e3 | ed - && exit 255 ||
-cmp ../../e3.rr e3.ro
+cmp /opt/src/alm/ed-piq/ed/testsuite/e3.rr e3.ro
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -4220,19 +4220,19 @@ at_xfail=no
 
 cat >script-f1 <<_ATEOF_ED
 H
-r ../../f1.err
-$(test -s ../../f1.err &&
-cat ../../f1.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/f1.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/f1.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/f1.err ||
 echo "f1")
 w f1.ro
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/f1.err-at:20: cat script-f1 | ed - && exit 255 ||
-cmp ../../f1.rr f1.ro"
+cmp /opt/src/alm/ed-piq/ed/testsuite/f1.rr f1.ro"
 at_fn_check_prepare_notrace 'an embedded newline' "f1.err-at:20"
 ( $at_check_trace; cat script-f1 | ed - && exit 255 ||
-cmp ../../f1.rr f1.ro
+cmp /opt/src/alm/ed-piq/ed/testsuite/f1.rr f1.ro
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -4259,19 +4259,19 @@ at_xfail=no
 
 cat >script-f2 <<_ATEOF_ED
 H
-r ../../f2.err
-$(test -s ../../f2.err &&
-cat ../../f2.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/f2.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/f2.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/f2.err ||
 echo "f2")
 w f2.ro
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/f2.err-at:20: cat script-f2 | ed - && exit 255 ||
-cmp ../../f2.rr f2.ro"
+cmp /opt/src/alm/ed-piq/ed/testsuite/f2.rr f2.ro"
 at_fn_check_prepare_notrace 'an embedded newline' "f2.err-at:20"
 ( $at_check_trace; cat script-f2 | ed - && exit 255 ||
-cmp ../../f2.rr f2.ro
+cmp /opt/src/alm/ed-piq/ed/testsuite/f2.rr f2.ro
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -4298,19 +4298,19 @@ at_xfail=no
 
 cat >script-g1 <<_ATEOF_ED
 H
-r ../../g1.err
-$(test -s ../../g1.err &&
-cat ../../g1.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/g1.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/g1.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/g1.err ||
 echo "g1")
 w g1.ro
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/g1.err-at:20: cat script-g1 | ed - && exit 255 ||
-cmp ../../g1.rr g1.ro"
+cmp /opt/src/alm/ed-piq/ed/testsuite/g1.rr g1.ro"
 at_fn_check_prepare_notrace 'an embedded newline' "g1.err-at:20"
 ( $at_check_trace; cat script-g1 | ed - && exit 255 ||
-cmp ../../g1.rr g1.ro
+cmp /opt/src/alm/ed-piq/ed/testsuite/g1.rr g1.ro
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -4337,19 +4337,19 @@ at_xfail=no
 
 cat >script-g2 <<_ATEOF_ED
 H
-r ../../g2.err
-$(test -s ../../g2.err &&
-cat ../../g2.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/g2.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/g2.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/g2.err ||
 echo "g2")
 w g2.ro
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/g2.err-at:20: cat script-g2 | ed - && exit 255 ||
-cmp ../../g2.rr g2.ro"
+cmp /opt/src/alm/ed-piq/ed/testsuite/g2.rr g2.ro"
 at_fn_check_prepare_notrace 'an embedded newline' "g2.err-at:20"
 ( $at_check_trace; cat script-g2 | ed - && exit 255 ||
-cmp ../../g2.rr g2.ro
+cmp /opt/src/alm/ed-piq/ed/testsuite/g2.rr g2.ro
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -4376,19 +4376,19 @@ at_xfail=no
 
 cat >script-g3 <<_ATEOF_ED
 H
-r ../../g3.err
-$(test -s ../../g3.err &&
-cat ../../g3.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/g3.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/g3.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/g3.err ||
 echo "g3")
 w g3.ro
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/g3.err-at:20: cat script-g3 | ed - && exit 255 ||
-cmp ../../g3.rr g3.ro"
+cmp /opt/src/alm/ed-piq/ed/testsuite/g3.rr g3.ro"
 at_fn_check_prepare_notrace 'an embedded newline' "g3.err-at:20"
 ( $at_check_trace; cat script-g3 | ed - && exit 255 ||
-cmp ../../g3.rr g3.ro
+cmp /opt/src/alm/ed-piq/ed/testsuite/g3.rr g3.ro
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -4415,19 +4415,19 @@ at_xfail=no
 
 cat >script-h <<_ATEOF_ED
 H
-r ../../h.err
-$(test -s ../../h.err &&
-cat ../../h.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/h.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/h.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/h.err ||
 echo "h")
 w h.ro
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/h.err-at:20: cat script-h | ed - && exit 255 ||
-cmp ../../h.rr h.ro"
+cmp /opt/src/alm/ed-piq/ed/testsuite/h.rr h.ro"
 at_fn_check_prepare_notrace 'an embedded newline' "h.err-at:20"
 ( $at_check_trace; cat script-h | ed - && exit 255 ||
-cmp ../../h.rr h.ro
+cmp /opt/src/alm/ed-piq/ed/testsuite/h.rr h.ro
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -4454,19 +4454,19 @@ at_xfail=no
 
 cat >script-i2 <<_ATEOF_ED
 H
-r ../../i2.err
-$(test -s ../../i2.err &&
-cat ../../i2.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/i2.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/i2.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/i2.err ||
 echo "i2")
 w i2.ro
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/i2.err-at:20: cat script-i2 | ed - && exit 255 ||
-cmp ../../i2.rr i2.ro"
+cmp /opt/src/alm/ed-piq/ed/testsuite/i2.rr i2.ro"
 at_fn_check_prepare_notrace 'an embedded newline' "i2.err-at:20"
 ( $at_check_trace; cat script-i2 | ed - && exit 255 ||
-cmp ../../i2.rr i2.ro
+cmp /opt/src/alm/ed-piq/ed/testsuite/i2.rr i2.ro
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -4493,19 +4493,19 @@ at_xfail=no
 
 cat >script-k2 <<_ATEOF_ED
 H
-r ../../k2.err
-$(test -s ../../k2.err &&
-cat ../../k2.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/k2.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/k2.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/k2.err ||
 echo "k2")
 w k2.ro
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/k2.err-at:20: cat script-k2 | ed - && exit 255 ||
-cmp ../../k2.rr k2.ro"
+cmp /opt/src/alm/ed-piq/ed/testsuite/k2.rr k2.ro"
 at_fn_check_prepare_notrace 'an embedded newline' "k2.err-at:20"
 ( $at_check_trace; cat script-k2 | ed - && exit 255 ||
-cmp ../../k2.rr k2.ro
+cmp /opt/src/alm/ed-piq/ed/testsuite/k2.rr k2.ro
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -4532,19 +4532,19 @@ at_xfail=no
 
 cat >script-k3 <<_ATEOF_ED
 H
-r ../../k3.err
-$(test -s ../../k3.err &&
-cat ../../k3.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/k3.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/k3.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/k3.err ||
 echo "k3")
 w k3.ro
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/k3.err-at:20: cat script-k3 | ed - && exit 255 ||
-cmp ../../k3.rr k3.ro"
+cmp /opt/src/alm/ed-piq/ed/testsuite/k3.rr k3.ro"
 at_fn_check_prepare_notrace 'an embedded newline' "k3.err-at:20"
 ( $at_check_trace; cat script-k3 | ed - && exit 255 ||
-cmp ../../k3.rr k3.ro
+cmp /opt/src/alm/ed-piq/ed/testsuite/k3.rr k3.ro
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -4571,19 +4571,19 @@ at_xfail=no
 
 cat >script-k4 <<_ATEOF_ED
 H
-r ../../k4.err
-$(test -s ../../k4.err &&
-cat ../../k4.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/k4.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/k4.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/k4.err ||
 echo "k4")
 w k4.ro
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/k4.err-at:20: cat script-k4 | ed - && exit 255 ||
-cmp ../../k4.rr k4.ro"
+cmp /opt/src/alm/ed-piq/ed/testsuite/k4.rr k4.ro"
 at_fn_check_prepare_notrace 'an embedded newline' "k4.err-at:20"
 ( $at_check_trace; cat script-k4 | ed - && exit 255 ||
-cmp ../../k4.rr k4.ro
+cmp /opt/src/alm/ed-piq/ed/testsuite/k4.rr k4.ro
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -4610,19 +4610,19 @@ at_xfail=no
 
 cat >script-m <<_ATEOF_ED
 H
-r ../../m.err
-$(test -s ../../m.err &&
-cat ../../m.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/m.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/m.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/m.err ||
 echo "m")
 w m.ro
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/m.err-at:20: cat script-m | ed - && exit 255 ||
-cmp ../../m.rr m.ro"
+cmp /opt/src/alm/ed-piq/ed/testsuite/m.rr m.ro"
 at_fn_check_prepare_notrace 'an embedded newline' "m.err-at:20"
 ( $at_check_trace; cat script-m | ed - && exit 255 ||
-cmp ../../m.rr m.ro
+cmp /opt/src/alm/ed-piq/ed/testsuite/m.rr m.ro
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -4649,19 +4649,19 @@ at_xfail=no
 
 cat >script-q1 <<_ATEOF_ED
 H
-r ../../q1.err
-$(test -s ../../q1.err &&
-cat ../../q1.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/q1.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/q1.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/q1.err ||
 echo "q1")
 w q1.ro
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/q1.err-at:20: cat script-q1 | ed - && exit 255 ||
-cmp ../../q1.rr q1.ro"
+cmp /opt/src/alm/ed-piq/ed/testsuite/q1.rr q1.ro"
 at_fn_check_prepare_notrace 'an embedded newline' "q1.err-at:20"
 ( $at_check_trace; cat script-q1 | ed - && exit 255 ||
-cmp ../../q1.rr q1.ro
+cmp /opt/src/alm/ed-piq/ed/testsuite/q1.rr q1.ro
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -4688,19 +4688,19 @@ at_xfail=no
 
 cat >script-r2 <<_ATEOF_ED
 H
-r ../../r2.err
-$(test -s ../../r2.err &&
-cat ../../r2.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/r2.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/r2.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/r2.err ||
 echo "r2")
 w r2.ro
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/r2.err-at:20: cat script-r2 | ed - && exit 255 ||
-cmp ../../r2.rr r2.ro"
+cmp /opt/src/alm/ed-piq/ed/testsuite/r2.rr r2.ro"
 at_fn_check_prepare_notrace 'an embedded newline' "r2.err-at:20"
 ( $at_check_trace; cat script-r2 | ed - && exit 255 ||
-cmp ../../r2.rr r2.ro
+cmp /opt/src/alm/ed-piq/ed/testsuite/r2.rr r2.ro
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -4727,19 +4727,19 @@ at_xfail=no
 
 cat >script-s1 <<_ATEOF_ED
 H
-r ../../s1.err
-$(test -s ../../s1.err &&
-cat ../../s1.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/s1.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/s1.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/s1.err ||
 echo "s1")
 w s1.ro
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/s1.err-at:20: cat script-s1 | ed - && exit 255 ||
-cmp ../../s1.rr s1.ro"
+cmp /opt/src/alm/ed-piq/ed/testsuite/s1.rr s1.ro"
 at_fn_check_prepare_notrace 'an embedded newline' "s1.err-at:20"
 ( $at_check_trace; cat script-s1 | ed - && exit 255 ||
-cmp ../../s1.rr s1.ro
+cmp /opt/src/alm/ed-piq/ed/testsuite/s1.rr s1.ro
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -4766,19 +4766,19 @@ at_xfail=no
 
 cat >script-s10 <<_ATEOF_ED
 H
-r ../../s10.err
-$(test -s ../../s10.err &&
-cat ../../s10.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/s10.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/s10.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/s10.err ||
 echo "s10")
 w s10.ro
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/s10.err-at:20: cat script-s10 | ed - && exit 255 ||
-cmp ../../s10.rr s10.ro"
+cmp /opt/src/alm/ed-piq/ed/testsuite/s10.rr s10.ro"
 at_fn_check_prepare_notrace 'an embedded newline' "s10.err-at:20"
 ( $at_check_trace; cat script-s10 | ed - && exit 255 ||
-cmp ../../s10.rr s10.ro
+cmp /opt/src/alm/ed-piq/ed/testsuite/s10.rr s10.ro
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -4805,19 +4805,19 @@ at_xfail=no
 
 cat >script-s3 <<_ATEOF_ED
 H
-r ../../s3.err
-$(test -s ../../s3.err &&
-cat ../../s3.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/s3.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/s3.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/s3.err ||
 echo "s3")
 w s3.ro
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/s3.err-at:20: cat script-s3 | ed - && exit 255 ||
-cmp ../../s3.rr s3.ro"
+cmp /opt/src/alm/ed-piq/ed/testsuite/s3.rr s3.ro"
 at_fn_check_prepare_notrace 'an embedded newline' "s3.err-at:20"
 ( $at_check_trace; cat script-s3 | ed - && exit 255 ||
-cmp ../../s3.rr s3.ro
+cmp /opt/src/alm/ed-piq/ed/testsuite/s3.rr s3.ro
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -4844,19 +4844,19 @@ at_xfail=no
 
 cat >script-s4 <<_ATEOF_ED
 H
-r ../../s4.err
-$(test -s ../../s4.err &&
-cat ../../s4.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/s4.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/s4.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/s4.err ||
 echo "s4")
 w s4.ro
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/s4.err-at:20: cat script-s4 | ed - && exit 255 ||
-cmp ../../s4.rr s4.ro"
+cmp /opt/src/alm/ed-piq/ed/testsuite/s4.rr s4.ro"
 at_fn_check_prepare_notrace 'an embedded newline' "s4.err-at:20"
 ( $at_check_trace; cat script-s4 | ed - && exit 255 ||
-cmp ../../s4.rr s4.ro
+cmp /opt/src/alm/ed-piq/ed/testsuite/s4.rr s4.ro
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -4883,19 +4883,19 @@ at_xfail=no
 
 cat >script-s5 <<_ATEOF_ED
 H
-r ../../s5.err
-$(test -s ../../s5.err &&
-cat ../../s5.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/s5.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/s5.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/s5.err ||
 echo "s5")
 w s5.ro
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/s5.err-at:20: cat script-s5 | ed - && exit 255 ||
-cmp ../../s5.rr s5.ro"
+cmp /opt/src/alm/ed-piq/ed/testsuite/s5.rr s5.ro"
 at_fn_check_prepare_notrace 'an embedded newline' "s5.err-at:20"
 ( $at_check_trace; cat script-s5 | ed - && exit 255 ||
-cmp ../../s5.rr s5.ro
+cmp /opt/src/alm/ed-piq/ed/testsuite/s5.rr s5.ro
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -4922,19 +4922,19 @@ at_xfail=no
 
 cat >script-s6 <<_ATEOF_ED
 H
-r ../../s6.err
-$(test -s ../../s6.err &&
-cat ../../s6.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/s6.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/s6.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/s6.err ||
 echo "s6")
 w s6.ro
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/s6.err-at:20: cat script-s6 | ed - && exit 255 ||
-cmp ../../s6.rr s6.ro"
+cmp /opt/src/alm/ed-piq/ed/testsuite/s6.rr s6.ro"
 at_fn_check_prepare_notrace 'an embedded newline' "s6.err-at:20"
 ( $at_check_trace; cat script-s6 | ed - && exit 255 ||
-cmp ../../s6.rr s6.ro
+cmp /opt/src/alm/ed-piq/ed/testsuite/s6.rr s6.ro
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -4961,19 +4961,19 @@ at_xfail=no
 
 cat >script-s7 <<_ATEOF_ED
 H
-r ../../s7.err
-$(test -s ../../s7.err &&
-cat ../../s7.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/s7.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/s7.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/s7.err ||
 echo "s7")
 w s7.ro
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/s7.err-at:20: cat script-s7 | ed - && exit 255 ||
-cmp ../../s7.rr s7.ro"
+cmp /opt/src/alm/ed-piq/ed/testsuite/s7.rr s7.ro"
 at_fn_check_prepare_notrace 'an embedded newline' "s7.err-at:20"
 ( $at_check_trace; cat script-s7 | ed - && exit 255 ||
-cmp ../../s7.rr s7.ro
+cmp /opt/src/alm/ed-piq/ed/testsuite/s7.rr s7.ro
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -5000,19 +5000,19 @@ at_xfail=no
 
 cat >script-s8 <<_ATEOF_ED
 H
-r ../../s8.err
-$(test -s ../../s8.err &&
-cat ../../s8.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/s8.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/s8.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/s8.err ||
 echo "s8")
 w s8.ro
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/s8.err-at:20: cat script-s8 | ed - && exit 255 ||
-cmp ../../s8.rr s8.ro"
+cmp /opt/src/alm/ed-piq/ed/testsuite/s8.rr s8.ro"
 at_fn_check_prepare_notrace 'an embedded newline' "s8.err-at:20"
 ( $at_check_trace; cat script-s8 | ed - && exit 255 ||
-cmp ../../s8.rr s8.ro
+cmp /opt/src/alm/ed-piq/ed/testsuite/s8.rr s8.ro
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -5039,19 +5039,19 @@ at_xfail=no
 
 cat >script-s9 <<_ATEOF_ED
 H
-r ../../s9.err
-$(test -s ../../s9.err &&
-cat ../../s9.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/s9.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/s9.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/s9.err ||
 echo "s9")
 w s9.ro
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/s9.err-at:20: cat script-s9 | ed - && exit 255 ||
-cmp ../../s9.rr s9.ro"
+cmp /opt/src/alm/ed-piq/ed/testsuite/s9.rr s9.ro"
 at_fn_check_prepare_notrace 'an embedded newline' "s9.err-at:20"
 ( $at_check_trace; cat script-s9 | ed - && exit 255 ||
-cmp ../../s9.rr s9.ro
+cmp /opt/src/alm/ed-piq/ed/testsuite/s9.rr s9.ro
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -5078,19 +5078,19 @@ at_xfail=no
 
 cat >script-t1 <<_ATEOF_ED
 H
-r ../../t1.err
-$(test -s ../../t1.err &&
-cat ../../t1.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/t1.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/t1.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/t1.err ||
 echo "t1")
 w t1.ro
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/t1.err-at:20: cat script-t1 | ed - && exit 255 ||
-cmp ../../t1.rr t1.ro"
+cmp /opt/src/alm/ed-piq/ed/testsuite/t1.rr t1.ro"
 at_fn_check_prepare_notrace 'an embedded newline' "t1.err-at:20"
 ( $at_check_trace; cat script-t1 | ed - && exit 255 ||
-cmp ../../t1.rr t1.ro
+cmp /opt/src/alm/ed-piq/ed/testsuite/t1.rr t1.ro
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -5117,19 +5117,19 @@ at_xfail=no
 
 cat >script-t2 <<_ATEOF_ED
 H
-r ../../t2.err
-$(test -s ../../t2.err &&
-cat ../../t2.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/t2.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/t2.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/t2.err ||
 echo "t2")
 w t2.ro
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/t2.err-at:20: cat script-t2 | ed - && exit 255 ||
-cmp ../../t2.rr t2.ro"
+cmp /opt/src/alm/ed-piq/ed/testsuite/t2.rr t2.ro"
 at_fn_check_prepare_notrace 'an embedded newline' "t2.err-at:20"
 ( $at_check_trace; cat script-t2 | ed - && exit 255 ||
-cmp ../../t2.rr t2.ro
+cmp /opt/src/alm/ed-piq/ed/testsuite/t2.rr t2.ro
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -5156,19 +5156,19 @@ at_xfail=no
 
 cat >script-u <<_ATEOF_ED
 H
-r ../../u.err
-$(test -s ../../u.err &&
-cat ../../u.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/u.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/u.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/u.err ||
 echo "u")
 w u.ro
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/u.err-at:20: cat script-u | ed - && exit 255 ||
-cmp ../../u.rr u.ro"
+cmp /opt/src/alm/ed-piq/ed/testsuite/u.rr u.ro"
 at_fn_check_prepare_notrace 'an embedded newline' "u.err-at:20"
 ( $at_check_trace; cat script-u | ed - && exit 255 ||
-cmp ../../u.rr u.ro
+cmp /opt/src/alm/ed-piq/ed/testsuite/u.rr u.ro
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -5195,19 +5195,19 @@ at_xfail=no
 
 cat >script-w1 <<_ATEOF_ED
 H
-r ../../w1.err
-$(test -s ../../w1.err &&
-cat ../../w1.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/w1.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/w1.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/w1.err ||
 echo "w1")
 w w1.ro
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/w1.err-at:20: cat script-w1 | ed - && exit 255 ||
-cmp ../../w1.rr w1.ro"
+cmp /opt/src/alm/ed-piq/ed/testsuite/w1.rr w1.ro"
 at_fn_check_prepare_notrace 'an embedded newline' "w1.err-at:20"
 ( $at_check_trace; cat script-w1 | ed - && exit 255 ||
-cmp ../../w1.rr w1.ro
+cmp /opt/src/alm/ed-piq/ed/testsuite/w1.rr w1.ro
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -5234,19 +5234,19 @@ at_xfail=no
 
 cat >script-w2 <<_ATEOF_ED
 H
-r ../../w2.err
-$(test -s ../../w2.err &&
-cat ../../w2.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/w2.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/w2.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/w2.err ||
 echo "w2")
 w w2.ro
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/w2.err-at:20: cat script-w2 | ed - && exit 255 ||
-cmp ../../w2.rr w2.ro"
+cmp /opt/src/alm/ed-piq/ed/testsuite/w2.rr w2.ro"
 at_fn_check_prepare_notrace 'an embedded newline' "w2.err-at:20"
 ( $at_check_trace; cat script-w2 | ed - && exit 255 ||
-cmp ../../w2.rr w2.ro
+cmp /opt/src/alm/ed-piq/ed/testsuite/w2.rr w2.ro
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -5273,19 +5273,19 @@ at_xfail=no
 
 cat >script-w3 <<_ATEOF_ED
 H
-r ../../w3.err
-$(test -s ../../w3.err &&
-cat ../../w3.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/w3.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/w3.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/w3.err ||
 echo "w3")
 w w3.ro
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/w3.err-at:20: cat script-w3 | ed - && exit 255 ||
-cmp ../../w3.rr w3.ro"
+cmp /opt/src/alm/ed-piq/ed/testsuite/w3.rr w3.ro"
 at_fn_check_prepare_notrace 'an embedded newline' "w3.err-at:20"
 ( $at_check_trace; cat script-w3 | ed - && exit 255 ||
-cmp ../../w3.rr w3.ro
+cmp /opt/src/alm/ed-piq/ed/testsuite/w3.rr w3.ro
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -5312,19 +5312,19 @@ at_xfail=no
 
 cat >script-z <<_ATEOF_ED
 H
-r ../../z.err
-$(test -s ../../z.err &&
-cat ../../z.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/z.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/z.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/z.err ||
 echo "z")
 w z.ro
 _ATEOF_ED
 
 { set +x
 $as_echo "$at_srcdir/z.err-at:20: cat script-z | ed - && exit 255 ||
-cmp ../../z.rr z.ro"
+cmp /opt/src/alm/ed-piq/ed/testsuite/z.rr z.ro"
 at_fn_check_prepare_notrace 'an embedded newline' "z.err-at:20"
 ( $at_check_trace; cat script-z | ed - && exit 255 ||
-cmp ../../z.rr z.ro
+cmp /opt/src/alm/ed-piq/ed/testsuite/z.rr z.ro
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -5351,9 +5351,9 @@ at_xfail=no
 
 cat >script-a2 <<_ATEOF_ED
 H
-r ../../a2.err
-$(test -s ../../a2.err &&
-cat ../../a2.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/a2.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/a2.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/a2.err ||
 echo "w a2.ro")
 _ATEOF_ED
 
@@ -5387,9 +5387,9 @@ at_xfail=no
 
 cat >script-addr1 <<_ATEOF_ED
 H
-r ../../addr1.err
-$(test -s ../../addr1.err &&
-cat ../../addr1.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/addr1.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/addr1.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/addr1.err ||
 echo "w addr1.ro")
 _ATEOF_ED
 
@@ -5423,9 +5423,9 @@ at_xfail=no
 
 cat >script-addr2 <<_ATEOF_ED
 H
-r ../../addr2.err
-$(test -s ../../addr2.err &&
-cat ../../addr2.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/addr2.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/addr2.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/addr2.err ||
 echo "w addr2.ro")
 _ATEOF_ED
 
@@ -5459,9 +5459,9 @@ at_xfail=no
 
 cat >script-bang1 <<_ATEOF_ED
 H
-r ../../bang1.err
-$(test -s ../../bang1.err &&
-cat ../../bang1.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/bang1.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/bang1.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/bang1.err ||
 echo "w bang1.ro")
 _ATEOF_ED
 
@@ -5495,9 +5495,9 @@ at_xfail=no
 
 cat >script-bang2 <<_ATEOF_ED
 H
-r ../../bang2.err
-$(test -s ../../bang2.err &&
-cat ../../bang2.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/bang2.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/bang2.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/bang2.err ||
 echo "w bang2.ro")
 _ATEOF_ED
 
@@ -5531,9 +5531,9 @@ at_xfail=no
 
 cat >script-c1 <<_ATEOF_ED
 H
-r ../../c1.err
-$(test -s ../../c1.err &&
-cat ../../c1.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/c1.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/c1.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/c1.err ||
 echo "w c1.ro")
 _ATEOF_ED
 
@@ -5567,9 +5567,9 @@ at_xfail=no
 
 cat >script-d <<_ATEOF_ED
 H
-r ../../d.err
-$(test -s ../../d.err &&
-cat ../../d.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/d.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/d.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/d.err ||
 echo "w d.ro")
 _ATEOF_ED
 
@@ -5603,9 +5603,9 @@ at_xfail=no
 
 cat >script-e1 <<_ATEOF_ED
 H
-r ../../e1.err
-$(test -s ../../e1.err &&
-cat ../../e1.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/e1.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/e1.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/e1.err ||
 echo "w e1.ro")
 _ATEOF_ED
 
@@ -5639,9 +5639,9 @@ at_xfail=no
 
 cat >script-e2 <<_ATEOF_ED
 H
-r ../../e2.err
-$(test -s ../../e2.err &&
-cat ../../e2.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/e2.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/e2.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/e2.err ||
 echo "w e2.ro")
 _ATEOF_ED
 
@@ -5675,9 +5675,9 @@ at_xfail=no
 
 cat >script-e3 <<_ATEOF_ED
 H
-r ../../e3.err
-$(test -s ../../e3.err &&
-cat ../../e3.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/e3.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/e3.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/e3.err ||
 echo "w e3.ro")
 _ATEOF_ED
 
@@ -5711,9 +5711,9 @@ at_xfail=no
 
 cat >script-f1 <<_ATEOF_ED
 H
-r ../../f1.err
-$(test -s ../../f1.err &&
-cat ../../f1.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/f1.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/f1.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/f1.err ||
 echo "w f1.ro")
 _ATEOF_ED
 
@@ -5747,9 +5747,9 @@ at_xfail=no
 
 cat >script-f2 <<_ATEOF_ED
 H
-r ../../f2.err
-$(test -s ../../f2.err &&
-cat ../../f2.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/f2.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/f2.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/f2.err ||
 echo "w f2.ro")
 _ATEOF_ED
 
@@ -5783,9 +5783,9 @@ at_xfail=no
 
 cat >script-g1 <<_ATEOF_ED
 H
-r ../../g1.err
-$(test -s ../../g1.err &&
-cat ../../g1.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/g1.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/g1.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/g1.err ||
 echo "w g1.ro")
 _ATEOF_ED
 
@@ -5819,9 +5819,9 @@ at_xfail=no
 
 cat >script-g2 <<_ATEOF_ED
 H
-r ../../g2.err
-$(test -s ../../g2.err &&
-cat ../../g2.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/g2.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/g2.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/g2.err ||
 echo "w g2.ro")
 _ATEOF_ED
 
@@ -5855,9 +5855,9 @@ at_xfail=no
 
 cat >script-g3 <<_ATEOF_ED
 H
-r ../../g3.err
-$(test -s ../../g3.err &&
-cat ../../g3.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/g3.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/g3.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/g3.err ||
 echo "w g3.ro")
 _ATEOF_ED
 
@@ -5891,9 +5891,9 @@ at_xfail=no
 
 cat >script-h <<_ATEOF_ED
 H
-r ../../h.err
-$(test -s ../../h.err &&
-cat ../../h.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/h.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/h.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/h.err ||
 echo "w h.ro")
 _ATEOF_ED
 
@@ -5927,9 +5927,9 @@ at_xfail=no
 
 cat >script-i2 <<_ATEOF_ED
 H
-r ../../i2.err
-$(test -s ../../i2.err &&
-cat ../../i2.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/i2.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/i2.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/i2.err ||
 echo "w i2.ro")
 _ATEOF_ED
 
@@ -5963,9 +5963,9 @@ at_xfail=no
 
 cat >script-k2 <<_ATEOF_ED
 H
-r ../../k2.err
-$(test -s ../../k2.err &&
-cat ../../k2.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/k2.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/k2.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/k2.err ||
 echo "w k2.ro")
 _ATEOF_ED
 
@@ -5999,9 +5999,9 @@ at_xfail=no
 
 cat >script-k3 <<_ATEOF_ED
 H
-r ../../k3.err
-$(test -s ../../k3.err &&
-cat ../../k3.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/k3.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/k3.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/k3.err ||
 echo "w k3.ro")
 _ATEOF_ED
 
@@ -6035,9 +6035,9 @@ at_xfail=no
 
 cat >script-k4 <<_ATEOF_ED
 H
-r ../../k4.err
-$(test -s ../../k4.err &&
-cat ../../k4.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/k4.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/k4.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/k4.err ||
 echo "w k4.ro")
 _ATEOF_ED
 
@@ -6071,9 +6071,9 @@ at_xfail=no
 
 cat >script-m <<_ATEOF_ED
 H
-r ../../m.err
-$(test -s ../../m.err &&
-cat ../../m.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/m.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/m.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/m.err ||
 echo "w m.ro")
 _ATEOF_ED
 
@@ -6107,9 +6107,9 @@ at_xfail=no
 
 cat >script-q1 <<_ATEOF_ED
 H
-r ../../q1.err
-$(test -s ../../q1.err &&
-cat ../../q1.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/q1.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/q1.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/q1.err ||
 echo "w q1.ro")
 _ATEOF_ED
 
@@ -6143,9 +6143,9 @@ at_xfail=no
 
 cat >script-r2 <<_ATEOF_ED
 H
-r ../../r2.err
-$(test -s ../../r2.err &&
-cat ../../r2.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/r2.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/r2.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/r2.err ||
 echo "w r2.ro")
 _ATEOF_ED
 
@@ -6179,9 +6179,9 @@ at_xfail=no
 
 cat >script-s1 <<_ATEOF_ED
 H
-r ../../s1.err
-$(test -s ../../s1.err &&
-cat ../../s1.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/s1.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/s1.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/s1.err ||
 echo "w s1.ro")
 _ATEOF_ED
 
@@ -6215,9 +6215,9 @@ at_xfail=no
 
 cat >script-s10 <<_ATEOF_ED
 H
-r ../../s10.err
-$(test -s ../../s10.err &&
-cat ../../s10.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/s10.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/s10.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/s10.err ||
 echo "w s10.ro")
 _ATEOF_ED
 
@@ -6251,9 +6251,9 @@ at_xfail=no
 
 cat >script-s3 <<_ATEOF_ED
 H
-r ../../s3.err
-$(test -s ../../s3.err &&
-cat ../../s3.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/s3.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/s3.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/s3.err ||
 echo "w s3.ro")
 _ATEOF_ED
 
@@ -6287,9 +6287,9 @@ at_xfail=no
 
 cat >script-s4 <<_ATEOF_ED
 H
-r ../../s4.err
-$(test -s ../../s4.err &&
-cat ../../s4.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/s4.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/s4.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/s4.err ||
 echo "w s4.ro")
 _ATEOF_ED
 
@@ -6323,9 +6323,9 @@ at_xfail=no
 
 cat >script-s5 <<_ATEOF_ED
 H
-r ../../s5.err
-$(test -s ../../s5.err &&
-cat ../../s5.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/s5.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/s5.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/s5.err ||
 echo "w s5.ro")
 _ATEOF_ED
 
@@ -6359,9 +6359,9 @@ at_xfail=no
 
 cat >script-s6 <<_ATEOF_ED
 H
-r ../../s6.err
-$(test -s ../../s6.err &&
-cat ../../s6.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/s6.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/s6.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/s6.err ||
 echo "w s6.ro")
 _ATEOF_ED
 
@@ -6395,9 +6395,9 @@ at_xfail=no
 
 cat >script-s7 <<_ATEOF_ED
 H
-r ../../s7.err
-$(test -s ../../s7.err &&
-cat ../../s7.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/s7.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/s7.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/s7.err ||
 echo "w s7.ro")
 _ATEOF_ED
 
@@ -6431,9 +6431,9 @@ at_xfail=no
 
 cat >script-s8 <<_ATEOF_ED
 H
-r ../../s8.err
-$(test -s ../../s8.err &&
-cat ../../s8.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/s8.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/s8.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/s8.err ||
 echo "w s8.ro")
 _ATEOF_ED
 
@@ -6467,9 +6467,9 @@ at_xfail=no
 
 cat >script-s9 <<_ATEOF_ED
 H
-r ../../s9.err
-$(test -s ../../s9.err &&
-cat ../../s9.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/s9.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/s9.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/s9.err ||
 echo "w s9.ro")
 _ATEOF_ED
 
@@ -6503,9 +6503,9 @@ at_xfail=no
 
 cat >script-t1 <<_ATEOF_ED
 H
-r ../../t1.err
-$(test -s ../../t1.err &&
-cat ../../t1.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/t1.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/t1.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/t1.err ||
 echo "w t1.ro")
 _ATEOF_ED
 
@@ -6539,9 +6539,9 @@ at_xfail=no
 
 cat >script-t2 <<_ATEOF_ED
 H
-r ../../t2.err
-$(test -s ../../t2.err &&
-cat ../../t2.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/t2.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/t2.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/t2.err ||
 echo "w t2.ro")
 _ATEOF_ED
 
@@ -6575,9 +6575,9 @@ at_xfail=no
 
 cat >script-u <<_ATEOF_ED
 H
-r ../../u.err
-$(test -s ../../u.err &&
-cat ../../u.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/u.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/u.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/u.err ||
 echo "w u.ro")
 _ATEOF_ED
 
@@ -6611,9 +6611,9 @@ at_xfail=no
 
 cat >script-w1 <<_ATEOF_ED
 H
-r ../../w1.err
-$(test -s ../../w1.err &&
-cat ../../w1.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/w1.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/w1.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/w1.err ||
 echo "w w1.ro")
 _ATEOF_ED
 
@@ -6647,9 +6647,9 @@ at_xfail=no
 
 cat >script-w2 <<_ATEOF_ED
 H
-r ../../w2.err
-$(test -s ../../w2.err &&
-cat ../../w2.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/w2.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/w2.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/w2.err ||
 echo "w w2.ro")
 _ATEOF_ED
 
@@ -6683,9 +6683,9 @@ at_xfail=no
 
 cat >script-w3 <<_ATEOF_ED
 H
-r ../../w3.err
-$(test -s ../../w3.err &&
-cat ../../w3.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/w3.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/w3.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/w3.err ||
 echo "w w3.ro")
 _ATEOF_ED
 
@@ -6719,9 +6719,9 @@ at_xfail=no
 
 cat >script-z <<_ATEOF_ED
 H
-r ../../z.err
-$(test -s ../../z.err &&
-cat ../../z.err ||
+r /opt/src/alm/ed-piq/ed/testsuite/z.err
+$(test -s /opt/src/alm/ed-piq/ed/testsuite/z.err &&
+cat /opt/src/alm/ed-piq/ed/testsuite/z.err ||
 echo "w z.ro")
 _ATEOF_ED
 

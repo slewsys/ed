@@ -1,8 +1,8 @@
 /* undo.c: Undo routines for the ed line editor.
 
-   Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
+   Copyright © 1993-2014 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2013-06-06 <alm@slewsys.org>
+   Last modified: 2014-01-20 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -28,7 +28,7 @@ append_undo_node (type, from, to, ed)
   if (!(up = (ed_undo_node_t *) malloc (ED_UNDO_NODE_T_SIZE)))
     {
       fprintf (stderr, "%s\n", strerror (errno));
-      ed->exec.err = _("Memory exhausted");
+      ed->exec->err = _("Memory exhausted");
       spl0 ();
       return NULL;
     }
@@ -52,7 +52,7 @@ undo_last_command (ed)
 
   if (ed->buf[1].dot == -1 || ed->buf[1].addr_last == -1)
     {
-      ed->exec.err = _("Nothing to undo");
+      ed->exec->err = _("Nothing to undo");
       return ERR;
     }
   spl1 ();
@@ -93,7 +93,7 @@ undo_last_command (ed)
     }
   while ((up = next) != undo_head);
 
-  if (ed->exec.global)
+  if (ed->exec->global)
     reset_global_queue (ed);
   ed->buf[0] = ed->buf[1], ed->buf[1] = saved_buf;
   spl0 ();

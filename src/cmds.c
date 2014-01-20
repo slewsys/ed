@@ -1,8 +1,8 @@
 /* cmds.c: Basic editor commands for the ed line editor.
 
-   Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
+   Copyright © 1993-2014 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2013-08-09 <alm@slewsys.org>
+   Last modified: 2014-01-20 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -25,7 +25,7 @@ append_lines (after, ed)
   ed->buf[0].input_is_binary = 0;
   for (ed->buf[0].dot = after;;)
     {
-      if (!ed->exec.global)
+      if (!ed->exec->global)
         {
           if (!(ed->input = get_stdin_line (&len, ed)))
             {
@@ -37,17 +37,17 @@ append_lines (after, ed)
             }
           if (*(ed->input + len - 1) != '\n')
             {
-              ed->exec.err = _("End-of-file unexpected");
+              ed->exec->err = _("End-of-file unexpected");
               clearerr (stdin);
               return ERR;
             }
-          ++ed->exec.line_no;
+          ++ed->exec->line_no;
         }
       else if (*ed->input == '\0')
         return 0;
       if (*ed->input == '.' && *(ed->input + 1) == '\n')
         return 0;
-      if (ed->exec.global)
+      if (ed->exec->global)
         {
           for (s = ed->input; *s++ != '\n';)
             ;
@@ -72,8 +72,7 @@ append_lines (after, ed)
 }
 
 
-/* copy_lines: Copy a range of lines to after given address; return
-   status. */
+/* copy_lines: Copy a range of lines to after given address; return status. */
 int
 copy_lines (from, to, after, ed)
      off_t from;
@@ -127,7 +126,7 @@ delete_lines (from, to, ed)
 
   /* This get_line_node last! */
   b = get_line_node (from - 1, ed);
-  if (ed->exec.global)
+  if (ed->exec->global)
     delete_global_nodes (b->q_forw, a, ed);
   LINK_NODES (b, a);
   if (to == ed->buf[0].addr_last)
@@ -235,7 +234,7 @@ move_lines (from, to, after, ed)
       LINK_NODES (b1, a1);
       ed->buf[0].dot = after + (from > after ? to - from + 1 : 0);
     }
-  if (ed->exec.global)
+  if (ed->exec->global)
     delete_global_nodes (b2->q_forw, a2, ed);
   ed->buf[0].is_modified = 1;
   spl0 ();
@@ -258,7 +257,7 @@ mark_line_node (lp, n, ed)
 {
   if (!islower (n))
     {
-      ed->exec.err = _("Invalid address mark");
+      ed->exec->err = _("Invalid address mark");
       return ERR;
     }
   if (!mark[n - 'a'])
@@ -277,7 +276,7 @@ get_marked_node_address (n, addr, ed)
 {
   if (!islower (n))
     {
-      ed->exec.err = _("Invalid address mark");
+      ed->exec->err = _("Invalid address mark");
       return ERR;
     }
   return get_line_node_address (mark[n - 'a'], addr, ed);

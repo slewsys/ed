@@ -1,8 +1,8 @@
 /* sub.c: Substitution routines for the ed line editor.
 
-   Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
+   Copyright © 1993-2014 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2013-08-09 <alm@slewsys.org>
+   Last modified: 2014-01-20 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -128,7 +128,7 @@ resubstitute (s_nth, s_mod, s_f, sgpr_f, ed)
       default:
         if (*sgpr_f)
           {
-            ed->exec.err = _("Unknown command suffix");
+            ed->exec->err = _("Unknown command suffix");
             return ERR;
           }
         return 0;
@@ -150,7 +150,7 @@ substitution_lhs (lhs_p, sgpr_f, ed)
   /* Short form of substitution with unknown modifier, e.g., `sw'. */
   if (*ed->input != '\n' && *(ed->input + 1) == '\n')
     {
-      ed->exec.err = _("Unknown command suffix");
+      ed->exec->err = _("Unknown command suffix");
       return ERR;
     }
 
@@ -158,7 +158,7 @@ substitution_lhs (lhs_p, sgpr_f, ed)
   spl1 ();
 
   /* If r_f, use regex from last search. */
-  if (((ed->subst.r_f = (*sgpr_f & TGSR)) || !*sgpr_f)
+  if (((ed->subst->r_f = (*sgpr_f & TGSR)) || !*sgpr_f)
       && !(re = get_compiled_regex (*ed->input, RE_SUBST, ed)))
     {
       spl0 ();
@@ -169,7 +169,7 @@ substitution_lhs (lhs_p, sgpr_f, ed)
 
   if (*sgpr_f && !*lhs_p)
     {
-      ed->exec.err = _("No previous substitution");
+      ed->exec->err = _("No previous substitution");
       return ERR;
     }
   return 0;
@@ -193,7 +193,7 @@ substitution_rhs (s_nth, s_mod, s_f, sio_f, ed)
      ed_state_t *ed;
 {
   size_t len;
-  unsigned dc;                  /* Pattern delimiting char */
+  unsigned dc;                    /* Pattern delimiting char */
   int status;
 
   *s_f = *sio_f = 0;              /* Reset modifiers and I/O flags */
@@ -201,8 +201,8 @@ substitution_rhs (s_nth, s_mod, s_f, sio_f, ed)
   ed->buf[0].input_is_binary = 0; /* Value used in substitute_lines(). */
 
 
-  /* Don't clobber command buffer if any ed->exec.global set. */
-  if (!ed->exec.global && !(ed->input = get_extended_line (&len, 0, ed)))
+  /* Don't clobber command buffer if any ed->exec->global set. */
+  if (!ed->exec->global && !(ed->input = get_extended_line (&len, 0, ed)))
     {
       /* EOF here always flags error. */
       status = ERR;
@@ -245,13 +245,13 @@ substitution_template (dc, ed)
       ++ed->input;
       if (!rhs)
         {
-          ed->exec.err = _("No previous substitution");
+          ed->exec->err = _("No previous substitution");
           return ERR;
         }
       return 0;
     }
 
-  if (!ed->exec.global)
+  if (!ed->exec->global)
     {
       rhs = NULL;
       rhs_size = 0;
@@ -462,9 +462,9 @@ substitute_lines (from, to, re, s_nth, s_mod, s_f, ed)
   /* Preserve flag newline_appended, inrespective of substitution, to
      prevent gratuitous newline in binary output. */
   ed->buf[0].newline_appended = nl;
-  if (nsubs == 0 && !ed->exec.global)
+  if (nsubs == 0 && !ed->exec->global)
     {
-      ed->exec.err = _("No match");
+      ed->exec->err = _("No match");
       return ERR;
     }
   return 0;

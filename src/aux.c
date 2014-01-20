@@ -1,8 +1,8 @@
 /* aux.c: Auxiliary editor commands for the ed line editor.
 
-   Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
+   Copyright © 1993-2014 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2013-07-06 <alm@slewsys.org>
+   Last modified: 2014-01-20 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -34,7 +34,7 @@ static ed_line_node_t *append_register_node __P ((size_t, off_t, int,
       waitpid (pid, &status, 0);                                              \
       if (!status && WIFEXITED (status) && WEXITSTATUS (status) == 127)       \
         {                                                                     \
-          ed->exec.err = _("Child process error");                            \
+          ed->exec->err = _("Child process error");                           \
           status = ERR;                                                       \
         }                                                                     \
     }                                                                         \
@@ -66,7 +66,7 @@ filter_lines (from, to, sc, ed)
   if (pipe (ip) < 0 || pipe (op) < 0)
     {
       fprintf (stderr, "%s\n", strerror (errno));
-      ed->exec.err = _("Pipe open error");
+      ed->exec->err = _("Pipe open error");
       return ERR;
     }
 
@@ -75,7 +75,7 @@ filter_lines (from, to, sc, ed)
     {
     case -1:
       fprintf (stderr, "%s\n", strerror (errno));
-      ed->exec.err = _("Fork error");
+      ed->exec->err = _("Fork error");
       close (ip[0]), close (ip[1]);
       close (op[0]), close (op[1]);
       status = ERR;
@@ -124,7 +124,7 @@ filter_lines (from, to, sc, ed)
     {
     case -1:
       fprintf (stderr, "%s\n", strerror (errno));
-      ed->exec.err = _("Fork error");
+      ed->exec->err = _("Fork error");
       (void) close (ip[1]);
       (void) close (op[0]);
       status = ERR;
@@ -150,7 +150,7 @@ filter_lines (from, to, sc, ed)
   if (close (ip[0]) < 0 || close (ip[1]) < 0 || !(opp = fdopen (op[0], "r")))
     {
       fprintf (stderr, "%s\n", strerror (errno));
-      ed->exec.err = _("Pipe open error");
+      ed->exec->err = _("Pipe open error");
       status = ERR;
       goto err;
     }
@@ -159,12 +159,12 @@ filter_lines (from, to, sc, ed)
   if ((status = read_stream_r (opp, ed->buf[0].dot, &size, ed)) < 0)
     goto err;
  
-  printf (ed->exec.opt & SCRIPTED ? "" : "%" OFF_T_FORMAT_STRING "\n", size);
+  printf (ed->exec->opt & SCRIPTED ? "" : "%" OFF_T_FORMAT_STRING "\n", size);
 
   if (fclose (opp) < 0)
     {
       fprintf (stderr, "%s\n", strerror (errno));
-      ed->exec.err = _("Pipe close error");
+      ed->exec->err = _("Pipe close error");
       status = ERR;
       goto err;
     }
@@ -196,7 +196,7 @@ append_register_node (len, offset, qno, ed)
   if (!(lp = (ed_line_node_t *) malloc (ED_LINE_NODE_T_SIZE)))
     {
       fprintf (stderr, "%s\n", strerror (errno));
-      ed->exec.err = _("Memory exhausted");
+      ed->exec->err = _("Memory exhausted");
       return NULL;
     }
   lp->len = len;

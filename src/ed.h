@@ -1,8 +1,8 @@
 /* ed.h: Header for the ed line editor.
 
-   Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
+   Copyright © 1993-2014 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2013-08-09 <alm@slewsys.org>
+   Last modified: 2014-01-20 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -339,18 +339,20 @@ struct ed_buffer
 /* Ed buffer meta data and storage parameters. */
 struct ed_core
 {
+  /* List of register buffers. */
+  ed_line_node_t *reg[REG_MAX];
+
+  /* Edit-processing buffers. */
+  ed_line_node_t *buffer_head;   /* Head of in-core buffer. */
+  ed_global_node_t *global_head; /* Head of global command buffer. */
+  ed_undo_node_t *undo_head;     /* Head of undo buffer. */
+
   /* Buffer storage */
   FILE *fp;                     /* Pointer to on-disk buffer. */
   char *pathname;               /* Pathname of on-disk buffer. */
   size_t pathname_size;         /* Size of on-disk buffer pathname. */
   off_t offset;                 /* Current offset of on-disk buffer. */
   int seek_on_write;            /* If set, seek before writing. */
-
-  /* Edit-processing buffers. */
-  ed_line_node_t buffer_head;   /* Head of in-core buffer. */
-  ed_global_node_t global_head; /* Head of global command buffer. */
-  ed_line_node_t *reg[REG_MAX]; /* List of register buffers. */
-  ed_undo_node_t undo_head;     /* Head of undo buffer. */
 };
 
 /* Display parameters */
@@ -368,39 +370,39 @@ struct ed_execute
 {
   FILE *fp;                     /* Command script file pointer - after
                                  * concatenating all scripts, associated file,
-                                 * ed->exec.pathname, is redirected to stdin.
+                                 * ed->exec->pathname, is redirected to stdin.
                                  */
   char *file_script;            /* File argument of `-f script' option. */
   char *pathname;               /* Pathname of concatenation of command-line
                                  * and file scripts.
                                  */
 
-  const char *err;              /* Error message. */
-  off_t line_no;                /* Script line number. */
-  int first_pass;               /* If set, first global command iteration. */
-  int global;                   /* If set, global command (GLBL [| GLBI]). */
-  int opt;                      /* Command-line switch bitmap. */
+  char *err;                    /* Error message. */
 
 #define DEFAULT_PROMPT "*"
 
   char *prompt;                 /* Interactive command prompt. */
+  off_t line_no;                /* Script line number. */
+  int opt;                      /* Command-line switch bitmap. */
   int status;                   /* Command status. */
+  int first_pass;               /* If set, first global command iteration. */
+  int global;                   /* If set, global command (GLBL [| GLBI]). */
 };
 
 /* File parameters. */
 struct ed_file
 {
-  int is_glob;                  /* Glob filename? */
-  glob_t glob;                  /* Glob of file names. */
-  glob_t list;                  /* List of files to edit (copy of glob). */
-  char *name;                   /* Name of current file. */
-  size_t name_size;             /* Size of name buffer. */
-
 #ifdef WANT_FILE_LOCK
   FILE *handle;                 /* File handle. */
-  int is_writable;              /* If set, file open read-write. */
   INO_T inode;                  /* File inode. */
 #endif  /* WANT_FILE_LOCK */
+
+  glob_t *glob;                 /* Glob of file names. */
+  glob_t *list;                 /* List of files to edit (copy of glob). */
+  char *name;                   /* Name of current file. */
+  size_t name_size;             /* Size of name buffer. */
+  int is_glob;                  /* Glob filename? */
+  int is_writable;              /* If set, file open read-write. */
 };
 
 /* Address range parameters. */
@@ -418,10 +420,10 @@ struct ed_substitute
   char *rhs;                    /* Substitution replacement buffer */
   size_t rhs_size;              /* Substitution replacement buffer size */
   size_t rhs_i;                 /* Substitution replacement buffer index */
-  unsigned r_f;                 /* Substitution TGSR flag */
-  unsigned s_f;                 /* Substitution modifier flags */
   off_t s_mod;                  /* Substitution match modulus */
   off_t s_nth;                  /* Substitution match offset */
+  unsigned r_f;                 /* Substitution TGSR flag */
+  unsigned s_f;                 /* Substitution modifier flags */
   unsigned  sio_f;              /* Substitution I/O flags */
 };
 
@@ -448,13 +450,13 @@ typedef struct ed_state
 {
   char *input;                  /* Standard input pointer. */
 
-  struct ed_buffer buf[2];      /* Buffer state parameters. */
-  struct ed_core core;          /* Meta data and storage parameters. */
-  struct ed_display display;    /* Display parameters. */
-  struct ed_execute exec;       /* Command execution parameters. */
-  struct ed_file file;          /* File parameters. */
-  struct ed_region region;      /* Region parameters. */
-  struct ed_substitute subst;   /* Saved substitution parameters. */
+  struct ed_buffer *buf;        /* Buffer state parameters. */
+  struct ed_core *core;         /* Meta data and storage parameters. */
+  struct ed_display *display;   /* Display parameters. */
+  struct ed_execute *exec;      /* Command execution parameters. */
+  struct ed_file *file;         /* File parameters. */
+  struct ed_region *region;     /* Region parameters. */
+  struct ed_substitute *subst;  /* Saved substitution parameters. */
 } ed_state_t;
 
 /* Ed command-modifier flags. */
@@ -676,7 +678,7 @@ enum search_type
       if (((_n = strtol ((s), (sp), 10)) == 0 && errno == EINVAL)             \
           || ((_n == LONG_MIN || _n == LONG_MAX) && errno == ERANGE))         \
         {                                                                     \
-          ed->exec.err = _("Numerical result out of range");                  \
+          ed->exec->err = _("Numerical result out of range");                 \
           (i) = 0;                                                            \
           return errval;                                                      \
         }                                                                     \
@@ -711,7 +713,7 @@ enum search_type
       if (((_n = strtoll ((s), (sp), 10)) == 0 && errno == EINVAL)            \
           || ((_n == LLONG_MIN || _n == LLONG_MAX) && errno == ERANGE))       \
         {                                                                     \
-          ed->exec.err = _("Numerical result out of range");                  \
+          ed->exec->err = _("Numerical result out of range");                 \
           (i) = 0;                                                            \
           return errval;                                                      \
         }                                                                     \
@@ -746,7 +748,7 @@ enum search_type
       if (((_n = strtoul ((s), (sp), 10)) == 0  && errno == EINVAL)           \
           || (_n == ULONG_MAX && errno == ERANGE))                            \
         {                                                                     \
-          ed->exec.err = _("Numerical result out of range");                  \
+          ed->exec->err = _("Numerical result out of range");                 \
           (i) = 0;                                                            \
           return errval;                                                      \
         }                                                                     \
@@ -775,12 +777,14 @@ enum search_type
 void activate_signals __P ((void));
 int address_offset __P ((off_t *, ed_state_t *));
 int address_range __P ((ed_state_t *));
+ed_state_t *alloc_ed_state __P ((const char *));
 int append_script_expression __P ((const char *, ed_state_t *ed));
 int append_script_file __P ((char *, ed_state_t *ed));
 ed_line_node_t *append_line_node __P ((size_t, off_t, off_t,
-                                    ed_state_t *));
+                                       ed_state_t *));
 int append_lines __P ((off_t, ed_state_t *));
-ed_text_node_t *append_text_node __P ((ed_text_node_t *, const char *, size_t));
+ed_text_node_t *append_text_node __P ((ed_text_node_t *, const char *,
+                                       size_t));
 ed_undo_node_t *append_undo_node __P ((int, off_t, off_t, ed_state_t *));
 int close_ed_buffer __P ((ed_state_t *));
 int copy_lines __P ((off_t, off_t, off_t, ed_state_t *));
