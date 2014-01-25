@@ -2,7 +2,7 @@
 
    Copyright © 1993-2014 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2014-01-20 <alm@slewsys.org>
+   Last modified: 2014-01-25 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -24,7 +24,7 @@
 
 /* Static function declarations. */
 static ed_line_node_t *append_register_node __P ((size_t, off_t, int,
-                                               ed_state_t *));
+                                               ed_buffer_t *));
 
 
 #if defined HAVE_FORK && defined WANT_EXTERNAL_FILTER
@@ -48,7 +48,7 @@ filter_lines (from, to, sc, ed)
      off_t from;
      off_t to;
      const char *sc;
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
   FILE *ipp, *opp;
   ed_line_node_t *lp = get_line_node (from, ed);
@@ -112,10 +112,10 @@ filter_lines (from, to, sc, ed)
     }
 
   /* If filtering entire file, reset state. */
-  if (ed->buf[0].addr_last == 0)
+  if (ed->state[0].lines == 0)
     {
-      ed->buf[0].is_binary = 0;
-      ed->buf[0].is_empty = 1;
+      ed->state[0].is_binary = 0;
+      ed->state[0].is_empty = 1;
     }
   spl0 ();
 
@@ -156,7 +156,7 @@ filter_lines (from, to, sc, ed)
     }
 
   /* Read standard output of shell process via reentrant read_stream. */
-  if ((status = read_stream_r (opp, ed->buf[0].dot, &size, ed)) < 0)
+  if ((status = read_stream_r (opp, ed->state[0].dot, &size, ed)) < 0)
     goto err;
  
   printf (ed->exec->opt & SCRIPTED ? "" : "%" OFF_T_FORMAT_STRING "\n", size);
@@ -189,7 +189,7 @@ append_register_node (len, offset, qno, ed)
      size_t len;
      off_t offset;
      int qno;
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
   ed_line_node_t *lp;
 
@@ -214,7 +214,7 @@ copy_register (from, to,  overwrite, ed)
      int from;                  /* source register */
      int to;                    /* destination register */
      int overwrite;
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
   ed_line_node_t *lp, *ep;
 
@@ -243,7 +243,7 @@ move_register (from, to,  overwrite, ed)
      int from;                  /* source register */
      int to;                    /* destination register */
      int overwrite;
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
   if (!register_head[from]
       && init_register_queue (register_head, from, ed) < 0)
@@ -271,7 +271,7 @@ int
 read_register (qno, addr, ed)
      int qno;                    /* source register */
      off_t addr;                /* destination address */
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
   ed_undo_node_t *up = NULL;
   ed_line_node_t *lp, *np, *ep;
@@ -279,7 +279,7 @@ read_register (qno, addr, ed)
   if (!register_head[qno] && init_register_queue (register_head, qno, ed) < 0)
     return ERR;
 
-  ed->buf[0].dot = addr;
+  ed->state[0].dot = addr;
   for (ep = register_head[qno], lp = ep->q_forw; lp != ep; lp = lp->q_forw)
     {
       spl1 ();
@@ -288,8 +288,8 @@ read_register (qno, addr, ed)
           spl0 ();
           return ERR;
         }
-      APPEND_UNDO_NODE (np, up, ed->buf[0].dot, ed);
-      ed->buf[0].is_modified = 1;
+      APPEND_UNDO_NODE (np, up, ed->state[0].dot, ed);
+      ed->state[0].is_modified = 1;
       spl0 ();
     }
   return 0;
@@ -300,7 +300,7 @@ read_register (qno, addr, ed)
 int
 reset_register_queue (qno, ed)
      int qno;
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
   ed_line_node_t *lp, *np, *ep;
 
@@ -328,7 +328,7 @@ write_register (qno, from, to, overwrite, ed)
      off_t from;                /* from address */
      off_t to;                  /* to address */
      int overwrite;
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
 
   ed_line_node_t *lp = get_line_node (from, ed);

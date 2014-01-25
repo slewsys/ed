@@ -2,7 +2,7 @@
 
    Copyright © 1993-2014 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2014-01-20 <alm@slewsys.org>
+   Last modified: 2014-01-25 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -323,17 +323,17 @@ typedef struct ed_undo_node
 #define REG_MAX  27             /* Max number of registers */
 
 /* Ed buffer state parameters. */
-struct ed_buffer
+struct ed_state
 {
-  off_t addr_last;              /* Number of last line. */
-  off_t dot;                    /* Current line address. */
+  off_t dot;                    /* Current line number. */
+  off_t lines;                  /* Number of lines. */
+  
   int is_binary;                /* If set, buffer contains binary data.  */
   int is_empty;                 /* If set, buffer is "logically" empty. */
   int is_modified;              /* If set, buffer contains unsaved data. */
   int newline_appended;         /* if set, newline appended to buffer. */
   int input_wants_newline;      /* If set, newline needed on input.  */
   int input_is_binary;          /* If set, binary data on input. */
-  int addr_last_len;            /* strlen (addr_last). */
 };
 
 /* Ed buffer meta data and storage parameters. */
@@ -343,8 +343,8 @@ struct ed_core
   ed_line_node_t *reg[REG_MAX];
 
   /* Edit-processing buffers. */
-  ed_line_node_t *buffer_head;   /* Head of in-core buffer. */
-  ed_global_node_t *global_head; /* Head of global command buffer. */
+  ed_line_node_t *line_head;     /* Head of line buffer. */
+  ed_global_node_t *global_head; /* Head of global line buffer. */
   ed_undo_node_t *undo_head;     /* Head of undo buffer. */
 
   /* Buffer storage */
@@ -365,28 +365,48 @@ struct ed_display
   int off;                      /* If set, do not print frame buffer. */
 };
 
+/* Address range parameters. */
+struct ed_region
+{
+  off_t start;                  /* Region start address. */
+  off_t end;                    /* Region end address. */
+  int addrs;                    /* Number of region addresses. */
+};
+ 
+/* Substitution parameters. */
+struct ed_substitute
+{
+  regex_t *lhs;                 /* Substitution pattern buffer. */
+  char *rhs;                    /* Substitution replacement buffer. */
+  size_t rhs_size;              /* Substitution replacement buffer size. */
+  size_t rhs_i;                 /* Substitution replacement buffer index. */
+  off_t s_mod;                  /* Substitution match modulus. */
+  off_t s_nth;                  /* Substitution match offset. */
+  unsigned r_f;                 /* Substitution TGSR flag. */
+  unsigned s_f;                 /* Substitution modifier flags. */
+  unsigned  sio_f;              /* Substitution I/O flags. */
+};
+
 /* Execution parameters. */
 struct ed_execute
 {
-  FILE *fp;                     /* Command script file pointer - after
-                                 * concatenating all scripts, associated file,
-                                 * ed->exec->pathname, is redirected to stdin.
-                                 */
+  FILE *fp;                     /* Command script file pointer. */
   char *file_script;            /* File argument of `-f script' option. */
-  char *pathname;               /* Pathname of concatenation of command-line
-                                 * and file scripts.
-                                 */
+  char *pathname;               /* Concatenation of scripts. */
 
-  char *err;                    /* Error message. */
+  struct ed_substitute *subst;  /* Substitution parameters. */
+  struct ed_region *region;     /* Address range parameters. */
+
+  const char *err;              /* Error message. */
 
 #define DEFAULT_PROMPT "*"
 
   char *prompt;                 /* Interactive command prompt. */
   off_t line_no;                /* Script line number. */
-  int opt;                      /* Command-line switch bitmap. */
-  int status;                   /* Command status. */
   int first_pass;               /* If set, first global command iteration. */
   int global;                   /* If set, global command (GLBL [| GLBI]). */
+  int opt;                      /* Command-line options. */
+  int status;                   /* Command status. */
 };
 
 /* File parameters. */
@@ -405,27 +425,6 @@ struct ed_file
   int is_writable;              /* If set, file open read-write. */
 };
 
-/* Address range parameters. */
-struct ed_region
-{
-  off_t start;                  /* Region start address. */
-  off_t end;                    /* Region end address. */
-  int addrs;                    /* Number of region addresses. */
-};
- 
-/* Substitution parameters. */
-struct ed_substitute
-{
-  regex_t *lhs;                 /* Substitution pattern buffer */
-  char *rhs;                    /* Substitution replacement buffer */
-  size_t rhs_size;              /* Substitution replacement buffer size */
-  size_t rhs_i;                 /* Substitution replacement buffer index */
-  off_t s_mod;                  /* Substitution match modulus */
-  off_t s_nth;                  /* Substitution match offset */
-  unsigned r_f;                 /* Substitution TGSR flag */
-  unsigned s_f;                 /* Substitution modifier flags */
-  unsigned  sio_f;              /* Substitution I/O flags */
-};
 
 /* Ed command-line flags. */
 enum ed_command_flags
@@ -446,18 +445,16 @@ enum ed_command_flags
 };
 
 /* Ed state parameters. */
-typedef struct ed_state
+typedef struct ed_buffer
 {
   char *input;                  /* Standard input pointer. */
 
-  struct ed_buffer *buf;        /* Buffer state parameters. */
+  struct ed_state *state;       /* Array of buffer states. */
   struct ed_core *core;         /* Meta data and storage parameters. */
   struct ed_display *display;   /* Display parameters. */
   struct ed_execute *exec;      /* Command execution parameters. */
   struct ed_file *file;         /* File parameters. */
-  struct ed_region *region;     /* Region parameters. */
-  struct ed_substitute *subst;  /* Saved substitution parameters. */
-} ed_state_t;
+} ed_buffer_t;
 
 /* Ed command-modifier flags. */
 enum ed_modifier_flags
@@ -775,104 +772,104 @@ enum search_type
 
 /* Global function declarations. */
 void activate_signals __P ((void));
-int address_offset __P ((off_t *, ed_state_t *));
-int address_range __P ((ed_state_t *));
-ed_state_t *alloc_ed_state __P ((const char *));
-int append_script_expression __P ((const char *, ed_state_t *ed));
-int append_script_file __P ((char *, ed_state_t *ed));
+int address_offset __P ((off_t *, ed_buffer_t *));
+int address_range __P ((ed_buffer_t *));
+ed_buffer_t *alloc_ed_buffer __P ((void));
+int append_script_expression __P ((const char *, ed_buffer_t *ed));
+int append_script_file __P ((char *, ed_buffer_t *ed));
 ed_line_node_t *append_line_node __P ((size_t, off_t, off_t,
-                                       ed_state_t *));
-int append_lines __P ((off_t, ed_state_t *));
+                                       ed_buffer_t *));
+int append_lines __P ((off_t, ed_buffer_t *));
 ed_text_node_t *append_text_node __P ((ed_text_node_t *, const char *,
                                        size_t));
-ed_undo_node_t *append_undo_node __P ((int, off_t, off_t, ed_state_t *));
-int close_ed_buffer __P ((ed_state_t *));
-int copy_lines __P ((off_t, off_t, off_t, ed_state_t *));
-int copy_register __P ((int, int, int, ed_state_t *));
-int create_disk_buffer __P ((FILE **, char **, ed_state_t *));
+ed_undo_node_t *append_undo_node __P ((int, off_t, off_t, ed_buffer_t *));
+int close_ed_buffer __P ((ed_buffer_t *));
+int copy_lines __P ((off_t, off_t, off_t, ed_buffer_t *));
+int copy_register __P ((int, int, int, ed_buffer_t *));
+int create_disk_buffer __P ((FILE **, char **, ed_buffer_t *));
 void delete_global_nodes __P ((const ed_line_node_t *, const ed_line_node_t *,
-                               ed_state_t *));
-int delete_lines __P ((off_t, off_t, ed_state_t *));
-int display_lines __P ((off_t, off_t, unsigned int, ed_state_t *));
-int exec_command __P ((ed_state_t *));
-int exec_global __P ((unsigned, ed_state_t *));
-char *file_glob __P ((size_t *, int, int, ed_state_t *));
-char *file_name __P ((size_t *, ed_state_t *));
-int filter_lines __P ((off_t, off_t, const char *, ed_state_t *));
-char *get_buffer_line __P ((const ed_line_node_t *, ed_state_t *));
-regex_t *get_compiled_regex __P ((unsigned, int, ed_state_t *));
-char *get_extended_line __P ((size_t *, int, ed_state_t *));
-ed_line_node_t *get_line_node __P ((off_t, ed_state_t *));
+                               ed_buffer_t *));
+int delete_lines __P ((off_t, off_t, ed_buffer_t *));
+int display_lines __P ((off_t, off_t, unsigned int, ed_buffer_t *));
+int exec_command __P ((ed_buffer_t *));
+int exec_global __P ((unsigned, ed_buffer_t *));
+char *file_glob __P ((size_t *, int, int, ed_buffer_t *));
+char *file_name __P ((size_t *, ed_buffer_t *));
+int filter_lines __P ((off_t, off_t, const char *, ed_buffer_t *));
+char *get_buffer_line __P ((const ed_line_node_t *, ed_buffer_t *));
+regex_t *get_compiled_regex __P ((unsigned, int, ed_buffer_t *));
+char *get_extended_line __P ((size_t *, int, ed_buffer_t *));
+ed_line_node_t *get_line_node __P ((off_t, ed_buffer_t *));
 int get_line_node_address __P ((const ed_line_node_t *, off_t *,
-                                ed_state_t *));
-int get_marked_node_address __P ((int, off_t *, ed_state_t *));
+                                ed_buffer_t *));
+int get_marked_node_address __P ((int, off_t *, ed_buffer_t *));
 int get_matching_node_address __P ((const regex_t *, int, off_t *,
-                                    ed_state_t *));
+                                    ed_buffer_t *));
 size_t get_path_max __P ((const char *));
 #define get_stdin_line(len, ed) get_stream_line (stdin, len, ed)
-char *get_stream_line __P ((FILE *, size_t *, ed_state_t *));
+char *get_stream_line __P ((FILE *, size_t *, ed_buffer_t *));
 int has_trailing_escape __P ((const char *, const char *));
-void init_ed_command __P ((int, ed_state_t *));
-void init_ed_buffer __P ((off_t, struct ed_buffer *));
+void init_ed_command __P ((int, ed_buffer_t *));
+void init_ed_state __P ((off_t, struct ed_state *));
 void init_global_queue __P ((ed_global_node_t **, ed_line_node_t **,
-                             ed_state_t *));
-int init_register_queue __P ((ed_line_node_t **, int, ed_state_t *));
-int init_signal_handler __P ((ed_state_t *));
+                             ed_buffer_t *));
+int init_register_queue __P ((ed_line_node_t **, int, ed_buffer_t *));
+int init_signal_handler __P ((ed_buffer_t *));
 void init_substitute __P ((regex_t **, unsigned *, off_t *, off_t *,
                            unsigned *, struct ed_substitute *));
 void init_text_deque __P ((ed_text_node_t *));
-void init_undo_queue __P ((ed_undo_node_t **, ed_state_t *));
-int join_lines __P ((off_t, off_t, ed_state_t *));
-int mark_global_nodes __P ((int, ed_state_t *));
-int mark_line_node __P ((const ed_line_node_t *, int, ed_state_t *));
-int move_lines __P ((off_t, off_t, off_t, ed_state_t *));
-int move_register __P ((int, int, int, ed_state_t *));
-int next_address __P ((off_t *, ed_state_t *));
-int one_time_init __P ((int, char **, ed_state_t *));
+void init_undo_queue __P ((ed_undo_node_t **, ed_buffer_t *));
+int join_lines __P ((off_t, off_t, ed_buffer_t *));
+int mark_global_nodes __P ((int, ed_buffer_t *));
+int mark_line_node __P ((const ed_line_node_t *, int, ed_buffer_t *));
+int move_lines __P ((off_t, off_t, off_t, ed_buffer_t *));
+int move_register __P ((int, int, int, ed_buffer_t *));
+int next_address __P ((off_t *, ed_buffer_t *));
+int one_time_init __P ((int, char **, ed_buffer_t *));
 char *pop_text_node __P ((ed_text_node_t *, size_t *));
-char *put_buffer_line __P ((const char *, size_t, ed_state_t *));
-void quit __P ((int, ed_state_t *));
+char *put_buffer_line __P ((const char *, size_t, ed_buffer_t *));
+void quit __P ((int, ed_buffer_t *));
 int read_file __P ((const char *, off_t, off_t *, off_t *, int,
-                    ed_state_t *));
+                    ed_buffer_t *));
 int read_pipe __P ((const char *, off_t, off_t *, off_t *,
-                    ed_state_t *));
-int read_register __P ((int, off_t, ed_state_t *));
-int read_stream_r __P ((FILE *, off_t, off_t *, ed_state_t *));
-void *realloc_buffer __P ((void **, size_t *, off_t, ed_state_t *));
-char *regular_expression __P ((unsigned, size_t *, ed_state_t *));
-int reopen_ed_buffer __P ((ed_state_t *));
-void reset_global_queue __P ((ed_state_t *));
-int reset_register_queue __P ((int, ed_state_t *));
-void reset_undo_queue __P ((ed_state_t *));
+                    ed_buffer_t *));
+int read_register __P ((int, off_t, ed_buffer_t *));
+int read_stream_r __P ((FILE *, off_t, off_t *, ed_buffer_t *));
+void *realloc_buffer __P ((void **, size_t *, off_t, ed_buffer_t *));
+char *regular_expression __P ((unsigned, size_t *, ed_buffer_t *));
+int reopen_ed_buffer __P ((ed_buffer_t *));
+void reset_global_queue __P ((ed_buffer_t *));
+int reset_register_queue __P ((int, ed_buffer_t *));
+void reset_undo_queue __P ((ed_buffer_t *));
 int resubstitute __P ((off_t *, off_t *, unsigned *, unsigned *,
-                                ed_state_t *));
+                                ed_buffer_t *));
 void save_substitute __P ((regex_t *, unsigned, off_t, off_t, unsigned,
                                   struct ed_substitute *));
-int scroll_forward __P ((off_t, off_t, unsigned int, ed_state_t *ed));
+int scroll_forward __P ((off_t, off_t, unsigned int, ed_buffer_t *ed));
 
 #ifdef WANT_FILE_LOCK
 int set_file_lock __P ((FILE *, int));
 #endif
 
-char *shell_command __P ((size_t *, int *, ed_state_t *));
+char *shell_command __P ((size_t *, int *, ed_buffer_t *));
 char *shift_text_node __P ((ed_text_node_t *, size_t *));
 void signal_handler __P ((int));
 void spl0 __P ((void));
 void spl1 __P ((void));
 int substitute_lines __P ((off_t, off_t, regex_t *, off_t, off_t, unsigned,
-                             ed_state_t *));
-int substitution_lhs __P ((regex_t **, unsigned *, ed_state_t *));
+                             ed_buffer_t *));
+int substitution_lhs __P ((regex_t **, unsigned *, ed_buffer_t *));
 int substitution_rhs __P ((off_t *, off_t *, unsigned *, unsigned *,
-                           ed_state_t *));
-int undo_last_command __P ((ed_state_t *));
+                           ed_buffer_t *));
+int undo_last_command __P ((ed_buffer_t *));
 void unmark_line_node __P ((const ed_line_node_t *));
 int write_file __P ((const char *, int, off_t, off_t, off_t *, off_t *,
-                     const char *, ed_state_t *));
+                     const char *, ed_buffer_t *));
 int write_pipe __P ((const char *, off_t, off_t, off_t *, off_t *,
-                     ed_state_t *));
-int write_register __P ((int, off_t, off_t, int, ed_state_t *));
+                     ed_buffer_t *));
+int write_register __P ((int, off_t, off_t, int, ed_buffer_t *));
 int write_stream __P ((FILE *, ed_line_node_t *, off_t, off_t *,
-                       ed_state_t *));
+                       ed_buffer_t *));
 
 /* global vars */
 extern volatile sig_atomic_t window_columns;

@@ -2,7 +2,7 @@
 
    Copyright © 1993-2014 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2014-01-20 <alm@slewsys.org>
+   Last modified: 2014-01-25 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -26,15 +26,15 @@ jmp_buf env;
 #endif  /* !HAVE_SIGLONGJMP */
 
 /* Global declarations */
-ed_state_t *ed;
+ed_buffer_t *ed;
 
 /* Static function declarations. */
-static void ed_usage __P ((int, ed_state_t *));
+static void ed_usage __P ((int, ed_buffer_t *));
 #ifdef WANT_ED_ENVAR
-static char **getenv_init_argv __P ((const char *, int *, ed_state_t *));
+static char **getenv_init_argv __P ((const char *, int *, ed_buffer_t *));
 #endif
-static int next_edit __P ((int, ed_state_t *));
-static void script_die __P ((int, ed_state_t *));
+static int next_edit __P ((int, ed_buffer_t *));
+static void script_die __P ((int, ed_buffer_t *));
 
 /* ed: line editor */
 int
@@ -68,7 +68,7 @@ main (argc, argv)
   int status = 0;
   int signal_status = 0;
 
-  if ((ed = alloc_ed_state (*argv)) == NULL)
+  if ((ed = alloc_ed_buffer ()) == NULL)
       exit (1);
 
   if ((len = strlen (*argv)) > 2 && *(*argv + len - 3) == 'r')
@@ -247,7 +247,7 @@ top:
       if (!(ed->input = get_stdin_line (&len, ed)))
         {
           status = (!feof (stdin)
-                    ? ERR : (ed->buf[0].is_modified
+                    ? ERR : (ed->state[0].is_modified
                              && !(ed->exec->opt & SCRIPTED)
                              ? EMOD : EOF));
           clearerr (stdin);
@@ -271,8 +271,8 @@ top:
 
         /* ... */
         if (!status
-            || (status = display_lines (ed->buf[0].dot,
-                                        ed->buf[0].dot, status, ed)) >= 0)
+            || (status = display_lines (ed->state[0].dot,
+                                        ed->state[0].dot, status, ed)) >= 0)
           continue;
 
     error:
@@ -292,7 +292,7 @@ top:
           quit (ed->exec->status, ed);
         case EMOD:
           ed->exec->err = _("WARNING: Buffer modified since last write");
-          ed->buf[0].is_modified = 0;
+          ed->state[0].is_modified = 0;
           puts ("?");
           if (!(ed->exec->opt & EXIT_ON_ERROR))
             printf (ed->exec->opt & VERBOSE ? "%s\n" : "", ed->exec->err);
@@ -324,7 +324,7 @@ top:
 static int
 next_edit (status, ed)
      int status;
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
   static char *buf = NULL;
   static size_t buf_size = 0;
@@ -351,9 +351,9 @@ next_edit (status, ed)
   sprintf (ed->input = buf, "r %s\n", *ed->file->list->gl_pathv);
 #endif  /* !WANT_FILE_GLOB */
 
-  ed->region->addrs = 0;
-  ed->region->start = 0;
-  ed->region->end = 0;
+  ed->exec->region->addrs = 0;
+  ed->exec->region->start = 0;
+  ed->exec->region->end = 0;
   return 0;
 }
 
@@ -365,7 +365,7 @@ static char **
 getenv_init_argv (s, argc, ed)
      const char *s;
      int *argc;
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
   static char *argv;            /* argument vector buffer */
   static char *env;             /* copy of environment variable */
@@ -413,7 +413,7 @@ getenv_init_argv (s, argc, ed)
 int
 append_script_expression (s, ed)
      const char *s;
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
   size_t n;
   int status;
@@ -434,7 +434,7 @@ append_script_expression (s, ed)
   if ((n = strlen (s)) > 0)
     {
       if (fwrite (s, 1, n, ed->exec->fp) != n
-          || s[n - 1] != '\n' && fwrite ("\n", 1, 1, ed->exec->fp) != 1)
+          || (s[n - 1] != '\n' && fwrite ("\n", 1, 1, ed->exec->fp) != 1))
         {  
           fprintf (stderr, "%s: %s\n", ed->exec->pathname, strerror (errno));
           ed->exec->err = _("File write error");
@@ -457,7 +457,7 @@ append_script_expression (s, ed)
 int
 append_script_file (fn, ed)
      char *fn;
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
   FILE *fp;
   char *filename;
@@ -539,7 +539,7 @@ append_script_file (fn, ed)
 static void
 ed_usage (status, ed)
      int status;
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
   extern char version_string[]; /* From version.c */
 
@@ -581,7 +581,7 @@ Report bugs to: <bug-ed@gnu.org>.\n"));
 static void
 script_die (status, ed)
      int status;
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
   if (ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL)
       || !ed->exec->file_script)

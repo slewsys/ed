@@ -1,3 +1,9 @@
+2014-01-25  Andrew L. Moore  <alm@slewsys.org>
+
+	* src/*.[ch]: Refactor data structures:
+	ed->subst => ed->exec->subst
+	ed->region => ed->exec->region
+
 2014-01-20  Andrew L. Moore  <alm@slewsys.org>
 
 	* src/buf.c (alloc_ed_state, alloc_ed_core, alloc_ed_display)

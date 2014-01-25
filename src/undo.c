@@ -2,7 +2,7 @@
 
    Copyright © 1993-2014 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2014-01-20 <alm@slewsys.org>
+   Last modified: 2014-01-25 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -18,7 +18,7 @@ append_undo_node (type, from, to, ed)
      int type;
      off_t from;
      off_t to;
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
   ed_undo_node_t *up;
 
@@ -44,13 +44,13 @@ append_undo_node (type, from, to, ed)
 /* undo_last_command: Undo last change to the editor buffer. */
 int
 undo_last_command (ed)
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
-  struct ed_buffer saved_buf = *ed->buf;
+  struct ed_state saved_buf = *ed->state;
   ed_undo_node_t *up = undo_head;
   ed_undo_node_t *next;
 
-  if (ed->buf[1].dot == -1 || ed->buf[1].addr_last == -1)
+  if (ed->state[1].dot == -1 || ed->state[1].lines == -1)
     {
       ed->exec->err = _("Nothing to undo");
       return ERR;
@@ -95,7 +95,7 @@ undo_last_command (ed)
 
   if (ed->exec->global)
     reset_global_queue (ed);
-  ed->buf[0] = ed->buf[1], ed->buf[1] = saved_buf;
+  ed->state[0] = ed->state[1], ed->state[1] = saved_buf;
   spl0 ();
   return 0;
 }
@@ -104,7 +104,7 @@ undo_last_command (ed)
 /* reset_undo_queue: Clear the undo queue. */
 void
 reset_undo_queue (ed)
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
   ed_undo_node_t *up, *up_next;
   ed_line_node_t *lp, *ep, *lp_next;
@@ -129,7 +129,7 @@ reset_undo_queue (ed)
       UNLINK_NODE (up);
       free (up);
     }
-  ed->buf[1] = ed->buf[0];
+  ed->state[1] = ed->state[0];
   spl0 ();
 }
 

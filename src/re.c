@@ -2,7 +2,7 @@
 
    Copyright © 1993-2014 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2014-01-20 <alm@slewsys.org>
+   Last modified: 2014-01-25 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -14,7 +14,7 @@ regex_t *
 get_compiled_regex (dc, re_type, ed)
      unsigned dc;
      int re_type;               /* search type */
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
   static const char *compile_err = NULL;
   static regex_t *re_search = NULL; /* search regex */
@@ -134,7 +134,7 @@ get_compiled_regex (dc, re_type, ed)
       switch (re_type)
         {
         case RE_SUBST:
-          re = (dc != '\n' && re_search || ed->subst->r_f ? re_search
+          re = ((dc != '\n' && re_search) || ed->exec->subst->r_f ? re_search
                 : re_subst);
           if (!re_subst)
             re_subst = re;
@@ -183,8 +183,9 @@ get_compiled_regex (dc, re_type, ed)
   /* BSD regcomp () accepts pattern with NUL chars via REG_PEND, but
      has no equivalent of GNU's re_syntax_options. */
   re->re_endp = pattern + len;
-  if (status = regcomp (re, pattern, (REG_PEND | (ed->exec->opt & REGEX_EXTENDED
-                                                  ? REG_EXTENDED : 0))))
+  if (status =
+      regcomp (re, pattern, (REG_PEND | (ed->exec->opt & REGEX_EXTENDED
+                                         ? REG_EXTENDED : 0))))
 # else
 
   /* Use generic POSIX regular expression library. */
@@ -230,19 +231,19 @@ get_matching_node_address (re, dir, addr, ed)
      const regex_t *re;
      int dir;
      off_t *addr;
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
   regmatch_t rm[1];
   ed_line_node_t *lp;
   char *s;
 
-  *addr = ed->buf[0].dot;
+  *addr = ed->state[0].dot;
   if (!re)
     return ERR;
   do
     {
-      if ((*addr = (dir ? INC_MOD (*addr, ed->buf[0].addr_last)
-                    : DEC_MOD (*addr, ed->buf[0].addr_last))))
+      if ((*addr = (dir ? INC_MOD (*addr, ed->state[0].lines)
+                    : DEC_MOD (*addr, ed->state[0].lines))))
         {
           lp = get_line_node (*addr, ed);
           if (!(s = get_buffer_line (lp, ed)))
@@ -252,14 +253,14 @@ get_matching_node_address (re, dir, addr, ed)
           rm[0].rm_eo = lp->len;
           if (!regexec (re, s, 0, rm, REG_STARTEND))
 #else
-          if (ed->buf[0].is_binary)
+          if (ed->state[0].is_binary)
             NUL_TO_NEWLINE (s, lp->len);
           if (!regexec (re, s, 0, NULL, 0))
 #endif  /* !defined (REG_STARTEND) */
             return 0;
         }
     }
-  while (*addr != ed->buf[0].dot);
+  while (*addr != ed->state[0].dot);
   ed->exec->err = _("No match");
   return ERR;
 }

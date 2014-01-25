@@ -2,7 +2,7 @@
 
    Copyright © 1993-2014 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2014-01-20 <alm@slewsys.org>
+   Last modified: 2014-01-25 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -11,15 +11,15 @@
 
 /* Static function declarations. */
 static int apply_subst_template __P ((const char *, const regmatch_t *,
-                                      int, size_t *, ed_state_t *));
+                                      int, size_t *, ed_buffer_t *));
 static size_t count_matches __P ((const regex_t *, const char *, int len,
-                                  struct ed_buffer *));
+                                  struct ed_state *));
 static int substitute_matching __P ((const regex_t *, const ed_line_node_t *,
                                      size_t *, off_t, off_t, unsigned,
-                                     ed_state_t *));
+                                     ed_buffer_t *));
 static int substitution_modifiers __P ((off_t *, off_t *, unsigned *,
-                                        ed_state_t *));
-static int substitution_template __P ((unsigned, ed_state_t *));
+                                        ed_buffer_t *));
+static int substitution_template __P ((unsigned, ed_buffer_t *));
 
 
 #define SGPR_CHARS "\n$+-^gpr0123456789"
@@ -33,7 +33,7 @@ resubstitute (s_nth, s_mod, s_f, sgpr_f, ed)
      off_t *s_mod;
      unsigned *s_f;
      unsigned *sgpr_f;
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
   int status;
   int g_f = 0;                  /* Set if global toggled - e.g. `sg' */
@@ -143,7 +143,7 @@ int
 substitution_lhs (lhs_p, sgpr_f, ed)
      regex_t **lhs_p;
      unsigned *sgpr_f;
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
   regex_t *re;
 
@@ -158,7 +158,7 @@ substitution_lhs (lhs_p, sgpr_f, ed)
   spl1 ();
 
   /* If r_f, use regex from last search. */
-  if (((ed->subst->r_f = (*sgpr_f & TGSR)) || !*sgpr_f)
+  if (((ed->exec->subst->r_f = (*sgpr_f & TGSR)) || !*sgpr_f)
       && !(re = get_compiled_regex (*ed->input, RE_SUBST, ed)))
     {
       spl0 ();
@@ -190,7 +190,7 @@ substitution_rhs (s_nth, s_mod, s_f, sio_f, ed)
      off_t *s_mod;
      unsigned *s_f;
      unsigned *sio_f;
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
   size_t len;
   unsigned dc;                    /* Pattern delimiting char */
@@ -198,7 +198,7 @@ substitution_rhs (s_nth, s_mod, s_f, sio_f, ed)
 
   *s_f = *sio_f = 0;              /* Reset modifiers and I/O flags */
   *s_nth = *s_mod = 0;            /* Reset match offset and modulus */
-  ed->buf[0].input_is_binary = 0; /* Value used in substitute_lines(). */
+  ed->state[0].input_is_binary = 0; /* Value used in substitute_lines(). */
 
 
   /* Don't clobber command buffer if any ed->exec->global set. */
@@ -237,7 +237,7 @@ substitution_rhs (s_nth, s_mod, s_f, sio_f, ed)
 static int
 substitution_template (dc, ed)
      unsigned dc;               /* Pattern delimiting char */
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
   if (*++ed->input == '%'
       && (*(ed->input + 1) == dc || *(ed->input + 1) == '\n'))
@@ -283,7 +283,7 @@ substitution_modifiers (s_nth, s_mod, s_f, ed)
      off_t *s_nth;
      off_t *s_mod;
      unsigned *s_f;
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
   int status;
 
@@ -405,7 +405,7 @@ substitute_lines (from, to, re, s_nth, s_mod, s_f, ed)
      off_t s_nth;
      off_t s_mod;
      unsigned s_f;
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
   ed_line_node_t *lp;
   ed_undo_node_t *up;
@@ -413,17 +413,17 @@ substitute_lines (from, to, re, s_nth, s_mod, s_f, ed)
   char *txt;
   char *eot;
   off_t lc;
-  off_t dot = ed->buf[0].dot;
+  off_t dot = ed->state[0].dot;
   size_t len = 0;
   int nsubs = 0;
   int status = 0;
-  int nl = ed->buf[0].newline_appended;
+  int nl = ed->state[0].newline_appended;
 
-  ed->buf[0].dot = from - 1;
+  ed->state[0].dot = from - 1;
   for (lc = 0; lc <= to - from; ++lc)
     {
       /* Can't use lp->q_forw because replacement may be multiple lines. */
-      lp = get_line_node (++ed->buf[0].dot, ed);
+      lp = get_line_node (++ed->state[0].dot, ed);
       if ((status =
            substitute_matching (re, lp, &len, s_nth, s_mod, s_f, ed)) < 0)
         return status;
@@ -431,7 +431,7 @@ substitute_lines (from, to, re, s_nth, s_mod, s_f, ed)
         {
           spl1 ();
           up = NULL;
-          if (delete_lines (ed->buf[0].dot, ed->buf[0].dot, ed) < 0)
+          if (delete_lines (ed->state[0].dot, ed->state[0].dot, ed) < 0)
             {
               spl0 ();
               return ERR;
@@ -447,21 +447,21 @@ substitute_lines (from, to, re, s_nth, s_mod, s_f, ed)
                   spl0 ();
                   return ERR;
                 }
-              lp = get_line_node (ed->buf[0].dot, ed);
-              APPEND_UNDO_NODE (lp, up, ed->buf[0].dot, ed);
+              lp = get_line_node (ed->state[0].dot, ed);
+              APPEND_UNDO_NODE (lp, up, ed->state[0].dot, ed);
             }
           while (txt != eot);
           ++nsubs;
-          dot = ed->buf[0].dot;
-          ed->buf[0].is_binary |= ed->buf[0].input_is_binary;
+          dot = ed->state[0].dot;
+          ed->state[0].is_binary |= ed->state[0].input_is_binary;
           spl0 ();
         }
     }
-  ed->buf[0].dot = dot;
+  ed->state[0].dot = dot;
 
   /* Preserve flag newline_appended, inrespective of substitution, to
      prevent gratuitous newline in binary output. */
-  ed->buf[0].newline_appended = nl;
+  ed->state[0].newline_appended = nl;
   if (nsubs == 0 && !ed->exec->global)
     {
       ed->exec->err = _("No match");
@@ -481,7 +481,7 @@ substitute_matching (re, lp, len, s_nth, s_mod,  s_f, ed)
      off_t s_nth;
      off_t s_mod;
      unsigned s_f;
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
   regmatch_t rm[SE_MAX];
   char *txt;
@@ -500,7 +500,7 @@ substitute_matching (re, lp, len, s_nth, s_mod,  s_f, ed)
   /* If match-relative and requested match (s_nth) > available (n),
      then nothing to do. */
   if ((s_f & SNLR || s_f & SMLR)
-      && (n = count_matches (re, txt, lp->len, ed->buf)) <= labs(s_nth))
+      && (n = count_matches (re, txt, lp->len, ed->state)) <= labs(s_nth))
     return *len = 0;
 
   /* Last match-relative s_nth?  */
@@ -521,7 +521,7 @@ substitute_matching (re, lp, len, s_nth, s_mod,  s_f, ed)
          && !regexec (re, txt, SE_MAX, rm, REG_STARTEND);
        txt += j, rm[0].rm_so = 0, rm[0].rm_eo = eot - txt)
 #else
-  if (ed->buf[0].is_binary)
+  if (ed->state[0].is_binary)
     NUL_TO_NEWLINE (txt, lp->len);
   for (*len = 0, eot = txt + lp->len;
        (!changed || (s_f & GSUB)) && !regexec (re, txt, SE_MAX, rm, 0);
@@ -539,7 +539,7 @@ substitute_matching (re, lp, len, s_nth, s_mod,  s_f, ed)
           j = 1;
           REALLOC_THROW (rb, rb_size, *len + j, ERR, ed);
 #ifndef REG_STARTEND
-          if (ed->buf[0].is_binary)
+          if (ed->state[0].is_binary)
             NEWLINE_TO_NUL (txt, j);
 #endif
           memcpy (rb + (*len)++, txt, j);
@@ -553,7 +553,7 @@ substitute_matching (re, lp, len, s_nth, s_mod,  s_f, ed)
         {
           REALLOC_THROW (rb, rb_size, *len + i, ERR, ed);
 #ifndef REG_STARTEND
-          if (ed->buf[0].is_binary)
+          if (ed->state[0].is_binary)
             NEWLINE_TO_NUL (txt, j);
 #endif
           memcpy (rb + *len, txt, i);
@@ -573,7 +573,7 @@ substitute_matching (re, lp, len, s_nth, s_mod,  s_f, ed)
           j = max (1, j);
           REALLOC_THROW (rb, rb_size, *len + j, ERR, ed);
 #ifndef REG_STARTEND
-          if (ed->buf[0].is_binary)
+          if (ed->state[0].is_binary)
             NEWLINE_TO_NUL (txt, j);
 #endif
           memcpy (rb + *len, txt, j);
@@ -586,13 +586,13 @@ substitute_matching (re, lp, len, s_nth, s_mod,  s_f, ed)
   i = max (0, eot - txt);
   REALLOC_THROW (rb, rb_size, *len + i + 2, ERR, ed);
 #ifndef REG_STARTEND
-  if (ed->buf[0].is_binary)
+  if (ed->state[0].is_binary)
     NEWLINE_TO_NUL (txt, i);
 #endif
   memcpy (rb + *len, txt, i);
 
   /* put_buffer_line() requires newline. For binary data, setting flag
-     ed->buf[0].newline_appended suppresses its output.
+     ed->state[0].newline_appended suppresses its output.
      (See also read_stream() comments.) */
   strcpy (rb + *len + i, "\n");
   *len += i + 1;                /* `\n' => +1. */
@@ -606,11 +606,11 @@ count_matches (re, txt, len, buf)
      const regex_t *re;
      const char *txt;
      int len;
-     struct ed_buffer *buf;
+     struct ed_state *buf;
 {
   regmatch_t rm[SE_MAX];
   const char *eot;
-  size_t i, j = 0;
+  size_t off = 0;
   size_t nmatches = 0;
   int matched_prev = 0;
   int nul_prev;
@@ -619,24 +619,25 @@ count_matches (re, txt, len, buf)
 #ifdef REG_STARTEND
   for (eot = txt + len, rm[0].rm_so = 0, rm[0].rm_eo = len;
        !regexec (re, txt, SE_MAX, rm, REG_STARTEND);
-       txt += j, rm[0].rm_so = 0, rm[0].rm_eo = eot - txt)
+       txt += off, rm[0].rm_so = 0, rm[0].rm_eo = eot - txt)
 #else
   if (buf->is_binary)
     NUL_TO_NEWLINE (txt, len);
   for (eot = txt + len;
        !regexec (re, txt, SE_MAX, rm, 0);
-       txt += j)
+       txt += off)
 #endif  /* !REG_STARTEND */
     {
-      i = rm[0].rm_so, j = rm[0].rm_eo;
-      nul_prev = nul_next, nul_next = !j;
+      off = rm[0].rm_eo;
+      nul_prev = nul_next;
+      nul_next = !off;
 
       /* Infinite loop!! */
       if (matched_prev && nul_next)
         {
           if (!*txt)
             break;
-          j = 1;
+          off = 1;
           matched_prev = 0;
         }
 
@@ -653,7 +654,7 @@ count_matches (re, txt, len, buf)
         {
           if (nul_next && !*txt)
             break;
-          j = max (1, j);
+          off = max (1, off);
           matched_prev = 0;
         }
     }
@@ -669,7 +670,7 @@ apply_subst_template (boln, rm, re_nsub, len, ed)
      const regmatch_t *rm;
      int re_nsub;
      size_t *len;
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
   char *sub = rhs;
   size_t j = 0;

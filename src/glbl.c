@@ -2,7 +2,7 @@
 
    Copyright © 1993-2014 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2014-01-20 <alm@slewsys.org>
+   Last modified: 2014-01-25 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -11,21 +11,21 @@
 
 /* Static function declarations. */
 static ed_global_node_t *append_global_node __P ((const ed_line_node_t *,
-                                               ed_state_t *));
-static ed_line_node_t *next_global_node __P ((ed_state_t *));
+                                               ed_buffer_t *));
+static ed_line_node_t *next_global_node __P ((ed_buffer_t *));
 
 
 /* mark_global_nodes: Add lines matching a pattern to global queue. */
 int
 mark_global_nodes (want_match, ed)
      int want_match;
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
   regmatch_t rm[1];
   regex_t *re;
   ed_line_node_t *lp;
-  off_t from = ed->region->start;
-  off_t to = ed->region->end;
+  off_t from = ed->exec->region->start;
+  off_t to = ed->exec->region->end;
   off_t n = from ? to - from + 1 : 0;
   char dc = *ed->input;              /* pattern delimiting char */
   char *s;
@@ -51,7 +51,7 @@ mark_global_nodes (want_match, ed)
       if (!regexec (re, s, 0, rm, REG_STARTEND) == want_match
           && !append_global_node (lp, ed))
 #else
-      if (ed->buf[0].is_binary)
+      if (ed->state[0].is_binary)
         NUL_TO_NEWLINE (s, lp->len);
       if (!regexec (re, s, 0, NULL, 0) == want_match
           && !append_global_node (lp, ed))
@@ -67,7 +67,7 @@ mark_global_nodes (want_match, ed)
 int
 exec_global (io_f, ed)
      unsigned io_f;             /* I/O flags */
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
   static char *gcb = NULL;      /* global command buffer */
   static size_t gcb_size = 0;   /* buffer size */
@@ -91,10 +91,10 @@ exec_global (io_f, ed)
   for (ed->exec->first_pass = 1; (lp = next_global_node (ed));
        ed->input = gcb, ed->exec->first_pass = 0)
     {
-      if ((status = get_line_node_address (lp, &ed->buf[0].dot, ed)) < 0
+      if ((status = get_line_node_address (lp, &ed->state[0].dot, ed)) < 0
           || (interactive
-              && (status = display_lines (ed->buf[0].dot,
-                                          ed->buf[0].dot, io_f, ed)) < 0))
+              && (status = display_lines (ed->state[0].dot,
+                                          ed->state[0].dot, io_f, ed)) < 0))
         return status;
 
       /* If `G/V' command, then read from stdin. */
@@ -149,7 +149,7 @@ exec_global (io_f, ed)
 static ed_global_node_t *
 append_global_node (lp, ed)
      const ed_line_node_t *lp;
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
   ed_global_node_t *ap;
   ed_global_node_t *global_last = ed->core->global_head->q_back;
@@ -173,7 +173,7 @@ append_global_node (lp, ed)
    node pointer. */
 static ed_line_node_t *
 next_global_node (ed)
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
   ed_global_node_t *ap = ed->core->global_head->q_forw;
   ed_line_node_t *lp = ap->lp;
@@ -192,7 +192,7 @@ next_global_node (ed)
 /* reset_global_queue: Initialize and reset global queue. */
 void
 reset_global_queue (ed)
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
   /* Assert: spl1 () */
 
@@ -221,7 +221,7 @@ void
 delete_global_nodes (begin, end, ed)
      const ed_line_node_t *begin;
      const ed_line_node_t *end;
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
   ed_line_node_t *first = (ed_line_node_t *) begin;
   ed_line_node_t *last = (ed_line_node_t *) end;
@@ -232,7 +232,7 @@ delete_global_nodes (begin, end, ed)
   SEEK_GLOBAL_LINE (from, ed->core->global_head, first, last);
 
   if (first != last)
-    SEEK_GLOBAL_LINE (to, from->q_forw, last, ed->core->buffer_head);
+    SEEK_GLOBAL_LINE (to, from->q_forw, last, ed->core->line_head);
 
   /* Assert: spl1 () */
 
