@@ -3,7 +3,7 @@
 
    Copyright © 1993-2014 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2014-01-25 <alm@slewsys.org>
+   Last modified: 2014-01-26 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -556,7 +556,7 @@ void *
 realloc_buffer (b, n, i, ed)
      void **b;
      size_t *n;
-     off_t i;
+     size_t i;
      ed_buffer_t *ed;
 {
   char *_ts;

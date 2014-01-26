@@ -2,7 +2,7 @@
 
    Copyright © 1993-2014 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2014-01-25 <alm@slewsys.org>
+   Last modified: 2014-01-26 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -1026,22 +1026,22 @@ exec_one_off (cmd, modifier, ed)
   static size_t input_size = 0;
 
   char *saved_modifier = modifier;
-  int input_len;
+  size_t len;
   int status;
 
   /* Allocate for `start,end' + cmd + modifier. */
   if (strlen (cmd) != 1
-      || (input_len = 2 * OFF_T_LEN + strlen (modifier) + 3) > SIZE_T_MAX)
+      || (len = 2 * OFF_T_LEN + strlen (modifier) + 3) > SIZE_T_MAX)
     {
       ed->exec->err = _("Command too long");
       return ERR;
     }
-  REALLOC_THROW (input, input_size, input_len, ERR, ed);
+  REALLOC_THROW (input, input_size, len, ERR, ed);
   if (ed->exec->region->addrs)
-    snprintf (input, input_len, "%ld,%ld%s%s", ed->exec->region->start,
+    snprintf (input, len, "%ld,%ld%s%s", ed->exec->region->start,
               ed->exec->region->end, cmd, modifier);
   else
-    snprintf (input, input_len, "%s%s", cmd, modifier);
+    snprintf (input, len, "%s%s", cmd, modifier);
   ed->input = input;
   if ((status = address_range (ed)) < 0
       || (status = exec_command (ed)) < 0)

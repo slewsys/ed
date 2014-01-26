@@ -2,7 +2,7 @@
 
    Copyright © 1993-2014 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2014-01-25 <alm@slewsys.org>
+   Last modified: 2014-01-26 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -651,7 +651,7 @@ enum search_type
 #define REALLOC_THROW(b, n, i, err, ed)                                       \
   do                                                                          \
     {                                                                         \
-      if (!realloc_buffer ((void **) &(b), &(n), (off_t) (i), (ed)))          \
+      if (!realloc_buffer ((void **) &(b), &(n), (size_t) (i), (ed)))         \
         return (err);                                                         \
     }                                                                         \
   while (0)
@@ -835,7 +835,7 @@ int read_pipe __P ((const char *, off_t, off_t *, off_t *,
                     ed_buffer_t *));
 int read_register __P ((int, off_t, ed_buffer_t *));
 int read_stream_r __P ((FILE *, off_t, off_t *, ed_buffer_t *));
-void *realloc_buffer __P ((void **, size_t *, off_t, ed_buffer_t *));
+void *realloc_buffer __P ((void **, size_t *, size_t, ed_buffer_t *));
 char *regular_expression __P ((unsigned, size_t *, ed_buffer_t *));
 int reopen_ed_buffer __P ((ed_buffer_t *));
 void reset_global_queue __P ((ed_buffer_t *));

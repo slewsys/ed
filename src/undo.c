@@ -1,14 +1,13 @@
+
 /* undo.c: Undo routines for the ed line editor.
 
    Copyright © 1993-2014 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2014-01-25 <alm@slewsys.org>
+   Last modified: 2014-01-26 <alm@slewsys.org>
 
    This file is part of ed. */
 
 #include "ed.h"
-
-ed_undo_node_t *undo_head = NULL; /* head of undo queue */
 
 
 /* append_undo_node: Append node to end of undo queue. Return node
@@ -22,7 +21,7 @@ append_undo_node (type, from, to, ed)
 {
   ed_undo_node_t *up;
 
-  ed_undo_node_t *undo_last = undo_head->q_back;
+  ed_undo_node_t *undo_last = ed->core->undo_head->q_back;
 
   spl1 ();
   if (!(up = (ed_undo_node_t *) malloc (ED_UNDO_NODE_T_SIZE)))
@@ -47,7 +46,7 @@ undo_last_command (ed)
      ed_buffer_t *ed;
 {
   struct ed_state saved_buf = *ed->state;
-  ed_undo_node_t *up = undo_head;
+  ed_undo_node_t *up = ed->core->undo_head;
   ed_undo_node_t *next;
 
   if (ed->state[1].dot == -1 || ed->state[1].lines == -1)
@@ -58,7 +57,7 @@ undo_last_command (ed)
   spl1 ();
   get_line_node (0, ed);        /* this get_line_node last! */
 
-  while ((up = up->q_back) != undo_head)
+  while ((up = up->q_back) != ed->core->undo_head)
     {
       switch (up->type)
         {
@@ -91,7 +90,7 @@ undo_last_command (ed)
       next = up->q_forw;
       REVERSE_LINKS (up, ed_undo_node_t);
     }
-  while ((up = next) != undo_head);
+  while ((up = next) != ed->core->undo_head);
 
   if (ed->exec->global)
     reset_global_queue (ed);
@@ -110,10 +109,8 @@ reset_undo_queue (ed)
   ed_line_node_t *lp, *ep, *lp_next;
 
   spl1 ();
-  if (!undo_head)
-    init_undo_queue (&undo_head, ed);
-
-  for (up = undo_head->q_forw; up != undo_head; up = up_next)
+  for (up = ed->core->undo_head->q_forw; up != ed->core->undo_head;
+       up = up_next)
     {
       if (up->type == UDEL)
         {

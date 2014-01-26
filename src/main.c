@@ -2,7 +2,7 @@
 
    Copyright © 1993-2014 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2014-01-25 <alm@slewsys.org>
+   Last modified: 2014-01-26 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -330,19 +330,21 @@ next_edit (status, ed)
   static size_t buf_size = 0;
 
   size_t len;
-
+ 
   if ((len = strlen (*ed->file->list->gl_pathv)) > SIZE_T_MAX - 4)
     {
       ed->exec->err = _("File name too long");
       return ERR;
     }
+
+  /* Allocate for string `r <filename>\n\0' */
   REALLOC_THROW (buf, buf_size, len + 4, ERR, ed);
 
 #ifdef WANT_FILE_GLOB
   sprintf (ed->input = buf,
 # ifdef WANT_SAFE_WRITE
            status == EOF_GLB ? "~E\n" :
-# endif           
+# endif  /* WANT_SAFE_WRITE */
            status == EOF_NXT ? "En\n" :
            status == EOF_PRV ? "Ep\n" :
            "r %s\n",
