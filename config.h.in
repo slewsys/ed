@@ -390,8 +390,11 @@
    */
 #undef LT_OBJDIR
 
-/* Define format string to output a value of type off_t. */
+/* Define format string to print value of type off_t. */
 #undef OFF_T_FORMAT_STRING
+
+/* Define int with storage size of off_t. */
+#undef OFF_T_SIZE
 
 /* Name of package */
 #undef PACKAGE

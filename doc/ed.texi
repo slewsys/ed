@@ -1,6 +1,6 @@
 \input texinfo
 
-@c Last modified: 2014-01-20 <alm@slewsys.org>
+@c Last modified: 2014-01-26 <alm@slewsys.org>
 
 @c %**start of header
 @setfilename ed.info
@@ -149,9 +149,9 @@ matching syntax which @command{ed} introduced, and even some of its
 command syntax, is now standard across many applications and
 programming languages. Its consistency and general availabiliy across
 platforms make @command{ed} a natural springboard to learning the Unix
-system. Unsurprisingly, Brian W. Kernighan's original @command{ed} tutorials
-are as relevant as when they were written circa 1970. They reprinted
-here, courtesy of Lucent Laboratories.
+system. Brian W. Kernighan's original @command{ed} tutorials
+are as relevant today as when they were written circa 1970. They are
+reprinted here courtesy of Lucent Laboratories.
 
 @menu
 * A Tutorial Introduction to the UNIX Text Editor::

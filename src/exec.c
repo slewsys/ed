@@ -129,7 +129,7 @@ exec_command (ed)
   paging = 0;
   SKIP_WHITESPACE (ed);
 
-  if (ed->file->is_glob = ((c = *ed->input++) == '~'))
+  if ((ed->file->is_glob = ((c = *ed->input++) == '~')))
     c = *ed->input++;
   switch (c)
     {
@@ -1022,8 +1022,8 @@ exec_one_off (cmd, modifier, ed)
      char *modifier;
      ed_buffer_t *ed;
 {
-  static char *input = NULL;
-  static size_t input_size = 0;
+  static char *buf = NULL;
+  static size_t buf_size = 0;
 
   char *saved_modifier = modifier;
   size_t len;
@@ -1036,13 +1036,14 @@ exec_one_off (cmd, modifier, ed)
       ed->exec->err = _("Command too long");
       return ERR;
     }
-  REALLOC_THROW (input, input_size, len, ERR, ed);
+  REALLOC_THROW (buf, buf_size, len, ERR, ed);
   if (ed->exec->region->addrs)
-    snprintf (input, len, "%ld,%ld%s%s", ed->exec->region->start,
-              ed->exec->region->end, cmd, modifier);
+    snprintf (buf, len,
+              "%" OFF_T_FORMAT_STRING ",%" OFF_T_FORMAT_STRING "%s%s",
+              ed->exec->region->start, ed->exec->region->end, cmd, modifier);
   else
-    snprintf (input, len, "%s%s", cmd, modifier);
-  ed->input = input;
+    snprintf (buf, len, "%s%s", cmd, modifier);
+  ed->input = buf;
   if ((status = address_range (ed)) < 0
       || (status = exec_command (ed)) < 0)
     return status;

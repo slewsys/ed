@@ -181,8 +181,11 @@ int fstat ();
 # define LLONG_MIN (-LLONG_MAX - 1)
 #endif
 
+/* Assert: System-dependent OFF_T_SIZE determined by configure. */
 #ifndef OFF_T_MAX
-# define OFF_T_MAX LLONG_MAX
+# define OFF_T_MAX                                                            \
+  ((OFF_T_SIZE) (~(unsigned OFF_T_SIZE) 0 >> (unsigned OFF_T_SIZE) 1))
+# define OFF_T_MIN (-OFF_T_MAX - 1)
 #endif
 
 #ifndef max

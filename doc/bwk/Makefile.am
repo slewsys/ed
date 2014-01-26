@@ -2,7 +2,7 @@
 
 # Copyright © 2006-2014 Andrew L. Moore, SlewSys Research
 
-# Last modified: 2013-01-27 <alm@buttercup.lan>
+# Last modified: 2014-01-26 <alm@slewsys.org>
 
 # Process this file with automake to create Makefile.in.
 
@@ -11,7 +11,7 @@ SUFFIXES = .ps .pdf
 .ps.pdf:
 	if test -f $< &&                                                      \
 	   test -n "$(PS2PDF)" &&                                             \
-	   test -x $$(which $(PS2PDF)); then                                  \
+	   test -x "$$(which $(PS2PDF))"; then                                \
 	    $(PS2PDF) $< $@;                                                  \
 	fi
 

@@ -2,7 +2,7 @@
 
    Copyright © 1993-2014 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2014-01-25 <alm@slewsys.org>
+   Last modified: 2014-01-26 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -439,7 +439,7 @@ put_frame_buffer_line (lp, addr, io_f, fb, ed)
           /* As with cat(1), form feed (\f) does not force a new page,
              only a new line. Any following text continues on the next
              line -- indented to the current column. */
-          if (form_feed = (*s == '\f'))
+          if ((form_feed = (*s == '\f')))
             INC_MOD_FB_ROW (lp, addr, io_f & ZBWD, fb);
         }
       else

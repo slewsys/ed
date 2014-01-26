@@ -1,5 +1,7 @@
 2014-01-26  Andrew L. Moore  <alm@slewsys.org>
 
+	* src/ed.h: Use configure to set size of off_t.
+
 	* src/buf.c (realloc_buffer): Changing argument type from off_t to
 	size_t fixes segfault on 32-bit Linux.
 
