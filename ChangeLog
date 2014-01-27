@@ -1,9 +1,16 @@
+2014-01-27  Andrew L. Moore  <alm@slewsys.org>
+
+	* src/ed.h (off_t): Work around conflicting off_t typedefs (e.g.,
+	if _LARGE_FILE support enabled) and redefine using storage size
+	determined by configure. This resolves outstanding segfaults on
+	32-bit GNU/Linux platform.
+
 2014-01-26  Andrew L. Moore  <alm@slewsys.org>
 
 	* src/ed.h: Use configure to set size of off_t.
 
 	* src/buf.c (realloc_buffer): Changing argument type from off_t to
-	size_t fixes segfault on 32-bit Linux.
+	size_t fixes segfault on 32-bit GNU/Linux.
 
 2014-01-25  Andrew L. Moore  <alm@slewsys.org>
 
@@ -17,7 +24,7 @@
 	(alloc_ed_execute, alloc_ed_file, alloc_ed_region)
 	(alloc_ed_substitute):
 	* src/ed.h: Use struct pointers to alleviate alignment issues
-	on 32-bit Linux.
+	on 32-bit GNU/Linux.
 
 2013-08-08  Andrew L. Moore  <alm@slewsys.org>
 

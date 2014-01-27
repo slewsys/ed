@@ -2,7 +2,7 @@
 
    Copyright © 1993-2014 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2014-01-26 <alm@slewsys.org>
+   Last modified: 2014-01-27 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -13,9 +13,9 @@ char *copyright =
 
 #include <pwd.h>
 
+#include "ed.h"
 #include "argmax.h"
 #include "getopt.h"
-#include "ed.h"
 
 #define STDIN "/dev/stdin"
 

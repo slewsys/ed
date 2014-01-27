@@ -1,14 +1,14 @@
-# es.po: Traducciones al Espanol para el paquete ed.
-# Copyright © 2007-2013 Free Software Foundation, Inc.
-# This file is distributed under the same license as the ed package.
-# Andrew L. Moore <alm@gnu.org>, 2007
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: ed 0.271-b6\n"
+"Project-Id-Version: ed 0.271-b7\n"
 "Report-Msgid-Bugs-To: bug-ed@gnu.org\n"
-"POT-Creation-Date: 2013-08-08 15:00-0400\n"
+"POT-Creation-Date: 2014-01-27 03:40-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,61 +17,61 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/buf.c:108 src/buf.c:295 src/buf.c:308
+#: src/buf.c:115 src/buf.c:305 src/buf.c:318
 msgid "Buffer open error"
 msgstr ""
 
-#: src/buf.c:217 src/buf.c:281 src/buf.c:453 src/buf.c:574 src/glbl.c:161
-#: src/io.c:250 src/main.c:470 src/re.c:155 src/undo.c:31 lib/regcomp.c:168
+#: src/buf.c:227 src/buf.c:291 src/buf.c:463 src/buf.c:584 src/glbl.c:161
+#: src/io.c:250 src/main.c:479 src/re.c:159 src/undo.c:30 lib/regcomp.c:168
 msgid "Memory exhausted"
 msgstr ""
 
-#: src/buf.c:274 src/main.c:337
+#: src/buf.c:284 src/main.c:336
 msgid "File name too long"
 msgstr ""
 
-#: src/buf.c:275
+#: src/buf.c:285
 msgid "Invalid buffer name"
 msgstr ""
 
-#: src/buf.c:325
+#: src/buf.c:335
 msgid "Buffer close error"
 msgstr ""
 
-#: src/buf.c:362 src/buf.c:398
+#: src/buf.c:372 src/buf.c:408
 msgid "Buffer seek error"
 msgstr ""
 
-#: src/buf.c:372
+#: src/buf.c:382
 msgid "Buffer read error"
 msgstr ""
 
-#: src/buf.c:412 src/buf.c:444
+#: src/buf.c:422 src/buf.c:454
 msgid "Buffer full"
 msgstr ""
 
-#: src/buf.c:419
+#: src/buf.c:429
 msgid "Buffer write error"
 msgstr ""
 
-#: src/buf.c:522 src/exec.c:86 src/exec.c:420 src/exec.c:1044
+#: src/buf.c:532 src/exec.c:86 src/exec.c:421 src/exec.c:1071
 msgid "Address out of range"
 msgstr ""
 
-#: src/buf.c:567
+#: src/buf.c:577
 msgid "Memory request too big"
 msgstr ""
 
-#: src/cmds.c:40 src/io.c:395 src/main.c:261
+#: src/cmds.c:40 src/io.c:395 src/main.c:260
 msgid "End-of-file unexpected"
 msgstr ""
 
-#: src/cmds.c:261 src/cmds.c:280
+#: src/cmds.c:260 src/cmds.c:279
 msgid "Invalid address mark"
 msgstr ""
 
-#: src/exec.c:30 src/exec.c:209 src/exec.c:293 src/exec.c:509 src/exec.c:667
-#: src/exec.c:679 src/exec.c:687
+#: src/exec.c:30 src/exec.c:209 src/exec.c:293 src/exec.c:515 src/exec.c:679
+#: src/exec.c:691 src/exec.c:699
 msgid "Command suffix unexpected"
 msgstr ""
 
@@ -79,8 +79,8 @@ msgstr ""
 msgid "Destination address required"
 msgstr ""
 
-#: src/exec.c:200 src/exec.c:284 src/exec.c:360 src/exec.c:376 src/exec.c:475
-#: src/exec.c:500 src/exec.c:645 src/exec.c:957
+#: src/exec.c:200 src/exec.c:284 src/exec.c:360 src/exec.c:376 src/exec.c:480
+#: src/exec.c:506 src/exec.c:657 src/exec.c:977
 msgid "Address unexpected"
 msgstr ""
 
@@ -100,23 +100,23 @@ msgstr ""
 msgid "No previous error"
 msgstr ""
 
-#: src/exec.c:448
+#: src/exec.c:451
 msgid "Invalid destination address"
 msgstr ""
 
-#: src/exec.c:815 src/exec.c:852 src/exec.c:863 src/exec.c:901 src/exec.c:987
+#: src/exec.c:829 src/exec.c:866 src/exec.c:877 src/exec.c:916 src/exec.c:1011
 msgid "Unknown command"
 msgstr ""
 
-#: src/exec.c:986
+#: src/exec.c:1010
 msgid "Invalid address"
 msgstr ""
 
-#: src/exec.c:1012
+#: src/exec.c:1036
 msgid "Command too long"
 msgstr ""
 
-#: src/exec.c:1049
+#: src/exec.c:1076
 msgid "Invalid address range"
 msgstr ""
 
@@ -124,12 +124,12 @@ msgstr ""
 msgid "No previous command"
 msgstr ""
 
-#: src/io.c:61 src/io.c:511 src/main.c:429 src/main.c:443 src/main.c:488
-#: src/main.c:515
+#: src/io.c:61 src/io.c:511 src/main.c:432 src/main.c:449 src/main.c:501
+#: src/main.c:532
 msgid "File seek error"
 msgstr ""
 
-#: src/io.c:70 src/io.c:122 src/io.c:535 src/io.c:589 src/main.c:478
+#: src/io.c:70 src/io.c:122 src/io.c:535 src/io.c:589 src/main.c:489
 msgid "File open error"
 msgstr ""
 
@@ -150,7 +150,7 @@ msgstr ""
 msgid "Newline appended"
 msgstr ""
 
-#: src/io.c:457 src/main.c:501
+#: src/io.c:457 src/main.c:516
 msgid "File read error"
 msgstr ""
 
@@ -162,7 +162,7 @@ msgstr ""
 msgid "File too big"
 msgstr ""
 
-#: src/io.c:665 src/main.c:437 src/main.c:508
+#: src/io.c:665 src/main.c:442 src/main.c:525
 msgid "File write error"
 msgstr ""
 
@@ -174,33 +174,33 @@ msgstr ""
 msgid "Access restricted to regular files"
 msgstr ""
 
-#: src/main.c:194
+#: src/main.c:193
 msgid "Interrupted"
 msgstr ""
 
-#: src/main.c:295
+#: src/main.c:294
 msgid "WARNING: Buffer modified since last write"
 msgstr ""
 
-#: src/main.c:386
+#: src/main.c:387
 msgid "Argument list too long"
 msgstr ""
 
-#: src/main.c:398
+#: src/main.c:399
 msgid "Argument list full"
 msgstr ""
 
-#: src/main.c:531
+#: src/main.c:549
 #, c-format
 msgid "Usage: %s [-] [-EGhirsVv] [-f SCRIPT] [-p PROMPT] [FILE]\n"
 msgstr ""
 
-#: src/main.c:538
+#: src/main.c:556
 #, c-format
 msgid "Usage: %s [OPTION...] [FILE]\n"
 msgstr ""
 
-#: src/main.c:540
+#: src/main.c:558
 #, c-format
 msgid ""
 "Options:\n"
@@ -224,7 +224,7 @@ msgid ""
 "Report bugs to: <bug-ed@gnu.org>.\n"
 msgstr ""
 
-#: src/main.c:572
+#: src/main.c:591
 msgid "script, line %"
 msgstr ""
 
@@ -232,11 +232,11 @@ msgstr ""
 msgid "Invalid pattern delimiter"
 msgstr ""
 
-#: src/re.c:145
+#: src/re.c:149
 msgid "No previous pattern"
 msgstr ""
 
-#: src/re.c:259 src/sub.c:467 lib/regcomp.c:135
+#: src/re.c:264 src/sub.c:467 lib/regcomp.c:135
 msgid "No match"
 msgstr ""
 
@@ -248,7 +248,7 @@ msgstr ""
 msgid "No previous substitution"
 msgstr ""
 
-#: src/undo.c:55
+#: src/undo.c:54
 msgid "Nothing to undo"
 msgstr ""
 

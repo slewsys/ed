@@ -319,39 +319,6 @@ AT_PROTO_ERR = $(srcdir)/proto.err-at.in
 AT_PROTO_FAIL = $(srcdir)/proto.fail-at.in
 SUFFIXES = .t .err .ok-at .err-at .fail-at
 
-# The following GNU make rules generate a location-dependent version
-# of testsuite, `testsuite-dist'. Iff the distribution is built from
-# $(top_srcdir), testsuite-dist is invoked from $(top_srcdir) via:
-#
-#     $ make quick-check
-#
-# Testsuite-dist is provided because generating a location-independent
-# testsuite requires both GNU make and autoconf tools.
-#
-# These rules should remain commented out unless generating a
-# distribution version of testsuite.
-#
-# Please update $(top_srcdir)/testsuite/ts-am-sw.in to reflect any
-# changes in the format of this file.
-#
-# .t.ok-at:
-# 	sed -e "s^@SCRIPT_NAME@^$*^g"                                         \
-# 	    -e "s^@SCRIPT_SRC@^../../$*^g" "$(AT_PROTO_OK)"                   \
-# 	>"$@".tmp
-# 	mv "$@".tmp "$@"
-# 
-# .err.err-at:
-# 	sed -e "s^@SCRIPT_NAME@^$*^g"                                         \
-# 	    -e "s^@SCRIPT_SRC@^../../$*^g" "$(AT_PROTO_ERR)"                  \
-# 	>"$@".tmp
-# 	mv "$@".tmp "$@"
-# 
-# .err.fail-at:
-# 	sed -e "s^@SCRIPT_NAME@^$*^g"                                         \
-# 	    -e "s^@SCRIPT_SRC@^../../$*^g" "$(AT_PROTO_FAIL)"                 \
-# 	>"$@".tmp
-# 	mv "$@".tmp "$@"
-
 # Ed scripts which should complete sucessfully.
 ED_SCRIPTS_OK = \
 	a.t addr.t ascii.t bang1.t c1.t c2.t comment.t d.t e1.t e2.t          \
@@ -587,22 +554,55 @@ uninstall-am:
 # Please update $(top_srcdir)/testsuite/ts-am-sw.in to reflect any
 # changes in the format of this file.
 #
+# .t.ok-at:
+# 	sed -e "s^@SCRIPT_NAME@^$*^g"                                         \
+# 	    -e "s^@SCRIPT_SRC@^$(abs_srcdir)/$*^g" "$(AT_PROTO_OK)"           \
+# 	    >"$@".tmp
+# 	mv "$@".tmp "$@"
+# 
+# .err.err-at:
+# 	sed -e "s^@SCRIPT_NAME@^$*^g"                                         \
+# 	    -e "s^@SCRIPT_SRC@^$(abs_srcdir)/$*^g" "$(AT_PROTO_ERR)"          \
+# 	    >"$@".tmp
+# 	mv "$@".tmp "$@"
+# 
+# .err.fail-at:
+# 	sed -e "s^@SCRIPT_NAME@^$$(basename $*)^g"                            \
+# 	    -e "s^@SCRIPT_SRC@^$(abs_srcdir)/$*^g" "$(AT_PROTO_FAIL)"         \
+# 	    >"$@".tmp
+# 	mv "$@".tmp "$@"
+
+# The following GNU make rules generate a location-dependent version
+# of testsuite, `testsuite-dist'. Iff the distribution is built from
+# $(top_srcdir), testsuite-dist is invoked from $(top_srcdir) via:
+#
+#     $ make quick-check
+#
+# Testsuite-dist is provided because generating a location-independent
+# testsuite requires both GNU make and autoconf tools.
+#
+# These rules should remain commented out unless generating a
+# distribution version of testsuite.
+#
+# Please update $(top_srcdir)/testsuite/ts-am-sw.in to reflect any
+# changes in the format of this file.
+#
 .t.ok-at:
 	sed -e "s^@SCRIPT_NAME@^$*^g"                                         \
-	    -e "s^@SCRIPT_SRC@^$(abs_srcdir)/$*^g" "$(AT_PROTO_OK)"           \
-	    >"$@".tmp
+	    -e "s^@SCRIPT_SRC@^../../$*^g" "$(AT_PROTO_OK)"                   \
+	>"$@".tmp
 	mv "$@".tmp "$@"
 
 .err.err-at:
 	sed -e "s^@SCRIPT_NAME@^$*^g"                                         \
-	    -e "s^@SCRIPT_SRC@^$(abs_srcdir)/$*^g" "$(AT_PROTO_ERR)"          \
-	    >"$@".tmp
+	    -e "s^@SCRIPT_SRC@^../../$*^g" "$(AT_PROTO_ERR)"                  \
+	>"$@".tmp
 	mv "$@".tmp "$@"
 
 .err.fail-at:
-	sed -e "s^@SCRIPT_NAME@^$$(basename $*)^g"                            \
-	    -e "s^@SCRIPT_SRC@^$(abs_srcdir)/$*^g" "$(AT_PROTO_FAIL)"         \
-	    >"$@".tmp
+	sed -e "s^@SCRIPT_NAME@^$*^g"                                         \
+	    -e "s^@SCRIPT_SRC@^../../$*^g" "$(AT_PROTO_FAIL)"                 \
+	>"$@".tmp
 	mv "$@".tmp "$@"
 
 .PHONY: build-and-run-testsuite quick-check

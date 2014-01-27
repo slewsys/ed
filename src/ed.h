@@ -2,13 +2,17 @@
 
    Copyright © 1993-2014 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2014-01-26 <alm@slewsys.org>
+   Last modified: 2014-01-27 <alm@slewsys.org>
 
    This file is part of ed. */
 
 #ifdef HAVE_CONFIG_H
 # include "config.h"
 #endif
+
+/* Work around conflicting off_t typedefs (e.g., if _LARGE_FILE
+   support enabled). Defined per configure, below. */
+#define off_t INTERNAL_OFF_T
 
 #include <ctype.h>
 #include <errno.h>
@@ -155,6 +159,10 @@ int fstat ();
 
 #include <regex.h>
 
+/* Define off_t per storage size determined by configure. */
+#undef off_t
+typedef OFF_T_SIZE off_t;
+
 #ifndef INT_MAX
 # define INT_MAX ((int) (~(unsigned int) 0 >> (unsigned int) 1))
 # define INT_MIN (-INT_MAX - 1)
@@ -170,9 +178,10 @@ int fstat ();
 #endif
 
 #ifndef SIZE_T_MAX
-# define SIZE_T_MAX ULONG_MAX
+# define SIZE_T_MAX                                                           \
+  ((SIZE_T_SIZE) (~(SIZE_T_SIZE) 0 >> (SIZE_T_SIZE) 1))
 #endif
-
+  
 #define LINECHARS SIZE_T_MAX    /* Max chars per line, including NULs. */
 
 #ifndef LLONG_MAX
@@ -181,7 +190,6 @@ int fstat ();
 # define LLONG_MIN (-LLONG_MAX - 1)
 #endif
 
-/* Assert: System-dependent OFF_T_SIZE determined by configure. */
 #ifndef OFF_T_MAX
 # define OFF_T_MAX                                                            \
   ((OFF_T_SIZE) (~(unsigned OFF_T_SIZE) 0 >> (unsigned OFF_T_SIZE) 1))
@@ -246,8 +254,8 @@ typedef struct ed_line_node
 {
   struct ed_line_node *q_forw;
   struct ed_line_node *q_back;
-  off_t seek;                   /* Line offset in on-disk buffer. */
   size_t len;                   /* Line length. */
+  off_t seek;                   /* Line offset in on-disk buffer. */
 } ed_line_node_t;
 
 #define ED_LINE_NODE_T_SIZE (sizeof (ed_line_node_t))
@@ -256,11 +264,11 @@ typedef struct ed_line_node
 typedef struct ed_frame_node
 {
   ed_line_node_t *lp;           /* Line pointer. */
-  off_t addr;                   /* Address of current row's line. */
   char *text;                   /* Text buffer. */
   size_t text_size;             /* Text buffer size. */
   size_t text_i;                /* Current text index in row. */
   size_t offset;                /* Offset into source text of row. */
+  off_t addr;                   /* Address of current row's line. */
 } ed_frame_node_t;
 
 #define ED_FRAME_NODE_T_SIZE (sizeof (ed_frame_node_t))
@@ -330,7 +338,7 @@ struct ed_state
 {
   off_t dot;                    /* Current line number. */
   off_t lines;                  /* Number of lines. */
-  
+
   int is_binary;                /* If set, buffer contains binary data.  */
   int is_empty;                 /* If set, buffer is "logically" empty. */
   int is_modified;              /* If set, buffer contains unsaved data. */
@@ -361,11 +369,11 @@ struct ed_core
 /* Display parameters */
 struct ed_display
 {
-  off_t page_addr;              /* Address of first displayed line in page. */
   int is_paging;                /* If set, displaying a page of text. */
   int underflow;                /* If set, line truncated at top page. */
   int overflow;                 /* If set, line truncated at bottom of page. */
   int off;                      /* If set, do not print frame buffer. */
+  off_t page_addr;              /* Address of first displayed line in page. */
 };
 
 /* Address range parameters. */

@@ -432,6 +432,9 @@
 # undef SIZE_MAX
 #endif
 
+/* Define int with storage size of size_t. */
+#undef SIZE_T_SIZE
+
 /* If using the C implementation of alloca, define if you know the
    direction of stack growth for your system; otherwise it will be
    automatically deduced at runtime.

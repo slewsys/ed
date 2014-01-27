@@ -2,12 +2,12 @@
 
 # Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
 
-# Last modified: 2014-01-26 <alm@slewsys.org>
+# Last modified: 2014-01-27 <alm@slewsys.org>
 
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.65])
-AC_INIT([ed],[0.271-b6],[bug-ed@gnu.org])
+AC_INIT([ed],[0.271-b7],[bug-ed@gnu.org])
 AC_CONFIG_AUX_DIR([.])
 AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADERS([config.h])
@@ -79,57 +79,6 @@ AC_PATH_PROG([GROFF], [groff])
 AC_ARG_VAR([PS2PDF], [PostScript to PDF filter])
 AC_PATH_PROGS([PS2PDF], [ps2pdf14 ps2pdf ps2pdfwr])
 
-
-AC_TYPE_OFF_T
-
-dnl Check off_t before configure modifies it...
-# Checks storage size of off_t
-AC_CACHE_CHECK([size of off_t],
- [ac_cv_off_t_size],
- AC_RUN_IFELSE([AC_LANG_SOURCE([
-#include <limits.h>
-#include <stdio.h>
-#include <unistd.h>
-#include <sys/types.h>
-
-int
-main()
-{
-  _exit (sizeof (long long) - sizeof (off_t));
-}
-  ])],
-  [ac_cv_off_t_size="long long"],
-  [ac_cv_off_t_size="long"],
-  [ac_cv_off_t_size="long"]))
-AC_DEFINE_UNQUOTED([OFF_T_SIZE], [$ac_cv_off_t_size],
-  [Define int with storage size of off_t.])
-
-# Checks for string format to output value of off_t
-AC_CACHE_CHECK([how to print value off_t],
- [ac_cv_off_t_format_string],
- AC_RUN_IFELSE([AC_LANG_SOURCE([
-#include <limits.h>
-#include <stdio.h>
-#include <unistd.h>
-#include <sys/types.h>
-
-int
-main()
-{
-  _exit (sizeof (long long) - sizeof (off_t));
-}
-  ])],
-  [ac_cv_off_t_format_string="lld"],
-  [ac_cv_off_t_format_string="ld"],
-  [ac_cv_off_t_format_string="ld"]))
-AC_DEFINE_UNQUOTED([OFF_T_FORMAT_STRING], ["$ac_cv_off_t_format_string"],
-  [Define format string to print value of type off_t.])
-
-
-AC_SYS_LARGEFILE
-AC_PROG_CC
-AC_PROG_LN_S
-
 # Checks for prior deployment of this package - used by `upgrade-sh'
 AC_CACHE_CHECK([for ed], [ac_cv_path_ED_COMMAND],
     [AC_PATH_PROGS_FEATURE_CHECK([ED_COMMAND], ["$ED" ed],
@@ -153,6 +102,9 @@ AC_CACHE_CHECK([for GNU make], [ac_cv_path_GNU_MAKE_COMMAND],
       [])])
 AC_SUBST(GNU_MAKE_COMMAND, [$ac_cv_path_GNU_MAKE_COMMAND])
 
+AC_SYS_LARGEFILE
+AC_PROG_CC
+AC_PROG_LN_S
 AC_PROG_INSTALL
 AC_PROG_MKDIR_P
 AC_PROG_YACC
@@ -248,6 +200,7 @@ AC_CHECK_HEADERS_ONCE([fcntl.h glob.h libintl.h limits.h locale.h stdlib.h    \
 #
 AC_C_CONST
 AC_TYPE_PID_T
+AC_TYPE_OFF_T
 AC_TYPE_SIZE_T
 AC_C_VOLATILE
 AC_CHECK_TYPES([sig_atomic_t],
@@ -259,6 +212,70 @@ AC_CHECK_DECL([F_SETLK],
   [ac_cv_have_decl_f_setlk=yes],
   [ac_cv_have_decl_f_setlk=no],
   [#include <fcntl.h>])
+
+# Checks storage size of size_t
+AC_CACHE_CHECK([size of size_t],
+ [ac_cv_size_t_size],
+ AC_RUN_IFELSE([AC_LANG_SOURCE([
+#include <limits.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/types.h>
+
+int
+main()
+{
+  _exit (sizeof (unsigned long long) - sizeof (size_t));
+}
+  ])],
+  [ac_cv_size_t_size="unsigned long long"],
+  [ac_cv_size_t_size="unsigned long"],
+  [ac_cv_size_t_size="unsigned long"]))
+AC_DEFINE_UNQUOTED([SIZE_T_SIZE], [$ac_cv_size_t_size],
+  [Define int with storage size of size_t.])
+
+# Checks storage size of off_t
+AC_CACHE_CHECK([size of off_t],
+ [ac_cv_off_t_size],
+ AC_RUN_IFELSE([AC_LANG_SOURCE([
+#include <limits.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/types.h>
+
+int
+main()
+{
+  _exit (sizeof (long long) - sizeof (off_t));
+}
+  ])],
+  [ac_cv_off_t_size="long long"],
+  [ac_cv_off_t_size="long"],
+  [ac_cv_off_t_size="long"]))
+AC_DEFINE_UNQUOTED([OFF_T_SIZE], [$ac_cv_off_t_size],
+  [Define int with storage size of off_t.])
+
+# Checks for string format to output value of off_t
+AC_CACHE_CHECK([how to print value off_t],
+ [ac_cv_off_t_format_string],
+ AC_RUN_IFELSE([AC_LANG_SOURCE([
+#include <limits.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/types.h>
+
+int
+main()
+{
+  _exit (sizeof (long long) - sizeof (off_t));
+}
+  ])],
+  [ac_cv_off_t_format_string="lld"],
+  [ac_cv_off_t_format_string="ld"],
+  [ac_cv_off_t_format_string="ld"]))
+AC_DEFINE_UNQUOTED([OFF_T_FORMAT_STRING], ["$ac_cv_off_t_format_string"],
+  [Define format string to print value of type off_t.])
+
 
 #
 # Checks for system calls and library functions.
