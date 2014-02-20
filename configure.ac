@@ -2,12 +2,12 @@
 
 # Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
 
-# Last modified: 2013-08-08 <alm@slewsys.org>
+# Last modified: 2014-02-18 <alm@slewsys.org>
 
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.65])
-AC_INIT([ed],[0.271-b4],[bug-ed@gnu.org])
+AC_INIT([ed],[0.271-b5],[bug-ed@gnu.org])
 AC_CONFIG_AUX_DIR([.])
 AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADERS([config.h])
@@ -269,7 +269,7 @@ AC_CACHE_CHECK([how to output value of off_t],
 int
 main()
 {
-  exit (sizeof (long) < sizeof (OFF_T_MIN) && sizeof (int) < sizeof (long) ? 0 : 1);
+  exit (sizeof (long) < sizeof (OFF_T_MIN) /* && sizeof (int) < sizeof (long) */ ? 0 : 1);
 }
   ])],
   [ac_cv_off_t_format_string="lld"],

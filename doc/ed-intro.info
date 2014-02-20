@@ -1,4 +1,4 @@
-This is ed-intro.info, produced by makeinfo version 4.13 from
+This is ed-intro.info, produced by makeinfo version 4.8 from
 ed-intro.texi.
 
 INFO-DIR-SECTION Text creation and manipulation
@@ -1334,33 +1334,33 @@ and `q').
 
 
 Tag Table:
-Node: Top386
-Node: Introduction2323
-Node: Disclaimer3142
-Node: Getting Started4003
-Node: Creating Text4420
-Node: Error Messages7397
-Node: Writing to a file7762
-Node: Leaving ed9194
-Ref: Leaving ed-Footnote-19758
-Node: Exercise 19915
-Node: Reading text from a file10355
-Node: Inserting text from a file11851
-Node: Exercise 212826
-Node: Printing the buffer13444
-Node: Exercise 315457
-Node: The current line15861
-Node: Deleting lines18699
-Node: Exercise 419536
-Node: Modifying text20532
-Node: Exercise 523466
-Node: Context searching24367
-Node: Exercise 627915
-Node: Change and Insert29441
-Node: Exercise 731067
-Node: Moving text around31904
-Node: The global commands33006
-Node: Special Characters34298
-Node: Summary38384
+Node: Top385
+Node: Introduction2322
+Node: Disclaimer3141
+Node: Getting Started4002
+Node: Creating Text4419
+Node: Error Messages7396
+Node: Writing to a file7761
+Node: Leaving ed9193
+Ref: Leaving ed-Footnote-19757
+Node: Exercise 19914
+Node: Reading text from a file10354
+Node: Inserting text from a file11850
+Node: Exercise 212825
+Node: Printing the buffer13443
+Node: Exercise 315456
+Node: The current line15860
+Node: Deleting lines18698
+Node: Exercise 419535
+Node: Modifying text20531
+Node: Exercise 523465
+Node: Context searching24366
+Node: Exercise 627914
+Node: Change and Insert29440
+Node: Exercise 731066
+Node: Moving text around31903
+Node: The global commands33005
+Node: Special Characters34297
+Node: Summary38383
 
 End Tag Table

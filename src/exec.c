@@ -2,12 +2,15 @@
 
    Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2013-08-09 <alm@slewsys.org>
+   Last modified: 2014-02-20 <alm@slewsys.org>
 
    This file is part of ed. */
 
 #include "ed.h"
 
+/* Register I/O flags. */
+#define READ_REGISTER 0x01
+#define WRITE_REGISTER 0x02
 
 /* COMMAND_SUFFIX: Get command suffix from the command buffer. */
 #define COMMAND_SUFFIX(io_f, ed)                                              \
@@ -73,22 +76,35 @@
       off_t _start = (ed)->region.start;                                      \
       off_t _end = (ed)->region.end;                                          \
       int _status;                                                            \
-      if ((_status = address_range (ed)) < 0)                                 \
-        return _status;                                                       \
-      if ((ed)->exec.opt & (POSIXLY_CORRECT | TRADITIONAL)                    \
-          && !(ed)->region.addrs)                                             \
+                                                                              \
+      /* Parse "write register" command variation. */                         \
+      if (*ed->input == '>')                                                  \
         {                                                                     \
-          (ed)->exec.err = _("Destination address required");                 \
-          return ERR;                                                         \
+          reg_io |= WRITE_REGISTER;                                           \
+          if (append = *++ed->input == '>')                                   \
+            ++ed->input;                                                      \
+          if ((status = is_valid_register (&reg_write, ed)) < 0)              \
+            return status;                                                    \
         }                                                                     \
-      if ((ed)->buf[0].addr_last < (ed)->region.end)                          \
+      else                                                                    \
         {                                                                     \
-          (ed)->exec.err = _("Address out of range");                         \
-          return ERR;                                                         \
+          if ((_status = address_range (ed)) < 0)                             \
+            return _status;                                                   \
+          if ((ed)->exec.opt & (POSIXLY_CORRECT | TRADITIONAL)                \
+              && !(ed)->region.addrs)                                         \
+            {                                                                 \
+              (ed)->exec.err = _("Destination address required");             \
+              return ERR;                                                     \
+            }                                                                 \
+          if ((ed)->buf[0].addr_last < (ed)->region.end)                      \
+            {                                                                 \
+              (ed)->exec.err = _("Address out of range");                     \
+              return ERR;                                                     \
+            }                                                                 \
+          (addr) = (ed)->region.end;                                          \
+          (ed)->region.end = _end;                                            \
+          (ed)->region.start = _start;                                        \
         }                                                                     \
-      (addr) = (ed)->region.end;                                              \
-      (ed)->region.end = _end;                                                \
-      (ed)->region.start = _start;                                            \
     }                                                                         \
   while (0)
 
@@ -96,6 +112,7 @@
 /* Static function declarations. */
 static int exec_one_off __P ((const char *, char *, ed_state_t *ed));
 static int is_valid_range __P ((off_t, off_t, ed_state_t *));
+static int is_valid_register __P ((int *, ed_state_t *));
 
 
 /* exec_command: Execute the next command in command buffer; return
@@ -118,23 +135,74 @@ exec_command (ed)
   off_t size = 0;
   char *fn = NULL;
   size_t len = 0;
-  unsigned io_f = 0;            /* I/O flags */
+  unsigned io_f = 0;            /* Print I/O flags */
   unsigned s_f = 0;             /* Saved substitution modifier flags */
   unsigned sgpr_f = 0;          /* Short-form substitution modifier flags */
   unsigned  sio_f = 0;          /* Saved substitution I/O flags */
+  int append = 0;               /* Append to register? */
   int c = 0;
   int cx = 0;
   int cy = 0;
   int cz = 0;
   int is_default = 0;
+  int reg_read = 0;             /* Register to read from. */
+  int reg_write = 0;            /* Register to write to. */
+  int reg_io = 0;               /* Register I/O flags. */
   int status = 0;               /* Return status */
 
   ed->display.is_paging = paging;
   paging = 0;
   SKIP_WHITESPACE (ed);
 
-  if (ed->file.is_glob = (c = *ed->input++) == '~')
+  /* Register indirection. */
+  if (*ed->input == '<')
+    {
+      reg_io |= READ_REGISTER;
+      ++ed->input;
+      if ((status = is_valid_register (&reg_read, ed)) < 0)
+        return status;
+    }
+
+  SKIP_WHITESPACE (ed);
+  c = *ed->input++;
+
+#ifdef WANT_FILE_GLOB
+  if ((ed->file.is_glob = c == '~'))
     c = *ed->input++;
+#endif
+  
+  /* Validate any command prefix. */
+  switch (c)
+    {
+    case 'm':
+    case 't':
+      if (ed->file.is_glob)
+        {
+          ed->exec.err = _("Command prefix unexpected");
+          return ERR;
+        }
+      break;
+    case 'E':
+    case 'e':
+    case 'f':
+    case 'r':
+    case 'w':
+    case 'W':
+      if (reg_io)
+        {
+          ed->exec.err = _("Command prefix unexpected");
+          return ERR;
+        }
+      break;
+    default:
+      if (reg_io || ed->file.is_glob)
+        {
+          ed->exec.err = _("Command prefix unexpected");
+          return ERR;
+        }
+      break;
+    }
+  
   switch (c)
     {
     case 'a':
@@ -177,7 +245,9 @@ exec_command (ed)
       COMMAND_SUFFIX (io_f, ed);
       if (!ed->exec.global)
         reset_undo_queue (ed);
-
+      if ((status = write_to_register (REG_MAX - 1, ed->region.start,
+                                       ed->region.end, 0, ed)) < 0)
+        return status;
       spl1 ();
       if ((status = delete_lines (ed->region.start, ed->region.end, ed)) < 0)
         {
@@ -451,9 +521,39 @@ exec_command (ed)
       COMMAND_SUFFIX (io_f, ed);
       if (!ed->exec.global)
         reset_undo_queue (ed);
-      if ((status =
-           move_lines (ed->region.start, ed->region.end, addr, ed)) < 0)
-        return status;
+      switch (reg_io)
+        {
+        case 0:
+          if ((status =
+               move_lines (ed->region.start, ed->region.end, addr, ed)) < 0)
+            return status;
+          break;
+        case READ_REGISTER:
+          if ((status = read_from_register (reg_read, addr, ed)) < 0
+              || (status = reset_register_queue (reg_read, ed)) < 0)
+            return status;
+          break;
+        case WRITE_REGISTER:
+          if ((status = write_to_register (reg_write, ed->region.start,
+                                           ed->region.end, append, ed)) < 0)
+            return status;
+          spl1 ();
+          if ((status = delete_lines (ed->region.start,
+                                      ed->region.end, ed)) < 0)
+            {
+              spl0 ();
+              return status;
+            }
+          spl0 ();
+          break;
+        case READ_REGISTER | WRITE_REGISTER:
+          if ((status = register_move (reg_read, reg_write, append, ed)) < 0)
+            return status;
+          break;
+        default:
+          ed->exec.err = _("Invalid register");
+          return ERR;
+        }
       break;
     case 'n':
 
@@ -635,9 +735,30 @@ exec_command (ed)
       COMMAND_SUFFIX (io_f, ed);
       if (!ed->exec.global)
         reset_undo_queue (ed);
-      if ((status =
-           copy_lines (ed->region.start, ed->region.end, addr, ed)) < 0)
-        return status;
+      switch (reg_io)
+        {
+        case 0:
+          if ((status =
+               copy_lines (ed->region.start, ed->region.end, addr, ed)) < 0)
+            return status;
+          break;
+        case READ_REGISTER:
+          if ((status = read_from_register (reg_read, addr, ed)) < 0)
+            return status;
+          break;
+        case WRITE_REGISTER:
+          if ((status = write_to_register (reg_write, ed->region.start,
+                                           ed->region.end, append, ed)) < 0)
+            return status;
+          break;
+        case READ_REGISTER | WRITE_REGISTER:
+          if ((status = register_copy (reg_read, reg_write, append, ed)) < 0)
+            return status;
+          break;
+        default:
+          ed->exec.err = _("Invalid register");
+          return ERR;
+        }
       break;
     case 'u':
       if (ed->region.addrs)
@@ -999,7 +1120,7 @@ exec_one_off (cmd, modifier, ed)
      ed_state_t *ed;
 {
   static char *input = NULL;
-  static off_t input_size = 0;
+  static size_t input_size = 0;
 
   char *saved_modifier = modifier;
   int input_len;
@@ -1014,7 +1135,9 @@ exec_one_off (cmd, modifier, ed)
     }
   REALLOC_THROW (input, input_size, input_len, ERR, ed);
   if (ed->region.addrs)
-    snprintf (input, input_len, "%ld,%ld%s%s", ed->region.start,
+    snprintf (input, input_len,
+              "%" OFF_T_FORMAT_STRING ",%" OFF_T_FORMAT_STRING "%s%s",
+              ed->region.start,
               ed->region.end, cmd, modifier);
   else
     snprintf (input, input_len, "%s%s", cmd, modifier);
@@ -1050,6 +1173,18 @@ is_valid_range (from, to, ed)
       return ERR;
     }
   return 0;
+}
+
+
+/* is_valid_register: Validate register index.  */
+static int
+is_valid_register (regno, ed)
+     int *regno;
+     ed_state_t *ed;
+{
+  *regno = (*ed->input < REG_FIRST || *ed->input > REG_LAST ? REG_MAX - 1
+            : *ed->input++ - REG_FIRST);
+  return *regno;
 }
 
 

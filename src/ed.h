@@ -2,7 +2,7 @@
 
    Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2013-08-09 <alm@slewsys.org>
+   Last modified: 2014-02-20 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -320,7 +320,9 @@ typedef struct ed_undo_node
 } ed_undo_node_t;
 
 #define ED_UNDO_NODE_T_SIZE (sizeof (ed_undo_node_t))
-#define REG_MAX  27             /* Max number of registers */
+#define REG_FIRST  '0'          /* Name of first register */
+#define REG_LAST  '9'           /* Name of last register */
+#define REG_MAX  11             /* Max number of registers, including default */
 
 /* Ed buffer state parameters. */
 struct ed_buffer
@@ -422,7 +424,7 @@ struct ed_substitute
   unsigned s_f;                 /* Substitution modifier flags */
   off_t s_mod;                  /* Substitution match modulus */
   off_t s_nth;                  /* Substitution match offset */
-  unsigned  sio_f;              /* Substitution I/O flags */
+  unsigned sio_f;               /* Substitution I/O flags */
 };
 
 /* Ed command-line flags. */
@@ -624,7 +626,11 @@ enum search_type
 /* INIT_DEQUE: Link node to itself. */
 #define INIT_DEQUE(node) LINK_NODES ((node), (node))
 
-/* APPEND_NODE: Append node after prev. */
+/*
+ * APPEND_NODE: Append node after prev.
+ * NB: Order of the calls is critical and prev must not be of the
+ *     form p->q_back.
+ */
 #define APPEND_NODE(node, prev)                                               \
   do                                                                          \
     {                                                                         \
@@ -784,7 +790,6 @@ ed_text_node_t *append_text_node __P ((ed_text_node_t *, const char *, size_t));
 ed_undo_node_t *append_undo_node __P ((int, off_t, off_t, ed_state_t *));
 int close_ed_buffer __P ((ed_state_t *));
 int copy_lines __P ((off_t, off_t, off_t, ed_state_t *));
-int copy_register __P ((int, int, int, ed_state_t *));
 int create_disk_buffer __P ((FILE **, char **, ed_state_t *));
 void delete_global_nodes __P ((const ed_line_node_t *, const ed_line_node_t *,
                                ed_state_t *));
@@ -812,7 +817,7 @@ void init_ed_command __P ((int, ed_state_t *));
 void init_ed_buffer __P ((off_t, struct ed_buffer *));
 void init_global_queue __P ((ed_global_node_t **, ed_line_node_t **,
                              ed_state_t *));
-int init_register_queue __P ((ed_line_node_t **, int, ed_state_t *));
+int init_register_queue __P ((int, ed_state_t *));
 int init_signal_handler __P ((ed_state_t *));
 void init_substitute __P ((regex_t **, unsigned *, off_t *, off_t *,
                            unsigned *, struct ed_substitute *));
@@ -822,7 +827,6 @@ int join_lines __P ((off_t, off_t, ed_state_t *));
 int mark_global_nodes __P ((int, ed_state_t *));
 int mark_line_node __P ((const ed_line_node_t *, int, ed_state_t *));
 int move_lines __P ((off_t, off_t, off_t, ed_state_t *));
-int move_register __P ((int, int, int, ed_state_t *));
 int next_address __P ((off_t *, ed_state_t *));
 int one_time_init __P ((int, char **, ed_state_t *));
 char *pop_text_node __P ((ed_text_node_t *, size_t *));
@@ -832,9 +836,11 @@ int read_file __P ((const char *, off_t, off_t *, off_t *, int,
                     ed_state_t *));
 int read_pipe __P ((const char *, off_t, off_t *, off_t *,
                     ed_state_t *));
-int read_register __P ((int, off_t, ed_state_t *));
+int read_from_register __P ((int, off_t, ed_state_t *));
 int read_stream_r __P ((FILE *, off_t, off_t *, ed_state_t *));
 void *realloc_buffer __P ((void **, size_t *, off_t, ed_state_t *));
+int register_copy __P ((int, int, int, ed_state_t *));
+int register_move __P ((int, int, int, ed_state_t *));
 char *regular_expression __P ((unsigned, size_t *, ed_state_t *));
 int reopen_ed_buffer __P ((ed_state_t *));
 void reset_global_queue __P ((ed_state_t *));
@@ -866,7 +872,7 @@ int write_file __P ((const char *, int, off_t, off_t, off_t *, off_t *,
                      const char *, ed_state_t *));
 int write_pipe __P ((const char *, off_t, off_t, off_t *, off_t *,
                      ed_state_t *));
-int write_register __P ((int, off_t, off_t, int, ed_state_t *));
+int write_to_register __P ((int, off_t, off_t, int, ed_state_t *));
 int write_stream __P ((FILE *, ed_line_node_t *, off_t, off_t *,
                        ed_state_t *));
 

@@ -2,7 +2,7 @@
 
    Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2013-07-06 <alm@slewsys.org>
+   Last modified: 2014-02-20 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -23,7 +23,7 @@
 
 
 /* Static function declarations. */
-static ed_line_node_t *append_register_node __P ((size_t, off_t, int,
+static ed_line_node_t *append_node_to_register __P ((size_t, off_t, int,
                                                ed_state_t *));
 
 
@@ -177,110 +177,52 @@ filter_lines (from, to, sc, ed)
 #endif  /* defined HAVE_FORK && defined WANT_EXTERNAL_FILTER */
 
 
-/* Global declarations */
-ed_line_node_t *register_head[REG_MAX]; /* list of register queues */
-ed_line_node_t *register_p[REG_MAX];    /* register queue pointers */
-
-
-/* append_register_node: Append node to end of given register.
+/* append_node_to_register: Append node to end of given register.
    Return node pointer. */
 static ed_line_node_t *
-append_register_node (len, offset, qno, ed)
+append_node_to_register (len, offset, qno, ed)
      size_t len;
      off_t offset;
      int qno;
      ed_state_t *ed;
 {
   ed_line_node_t *lp;
+  ed_line_node_t *tq = ed->core.reg[qno]->q_back;
 
+  spl1 ();
   if (!(lp = (ed_line_node_t *) malloc (ED_LINE_NODE_T_SIZE)))
     {
       fprintf (stderr, "%s\n", strerror (errno));
       ed->exec.err = _("Memory exhausted");
+      spl0 ();
       return NULL;
     }
   lp->len = len;
   lp->seek = offset;
-  APPEND_NODE (lp, register_head[qno]->q_back);
+
+  /* APPEND_NODE is macro, so tq is mandatory! */
+  APPEND_NODE (lp, tq);
+  spl0 ();
   return lp;
 }
 
 
-/* copy_register: Write lines from one register to another. If
-   `overwrite' is non-zero, any previous contents of target register
-   are lost. */
-int
-copy_register (from, to,  overwrite, ed)
-     int from;                  /* source register */
-     int to;                    /* destination register */
-     int overwrite;
-     ed_state_t *ed;
-{
-  ed_line_node_t *lp, *ep;
-
-  if (!register_head[from]
-      && init_register_queue (register_head, from, ed) < 0)
-    return ERR;
-  if (!register_head[to] && init_register_queue (register_head, to, ed) < 0)
-    return ERR;
-  if (overwrite && from != to && reset_register_queue (to, ed) < 0)
-    return ERR;
-
-  /* Handle case of register appended to itself. */
-  if (!(overwrite && from == to))
-    for (ep = register_head[from], lp = ep->q_forw; lp != ep; lp = lp->q_forw)
-      if (!append_register_node (lp->len, lp->seek, to, ed))
-        return ERR;
-  return 0;
-}
-  
-
-/* move_register: Move lines from one register to another. If
-   `overwrite' is non-zero, any previous contents of target register
-   are lost. */
-int
-move_register (from, to,  overwrite, ed)
-     int from;                  /* source register */
-     int to;                    /* destination register */
-     int overwrite;
-     ed_state_t *ed;
-{
-  if (!register_head[from]
-      && init_register_queue (register_head, from, ed) < 0)
-    return ERR;
-  if (!register_head[to] && init_register_queue (register_head, to, ed) < 0)
-    return ERR;
-  if (overwrite && from != to && reset_register_queue (to, ed) < 0)
-    return ERR;
-
-  if (from != to && register_head[from]->q_forw != register_head[from])
-    {
-      spl1 ();
-      LINK_NODES (register_head[to]->q_back, register_head[from]->q_forw);
-      LINK_NODES (register_head[from]->q_back, register_head[to]);
-      LINK_NODES (register_head[from], register_head[from]);
-      spl0 ();
-    }
-  return 0;
-}
-
-
-/* read_register: Append lines from register to buffer after given
+/* append_from_register: Append lines from register to buffer after given
    address. */
 int
-read_register (qno, addr, ed)
-     int qno;                    /* source register */
+read_from_register (qno, addr, ed)
+     int qno;                   /* source register */
      off_t addr;                /* destination address */
      ed_state_t *ed;
 {
   ed_undo_node_t *up = NULL;
   ed_line_node_t *lp, *np, *ep;
 
-  if (!register_head[qno] && init_register_queue (register_head, qno, ed) < 0)
+  if (!ed->core.reg[qno] && init_register_queue (qno, ed) < 0)
     return ERR;
 
   ed->buf[0].dot = addr;
-  for (ep = register_head[qno], lp = ep->q_forw; lp != ep; lp = lp->q_forw)
+  for (ep = ed->core.reg[qno], lp = ep->q_forw; lp != ep; lp = lp->q_forw)
     {
       spl1 ();
       if (!(np = append_line_node (lp->len, lp->seek, addr, ed)))
@@ -296,6 +238,65 @@ read_register (qno, addr, ed)
 }
   
 
+/* register_copy: Write lines from one register to another. If
+   `append' is zero, any previous contents of target register
+   are lost. */
+int
+register_copy (from, to,  append, ed)
+     int from;                  /* source register */
+     int to;                    /* destination register */
+     int append;
+     ed_state_t *ed;
+{
+  ed_line_node_t *lp, *ep;
+
+  if (!ed->core.reg[from]
+      && init_register_queue (from, ed) < 0)
+    return ERR;
+  if (!ed->core.reg[to] && init_register_queue (to, ed) < 0)
+    return ERR;
+  if (!append && from != to && reset_register_queue (to, ed) < 0)
+    return ERR;
+
+  /* Handle case of register appended to itself. */
+  if (append && from != to)
+    for (ep = ed->core.reg[from], lp = ep->q_forw; lp != ep; lp = lp->q_forw)
+      if (!append_node_to_register (lp->len, lp->seek, to, ed))
+        return ERR;
+  return 0;
+}
+  
+
+/* move_register: Move lines from one register to another. If
+   `append' is zero, any previous contents of target register
+   are lost. */
+int
+register_move (from, to,  append, ed)
+     int from;                  /* source register */
+     int to;                    /* destination register */
+     int append;
+     ed_state_t *ed;
+{
+  if (!ed->core.reg[from]
+      && init_register_queue (from, ed) < 0)
+    return ERR;
+  if (!ed->core.reg[to] && init_register_queue (to, ed) < 0)
+    return ERR;
+  if (!append && from != to && reset_register_queue (to, ed) < 0)
+    return ERR;
+
+  if (from != to && ed->core.reg[from]->q_forw != ed->core.reg[from])
+    {
+      spl1 ();
+      LINK_NODES (ed->core.reg[to]->q_back, ed->core.reg[from]->q_forw);
+      LINK_NODES (ed->core.reg[from]->q_back, ed->core.reg[to]);
+      LINK_NODES (ed->core.reg[from], ed->core.reg[from]);
+      spl0 ();
+    }
+  return 0;
+}
+
+
 /* reset_register_queue: Release nodes of given register. */
 int
 reset_register_queue (qno, ed)
@@ -304,11 +305,11 @@ reset_register_queue (qno, ed)
 {
   ed_line_node_t *lp, *np, *ep;
 
-  if (!register_head[qno] && init_register_queue (register_head, qno, ed) < 0)
+  if (!ed->core.reg[qno] && init_register_queue (qno, ed) < 0)
     return ERR;
 
   spl1 ();
-  for (ep = register_head[qno], lp = ep->q_forw; lp != ep; lp = np)
+  for (ep = ed->core.reg[qno], lp = ep->q_forw; lp != ep; lp = np)
     {
       np = lp->q_forw;
       LINK_NODES (lp->q_back, np);
@@ -319,28 +320,28 @@ reset_register_queue (qno, ed)
 }
 
 
-/* write_register: Write addressed lines to given register. If
-   `overwrite' is non-zero, any previous register contents are
+/* write_to_register: Write addressed lines to given register. If
+   `append' is zero, any previous register contents are
    lost. */
 int
-write_register (qno, from, to, overwrite, ed)
+write_to_register (qno, from, to, append, ed)
      int qno;                   /* destination register */
      off_t from;                /* from address */
      off_t to;                  /* to address */
-     int overwrite;
+     int append;
      ed_state_t *ed;
 {
 
   ed_line_node_t *lp = get_line_node (from, ed);
   off_t n = from ? to - from + 1 : 0;
 
-  if (!register_head[qno] && init_register_queue (register_head, qno, ed) < 0)
+  if (!ed->core.reg[qno] && init_register_queue (qno, ed) < 0)
     return ERR;
-  if (overwrite && reset_register_queue (qno, ed) < 0)
+  if (!append && reset_register_queue (qno, ed) < 0)
     return ERR;
 
   for (; n; --n, lp = lp->q_forw)
-    if (!append_register_node (lp->len, lp->seek, qno, ed))
+    if (!append_node_to_register (lp->len, lp->seek, qno, ed))
       return ERR;
   return 0;
 }

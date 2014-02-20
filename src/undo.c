@@ -2,7 +2,7 @@
 
    Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2013-06-06 <alm@slewsys.org>
+   Last modified: 2014-02-19 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -22,7 +22,7 @@ append_undo_node (type, from, to, ed)
 {
   ed_undo_node_t *up;
 
-  ed_undo_node_t *undo_last = undo_head->q_back;
+  ed_undo_node_t *tq = undo_head->q_back;
 
   spl1 ();
   if (!(up = (ed_undo_node_t *) malloc (ED_UNDO_NODE_T_SIZE)))
@@ -35,7 +35,9 @@ append_undo_node (type, from, to, ed)
   up->type = type;
   up->h = get_line_node (from, ed);
   up->t = get_line_node (to, ed);
-  APPEND_NODE (up, undo_last);
+
+  /* APPEND_NODE is macro, so tq is mandatory! */
+  APPEND_NODE (up, tq);
   spl0 ();
   return up;
 }

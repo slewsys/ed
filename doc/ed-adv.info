@@ -1,4 +1,4 @@
-This is ed-adv.info, produced by makeinfo version 4.13 from ed-adv.texi.
+This is ed-adv.info, produced by makeinfo version 4.8 from ed-adv.texi.
 
 INFO-DIR-SECTION Text creation and manipulation
 START-INFO-DIR-ENTRY
@@ -1726,9 +1726,9 @@ once with
 
    The  point  is that the `w' command can write out a group of lines,
 instead of the whole file.  In fact, you can write out  a  single  line
-if you like; just give one line number instead of two.  For example, if
-you have just typed a horribly  complicated  line  and you know that it
-(or something like it) is going to be needed later, then save it --
+if you like; just give one line number instead of two.  For example,
+if you have just typed a horribly  complicated  line  and you know that
+it (or something like it) is going to be needed later, then save it --
 don't re-type it.  In the editor, say
 
      `a'
@@ -2067,50 +2067,50 @@ References
 
 
 Tag Table:
-Node: Top347
-Node: INTRODUCTION1415
-Node: SPECIAL CHARACTERS2915
-Node: The List Command3909
-Node: The Substitute Command5625
-Node: The Undo Command7439
-Node: The Metacharacter7897
-Node: The Backslash10563
-Node: The Dollar Sign13390
-Node: The Circumflex14726
-Node: The Star15614
-Node: The Brackets19543
-Node: The Ampersand21615
-Node: Substituting Newlines23125
-Node: Joining Lines24545
-Node: Rearranging a Line25342
-Node: LINE ADDRESSING27341
-Node: Address Arithmetic28539
-Node: Repeated Searches30186
-Node: Default Addresses31428
-Node: Semicolon35733
-Node: Interrupting the Editor38489
-Node: GLOBAL COMMANDS39478
-Node: The Global Command List39874
-Node: Multi-line Global Commands42574
-Node: CUT AND PASTE WITH UNIX COMMANDS44199
-Node: Changing the Name of a File45256
-Node: Making a Copy of a File46078
-Node: Removing a File47560
-Node: Putting Two or More Files Together47927
-Node: Adding Something to the End of a File50392
-Node: CUT AND PASTE WITH THE EDITOR51499
-Node: Filenames52027
-Node: Inserting One File into Another54022
-Node: Writing Out Part of a File55012
-Node: Moving Lines Around56654
-Node: Marks59570
-Node: Copying Lines60570
-Node: The Temporary Escape61731
-Node: SUPPORTING TOOLS62544
-Node: Grep63128
-Node: Editing Scripts65263
-Node: Sed66221
-Node: Acknowledgement67516
-Node: References67734
+Node: Top346
+Node: INTRODUCTION1414
+Node: SPECIAL CHARACTERS2914
+Node: The List Command3908
+Node: The Substitute Command5624
+Node: The Undo Command7438
+Node: The Metacharacter7896
+Node: The Backslash10562
+Node: The Dollar Sign13389
+Node: The Circumflex14725
+Node: The Star15613
+Node: The Brackets19542
+Node: The Ampersand21614
+Node: Substituting Newlines23124
+Node: Joining Lines24544
+Node: Rearranging a Line25341
+Node: LINE ADDRESSING27340
+Node: Address Arithmetic28538
+Node: Repeated Searches30185
+Node: Default Addresses31427
+Node: Semicolon35732
+Node: Interrupting the Editor38488
+Node: GLOBAL COMMANDS39477
+Node: The Global Command List39873
+Node: Multi-line Global Commands42573
+Node: CUT AND PASTE WITH UNIX COMMANDS44198
+Node: Changing the Name of a File45255
+Node: Making a Copy of a File46077
+Node: Removing a File47559
+Node: Putting Two or More Files Together47926
+Node: Adding Something to the End of a File50391
+Node: CUT AND PASTE WITH THE EDITOR51498
+Node: Filenames52026
+Node: Inserting One File into Another54021
+Node: Writing Out Part of a File55011
+Node: Moving Lines Around56653
+Node: Marks59569
+Node: Copying Lines60569
+Node: The Temporary Escape61730
+Node: SUPPORTING TOOLS62543
+Node: Grep63127
+Node: Editing Scripts65262
+Node: Sed66220
+Node: Acknowledgement67515
+Node: References67733
 
 End Tag Table

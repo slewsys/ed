@@ -2,7 +2,7 @@
 
    Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2013-08-09 <alm@slewsys.org>
+   Last modified: 2014-02-20 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -151,21 +151,23 @@ append_global_node (lp, ed)
      const ed_line_node_t *lp;
      ed_state_t *ed;
 {
-  ed_global_node_t *ap;
-  ed_global_node_t *global_last = ed->core.global_head.q_back;
+  ed_global_node_t *gp;
+  ed_global_node_t *tq = ed->core.global_head.q_back;
 
   spl1 ();
-  if (!(ap = (ed_global_node_t *) malloc (ED_GLOBAL_NODE_T_SIZE)))
+  if (!(gp = (ed_global_node_t *) malloc (ED_GLOBAL_NODE_T_SIZE)))
     {
       fprintf (stderr, "%s\n", strerror (errno));
       ed->exec.err = _("Memory exhausted");
       spl0 ();
       return NULL;
     }
-  ap->lp = (ed_line_node_t *) lp;
-  APPEND_NODE (ap, global_last);
+  gp->lp = (ed_line_node_t *) lp;
+
+  /* APPEND_NODE is macro, so tq is mandatory! */
+  APPEND_NODE (gp, tq);
   spl0 ();
-  return ap;
+  return gp;
 }
 
 

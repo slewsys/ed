@@ -1,3 +1,29 @@
+2014-02-20  Andrew L. Moore  <alm@slewsys.org>
+
+	* src/exec.c (exec_command):
+	* src/aux.c (append_node_to_register, read_from_register)
+	(register_copy, register_move, reset_register_queue)
+	(write_to_register): Add register extensions to `m' and `t'
+	commands. Deleted lines are copied to a default register. The
+	syntax of the register extensions is as follows.
+
+	(.,.)m|t>[>][k] where optional k = 0, 1, ..., 9. Moves or copies,
+	respectively, the addressed lines to register k (or default
+	anonymous register, if k is not given). If `>>' lines are appended
+	to end of register. Otherwise, any previous register contents are
+	overwritten.
+
+	<[k]m|t(.) where optional k = 0, 1, ..., 9. Moves or copies,
+	respectively, contents of register k (or default anonymous
+	register, if k is not given) to after the addressed line.
+
+	<[k]m|t>[>][j] where optional k = 0, 1, ..., 9 and j = 0, 1, ...,
+	9. Moves or copies, respectively, contents of register k (or
+	default anonymous register, if k is not given) to register j (or
+	default anonymous register, if j is not given). If `>>' lines are
+	appended to end of register. Otherwise, any previous register
+	contents are overwritten.
+
 2013-08-08  Andrew L. Moore  <alm@slewsys.org>
 
 	* Makefile.am: Ignore errors from update-po in
@@ -758,7 +784,9 @@
         ~e or ~E                Edits first file in `default file list' and
                                 sets `default file name' -- i.e., the `~e'
                                 command with no arguments effectively
-                                rewinds the `default file list'. Any lines
+                                rewinds the `default file list'. To re-read
+	                        the current file from disk, use the `e' or
+				`E' command instead.  Any lines
                                 in the editor buffer are deleted before
                                 the new file is read. The new `default
                                 file name' and size are printed to stdout.

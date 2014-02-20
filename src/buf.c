@@ -2,7 +2,7 @@
 
    Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2013-08-08 <alm@slewsys.org>
+   Last modified: 2014-02-19 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -205,11 +205,12 @@ init_global_queue (aq, lq, ed)
 
 /* init_register_queue: Initialize given ed_core register queue. */
 int
-init_register_queue (rq, qno, ed)
-     ed_line_node_t *rq[];
+init_register_queue (qno, ed)
      int qno;                   /* register queue number */
      ed_state_t *ed;
 {
+  ed_line_node_t *rq[REG_MAX];
+
   spl1 ();
   if (!(rq[qno] = (ed_line_node_t *) malloc (sizeof (ed_line_node_t))))
     {
@@ -604,7 +605,7 @@ append_text_node (th, tb, len)
      const size_t len;
 {
   ed_text_node_t *tp;
-  ed_text_node_t *last = th->q_back;
+  ed_text_node_t *tq = th->q_back;
   size_t text_size = 0;
 
   spl1 ();
@@ -614,7 +615,9 @@ append_text_node (th, tb, len)
     return NULL;
   tp->text = (char *) tb;
   tp->text_i = len;
-  APPEND_NODE (tp, last);
+
+  /* APPEND_NODE is macro, so tq is mandatory! */
+  APPEND_NODE (tp, tq);
   spl0 ();
   return tp;
 }
