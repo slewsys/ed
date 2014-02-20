@@ -1,8 +1,8 @@
 /* re.c: Regular expression interface for the ed line editor.
 
-   Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
+   Copyright © 1993-2014 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2013-08-09 <alm@slewsys.org>
+   Last modified: 2014-01-25 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -14,7 +14,7 @@ regex_t *
 get_compiled_regex (dc, re_type, ed)
      unsigned dc;
      int re_type;               /* search type */
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
   static const char *compile_err = NULL;
   static regex_t *re_search = NULL; /* search regex */
@@ -34,7 +34,7 @@ get_compiled_regex (dc, re_type, ed)
 
   if (isspace (dc) && dc != '\n')
     {
-      ed->exec.err = _("Invalid pattern delimiter");
+      ed->exec->err = _("Invalid pattern delimiter");
       return NULL;
     }
 
@@ -55,82 +55,86 @@ get_compiled_regex (dc, re_type, ed)
 
          Some cases to consider...
 
-         I. Sequences beginning:            Effect:
+         I. Sequences beginning:        Effect:
                   s/abc/
              1)
-               s                            s/abc/ - by definition.
+               s                        s/abc/ - by definition.
              2)
-               s//                          s/abc/ - no previous search.
+               s//                      s/abc/ - no previous search.
              3)
-               sr                           s/abc/ - no previous search. (?)
+               sr                       s/abc/ - no previous search. (?)
              4)
-               //                           /abc/ - no previous search.
+               //                       /abc/ - no previous search.
              5)
-               //s                          /abc/s/abc/ - by (I.4) and (I.1).
+               //s                      /abc/s/abc/ - by (I.4) and (I.1).
              6)
-               //s//                        /abc/s/abc/ - by (I.4) and definition of `s//'.
+               //s//                    /abc/s/abc/ - by (I.4) and definition
+                                        of `s//'.
              7)
-               //sr                         /abc/s/abc/ - by (I.4) and defintion of `sr'.
+               //sr                     /abc/s/abc/ - by (I.4) and defintion
+                                        of `sr'.
              
          II. Sequences beginning:
                    /xyz/
              1)
-               s                            s/xyz/ - no previous substitution. 
+               s                        s/xyz/ - no previous substitution. 
              2)
-               s//                          s/xyz/ - by definition.
+               s//                      s/xyz/ - by definition.
              3)
-               sr                           s/xyz/ - by definition.
+               sr                       s/xyz/ - by definition.
              4)
-               //                           /xyz/ - by definition.
+               //                       /xyz/ - by definition.
              5)
-               //s                          /xyz/s/xyz/ - by (II.4) and (II.1).
+               //s                      /xyz/s/xyz/ - by (II.4) and (II.1).
              6)
-               //s//                        /xyz/s/xyz/ - by (II.4) and definition of `s//'.
+               //s//                    /xyz/s/xyz/ - by (II.4) and definition
+                                        of `s//'.
              7)
-               //sr                         /xyz/s/xyz/ - by (II.4) and definition of `sr'.
+               //sr                     /xyz/s/xyz/ - by (II.4) and definition
+                                        of `sr'.
              
          III. Sequences beginning:
                    s/abc/
                    /xyz/
              1)
-               s                            s/abc/ - by (I.1).
+               s                        s/abc/ - by (I.1).
              2)
-               s//                          s/xyz/ - by (II.2).
+               s//                      s/xyz/ - by (II.2).
              3)
-               sr                           s/xyz/ - by (II.3).
+               sr                       s/xyz/ - by (II.3).
              4)
-               //                           /xyz/ - by (II.4).
+               //                       /xyz/ - by (II.4).
              5)
-               //s                          /xyz/s/abc/ - by (II.4) and (I.1).
+               //s                      /xyz/s/abc/ - by (II.4) and (I.1).
              6)
-               //s//                        /xyz/s/xyz/ - by (II.4) and (II.2).
+               //s//                    /xyz/s/xyz/ - by (II.4) and (II.2).
              7)
-               //sr                         /xyz/s/xyz/ - by (II.4) and (II.3).
+               //sr                     /xyz/s/xyz/ - by (II.4) and (II.3).
     
          IV. Sequences beginning:
                    /xyz/
                    s/abc/
              1)
-               s                            s/abc/ - by (I.1).
+               s                        s/abc/ - by (I.1).
              2)
-               s//                          s/xyz/ - by (II.2).
+               s//                      s/xyz/ - by (II.2).
              3)
-               sr                           s/xyz/ - by (II.3).
+               sr                       s/xyz/ - by (II.3).
              4)
-               //                           /xyz/ - by (II.4).
+               //                       /xyz/ - by (II.4).
              5)
-               //s                          /xyz/s/abc/ - by (II.4) and (I.1).
+               //s                      /xyz/s/abc/ - by (II.4) and (I.1).
              6)
-               //s//                        /xyz/s/xyz/ - by (II.4) and (II.2).
+               //s//                    /xyz/s/xyz/ - by (II.4) and (II.2).
              7)
-               //sr                         /xyz/s/xyz/ - by (II.4) and (II.3).
+               //sr                     /xyz/s/xyz/ - by (II.4) and (II.3).
     
        */
 
       switch (re_type)
         {
         case RE_SUBST:
-          re = (dc != '\n' && re_search || ed->subst.r_f ? re_search
+          re = ((dc != '\n' && re_search) || ed->exec->subst->r_f ? re_search
                 : re_subst);
           if (!re_subst)
             re_subst = re;
@@ -142,7 +146,7 @@ get_compiled_regex (dc, re_type, ed)
           break;
         }
       if (!re)
-        ed->exec.err = _("No previous pattern");
+        ed->exec->err = _("No previous pattern");
       return re;
     }
 
@@ -152,7 +156,7 @@ get_compiled_regex (dc, re_type, ed)
   if (!(re = (regex_t *) malloc (sizeof (regex_t))))
     {
       fprintf (stderr, "%s\n", strerror (errno));
-      ed->exec.err = _("Memory exhausted");
+      ed->exec->err = _("Memory exhausted");
       return NULL;
     }
 
@@ -169,7 +173,7 @@ get_compiled_regex (dc, re_type, ed)
     {
       regfree (re);
       free (re);
-      ed->exec.err = compile_err;
+      ed->exec->err = compile_err;
       return NULL;
     }
 
@@ -179,17 +183,18 @@ get_compiled_regex (dc, re_type, ed)
   /* BSD regcomp () accepts pattern with NUL chars via REG_PEND, but
      has no equivalent of GNU's re_syntax_options. */
   re->re_endp = pattern + len;
-  if (status = regcomp (re, pattern, (REG_PEND | (ed->exec.opt & REGEX_EXTENDED
-                                                  ? REG_EXTENDED : 0))))
+  if (status =
+      regcomp (re, pattern, (REG_PEND | (ed->exec->opt & REGEX_EXTENDED
+                                         ? REG_EXTENDED : 0))))
 # else
 
   /* Use generic POSIX regular expression library. */
-  if (status = regcomp (re, pattern, (ed->exec.opt & REGEX_EXTENDED
+  if (status = regcomp (re, pattern, (ed->exec->opt & REGEX_EXTENDED
                                       ? REG_EXTENDED : 0)))
 # endif /* !defined (REG_PEND) */
     {
       regerror (status, re, re_err, sizeof re_err);
-      ed->exec.err = re_err;
+      ed->exec->err = re_err;
       free (re);
       return NULL;
     }
@@ -226,19 +231,19 @@ get_matching_node_address (re, dir, addr, ed)
      const regex_t *re;
      int dir;
      off_t *addr;
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
   regmatch_t rm[1];
   ed_line_node_t *lp;
   char *s;
 
-  *addr = ed->buf[0].dot;
+  *addr = ed->state[0].dot;
   if (!re)
     return ERR;
   do
     {
-      if ((*addr = (dir ? INC_MOD (*addr, ed->buf[0].addr_last)
-                    : DEC_MOD (*addr, ed->buf[0].addr_last))))
+      if ((*addr = (dir ? INC_MOD (*addr, ed->state[0].lines)
+                    : DEC_MOD (*addr, ed->state[0].lines))))
         {
           lp = get_line_node (*addr, ed);
           if (!(s = get_buffer_line (lp, ed)))
@@ -248,15 +253,15 @@ get_matching_node_address (re, dir, addr, ed)
           rm[0].rm_eo = lp->len;
           if (!regexec (re, s, 0, rm, REG_STARTEND))
 #else
-          if (ed->buf[0].is_binary)
+          if (ed->state[0].is_binary)
             NUL_TO_NEWLINE (s, lp->len);
           if (!regexec (re, s, 0, NULL, 0))
 #endif  /* !defined (REG_STARTEND) */
             return 0;
         }
     }
-  while (*addr != ed->buf[0].dot);
-  ed->exec.err = _("No match");
+  while (*addr != ed->state[0].dot);
+  ed->exec->err = _("No match");
   return ERR;
 }
 

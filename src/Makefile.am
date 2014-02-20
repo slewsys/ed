@@ -1,6 +1,6 @@
 # Makefile.am: Src subdirectory automake template for the ed line editor.
 
-# Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
+# Copyright © 1993-2014 Andrew L. Moore, SlewSys Research
 
 # Last modified: 2011-04-14 <alm@slewsys.org>
 

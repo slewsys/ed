@@ -1,8 +1,9 @@
+
 /* buf.c: Buffer routines for the ed line editor.
 
-   Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
+   Copyright © 1993-2014 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2014-02-19 <alm@slewsys.org>
+   Last modified: 2014-02-20 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -24,7 +25,13 @@ volatile sig_atomic_t window_columns = 80; /* default screen width: ws_col  */
 volatile sig_atomic_t window_rows = 24;    /* default screen length: ws_row */
 
 /* Static function declarations. */
-static int init_stdio __P ((ed_state_t *));
+static int init_stdio __P ((ed_buffer_t *));
+static struct ed_core *alloc_ed_core __P ((const char *));
+static struct ed_display *alloc_ed_display __P ((const char *));
+static struct ed_execute *alloc_ed_execute __P ((const char *));
+static struct ed_file *alloc_ed_file __P ((const char *));
+static struct ed_region *alloc_ed_region __P ((const char *));
+static struct ed_substitute *alloc_ed_substitute __P ((const char *));
 
 /* one_time_init: Open ed buffer file; initialize queues, I/O buffers
    and translation table; read environment variables. */
@@ -32,35 +39,35 @@ int
 one_time_init (argc, argv, ed)
      int argc;
      char *argv[];
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
   char *cs, *ls;
   long l;
   int status;
 
   if ((status = init_stdio (ed)) < 0
-      || (status = create_disk_buffer (&ed->core.fp,
-                                       &ed->core.pathname, ed)) < 0)
+      || (status = create_disk_buffer (&ed->core->fp,
+                                       &ed->core->pathname, ed)) < 0)
     return status;
 
   /* If ed is invoked with file args, any file globbing is done at the
      shell level. The results are stored in the file_glob structure
      even if file globbing support is not enabled. */
-  ed->file.list.gl_pathc = argc;
-  ed->file.list.gl_pathv = argv;
+  ed->file->list->gl_pathc = argc;
+  ed->file->list->gl_pathv = argv;
 
-  /* Reset file_glob.gl_offs after first glob(3) -- see
+  /* Reset file_glob->gl_offs after first glob(3) -- see
      file_glob(). */
-  ed->file.list.gl_offs = 1;
+  ed->file->list->gl_offs = 1;
 
   init_ed_command (1, ed);
-  init_ed_buffer (0, &ed->buf[0]);
-  init_ed_buffer (-1, &ed->buf[1]);
+  init_ed_state (0, &ed->state[0]);
+  init_ed_state (-1, &ed->state[1]);
 
   /* Initialize buffer meta data deques. */
-  INIT_DEQUE (&ed->core.buffer_head);
-  INIT_DEQUE (&ed->core.global_head);
-  INIT_DEQUE (&ed->core.undo_head);
+  INIT_DEQUE (ed->core->line_head);
+  INIT_DEQUE (ed->core->global_head);
+  INIT_DEQUE (ed->core->undo_head);
 
   /* Sanity check values of environment vars */
   if ((ls = getenv ("LINES")))
@@ -77,18 +84,18 @@ one_time_init (argc, argv, ed)
     }
 
   /* Assign a default command prompt. */
-  if (!ed->exec.prompt)
-    ed->exec.prompt = DEFAULT_PROMPT;
+  if (!ed->exec->prompt)
+    ed->exec->prompt = DEFAULT_PROMPT;
 
   /* Check environment for POSIXLY_CORRECT */
   if (getenv ("POSIXLY_CORRECT"))
-    ed->exec.opt |= POSIXLY_CORRECT;
+    ed->exec->opt |= POSIXLY_CORRECT;
   
 #ifdef HAVE_REG_SYNTAX_T
-  re_syntax_options =  (ed->exec.opt & (POSIXLY_CORRECT | TRADITIONAL)
-                        ? (ed->exec.opt & REGEX_EXTENDED
+  re_syntax_options =  (ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL)
+                        ? (ed->exec->opt & REGEX_EXTENDED
                            ? RE_SYNTAX_POSIX_EXTENDED : RE_SYNTAX_POSIX_BASIC)
-                        : (ed->exec.opt & REGEX_EXTENDED
+                        : (ed->exec->opt & REGEX_EXTENDED
                            ? RE_SYNTAX_ED_EXTENDED : RE_SYNTAX_ED_BASIC));
 #endif
 
@@ -99,13 +106,13 @@ one_time_init (argc, argv, ed)
 /* init_stdio: Initialize standard I/O. */
 static int
 init_stdio (ed)
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
   /* Redirect command script to stdin. */
-  if (ed->exec.pathname && !freopen (ed->exec.pathname, "r", stdin))
+  if (ed->exec->pathname && !freopen (ed->exec->pathname, "r", stdin))
     {
-      fprintf (stderr, "%s: %s\n", ed->exec.pathname, strerror (errno));
-      ed->exec.err = _("Buffer open error");
+      fprintf (stderr, "%s: %s\n", ed->exec->pathname, strerror (errno));
+      ed->exec->err = _("Buffer open error");
       return FATAL;
     }
 
@@ -126,9 +133,10 @@ init_stdio (ed)
   SETVBUF (stdout, NULL, _IOLBF, 0);
 #endif   /* !HAVE_SETBUFFER */
 
-  /* Don't exit on errors if stdin is non-seekable, e.g., piped, or tty. */
-  if (lseek (0, 0, SEEK_CUR) != -1 && (ed->exec.opt & SCRIPTED || !isatty (0)))
-    ed->exec.opt |= EXIT_ON_ERROR;
+  /* Don't exit on errors if stdin is non-seekable, e.g., piped or tty. */
+  if (lseek (0, 0, SEEK_CUR) != -1
+      && (ed->exec->opt & SCRIPTED || !isatty (0)))
+    ed->exec->opt |= EXIT_ON_ERROR;
   return 0;
 }
 
@@ -137,57 +145,59 @@ init_stdio (ed)
 void
 init_ed_command (init_glob, ed)
      int init_glob;             /* If set, initialize file list. */
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
   /* Assert: spl1 () */
 
   /* Display state */
-  ed->display.is_paging = 0;
-  ed->display.page_addr = 0;
-  ed->display.underflow = 0;
-  ed->display.overflow = 0;
+  ed->display->is_paging = 0;
+  ed->display->page_addr = 0;
+  ed->display->underflow = 0;
+  ed->display->overflow = 0;
+  ed->display->off = 0;
 
   /* Global command state */
-  ed->exec.first_pass = 0;
-  ed->exec.global = 0;
+  ed->exec->first_pass = 0;
+  ed->exec->global = 0;
 
   /* Set default file list */
   if (init_glob)
-    ed->file.glob = ed->file.list;
+    *ed->file->glob = *ed->file->list;
 
   /* File info */
 #ifdef WANT_FILE_LOCK
 
   /* GNU/Linux double-frees on fclose() here... */
 #if __linux__
-  if (ed->file.handle)
+  if (ed->file->handle)
 
     /* Assert: No writes since fopen(3). */
-    (void) fclose (ed->file.handle);
+    (void) fclose (ed->file->handle);
 #endif  /* __linux__ */
 
-  ed->file.handle = NULL;
-  ed->file.inode = 0;
-  ed->file.is_writable = 0;
+  ed->file->handle = NULL;
+  ed->file->inode = 0;
+  ed->file->is_writable = 0;
 #endif  /* WANT_FILE_LOCK */
+
 }
 
 
-/* init_ed_buffer: Initialize ed_buffer structure. */
+/* init_ed_state: Initialize ed_state structure. */
 void
-init_ed_buffer (addr, buf)
+init_ed_state (addr, state)
      off_t addr;
-     struct ed_buffer *buf;
+     struct ed_state *state;
 {
   /* Editor buffer state */
-  buf->addr_last = addr;         /* -1 disables undo */
-  buf->dot = addr;               /* -1 disables undo */
-  buf->is_binary = 0;
-  buf->is_empty = 1;
-  buf->is_modified = 0;
-  buf->newline_appended = 0;
-  buf->input_wants_newline = 0;
-  buf->input_is_binary = 0;
+  state->lines = addr;         /* -1 disables undo */
+  state->dot = addr;               /* -1 disables undo */
+  state->is_binary = 0;
+  state->is_empty = 1;
+  state->is_modified = 0;
+  state->newline_appended = 0;
+  state->input_wants_newline = 0;
+  state->input_is_binary = 0;
 }
 
 
@@ -196,10 +206,10 @@ void
 init_global_queue (aq, lq, ed)
      ed_global_node_t **aq;
      ed_line_node_t **lq;
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
-  *aq = &ed->core.global_head;
-  *lq = &ed->core.buffer_head;
+  *aq = ed->core->global_head;
+  *lq = ed->core->line_head;
 }
 
 
@@ -207,7 +217,7 @@ init_global_queue (aq, lq, ed)
 int
 init_register_queue (qno, ed)
      int qno;                   /* register queue number */
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
   ed_line_node_t *rq[REG_MAX];
 
@@ -215,13 +225,13 @@ init_register_queue (qno, ed)
   if (!(rq[qno] = (ed_line_node_t *) malloc (sizeof (ed_line_node_t))))
     {
       fprintf (stderr, "%s\n", strerror (errno));
-      ed->exec.err = _("Memory exhausted");
+      ed->exec->err = _("Memory exhausted");
       spl0 ();
       return ERR;
     }
 
   LINK_NODES (rq[qno], rq[qno]);
-  ed->core.reg[qno] = rq[qno];
+  ed->core->reg[qno] = rq[qno];
   spl0 ();
   return 0;
 }
@@ -231,22 +241,22 @@ init_register_queue (qno, ed)
 void
 init_undo_queue (uq, ed)
      ed_undo_node_t **uq;
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
-  *uq = &ed->core.undo_head;
+  *uq = ed->core->undo_head;
 }
 
 
 /* reopen_ed_buffer: Close on-disk buffer and create new one. */
 int
 reopen_ed_buffer (ed)
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
   int status;
 
   if ((status = close_ed_buffer (ed)) < 0
-      || (status = create_disk_buffer (&ed->core.fp,
-                                       &ed->core.pathname, ed)) < 0)
+      || (status = create_disk_buffer (&ed->core->fp,
+                                       &ed->core->pathname, ed)) < 0)
     return status;
   return 0;
 }
@@ -257,7 +267,7 @@ int
 create_disk_buffer (fp, buf, ed)
      FILE **fp;                 /* buffer file pointer */
      char **buf;                /* buffer pathname */
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
   STAT_T sb;
   char template[] = "ed.XXXXXXXXXX";
@@ -273,13 +283,13 @@ create_disk_buffer (fp, buf, ed)
   if (len > get_path_max (s) - sizeof template - m)
     {
       fprintf (stderr, "%s/%s: %s\n", s, template, _("File name too long"));
-      ed->exec.err = _("Invalid buffer name");
+      ed->exec->err = _("Invalid buffer name");
       return ERR;
     }
   if (!(*buf = (char *) realloc (*buf, len + sizeof template + 1)))
     {
       fprintf (stderr, "%s\n", strerror (errno));
-      ed->exec.err = _("Memory exhausted");
+      ed->exec->err = _("Memory exhausted");
       return ERR;
     }
   strcpy (*buf, s);
@@ -293,7 +303,7 @@ create_disk_buffer (fp, buf, ed)
       || !(*fp = fdopen (fd, "w+")))
     {
       fprintf (stderr, "%s: %s\n", *buf, strerror (errno));
-      ed->exec.err = _("Buffer open error");
+      ed->exec->err = _("Buffer open error");
       return ERR;
     }
 
@@ -306,7 +316,7 @@ create_disk_buffer (fp, buf, ed)
   if (!S_ISREG (sb.st_mode))
     {
       fprintf (stderr, "%s: Not a regular file\n", *buf);
-      ed->exec.err = _("Buffer open error");
+      ed->exec->err = _("Buffer open error");
       return ERR;
     }
   return 0;
@@ -316,21 +326,21 @@ create_disk_buffer (fp, buf, ed)
 /* close_ed_buffer: Close on-disk buffer file. */
 int
 close_ed_buffer (ed)
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
   int status = 0;
   
-  if (ed->core.fp && fclose (ed->core.fp) < 0)
+  if (ed->core->fp && fclose (ed->core->fp) < 0)
     {
-      fprintf (stderr, "%s: %s\n", ed->core.pathname, strerror (errno));
-      ed->exec.err = _("Buffer close error");
+      fprintf (stderr, "%s: %s\n", ed->core->pathname, strerror (errno));
+      ed->exec->err = _("Buffer close error");
       status = ERR;
     }
-  ed->core.fp = NULL;
-  ed->core.offset = 0;
-  ed->core.seek_on_write = 0;
-  if (ed->core.pathname)
-    unlink (ed->core.pathname);
+  ed->core->fp = NULL;
+  ed->core->offset = 0;
+  ed->core->seek_on_write = 0;
+  if (ed->core->pathname)
+    unlink (ed->core->pathname);
   return status;
 }
 
@@ -339,41 +349,41 @@ close_ed_buffer (ed)
 char *
 get_buffer_line (lp, ed)
      const ed_line_node_t *lp;
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
   static char *tb = NULL;       /* Buffer for line from ed buffer file. */
   static size_t tb_size = 0;    /* Buffer size. */
 
   /* Permit writing the "contents" ('\n') of an empty buffer. */
-  if (lp == &ed->core.buffer_head)
+  if (lp == ed->core->line_head)
     {
       REALLOC_THROW (tb, tb_size, 1, NULL, ed);
       tb[0] = '\0';
       return tb;
     }
-  ed->core.seek_on_write = 1;         /* Force seek on write. */
+  ed->core->seek_on_write = 1;         /* Force seek on write. */
 
   /* out of position */
-  if (ed->core.offset != lp->seek)
+  if (ed->core->offset != lp->seek)
     {
-      ed->core.offset = lp->seek;
-      if (FSEEK (ed->core.fp, ed->core.offset, SEEK_SET) == -1)
+      ed->core->offset = lp->seek;
+      if (FSEEK (ed->core->fp, ed->core->offset, SEEK_SET) == -1)
         {
-          fprintf (stderr, "%s: %s\n", ed->core.pathname, strerror (errno));
-          ed->exec.err = _("Buffer seek error");
+          fprintf (stderr, "%s: %s\n", ed->core->pathname, strerror (errno));
+          ed->exec->err = _("Buffer seek error");
           return NULL;
         }
     }
 
   /* Allocate lp->len + '\0' (or '\n', as per write_stream ()). */
   REALLOC_THROW (tb, tb_size, lp->len + 1, NULL, ed);
-  if (fread (tb, sizeof (char), lp->len, ed->core.fp) != lp->len)
+  if (fread (tb, sizeof (char), lp->len, ed->core->fp) != lp->len)
     {
-      fprintf (stderr, "%s: %s\n", ed->core.pathname, strerror (errno));
-      ed->exec.err = _("Buffer read error");
+      fprintf (stderr, "%s: %s\n", ed->core->pathname, strerror (errno));
+      ed->exec->err = _("Buffer read error");
       return NULL;
     }
-  ed->core.offset += lp->len;         /* Update current offset in buffer file. */
+  ed->core->offset += lp->len;  /* Update current offset in buffer file. */
   *(tb + lp->len) = '\0';
   return tb;
 }
@@ -386,20 +396,20 @@ char *
 put_buffer_line (t, len, ed)
      const char *t;
      size_t len;
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
   /* If ed buffer file was read since last write, seek to end of file
      before writing. */
-  if (ed->core.seek_on_write)
+  if (ed->core->seek_on_write)
     {
-      if (FSEEK (ed->core.fp, 0L, SEEK_END) == -1
-          || (ed->core.offset = FTELL (ed->core.fp)) == -1)
+      if (FSEEK (ed->core->fp, 0L, SEEK_END) == -1
+          || (ed->core->offset = FTELL (ed->core->fp)) == -1)
         {
-          fprintf (stderr, "%s: %s\n", ed->core.pathname, strerror (errno));
-          ed->exec.err = _("Buffer seek error");
+          fprintf (stderr, "%s: %s\n", ed->core->pathname, strerror (errno));
+          ed->exec->err = _("Buffer seek error");
           return NULL;
         }
-      ed->core.seek_on_write = 0;
+      ed->core->seek_on_write = 0;
     }
 
   /* Assert: spl1 () */
@@ -408,23 +418,23 @@ put_buffer_line (t, len, ed)
   --len;                        /* Don't write `\n'. */
 
   /* NB: We are testing buffer file here, not file it represents. */
-  if (ed->core.offset > OFF_T_MAX - len)
+  if (ed->core->offset > OFF_T_MAX - len)
     {
-      ed->exec.err = _("Buffer full");
+      ed->exec->err = _("Buffer full");
       return NULL;
     }
-  if (fwrite (t, sizeof (char), len, ed->core.fp) != len)
+  if (fwrite (t, sizeof (char), len, ed->core->fp) != len)
     {
-      ed->core.offset = -1;
-      fprintf (stderr, "%s: %s\n", ed->core.pathname, strerror (errno));
-      ed->exec.err = _("Buffer write error");
+      ed->core->offset = -1;
+      fprintf (stderr, "%s: %s\n", ed->core->pathname, strerror (errno));
+      ed->exec->err = _("Buffer write error");
       return NULL;
     }
-  if (!append_line_node (len, ed->core.offset, ed->buf[0].dot, ed))
+  if (!append_line_node (len, ed->core->offset, ed->state[0].dot, ed))
     return NULL;
 
-  ++ed->buf[0].dot;
-  ed->core.offset += len;             /* Update current offset in buffer file. */
+  ++ed->state[0].dot;
+  ed->core->offset += len;      /* Update current offset in buffer file. */
   return (char *) t + ++len;
 }
 
@@ -436,13 +446,13 @@ append_line_node (len, offset, addr, ed)
      size_t len;
      off_t offset;
      off_t addr;
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
   ed_line_node_t *lp, *np;
 
-  if (ed->buf[0].addr_last >= OFF_T_MAX)
+  if (ed->state[0].lines >= OFF_T_MAX)
     {
-      ed->exec.err = _("Buffer full");
+      ed->exec->err = _("Buffer full");
       return NULL;
     }
 
@@ -451,7 +461,7 @@ append_line_node (len, offset, addr, ed)
   if (!(lp = (ed_line_node_t *) malloc (ED_LINE_NODE_T_SIZE)))
     {
       fprintf (stderr, "%s\n", strerror (errno));
-      ed->exec.err = _("Memory exhausted");
+      ed->exec->err = _("Memory exhausted");
       return NULL;
     }
 
@@ -461,7 +471,7 @@ append_line_node (len, offset, addr, ed)
   /* This get_line_node last! */
   np = get_line_node (addr, ed);
   APPEND_NODE (lp, np);
-  ++ed->buf[0].addr_last;
+  ++ed->state[0].lines;
   return lp;
 }
 
@@ -470,23 +480,23 @@ append_line_node (len, offset, addr, ed)
 ed_line_node_t *
 get_line_node (n, ed)
      off_t n;
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
   static ed_line_node_t *lp = NULL;
   static off_t n_prev = 0;
 
   if (!lp)
-    lp =  &ed->core.buffer_head;
+    lp = ed->core->line_head;
 
   if (n > n_prev)
     {
-      if (n <= (n_prev + ed->buf[0].addr_last) >> 1)
+      if (n <= (n_prev + ed->state[0].lines) >> 1)
         for (; n_prev < n; ++n_prev)
           lp = lp->q_forw;
       else
         {
-          lp = ed->core.buffer_head.q_back;
-          for (n_prev = ed->buf[0].addr_last; n_prev > n; --n_prev)
+          lp = ed->core->line_head->q_back;
+          for (n_prev = ed->state[0].lines; n_prev > n; --n_prev)
             lp = lp->q_back;
         }
     }
@@ -497,7 +507,7 @@ get_line_node (n, ed)
           lp = lp->q_back;
       else
         {
-          lp = &ed->core.buffer_head;
+          lp = ed->core->line_head;
           for (n_prev = 0; n_prev < n; ++n_prev)
             lp = lp->q_forw;
         }
@@ -511,16 +521,16 @@ int
 get_line_node_address (lp, addr, ed)
      const ed_line_node_t *lp;
      off_t *addr;
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
-  ed_line_node_t *cp = &ed->core.buffer_head;
+  ed_line_node_t *cp = ed->core->line_head;
 
   *addr = 0;
-  while (cp != lp && (cp = cp->q_forw) != &ed->core.buffer_head)
+  while (cp != lp && (cp = cp->q_forw) != ed->core->line_head)
     ++*addr;
-  if (*addr && cp == &ed->core.buffer_head)
+  if (*addr && cp == ed->core->line_head)
     {
-      ed->exec.err = _("Address out of range");
+      ed->exec->err = _("Address out of range");
       return ERR;
     }
   return 0;
@@ -531,12 +541,12 @@ get_line_node_address (lp, addr, ed)
 void
 quit (n, ed)
      int n;
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
-  if (ed->core.fp)
+  if (ed->core->fp)
     {
-      (void) fclose (ed->core.fp);
-      unlink (ed->core.pathname);
+      (void) fclose (ed->core->fp);
+      unlink (ed->core->pathname);
     }
   _exit (n);
 }
@@ -547,8 +557,8 @@ void *
 realloc_buffer (b, n, i, ed)
      void **b;
      size_t *n;
-     off_t i;
-     ed_state_t *ed;
+     size_t i;
+     ed_buffer_t *ed;
 {
   char *_ts;
   size_t _ti;
@@ -565,14 +575,14 @@ realloc_buffer (b, n, i, ed)
     _ti = (size_t) i;
   else
     {
-      ed->exec.err = _("Memory request too big");
+      ed->exec->err = _("Memory request too big");
       return NULL;
     }
   spl1 ();
   if (!(_ts = (char *) realloc (*b, _ti)))
     {
       fprintf (stderr, "%s\n", strerror (errno));
-      ed->exec.err = _("Memory exhausted");
+      ed->exec->err = _("Memory exhausted");
       spl0 ();
       return NULL;
     }
@@ -670,6 +680,39 @@ shift_text_node (th, len)
   free (tp);
   spl0 ();
   return s;
+}
+
+#define ALLOC_ED_TYPE(ptr, n, type)                                           \
+  do                                                                          \
+    {                                                                         \
+      if ((ptr = (type *) calloc (n, sizeof (type))) == NULL)                 \
+        {                                                                     \
+          fprintf (stderr, "%s\n", strerror (errno));                         \
+          return NULL;                                                        \
+        }                                                                     \
+    }                                                                         \
+  while (0)
+   
+/* alloc_ed_buffer: Allocate memory for ed_buffer_t struct. */
+ed_buffer_t *
+alloc_ed_buffer ()
+{
+  ed_buffer_t *ed_buffer;
+  
+  ALLOC_ED_TYPE (ed_buffer, 1, ed_buffer_t);
+  ALLOC_ED_TYPE (ed_buffer->state, 2, struct ed_state);
+  ALLOC_ED_TYPE (ed_buffer->core, 1, struct ed_core);
+  ALLOC_ED_TYPE (ed_buffer->core->line_head, 1, ed_line_node_t);
+  ALLOC_ED_TYPE (ed_buffer->core->global_head, 1, ed_global_node_t);
+  ALLOC_ED_TYPE (ed_buffer->core->undo_head, 1, ed_undo_node_t);
+  ALLOC_ED_TYPE (ed_buffer->display, 1, struct ed_display);
+  ALLOC_ED_TYPE (ed_buffer->exec, 1, struct ed_execute);
+  ALLOC_ED_TYPE (ed_buffer->exec->subst, 1, struct ed_substitute);
+  ALLOC_ED_TYPE (ed_buffer->exec->region, 1, struct ed_region);
+  ALLOC_ED_TYPE (ed_buffer->file, 1, struct ed_file);
+  ALLOC_ED_TYPE (ed_buffer->file->list, 1, glob_t);
+  ALLOC_ED_TYPE (ed_buffer->file->glob, 1, glob_t);
+  return ed_buffer;
 }
 
 /*

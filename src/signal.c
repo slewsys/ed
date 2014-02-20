@@ -1,8 +1,8 @@
 /* signal.c: Signal handlers for the ed line editor.
 
-   Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
+   Copyright © 1993-2014 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2013-06-28 <alm@slewsys.org>
+   Last modified: 2014-01-25 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -44,9 +44,8 @@ static void
 handle_hup (signo)
      int signo;
 {
-  extern ed_state_t _ed;
+  extern ed_buffer_t *ed;
 
-  ed_state_t *ed = &_ed;
   char template[] = "ed.hup";
   char *hup = NULL;             /* hup file name */
   char *s;
@@ -58,8 +57,8 @@ handle_hup (signo)
   if (!_sigactive)
     quit (1, ed);
   _sigflags &= ~(1 << (signo - 1));
-  if (ed->buf[0].addr_last
-      && write_file ("ed.hup", 0, 1, ed->buf[0].addr_last,
+  if (ed->state[0].lines
+      && write_file ("ed.hup", 0, 1, ed->state[0].lines,
                      &addr, &size, "w", ed) < 0
       && (s = getenv ("HOME")))
     {
@@ -69,7 +68,7 @@ handle_hup (signo)
       memcpy (hup, s, len);
       memcpy (hup + len, m ? "/" : "", 1);
       memcpy (hup + len + m, template, sizeof template);
-      write_file (hup, 0, 1, ed->buf[0].addr_last, &addr, &size, "w", ed);
+      write_file (hup, 0, 1, ed->state[0].lines, &addr, &size, "w", ed);
     }
   quit (2, ed);
 }
@@ -79,9 +78,7 @@ static void
 handle_int (signo)
      int signo;
 {
-  extern ed_state_t _ed;
-
-  ed_state_t *ed = &_ed;
+  extern ed_buffer_t *ed;
 
   if (!_sigactive)
     quit (1, ed);
@@ -119,7 +116,7 @@ handle_winch (signo)
 
 int
 init_signal_handler (ed)
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
   /* Override signo-indexed LUT for handlers of interest. */
   sighandler[SIGHUP - 1] = handle_hup;
@@ -139,7 +136,7 @@ init_signal_handler (ed)
       )
     {
       fprintf (stderr, "%s\n", strerror (errno));
-      ed->exec.err = _("Signal error");
+      ed->exec->err = _("Signal error");
       return ERR;
     }
   return 0;

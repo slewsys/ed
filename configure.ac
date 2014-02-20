@@ -2,12 +2,12 @@
 
 # Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
 
-# Last modified: 2014-02-18 <alm@slewsys.org>
+# Last modified: 2014-02-20 <alm@slewsys.org>
 
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.65])
-AC_INIT([ed],[0.271-b5],[bug-ed@gnu.org])
+AC_INIT([ed],[0.271-b8],[bug-ed@gnu.org])
 AC_CONFIG_AUX_DIR([.])
 AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADERS([config.h])
@@ -79,10 +79,6 @@ AC_PATH_PROG([GROFF], [groff])
 AC_ARG_VAR([PS2PDF], [PostScript to PDF filter])
 AC_PATH_PROGS([PS2PDF], [ps2pdf14 ps2pdf ps2pdfwr])
 
-AC_SYS_LARGEFILE
-AC_PROG_CC
-AC_PROG_LN_S
-
 # Checks for prior deployment of this package - used by `upgrade-sh'
 AC_CACHE_CHECK([for ed], [ac_cv_path_ED_COMMAND],
     [AC_PATH_PROGS_FEATURE_CHECK([ED_COMMAND], ["$ED" ed],
@@ -106,6 +102,9 @@ AC_CACHE_CHECK([for GNU make], [ac_cv_path_GNU_MAKE_COMMAND],
       [])])
 AC_SUBST(GNU_MAKE_COMMAND, [$ac_cv_path_GNU_MAKE_COMMAND])
 
+AC_SYS_LARGEFILE
+AC_PROG_CC
+AC_PROG_LN_S
 AC_PROG_INSTALL
 AC_PROG_MKDIR_P
 AC_PROG_YACC
@@ -139,7 +138,7 @@ AC_ARG_ENABLE([ed-envar],
     [enable ED environment variable])],
   [AC_DEFINE([WANT_ED_ENVAR], [1],
     [Define to 1 to enable support for ED environment variable.])],[])
-AC_MSG_RESULT([$enable_ed_envar])
+AC_MSG_RESULT([${enable_ed_envar:-no}])
 
 AC_MSG_CHECKING([whether external filter support is requested])
 AC_ARG_ENABLE([external-filter],
@@ -147,7 +146,7 @@ AC_ARG_ENABLE([external-filter],
     [enable external filtering of buffer])],
   [AC_DEFINE([WANT_EXTERNAL_FILTER], [1],
     [Define to 1 to enable modifying buffer via external filters.])],[])
-AC_MSG_RESULT([$enable_external_filter])
+AC_MSG_RESULT([${enable_external_filter:-no}])
 
 AC_MSG_CHECKING([whether file glob support is requested])
 AC_ARG_ENABLE([file-glob],
@@ -155,7 +154,7 @@ AC_ARG_ENABLE([file-glob],
     [enable file globbing and multi-file support])],
   [AC_DEFINE([WANT_FILE_GLOB], [1],
     [Define to 1 to enable file glob and multi-file support.])],[])
-AC_MSG_RESULT([$enable_file_glob])
+AC_MSG_RESULT([${enable_file_glob:-no}])
 
 dnl AC_MSG_CHECKING([whether safe write support is requested])
 dnl AC_ARG_ENABLE([safe-write],
@@ -163,13 +162,13 @@ dnl   [AS_HELP_STRING([--enable-safe-write],
 dnl     [enable safe write])],
 dnl   [AC_DEFINE([WANT_SAFE_WRITE], [1],
 dnl     [Define to 1 to interpret `~w' as `w' followed by `~e'.])],[])
-dnl AC_MSG_RESULT([$enable_safe_write])
+dnl AC_MSG_RESULT([${enable_safe_write:-no}])
 
 AC_MSG_CHECKING([whether file lock support is requested])
 AC_ARG_ENABLE([file-lock],
   [AS_HELP_STRING([--enable-file-lock],
     [enable file locking support])],[],[])
-AC_MSG_RESULT([$enable_file_lock])
+AC_MSG_RESULT([${enable_file_lock:-no}])
 if test _$[enable_file_lock] = _yes; then
   if test _$[ac_cv_func_flock] = _no &&
     test _$[ac_cv_have_decl_f_setlk] = _no; then
@@ -200,8 +199,8 @@ AC_CHECK_HEADERS_ONCE([fcntl.h glob.h libintl.h limits.h locale.h stdlib.h    \
 # Checks for typedefs, structures, and compiler characteristics.
 #
 AC_C_CONST
-AC_TYPE_OFF_T
 AC_TYPE_PID_T
+AC_TYPE_OFF_T
 AC_TYPE_SIZE_T
 AC_C_VOLATILE
 AC_CHECK_TYPES([sig_atomic_t],
@@ -213,6 +212,70 @@ AC_CHECK_DECL([F_SETLK],
   [ac_cv_have_decl_f_setlk=yes],
   [ac_cv_have_decl_f_setlk=no],
   [#include <fcntl.h>])
+
+# Checks storage size of size_t
+AC_CACHE_CHECK([size of size_t],
+ [ac_cv_size_t_size],
+ AC_RUN_IFELSE([AC_LANG_SOURCE([
+#include <limits.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/types.h>
+
+int
+main()
+{
+  _exit (sizeof (unsigned long long) - sizeof (size_t));
+}
+  ])],
+  [ac_cv_size_t_size="unsigned long long"],
+  [ac_cv_size_t_size="unsigned long"],
+  [ac_cv_size_t_size="unsigned long"]))
+AC_DEFINE_UNQUOTED([SIZE_T_SIZE], [$ac_cv_size_t_size],
+  [Define int with storage size of size_t.])
+
+# Checks storage size of off_t
+AC_CACHE_CHECK([size of off_t],
+ [ac_cv_off_t_size],
+ AC_RUN_IFELSE([AC_LANG_SOURCE([
+#include <limits.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/types.h>
+
+int
+main()
+{
+  _exit (sizeof (long long) - sizeof (off_t));
+}
+  ])],
+  [ac_cv_off_t_size="long long"],
+  [ac_cv_off_t_size="long"],
+  [ac_cv_off_t_size="long"]))
+AC_DEFINE_UNQUOTED([OFF_T_SIZE], [$ac_cv_off_t_size],
+  [Define int with storage size of off_t.])
+
+# Checks for string format to output value of off_t
+AC_CACHE_CHECK([how to print value off_t],
+ [ac_cv_off_t_format_string],
+ AC_RUN_IFELSE([AC_LANG_SOURCE([
+#include <limits.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/types.h>
+
+int
+main()
+{
+  _exit (sizeof (long long) - sizeof (off_t));
+}
+  ])],
+  [ac_cv_off_t_format_string="lld"],
+  [ac_cv_off_t_format_string="ld"],
+  [ac_cv_off_t_format_string="ld"]))
+AC_DEFINE_UNQUOTED([OFF_T_FORMAT_STRING], ["$ac_cv_off_t_format_string"],
+  [Define format string to print value of type off_t.])
+
 
 #
 # Checks for system calls and library functions.

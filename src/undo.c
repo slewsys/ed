@@ -1,14 +1,13 @@
+
 /* undo.c: Undo routines for the ed line editor.
 
-   Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
+   Copyright © 1993-2014 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2014-02-19 <alm@slewsys.org>
+   Last modified: 2014-02-20 <alm@slewsys.org>
 
    This file is part of ed. */
 
 #include "ed.h"
-
-ed_undo_node_t *undo_head = NULL; /* head of undo queue */
 
 
 /* append_undo_node: Append node to end of undo queue. Return node
@@ -18,17 +17,17 @@ append_undo_node (type, from, to, ed)
      int type;
      off_t from;
      off_t to;
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
   ed_undo_node_t *up;
 
-  ed_undo_node_t *tq = undo_head->q_back;
+  ed_undo_node_t *tq = ed->core->undo_head->q_back;
 
   spl1 ();
   if (!(up = (ed_undo_node_t *) malloc (ED_UNDO_NODE_T_SIZE)))
     {
       fprintf (stderr, "%s\n", strerror (errno));
-      ed->exec.err = _("Memory exhausted");
+      ed->exec->err = _("Memory exhausted");
       spl0 ();
       return NULL;
     }
@@ -46,21 +45,21 @@ append_undo_node (type, from, to, ed)
 /* undo_last_command: Undo last change to the editor buffer. */
 int
 undo_last_command (ed)
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
-  struct ed_buffer saved_buf = *ed->buf;
-  ed_undo_node_t *up = undo_head;
+  struct ed_state saved_buf = *ed->state;
+  ed_undo_node_t *up = ed->core->undo_head;
   ed_undo_node_t *next;
 
-  if (ed->buf[1].dot == -1 || ed->buf[1].addr_last == -1)
+  if (ed->state[1].dot == -1 || ed->state[1].lines == -1)
     {
-      ed->exec.err = _("Nothing to undo");
+      ed->exec->err = _("Nothing to undo");
       return ERR;
     }
   spl1 ();
   get_line_node (0, ed);        /* this get_line_node last! */
 
-  while ((up = up->q_back) != undo_head)
+  while ((up = up->q_back) != ed->core->undo_head)
     {
       switch (up->type)
         {
@@ -93,11 +92,11 @@ undo_last_command (ed)
       next = up->q_forw;
       REVERSE_LINKS (up, ed_undo_node_t);
     }
-  while ((up = next) != undo_head);
+  while ((up = next) != ed->core->undo_head);
 
-  if (ed->exec.global)
+  if (ed->exec->global)
     reset_global_queue (ed);
-  ed->buf[0] = ed->buf[1], ed->buf[1] = saved_buf;
+  ed->state[0] = ed->state[1], ed->state[1] = saved_buf;
   spl0 ();
   return 0;
 }
@@ -106,16 +105,14 @@ undo_last_command (ed)
 /* reset_undo_queue: Clear the undo queue. */
 void
 reset_undo_queue (ed)
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
   ed_undo_node_t *up, *up_next;
   ed_line_node_t *lp, *ep, *lp_next;
 
   spl1 ();
-  if (!undo_head)
-    init_undo_queue (&undo_head, ed);
-
-  for (up = undo_head->q_forw; up != undo_head; up = up_next)
+  for (up = ed->core->undo_head->q_forw; up != ed->core->undo_head;
+       up = up_next)
     {
       if (up->type == UDEL)
         {
@@ -131,7 +128,7 @@ reset_undo_queue (ed)
       UNLINK_NODE (up);
       free (up);
     }
-  ed->buf[1] = ed->buf[0];
+  ed->state[1] = ed->state[0];
   spl0 ();
 }
 

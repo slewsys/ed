@@ -1,8 +1,8 @@
 /* cmds.c: Basic editor commands for the ed line editor.
 
-   Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
+   Copyright © 1993-2014 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2013-08-09 <alm@slewsys.org>
+   Last modified: 2014-01-25 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -14,7 +14,7 @@
 int
 append_lines (after, ed)
      off_t after;
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
   char *s;
   size_t len;
@@ -22,10 +22,10 @@ append_lines (after, ed)
   ed_undo_node_t *up = NULL;
   int status;
 
-  ed->buf[0].input_is_binary = 0;
-  for (ed->buf[0].dot = after;;)
+  ed->state[0].input_is_binary = 0;
+  for (ed->state[0].dot = after;;)
     {
-      if (!ed->exec.global)
+      if (!ed->exec->global)
         {
           if (!(ed->input = get_stdin_line (&len, ed)))
             {
@@ -37,49 +37,48 @@ append_lines (after, ed)
             }
           if (*(ed->input + len - 1) != '\n')
             {
-              ed->exec.err = _("End-of-file unexpected");
+              ed->exec->err = _("End-of-file unexpected");
               clearerr (stdin);
               return ERR;
             }
-          ++ed->exec.line_no;
+          ++ed->exec->line_no;
         }
       else if (*ed->input == '\0')
         return 0;
       if (*ed->input == '.' && *(ed->input + 1) == '\n')
         return 0;
-      if (ed->exec.global)
+      if (ed->exec->global)
         {
           for (s = ed->input; *s++ != '\n';)
             ;
           len = s - ed->input;
         }
       spl1 ();
-      ed->buf[0].is_binary |= ed->buf[0].input_is_binary;
-      if (after == ed->buf[0].addr_last)
-        ed->buf[0].newline_appended = 0;
+      ed->state[0].is_binary |= ed->state[0].input_is_binary;
+      if (after == ed->state[0].lines)
+        ed->state[0].newline_appended = 0;
       if (!(ed->input = put_buffer_line (ed->input, len, ed)))
         {
           spl0 ();
           return ERR;
         }
-      lp = get_line_node (ed->buf[0].dot, ed);
-      APPEND_UNDO_NODE (lp, up, ed->buf[0].dot, ed);
-      ed->buf[0].is_empty = 0;
-      ed->buf[0].is_modified = 1;
+      lp = get_line_node (ed->state[0].dot, ed);
+      APPEND_UNDO_NODE (lp, up, ed->state[0].dot, ed);
+      ed->state[0].is_empty = 0;
+      ed->state[0].is_modified = 1;
       spl0 ();
     }
   /* NOTREACHED */
 }
 
 
-/* copy_lines: Copy a range of lines to after given address; return
-   status. */
+/* copy_lines: Copy a range of lines to after given address; return status. */
 int
 copy_lines (from, to, after, ed)
      off_t from;
      off_t to;
      off_t after;
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
   ed_line_node_t *lp, *np;
   ed_undo_node_t *up = NULL;
@@ -100,9 +99,9 @@ copy_lines (from, to, after, ed)
               spl0 ();
               return ERR;
             }
-          ed->buf[0].dot = ++after;
+          ed->state[0].dot = ++after;
           APPEND_UNDO_NODE (np, up, after, ed);
-          ed->buf[0].is_modified = 1;
+          ed->state[0].is_modified = 1;
           spl0 ();
         }
     }
@@ -115,7 +114,7 @@ int
 delete_lines (from, to, ed)
      off_t from;
      off_t to;
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
   ed_line_node_t *b, *a;
 
@@ -123,18 +122,18 @@ delete_lines (from, to, ed)
 
   if (!append_undo_node (UDEL, from, to, ed))
     return ERR;
-  a = get_line_node (INC_MOD (to, ed->buf[0].addr_last), ed);
+  a = get_line_node (INC_MOD (to, ed->state[0].lines), ed);
 
   /* This get_line_node last! */
   b = get_line_node (from - 1, ed);
-  if (ed->exec.global)
+  if (ed->exec->global)
     delete_global_nodes (b->q_forw, a, ed);
   LINK_NODES (b, a);
-  if (to == ed->buf[0].addr_last)
-    ed->buf[0].newline_appended = 0;
-  ed->buf[0].addr_last -= to - from + 1;
-  ed->buf[0].dot = from - 1;
-  ed->buf[0].is_modified = 1;
+  if (to == ed->state[0].lines)
+    ed->state[0].newline_appended = 0;
+  ed->state[0].lines -= to - from + 1;
+  ed->state[0].dot = from - 1;
+  ed->state[0].is_modified = 1;
   return 0;
 }
 
@@ -146,7 +145,7 @@ int
 join_lines (from, to, ed)
      off_t from;
      off_t to;
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
   static char *lj = NULL;       /* line join buffer */
   static size_t lj_size;        /* buffer size */
@@ -172,14 +171,14 @@ join_lines (from, to, ed)
       spl0 ();
       return ERR;
     }
-  ed->buf[0].dot = from - 1;
+  ed->state[0].dot = from - 1;
   if (!put_buffer_line (lj, len, ed)
-      || !append_undo_node (UADD, ed->buf[0].dot, ed->buf[0].dot, ed))
+      || !append_undo_node (UADD, ed->state[0].dot, ed->state[0].dot, ed))
     {
       spl0 ();
       return ERR;
     }
-  ed->buf[0].is_modified = 1;
+  ed->state[0].is_modified = 1;
   spl0 ();
   return 0;
 }
@@ -191,10 +190,10 @@ move_lines (from, to, after, ed)
      off_t from;
      off_t to;
      off_t after;
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
   ed_line_node_t *b1, *a1, *b2, *a2;
-  off_t succ = INC_MOD (to, ed->buf[0].addr_last);
+  off_t succ = INC_MOD (to, ed->state[0].lines);
   off_t prec = from - 1;
   int done = (after == from - 1 || after == to);
 
@@ -203,11 +202,11 @@ move_lines (from, to, after, ed)
     {
       a2 = get_line_node (succ, ed);
       b2 = get_line_node (prec, ed);
-      ed->buf[0].dot = to;
+      ed->state[0].dot = to;
     }
   else if (!append_undo_node (UMOV, prec, succ, ed)
            || !append_undo_node (UMOV, after,
-                                 INC_MOD (after, ed->buf[0].addr_last), ed))
+                                 INC_MOD (after, ed->state[0].lines), ed))
     {
       spl0 ();
       return ERR;
@@ -233,11 +232,11 @@ move_lines (from, to, after, ed)
       LINK_NODES (b2, b1->q_forw);
       LINK_NODES (a1->q_back, a2);
       LINK_NODES (b1, a1);
-      ed->buf[0].dot = after + (from > after ? to - from + 1 : 0);
+      ed->state[0].dot = after + (from > after ? to - from + 1 : 0);
     }
-  if (ed->exec.global)
+  if (ed->exec->global)
     delete_global_nodes (b2->q_forw, a2, ed);
-  ed->buf[0].is_modified = 1;
+  ed->state[0].is_modified = 1;
   spl0 ();
   return 0;
 }
@@ -254,11 +253,11 @@ int
 mark_line_node (lp, n, ed)
      const ed_line_node_t *lp;
      int n;
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
   if (!islower (n))
     {
-      ed->exec.err = _("Invalid address mark");
+      ed->exec->err = _("Invalid address mark");
       return ERR;
     }
   if (!mark[n - 'a'])
@@ -273,11 +272,11 @@ int
 get_marked_node_address (n, addr, ed)
      int n;
      off_t *addr;
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
   if (!islower (n))
     {
-      ed->exec.err = _("Invalid address mark");
+      ed->exec->err = _("Invalid address mark");
       return ERR;
     }
   return get_line_node_address (mark[n - 'a'], addr, ed);

@@ -1,8 +1,8 @@
 /* page.c: Display routines for the ed line editor.
 
-   Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
+   Copyright © 1993-2014 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2013-08-05 <alm@slewsys.org>
+   Last modified: 2014-01-26 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -12,12 +12,12 @@
 /* Static function declarations. */
 static int display_frame_buffer __P ((const ed_frame_buffer_t *));
 static ed_frame_node_t *dup_frame_node __P ((const ed_frame_node_t *,
-                                             ed_state_t *));
-static int fb_putc __P ((int, ed_frame_buffer_t *, ed_state_t *));
-static int init_frame_buffer __P ((ed_frame_buffer_t *, int, ed_state_t *));
+                                             ed_buffer_t *));
+static int fb_putc __P ((int, ed_frame_buffer_t *, ed_buffer_t *));
+static int init_frame_buffer __P ((ed_frame_buffer_t *, int, ed_buffer_t *));
 static void init_frame_node __P ((ed_frame_node_t *));
 static int put_frame_buffer_line __P ((ed_line_node_t *, off_t, unsigned,
-                                       ed_frame_buffer_t *, ed_state_t *));
+                                       ed_frame_buffer_t *, ed_buffer_t *));
 static unsigned int sgr_span __P ((const char *));
 
 
@@ -55,8 +55,8 @@ static unsigned int sgr_span __P ((const char *));
           (fb)->prev_first = NULL;                                            \
           (fb)->prev_last = NULL;                                             \
         }                                                                     \
-      (ed)->display.underflow = 0;                                            \
-      (ed)->display.overflow = 0;                                             \
+      (ed)->display->underflow = 0;                                           \
+      (ed)->display->overflow = 0;                                            \
     }                                                                         \
   while (0)
 
@@ -67,7 +67,7 @@ display_lines (from, to, io_f, ed)
      off_t from;
      off_t to;
      unsigned int io_f;         /* I/O flags */
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
   static ed_frame_buffer_t frame_buffer = { 0 };
 
@@ -79,17 +79,17 @@ display_lines (from, to, io_f, ed)
   int status;
 
   /* Trivially allow printing empty buffer. */
-  if (!ed->buf[0].addr_last)
+  if (!ed->state[0].lines)
     return 0;
 
   /* If not scrolling, ignore frame buffer status. */
   if (!(io_f & (ZFWD | ZBWD)))
     {
-      ed->display.underflow = 0;
-      ed->display.overflow = 0;
+      ed->display->underflow = 0;
+      ed->display->overflow = 0;
     }
 
-  ep = get_line_node (INC_MOD (to, ed->buf[0].addr_last), ed);
+  ep = get_line_node (INC_MOD (to, ed->state[0].lines), ed);
   bp = get_line_node (from, ed);
 
  top:
@@ -103,7 +103,7 @@ display_lines (from, to, io_f, ed)
       /* If scrolling forward and last line of previous page was
          truncated, then print remainder of that line after first
          part. */
-      if ((io_f & ZFWD) && ed->display.underflow
+      if ((io_f & ZFWD) && ed->display->underflow
           && fb->prev_last && bp == fb->prev_last->lp)
         {
           fb->row->offset = bp->len - fb->rem_chars;
@@ -113,7 +113,7 @@ display_lines (from, to, io_f, ed)
       /* If scrolling backward and first line of previous page was
          truncated, then print beginning of that line before first
          part. */
-      else if ((io_f & ZBWD) && ed->display.overflow
+      else if ((io_f & ZBWD) && ed->display->overflow
                && fb->prev_first && bp == fb->prev_first->lp)
         {
           fb->rem_chars = fb->prev_first->offset;
@@ -137,22 +137,22 @@ display_lines (from, to, io_f, ed)
     }
 
   /* If final forward page not full, then scroll back from last line. */
-  if ((io_f & ZFWD) && to == ed->buf[0].addr_last && !fb->wraps
-      && (ed->display.underflow || from != 1))
+  if ((io_f & ZFWD) && to == ed->state[0].lines && !fb->wraps
+      && (ed->display->underflow || from != 1))
     {
       /* Ignore frame buffer status. */
       RESET_FB_PREV (fb, ed);
-      return display_lines (max (1, ed->buf[0].addr_last - fb->rows + 2),
-                            ed->buf[0].addr_last, (io_f | ZBWD) & ~ZFWD, ed);
+      return display_lines (max (1, ed->state[0].lines - fb->rows + 2),
+                            ed->state[0].lines, (io_f | ZBWD) & ~ZFWD, ed);
     }
 
   /* If final backward page not full, then scroll forward from first line. */
   if ((io_f & ZBWD) && from == 1 && !fb->wraps
-      && (ed->display.overflow || to != ed->buf[0].addr_last))
+      && (ed->display->overflow || to != ed->state[0].lines))
     {
       /* Ignore frame buffer status. */
       RESET_FB_PREV (fb, ed);
-      return display_lines (1, min (ed->buf[0].addr_last, fb->rows - 1),
+      return display_lines (1, min (ed->state[0].lines, fb->rows - 1),
                             (io_f | ZFWD) & ~ZBWD, ed);
     }
 
@@ -190,7 +190,7 @@ display_lines (from, to, io_f, ed)
         }
 
       /* Line address of first row. */
-      ed->display.page_addr = fb->prev_first->addr;
+      ed->display->page_addr = fb->prev_first->addr;
 
       /* Assign old prev_first `len - offset' as rem_chars to last
          line of current page. */
@@ -198,16 +198,16 @@ display_lines (from, to, io_f, ed)
         fb->rem_chars = rem_chars;
 
       /* If next command is `scroll forward', then current page
-         becomes `page above', and ed->display.underflow is set if
+         becomes `page above', and ed->display->underflow is set if
          last line of current page is truncated. */
-      ed->display.underflow = !!fb->rem_chars;
+      ed->display->underflow = !!fb->rem_chars;
 
       /* If next command is `scroll backward', then current page becomes
-         `page below', and ed->display.overflow is set if first line
+         `page below', and ed->display->overflow is set if first line
          of current page has non-zero offset. */
-      ed->display.overflow = !!fb->prev_first->offset;
+      ed->display->overflow = !!fb->prev_first->offset;
 
-      if (!ed->display.off  && (status = display_frame_buffer (fb)) < 0)
+      if (!ed->display->off  && (status = display_frame_buffer (fb)) < 0)
         {
           spl0 ();
           return status;
@@ -218,11 +218,11 @@ display_lines (from, to, io_f, ed)
   if (!(io_f & (ZBWD | ZFWD)))
     {
       /* More lines to print. */
-      if (from + lc - 1 != to && !ed->display.underflow)
+      if (from + lc - 1 != to && !ed->display->underflow)
         goto top;
 
       /* More of current line to print. */
-      if (ed->display.underflow)
+      if (ed->display->underflow)
         {
           bp = bp->q_back;
           --lc;
@@ -231,7 +231,7 @@ display_lines (from, to, io_f, ed)
     }
 
   /* Don't update current address until printing completed -- per bwk. */
-  ed->buf[0].dot = from + lc - 1;
+  ed->state[0].dot = from + lc - 1;
   return 0;
 }
 
@@ -241,7 +241,7 @@ static int
 init_frame_buffer (fb, io_f, ed)
      ed_frame_buffer_t *fb;
      int io_f;
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
   static char *fp = NULL;
   static size_t fp_size = 0;
@@ -342,10 +342,10 @@ put_frame_buffer_line (lp, addr, io_f, fb, ed)
      off_t addr;                /* Line no. */
      unsigned io_f;             /* I/O flags */
      ed_frame_buffer_t *fb;
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
-  static off_t addr_last = 0;
-  static int addr_last_len = 0;  /* strlen (addr_last) */
+  static off_t lines = 0;
+  static int lines_len = 0;      /* strlen (lines) */
   static char fmt[9] = { '\0' }; /* Line no. format string, e.g., "% 3lld\t" */
 
   off_t n;
@@ -353,7 +353,6 @@ put_frame_buffer_line (lp, addr, io_f, fb, ed)
   char line_no[OFF_T_LEN + TAB_WIDTH + 1];
   char *cp, *s;
   size_t col = 0;
-  size_t len = 0;
   unsigned int sgr_len = 0;     /* length of ANSI sgr sequence */
   int form_feed = 0;
 
@@ -389,23 +388,23 @@ put_frame_buffer_line (lp, addr, io_f, fb, ed)
   /* Numbered output. */
   if ((io_f & NMBR))
     {
-      /* If addr_last has changed, update format string. */
-      if (addr_last != ed->buf[0].addr_last)
+      /* If lines has changed, update format string. */
+      if (lines != ed->state[0].lines)
         {
-          n = addr_last = ed->buf[0].addr_last;
-          for (addr_last_len = 0; n /= 10; ++addr_last_len)
+          n = lines = ed->state[0].lines;
+          for (lines_len = 0; n /= 10; ++lines_len)
             ;
-          ++addr_last_len;
+          ++lines_len;
 
           /* Set line numbering format string. */
-          sprintf (fmt, "%%%d" OFF_T_FORMAT_STRING "\t", addr_last_len);
+          sprintf (fmt, "%%%d" OFF_T_FORMAT_STRING "\t", lines_len);
         }
 
       /* Evaluate format string, fmt, with address, addr, of dot. */
-      len = snprintf (line_no, OFF_T_LEN + TAB_WIDTH + 1, fmt, addr);
+      snprintf (line_no, OFF_T_LEN + TAB_WIDTH + 1, fmt, addr);
       FB_PUTS (line_no, fb, ed);
-      col = addr_last_len;
-      col += CHAR_WIDTH ('\t', addr_last_len);
+      col = lines_len;
+      col += CHAR_WIDTH ('\t', lines_len);
     }
 
   if (!(s = get_buffer_line (lp, ed)))
@@ -425,7 +424,7 @@ put_frame_buffer_line (lp, addr, io_f, fb, ed)
 
           /* If ANSI color support is enabled, exclude SGR sequences
              from column bookkeeping. */
-          if (ed->exec.opt & ANSI_COLOR && (sgr_len = sgr_span (s)) > 0)
+          if (ed->exec->opt & ANSI_COLOR && (sgr_len = sgr_span (s)) > 0)
             {
               for (; sgr_len--; --fb->rem_chars, ++s)
                 if (fb_putc ((unsigned) *s, fb, ed) < 0)
@@ -440,7 +439,7 @@ put_frame_buffer_line (lp, addr, io_f, fb, ed)
           /* As with cat(1), form feed (\f) does not force a new page,
              only a new line. Any following text continues on the next
              line -- indented to the current column. */
-          if (form_feed = (*s == '\f'))
+          if ((form_feed = (*s == '\f')))
             INC_MOD_FB_ROW (lp, addr, io_f & ZBWD, fb);
         }
       else
@@ -504,7 +503,7 @@ static int
 fb_putc (c, fb, ed)
      int c;
      ed_frame_buffer_t *fb;
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
   ed_frame_node_t *rp = fb->row + fb->row_i;
 
@@ -544,7 +543,7 @@ display_frame_buffer (fb)
 static ed_frame_node_t *
 dup_frame_node (rp, ed)
      const ed_frame_node_t *rp;
-     ed_state_t *ed;
+     ed_buffer_t *ed;
 {
   ed_frame_node_t *np;
 
@@ -553,7 +552,7 @@ dup_frame_node (rp, ed)
   if (!(np = (ed_frame_node_t *) malloc (ED_FRAME_NODE_T_SIZE)))
     {
       fprintf (stderr, "%s\n", strerror (errno));
-      ed->exec.err = _("Memory exhausted");
+      ed->exec->err = _("Memory exhausted");
       return NULL;
     }
   np->addr = rp->addr;
