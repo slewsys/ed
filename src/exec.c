@@ -2,7 +2,7 @@
 
    Copyright © 1993-2014 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2014-02-20 <alm@slewsys.org>
+   Last modified: 2014-03-11 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -528,7 +528,8 @@ exec_command (ed)
         {
         case 0:
           if ((status =
-               move_lines (ed->exec->region->start, ed->exec->region->end, addr, ed)) < 0)
+               move_lines (ed->exec->region->start,
+                           ed->exec->region->end, addr, ed)) < 0)
             return status;
           break;
         case READ_REGISTER:
@@ -537,8 +538,9 @@ exec_command (ed)
             return status;
           break;
         case WRITE_REGISTER:
-          if ((status = write_to_register (reg_write, ed->exec->region->start,
-                                           ed->exec->region->end, append, ed)) < 0)
+          if ((status =
+               write_to_register (reg_write, ed->exec->region->start,
+                                  ed->exec->region->end, append, ed)) < 0)
             return status;
           spl1 ();
           if ((status = delete_lines (ed->exec->region->start,
@@ -749,7 +751,8 @@ exec_command (ed)
         {
         case 0:
           if ((status =
-               copy_lines (ed->exec->region->start, ed->exec->region->end, addr, ed)) < 0)
+               copy_lines (ed->exec->region->start,
+                           ed->exec->region->end, addr, ed)) < 0)
             return status;
           break;
         case READ_REGISTER:
@@ -757,8 +760,9 @@ exec_command (ed)
             return status;
           break;
         case WRITE_REGISTER:
-          if ((status = write_to_register (reg_write, ed->exec->region->start,
-                                           ed->exec->region->end, append, ed)) < 0)
+          if ((status =
+               write_to_register (reg_write, ed->exec->region->start,
+                                  ed->exec->region->end, append, ed)) < 0)
             return status;
           break;
         case READ_REGISTER | WRITE_REGISTER:

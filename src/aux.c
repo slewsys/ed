@@ -2,7 +2,7 @@
 
    Copyright © 1993-2014 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2014-02-20 <alm@slewsys.org>
+   Last modified: 2014-03-12 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -27,7 +27,7 @@ static ed_line_node_t *append_node_to_register __P ((size_t, off_t, int,
                                                ed_buffer_t *));
 
 
-#if defined HAVE_FORK && defined WANT_EXTERNAL_FILTER
+#if defined (HAVE_FORK) && defined (WANT_EXTERNAL_FILTER)
 # define WAITPID(pid)                                                         \
   do                                                                          \
     {                                                                         \
@@ -174,7 +174,7 @@ filter_lines (from, to, sc, ed)
   WAITPID (shell_pid);
   return status;
 }
-#endif  /* defined HAVE_FORK && defined WANT_EXTERNAL_FILTER */
+#endif  /* defined (HAVE_FORK) && defined (WANT_EXTERNAL_FILTER) */
 
 
 /* append_node_to_register: Append node to end of given register.
@@ -187,7 +187,7 @@ append_node_to_register (len, offset, qno, ed)
      ed_buffer_t *ed;
 {
   ed_line_node_t *lp;
-  ed_line_node_t *tq = ed->core->reg[qno]->q_back;
+  ed_line_node_t *qt = ed->core->reg[qno]->q_back;
 
   spl1 ();
   if (!(lp = (ed_line_node_t *) malloc (ED_LINE_NODE_T_SIZE)))
@@ -200,8 +200,8 @@ append_node_to_register (len, offset, qno, ed)
   lp->len = len;
   lp->seek = offset;
 
-  /* APPEND_NODE is macro, so tq is mandatory! */
-  APPEND_NODE (lp, tq);
+  /* APPEND_NODE is macro, so qt is mandatory! */
+  APPEND_NODE (lp, qt);
   spl0 ();
   return lp;
 }
@@ -216,21 +216,21 @@ read_from_register (qno, addr, ed)
      ed_buffer_t *ed;
 {
   ed_undo_node_t *up = NULL;
-  ed_line_node_t *lp, *np, *ep;
+  ed_line_node_t *lp, *rp, *rh;
 
   if (!ed->core->reg[qno] && init_register_queue (qno, ed) < 0)
     return ERR;
 
-  ed->state[0].dot = addr;
-  for (ep = ed->core->reg[qno], lp = ep->q_forw; lp != ep; lp = lp->q_forw)
+  for (rh = ed->core->reg[qno], rp = rh->q_forw; rp != rh; rp = rp->q_forw)
     {
       spl1 ();
-      if (!(np = append_line_node (lp->len, lp->seek, addr, ed)))
+      if (!(lp = append_line_node (rp->len, rp->seek, addr, ed)))
         {
           spl0 ();
           return ERR;
         }
-      APPEND_UNDO_NODE (np, up, ed->state[0].dot, ed);
+      ed->state[0].dot = ++addr;
+      APPEND_UNDO_NODE (lp, up, addr, ed);
       ed->state[0].is_modified = 1;
       spl0 ();
     }
@@ -248,7 +248,7 @@ register_copy (from, to,  append, ed)
      int append;
      ed_buffer_t *ed;
 {
-  ed_line_node_t *lp, *ep;
+  ed_line_node_t *rp, *rh;
 
   if (!ed->core->reg[from]
       && init_register_queue (from, ed) < 0)
@@ -260,8 +260,8 @@ register_copy (from, to,  append, ed)
 
   /* Handle case of register appended to itself. */
   if (append && from != to)
-    for (ep = ed->core->reg[from], lp = ep->q_forw; lp != ep; lp = lp->q_forw)
-      if (!append_node_to_register (lp->len, lp->seek, to, ed))
+    for (rh = ed->core->reg[from], rp = rh->q_forw; rp != rh; rp = rp->q_forw)
+      if (!append_node_to_register (rp->len, rp->seek, to, ed))
         return ERR;
   return 0;
 }
@@ -303,17 +303,17 @@ reset_register_queue (qno, ed)
      int qno;
      ed_buffer_t *ed;
 {
-  ed_line_node_t *lp, *np, *ep;
+  ed_line_node_t *rp, *rn, *rh;
 
   if (!ed->core->reg[qno] && init_register_queue (qno, ed) < 0)
     return ERR;
 
   spl1 ();
-  for (ep = ed->core->reg[qno], lp = ep->q_forw; lp != ep; lp = np)
+  for (rh = ed->core->reg[qno], rp = rh->q_forw; rp != rh; rp = rn)
     {
-      np = lp->q_forw;
-      LINK_NODES (lp->q_back, np);
-      free (lp);
+      rn = rp->q_forw;
+      UNLINK_NODE (rp);
+      free (rp);
     }
   spl0 ();
   return 0;

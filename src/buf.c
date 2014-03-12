@@ -3,7 +3,7 @@
 
    Copyright © 1993-2014 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2014-02-20 <alm@slewsys.org>
+   Last modified: 2014-03-11 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -198,52 +198,6 @@ init_ed_state (addr, state)
   state->newline_appended = 0;
   state->input_wants_newline = 0;
   state->input_is_binary = 0;
-}
-
-
-/* init_global_queue: Initialize ed_core global queue. */
-void
-init_global_queue (aq, lq, ed)
-     ed_global_node_t **aq;
-     ed_line_node_t **lq;
-     ed_buffer_t *ed;
-{
-  *aq = ed->core->global_head;
-  *lq = ed->core->line_head;
-}
-
-
-/* init_register_queue: Initialize given ed_core register queue. */
-int
-init_register_queue (qno, ed)
-     int qno;                   /* register queue number */
-     ed_buffer_t *ed;
-{
-  ed_line_node_t *rq[REG_MAX];
-
-  spl1 ();
-  if (!(rq[qno] = (ed_line_node_t *) malloc (sizeof (ed_line_node_t))))
-    {
-      fprintf (stderr, "%s\n", strerror (errno));
-      ed->exec->err = _("Memory exhausted");
-      spl0 ();
-      return ERR;
-    }
-
-  LINK_NODES (rq[qno], rq[qno]);
-  ed->core->reg[qno] = rq[qno];
-  spl0 ();
-  return 0;
-}
-
-
-/* init_undo_queue: Initialize ed_core undo queue. */
-void
-init_undo_queue (uq, ed)
-     ed_undo_node_t **uq;
-     ed_buffer_t *ed;
-{
-  *uq = ed->core->undo_head;
 }
 
 
@@ -590,6 +544,52 @@ realloc_buffer (b, n, i, ed)
   *b = _ts;
   spl0 ();
   return *b;
+}
+
+
+/* init_global_queue: Initialize ed_core global queue. */
+void
+init_global_queue (aq, lq, ed)
+     ed_global_node_t **aq;
+     ed_line_node_t **lq;
+     ed_buffer_t *ed;
+{
+  *aq = ed->core->global_head;
+  *lq = ed->core->line_head;
+}
+
+
+/* init_register_queue: Initialize given ed_core register queue. */
+int
+init_register_queue (qno, ed)
+     int qno;                   /* register queue number */
+     ed_buffer_t *ed;
+{
+  ed_line_node_t *rq[REG_MAX];
+
+  spl1 ();
+  if (!(rq[qno] = (ed_line_node_t *) malloc (sizeof (ed_line_node_t))))
+    {
+      fprintf (stderr, "%s\n", strerror (errno));
+      ed->exec->err = _("Memory exhausted");
+      spl0 ();
+      return ERR;
+    }
+
+  LINK_NODES (rq[qno], rq[qno]);
+  ed->core->reg[qno] = rq[qno];
+  spl0 ();
+  return 0;
+}
+
+
+/* init_undo_queue: Initialize ed_core undo queue. */
+void
+init_undo_queue (uq, ed)
+     ed_undo_node_t **uq;
+     ed_buffer_t *ed;
+{
+  *uq = ed->core->undo_head;
 }
 
 

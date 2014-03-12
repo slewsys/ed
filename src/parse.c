@@ -2,7 +2,7 @@
 
    Copyright © 1993-2014 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2014-01-25 <alm@slewsys.org>
+   Last modified: 2014-03-11 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -352,6 +352,11 @@ file_glob (len, cm, replace, ed)
       default:
         offs = ed->file->glob->gl_pathc - ed->file->list->gl_pathc;
         gp = ed->file->glob;
+
+        /* Command `~e' with no arguments rewinds file list. */
+        ed->file->list->gl_pathc += offs;
+        ed->file->list->gl_pathv -= offs;
+        offs = 0;
 
         /* Return default file name if file list empty. */
         if (!gp->gl_pathc && ed->file->name)

@@ -2,7 +2,7 @@
 
    Copyright © 1993-2014 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2014-02-20 <alm@slewsys.org>
+   Last modified: 2014-03-11 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -636,8 +636,9 @@ enum search_type
 
 /*
  * APPEND_NODE: Append node after prev.
- * NB: Order of the calls is critical and prev must not be of the
- *     form p->q_back.
+ * CAVEAT UTILITOR: APPEND_NODE fails when `prev' of the form
+ * p->q_back.  The workaround is to assign t = p->q_back and then
+ * call APPEND_NODE(n, t).
  */
 #define APPEND_NODE(node, prev)                                               \
   do                                                                          \
