@@ -2,7 +2,7 @@
 
    Copyright © 1993-2014 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2014-01-26 <alm@slewsys.org>
+   Last modified: 2014-09-16 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -79,7 +79,7 @@ display_lines (from, to, io_f, ed)
   int status;
 
   /* Trivially allow printing empty buffer. */
-  if (!ed->state[0].lines)
+  if (!ed->state->lines)
     return 0;
 
   /* If not scrolling, ignore frame buffer status. */
@@ -89,7 +89,7 @@ display_lines (from, to, io_f, ed)
       ed->display->overflow = 0;
     }
 
-  ep = get_line_node (INC_MOD (to, ed->state[0].lines), ed);
+  ep = get_line_node (INC_MOD (to, ed->state->lines), ed);
   bp = get_line_node (from, ed);
 
  top:
@@ -137,22 +137,22 @@ display_lines (from, to, io_f, ed)
     }
 
   /* If final forward page not full, then scroll back from last line. */
-  if ((io_f & ZFWD) && to == ed->state[0].lines && !fb->wraps
+  if ((io_f & ZFWD) && to == ed->state->lines && !fb->wraps
       && (ed->display->underflow || from != 1))
     {
       /* Ignore frame buffer status. */
       RESET_FB_PREV (fb, ed);
-      return display_lines (max (1, ed->state[0].lines - fb->rows + 2),
-                            ed->state[0].lines, (io_f | ZBWD) & ~ZFWD, ed);
+      return display_lines (max (1, ed->state->lines - fb->rows + 2),
+                            ed->state->lines, (io_f | ZBWD) & ~ZFWD, ed);
     }
 
   /* If final backward page not full, then scroll forward from first line. */
   if ((io_f & ZBWD) && from == 1 && !fb->wraps
-      && (ed->display->overflow || to != ed->state[0].lines))
+      && (ed->display->overflow || to != ed->state->lines))
     {
       /* Ignore frame buffer status. */
       RESET_FB_PREV (fb, ed);
-      return display_lines (1, min (ed->state[0].lines, fb->rows - 1),
+      return display_lines (1, min (ed->state->lines, fb->rows - 1),
                             (io_f | ZFWD) & ~ZBWD, ed);
     }
 
@@ -231,7 +231,7 @@ display_lines (from, to, io_f, ed)
     }
 
   /* Don't update current address until printing completed -- per bwk. */
-  ed->state[0].dot = from + lc - 1;
+  ed->state->dot = from + lc - 1;
   return 0;
 }
 
@@ -389,9 +389,9 @@ put_frame_buffer_line (lp, addr, io_f, fb, ed)
   if ((io_f & NMBR))
     {
       /* If lines has changed, update format string. */
-      if (lines != ed->state[0].lines)
+      if (lines != ed->state->lines)
         {
-          n = lines = ed->state[0].lines;
+          n = lines = ed->state->lines;
           for (lines_len = 0; n /= 10; ++lines_len)
             ;
           ++lines_len;

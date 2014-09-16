@@ -2,7 +2,7 @@
 
    Copyright © 1993-2014 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2014-03-11 <alm@slewsys.org>
+   Last modified: 2014-09-16 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -28,14 +28,14 @@ address_range (ed)
      ed_buffer_t *ed;
 {
   /* As per SUSv3, 2004, intermediate addresses may exceed
-     ed->state[0].lines or be negative, so use signed types. */
+     ed->state->lines or be negative, so use signed types. */
   off_t addr;
   off_t first, second, dot;
   int have_dc;                  /* If set, have address delimiter char. */
   int status;
 
   ed->exec->region->addrs = 0;
-  first = second = dot = ed->state[0].dot;
+  first = second = dot = ed->state->dot;
   SKIP_WHITESPACE (ed);
   have_dc = IS_DELIMITER (*ed->input);
   do
@@ -47,7 +47,7 @@ address_range (ed)
           else
             {
               first = *ed->input == ';' ? dot : 1;
-              second = ed->state[0].lines;
+              second = ed->state->lines;
               ed->exec->region->addrs = 2;
             }
         }
@@ -71,7 +71,7 @@ address_range (ed)
     return status;
   ed->exec->region->start = first;
   ed->exec->region->end = second;
-  ed->state[0].dot = dot;
+  ed->state->dot = dot;
   return ed->exec->region->addrs;
 }
 
@@ -120,7 +120,7 @@ line_address (addr, ed)
       STRTOLL_THROW (*addr, ed->input, &ed->input, ERR);
       break;
     case '$':
-      *addr = ed->state[0].lines;
+      *addr = ed->state->lines;
       /* FALLTHROUGH */
     case '.':
       ++ed->input;
@@ -129,7 +129,7 @@ line_address (addr, ed)
     case '?':
       if ((status = check_address_bounds (*addr, ed)) < 0)
         return status;
-      ed->state[0].dot = *addr;
+      ed->state->dot = *addr;
       spl1 ();
       if ((status =
            get_matching_node_address (get_compiled_regex (c, RE_SEARCH, ed),
@@ -212,7 +212,7 @@ check_address_bounds (addr, ed)
      off_t addr;
      ed_buffer_t *ed;
 {
-  if (addr < 0 || ed->state[0].lines < addr)
+  if (addr < 0 || ed->state->lines < addr)
     {
       ed->exec->err = _("Address out of range");
       return ERR;
@@ -651,7 +651,7 @@ regular_expression (dc, len, ed)
   memcpy (lhs, s, *len);
   *(lhs + *len) = '\0';
 #if !defined REG_PEND && !defined HAVE_REG_SYNTAX_T
-  if (ed->state[0].is_binary)
+  if (ed->state->is_binary)
     NUL_TO_NEWLINE (lhs, *len);
 #endif
   return lhs;

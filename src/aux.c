@@ -2,7 +2,7 @@
 
    Copyright © 1993-2014 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2014-03-12 <alm@slewsys.org>
+   Last modified: 2014-09-16 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -112,10 +112,10 @@ filter_lines (from, to, sc, ed)
     }
 
   /* If filtering entire file, reset state. */
-  if (ed->state[0].lines == 0)
+  if (ed->state->lines == 0)
     {
-      ed->state[0].is_binary = 0;
-      ed->state[0].is_empty = 1;
+      ed->state->is_binary = 0;
+      ed->state->is_empty = 1;
     }
   spl0 ();
 
@@ -156,7 +156,7 @@ filter_lines (from, to, sc, ed)
     }
 
   /* Read standard output of shell process via reentrant read_stream. */
-  if ((status = read_stream_r (opp, ed->state[0].dot, &size, ed)) < 0)
+  if ((status = read_stream_r (opp, ed->state->dot, &size, ed)) < 0)
     goto err;
  
   printf (ed->exec->opt & SCRIPTED ? "" : "%" OFF_T_FORMAT_STRING "\n", size);
@@ -187,7 +187,7 @@ append_node_to_register (len, offset, qno, ed)
      ed_buffer_t *ed;
 {
   ed_line_node_t *lp;
-  ed_line_node_t *qt = ed->core->reg[qno]->q_back;
+  ed_line_node_t *tq = ed->core->reg[qno]->q_back;
 
   spl1 ();
   if (!(lp = (ed_line_node_t *) malloc (ED_LINE_NODE_T_SIZE)))
@@ -200,8 +200,8 @@ append_node_to_register (len, offset, qno, ed)
   lp->len = len;
   lp->seek = offset;
 
-  /* APPEND_NODE is macro, so qt is mandatory! */
-  APPEND_NODE (lp, qt);
+  /* APPEND_NODE is macro, so tq is mandatory! */
+  APPEND_NODE (lp, tq);
   spl0 ();
   return lp;
 }
@@ -229,9 +229,9 @@ read_from_register (qno, addr, ed)
           spl0 ();
           return ERR;
         }
-      ed->state[0].dot = ++addr;
+      ed->state->dot = ++addr;
       APPEND_UNDO_NODE (lp, up, addr, ed);
-      ed->state[0].is_modified = 1;
+      ed->state->is_modified = 1;
       spl0 ();
     }
   return 0;

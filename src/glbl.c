@@ -2,7 +2,7 @@
 
    Copyright © 1993-2014 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2014-02-20 <alm@slewsys.org>
+   Last modified: 2014-09-16 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -46,12 +46,12 @@ mark_global_nodes (want_match, ed)
       if (!(s = get_buffer_line (lp, ed)))
         return ERR;
 #ifdef REG_STARTEND
-      rm[0].rm_so = 0;
-      rm[0].rm_eo = lp->len;
+      rm->rm_so = 0;
+      rm->rm_eo = lp->len;
       if (!regexec (re, s, 0, rm, REG_STARTEND) == want_match
           && !append_global_node (lp, ed))
 #else
-      if (ed->state[0].is_binary)
+      if (ed->state->is_binary)
         NUL_TO_NEWLINE (s, lp->len);
       if (!regexec (re, s, 0, NULL, 0) == want_match
           && !append_global_node (lp, ed))
@@ -91,10 +91,10 @@ exec_global (io_f, ed)
   for (ed->exec->first_pass = 1; (lp = next_global_node (ed));
        ed->input = gcb, ed->exec->first_pass = 0)
     {
-      if ((status = get_line_node_address (lp, &ed->state[0].dot, ed)) < 0
+      if ((status = get_line_node_address (lp, &ed->state->dot, ed)) < 0
           || (interactive
-              && (status = display_lines (ed->state[0].dot,
-                                          ed->state[0].dot, io_f, ed)) < 0))
+              && (status = display_lines (ed->state->dot,
+                                          ed->state->dot, io_f, ed)) < 0))
         return status;
 
       /* If `G/V' command, then read from stdin. */
@@ -135,9 +135,11 @@ exec_global (io_f, ed)
           first_time = 0;
         }
       for (ed->input = gcb; *ed->input;)
-        if ((status =
-             address_range (ed)) < 0
-            || (status = exec_command (ed)) < 0)
+        if ((status = address_range (ed)) < 0
+            || (status = exec_command (ed)) < 0
+            || (status > 0 &&
+                (status = display_lines (ed->state->dot,
+                                         ed->state->dot, status, ed)) < 0))
           return status;
     }
   return 0;

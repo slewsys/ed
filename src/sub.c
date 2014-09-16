@@ -2,7 +2,7 @@
 
    Copyright © 1993-2014 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2014-01-26 <alm@slewsys.org>
+   Last modified: 2014-09-16 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -198,7 +198,7 @@ substitution_rhs (s_nth, s_mod, s_f, sio_f, ed)
 
   *s_f = *sio_f = 0;              /* Reset modifiers and I/O flags */
   *s_nth = *s_mod = 0;            /* Reset match offset and modulus */
-  ed->state[0].input_is_binary = 0; /* Value used in substitute_lines(). */
+  ed->state->input_is_binary = 0; /* Value used in substitute_lines(). */
 
 
   /* Don't clobber command buffer if any ed->exec->global set. */
@@ -413,17 +413,17 @@ substitute_lines (from, to, re, s_nth, s_mod, s_f, ed)
   char *txt;
   char *eot;
   off_t lc;
-  off_t dot = ed->state[0].dot;
+  off_t dot = ed->state->dot;
   size_t len = 0;
   int nsubs = 0;
   int status = 0;
-  int nl = ed->state[0].newline_appended;
+  int nl = ed->state->newline_appended;
 
-  ed->state[0].dot = from - 1;
+  ed->state->dot = from - 1;
   for (lc = 0; lc <= to - from; ++lc)
     {
       /* Can't use lp->q_forw because replacement may be multiple lines. */
-      lp = get_line_node (++ed->state[0].dot, ed);
+      lp = get_line_node (++ed->state->dot, ed);
       if ((status =
            substitute_matching (re, lp, &len, s_nth, s_mod, s_f, ed)) < 0)
         return status;
@@ -431,7 +431,7 @@ substitute_lines (from, to, re, s_nth, s_mod, s_f, ed)
         {
           spl1 ();
           up = NULL;
-          if (delete_lines (ed->state[0].dot, ed->state[0].dot, ed) < 0)
+          if (delete_lines (ed->state->dot, ed->state->dot, ed) < 0)
             {
               spl0 ();
               return ERR;
@@ -447,21 +447,21 @@ substitute_lines (from, to, re, s_nth, s_mod, s_f, ed)
                   spl0 ();
                   return ERR;
                 }
-              lp = get_line_node (ed->state[0].dot, ed);
-              APPEND_UNDO_NODE (lp, up, ed->state[0].dot, ed);
+              lp = get_line_node (ed->state->dot, ed);
+              APPEND_UNDO_NODE (lp, up, ed->state->dot, ed);
             }
           while (txt != eot);
           ++nsubs;
-          dot = ed->state[0].dot;
-          ed->state[0].is_binary |= ed->state[0].input_is_binary;
+          dot = ed->state->dot;
+          ed->state->is_binary |= ed->state->input_is_binary;
           spl0 ();
         }
     }
-  ed->state[0].dot = dot;
+  ed->state->dot = dot;
 
   /* Preserve flag newline_appended, inrespective of substitution, to
      prevent gratuitous newline in binary output. */
-  ed->state[0].newline_appended = nl;
+  ed->state->newline_appended = nl;
   if (nsubs == 0 && !ed->exec->global)
     {
       ed->exec->err = _("No match");
@@ -516,19 +516,19 @@ substitute_matching (re, lp, len, s_nth, s_mod,  s_f, ed)
     s_mod = 1;
 
 #ifdef REG_STARTEND
-  for (*len = 0, eot = txt + lp->len, rm[0].rm_so = 0, rm[0].rm_eo = lp->len;
+  for (*len = 0, eot = txt + lp->len, rm->rm_so = 0, rm->rm_eo = lp->len;
        (!changed || (s_f & GSUB))
          && !regexec (re, txt, SE_MAX, rm, REG_STARTEND);
-       txt += j, rm[0].rm_so = 0, rm[0].rm_eo = eot - txt)
+       txt += j, rm->rm_so = 0, rm->rm_eo = eot - txt)
 #else
-  if (ed->state[0].is_binary)
+  if (ed->state->is_binary)
     NUL_TO_NEWLINE (txt, lp->len);
   for (*len = 0, eot = txt + lp->len;
        (!changed || (s_f & GSUB)) && !regexec (re, txt, SE_MAX, rm, 0);
        txt += j)
 #endif  /* !REG_STARTEND */
     {
-      i = rm[0].rm_so, j = rm[0].rm_eo;
+      i = rm->rm_so, j = rm->rm_eo;
       nil_prev = nil_next, nil_next = !j;
 
       /* Infinite loop!! */
@@ -539,7 +539,7 @@ substitute_matching (re, lp, len, s_nth, s_mod,  s_f, ed)
           j = 1;
           REALLOC_THROW (rb, rb_size, *len + j, ERR, ed);
 #ifndef REG_STARTEND
-          if (ed->state[0].is_binary)
+          if (ed->state->is_binary)
             NEWLINE_TO_NUL (txt, j);
 #endif
           memcpy (rb + (*len)++, txt, j);
@@ -553,7 +553,7 @@ substitute_matching (re, lp, len, s_nth, s_mod,  s_f, ed)
         {
           REALLOC_THROW (rb, rb_size, *len + i, ERR, ed);
 #ifndef REG_STARTEND
-          if (ed->state[0].is_binary)
+          if (ed->state->is_binary)
             NEWLINE_TO_NUL (txt, j);
 #endif
           memcpy (rb + *len, txt, i);
@@ -573,7 +573,7 @@ substitute_matching (re, lp, len, s_nth, s_mod,  s_f, ed)
           j = max (1, j);
           REALLOC_THROW (rb, rb_size, *len + j, ERR, ed);
 #ifndef REG_STARTEND
-          if (ed->state[0].is_binary)
+          if (ed->state->is_binary)
             NEWLINE_TO_NUL (txt, j);
 #endif
           memcpy (rb + *len, txt, j);
@@ -586,13 +586,13 @@ substitute_matching (re, lp, len, s_nth, s_mod,  s_f, ed)
   i = max (0, eot - txt);
   REALLOC_THROW (rb, rb_size, *len + i + 2, ERR, ed);
 #ifndef REG_STARTEND
-  if (ed->state[0].is_binary)
+  if (ed->state->is_binary)
     NEWLINE_TO_NUL (txt, i);
 #endif
   memcpy (rb + *len, txt, i);
 
   /* put_buffer_line() requires newline. For binary data, setting flag
-     ed->state[0].newline_appended suppresses its output.
+     ed->state->newline_appended suppresses its output.
      (See also read_stream() comments.) */
   strcpy (rb + *len + i, "\n");
   *len += i + 1;                /* `\n' => +1. */
@@ -617,9 +617,9 @@ count_matches (re, txt, len, buf)
   int nul_next = 1;
 
 #ifdef REG_STARTEND
-  for (eot = txt + len, rm[0].rm_so = 0, rm[0].rm_eo = len;
+  for (eot = txt + len, rm->rm_so = 0, rm->rm_eo = len;
        !regexec (re, txt, SE_MAX, rm, REG_STARTEND);
-       txt += off, rm[0].rm_so = 0, rm[0].rm_eo = eot - txt)
+       txt += off, rm->rm_so = 0, rm->rm_eo = eot - txt)
 #else
   if (buf->is_binary)
     NUL_TO_NEWLINE (txt, len);
@@ -628,7 +628,7 @@ count_matches (re, txt, len, buf)
        txt += off)
 #endif  /* !REG_STARTEND */
     {
-      off = rm[0].rm_eo;
+      off = rm->rm_eo;
       nul_prev = nul_next;
       nul_next = !off;
 
@@ -680,8 +680,8 @@ apply_subst_template (boln, rm, re_nsub, len, ed)
   for (; sub < rhs + rhs_i; ++sub)
     if (*sub == '&')
       {
-        j = rm[0].rm_so;
-        k = rm[0].rm_eo;
+        j = rm->rm_so;
+        k = rm->rm_eo;
         REALLOC_THROW (rb, rb_size, *len + k - j, ERR, ed);
         while (j < k)
           *(rb + (*len)++) = *(boln + j++);

@@ -2,7 +2,7 @@
 
    Copyright © 1993-2014 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2014-01-25 <alm@slewsys.org>
+   Last modified: 2014-09-16 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -86,7 +86,7 @@ read_file (fn, after, addr, size, is_default, ed)
 #endif  /* HAVE_FILE_LOCK */
   if ((status = read_stream (fp, after, size, ed)) < 0)
     return status;
-  *addr = ed->state[0].dot - after;
+  *addr = ed->state->dot - after;
 
 #ifdef WANT_FILE_LOCK
   if (!is_default)
@@ -124,7 +124,7 @@ read_pipe (fn, after, addr, size, ed)
     }
   if ((status = read_stream (fp, after, size, ed)) < 0)
     return status;
-  *addr = ed->state[0].dot - after;
+  *addr = ed->state->dot - after;
 
   /* Ignore "no child" error. */
   pclose (fp);
@@ -163,29 +163,29 @@ read_stream (fp, after, size, ed)
   char *tb;
   size_t len;
   int newline_inserted = 0;
-  int newline_appended_already = ed->state[0].newline_appended;
-  int stream_appended = after == ed->state[0].lines;
+  int newline_appended_already = ed->state->newline_appended;
+  int stream_appended = after == ed->state->lines;
 
-  ed->state[0].dot = after;
-  ed->state[0].input_is_binary = 0;
-  ed->state[0].input_wants_newline = 0;
+  ed->state->dot = after;
+  ed->state->input_is_binary = 0;
+  ed->state->input_wants_newline = 0;
   for (*size = 0; (tb = get_stream_line (fp, &len, ed)); *size += len)
-    PUT_BUFFER_LINE (lp, tb, len, up, ed->state[0].dot);
+    PUT_BUFFER_LINE (lp, tb, len, up, ed->state->dot);
   if (feof (fp))
     {
       fflush (fp);
       clearerr (fp);
 
       /* Empty file into empty buffer. */
-      if (!*size && !ed->state[0].lines)
+      if (!*size && !ed->state->lines)
         {
-          PUT_BUFFER_LINE (lp, "\n", 1, up, ed->state[0].dot);
+          PUT_BUFFER_LINE (lp, "\n", 1, up, ed->state->dot);
 
           /* First time only! */
           if (!newline_appended_already)
             {
               *size = 1;
-              ed->state[0].input_wants_newline = 1;
+              ed->state->input_wants_newline = 1;
             }
         }
     }
@@ -198,28 +198,28 @@ read_stream (fp, after, size, ed)
   else if (!tb)
     return ERR;
 
-  ed->state[0].is_empty = (ed->state[0].is_empty
-                         ? *size == ed->state[0].input_wants_newline : 0);
+  ed->state->is_empty = (ed->state->is_empty
+                         ? *size == ed->state->input_wants_newline : 0);
 
   /* A newline is appended to an empty file read into an empty buffer,
      but the buffer is still considered `empty' in the sense that a
      subsequent read or append will overwrite the newline. This is
      what is expected when concatenating files. */
   newline_inserted = (stream_appended
-                      ? ed->state[0].newline_appended && ed->state[0].is_binary
-                      : ed->state[0].input_wants_newline);
-  ed->state[0].newline_appended = (stream_appended
-                                 ? ed->state[0].input_wants_newline
-                                 : ed->state[0].newline_appended);
+                      ? ed->state->newline_appended && ed->state->is_binary
+                      : ed->state->input_wants_newline);
+  ed->state->newline_appended = (stream_appended
+                                 ? ed->state->input_wants_newline
+                                 : ed->state->newline_appended);
 
   /* Assume that user knows what they're doing ...
-  if (ed->state[0].is_binary)
+  if (ed->state->is_binary)
     puts (_("Binary data"));
   */
 
   /* If binary, adjust size since appended newlines are not written. */
-  if ((ed->state[0].is_binary |= ed->state[0].input_is_binary)
-      && stream_appended && ed->state[0].newline_appended)
+  if ((ed->state->is_binary |= ed->state->input_is_binary)
+      && stream_appended && ed->state->newline_appended)
     --*size;
 
   /* When either appending to a binary file which has no trailing
@@ -230,8 +230,8 @@ read_stream (fp, after, size, ed)
      leave joining the lines up to the user. */
   if (newline_inserted && *size > 0)
     puts (_("Newline inserted"));
-  else if (!ed->state[0].is_binary && ed->state[0].newline_appended
-           && (*size || (ed->state[0].is_empty && !newline_appended_already)))
+  else if (!ed->state->is_binary && ed->state->newline_appended
+           && (*size || (ed->state->is_empty && !newline_appended_already)))
     puts (_("Newline appended"));
 
   return 0;
@@ -270,11 +270,11 @@ read_stream_r (fp, after, size, ed)
   char *t;
   size_t len = 0;
   int newline_inserted = 0;
-  int newline_appended_already = ed->state[0].newline_appended;
-  int stream_appended = after == ed->state[0].lines;
+  int newline_appended_already = ed->state->newline_appended;
+  int stream_appended = after == ed->state->lines;
 
-  ed->state[0].input_is_binary = 0;
-  ed->state[0].input_wants_newline = 0;
+  ed->state->input_is_binary = 0;
+  ed->state->input_wants_newline = 0;
 
   init_text_deque (&th);
 
@@ -287,7 +287,7 @@ read_stream_r (fp, after, size, ed)
       clearerr (fp);
 
       /* Empty file into empty buffer. */
-      if (!*size && !ed->state[0].lines)
+      if (!*size && !ed->state->lines)
         {
           APPEND_TEXT_NODE (&th, "\n", 1, ed);
 
@@ -295,7 +295,7 @@ read_stream_r (fp, after, size, ed)
           if (!newline_appended_already)
             {
               *size = 1;
-              ed->state[0].input_wants_newline = 1;
+              ed->state->input_wants_newline = 1;
             }
         }
     }
@@ -306,12 +306,12 @@ read_stream_r (fp, after, size, ed)
     }
 
   lp = get_line_node (after, ed);
-  ed->state[0].dot = after;
+  ed->state->dot = after;
 
   /* Write stream input to buffer file. */
   while ((t = shift_text_node (&th, &len)))
     {
-      PUT_BUFFER_LINE (lp, t, len, up, ed->state[0].dot);
+      PUT_BUFFER_LINE (lp, t, len, up, ed->state->dot);
       free (t);
     }
 
@@ -319,25 +319,25 @@ read_stream_r (fp, after, size, ed)
      but the buffer is still considered `empty' in the sense that a
      subsequent read or append will overwrite the newline. This is
      what is expected when concatenating files. */
-  ed->state[0].is_empty = (ed->state[0].is_empty
-                         ? *size == ed->state[0].input_wants_newline : 0);
+  ed->state->is_empty = (ed->state->is_empty
+                         ? *size == ed->state->input_wants_newline : 0);
 
   /* If stream_appended, then nl_prev == 0  ==> nl_prev && binary_prev == 0. */
   newline_inserted = (stream_appended
-                      ? ed->state[0].newline_appended && ed->state[0].is_binary
-                      : ed->state[0].input_wants_newline);
-  ed->state[0].newline_appended = (stream_appended
-                                 ? ed->state[0].input_wants_newline
-                                 : ed->state[0].newline_appended);
+                      ? ed->state->newline_appended && ed->state->is_binary
+                      : ed->state->input_wants_newline);
+  ed->state->newline_appended = (stream_appended
+                                 ? ed->state->input_wants_newline
+                                 : ed->state->newline_appended);
 
   /* Assume that user knows what they're doing ...
-  if (ed->state[0].is_binary)
+  if (ed->state->is_binary)
     puts (_("Binary data"));
   */
 
   /* If binary, adjust size since appended newlines are not written. */
-  if ((ed->state[0].is_binary |= ed->state[0].input_is_binary)
-      && stream_appended && ed->state[0].newline_appended)
+  if ((ed->state->is_binary |= ed->state->input_is_binary)
+      && stream_appended && ed->state->newline_appended)
     --*size;
 
   /* When either appending to a binary file which has no trailing
@@ -350,8 +350,8 @@ read_stream_r (fp, after, size, ed)
      and leave joining the lines up to the user. */
   if (newline_inserted && *size > 0)
     puts (_("Newline inserted"));
-  else if (!ed->state[0].is_binary && ed->state[0].newline_appended
-           && (*size || ed->state[0].is_empty))
+  else if (!ed->state->is_binary && ed->state->newline_appended
+           && (*size || ed->state->is_empty))
     puts (_("Newline appended"));
 
   return 0;
@@ -429,7 +429,7 @@ get_stream_line (fp, len, ed)
   for (; (c = getc (fp)) != EOF && c != '\n'; ++*len)
     {
       REALLOC_THROW (tb, tb_size, *len + 1, NULL, ed);
-      ed->state[0].input_is_binary |= !(*(tb + *len) = c);
+      ed->state->input_is_binary |= !(*(tb + *len) = c);
     }
   if (feof (fp))
     {
@@ -469,7 +469,7 @@ get_stream_line (fp, len, ed)
     }
   else
     {
-      ed->state[0].input_wants_newline = c != '\n';
+      ed->state->input_wants_newline = c != '\n';
       *(tb + *len) = '\n';
       *(tb + ++*len) = '\0';
     }
@@ -622,8 +622,8 @@ write_stream (fp, lp, n, size, ed)
       if (!(s = get_buffer_line (lp, ed)))
         return ERR;
       len = lp->len;
-      append_newline = !(n == 1 && ed->state[0].is_binary
-                         && ed->state[0].newline_appended);
+      append_newline = !(n == 1 && ed->state->is_binary
+                         && ed->state->newline_appended);
       if (*size >= OFF_T_MAX - len - append_newline)
         {
           ed->exec->err = _("File too big");

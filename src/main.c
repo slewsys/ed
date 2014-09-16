@@ -2,7 +2,7 @@
 
    Copyright © 1993-2014 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2014-01-27 <alm@slewsys.org>
+   Last modified: 2014-09-16 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -247,7 +247,7 @@ top:
       if (!(ed->input = get_stdin_line (&len, ed)))
         {
           status = (!feof (stdin)
-                    ? ERR : (ed->state[0].is_modified
+                    ? ERR : (ed->state->is_modified
                              && !(ed->exec->opt & SCRIPTED)
                              ? EMOD : EOF));
           clearerr (stdin);
@@ -271,8 +271,8 @@ top:
 
         /* ... */
         if (!status
-            || (status = display_lines (ed->state[0].dot,
-                                        ed->state[0].dot, status, ed)) >= 0)
+            || (status = display_lines (ed->state->dot,
+                                        ed->state->dot, status, ed)) >= 0)
           continue;
 
     error:
@@ -292,7 +292,7 @@ top:
           quit (ed->exec->status, ed);
         case EMOD:
           ed->exec->err = _("WARNING: Buffer modified since last write");
-          ed->state[0].is_modified = 0;
+          ed->state->is_modified = 0;
           puts ("?");
           if (!(ed->exec->opt & EXIT_ON_ERROR))
             printf (ed->exec->opt & VERBOSE ? "%s\n" : "", ed->exec->err);

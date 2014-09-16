@@ -2,7 +2,7 @@
 
    Copyright © 1993-2014 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2014-01-25 <alm@slewsys.org>
+   Last modified: 2014-09-16 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -22,8 +22,8 @@ append_lines (after, ed)
   ed_undo_node_t *up = NULL;
   int status;
 
-  ed->state[0].input_is_binary = 0;
-  for (ed->state[0].dot = after;;)
+  ed->state->input_is_binary = 0;
+  for (ed->state->dot = after;;)
     {
       if (!ed->exec->global)
         {
@@ -54,18 +54,18 @@ append_lines (after, ed)
           len = s - ed->input;
         }
       spl1 ();
-      ed->state[0].is_binary |= ed->state[0].input_is_binary;
-      if (after == ed->state[0].lines)
-        ed->state[0].newline_appended = 0;
+      ed->state->is_binary |= ed->state->input_is_binary;
+      if (after == ed->state->lines)
+        ed->state->newline_appended = 0;
       if (!(ed->input = put_buffer_line (ed->input, len, ed)))
         {
           spl0 ();
           return ERR;
         }
-      lp = get_line_node (ed->state[0].dot, ed);
-      APPEND_UNDO_NODE (lp, up, ed->state[0].dot, ed);
-      ed->state[0].is_empty = 0;
-      ed->state[0].is_modified = 1;
+      lp = get_line_node (ed->state->dot, ed);
+      APPEND_UNDO_NODE (lp, up, ed->state->dot, ed);
+      ed->state->is_empty = 0;
+      ed->state->is_modified = 1;
       spl0 ();
     }
   /* NOTREACHED */
@@ -99,9 +99,9 @@ copy_lines (from, to, after, ed)
               spl0 ();
               return ERR;
             }
-          ed->state[0].dot = ++after;
+          ed->state->dot = ++after;
           APPEND_UNDO_NODE (np, up, after, ed);
-          ed->state[0].is_modified = 1;
+          ed->state->is_modified = 1;
           spl0 ();
         }
     }
@@ -122,18 +122,18 @@ delete_lines (from, to, ed)
 
   if (!append_undo_node (UDEL, from, to, ed))
     return ERR;
-  a = get_line_node (INC_MOD (to, ed->state[0].lines), ed);
+  a = get_line_node (INC_MOD (to, ed->state->lines), ed);
 
   /* This get_line_node last! */
   b = get_line_node (from - 1, ed);
   if (ed->exec->global)
     delete_global_nodes (b->q_forw, a, ed);
   LINK_NODES (b, a);
-  if (to == ed->state[0].lines)
-    ed->state[0].newline_appended = 0;
-  ed->state[0].lines -= to - from + 1;
-  ed->state[0].dot = from - 1;
-  ed->state[0].is_modified = 1;
+  if (to == ed->state->lines)
+    ed->state->newline_appended = 0;
+  ed->state->lines -= to - from + 1;
+  ed->state->dot = from - 1;
+  ed->state->is_modified = 1;
   return 0;
 }
 
@@ -171,14 +171,14 @@ join_lines (from, to, ed)
       spl0 ();
       return ERR;
     }
-  ed->state[0].dot = from - 1;
+  ed->state->dot = from - 1;
   if (!put_buffer_line (lj, len, ed)
-      || !append_undo_node (UADD, ed->state[0].dot, ed->state[0].dot, ed))
+      || !append_undo_node (UADD, ed->state->dot, ed->state->dot, ed))
     {
       spl0 ();
       return ERR;
     }
-  ed->state[0].is_modified = 1;
+  ed->state->is_modified = 1;
   spl0 ();
   return 0;
 }
@@ -193,7 +193,7 @@ move_lines (from, to, after, ed)
      ed_buffer_t *ed;
 {
   ed_line_node_t *b1, *a1, *b2, *a2;
-  off_t succ = INC_MOD (to, ed->state[0].lines);
+  off_t succ = INC_MOD (to, ed->state->lines);
   off_t prec = from - 1;
   int done = (after == from - 1 || after == to);
 
@@ -202,11 +202,11 @@ move_lines (from, to, after, ed)
     {
       a2 = get_line_node (succ, ed);
       b2 = get_line_node (prec, ed);
-      ed->state[0].dot = to;
+      ed->state->dot = to;
     }
   else if (!append_undo_node (UMOV, prec, succ, ed)
            || !append_undo_node (UMOV, after,
-                                 INC_MOD (after, ed->state[0].lines), ed))
+                                 INC_MOD (after, ed->state->lines), ed))
     {
       spl0 ();
       return ERR;
@@ -232,11 +232,11 @@ move_lines (from, to, after, ed)
       LINK_NODES (b2, b1->q_forw);
       LINK_NODES (a1->q_back, a2);
       LINK_NODES (b1, a1);
-      ed->state[0].dot = after + (from > after ? to - from + 1 : 0);
+      ed->state->dot = after + (from > after ? to - from + 1 : 0);
     }
   if (ed->exec->global)
     delete_global_nodes (b2->q_forw, a2, ed);
-  ed->state[0].is_modified = 1;
+  ed->state->is_modified = 1;
   spl0 ();
   return 0;
 }

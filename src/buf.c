@@ -3,7 +3,7 @@
 
    Copyright © 1993-2014 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2014-03-11 <alm@slewsys.org>
+   Last modified: 2014-09-16 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -384,10 +384,10 @@ put_buffer_line (t, len, ed)
       ed->exec->err = _("Buffer write error");
       return NULL;
     }
-  if (!append_line_node (len, ed->core->offset, ed->state[0].dot, ed))
+  if (!append_line_node (len, ed->core->offset, ed->state->dot, ed))
     return NULL;
 
-  ++ed->state[0].dot;
+  ++ed->state->dot;
   ed->core->offset += len;      /* Update current offset in buffer file. */
   return (char *) t + ++len;
 }
@@ -404,7 +404,7 @@ append_line_node (len, offset, addr, ed)
 {
   ed_line_node_t *lp, *np;
 
-  if (ed->state[0].lines >= OFF_T_MAX)
+  if (ed->state->lines >= OFF_T_MAX)
     {
       ed->exec->err = _("Buffer full");
       return NULL;
@@ -425,7 +425,7 @@ append_line_node (len, offset, addr, ed)
   /* This get_line_node last! */
   np = get_line_node (addr, ed);
   APPEND_NODE (lp, np);
-  ++ed->state[0].lines;
+  ++ed->state->lines;
   return lp;
 }
 
@@ -444,13 +444,13 @@ get_line_node (n, ed)
 
   if (n > n_prev)
     {
-      if (n <= (n_prev + ed->state[0].lines) >> 1)
+      if (n <= (n_prev + ed->state->lines) >> 1)
         for (; n_prev < n; ++n_prev)
           lp = lp->q_forw;
       else
         {
           lp = ed->core->line_head->q_back;
-          for (n_prev = ed->state[0].lines; n_prev > n; --n_prev)
+          for (n_prev = ed->state->lines; n_prev > n; --n_prev)
             lp = lp->q_back;
         }
     }
@@ -642,17 +642,17 @@ pop_text_node (th, len)
 {
   static char *s;
 
-  ed_text_node_t *tp = th->q_back;
+  ed_text_node_t *tq = th->q_back;
 
   /* Uninitialized or no more elements. */
-  if (!tp || tp == th)
+  if (!tq || tq == th)
       return NULL;
 
   spl1 ();
-  UNLINK_NODE (tp);
-  *len = tp->text_i;
-  s = tp->text;
-  free (tp);
+  UNLINK_NODE (tq);
+  *len = tq->text_i;
+  s = tq->text;
+  free (tq);
   spl0 ();
   return s;
 }

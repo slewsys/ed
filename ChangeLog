@@ -1,3 +1,58 @@
+2014-09-16  Andrew L. Moore  <alm@slewsys.org>
+
+	* src/undo.c (undo_last_command):
+	* src/sub.c (substitution_rhs, substitute_lines)
+	(substitute_matching):
+	* src/signal.c (handle_hup):
+	* src/re.c (get_matching_node_address):
+	* src/parse.c (address_range, line_address)
+	(check_address_bounds, regular_expression):
+	* src/page.c (display_lines, put_frame_buffer_line):
+	* src/main.c (main):
+	* src/io.c (read_file, read_pipe, read_stream, read_stream_r):
+	* src/exec.c (DESTINATION_ADDRESS, exec_command, is_valid_range):
+	* src/cmds.c (append_lines, join_lines, copy_lines)
+	(delete_lines, join_lines, move_lines):
+	* src/buf.c (init_ed_state, put_buffer_line, append_line_node)
+	(get_line_node):
+	* src/aux.c (filter_lines, read_from_register): Replace `[0].'
+	with `->'.
+
+2014-09-16  gettextize  <bug-gnu-gettext@gnu.org>
+
+	* m4/gettext.m4: Upgrade to gettext-0.19.2.
+	* m4/iconv.m4: Upgrade to gettext-0.19.2.
+	* m4/lib-ld.m4: Upgrade to gettext-0.19.2.
+	* m4/lib-link.m4: Upgrade to gettext-0.19.2.
+	* m4/lib-prefix.m4: Upgrade to gettext-0.19.2.
+	* m4/nls.m4: Upgrade to gettext-0.19.2.
+	* m4/po.m4: Upgrade to gettext-0.19.2.
+	* m4/progtest.m4: Upgrade to gettext-0.19.2.
+	* m4/codeset.m4: Upgrade to gettext-0.19.2.
+	* m4/fcntl-o.m4: Upgrade to gettext-0.19.2.
+	* m4/glibc2.m4: Upgrade to gettext-0.19.2.
+	* m4/glibc21.m4: Upgrade to gettext-0.19.2.
+	* m4/intdiv0.m4: Upgrade to gettext-0.19.2.
+	* m4/intl.m4: Upgrade to gettext-0.19.2.
+	* m4/intldir.m4: Upgrade to gettext-0.19.2.
+	* m4/intlmacosx.m4: Upgrade to gettext-0.19.2.
+	* m4/intmax.m4: Upgrade to gettext-0.19.2.
+	* m4/inttypes_h.m4: Upgrade to gettext-0.19.2.
+	* m4/inttypes-pri.m4: Upgrade to gettext-0.19.2.
+	* m4/lcmessage.m4: Upgrade to gettext-0.19.2.
+	* m4/lock.m4: Upgrade to gettext-0.19.2.
+	* m4/longlong.m4: Upgrade to gettext-0.19.2.
+	* m4/printf-posix.m4: Upgrade to gettext-0.19.2.
+	* m4/size_max.m4: Upgrade to gettext-0.19.2.
+	* m4/stdint_h.m4: Upgrade to gettext-0.19.2.
+	* m4/threadlib.m4: Upgrade to gettext-0.19.2.
+	* m4/uintmax_t.m4: Upgrade to gettext-0.19.2.
+	* m4/visibility.m4: Upgrade to gettext-0.19.2.
+	* m4/wchar_t.m4: Upgrade to gettext-0.19.2.
+	* m4/wint_t.m4: Upgrade to gettext-0.19.2.
+	* m4/xsize.m4: Upgrade to gettext-0.19.2.
+	* configure.ac (AM_GNU_GETTEXT_VERSION): Bump to 0.19.2.
+
 2014-02-20  Andrew L. Moore  <alm@slewsys.org>
 
 	* src/exec.c (exec_command):

@@ -2,7 +2,7 @@
 
    Copyright © 1993-2014 Andrew L. Moore, SlewSys Research
 
-   Last modified: 2014-01-25 <alm@slewsys.org>
+   Last modified: 2014-09-16 <alm@slewsys.org>
 
    This file is part of ed. */
 
@@ -57,8 +57,8 @@ handle_hup (signo)
   if (!_sigactive)
     quit (1, ed);
   _sigflags &= ~(1 << (signo - 1));
-  if (ed->state[0].lines
-      && write_file ("ed.hup", 0, 1, ed->state[0].lines,
+  if (ed->state->lines
+      && write_file ("ed.hup", 0, 1, ed->state->lines,
                      &addr, &size, "w", ed) < 0
       && (s = getenv ("HOME")))
     {
@@ -68,7 +68,7 @@ handle_hup (signo)
       memcpy (hup, s, len);
       memcpy (hup + len, m ? "/" : "", 1);
       memcpy (hup + len + m, template, sizeof template);
-      write_file (hup, 0, 1, ed->state[0].lines, &addr, &size, "w", ed);
+      write_file (hup, 0, 1, ed->state->lines, &addr, &size, "w", ed);
     }
   quit (2, ed);
 }
