@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: ed 0.271-b7\n"
+"Project-Id-Version: ed 0.271-b10\n"
 "Report-Msgid-Bugs-To: bug-ed@gnu.org\n"
-"POT-Creation-Date: 2014-02-20 08:16-0500\n"
-"PO-Revision-Date: 2014-02-20 07:13+0000\n"
+"POT-Creation-Date: 2014-09-16 08:53-0400\n"
+"PO-Revision-Date: 2014-03-12 03:38+0000\n"
 "Last-Translator: Andrew L. Moore <alm@slewsys.org>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "Language: es\n"
@@ -17,48 +17,48 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/buf.c:115 src/buf.c:306 src/buf.c:319
+#: src/buf.c:115 src/buf.c:260 src/buf.c:273
 msgid "Buffer open error"
 msgstr "Error abrir búfer"
 
-#: src/buf.c:228 src/buf.c:292 src/buf.c:464 src/buf.c:585 src/glbl.c:161
+#: src/buf.c:239 src/main.c:336
+msgid "File name too long"
+msgstr "Nombre de archivo demasiado largo"
+
+#: src/buf.c:240
+msgid "Invalid buffer name"
+msgstr "Nombe de búfer inválido"
+
+#: src/buf.c:246 src/buf.c:418 src/buf.c:539 src/buf.c:574 src/glbl.c:163
 #: src/io.c:250 src/main.c:479 src/re.c:159 src/undo.c:30 lib/regcomp.c:168
 msgid "Memory exhausted"
 msgstr "Memoria agotada"
 
-#: src/buf.c:285 src/main.c:336
-msgid "File name too long"
-msgstr "Nombre de archivo demasiado largo"
-
-#: src/buf.c:286
-msgid "Invalid buffer name"
-msgstr "Nombe de búfer inválido"
-
-#: src/buf.c:336
+#: src/buf.c:290
 msgid "Buffer close error"
 msgstr "Error cerrar búfer"
 
-#: src/buf.c:373 src/buf.c:409
+#: src/buf.c:327 src/buf.c:363
 msgid "Buffer seek error"
 msgstr "Error buscar búfer"
 
-#: src/buf.c:383
+#: src/buf.c:337
 msgid "Buffer read error"
 msgstr "Error leer búfer"
 
-#: src/buf.c:423 src/buf.c:455
+#: src/buf.c:377 src/buf.c:409
 msgid "Buffer full"
 msgstr "Búfer agotada"
 
-#: src/buf.c:430
+#: src/buf.c:384
 msgid "Buffer write error"
 msgstr "Error escribir búfer"
 
-#: src/buf.c:533 src/exec.c:101 src/exec.c:491 src/exec.c:1191
+#: src/buf.c:487 src/exec.c:101 src/exec.c:491 src/exec.c:1195
 msgid "Address out of range"
 msgstr "Dirección fuera del intervalo"
 
-#: src/buf.c:578
+#: src/buf.c:532
 msgid "Memory request too big"
 msgstr "Pedirse demasiada memoria"
 
@@ -70,8 +70,8 @@ msgstr "Inesperado final de archivo"
 msgid "Invalid address mark"
 msgstr "Marca inválida de la dirección"
 
-#: src/exec.c:33 src/exec.c:279 src/exec.c:363 src/exec.c:614 src/exec.c:798
-#: src/exec.c:810 src/exec.c:818
+#: src/exec.c:33 src/exec.c:279 src/exec.c:363 src/exec.c:616 src/exec.c:802
+#: src/exec.c:814 src/exec.c:822
 msgid "Command suffix unexpected"
 msgstr "Sufijo del comando inesperado"
 
@@ -83,8 +83,8 @@ msgstr "Dirección de destinación requerida"
 msgid "Command prefix unexpected"
 msgstr "Prefijo del comando inesperado"
 
-#: src/exec.c:270 src/exec.c:354 src/exec.c:430 src/exec.c:446 src/exec.c:579
-#: src/exec.c:605 src/exec.c:776 src/exec.c:1096
+#: src/exec.c:270 src/exec.c:354 src/exec.c:430 src/exec.c:446 src/exec.c:581
+#: src/exec.c:607 src/exec.c:780 src/exec.c:1100
 msgid "Address unexpected"
 msgstr "Dirección inesperada"
 
@@ -108,24 +108,24 @@ msgstr "Ningún error previa"
 msgid "Invalid destination address"
 msgstr "Dirección de destinación inválida"
 
-#: src/exec.c:557 src/exec.c:769
+#: src/exec.c:559 src/exec.c:773
 msgid "Invalid register"
 msgstr "Registrar inválida"
 
-#: src/exec.c:948 src/exec.c:985 src/exec.c:996 src/exec.c:1035
-#: src/exec.c:1130
+#: src/exec.c:952 src/exec.c:989 src/exec.c:1000 src/exec.c:1039
+#: src/exec.c:1134
 msgid "Unknown command"
 msgstr "Comando desconocido"
 
-#: src/exec.c:1129
+#: src/exec.c:1133
 msgid "Invalid address"
 msgstr "Dirección inválida"
 
-#: src/exec.c:1155
+#: src/exec.c:1159
 msgid "Command too long"
 msgstr "Comando demasiado largo"
 
-#: src/exec.c:1196
+#: src/exec.c:1200
 msgid "Invalid address range"
 msgstr "Intervalo de dirección inválida"
 

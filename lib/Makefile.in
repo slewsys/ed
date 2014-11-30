@@ -98,8 +98,8 @@ host_triplet = @host@
 @LIBADD_REGEX_TRUE@am__append_9 = -DRE_ENABLE_I18N=1 -D__USE_GNU=1
 subdir = lib
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
-	$(top_srcdir)/mkinstalldirs strspn.c memset.c realloc.c \
-	malloc.c strtok.c $(top_srcdir)/depcomp $(noinst_HEADERS)
+	$(top_srcdir)/mkinstalldirs realloc.c strtok.c memset.c \
+	strspn.c malloc.c $(top_srcdir)/depcomp $(noinst_HEADERS)
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/codeset.m4 \
 	$(top_srcdir)/m4/extern-inline.m4 $(top_srcdir)/m4/fcntl-o.m4 \
