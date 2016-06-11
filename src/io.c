@@ -1,10 +1,9 @@
 /* io.c: I/O routines for the ed line editor.
-
-   Copyright © 1993-2014 Andrew L. Moore, SlewSys Research
-
-   Last modified: 2014-09-16 <alm@slewsys.org>
-
-   This file is part of ed. */
+ *
+ *  Copyright © 1993-2016 Andrew L. Moore, SlewSys Research
+ *
+ *  This file is part of ed.
+ */
 
 #include "ed.h"
 
@@ -64,7 +63,9 @@ read_file (fn, after, addr, size, is_default, ed)
     }
   else
 #endif  /* WANT_FILE_LOCK */
-    if (!(fp = fopen (fn, "r")))
+
+    /* Open for writing so that exclusive lock can be set by F_SETLK.  */
+    if (!(fp = fopen (fn, "r+")))
       {
         fprintf (stderr, "%s: %s\n", fn, strerror (errno));
         ed->exec->err = _("File open error");
@@ -616,7 +617,7 @@ write_stream (fp, lp, n, size, ed)
   int append_newline = 0;
   int status = 0;
 
-  /* As per SUSv3, permit writing an empty buffer. */
+  /* Per SUSv4, permit writing an empty buffer. */
   for (*size = 0; n; --n, lp = lp->q_forw)
     {
       if (!(s = get_buffer_line (lp, ed)))
@@ -713,36 +714,46 @@ set_file_lock (fp, exclusive)
      FILE *fp;
      int exclusive;             /* If set, get exclusive lock. */
 {
-  int status1 = 0;
-  int status2 = 0;
+  int flock_status = 0;
+  int fcntl_status = 0;
+  int fd = fileno (fp);
 
 #  ifdef F_SETLK
   struct flock l;
 #  endif  /* F_SETLK */
 
 #  ifdef HAVE_FLOCK
-  status1 = flock (fileno (fp), (exclusive ? LOCK_EX : LOCK_SH) | LOCK_NB);
+  if (flock (fd, (exclusive ? LOCK_EX : LOCK_SH) | LOCK_NB) == -1)
+    {
+      /* fprintf (stderr, "flock: %s\n", strerror (errno)); */
+      flock_status = errno;
+      errno = 0;
+    }
 #  endif  /* HAVE_FLOCK */
 
 #  ifdef F_SETLK
-  l.l_type = exclusive ? F_WRLCK : F_RDLCK;
-  l.l_whence = 0;
   l.l_start = 0;
   l.l_len = 0;
-  status2 = fcntl (fileno (fp), F_SETLK, &l);
+  l.l_type = exclusive ? F_WRLCK : F_RDLCK;
+  l.l_whence = 0;
+  if (fcntl (fd, F_SETLK, &l) == -1)
+    {
+#    ifdef HAVE_FLOCK
+
+      /* flock(8) already succeeded...  */
+      if (errno == EAGAIN && !flock_status)
+        {
+          errno = 0;
+          return 0;
+        }
+#    endif  /* HAVE_FLOCK */
+      /* fprintf (stderr, "F_SETLK: %s\n", strerror (errno)); */
+      fcntl_status = errno;
+      errno = 0;
+    }
 #  endif  /* F_SETLK */
 
-  return status1 || status2 ? -1 : 0;
+  return flock_status || fcntl_status ? -1 : 0;
 }
 
 #endif  /* WANT_FILE_LOCK */
-
-/*
- * Local variables:
- * mode: c
- * eval: (add-hook 'write-file-functions 'time-stamp)
- * time-stamp-start: "Last modified: "
- * time-stamp-format: "%:y-%02m-%02d <%u@%h>"
- * time-stamp-end: "$"
- * End:
- */
