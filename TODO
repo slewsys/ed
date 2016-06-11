@@ -1,7 +1,5 @@
 TODO: Possible improvements for the ed line editor.
 
-Last modified: 2014-02-20 <alm@slewsys.org>
-
 These are more or less in decreasing order of priority.
 
 * Pre-release
@@ -22,11 +20,3 @@ These are more or less in decreasing order of priority.
 
 * Undo
 ** Add multiple undo.
-
-# Local variables:
-# mode: org
-# eval: (add-hook 'write-file-functions 'time-stamp)
-# time-stamp-start: "Last modified: "
-# time-stamp-format: "%:y-%02m-%02d <%u@%h>"
-# time-stamp-end: "$"
-# End:

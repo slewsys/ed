@@ -1,8 +1,6 @@
 \input texinfo.tex
 @setfilename ed-intro.info
 
-@c Last modified: 2007-08-09 <alm@slewsys.org>
-
 @ifclear includefile
 
 @paragraphindent 3
@@ -1772,11 +1770,3 @@ at @strong{.}@kbd{-1}, scan to 1, wrap around to @kbd{$}.
 @end table
 
 @bye
-
-@c Local variables:
-@c mode: texinfo
-@c eval: (add-hook 'write-file-functions 'time-stamp)
-@c time-stamp-start: "Last modified: "
-@c time-stamp-format: "%:y-%02m-%02d <%u@%h>"
-@c time-stamp-end: "$"
-@c End:

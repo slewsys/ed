@@ -1,7 +1,5 @@
 NEWS: User visible changes in the ed line editor.
 
-Last modified: 2014-02-20 <alm@slewsys.org>
-
 * Register extensions
  Add register extensions to `m' and `t' commands. Deleted lines are
 	copied to a default register. The syntax of the register extensions
@@ -290,11 +288,3 @@ Last modified: 2014-02-20 <alm@slewsys.org>
 * Fix buffer overflow and temp file vulnerabilities.
 
 * Substitution sets the current address to the last modified line.
-
-# Local variables:
-# mode: outline
-# eval: (add-hook 'write-file-functions 'time-stamp)
-# time-stamp-start: "Last modified: "
-# time-stamp-format: "%:y-%02m-%02d <%u@%h>"
-# time-stamp-end: "$"
-# End:

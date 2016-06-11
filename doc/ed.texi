@@ -1,7 +1,5 @@
 \input texinfo
 
-@c Last modified: 2014-02-20 <alm@slewsys.org>
-
 @c %**start of header
 @setfilename ed.info
 @settitle The Ed Text Editor
@@ -867,12 +865,3 @@ second time, it succeeds, but any changes to the buffer are lost.
 @command{ed} exits with 0 if no errors occurred; otherwise >0.
 
 @bye
-
-@c Local variables:
-@c mode: texinfo
-@c eval: (add-hook 'write-file-functions 'time-stamp)
-@c time-stamp-start: "Last modified: "
-@c time-stamp-format: "%:y-%02m-%02d <%u@%h>"
-@c time-stamp-end: "$"
-@c End:
-

@@ -1,4 +1,4 @@
-#! @ED_COMMAND@ -vf
+#!@abs_top_builddir@/@ED_COMMAND@ -vf
 #
 # @(#) ts-am-sw.ed    1.1
 #

@@ -1,10 +1,9 @@
 /* ed.h: Header for the ed line editor.
-
-   Copyright © 1993-2014 Andrew L. Moore, SlewSys Research
-
-   Last modified: 2014-03-11 <alm@slewsys.org>
-
-   This file is part of ed. */
+ *
+ *  Copyright © 1993-2016 Andrew L. Moore, SlewSys Research
+ *
+ *  This file is part of ed.
+ */
 
 #ifdef HAVE_CONFIG_H
 # include "config.h"
@@ -192,7 +191,7 @@ typedef OFF_T_SIZE off_t;
 
 #ifndef OFF_T_MAX
 # define OFF_T_MAX                                                            \
-  ((OFF_T_SIZE) (~(unsigned OFF_T_SIZE) 0 >> (unsigned OFF_T_SIZE) 1))
+  ((OFF_T_SIZE) (~(OFF_T_SIZE) 0 >> (OFF_T_SIZE) 1))
 # define OFF_T_MIN (-OFF_T_MAX - 1)
 #endif
 
@@ -313,6 +312,20 @@ typedef struct ed_text_node
 
 #define ED_TEXT_NODE_T_SIZE (sizeof (ed_text_node_t))
 
+/* # define UADD    0 */
+/* # define UDEL    1 */
+/* # define UMOV    2 */
+/* # define URET    3 */
+
+/* Undo nodes types - inverse derived by toggling last bit. */
+typedef enum ed_undo_op
+  {
+    UADD = 0x00,
+    UDEL = 0x01,
+    UMOV = 0x10,
+    URET = 0x11
+  } ed_undo_op_t;
+
 /* Undo node. */
 typedef struct ed_undo_node
 {
@@ -320,17 +333,11 @@ typedef struct ed_undo_node
   struct ed_undo_node *q_back;
   ed_line_node_t *h;            /* Address of first modified line. */
   ed_line_node_t *t;            /* Address of last modified line. */
-
-/* Undo nodes types - inverse derived by toggling last bit. */
-# define UADD    0
-# define UDEL    1
-# define UMOV    2
-# define URET    3
-
-  int type;                     /* Node type. */
+  ed_undo_op_t type;            /* Node type. */
 } ed_undo_node_t;
 
 #define ED_UNDO_NODE_T_SIZE (sizeof (ed_undo_node_t))
+
 #define REG_FIRST  '0'          /* Name of first register */
 #define REG_LAST  '9'           /* Name of last register */
 #define REG_MAX  11             /* Max number of registers, including default */
@@ -400,7 +407,7 @@ struct ed_substitute
   unsigned sio_f;               /* Substitution I/O flags. */
 };
 
-/* Execution parameters. */
+/* Ed command parameters. */
 struct ed_execute
 {
   FILE *fp;                     /* Command script file pointer. */
@@ -442,7 +449,7 @@ enum ed_command_flags
 {
   ANSI_COLOR        = 0x0001,   /* If set, filter ANSI color codes. */
   EXIT_ON_ERROR     = 0x0002,   /* If set, exit on errors. */
-  POSIXLY_CORRECT   = 0x0004,   /* If set, adhere to SUSv3, 2004 standards. */
+  POSIXLY_CORRECT   = 0x0004,   /* If set, adhere to SUSv4, 2013 standards. */
   PRINT_CONFIG      = 0x0008,   /* If set, display configuration info. */
   PRINT_FIRST_FILE  = 0x0010,   /* If set, print first filename in a list. */
   PRINT_HELP        = 0x0020,   /* If set, display help. */
@@ -573,14 +580,14 @@ enum search_type
 
 /* Assert: 256 <= BUFSIZ <= 512KB and that 2 ^ BUFSIZ_LOG2 == BUFSIZ */
 #define BUFSIZ_LOG2                                                           \
-  ((BUFSIZ & 0x100) ? 8 :                                                     \
-   (BUFSIZ & 0x200) ? 9 :                                                     \
-   (BUFSIZ & 0x400) ? 10 :                                                    \
-   (BUFSIZ & 0x800) ? 11 :                                                    \
-   (BUFSIZ & 0x1000) ? 12 :                                                   \
-   (BUFSIZ & 0x2000) ? 13 :                                                   \
-   (BUFSIZ & 0x4000) ? 14 :                                                   \
-   (BUFSIZ & 0x8000) ? 15 :                                                   \
+  ((BUFSIZ & 0x100)   ?  8 :                                                  \
+   (BUFSIZ & 0x200)   ?  9 :                                                  \
+   (BUFSIZ & 0x400)   ? 10 :                                                  \
+   (BUFSIZ & 0x800)   ? 11 :                                                  \
+   (BUFSIZ & 0x1000)  ? 12 :                                                  \
+   (BUFSIZ & 0x2000)  ? 13 :                                                  \
+   (BUFSIZ & 0x4000)  ? 14 :                                                  \
+   (BUFSIZ & 0x8000)  ? 15 :                                                  \
    (BUFSIZ & 0x10000) ? 16 :                                                  \
    (BUFSIZ & 0x20000) ? 17 :                                                  \
    (BUFSIZ & 0x40000) ? 18 :                                                  \
@@ -889,13 +896,3 @@ int write_stream __P ((FILE *, ed_line_node_t *, off_t, off_t *,
 /* global vars */
 extern volatile sig_atomic_t window_columns;
 extern volatile sig_atomic_t window_rows;
-
-/*
- * Local variables:
- * mode: c
- * eval: (add-hook 'write-file-functions 'time-stamp)
- * time-stamp-start: "Last modified: "
- * time-stamp-format: "%:y-%02m-%02d <%u@%h>"
- * time-stamp-end: "$"
- * End:
- */

@@ -1,9 +1,7 @@
 # Makefile.am: Doc/tutorial automake template for the ed line editor.
-
-# Copyright © 2006-2014 Andrew L. Moore, SlewSys Research
-
-# Last modified: 2014-01-26 <alm@slewsys.org>
-
+#
+# Copyright © 2006-2016 Andrew L. Moore, SlewSys Research
+#
 # Process this file with automake to create Makefile.in.
 
 SUFFIXES = .ps .pdf
@@ -74,11 +72,3 @@ $(ADV).ps: $(ADV_SRC)
 
 clean-local:
 	-rm -f *.ps *.pdf
-
-# Local variables:
-# mode: makefile-gmake
-# eval: (add-hook 'write-file-functions 'time-stamp)
-# time-stamp-start: "Last modified: "
-# time-stamp-format: "%:y-%02m-%02d <%u@%h>"
-# time-stamp-end: "$"
-# End:

@@ -1,10 +1,9 @@
 /* page.c: Display routines for the ed line editor.
-
-   Copyright © 1993-2014 Andrew L. Moore, SlewSys Research
-
-   Last modified: 2014-09-16 <alm@slewsys.org>
-
-   This file is part of ed. */
+ *
+ *  Copyright © 1993-2016 Andrew L. Moore, SlewSys Research
+ *
+ *  This file is part of ed.
+ */
 
 #include "ed.h"
 
@@ -356,7 +355,7 @@ put_frame_buffer_line (lp, addr, io_f, fb, ed)
   unsigned int sgr_len = 0;     /* length of ANSI sgr sequence */
   int form_feed = 0;
 
-  /* As per SUSv3, 2004, the `$' (dollar sign) character is output by
+  /* Per SUSv4, 2013, the `$' (dollar sign) character is output by
      the `l' (literal) command as the escape sequence `\$' */
   char control_char[10] =
     {
@@ -578,13 +577,3 @@ sgr_span (s)
     ;
   return *s == 'm' ? s - t + 1 : 0;
 }
-
-/*
- * Local variables:
- * mode: c
- * eval: (add-hook 'write-file-functions 'time-stamp)
- * time-stamp-start: "Last modified: "
- * time-stamp-format: "%:y-%02m-%02d <%u@%h>"
- * time-stamp-end: "$"
- * End:
- */

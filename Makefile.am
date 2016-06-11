@@ -1,9 +1,7 @@
 # Makefile.am: Top-level automake template for the ed line editor.
-
-# Copyright © 1993-2014 Andrew L. Moore, SlewSys Research
-
-# Last modified: 2013-08-08 <alm@slewsys.org>
-
+#
+# Copyright © 1993-2016 Andrew L. Moore, SlewSys Research
+#
 # Process this file with automake to create Makefile.in
 
 ACLOCAL_AMFLAGS = -I m4
@@ -61,11 +59,3 @@ distclean-local:
 	rm -rf GPATH GRTAGS GSYMS GTAGS
 	find . -name '[Tt][Aa][Gg][Ss]' -type f -delete
 	find . \( -name '*~' -or -name '#*#' \) -type f -delete
-
-# Local variables:
-# mode: makefile-gmake
-# eval: (add-hook 'write-file-functions 'time-stamp)
-# time-stamp-start: "Last modified: "
-# time-stamp-format: "%:y-%02m-%02d <%u@%h>"
-# time-stamp-end: "$"
-# End:

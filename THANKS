@@ -1,7 +1,5 @@
 THANKS: Acknowledgements for help with the ed line editor.
 
-Last modified: 2011-04-14 <alm@slewsys.org>
-
 * CSRG
 Ed was originally written and released as part of a whirlwind
 effort to complete the first public release of CSRG's BSD Unix.
@@ -59,11 +57,3 @@ Ritchie extended regular expression syntax (ca. 1969?).
 Richard Stallman and the FSF's tireless efforts in promoting Free
 software have done more than perhaps any other factor to improve
 software quality for all of us.
-
-# Local variables:
-# mode: outline
-# eval: (add-hook 'write-file-functions 'time-stamp)
-# time-stamp-start: "Last modified: "
-# time-stamp-format: "%:y-%02m-%02d <%u@%h>"
-# time-stamp-end: "$"
-# End:

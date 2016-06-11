@@ -1,4 +1,4 @@
-This is ed.info, produced by makeinfo version 5.2 from ed.texi.
+This is ed.info, produced by makeinfo version 6.1 from ed.texi.
 
 Copyright (C) 1993-2013 Andrew L. Moore, SlewSys Research
 
@@ -21,7 +21,7 @@ The 'Ed' Text Editor
 ********************
 
 This manual is intended to serve as both tutorial and reference for
-'ed', the "standard Unix text editor", version 0.271-b11.  Of historical
+'ed', the "standard Unix text editor", version 2.0.0.  Of historical
 interest is that 'ed' was the original Unix text editor and introduced
 the "regular expression" method of representing text patterns.
 
@@ -1526,7 +1526,7 @@ remain theoretical knowledge, not something you have confidence in.
 File: ed.info,  Node: The List Command,  Next: The Substitute Command,  Prev: SPECIAL CHARACTERS,  Up: SPECIAL CHARACTERS
 
 The List Command ''l''
-======================
+----------------------
 
 'ed' provides two commands for printing the contents of the lines you're
 editing.  Most people are familiar with 'p', in combinations like
@@ -1564,7 +1564,7 @@ almost never want them.
 File: ed.info,  Node: The Substitute Command,  Next: The Undo Command,  Prev: The List Command,  Up: SPECIAL CHARACTERS
 
 The Substitute Command ''s''
-============================
+----------------------------
 
 Most of the next few sections will be taken up with a discussion of the
 substitute command 's'.  Since this is the command for changing the
@@ -1619,7 +1619,7 @@ the lines that were modified.
 File: ed.info,  Node: The Undo Command,  Next: The Metacharacter,  Prev: The Substitute Command,  Up: SPECIAL CHARACTERS
 
 The Undo Command ''u''
-======================
+----------------------
 
 Occasionally you will make a substitution in a line, only to realize too
 late that it was a ghastly mistake.  The 'undo' command 'u' lets you
@@ -1632,7 +1632,7 @@ restored to its previous state by typing the command
 File: ed.info,  Node: The Metacharacter,  Next: The Backslash,  Prev: The Undo Command,  Up: SPECIAL CHARACTERS
 
 The Metacharacter ''.''
-=======================
+-----------------------
 
 As you have undoubtedly noticed when you use 'ed', certain characters
 have unexpected meanings when they occur in the left side of a
@@ -1713,7 +1713,7 @@ which is probably not what you intended.
 File: ed.info,  Node: The Backslash,  Next: The Dollar Sign,  Prev: The Metacharacter,  Up: SPECIAL CHARACTERS
 
 The Backslash '\'
-=================
+-----------------
 
 Since a period means 'any character', the question naturally arises of
 what to do when you really want a period.  For example, how do you
@@ -1818,7 +1818,7 @@ really want.
 File: ed.info,  Node: The Dollar Sign,  Next: The Circumflex,  Prev: The Backslash,  Up: SPECIAL CHARACTERS
 
 The Dollar Sign ''$''
-=====================
+---------------------
 
 The next metacharacter, the '$', stands for 'the end of the line'.  As
 its most obvious use, suppose you have the line
@@ -1878,7 +1878,7 @@ added to that line.
 File: ed.info,  Node: The Circumflex,  Next: The Star,  Prev: The Dollar Sign,  Up: SPECIAL CHARACTERS
 
 The Circumflex ''^''
-====================
+--------------------
 
 The circumflex (or hat or caret) '^' stands for the beginning of the
 line.  For example, suppose you are looking for a line that begins with
@@ -1913,7 +1913,7 @@ you can use the command
 File: ed.info,  Node: The Star,  Next: The Brackets,  Prev: The Circumflex,  Up: SPECIAL CHARACTERS
 
 The Star ''*''
-==============
+--------------
 
 Suppose you have a line that looks like this:
 
@@ -2038,7 +2038,7 @@ write
 File: ed.info,  Node: The Brackets,  Next: The Ampersand,  Prev: The Star,  Up: SPECIAL CHARACTERS
 
 The Brackets ''[]''
-===================
+-------------------
 
 Suppose that you want to delete any numbers that appear at the beginning
 of all lines of a file.  You might first think of trying a series of
@@ -2101,7 +2101,7 @@ finds a line that doesn't begin with a circumflex.
 File: ed.info,  Node: The Ampersand,  Next: Substituting Newlines,  Prev: The Brackets,  Up: SPECIAL CHARACTERS
 
 The Ampersand ''&''
-===================
+-------------------
 
 The ampersand '&' is used primarily to save typing.  Suppose you have
 the line
@@ -2159,7 +2159,7 @@ the left side of a substitute, only on the _right_ side.
 File: ed.info,  Node: Substituting Newlines,  Next: Joining Lines,  Prev: The Ampersand,  Up: SPECIAL CHARACTERS
 
 Substituting Newlines
-=====================
+---------------------
 
 'ed' provides a facility for splitting a single line into two or more
 shorter lines by 'substituting in a newline'.  As the simplest example,
@@ -2203,7 +2203,7 @@ created.
 File: ed.info,  Node: Joining Lines,  Next: Rearranging a Line,  Prev: Substituting Newlines,  Up: SPECIAL CHARACTERS
 
 Joining Lines
-=============
+-------------
 
 Lines may also be joined together, but this is done with the 'j' command
 instead of 's'.  Given the lines
@@ -2231,7 +2231,7 @@ numbers in Section 3.)
 File: ed.info,  Node: Rearranging a Line,  Prev: Joining Lines,  Up: SPECIAL CHARACTERS
 
 Rearranging a Line with ''\(...\)''
-===================================
+-----------------------------------
 
 (This section should be skipped on first reading.)  Recall that '&' is a
 shorthand that stands for whatever was matched by the left side of an
@@ -2320,7 +2320,7 @@ in a substitute command.
 File: ed.info,  Node: Address Arithmetic,  Next: Repeated Searches,  Prev: LINE ADDRESSING,  Up: LINE ADDRESSING
 
 Address Arithmetic
-==================
+------------------
 
 The next step is to combine the line numbers like '.', '$', '/.../' and
 '?...?'  with '+' and '-'.  Thus
@@ -2384,7 +2384,7 @@ it.
 File: ed.info,  Node: Repeated Searches,  Next: Default Addresses,  Prev: Address Arithmetic,  Up: LINE ADDRESSING
 
 Repeated Searches
-=================
+-----------------
 
 Suppose you ask for the search
 
@@ -2428,7 +2428,7 @@ worked.
 File: ed.info,  Node: Default Addresses,  Next: Semicolon,  Prev: Repeated Searches,  Up: LINE ADDRESSING
 
 Default Line Numbers and the Value of Dot
-=========================================
+-----------------------------------------
 
 One of the most effective ways to speed up your editing is always to
 know what lines will be affected by a command if you don't specify the
@@ -2538,7 +2538,7 @@ and that is where dot would be set.
 File: ed.info,  Node: Semicolon,  Next: Interrupting the Editor,  Prev: Default Addresses,  Up: LINE ADDRESSING
 
 Semicolon ';'
-=============
+-------------
 
 Searches with '/.../' and '?...?'  start at the current line and move
 forward or backward respectively until they either find the pattern or
@@ -2622,7 +2622,7 @@ the search at line 1.
 File: ed.info,  Node: Interrupting the Editor,  Prev: Semicolon,  Up: LINE ADDRESSING
 
 Interrupting the Editor
-=======================
+-----------------------
 
 As a final note on what dot gets set to, you should be aware that if you
 hit the interrupt or delete or rubout or break key while 'ed' is doing a
@@ -2657,7 +2657,7 @@ specified pattern.
 File: ed.info,  Node: The Global Command List,  Next: Multi-line Global Commands,  Prev: GLOBAL COMMANDS,  Up: GLOBAL COMMANDS
 
 The Global Command List
-=======================
+-----------------------
 
 As the simplest example, the command
 
@@ -2740,7 +2740,7 @@ case the lines searched are only those in the range specified.
 File: ed.info,  Node: Multi-line Global Commands,  Prev: The Global Command List,  Up: GLOBAL COMMANDS
 
 Multi-line Global Commands
-==========================
+--------------------------
 
 It is possible to do more than one command under the control of a global
 command, although the syntax for expressing the operation is not
@@ -2813,7 +2813,7 @@ files.
 File: ed.info,  Node: Changing the Name of a File,  Next: Making a Copy of a File,  Prev: CUT AND PASTE WITH UNIX COMMANDS,  Up: CUT AND PASTE WITH UNIX COMMANDS
 
 Changing the Name of a File
-===========================
+---------------------------
 
 You have a file named 'memo' and you want it to be called 'paper'
 instead.  How is it done?
@@ -2840,7 +2840,7 @@ is illegal.
 File: ed.info,  Node: Making a Copy of a File,  Next: Removing a File,  Prev: Changing the Name of a File,  Up: CUT AND PASTE WITH UNIX COMMANDS
 
 Making a Copy of a File
-=======================
+-----------------------
 
 Sometimes what you want is a copy of a file -- an entirely fresh
 version.  This might be because you want to work on a file, and yet save
@@ -2879,7 +2879,7 @@ better be sure that's what you want to do _before_ you do it.
 File: ed.info,  Node: Removing a File,  Next: Putting Two or More Files Together,  Prev: Making a Copy of a File,  Up: CUT AND PASTE WITH UNIX COMMANDS
 
 Removing a File
-===============
+---------------
 
 If you decide you are really done with a file forever, you can remove it
 with the 'rm' command:
@@ -2892,7 +2892,7 @@ throws away (irrevocably) the file called 'savegood'.
 File: ed.info,  Node: Putting Two or More Files Together,  Next: Adding Something to the End of a File,  Prev: Removing a File,  Up: CUT AND PASTE WITH UNIX COMMANDS
 
 Putting Two or More Files Together
-==================================
+----------------------------------
 
 The next step is the familiar one of collecting two or more files into
 one big one.  This will be needed, for example, when the author of a
@@ -2957,7 +2957,7 @@ simple usages.
 File: ed.info,  Node: Adding Something to the End of a File,  Prev: Putting Two or More Files Together,  Up: CUT AND PASTE WITH UNIX COMMANDS
 
 Adding Something to the End of a File
-=====================================
+-------------------------------------
 
 Sometimes you want to add one file to the end of another.  We have
 enough building blocks now that you can do it; in fact before reading
@@ -3009,7 +3009,7 @@ themselves.
 File: ed.info,  Node: Filenames,  Next: Inserting One File into Another,  Prev: CUT AND PASTE WITH THE EDITOR,  Up: CUT AND PASTE WITH THE EDITOR
 
 Filenames
-=========
+---------
 
 The first step is to ensure that you know the 'ed' commands for reading
 and writing files.  Of course you can't go very far without knowing 'r'
@@ -3060,7 +3060,7 @@ careless 'w' command won't clobber the original.
 File: ed.info,  Node: Inserting One File into Another,  Next: Writing Out Part of a File,  Prev: Filenames,  Up: CUT AND PASTE WITH THE EDITOR
 
 Inserting One File into Another
-===============================
+-------------------------------
 
 Suppose you have a file called 'memo', and you want the file called
 'table' to be inserted just after the reference to Table 1.  That is, in
@@ -3088,7 +3088,7 @@ same as '$r'.
 File: ed.info,  Node: Writing Out Part of a File,  Next: Moving Lines Around,  Prev: Inserting One File into Another,  Up: CUT AND PASTE WITH THE EDITOR
 
 Writing Out Part of a File
-==========================
+--------------------------
 
 The other side of the coin is writing out part of the document you're
 editing.  For example, maybe you want to split out into a separate file
@@ -3139,7 +3139,7 @@ going on.
 File: ed.info,  Node: Moving Lines Around,  Next: Marks,  Prev: Writing Out Part of a File,  Up: CUT AND PASTE WITH THE EDITOR
 
 Moving Lines Around
-===================
+-------------------
 
 Suppose you want to move a paragraph from its present position in a
 paper to the end.  How would you do it?  As a concrete example, suppose
@@ -3210,7 +3210,7 @@ complicated; then if you goof, it's easy to back up to where you were.
 File: ed.info,  Node: Marks,  Next: Copying Lines,  Prev: Moving Lines Around,  Up: CUT AND PASTE WITH THE EDITOR
 
 Marks
-=====
+-----
 
 'ed' provides a facility for marking a line with a particular name so
 you can later reference it by name regardless of its actual line number.
@@ -3239,7 +3239,7 @@ associated with it at any given time.
 File: ed.info,  Node: Copying Lines,  Next: The Temporary Escape,  Prev: Marks,  Up: CUT AND PASTE WITH THE EDITOR
 
 Copying Lines
-=============
+-------------
 
 We mentioned earlier the idea of saving a line that was hard to type or
 used often, so as to cut down on typing time.  Of course this could be
@@ -3272,7 +3272,7 @@ and so on.
 File: ed.info,  Node: The Temporary Escape,  Prev: Copying Lines,  Up: CUT AND PASTE WITH THE EDITOR
 
 The Temporary Escape '!'
-========================
+------------------------
 
 Sometimes it is convenient to be able to temporarily escape from the
 editor to do some other UNIX command, perhaps one of the file copy or
@@ -3313,7 +3313,7 @@ found in [3].
 File: ed.info,  Node: Grep,  Next: Editing Scripts,  Prev: SUPPORTING TOOLS,  Up: SUPPORTING TOOLS
 
 Grep
-====
+----
 
 Sometimes you want to find all occurrences of some word or pattern in a
 set of files, to edit them or perhaps just to verify their presence or
@@ -3363,7 +3363,7 @@ command to be used as input to the second command; see [2].)
 File: ed.info,  Node: Editing Scripts,  Next: Sed,  Prev: Grep,  Up: SUPPORTING TOOLS
 
 Editing Scripts
-===============
+---------------
 
 If a fairly complicated set of editing operations is to be done on a
 whole set of files, the easiest thing to do is to make up a 'script',
@@ -3395,7 +3395,7 @@ through a set of files automatically, with varying degrees of ease.
 File: ed.info,  Node: Sed,  Prev: Editing Scripts,  Up: SUPPORTING TOOLS
 
 Sed
-===
+---
 
 'sed' ('stream editor') is a version of the editor with restricted
 capabilities but which is capable of processing unlimited amounts of
@@ -3428,7 +3428,7 @@ branching, which we cannot go into here.
 File: ed.info,  Node: Acknowledgement,  Next: References,  Prev: SUPPORTING TOOLS,  Up: Advanced Editing on UNIX
 
 Acknowledgement
-***************
+===============
 
 I am grateful to Ted Dolotta for his careful reading and valuable
 suggestions.
@@ -3437,7 +3437,7 @@ suggestions.
 File: ed.info,  Node: References,  Prev: Acknowledgement,  Up: Advanced Editing on UNIX
 
 References
-**********
+==========
 
 [1]Brian W. Kernighan, _A Tutorial Introduction to the UNIX Text
    Editor_, Bell Laboratories internal memorandum.
@@ -4097,88 +4097,88 @@ succeeds, but any changes to the buffer are lost.
 
 Tag Table:
 Node: Top435
-Node: Overview1430
-Node: Tutorial3691
-Node: A Tutorial Introduction to the UNIX Text Editor4477
-Node: Introduction6400
-Node: Disclaimer7295
-Node: Getting Started8192
-Node: Creating Text8640
-Node: Error Messages11603
-Node: Writing to a file11995
-Node: Leaving ed13460
-Ref: Leaving ed-Footnote-114057
-Node: Exercise 114214
-Node: Reading text from a file14684
-Node: Inserting text from a file16188
-Node: Exercise 217183
-Node: Printing the buffer17839
-Node: Exercise 319844
-Node: The current line20284
-Node: Deleting lines23070
-Node: Exercise 423917
-Node: Modifying text24912
-Node: Exercise 527801
-Node: Context searching28717
-Node: Exercise 632258
-Node: Change and Insert33777
-Node: Exercise 735405
-Node: Moving text around36252
-Node: The global commands37377
-Node: Special Characters38663
-Node: Summary42684
-Node: Advanced Editing on UNIX45744
-Node: INTRODUCTION46844
-Node: SPECIAL CHARACTERS48340
-Node: The List Command49358
-Node: The Substitute Command51034
-Node: The Undo Command52795
-Node: The Metacharacter53242
-Node: The Backslash55781
-Node: The Dollar Sign58493
-Node: The Circumflex59777
-Node: The Star60624
-Node: The Brackets64286
-Node: The Ampersand66305
-Node: Substituting Newlines67776
-Node: Joining Lines69139
-Node: Rearranging a Line69900
-Node: LINE ADDRESSING71831
-Node: Address Arithmetic73028
-Node: Repeated Searches74618
-Node: Default Addresses75826
-Node: Semicolon79871
-Node: Interrupting the Editor82529
-Node: GLOBAL COMMANDS83486
-Node: The Global Command List83898
-Node: Multi-line Global Commands86492
-Node: CUT AND PASTE WITH UNIX COMMANDS88070
-Node: Changing the Name of a File89122
-Node: Making a Copy of a File89918
-Node: Removing a File91346
-Node: Putting Two or More Files Together91705
-Node: Adding Something to the End of a File94085
-Node: CUT AND PASTE WITH THE EDITOR95163
-Node: Filenames95711
-Node: Inserting One File into Another97622
-Node: Writing Out Part of a File98580
-Node: Moving Lines Around100143
-Node: Marks102957
-Node: Copying Lines103926
-Node: The Temporary Escape105010
-Node: SUPPORTING TOOLS105801
-Node: Grep106394
-Node: Editing Scripts108467
-Node: Sed109387
-Node: Acknowledgement110633
-Node: References110862
-Node: Switches111277
-Node: Line Addressing112588
-Node: Regular Expressions116029
-Node: Extended Expressions121368
-Node: Command Reference122949
-Node: Environment133246
-Node: Limitations133888
-Node: Error Handling134524
+Node: Overview1426
+Node: Tutorial3687
+Node: A Tutorial Introduction to the UNIX Text Editor4473
+Node: Introduction6396
+Node: Disclaimer7291
+Node: Getting Started8188
+Node: Creating Text8636
+Node: Error Messages11599
+Node: Writing to a file11991
+Node: Leaving ed13456
+Ref: Leaving ed-Footnote-114053
+Node: Exercise 114210
+Node: Reading text from a file14680
+Node: Inserting text from a file16184
+Node: Exercise 217179
+Node: Printing the buffer17835
+Node: Exercise 319840
+Node: The current line20280
+Node: Deleting lines23066
+Node: Exercise 423913
+Node: Modifying text24908
+Node: Exercise 527797
+Node: Context searching28713
+Node: Exercise 632254
+Node: Change and Insert33773
+Node: Exercise 735401
+Node: Moving text around36248
+Node: The global commands37373
+Node: Special Characters38659
+Node: Summary42680
+Node: Advanced Editing on UNIX45740
+Node: INTRODUCTION46840
+Node: SPECIAL CHARACTERS48336
+Node: The List Command49354
+Node: The Substitute Command51030
+Node: The Undo Command52791
+Node: The Metacharacter53238
+Node: The Backslash55777
+Node: The Dollar Sign58489
+Node: The Circumflex59773
+Node: The Star60620
+Node: The Brackets64282
+Node: The Ampersand66301
+Node: Substituting Newlines67772
+Node: Joining Lines69135
+Node: Rearranging a Line69896
+Node: LINE ADDRESSING71827
+Node: Address Arithmetic73024
+Node: Repeated Searches74614
+Node: Default Addresses75822
+Node: Semicolon79867
+Node: Interrupting the Editor82525
+Node: GLOBAL COMMANDS83482
+Node: The Global Command List83894
+Node: Multi-line Global Commands86488
+Node: CUT AND PASTE WITH UNIX COMMANDS88066
+Node: Changing the Name of a File89118
+Node: Making a Copy of a File89914
+Node: Removing a File91342
+Node: Putting Two or More Files Together91701
+Node: Adding Something to the End of a File94081
+Node: CUT AND PASTE WITH THE EDITOR95159
+Node: Filenames95707
+Node: Inserting One File into Another97618
+Node: Writing Out Part of a File98576
+Node: Moving Lines Around100139
+Node: Marks102953
+Node: Copying Lines103922
+Node: The Temporary Escape105006
+Node: SUPPORTING TOOLS105797
+Node: Grep106390
+Node: Editing Scripts108463
+Node: Sed109383
+Node: Acknowledgement110629
+Node: References110858
+Node: Switches111273
+Node: Line Addressing112584
+Node: Regular Expressions116025
+Node: Extended Expressions121364
+Node: Command Reference122945
+Node: Environment133242
+Node: Limitations133884
+Node: Error Handling134520
 
 End Tag Table

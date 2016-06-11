@@ -1,15 +1,15 @@
-#! /bin/bash -
+#!/bin/bash -
 #
 # @(#)upgrade-sh
 #
-# Copyright © 2006-2013 Andrew L. Moore, SlewSys Research
-#
-# Last modified: 2013-08-08 <alm@slewsys.org>
+# Copyright © 2006-2016 Andrew L. Moore, SlewSys Research
 #
 # This script invokes `configure' with options listed by `ed --info'.
 #
 declare -i _exit_status=''
 declare _process_output=''
+declare verbose='true'
+declare pgm="${0##*/}"
 
 ed  --info >/dev/null 2>&1 || {
     echo "ed: --info: Unrecognized option." >&2
@@ -17,7 +17,7 @@ ed  --info >/dev/null 2>&1 || {
 }
 
 usage() {
-    echo "Usage: $PGM [-h|--help] [-s|--silent] [maintainer-update-dist]" >&2
+    echo "Usage: $pgm [-h|--help] [-s|--silent] [maintainer-update-dist]" >&2
     exit 1
 }
 
@@ -27,7 +27,7 @@ usage() {
 check_exit_status() {
     if (( _exit_status != 0 )); then
         cat >&2 <<EOF
-$PGM: Process terminated with errors.
+$pgm: Process terminated with errors.
 $process_output
 EOF
 
@@ -35,12 +35,10 @@ EOF
     fi
 }
 
-PGM="${0##*/}"
 if [[ ."$1" = .-h* ]] || [[ ."$1" = .--h* ]]; then
     usage
 fi
 
-verbose='true'
 if [[ ."$1" = .-s* ]] || [[ ."$1" = .--s* ]]; then
     verbose='false'
     shift
@@ -53,7 +51,7 @@ fi
 srcdir="${0%/*}"
 
 $verbose && cat >&2 <<EOF
-$PGM: Running:
+$pgm: Running:
   ( cd "$srcdir" && ./bootstrap-sh --silent )
 
 EOF
@@ -62,7 +60,7 @@ process_output="$( cd "$srcdir" && ./bootstrap-sh --silent )"
 _exit_status=$?
 
 $verbose && cat >&2 <<EOF
-$PGM: Running:
+$pgm: Running:
   "$srcdir/configure" $(ed --info | tail -n +3 | tr -d '\n')
 
 EOF
@@ -75,7 +73,7 @@ check_exit_status
 # If no args, try just compiling.
 if [ $# -eq 0 ]; then
     $verbose && cat <<EOF
-$PGM: Running:
+$pgm: Running:
   make all
 
 EOF
@@ -86,7 +84,7 @@ EOF
 # Otherwise, update distribution.
 else
     $verbose && cat >&2 <<EOF
-$PGM: Running:
+$pgm: Running:
   make maintainer-update-dist
 
 EOF
@@ -113,7 +111,7 @@ abs_srcdir="$(cd "$srcdir" && pwd)"
 # If builddir = srcdir, use quick-check.
 if [ ."$abs_srcdir" = ."$(pwd)" ]; then
     $verbose && cat >&2 <<EOF
-$PGM: Running:
+$pgm: Running:
   make quick-check
 
 EOF
@@ -124,7 +122,7 @@ EOF
 # Otherwise, try invoking GNU make.
 elif [ -x "$(which gmake)" ]; then
     $verbose && cat >&2 <<EOF
-$PGM: Running:
+$pgm: Running:
   gmake check
 
 EOF
@@ -133,7 +131,7 @@ EOF
     _exit_status=$?
 elif [ -x "$(which gnumake)" ]; then
     $verbose && cat >&2 <<EOF
-$PGM: Running:
+$pgm: Running:
   gnumake check
 
 EOF
@@ -142,7 +140,7 @@ EOF
     _exit_status=$?
 elif [[ "$(make --version | head -1)" =~ "GNU Make" ]]; then
     $verbose && cat >&2  <<EOF
-$PGM: Running:
+$pgm: Running:
   make check
 
 EOF
@@ -157,11 +155,3 @@ EOF
 
 fi
 check_exit_status
-
-# Local variables:
-# mode: shell-script
-# eval: (add-hook 'write-file-functions 'time-stamp)
-# time-stamp-start: "Last modified: "
-# time-stamp-format: "%:y-%02m-%02d <%u@%h>"
-# time-stamp-end: "$"
-# End:

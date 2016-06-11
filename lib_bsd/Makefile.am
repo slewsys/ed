@@ -1,9 +1,7 @@
 # Makefile.am: Lib subdirectory automake template for the ed line editor.
-
-# Copyright © 1993-2014 Andrew L. Moore, SlewSys Research
-
-# Last modified: 2011-04-14 <alm@slewsys.org>
-
+#
+# Copyright © 1993-2016 Andrew L. Moore, SlewSys Research
+#
 # Process this file with automake to create Makefile.in
 
 # BSD getopt(3) requires optreset -- ln -sf bsd_getopt.h getopt.h
@@ -45,11 +43,3 @@ AM_CPPFLAGS += -DRE_ENABLE_I18N=1					      \
                -I$(top_srcdir)/regex					      \
                -I$(top_builddir)/regex
 endif WITH_INCLUDED_REGEX
-
-# Local variables:
-# mode: makefile-gmake
-# eval: (add-hook 'write-file-functions 'time-stamp)
-# time-stamp-start: "Last modified: "
-# time-stamp-format: "%:y-%02m-%02d <%u@%h>"
-# time-stamp-end: "$"
-# End:

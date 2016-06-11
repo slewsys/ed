@@ -1,10 +1,8 @@
-#! /bin/bash -
+#!/bin/bash -
 #
 # @(#)bootstrap-sh
 #
-# Copyright © 2006-2013 Andrew L. Moore, SlewSys Research
-#
-# Last modified: 2013-01-27 <alm@buttercup.lan>
+# Copyright © 2006-2016 Andrew L. Moore, SlewSys Research
 #
 # This script generates a GNU Autoconf configure script for the ed
 # line editor.
@@ -84,11 +82,3 @@ if $verbose; then
 ------------------------------------------------------------------------
 EOF
 fi
-
-# Local variables:
-# mode: shell-script
-# eval: (add-hook 'write-file-functions 'time-stamp)
-# time-stamp-start: "Last modified: "
-# time-stamp-format: "%:y-%02m-%02d <%u@%h>"
-# time-stamp-end: "$"
-# End:

@@ -1,13 +1,11 @@
 # configure.ac: Configure autoconf template for the ed line editor.
-
-# Copyright © 1993-2013 Andrew L. Moore, SlewSys Research
-
-# Last modified: 2014-09-16 <alm@slewsys.org>
-
+#
+# Copyright © 1993-2016 Andrew L. Moore, SlewSys Research
+#
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.65])
-AC_INIT([ed],[0.271-b11],[bug-ed@gnu.org])
+AC_INIT([ed],[2.0.0],[bug-ed@gnu.org])
 AC_CONFIG_AUX_DIR([.])
 AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADERS([config.h])
@@ -18,16 +16,17 @@ AM_INIT_AUTOMAKE([gnits])
 
 # Preserve configured options for displaying in --info output.
 [ac_cv_configure_args=''
-for ac_option in `sed -n                                                      \
-  -e '/^.*configure@<:@ @:>@\{1,\}\(--.*\)$/s//\1/p'                          \
-  -e '/^--/q' config.log`
-do
-  expr _"$ac_option" : '_-' >/dev/null 2>&1 &&
-  ! expr _"$ac_option" : '_--no-create' >/dev/null 2>&1 &&
-  ! expr _"$ac_option" : '_--no-recursion' >/dev/null 2>&1 &&
-  ac_cv_configure_args="$ac_cv_configure_args  $ac_option\\n"
-done]
-if test ! _"$[ac_cv_configure_args]" = _''; then
+ while read line; do
+    configure_args=`expr ."$line" : '^..*configure \{1,\}\(--.*\)$'`
+    test ."$configure_args" != .'' && break
+ done <config.log
+ for ac_option in $configure_args; do
+     expr ."$ac_option" : .'-' >/dev/null 2>&1 &&
+     ! expr ."$ac_option" : .'--no-create' >/dev/null 2>&1 &&
+     ! expr ."$ac_option" : .'--no-recursion' >/dev/null 2>&1 &&
+     ac_cv_configure_args="$ac_cv_configure_args  $ac_option\\n"
+ done]
+if test ! ."$[ac_cv_configure_args]" = .''; then
   AC_DEFINE_UNQUOTED([CONFIGURE_ARGS],
     ["Configured options:\n$ac_cv_configure_args"],
     [Options with which "$top_srcdir"/configure was invoked.])
@@ -37,7 +36,7 @@ else
 fi
 
 # Darwin disables nested functions which are used by some AC tests.
-if test _$[GCC] = _yes; then
+if test .$[GCC] = .yes; then
   AC_CACHE_CHECK([whether gcc needs -fnested-functions],
     [ac_cv_gcc_cflags_nested_functions],
     AC_RUN_IFELSE([AC_LANG_SOURCE([
@@ -55,7 +54,7 @@ main ()
       [ac_cv_gcc_cflags_nested_functions=no],
       [ac_cv_gcc_cflags_nested_functions=yes],
       [ac_cv_gcc_cflags_nested_functions=no]))
-  if test _$[ac_cv_gcc_cflags_nested_functions] = _yes; then
+  if test ."$[ac_cv_gcc_cflags_nested_functions]" = .'yes'; then
     CFLAGS="$CFLAGS -fnested-functions"
   fi
 fi
@@ -82,25 +81,29 @@ AC_PATH_PROGS([PS2PDF], [ps2pdf14 ps2pdf ps2pdfwr])
 # Checks for prior deployment of this package - used by `upgrade-sh'
 AC_CACHE_CHECK([for ed], [ac_cv_path_ED_COMMAND],
     [AC_PATH_PROGS_FEATURE_CHECK([ED_COMMAND], ["$ED" ed],
-      [if $ac_path_ED_COMMAND --version 2>&1 |                                \
-           grep -i '^ed ' >/dev/null 2>&1; then
-         ac_cv_path_ED_COMMAND=$ac_path_ED_COMMAND
-         ac_path_ED_COMMAND_found=:
-       fi],
+      [case `$ac_path_ED_COMMAND --info 2>&1` in
+           ed)
+               ac_cv_path_ED_COMMAND=$ac_path_ED_COMMAND
+               ac_path_ED_COMMAND_found=:
+               ;;
+       esac],
       [ac_cv_path_ED_COMMAND=./src/ed])])
 AC_SUBST(ED_COMMAND, [$ac_cv_path_ED_COMMAND])
 
 # Checks availability of GNU make
-AC_CACHE_CHECK([for GNU make], [ac_cv_path_GNU_MAKE_COMMAND],
-    [AC_PATH_PROGS_FEATURE_CHECK([GNU_MAKE_COMMAND],
-    ["$MAKE" make gmake gnumake],
-    [if $ac_path_GNU_MAKE_COMMAND --version 2>&1 |                            \
-       grep -i 'gnu' >/dev/null 2>&1; then
-         ac_cv_path_GNU_MAKE_COMMAND=$ac_path_GNU_MAKE_COMMAND
-         ac_path_GNU_MAKE_COMMAND_found=:
-       fi],
-      [])])
-AC_SUBST(GNU_MAKE_COMMAND, [$ac_cv_path_GNU_MAKE_COMMAND])
+dnl AC_CACHE_CHECK([for GNU make], [ac_cv_path_GNU_MAKE_COMMAND],
+dnl     [AC_PATH_PROGS_FEATURE_CHECK([GNU_MAKE_COMMAND],
+dnl     ["$MAKE" make gmake gnumake],
+dnl     [if $ac_path_GNU_MAKE_COMMAND --version 2>&1 |                            \
+dnl        grep -i 'gnu' >/dev/null 2>&1; then
+dnl          ac_cv_path_GNU_MAKE_COMMAND=$ac_path_GNU_MAKE_COMMAND
+dnl          ac_path_GNU_MAKE_COMMAND_found=:
+dnl        fi],
+dnl       [])])
+AX_CHECK_GNU_MAKE()
+if test ."$_cv_gnu_make_command" != .''; then
+   AC_SUBST(GNU_MAKE_COMMAND, [$_cv_gnu_make_command])
+fi
 
 AC_SYS_LARGEFILE
 AC_PROG_CC
@@ -118,11 +121,11 @@ AC_ARG_WITH([included-regex],
     [use GNU regex library included here])],[],
     [with_included_regex=check])
 AC_MSG_RESULT([$with_included_regex])
-AS_IF([test "_$with_included_regex" != _yes],
+AS_IF([test ."$with_included_regex" != .'yes'],
   [AC_CHECK_FUNCS([regcomp],[],
     [AC_MSG_WARN([System regex not found, falling back to included version])
      with_included_regex=yes])])
-AM_CONDITIONAL([LIBADD_REGEX], [test "_$with_included_regex" = _yes])
+AM_CONDITIONAL([LIBADD_REGEX], [test ."$with_included_regex" = .'yes'])
 AM_COND_IF([LIBADD_REGEX],
   [AC_DEFINE([HAVE_REG_SYNTAX_T], [1],
     [Define to 1 if regex.h defines `reg_syntax_t'.])],
@@ -169,9 +172,9 @@ AC_ARG_ENABLE([file-lock],
   [AS_HELP_STRING([--enable-file-lock],
     [enable file locking support])],[],[])
 AC_MSG_RESULT([${enable_file_lock:-no}])
-if test _$[enable_file_lock] = _yes; then
-  if test _$[ac_cv_func_flock] = _no &&
-    test _$[ac_cv_have_decl_f_setlk] = _no; then
+if test ."$[enable_file_lock]" = .'yes'; then
+  if test ."$[ac_cv_func_flock]" = .'no' &&
+    test ."$[ac_cv_have_decl_f_setlk]" = .'no'; then
     AC_MSG_WARN([Don't know how to set file locks; disabling])
   else
     AC_DEFINE([WANT_FILE_LOCK], [1],
@@ -191,9 +194,9 @@ AC_HEADER_STDBOOL
 AC_HEADER_STDC
 AC_HEADER_SYS_WAIT
 AC_HEADER_TIOCGWINSZ
-AC_CHECK_HEADERS_ONCE([fcntl.h glob.h libintl.h limits.h locale.h stdlib.h    \
-  string.h strings.h sys/file.h sys/ioctl.h sys/param.h termios.h unistd.h    \
-  wchar.h wctype.h])
+AC_CHECK_HEADERS_ONCE([fcntl.h glob.h libintl.h limits.h locale.h stddef.h    \
+  stdlib.h string.h strings.h sys/file.h sys/ioctl.h sys/param.h termios.h    \
+  unistd.h wchar.h wctype.h])
 
 #
 # Checks for typedefs, structures, and compiler characteristics.
@@ -202,6 +205,7 @@ AC_C_CONST
 AC_TYPE_PID_T
 AC_TYPE_OFF_T
 AC_TYPE_SIZE_T
+AC_TYPE_LONG_LONG_INT
 AC_C_VOLATILE
 AC_CHECK_TYPES([sig_atomic_t],
   [AC_DEFINE([HAVE_SIG_ATOMIC_T], [1],
@@ -213,47 +217,42 @@ AC_CHECK_DECL([F_SETLK],
   [ac_cv_have_decl_f_setlk=no],
   [#include <fcntl.h>])
 
-# Checks storage size of size_t
-AC_CACHE_CHECK([size of size_t],
- [ac_cv_size_t_size],
- AC_RUN_IFELSE([AC_LANG_SOURCE([
-#include <limits.h>
-#include <stdio.h>
+# Headers for compile checks.
+headers='#ifdef HAVE_STDDEF_H
+#include <stddef.h>
+#endif
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
-#include <sys/types.h>
+#endif
+'
+  
+# Checks storage sizes
+AX_COMPILE_CHECK_SIZEOF(long)
+AX_COMPILE_CHECK_SIZEOF(long long)
+AX_COMPILE_CHECK_SIZEOF(size_t, $headers)
+AX_COMPILE_CHECK_SIZEOF(off_t, $headers)
 
-int
-main()
-{
-  _exit (sizeof (unsigned long long) - sizeof (size_t));
-}
-  ])],
-  [ac_cv_size_t_size="unsigned long long"],
-  [ac_cv_size_t_size="unsigned long"],
-  [ac_cv_size_t_size="unsigned long"]))
-AC_DEFINE_UNQUOTED([SIZE_T_SIZE], [$ac_cv_size_t_size],
-  [Define int with storage size of size_t.])
+if test ."$ac_cv_sizeof_size_t" = ."$ac_cv_sizeof_long"; then
+   AC_DEFINE_UNQUOTED([SIZE_T_SIZE], [unsigned long],
+      [Define int with storage size of size_t.])
+elif test ."$ac_cv_sizeof_size_t" = ."$ac_cv_sizeof_long_long"; then
+   AC_DEFINE_UNQUOTED([SIZE_T_SIZE], [unsigned long long],
+      [Define int with storage size of size_t.])
+else
+   AC_DEFINE_UNQUOTED([SIZE_T_SIZE], [unsigned long long],
+      [Define int with storage size of size_t.])
+fi
 
-# Checks storage size of off_t
-AC_CACHE_CHECK([size of off_t],
- [ac_cv_off_t_size],
- AC_RUN_IFELSE([AC_LANG_SOURCE([
-#include <limits.h>
-#include <stdio.h>
-#include <unistd.h>
-#include <sys/types.h>
-
-int
-main()
-{
-  _exit (sizeof (long long) - sizeof (off_t));
-}
-  ])],
-  [ac_cv_off_t_size="long long"],
-  [ac_cv_off_t_size="long"],
-  [ac_cv_off_t_size="long"]))
-AC_DEFINE_UNQUOTED([OFF_T_SIZE], [$ac_cv_off_t_size],
-  [Define int with storage size of off_t.])
+if test ."$ac_cv_sizeof_off_t" = ."$ac_cv_sizeof_long"; then
+   AC_DEFINE_UNQUOTED([OFF_T_SIZE], [unsigned long],
+      [Define int with storage size of off_t.])
+elif test ."$ac_cv_sizeof_off_t" = ."$ac_cv_sizeof_long_long"; then
+   AC_DEFINE_UNQUOTED([OFF_T_SIZE], [unsigned long long],
+      [Define int with storage size of off_t.])
+else
+   AC_DEFINE_UNQUOTED([OFF_T_SIZE], [unsigned long long],
+      [Define int with storage size of size_t.])
+fi
 
 # Checks for string format to output value of off_t
 AC_CACHE_CHECK([how to print value off_t],
@@ -282,13 +281,13 @@ AC_DEFINE_UNQUOTED([OFF_T_FORMAT_STRING], ["$ac_cv_off_t_format_string"],
 #
 AC_CHECK_FUNC([getopt_long])
 AM_CONDITIONAL([LIBADD_GETOPT_LONG],
-    [test "_$ac_cv_func_getopt_long" = _no])
+    [test ."$ac_cv_func_getopt_long" = .'no'])
 
 AC_PROG_LIBTOOL
 
 AM_GNU_GETTEXT([no-libtool], [need-formatstring-macros], [../intl])
-AM_GNU_GETTEXT_VERSION([0.19.2])
-AM_CONDITIONAL([LDADD_LIBINTL], [test "_$LTLIBINTL" != _])
+AM_GNU_GETTEXT_VERSION([0.19.7])
+AM_CONDITIONAL([LDADD_LIBINTL], [test ."$LTLIBINTL" != .''])
 AM_COND_IF([LDADD_LIBINTL], [],
     [AM_GNU_GETTEXT([external])]
     :)
@@ -342,11 +341,11 @@ AC_DEFINE_UNQUOTED([OFF_T_FORMAT_STRING], ["$ac_cv_off_t_format_string"],
   [Define format string to output a value of type off_t.])
 
 AM_CONDITIONAL([LDADD_LIBED],
-  [test "_$LIBOBJS" != _ ||
-   test "_$with_included_regex" = _yes ||
-   test "_$ac_cv_func_getopt_long" = _no ||
-   test "_$ac_cv_func_malloc_0_nonnull" = _no ||
-   test "_$ac_cv_func_realloc_0_nonnull" = _no])
+  [test ."$LIBOBJS" != .'' ||
+   test ."$with_included_regex" = .'yes' ||
+   test ."$ac_cv_func_getopt_long" = .'no' ||
+   test ."$ac_cv_func_malloc_0_nonnull" = .'no' ||
+   test ."$ac_cv_func_realloc_0_nonnull" = .'no'])
 
 # Generate autotest helpers.
 AC_CONFIG_TESTDIR([testsuite])
@@ -371,11 +370,3 @@ AC_CONFIG_FILES([Makefile                                                     \
   testsuite/Makefile])
 
 AC_OUTPUT
-
-# Local variables:
-# mode: autoconf
-# eval: (add-hook 'write-file-functions 'time-stamp)
-# time-stamp-start: "Last modified: "
-# time-stamp-format: "%:y-%02m-%02d <%u@%h>"
-# time-stamp-end: "$"
-# End:

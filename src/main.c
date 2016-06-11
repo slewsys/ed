@@ -1,14 +1,13 @@
 /* main.c: Entry point for the ed line editor.
-
-   Copyright © 1993-2014 Andrew L. Moore, SlewSys Research
-
-   Last modified: 2014-09-16 <alm@slewsys.org>
-
-   This file is part of ed. */
+ *
+ *  Copyright © 1993-2016 Andrew L. Moore, SlewSys Research
+ *
+ *  This file is part of ed.
+ */
 
 #ifndef lint
 char *copyright =
-  "@(#) Copyright © 1993-2014 Andrew L. Moore, SlewSys Research.\n";
+  "@(#) Copyright © 1993-2016 Andrew L. Moore, SlewSys Research.\n";
 #endif  /* not lint */
 
 #include <pwd.h>
@@ -206,7 +205,7 @@ top:
 
   /* If file globbing is enabled and ed is given multiple file args,
      then print name of each as it becomes current, i.e., opened for
-     editing. For SUSv3 compatibility, suppress printing the name if
+     editing. For SUSv4 compatibility, suppress printing the name if
      only one file arg is given. */
   if (argc > 0)
     ed->exec->opt |= PRINT_FIRST_FILE;
@@ -426,7 +425,7 @@ append_script_expression (s, ed)
     return status;
 
   /* Append string `s' to end of file `ed->exec->pathname'. */
-  if (fseek (ed->exec->fp, 0L, SEEK_END) == -1)
+  if (FSEEK (ed->exec->fp, 0L, SEEK_END) == -1)
     {
       fprintf (stderr, "%s: %s\n", ed->exec->pathname, strerror (errno));
       ed->exec->err = _("File seek error");
@@ -443,7 +442,7 @@ append_script_expression (s, ed)
           clearerr (ed->exec->fp);
           return ERR;
         }
-      if (fseek (ed->exec->fp, 0L, SEEK_SET) == -1)
+      if (FSEEK (ed->exec->fp, 0L, SEEK_SET) == -1)
         {
           fprintf (stderr, "%s: %s\n", ed->exec->pathname, strerror (errno));
           ed->exec->err = _("File seek error");
@@ -495,7 +494,7 @@ append_script_file (fn, ed)
     return status;
 
   /* Append contents of file `fn' to end of file `ed->exec->pathname'. */
-  if (fseek (ed->exec->fp, 0L, SEEK_END) == -1)
+  if (FSEEK (ed->exec->fp, 0L, SEEK_END) == -1)
     {
       fprintf (stderr, "%s: %s\n", ed->exec->pathname, strerror (errno));
       ed->exec->err = _("File seek error");
@@ -526,7 +525,7 @@ append_script_file (fn, ed)
       clearerr (ed->exec->fp);
       return ERR;
     }
-  if (fseek (ed->exec->fp, 0L, SEEK_SET) == -1)
+  if (FSEEK (ed->exec->fp, 0L, SEEK_SET) == -1)
     {
       fprintf (stderr, "%s: %s\n", ed->exec->pathname, strerror (errno));
       ed->exec->err = _("File seek error");
@@ -596,13 +595,3 @@ script_die (status, ed)
              ed->exec->file_script, ed->exec->line_no, ed->exec->err);
   quit (status, ed);
 }
-
-/*
- * Local variables:
- * mode: c
- * eval: (add-hook 'write-file-functions 'time-stamp)
- * time-stamp-start: "Last modified: "
- * time-stamp-format: "%:y-%02m-%02d <%u@%h>"
- * time-stamp-end: "$"
- * End:
- */

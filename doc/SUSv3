@@ -1,7 +1,5 @@
 SUSv3: Deviations of the ed line editor from the SUSv3 standard.
 
-Last modified: 2011-04-14 <alm@slewsys.org>
-
 ed(1) is not strictly compliant with Open Group's SUSv3, 2004
 standard (aka IEEE POSIX Std 1003.1). The following summarizes
 omissions, extensions and deviations with respect to this standard.
@@ -250,12 +248,4 @@ SUSv3
 
 
 --------------------------------------------------------------------------------
-
-# Local variables:
-# mode: org
-# eval: (add-hook 'write-file-functions 'time-stamp)
-# time-stamp-start: "Last modified: "
-# time-stamp-format: "%:y-%02m-%02d <%u@%h>"
-# time-stamp-end: "$"
-# End:
 

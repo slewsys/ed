@@ -1,10 +1,9 @@
 /* parse.c: Editor command-parsing routines for the ed line editor.
-
-   Copyright © 1993-2014 Andrew L. Moore, SlewSys Research
-
-   Last modified: 2014-09-16 <alm@slewsys.org>
-
-   This file is part of ed. */
+ *
+ *  Copyright © 1993-2016 Andrew L. Moore, SlewSys Research
+ *
+ *  This file is part of ed.
+ */
 
 #include "ed.h"
 #include <sys/stat.h>
@@ -27,7 +26,7 @@ int
 address_range (ed)
      ed_buffer_t *ed;
 {
-  /* As per SUSv3, 2004, intermediate addresses may exceed
+  /* Per SUSv4, 2013, intermediate addresses may exceed
      ed->state->lines or be negative, so use signed types. */
   off_t addr;
   off_t first, second, dot;
@@ -791,13 +790,3 @@ has_trailing_escape (s, t)
 {
   return (s == t || *(t - 1) != '\\' ? 0 : !has_trailing_escape (s, t - 1));
 }
-
-/*
- * Local variables:
- * mode: c
- * eval: (add-hook 'write-file-functions 'time-stamp)
- * time-stamp-start: "Last modified: "
- * time-stamp-format: "%:y-%02m-%02d <%u@%h>"
- * time-stamp-end: "$"
- * End:
- */

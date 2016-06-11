@@ -1,19 +1,35 @@
 # Makefile.am: Doc subdirectory automake template for the ed line editor.
-
-# Copyright © 1993-2014 Andrew L. Moore, SlewSys Research
-
-# Last modified: 2014-01-26 <alm@slewsys.org>
-
+#
+# Copyright © 1993-2016 Andrew L. Moore, SlewSys Research
+#
 # Process this file with automake to create Makefile.in
 
-TEXI       = ed.texi
-INTRO_TEXI = ed-intro.texi
-ADV_TEXI   = ed-adv.texi
+PROG		= ed
+TEXI		= $(PROG:=.texi)
+INTRO_TEXI	= $(PROG:=-intro.texi)
+ADV_TEXI	= $(PROG:=-adv.texi)
 
-INTRO_PS  = $(INTRO_TEXI:.texi=.ps)
-INTRO_PDF = $(INTRO_TEXI:.texi=.pdf)
-ADV_PS    = $(ADV_TEXI:.texi=.ps)
-ADV_PDF   = $(ADV_TEXI:.texi=.pdf)
+INTRO_PS	= $(PROG:=.ps)
+INTRO_PDF	= $(PROG:=.pdf)
+ADV_PS		= $(PROG:=.ps)
+ADV_PDF		= $(PROG:=.pdf)
+
+INFO		= $(PROG:=.info)
+INTRO_INFO	= $(PROG:=-intro.info)
+ADV_INFO	= $(PROG:=-adv.info)
+
+TEX_AUX		= $(PROG:=.aux)
+TEX_CP		= $(PROG:=.cp)
+TEX_FN		= $(PROG:=.fn)
+TEX_KY		= $(PROG:=.ky)
+TEX_LOG		= $(PROG:=.log)
+TEX_PG		= $(PROG:=.pg)
+TEX_TOC		= $(PROG:=.toc)
+TEX_TP		= $(PROG:=.tp)
+TEX_VR		= $(PROG:=.vr)
+
+TEX_EXTRA 	= $(TEX_AUX) $(TEX_CP) $(TEX_FN) $(TEX_KY)		     \
+	          $(TEX_LOG) $(TEX_PG) $(TEX_TOC) $(TEX_TP) $(TEX_VR)
 
 
 # Munged versions ed-intro. and ed-adv.texi for inclusion in ed.info.
@@ -21,10 +37,6 @@ INTRO_INCL_TEXI = $(INTRO_TEXI:.texi=-incl.texi)
 INTRO_INFO_TEXI = $(INTRO_TEXI:.texi=-info.texi)
 ADV_INCL_TEXI   = $(ADV_TEXI:.texi=-incl.texi)
 ADV_INFO_TEXI   = $(ADV_TEXI:.texi=-info.texi)
-
-INFO       = ed.info
-INTRO_INFO = $(INTRO_TEXI:.texi=.info)
-ADV_INFO   = $(ADV_TEXI:.texi=.info)
 
 # Automake doesn't like absolute paths in TEXINOFS decls.
 info_TEXINFOS = 							      \
@@ -38,7 +50,7 @@ ed_TEXINFOS =								      \
 	gpl.texi							      \
 	fdl.texi
 
-man_MANS = ed.1
+man_MANS = $(PROG:=.1)
 EXTRA_DIST = $(man_MANS) SUSv3
 
 SUBDIRS = bwk
@@ -120,13 +132,6 @@ $(ADV_PDF):
 	fi
 
 clean-local:
-	rm -f $(INTRO_INCL_TEXI) $(ADV_INCL_TEXI)             		      \
-	      $(INTRO_INFO_TEXI) $(ADV_INFO_TEXI)
-
-# Local variables:
-# mode: makefile-gmake
-# eval: (add-hook 'write-file-functions 'time-stamp)
-# time-stamp-start: "Last modified: "
-# time-stamp-format: "%:y-%02m-%02d <%u@%h>"
-# time-stamp-end: "$"
-# End:
+	rm -f $(INTRO_INCL_TEXI) $(ADV_INCL_TEXI)			      \
+	    $(INTRO_INFO_TEXI) $(ADV_INFO_TEXI)				      \
+	    $(TEX_EXTRA)

@@ -1,9 +1,7 @@
 # Makefile.am: Lib subdirectory automake template for the ed line editor.
-
-# Copyright © 1993-2014 Andrew L. Moore, SlewSys Research
-
-# Last modified: 2011-04-14 <alm@slewsys.org>
-
+#
+# Copyright © 1993-2016 Andrew L. Moore, SlewSys Research
+#
 # Process this file with automake to create Makefile.in
 
 localedir = $(datadir)/locale
@@ -52,11 +50,3 @@ clean-local:
 	rm -f getopt.h regex.h
 
 distclean-local: clean-local
-
-# Local variables:
-# mode: makefile-gmake
-# eval: (add-hook 'write-file-functions 'time-stamp)
-# time-stamp-start: "Last modified: "
-# time-stamp-format: "%:y-%02m-%02d <%u@%h>"
-# time-stamp-end: "$"
-# End:

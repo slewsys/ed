@@ -1,13 +1,14 @@
 # es.po: Traducciones al Espanol para el paquete ed.
 # Copyright © 2007-2013 Free Software Foundation, Inc.
 # This file is distributed under the same license as the ed package.
-# Andrew L. Moore <alm@gnu.org>, 2013
+# Andrew L. Moore <alm@gnu.org>, 2016
 #
+#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: ed 0.271-b10\n"
 "Report-Msgid-Bugs-To: bug-ed@gnu.org\n"
-"POT-Creation-Date: 2014-09-16 08:53-0400\n"
+"POT-Creation-Date: 2016-06-11 05:23-0400\n"
 "PO-Revision-Date: 2014-03-12 03:38+0000\n"
 "Last-Translator: Andrew L. Moore <alm@slewsys.org>\n"
 "Language-Team: Spanish <es@li.org>\n"
@@ -17,200 +18,199 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/buf.c:115 src/buf.c:260 src/buf.c:273
+#: src/buf.c:113 src/buf.c:258 src/buf.c:271
 msgid "Buffer open error"
 msgstr "Error abrir búfer"
 
-#: src/buf.c:239 src/main.c:336
+#: src/buf.c:237 src/main.c:335
 msgid "File name too long"
 msgstr "Nombre de archivo demasiado largo"
 
-#: src/buf.c:240
+#: src/buf.c:238
 msgid "Invalid buffer name"
 msgstr "Nombe de búfer inválido"
 
-#: src/buf.c:246 src/buf.c:418 src/buf.c:539 src/buf.c:574 src/glbl.c:163
-#: src/io.c:250 src/main.c:479 src/re.c:159 src/undo.c:30 lib/regcomp.c:168
+#: src/buf.c:244 src/buf.c:416 src/buf.c:537 src/buf.c:572 src/glbl.c:162
+#: src/io.c:249 src/main.c:478 src/re.c:158 src/undo.c:28 lib/regcomp.c:168
 msgid "Memory exhausted"
 msgstr "Memoria agotada"
 
-#: src/buf.c:290
+#: src/buf.c:288
 msgid "Buffer close error"
 msgstr "Error cerrar búfer"
 
-#: src/buf.c:327 src/buf.c:363
+#: src/buf.c:325 src/buf.c:361
 msgid "Buffer seek error"
 msgstr "Error buscar búfer"
 
-#: src/buf.c:337
+#: src/buf.c:335
 msgid "Buffer read error"
 msgstr "Error leer búfer"
 
-#: src/buf.c:377 src/buf.c:409
+#: src/buf.c:375 src/buf.c:407
 msgid "Buffer full"
 msgstr "Búfer agotada"
 
-#: src/buf.c:384
+#: src/buf.c:382
 msgid "Buffer write error"
 msgstr "Error escribir búfer"
 
-#: src/buf.c:487 src/exec.c:101 src/exec.c:491 src/exec.c:1195
+#: src/buf.c:485 src/exec.c:100 src/exec.c:490 src/exec.c:1194
 msgid "Address out of range"
 msgstr "Dirección fuera del intervalo"
 
-#: src/buf.c:532
+#: src/buf.c:530
 msgid "Memory request too big"
 msgstr "Pedirse demasiada memoria"
 
-#: src/cmds.c:40 src/io.c:395 src/main.c:260
+#: src/cmds.c:39 src/io.c:394 src/main.c:259
 msgid "End-of-file unexpected"
 msgstr "Inesperado final de archivo"
 
-#: src/cmds.c:260 src/cmds.c:279
+#: src/cmds.c:259 src/cmds.c:278
 msgid "Invalid address mark"
 msgstr "Marca inválida de la dirección"
 
-#: src/exec.c:33 src/exec.c:279 src/exec.c:363 src/exec.c:616 src/exec.c:802
-#: src/exec.c:814 src/exec.c:822
+#: src/exec.c:32 src/exec.c:278 src/exec.c:362 src/exec.c:615 src/exec.c:801
+#: src/exec.c:813 src/exec.c:821
 msgid "Command suffix unexpected"
 msgstr "Sufijo del comando inesperado"
 
-#: src/exec.c:96
+#: src/exec.c:95
 msgid "Destination address required"
 msgstr "Dirección de destinación requerida"
 
-#: src/exec.c:177 src/exec.c:189 src/exec.c:196
+#: src/exec.c:176 src/exec.c:188 src/exec.c:195
 msgid "Command prefix unexpected"
 msgstr "Prefijo del comando inesperado"
 
-#: src/exec.c:270 src/exec.c:354 src/exec.c:430 src/exec.c:446 src/exec.c:581
-#: src/exec.c:607 src/exec.c:780 src/exec.c:1100
+#: src/exec.c:269 src/exec.c:353 src/exec.c:429 src/exec.c:445 src/exec.c:580
+#: src/exec.c:606 src/exec.c:779 src/exec.c:1099
 msgid "Address unexpected"
 msgstr "Dirección inesperada"
 
-#: src/exec.c:382
+#: src/exec.c:381
 msgid "Invalid redirection"
 msgstr "Cambio de dirección inválido"
 
-#: src/exec.c:401
+#: src/exec.c:400
 msgid "File name not set"
 msgstr "Nombre de archivo no definir"
 
-#: src/exec.c:411
+#: src/exec.c:410
 msgid "Recursive global command"
 msgstr "Comando global es recursivo"
 
-#: src/exec.c:450
+#: src/exec.c:449
 msgid "No previous error"
 msgstr "Ningún error previa"
 
-#: src/exec.c:521
+#: src/exec.c:520
 msgid "Invalid destination address"
 msgstr "Dirección de destinación inválida"
 
-#: src/exec.c:559 src/exec.c:773
+#: src/exec.c:558 src/exec.c:772
 msgid "Invalid register"
 msgstr "Registrar inválida"
 
-#: src/exec.c:952 src/exec.c:989 src/exec.c:1000 src/exec.c:1039
-#: src/exec.c:1134
+#: src/exec.c:951 src/exec.c:988 src/exec.c:999 src/exec.c:1038 src/exec.c:1133
 msgid "Unknown command"
 msgstr "Comando desconocido"
 
-#: src/exec.c:1133
+#: src/exec.c:1132
 msgid "Invalid address"
 msgstr "Dirección inválida"
 
-#: src/exec.c:1159
+#: src/exec.c:1158
 msgid "Command too long"
 msgstr "Comando demasiado largo"
 
-#: src/exec.c:1200
+#: src/exec.c:1199
 msgid "Invalid address range"
 msgstr "Intervalo de dirección inválida"
 
-#: src/glbl.c:124
+#: src/glbl.c:123
 msgid "No previous command"
 msgstr "Ningún comando previa"
 
-#: src/io.c:61 src/io.c:511 src/main.c:432 src/main.c:449 src/main.c:501
-#: src/main.c:532
+#: src/io.c:60 src/io.c:510 src/main.c:431 src/main.c:448 src/main.c:500
+#: src/main.c:531
 msgid "File seek error"
 msgstr "Error buscar archivo"
 
-#: src/io.c:70 src/io.c:122 src/io.c:535 src/io.c:589 src/main.c:489
+#: src/io.c:69 src/io.c:121 src/io.c:534 src/io.c:588 src/main.c:488
 msgid "File open error"
 msgstr "Error abrir archivo"
 
-#: src/io.c:85 src/io.c:549
+#: src/io.c:84 src/io.c:548
 #, c-format
 msgid "WARNING: File already locked\n"
 msgstr "ATENCION: Archivo ya bloqueado\n"
 
-#: src/io.c:97 src/io.c:526 src/io.c:564
+#: src/io.c:96 src/io.c:525 src/io.c:563
 msgid "File close error"
 msgstr "Error cerrar archivo"
 
-#: src/io.c:232 src/io.c:352
+#: src/io.c:231 src/io.c:351
 msgid "Newline inserted"
 msgstr "Nueva línea insertado"
 
-#: src/io.c:235 src/io.c:355
+#: src/io.c:234 src/io.c:354
 msgid "Newline appended"
 msgstr "Nueva línea añadido"
 
-#: src/io.c:457 src/main.c:516
+#: src/io.c:456 src/main.c:515
 msgid "File read error"
 msgstr "Error leer archivo"
 
-#: src/io.c:517
+#: src/io.c:516
 msgid "File truncate error"
 msgstr "Error truncar archivo"
 
-#: src/io.c:629
+#: src/io.c:628
 msgid "File too big"
 msgstr "Archivo demasiado grande"
 
-#: src/io.c:665 src/main.c:442 src/main.c:525
+#: src/io.c:664 src/main.c:441 src/main.c:524
 msgid "File write error"
 msgstr "Error escribir archivo"
 
-#: src/io.c:693
+#: src/io.c:692
 msgid "File status error"
 msgstr "Error del estado de archivo"
 
-#: src/io.c:700
+#: src/io.c:699
 msgid "Access restricted to regular files"
 msgstr "Acceso restringido a los archivos regulares"
 
-#: src/main.c:193
+#: src/main.c:192
 msgid "Interrupted"
 msgstr "Interrumpido"
 
-#: src/main.c:294
+#: src/main.c:293
 msgid "WARNING: Buffer modified since last write"
 msgstr "ATENCION: Búfer no escrito desde se modificó"
 
-#: src/main.c:387
+#: src/main.c:386
 msgid "Argument list too long"
 msgstr "Lista de argumentos demasiado largo"
 
-#: src/main.c:399
+#: src/main.c:398
 msgid "Argument list full"
 msgstr "Lista de argumentos llena"
 
-#: src/main.c:549
+#: src/main.c:548
 #, c-format
 msgid "Usage: %s [-] [-EGhirsVv] [-f SCRIPT] [-p PROMPT] [FILE]\n"
 msgstr ""
 "Modo de empleo: %s [-] [-EGhirsVv] [-f PROGRAMA] [-p AVISO] [ARCHIVO]\n"
 
-#: src/main.c:556
+#: src/main.c:555
 #, c-format
 msgid "Usage: %s [OPTION...] [FILE]\n"
 msgstr "Modo de empleo: %s [OPCIÓN...] [ARCHIVO]\n"
 
-#: src/main.c:558
+#: src/main.c:557
 #, c-format
 msgid ""
 "Options:\n"
@@ -253,31 +253,31 @@ msgstr ""
 "\n"
 "Comunicar bichos a: <bug-ed@gnu.org>.\n"
 
-#: src/main.c:591
+#: src/main.c:590
 msgid "script, line %"
 msgstr "programa, línea %"
 
-#: src/re.c:37
+#: src/re.c:36
 msgid "Invalid pattern delimiter"
 msgstr "Delimitador inválido del patrón"
 
-#: src/re.c:149
+#: src/re.c:148
 msgid "No previous pattern"
 msgstr "Ningún patrón previa"
 
-#: src/re.c:264 src/sub.c:467 lib/regcomp.c:135
+#: src/re.c:263 src/sub.c:466 lib/regcomp.c:135
 msgid "No match"
 msgstr "Ningún coincidencia"
 
-#: src/sub.c:131 src/sub.c:153
+#: src/sub.c:130 src/sub.c:152
 msgid "Unknown command suffix"
 msgstr "Sufijo desconocido del comando"
 
-#: src/sub.c:172 src/sub.c:248
+#: src/sub.c:171 src/sub.c:247
 msgid "No previous substitution"
 msgstr "Ninguna substitución previa"
 
-#: src/undo.c:56
+#: src/undo.c:54
 msgid "Nothing to undo"
 msgstr "Nada deshacer"
 

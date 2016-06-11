@@ -1,10 +1,9 @@
 /* exec.c: Command switch for the ed line editor.
-
-   Copyright © 1993-2014 Andrew L. Moore, SlewSys Research
-
-   Last modified: 2014-09-16 <alm@slewsys.org>
-
-   This file is part of ed. */
+ *
+ *  Copyright © 1993-2016 Andrew L. Moore, SlewSys Research
+ *
+ *  This file is part of ed.
+ */
 
 #include "ed.h"
 
@@ -81,7 +80,7 @@
       if (*ed->input == '>')                                                  \
         {                                                                     \
           reg_io |= WRITE_REGISTER;                                           \
-          if (append = *++ed->input == '>')                                   \
+          if ((append = *++ed->input == '>'))                                 \
             ++ed->input;                                                      \
           if ((status = is_valid_register (&reg_write, ed)) < 0)              \
             return status;                                                    \
@@ -217,7 +216,7 @@ exec_command (ed)
       /* FALLTHROUGH */
     case 'c':
 
-      /* As per SUSv3, 2004, 0c => 1c, so 0,0c => 1,1c. */
+      /* Per SUSv4, 2013, 0c => 1c, so 0,0c => 1,1c. */
       ed->exec->region->start += !ed->exec->region->start;
       ed->exec->region->end += !ed->exec->region->end;
       if ((status =
@@ -313,7 +312,7 @@ exec_command (ed)
         }
       else
         {
-          /* As per SUSv3, file name changes unconditionally. */
+          /* Per SUSv4, file name changes unconditionally. */
           if (*fn != '\0')
             {
               REALLOC_THROW (ed->file->name, ed->file->name_size,
@@ -324,8 +323,8 @@ exec_command (ed)
           else if (ed->file->name && *ed->file->name != '\0')
             ++is_default;
 
-          /* As per SUSv3, file argument is optional. Though not
-             mandated by SUSv3, if default file name is not set,
+          /* Per SUSv4, file argument is optional. Though not
+             mandated by SUSv4, if default file name is not set,
              trivially succeed by reading from `/dev/null'. */
           if ((status = read_file (is_default ? ed->file->name : "/dev/null",
                                    0, &addr, &size, is_default, ed)) < 0)
@@ -341,7 +340,7 @@ exec_command (ed)
       printf (ed->exec->opt & SCRIPTED ? "" : "%" OFF_T_FORMAT_STRING "\n",
               size);
 
-      /* As per SUSv3, exit_status cannot be reset. We'll do it anyhow ... */
+      /* Per SUSv4, exit_status cannot be reset. We'll do it anyhow ... */
       if (!(ed->exec->opt
             & (POSIXLY_CORRECT|TRADITIONAL|SCRIPTED|EXIT_ON_ERROR)))
         ed->exec->status = 0;
@@ -440,7 +439,7 @@ exec_command (ed)
     case 'h':
 
       /* Of all commands, at least `h' should be forgiving, but
-         SUSv3, 2004 says otherwise... */
+         SUSv4, 2013 says otherwise... */
       if (ed->exec->region->addrs)
         {
           ed->exec->err = _("Address unexpected");
@@ -451,7 +450,7 @@ exec_command (ed)
       break;
     case 'i':
 
-      /* As per SUSv3, 2004, 0i => 1i. */
+      /* Per SUSv4, 2013, 0i => 1i. */
       ed->exec->region->end += !ed->exec->region->end;
       COMMAND_SUFFIX (io_f, ed);
       if (!ed->exec->global)
@@ -459,7 +458,7 @@ exec_command (ed)
       if ((status = append_lines (ed->exec->region->end - 1, ed)) < 0)
         return status;
 
-      /* Per SUSv3, 2004, empty insert sets dot to addressed line. */
+      /* Per SUSv4, 2013, empty insert sets dot to addressed line. */
       if (ed->state->dot == ed->exec->region->end - 1)
         ed->state->dot = ed->exec->region->end;
       break;
@@ -663,8 +662,8 @@ exec_command (ed)
           else if (*fn == '\0' && ed->file->name && *ed->file->name != '\0')
             ++is_default;
 
-          /* As per SUSv3, file argument is optional. Though not mandated
-             by SUSv3, if default file name is not set, trivially
+          /* As per SUSv4, file argument is optional. Though not mandated
+             by SUSv5, if default file name is not set, trivially
              succeed by reading from `/dev/null'. */
           if ((status = read_file (is_default ? ed->file->name
                                    : (*fn != '\0' ? fn : "/dev/null"),
@@ -864,8 +863,8 @@ exec_command (ed)
             else if (*fn == '\0' && ed->file->name && *ed->file->name != '\0')
               ++is_default;
 
-          /* As per SUSv3, file argument is optional. Though not
-             mandated by SUSv3, if default file name is not set,
+          /* Per SUSv4, file argument is optional. Though not
+             mandated by SUSv4, if default file name is not set,
              trivially succeed by writing to `/dev/null'. */
           if ((status =
                write_file (is_default ? ed->file->name
@@ -875,14 +874,14 @@ exec_command (ed)
                            &addr, &size, (c == 'W' ? "a" : "w"), ed)) < 0)
             return status;
 
-          /* As per SUSv3, whole buffer must be written to file (not `!')
+          /* Per SUSv4, whole buffer must be written to file (not `!')
              to reset buffer modifed state. */
           if (addr == ed->state->lines && (is_default || *fn != '\0'))
             {
               ed->state->is_modified = 0;
 
-              /* As per SUSv3, exit_status cannot be reset. We'll do
-                 it anyhow ... */
+              /* Per SUSv4, exit_status cannot be reset. We'll do it
+                 anyhow ... */
               if (!(ed->exec->opt
                     & (POSIXLY_CORRECT|TRADITIONAL|SCRIPTED|EXIT_ON_ERROR)))
                 ed->exec->status = 0;
@@ -1224,13 +1223,3 @@ const char *ps;
 {
   return PATH_MAX;
 }
-
-/*
- * Local variables:
- * mode: c
- * eval: (add-hook 'write-file-functions 'time-stamp)
- * time-stamp-start: "Last modified: "
- * time-stamp-format: "%:y-%02m-%02d <%u@%h>"
- * time-stamp-end: "$"
- * End:
- */

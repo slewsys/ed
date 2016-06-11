@@ -1,10 +1,9 @@
 /* utf8.c: UTF-8 routines for ed line editor.
-
-   Copyright © 1993-2014 Andrew L. Moore, SlewSys Research
-   
-   Last modified: 2014-01-27 <alm@slewsys.org>
-   
-   This file is part of ed. */
+ *
+ *  Copyright © 1993-2016 Andrew L. Moore, SlewSys Research
+ *  
+ *  This file is part of ed.
+ */
 
 #include "ed.h"
 

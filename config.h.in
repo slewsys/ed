@@ -386,14 +386,13 @@
 /* Define if integer division by zero raises signal SIGFPE. */
 #undef INTDIV0_RAISES_SIGFPE
 
-/* Define to the sub-directory in which libtool stores uninstalled libraries.
-   */
+/* Define to the sub-directory where libtool stores uninstalled libraries. */
 #undef LT_OBJDIR
 
 /* Define format string to output a value of type off_t. */
 #undef OFF_T_FORMAT_STRING
 
-/* Define int with storage size of off_t. */
+/* Define int with storage size of size_t. */
 #undef OFF_T_SIZE
 
 /* Name of package */
@@ -425,6 +424,18 @@
 
 /* Define as the return type of signal handlers (`int' or `void'). */
 #undef RETSIGTYPE
+
+/* The number of bytes in type long */
+#undef SIZEOF_LONG
+
+/* The number of bytes in type long long */
+#undef SIZEOF_LONG_LONG
+
+/* The number of bytes in type off_t */
+#undef SIZEOF_OFF_T
+
+/* The number of bytes in type size_t */
+#undef SIZEOF_SIZE_T
 
 /* Define as the maximum value of type 'size_t', if the system doesn't define
    it. */
