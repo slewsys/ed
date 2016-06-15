@@ -157,7 +157,7 @@ filter_lines (from, to, sc, ed)
   /* Read standard output of shell process via reentrant read_stream. */
   if ((status = read_stream_r (opp, ed->state->dot, &size, ed)) < 0)
     goto err;
- 
+
   printf (ed->exec->opt & SCRIPTED ? "" : "%" OFF_T_FORMAT_STRING "\n", size);
 
   if (fclose (opp) < 0)
@@ -235,7 +235,7 @@ read_from_register (qno, addr, ed)
     }
   return 0;
 }
-  
+
 
 /* register_copy: Write lines from one register to another. If
    `append' is zero, any previous contents of target register
@@ -264,7 +264,7 @@ register_copy (from, to,  append, ed)
         return ERR;
   return 0;
 }
-  
+
 
 /* move_register: Move lines from one register to another. If
    `append' is zero, any previous contents of target register

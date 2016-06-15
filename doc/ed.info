@@ -21,7 +21,7 @@ The 'Ed' Text Editor
 ********************
 
 This manual is intended to serve as both tutorial and reference for
-'ed', the "standard Unix text editor", version 2.0.0.  Of historical
+'ed', the "standard Unix text editor", version 2.0.1.  Of historical
 interest is that 'ed' was the original Unix text editor and introduced
 the "regular expression" method of representing text patterns.
 

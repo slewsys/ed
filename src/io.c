@@ -738,6 +738,8 @@ set_file_lock (fp, exclusive)
   l.l_whence = 0;
   if (fcntl (fd, F_SETLK, &l) == -1)
     {
+
+      /* In case flock(2) and fcntl(2) share locks. */
 #    ifdef HAVE_FLOCK
 
       /* flock(8) already succeeded...  */

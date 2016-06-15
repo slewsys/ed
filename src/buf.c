@@ -18,10 +18,6 @@
 #endif
 
 
-/* Global declarations */
-volatile sig_atomic_t window_columns = 80; /* default screen width: ws_col  */
-volatile sig_atomic_t window_rows = 24;    /* default screen length: ws_row */
-
 /* Static function declarations. */
 static int init_stdio __P ((ed_buffer_t *));
 static struct ed_core *alloc_ed_core __P ((const char *));
@@ -72,14 +68,23 @@ one_time_init (argc, argv, ed)
     {
       STRTOL_THROW (l, ls, NULL, ERR);
       if (1 < l  && l < ROWS_MAX)
-        window_rows = l;
+        ed->display->ws_row = l;
     }
+
+  /* !SIGWINCH */
+  else if (!ed->display->ws_row)
+    ed->display->ws_row = WS_ROW;
+
   if ((cs = getenv ("COLUMNS")))
     {
       STRTOL_THROW (l, cs, NULL, ERR);
       if (TAB_WIDTH < l && l < COLUMNS_MAX)
-        window_columns = l;
+        ed->display->ws_col = l;
     }
+
+  /* !SIGWINCH */
+  else if (!ed->display->ws_col)
+    ed->display->ws_col = WS_COL;
 
   /* Assign a default command prompt. */
   if (!ed->exec->prompt)
@@ -88,7 +93,7 @@ one_time_init (argc, argv, ed)
   /* Check environment for POSIXLY_CORRECT */
   if (getenv ("POSIXLY_CORRECT"))
     ed->exec->opt |= POSIXLY_CORRECT;
-  
+
 #ifdef HAVE_REG_SYNTAX_T
   re_syntax_options =  (ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL)
                         ? (ed->exec->opt & REGEX_EXTENDED
@@ -188,8 +193,8 @@ init_ed_state (addr, state)
      struct ed_state *state;
 {
   /* Editor buffer state */
-  state->lines = addr;         /* -1 disables undo */
-  state->dot = addr;               /* -1 disables undo */
+  state->lines = addr;          /* -1 disables undo */
+  state->dot = addr;            /* -1 disables undo */
   state->is_binary = 0;
   state->is_empty = 1;
   state->is_modified = 0;
@@ -281,7 +286,7 @@ close_ed_buffer (ed)
      ed_buffer_t *ed;
 {
   int status = 0;
-  
+
   if (ed->core->fp && fclose (ed->core->fp) < 0)
     {
       fprintf (stderr, "%s: %s\n", ed->core->pathname, strerror (errno));
@@ -690,13 +695,13 @@ shift_text_node (th, len)
         }                                                                     \
     }                                                                         \
   while (0)
-   
+
 /* alloc_ed_buffer: Allocate memory for ed_buffer_t struct. */
 ed_buffer_t *
 alloc_ed_buffer ()
 {
   ed_buffer_t *ed_buffer;
-  
+
   ALLOC_ED_TYPE (ed_buffer, 1, ed_buffer_t);
   ALLOC_ED_TYPE (ed_buffer->state, 2, struct ed_state);
   ALLOC_ED_TYPE (ed_buffer->core, 1, struct ed_core);

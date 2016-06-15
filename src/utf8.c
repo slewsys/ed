@@ -1,7 +1,7 @@
 /* utf8.c: UTF-8 routines for ed line editor.
  *
  *  Copyright © 1993-2016 Andrew L. Moore, SlewSys Research
- *  
+ *
  *  This file is part of ed.
  */
 
@@ -45,7 +45,7 @@ decode_utf8_char (code, s, len)
   int cp;
   int bytes = 0;
   unsigned char *t;
-  
+
   if (len < 1)
     return ERR;
 
@@ -67,7 +67,7 @@ decode_utf8_char (code, s, len)
       /* UTF-8 encoding over-long. */
       if (*t & ~utf8_byte_mask[2] <= 1)
         return ERR;
-      
+
       bytes = 2;
     }
 
@@ -83,7 +83,7 @@ decode_utf8_char (code, s, len)
       /* UTF-8 codepoint exceeds 0x10FFFF. */
       if (*t & ~utf8_byte_mask[4] > 5)
         return ERR;
-      
+
       bytes = 4;
     }
 
@@ -103,7 +103,7 @@ decode_utf8_char (code, s, len)
       /* UTF-8 continuation byte encoding invalid. */
       if (*t & utf8_byte_mask[1] != utf8_byte_mask[0])
         return ERR;
-      
+
       /*  Extract data from continuation byte of UTF-8 encoding. */
       cp |= (*t++ & ~utf8_byte_mask[1]) << utf8_cp_offset[bytes - 1];
     }
@@ -121,7 +121,7 @@ decode_utf8_char (code, s, len)
 /*
  * encode_utf8_char: Encode UTF-8 codepoint, code, per RFC 3629 (up to
  * U+10FFFF) to character buffer s. Return 0 if successful, otherwise ERR.
- * 
+ *
  * NB: The buffer s must be long enough to contain the UTF-8 encoding,
  * can be up to 4 bytes in length per RFC 3629.
  */
@@ -133,7 +133,7 @@ encode_utf8_char (s, len, code)
 {
   unsigned int cp = code;
   char *t = s;
-  
+
   /* 1-byte UTF-8 encoding (i.e., 7-bit ASCII). */
   if (cp <= 0x7F)
     {
@@ -143,7 +143,7 @@ encode_utf8_char (s, len, code)
   /* 2-byte UTF-8 encoding. */
   else if (cp <= 0x7FF)
     {
-      /* 
+      /*
        * Map lower 11 bits of codepoint to UTF-8 encoding.
        * Upper 5 codepoint bits to UTF-8 leading byte.
        * Lower 6 codepoint bits to UTF-8 continuation byte.
@@ -166,7 +166,7 @@ encode_utf8_char (s, len, code)
       if ((0xDC80 <= cp && cp <= 0xDCFF) || cp == 0xFFFE || cp == 0xFFFF)
         return ERR;
 
-      /* 
+      /*
        * Map lower 16 bits of codepoint to UTF-8 encoding.
        * Upper 4 codepoint bits to UTF-8 leading byte.
        * Middle 6 codepoint bits to first UTF-8 continuation byte.
@@ -187,7 +187,7 @@ encode_utf8_char (s, len, code)
   /* 4-byte UTF-8 encoding */
   else if (cp <= 0x10FFFF)
     {
-      /* 
+      /*
        * Map lower 21 bits of codepoint to UTF-8 encoding.
        * Upper 3 codepoint bits to UTF-8 leading byte.
        * Upper middle 6 codepoint bits to first UTF-8 continuation byte.
@@ -221,5 +221,4 @@ utf8_char_width (s, len)
      int *len;
 {
   utf8_ea_width_t *ea_width;
-  
 }

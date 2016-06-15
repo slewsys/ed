@@ -42,92 +42,92 @@ get_compiled_regex (dc, re_type, ed)
   /* Use previous pattern. */
   if (dc == '\n' || *++ed->input == '\n' || *ed->input == dc)
     {
-      /* 
-         For a substitution command, there may be two patterns
-         available: one from previous search and one from previous
-         substitution. In the case of an empty pattern (e.g., ed
-         command `s///'), the previous substitution pattern is used
-         only if there was no previous search. In the case of a
-         repeated substitution, (e.g., `s' => dc == '\n'), the
-         previous search pattern is used only if explicitly requested
-         via `r' modifier (i.e., `sr' => r_f).
-
-         Some cases to consider...
-
-         I. Sequences beginning:        Effect:
-                  s/abc/
-             1)
-               s                        s/abc/ - by definition.
-             2)
-               s//                      s/abc/ - no previous search.
-             3)
-               sr                       s/abc/ - no previous search. (?)
-             4)
-               //                       /abc/ - no previous search.
-             5)
-               //s                      /abc/s/abc/ - by (I.4) and (I.1).
-             6)
-               //s//                    /abc/s/abc/ - by (I.4) and definition
-                                        of `s//'.
-             7)
-               //sr                     /abc/s/abc/ - by (I.4) and defintion
-                                        of `sr'.
-             
-         II. Sequences beginning:
-                   /xyz/
-             1)
-               s                        s/xyz/ - no previous substitution. 
-             2)
-               s//                      s/xyz/ - by definition.
-             3)
-               sr                       s/xyz/ - by definition.
-             4)
-               //                       /xyz/ - by definition.
-             5)
-               //s                      /xyz/s/xyz/ - by (II.4) and (II.1).
-             6)
-               //s//                    /xyz/s/xyz/ - by (II.4) and definition
-                                        of `s//'.
-             7)
-               //sr                     /xyz/s/xyz/ - by (II.4) and definition
-                                        of `sr'.
-             
-         III. Sequences beginning:
-                   s/abc/
-                   /xyz/
-             1)
-               s                        s/abc/ - by (I.1).
-             2)
-               s//                      s/xyz/ - by (II.2).
-             3)
-               sr                       s/xyz/ - by (II.3).
-             4)
-               //                       /xyz/ - by (II.4).
-             5)
-               //s                      /xyz/s/abc/ - by (II.4) and (I.1).
-             6)
-               //s//                    /xyz/s/xyz/ - by (II.4) and (II.2).
-             7)
-               //sr                     /xyz/s/xyz/ - by (II.4) and (II.3).
-    
-         IV. Sequences beginning:
-                   /xyz/
-                   s/abc/
-             1)
-               s                        s/abc/ - by (I.1).
-             2)
-               s//                      s/xyz/ - by (II.2).
-             3)
-               sr                       s/xyz/ - by (II.3).
-             4)
-               //                       /xyz/ - by (II.4).
-             5)
-               //s                      /xyz/s/abc/ - by (II.4) and (I.1).
-             6)
-               //s//                    /xyz/s/xyz/ - by (II.4) and (II.2).
-             7)
-               //sr                     /xyz/s/xyz/ - by (II.4) and (II.3).
-    
+      /*
+       *  For a substitution command, there may be two patterns
+       *  available: one from previous search and one from previous
+       *  substitution. In the case of an empty pattern (e.g., ed
+       *  command `s///'), the previous substitution pattern is used
+       *  only if there was no previous search. In the case of a
+       *  repeated substitution, (e.g., `s' => dc == '\n'), the
+       *  previous search pattern is used only if explicitly requested
+       *  via `r' modifier (i.e., `sr' => r_f).
+       *
+       *  Some cases to consider...
+       *
+       *  I. Sequences beginning:        Effect:
+       *           s/abc/
+       *      1)
+       *        s                        s/abc/ - by definition.
+       *      2)
+       *        s//                      s/abc/ - no previous search.
+       *      3)
+       *        sr                       s/abc/ - no previous search. (?)
+       *      4)
+       *        //                       /abc/ - no previous search.
+       *      5)
+       *        //s                      /abc/s/abc/ - by (I.4) and (I.1).
+       *      6)
+       *        //s//                    /abc/s/abc/ - by (I.4) and definition
+       *                                 of `s//'.
+       *      7)
+       *        //sr                     /abc/s/abc/ - by (I.4) and defintion
+       *                                 of `sr'.
+       *
+       *  II. Sequences beginning:
+       *            /xyz/
+       *      1)
+       *        s                        s/xyz/ - no previous substitution.
+       *      2)
+       *        s//                      s/xyz/ - by definition.
+       *      3)
+       *        sr                       s/xyz/ - by definition.
+       *      4)
+       *        //                       /xyz/ - by definition.
+       *      5)
+       *        //s                      /xyz/s/xyz/ - by (II.4) and (II.1).
+       *      6)
+       *        //s//                    /xyz/s/xyz/ - by (II.4) and definition
+       *                                 of `s//'.
+       *      7)
+       *        //sr                     /xyz/s/xyz/ - by (II.4) and definition
+       *                                 of `sr'.
+       *
+       *  III. Sequences beginning:
+       *            s/abc/
+       *            /xyz/
+       *      1)
+       *        s                        s/abc/ - by (I.1).
+       *      2)
+       *        s//                      s/xyz/ - by (II.2).
+       *      3)
+       *        sr                       s/xyz/ - by (II.3).
+       *      4)
+       *        //                       /xyz/ - by (II.4).
+       *      5)
+       *        //s                      /xyz/s/abc/ - by (II.4) and (I.1).
+       *      6)
+       *        //s//                    /xyz/s/xyz/ - by (II.4) and (II.2).
+       *      7)
+       *        //sr                     /xyz/s/xyz/ - by (II.4) and (II.3).
+       *
+       *  IV. Sequences beginning:
+       *            /xyz/
+       *            s/abc/
+       *      1)
+       *        s                        s/abc/ - by (I.1).
+       *      2)
+       *        s//                      s/xyz/ - by (II.2).
+       *      3)
+       *        sr                       s/xyz/ - by (II.3).
+       *      4)
+       *        //                       /xyz/ - by (II.4).
+       *      5)
+       *        //s                      /xyz/s/abc/ - by (II.4) and (I.1).
+       *      6)
+       *        //s//                    /xyz/s/xyz/ - by (II.4) and (II.2).
+       *      7)
+       *        //sr                     /xyz/s/xyz/ - by (II.4) and (II.3).
+       *
        */
 
       switch (re_type)

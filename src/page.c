@@ -249,8 +249,8 @@ init_frame_buffer (fb, io_f, ed)
 
   spl1 ();
 
-  if (fb->rows != window_rows
-      || fb->columns != window_columns)
+  if (fb->rows != ed->display->ws_row
+      || fb->columns != ed->display->ws_col)
     {
       fb->row_i = 0;
       for (n = 0; n < fb->rows - 1; ++n)
@@ -260,13 +260,14 @@ init_frame_buffer (fb, io_f, ed)
             init_frame_node (fb->row + n);
           }
       REALLOC_THROW (fp, fp_size,
-                     (window_rows - 1) * sizeof (ed_frame_node_t), ERR, ed);
+                     (ed->display->ws_row - 1) * sizeof (ed_frame_node_t),
+                     ERR, ed);
       fb->row = (ed_frame_node_t *) fp;
-      for (n = max (0, fb->rows - 1); n < window_rows - 1; ++n)
+      for (n = max (0, fb->rows - 1); n < ed->display->ws_row - 1; ++n)
         init_frame_node (fb->row + n);
 
-      fb->rows = window_rows;
-      fb->columns = window_columns;
+      fb->rows = ed->display->ws_row;
+      fb->columns = ed->display->ws_col;
     }
 
   /* Don't reset row_i if scrolling forward in half-pages. Append to

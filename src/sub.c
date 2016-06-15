@@ -78,18 +78,20 @@ resubstitute (s_nth, s_mod, s_f, sgpr_f, ed)
       case '9':
         if (g_f)
           {
-            /* If the last substitution is, say, `s;x;y;gp', then a
-               subsequent `sg' is equivalent to  `s;x;y;p', and
-               `sg' a second time expands to     `s;x;y;gp' again, 
-               i.e., `sg' always toggles the global modifier of the
-               last substitution.
-
-               `sg2', on the other hand, always overrides the global
-               modifier, if any, of the last substitution. So again,
-               if the last substitution is `s;x;y;gp' then a
-               subsequent `sg2' is interpreted as neither `s;x;y;2p'
-               nor `s;x;y;p'. Instead, it is interpreted as
-               `s;x;y;g2p'. */
+            /*
+             *  If the last substitution is, say, `s;x;y;gp', then a
+             *  subsequent `sg' is equivalent to  `s;x;y;p', and
+             *  `sg' a second time expands to     `s;x;y;gp' again,
+             *  i.e., `sg' always toggles the global modifier of the
+             *  last substitution.
+             *
+             *  `sg2', on the other hand, always overrides the global
+             *  modifier, if any, of the last substitution. So again,
+             *  if the last substitution is `s;x;y;gp' then a
+             *  subsequent `sg2' is interpreted as neither `s;x;y;2p'
+             *  nor `s;x;y;p'. Instead, it is interpreted as
+             *  `s;x;y;g2p'.
+             */
             *s_f &= ~(GSUB | SMLR);
             *s_mod = 0;
             if ((status = address_offset (s_mod, ed)) < 0)
@@ -100,7 +102,7 @@ resubstitute (s_nth, s_mod, s_f, sgpr_f, ed)
             else
               *s_f &= ~SMLR;    /* Select frequency: s_mod. */
           }
-        else 
+        else
           {
             *s_nth = 0;
             if ((status = address_offset (s_nth, ed)) < 0)
@@ -109,7 +111,7 @@ resubstitute (s_nth, s_mod, s_f, sgpr_f, ed)
               *s_f |= SNLR;     /* Select (match_count - s_nth) match. */
             else
               *s_f &= ~SNLR;    /* Select s_nth match. */
-          }  
+          }
         break;
       case 'g':
         g_f = 1;
@@ -547,7 +549,7 @@ substitute_matching (re, lp, len, s_nth, s_mod,  s_f, ed)
 
       /* NIL (i.e., empty) match counts towards s_nth iff previous
          match was NIL. */
-      else if ((!nil_next || nil_prev) && ++k >= s_nth 
+      else if ((!nil_next || nil_prev) && ++k >= s_nth
                && !((k - s_nth)  % s_mod))
         {
           REALLOC_THROW (rb, rb_size, *len + i, ERR, ed);
@@ -569,7 +571,8 @@ substitute_matching (re, lp, len, s_nth, s_mod,  s_f, ed)
         {
           if (nil_next && !*txt)
             break;
-          j = max (1, j);
+          if (!j)
+            ++j;
           REALLOC_THROW (rb, rb_size, *len + j, ERR, ed);
 #ifndef REG_STARTEND
           if (ed->state->is_binary)
@@ -582,7 +585,7 @@ substitute_matching (re, lp, len, s_nth, s_mod,  s_f, ed)
     }
   if (!changed)
     return *len = 0;
-  i = max (0, eot - txt);
+  i = eot > txt ? eot - txt : 0;
   REALLOC_THROW (rb, rb_size, *len + i + 2, ERR, ed);
 #ifndef REG_STARTEND
   if (ed->state->is_binary)
@@ -653,7 +656,8 @@ count_matches (re, txt, len, buf)
         {
           if (nul_next && !*txt)
             break;
-          off = max (1, off);
+          if (!off)
+            ++off;
           matched_prev = 0;
         }
     }

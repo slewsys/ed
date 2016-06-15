@@ -162,6 +162,10 @@ int fstat ();
 #undef off_t
 typedef OFF_T_SIZE off_t;
 
+/* Define size_t per storage size determined by configure. */
+#undef size_t
+typedef SIZE_T_SIZE size_t;
+
 #ifndef INT_MAX
 # define INT_MAX ((int) (~(unsigned int) 0 >> (unsigned int) 1))
 # define INT_MIN (-INT_MAX - 1)
@@ -178,9 +182,9 @@ typedef OFF_T_SIZE off_t;
 
 #ifndef SIZE_T_MAX
 # define SIZE_T_MAX                                                           \
-  ((SIZE_T_SIZE) (~(SIZE_T_SIZE) 0 >> (SIZE_T_SIZE) 1))
+  ((size_t) (~(size_t) 0))
 #endif
-  
+
 #define LINECHARS SIZE_T_MAX    /* Max chars per line, including NULs. */
 
 #ifndef LLONG_MAX
@@ -190,9 +194,9 @@ typedef OFF_T_SIZE off_t;
 #endif
 
 #ifndef OFF_T_MAX
-# define OFF_T_MAX                                                            \
-  ((OFF_T_SIZE) (~(OFF_T_SIZE) 0 >> (OFF_T_SIZE) 1))
-# define OFF_T_MIN (-OFF_T_MAX - 1)
+#  define OFF_T_MAX                                                           \
+  ((off_t) (~(size_t) 0 >> (size_t) 1))
+#  define OFF_T_MIN (-OFF_T_MAX - 1)
 #endif
 
 #ifndef max
@@ -375,9 +379,18 @@ struct ed_core
   int seek_on_write;            /* If set, seek before writing. */
 };
 
+/* Default display size. */
+enum default_window_size
+  {
+    WS_ROW = 24,                /* Height in characters. */
+    WS_COL = 80                 /* Width in characters. */
+  };
+
 /* Display parameters */
 struct ed_display
 {
+  volatile sig_atomic_t ws_row; /* Display height. */
+  volatile sig_atomic_t ws_col; /* Display width. */
   off_t page_addr;              /* Address of first displayed line in page. */
   int is_paging;                /* If set, displaying a page of text. */
   int underflow;                /* If set, line truncated at top page. */
@@ -392,7 +405,7 @@ struct ed_region
   off_t end;                    /* Region end address. */
   int addrs;                    /* Number of region addresses. */
 };
- 
+
 /* Substitution parameters. */
 struct ed_substitute
 {
@@ -892,7 +905,3 @@ int write_pipe __P ((const char *, off_t, off_t, off_t *, off_t *,
 int write_to_register __P ((int, off_t, off_t, int, ed_buffer_t *));
 int write_stream __P ((FILE *, ed_line_node_t *, off_t, off_t *,
                        ed_buffer_t *));
-
-/* global vars */
-extern volatile sig_atomic_t window_columns;
-extern volatile sig_atomic_t window_rows;

@@ -90,6 +90,8 @@ static void
 handle_winch (signo)
      int signo;
 {
+  extern ed_buffer_t *ed;
+
   int saved_errno = errno;
 
 #ifdef TIOCGWINSZ
@@ -101,11 +103,11 @@ handle_winch (signo)
 #ifdef TIOCGWINSZ
   if (ioctl (0, TIOCGWINSZ, &ws) >= 0)
     {
-      /* Sanity check values of environment vars */
+      /* Sanity check window size values.  */
       if (1 < ws.ws_row && ws.ws_row < ROWS_MAX)
-        window_rows = ws.ws_row;
+        ed->display->ws_row = ws.ws_row;
       if (TAB_WIDTH < ws.ws_col && ws.ws_col < COLUMNS_MAX)
-        window_columns = ws.ws_col;
+        ed->display->ws_col = ws.ws_col;
     }
 #endif
 
@@ -188,7 +190,7 @@ spl1 (void)
   /* Assert: _sigactive == 1 */
   ++_mutex;
 }
- 
+
 
 /* spl0: Lower priority level and enable signals if level is nominal. */
 void

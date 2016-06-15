@@ -6,7 +6,7 @@
 
 ACLOCAL_AMFLAGS = -I m4
 
-SUBDIRS = 
+SUBDIRS =
 
 if LDADD_LIBED
 SUBDIRS += lib
@@ -55,7 +55,7 @@ update-po:
 
 distclean-local:
 	rm -f configure.orig
-	rm -rf  testsuite/.ts-am-sw autom4te.cache 
+	rm -rf  testsuite/.ts-am-sw autom4te.cache
 	rm -rf GPATH GRTAGS GSYMS GTAGS
 	find . -name '[Tt][Aa][Gg][Ss]' -type f -delete
 	find . \( -name '*~' -or -name '#*#' \) -type f -delete

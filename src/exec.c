@@ -165,7 +165,7 @@ exec_command (ed)
   if ((ed->file->is_glob = c == '~'))
     c = *ed->input++;
 #endif
-  
+
   /* Validate any command prefix. */
   switch (c)
     {
@@ -197,7 +197,7 @@ exec_command (ed)
         }
       break;
     }
-  
+
   switch (c)
     {
     case 'a':
@@ -344,8 +344,6 @@ exec_command (ed)
       if (!(ed->exec->opt
             & (POSIXLY_CORRECT|TRADITIONAL|SCRIPTED|EXIT_ON_ERROR)))
         ed->exec->status = 0;
-        
-
       return 0;
     case 'f':
       if (ed->exec->region->addrs)
@@ -703,7 +701,7 @@ exec_command (ed)
           || (status = substitution_lhs (&lhs, &sgpr_f, ed)) < 0)
         return status;
 
-      /* If repeated substitution, toggle s_f per modifiers. */  
+      /* If repeated substitution, toggle s_f per modifiers. */
       if (sgpr_f)
         {
           /* Ignore after first iteration of non-interactive global. */
@@ -924,7 +922,6 @@ exec_command (ed)
               (ed->file->is_glob || cy == 'n' || cy == 'p' || cx == 'q')
               && ed->state->is_modified && !(ed->exec->opt & SCRIPTED) ? EMOD
               : ed->file->is_glob ? EOF_GLB
-              
 # else
               (cy == 'n' || cy == 'p' || cx == 'q')
               && ed->state->is_modified && !(ed->exec->opt & SCRIPTED) ? EMOD
@@ -1018,16 +1015,16 @@ exec_command (ed)
 
           /* Sanity check window size. */
           if (1 < len && len < ROWS_MAX)
-            window_rows = len;
+            ed->display->ws_row = len;
         }
       COMMAND_SUFFIX (io_f, ed);
       ++paging;
-      if (c != 'z')
+      if (c == 'z')
         addr = min (ed->state->lines,
-                    ed->exec->region->end + (window_rows >> 1) - 1);
+                    ed->exec->region->end + ed->display->ws_row - 2);
       else
         addr = min (ed->state->lines,
-                    ed->exec->region->end + window_rows - 2);
+                    ed->exec->region->end + (ed->display->ws_row >> 1) - 1);
       io_f |= c == '[' ? ZBWD : ZFWD;
       return display_lines (ed->exec->region->end, addr, io_f, ed);
       break;
@@ -1038,7 +1035,7 @@ exec_command (ed)
           ed->exec->err = _("Unknown command");
           return ERR;
         }
-      
+
       /* Determine address of last line to print. */
       if (ed->exec->region->addrs)
         {
@@ -1061,7 +1058,7 @@ exec_command (ed)
 
           /* Sanity check window size. */
           if (1 < len && len < ROWS_MAX)
-            window_rows = len;
+            ed->display->ws_row = len;
         }
       COMMAND_SUFFIX (io_f, ed);
       ++paging;
@@ -1069,7 +1066,7 @@ exec_command (ed)
       /* Display page preceding either given line or already displayed page.
          Otherwise, display page preceding current address. */
       return display_lines (max (1, (off_t) ed->exec->region->end
-                                 - window_rows + 2),
+                                 - ed->display->ws_row + 2),
                             ed->exec->region->end, io_f | ZBWD, ed);
       break;
     case '=':

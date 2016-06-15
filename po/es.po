@@ -194,8 +194,7 @@ msgstr "Lista de argumentos llena"
 #: src/main.c:531
 #, c-format
 msgid "Usage: %s [-] [-EGhirsVv] [-f SCRIPT] [-p PROMPT] [FILE]\n"
-msgstr ""
-"Modo de empleo: %s [-] [-EGhirsVv] [-f PROGRAMA] [-p AVISO] [ARCHIVO]\n"
+msgstr "Modo de empleo: %s [-] [-EGhirsVv] [-f PROGRAMA] [-p AVISO] [ARCHIVO]\n"
 
 #: src/main.c:538
 #, c-format

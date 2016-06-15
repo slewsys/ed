@@ -24,7 +24,7 @@ sigjmp_buf env;
 jmp_buf env;
 #endif  /* !HAVE_SIGLONGJMP */
 
-/* Global declarations */
+/* Global declaration - required by interrupt handlers. */
 ed_buffer_t *ed;
 
 /* Static function declarations. */
@@ -38,8 +38,8 @@ static void script_die __P ((int, ed_buffer_t *));
 /* ed: line editor */
 int
 main (argc, argv)
-     volatile int argc;
-     char **volatile argv;
+     int argc;
+     char **argv;
 {
   struct option long_options[15] =
     {
@@ -74,6 +74,7 @@ main (argc, argv)
     ed->exec->opt |= RESTRICTED;
 
 #ifdef WANT_ED_ENVAR
+
   /* Check `ED' environment variable (enabled with configure
      switch `--enable-ed-envar'). */
   if ((argv_new = getenv_init_argv ("ED", &argc_new, ed)))
@@ -165,7 +166,8 @@ top:
     }
 
 #ifdef HAVE_LOCALE_H
-  /* Get native locale. */
+
+  /* Native locale unavailable. */
   if (!setlocale (LC_ALL, ""))
     fprintf (stderr, "Warning: Locale unknown\n");
 #endif
@@ -174,6 +176,16 @@ top:
   if (!bindtextdomain (PACKAGE, LOCALEDIR) ||
       !textdomain (PACKAGE))
     fprintf (stderr, "%s\n", strerror(errno));
+#endif
+
+#ifdef WANT_FILE_GLOB
+
+  /* If file globbing is enabled and ed is given multiple file args,
+     then print name of each as it becomes current, i.e., opened for
+     editing. For SUSv4 compatibility, suppress printing the name if
+     only one file arg is given. */
+  if (argc > 0)
+    ed->exec->opt |= PRINT_FIRST_FILE;
 #endif
 
   if (!(signal_status = init_signal_handler (ed)))
@@ -200,16 +212,6 @@ top:
   /* Initialize editor buffer and globals. */
   if ((status = one_time_init (argc, argv, ed)) < 0)
     goto error;
-
-#ifdef WANT_FILE_GLOB
-
-  /* If file globbing is enabled and ed is given multiple file args,
-     then print name of each as it becomes current, i.e., opened for
-     editing. For SUSv4 compatibility, suppress printing the name if
-     only one file arg is given. */
-  if (argc > 0)
-    ed->exec->opt |= PRINT_FIRST_FILE;
-#endif
 
   /* Enable signal handlers.  */
   activate_signals ();
@@ -329,7 +331,7 @@ next_edit (status, ed)
   static size_t buf_size = 0;
 
   size_t len;
- 
+
   if ((len = strlen (*ed->file->list->gl_pathv)) > SIZE_T_MAX - 4)
     {
       ed->exec->err = _("File name too long");
@@ -386,7 +388,6 @@ getenv_init_argv (s, argc, ed)
           ed->exec->err = _("Argument list too long");
           return NULL;
         }
-      
       REALLOC_THROW (env, env_size, len + 1, NULL, ed);
       strcpy (env, u);
       for (v = strtok (env, sep); v; v = strtok (NULL, sep))
@@ -436,7 +437,7 @@ append_script_expression (s, ed)
     {
       if (fwrite (s, 1, n, ed->exec->fp) != n
           || (s[n - 1] != '\n' && fwrite ("\n", 1, 1, ed->exec->fp) != 1))
-        {  
+        {
           fprintf (stderr, "%s: %s\n", ed->exec->pathname, strerror (errno));
           ed->exec->err = _("File write error");
           clearerr (ed->exec->fp);
@@ -519,7 +520,7 @@ append_script_file (fn, ed)
     }
   fclose (fp);
   if (ferror (ed->exec->fp))
-    {  
+    {
       fprintf (stderr, "%s: %s\n", ed->exec->pathname, strerror (errno));
       ed->exec->err = _("File write error");
       clearerr (ed->exec->fp);

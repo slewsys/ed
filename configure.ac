@@ -5,7 +5,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.65])
-AC_INIT([ed],[2.0.0],[bug-ed@gnu.org])
+AC_INIT([ed],[2.0.1],[bug-ed@gnu.org])
 AC_CONFIG_AUX_DIR([.])
 AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADERS([config.h])
@@ -225,7 +225,7 @@ headers='#ifdef HAVE_STDDEF_H
 #include <unistd.h>
 #endif
 '
-  
+
 # Checks storage sizes
 AX_COMPILE_CHECK_SIZEOF(long)
 AX_COMPILE_CHECK_SIZEOF(long long)
@@ -235,46 +235,37 @@ AX_COMPILE_CHECK_SIZEOF(off_t, $headers)
 if test ."$ac_cv_sizeof_size_t" = ."$ac_cv_sizeof_long"; then
    AC_DEFINE_UNQUOTED([SIZE_T_SIZE], [unsigned long],
       [Define int with storage size of size_t.])
+   AC_DEFINE_UNQUOTED([SIZE_T_FORMAT_STRING], ["lu"],
+      [Define format string to print value of type size_t.])
 elif test ."$ac_cv_sizeof_size_t" = ."$ac_cv_sizeof_long_long"; then
    AC_DEFINE_UNQUOTED([SIZE_T_SIZE], [unsigned long long],
       [Define int with storage size of size_t.])
+   AC_DEFINE_UNQUOTED([SIZE_T_FORMAT_STRING], ["llu"],
+      [Define format string to print value of type size_t.])
 else
    AC_DEFINE_UNQUOTED([SIZE_T_SIZE], [unsigned long long],
       [Define int with storage size of size_t.])
+   AC_DEFINE_UNQUOTED([SIZE_T_FORMAT_STRING], ["lu"],
+      [Define format string to print value of type size_t.])
 fi
 
 if test ."$ac_cv_sizeof_off_t" = ."$ac_cv_sizeof_long"; then
-   AC_DEFINE_UNQUOTED([OFF_T_SIZE], [unsigned long],
+   AC_DEFINE_UNQUOTED([OFF_T_SIZE], [long],
       [Define int with storage size of off_t.])
+   AC_DEFINE_UNQUOTED([OFF_T_FORMAT_STRING], ["ld"],
+      [Define format string to print value of type off_t.])
+      
 elif test ."$ac_cv_sizeof_off_t" = ."$ac_cv_sizeof_long_long"; then
-   AC_DEFINE_UNQUOTED([OFF_T_SIZE], [unsigned long long],
+   AC_DEFINE_UNQUOTED([OFF_T_SIZE], [long long],
       [Define int with storage size of off_t.])
+   AC_DEFINE_UNQUOTED([OFF_T_FORMAT_STRING], ["lld"],
+      [Define format string to print value of type off_t.])
 else
-   AC_DEFINE_UNQUOTED([OFF_T_SIZE], [unsigned long long],
+   AC_DEFINE_UNQUOTED([OFF_T_SIZE], [long long],
       [Define int with storage size of size_t.])
+   AC_DEFINE_UNQUOTED([OFF_T_FORMAT_STRING], ["ld"],
+      [Define format string to print value of type off_t.])
 fi
-
-# Checks for string format to output value of off_t
-AC_CACHE_CHECK([how to print value off_t],
- [ac_cv_off_t_format_string],
- AC_RUN_IFELSE([AC_LANG_SOURCE([
-#include <limits.h>
-#include <stdio.h>
-#include <unistd.h>
-#include <sys/types.h>
-
-int
-main()
-{
-  _exit (sizeof (long long) - sizeof (off_t));
-}
-  ])],
-  [ac_cv_off_t_format_string="lld"],
-  [ac_cv_off_t_format_string="ld"],
-  [ac_cv_off_t_format_string="ld"]))
-AC_DEFINE_UNQUOTED([OFF_T_FORMAT_STRING], ["$ac_cv_off_t_format_string"],
-  [Define format string to print value of type off_t.])
-
 
 #
 # Checks for system calls and library functions.
@@ -310,36 +301,6 @@ AC_CHECK_FUNCS_ONCE([dup2 flock ftruncate memmove pathconf sigaction          \
   siglongjmp setbuffer setlocale stat64 strchr strerror strtol                \
   strtoul strtoll])
 
-# Checks for string format to output value of off_t
-AC_CACHE_CHECK([how to output value of off_t],
- [ac_cv_off_t_format_string],
- AC_RUN_IFELSE([AC_LANG_SOURCE([
-#include <stdio.h>
-#include <sys/types.h>
-#include <limits.h>
-
-#ifndef OFF_T_MAX
-# ifndef LLONG_MAX
-#  define LLONG_MAX \
-  ((long long) (~(unsigned long long) 0 >> (unsigned long long) 1))
-#  define LLONG_MIN (-LLONG_MAX - 1)
-# endif
-# define OFF_T_MAX LLONG_MAX
-# define OFF_T_MIN LLONG_MIN
-#endif
-
-int
-main()
-{
-  exit (sizeof (long) < sizeof (OFF_T_MIN) /* && sizeof (int) < sizeof (long) */ ? 0 : 1);
-}
-  ])],
-  [ac_cv_off_t_format_string="lld"],
-  [ac_cv_off_t_format_string="ld"],
-  [ac_cv_off_t_format_string="ld"]))
-AC_DEFINE_UNQUOTED([OFF_T_FORMAT_STRING], ["$ac_cv_off_t_format_string"],
-  [Define format string to output a value of type off_t.])
-
 AM_CONDITIONAL([LDADD_LIBED],
   [test ."$LIBOBJS" != .'' ||
    test ."$with_included_regex" = .'yes' ||
@@ -356,8 +317,6 @@ AC_CONFIG_FILES([testsuite/ts-am-sw.ed],
 
 # Generate configure helper.
 AM_MISSING_PROG([AUTOM4TE], [autom4te])
-
-dnl intl/Makefile
 
 # Generate Makefiles and conditional headers.
 AC_CONFIG_FILES([Makefile                                                     \

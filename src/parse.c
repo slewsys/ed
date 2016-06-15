@@ -62,8 +62,10 @@ address_range (ed)
     }
   while ((have_dc = IS_DELIMITER (*ed->input)));
 
-  if ((ed->exec->region->addrs = min (2, ed->exec->region->addrs)) < 2)
+  if (ed->exec->region->addrs < 2)
     first = second;
+  else
+    ed->exec->region->addrs = 2;
   if ((status = check_address_bounds (first, ed)) < 0
       || (status = check_address_bounds (second, ed)) < 0
       || (status = check_address_bounds (dot, ed)) < 0)
@@ -407,7 +409,7 @@ strtok_with_delimiters (s, delims)
         *s = *++t;
     else if ((*s = *t) == '\0' || strchr (delims, (unsigned char) *s))
       break;
-  
+
   /* No more tokens. */
   if (*t == '\0')
     t = NULL;
@@ -504,7 +506,6 @@ expand_glob (pattern, append, gp, ed)
                 }
               else if (S_ISDIR(sb.st_mode))
                 {
- 
                   /* dirname + '/' + basename */
                   len = strlen (*pathv) + strlen (basename) + 1;
 
@@ -538,7 +539,7 @@ expand_glob (pattern, append, gp, ed)
                     }
                   while (*++pv);
                   --gp->gl_pathc;
-              
+
                   spl0 ();
                 }
             }

@@ -1,6 +1,6 @@
-#!@abs_top_builddir@/@ED_COMMAND@ -vf
+#!/usr/bin/env ed -vf
 #
-# @(#) ts-am-sw.ed    1.1
+# @(#) ts-am-sw.ed.in    1.2
 #
 # This script toggles $top_srcdir/testsuite/Makefile.am between
 # generating location-dependent and independent versions of

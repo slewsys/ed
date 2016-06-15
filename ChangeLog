@@ -1,3 +1,18 @@
+2016-06-15  Andrew L. Moore  <alm@slewsys.org>
+
+	* src/io.c (read_file): fcntl(2) F_SETLK requires writable descriptor.
+	(set_file_lock): fcntl(2) F_SETLK and flock(2) may share locks.
+
+	* src/ed.h: Calculate OFF_T_MAX with size_t masks.
+
+	* src/buf.c (one_time_init):
+	* src/ed.h (struct ed_display):
+	* src/exec.c (exec_command):
+	* src/page.c (init_frame_buffer):
+	* src/signal.c (handle_winch): Move global vars window_rows and
+	window_columns to ed->display->ws_row and ed->display-ws_col,
+	respectively.
+
 2016-06-11  gettextize  <bug-gnu-gettext@gnu.org>
 
 	* m4/gettext.m4: Upgrade to gettext-0.19.7.
@@ -1665,6 +1680,6 @@ Wed Jan 19 20:42:50 PST 1994 Andrew Moore <alm@SlewSys.org>
 
         * Added reliable signal(2) for SysV.
 
-Dec 1993  Francois Pinard  (pinard@icule)
+Dec 1993  François Pinard  (pinard@icule)
 
         * GNUified ed.
