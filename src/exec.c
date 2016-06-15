@@ -430,7 +430,7 @@ exec_command (ed)
       COMMAND_SUFFIX (io_f, ed);
 
       /* Toggle VERBOSE setting. */
-      ed->exec->opt ^= ed->exec->opt & VERBOSE;
+      ed->exec->opt ^= VERBOSE;
       if (ed->exec->opt & VERBOSE && ed->exec->err)
         puts (ed->exec->err);
       break;
@@ -581,7 +581,7 @@ exec_command (ed)
       COMMAND_SUFFIX (io_f, ed);
 
       /* Toggle PROMPT settings. */
-      ed->exec->opt ^= ed->exec->opt & PROMPT;
+      ed->exec->opt ^= PROMPT;
       break;
     case 'p':
       /* Allow printing an empty buffer provided no addresses are

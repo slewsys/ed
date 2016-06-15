@@ -1,5 +1,7 @@
 2016-06-15  Andrew L. Moore  <alm@slewsys.org>
 
+	* src/exec.c (exec_command): Fix 'P' and 'H' commands.
+
 	* src/io.c (read_file): fcntl(2) F_SETLK requires writable descriptor.
 	(set_file_lock): fcntl(2) F_SETLK and flock(2) may share locks.
 
