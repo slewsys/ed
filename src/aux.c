@@ -40,8 +40,10 @@ static ed_line_node_t *append_node_to_register __P ((size_t, off_t, int,
   while (0)
 
 
-/* filter_lines: Filter a range of lines through a shell command;
-   return status. */
+/* 
+ * filter_lines: Filter a range of lines through a shell command;
+ *    return status.
+ */
 int
 filter_lines (from, to, sc, ed)
      off_t from;
@@ -60,8 +62,10 @@ filter_lines (from, to, sc, ed)
   /* Flush any buffered I/O. */
   fflush (NULL);
 
-  /* Create two pipes: one for writing to the shell command and
-     another for reading from it.  */
+  /* 
+   * Create two pipes: one for writing to the shell command and
+   * another for reading from it.
+   */
   if (pipe (ip) < 0 || pipe (op) < 0)
     {
       fprintf (stderr, "%s\n", strerror (errno));
@@ -84,9 +88,11 @@ filter_lines (from, to, sc, ed)
       signal (SIGINT, SIG_DFL);
       signal (SIGQUIT, SIG_DFL);
 
-      /* Redirect read/write pipes to command's standard I/O.  Close
-         write end of pipe ip, ip[1], so that EOF is seen.  Execute
-         shell command. */
+      /* 
+       * Redirect read/write pipes to command's standard I/O. Close
+       * write end of pipe ip, ip[1], so that EOF is seen. Execute
+       * shell command.
+       */
       if (dup2 (ip[0], 0) < 0 || dup2 (op[1], 1) < 0 || dup2 (op[1], 2) < 0
           || close (ip[0]) < 0 || close (ip[1]) < 0
           || close (op[0]) < 0 || close (op[1]) < 0
@@ -130,8 +136,10 @@ filter_lines (from, to, sc, ed)
       goto err;
     case 0:
 
-      /* Close unused pipe ends, then open and write to shell
-         process's standard input. */
+      /* 
+       * Close unused pipe ends, then open and write to shell
+       * process's standard input.
+       */
       if (close (ip[0]) < 0 || close (op[0]) < 0
           || !(ipp = fdopen (ip[1], "w"))
           || (status = write_stream (ipp, lp, n, &size, ed)) < 0
@@ -176,8 +184,10 @@ filter_lines (from, to, sc, ed)
 #endif  /* defined (HAVE_FORK) && defined (WANT_EXTERNAL_FILTER) */
 
 
-/* append_node_to_register: Append node to end of given register.
-   Return node pointer. */
+/* 
+ * append_node_to_register: Append node to end of given register.
+ *   Return node pointer.
+ */
 static ed_line_node_t *
 append_node_to_register (len, offset, qno, ed)
      size_t len;
@@ -206,8 +216,10 @@ append_node_to_register (len, offset, qno, ed)
 }
 
 
-/* append_from_register: Append lines from register to buffer after given
-   address. */
+/* 
+ * append_from_register: Append lines from register to buffer after given
+ *   address.
+ */
 int
 read_from_register (qno, addr, ed)
      int qno;                   /* source register */
@@ -237,9 +249,11 @@ read_from_register (qno, addr, ed)
 }
 
 
-/* register_copy: Write lines from one register to another. If
-   `append' is zero, any previous contents of target register
-   are lost. */
+/* 
+ * register_copy: Write lines from one register to another. If
+ *   `append' is zero, any previous contents of target register are
+ *   lost.
+ */
 int
 register_copy (from, to,  append, ed)
      int from;                  /* source register */
@@ -266,9 +280,10 @@ register_copy (from, to,  append, ed)
 }
 
 
-/* move_register: Move lines from one register to another. If
-   `append' is zero, any previous contents of target register
-   are lost. */
+/* 
+ * move_register: Move lines from one register to another. If `append'
+ *   is zero, any previous contents of target register are lost.
+ */
 int
 register_move (from, to,  append, ed)
      int from;                  /* source register */
@@ -319,9 +334,10 @@ reset_register_queue (qno, ed)
 }
 
 
-/* write_to_register: Write addressed lines to given register. If
-   `append' is zero, any previous register contents are
-   lost. */
+/* 
+ * write_to_register: Write addressed lines to given register. If
+ *   `append' is zero, any previous register contents are lost.
+ */
 int
 write_to_register (qno, from, to, append, ed)
      int qno;                   /* destination register */

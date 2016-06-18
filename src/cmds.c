@@ -8,8 +8,10 @@
 #include "ed.h"
 
 
-/* append_lines: Insert text from stdin to after given address; stop
-   when either a single period is read or EOF; return status. */
+/*
+ * append_lines: Insert text from stdin to after given address; stop
+ *   when either a single period is read or EOF. Return status.
+ */
 int
 append_lines (after, ed)
      off_t after;
@@ -71,7 +73,9 @@ append_lines (after, ed)
 }
 
 
-/* copy_lines: Copy a range of lines to after given address; return status. */
+/*
+ * copy_lines: Copy a range of lines to after given address. Return status.
+ */
 int
 copy_lines (from, to, after, ed)
      off_t from;
@@ -137,9 +141,9 @@ delete_lines (from, to, ed)
 }
 
 
-
-
-/* join_lines: Replace a range of lines with the joined text of those lines. */
+/*
+ * join_lines: Replace a range of lines with the joined text of those lines.
+ */
 int
 join_lines (from, to, ed)
      off_t from;
@@ -183,7 +187,9 @@ join_lines (from, to, ed)
 }
 
 
-/* move_lines: Move a range of lines to after given address. Return status. */
+/*
+ * move_lines: Move a range of lines to after given address. Return status.
+ */
 int
 move_lines (from, to, after, ed)
      off_t from;
@@ -241,12 +247,6 @@ move_lines (from, to, after, ed)
 }
 
 
-#define MARK_MAX 26             /* max number of marks */
-
-/* Global declarations */
-const ed_line_node_t *mark[MARK_MAX]; /* line markers */
-int markno;                     /* line marker count */
-
 /* mark_line_node: Set a line node mark. */
 int
 mark_line_node (lp, n, ed)
@@ -259,14 +259,16 @@ mark_line_node (lp, n, ed)
       ed->exec->err = _("Invalid address mark");
       return ERR;
     }
-  if (!mark[n - 'a'])
-    ++markno;
-  mark[n - 'a'] = lp;
+  if (!ed->core->mark[n - 'a'])
+    ++ed->core->markno;
+  ed->core->mark[n - 'a'] = lp;
   return 0;
 }
 
 
-/* get_marked_node_address: Get address of a marked line; return status. */
+/*
+ * get_marked_node_address: Get address of a marked line. Return status.
+ */
 int
 get_marked_node_address (n, addr, ed)
      int n;
@@ -278,7 +280,7 @@ get_marked_node_address (n, addr, ed)
       ed->exec->err = _("Invalid address mark");
       return ERR;
     }
-  return get_line_node_address (mark[n - 'a'], addr, ed);
+  return get_line_node_address (ed->core->mark[n - 'a'], addr, ed);
 }
 
 
@@ -289,10 +291,10 @@ unmark_line_node (lp)
 {
   int i;
 
-  for (i = 0; markno && i < MARK_MAX; ++i)
-    if (mark[i] == lp)
+  for (i = 0; ed->core->markno && i < MARK_MAX; ++i)
+    if (ed->core->mark[i] == lp)
       {
-        mark[i] = NULL;
-        --markno;
+        ed->core->mark[i] = NULL;
+        --ed->core->markno;
       }
 }

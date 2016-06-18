@@ -180,10 +180,12 @@ top:
 
 #ifdef WANT_FILE_GLOB
 
-  /* If file globbing is enabled and ed is given multiple file args,
-     then print name of each as it becomes current, i.e., opened for
-     editing. For SUSv4 compatibility, suppress printing the name if
-     only one file arg is given. */
+  /* 
+   * If file globbing is enabled and ed is given multiple file args,
+   * then print name of each as it becomes current, i.e., opened for
+   * editing. For SUSv4 compatibility, suppress printing the name if
+   * only one file arg is given.
+   */
   if (argc > 0)
     ed->exec->opt |= PRINT_FIRST_FILE;
 #endif
@@ -192,9 +194,11 @@ top:
     {
 #ifdef SIGWINCH
 
-      /* Signals are fatal before final initialization, i.e., before
-         calling one_time_init (), but SIGWINCH only sets current
-         window dimensions. */
+      /* 
+       * Signals are fatal before final initialization, i.e., before
+       * calling one_time_init (), but SIGWINCH only sets current
+       * window dimensions.
+       */
       signal_handler (SIGWINCH);
 #endif
     }
@@ -320,8 +324,10 @@ top:
 }
 
 
-/* next_edit: Construct ed command per status, pointed to by ed->input.
-   Return status. */
+/* 
+ * next_edit: Construct ed command per status, pointed to by
+ *   ed->input. Return status.
+ */
 static int
 next_edit (status, ed)
      int status;
@@ -362,8 +368,10 @@ next_edit (status, ed)
 
 
 #ifdef WANT_ED_ENVAR
-/* getenv_init_argv: Return argv constructed from value of given
-   environment variable; argv[0] points to the given variable name. */
+/* 
+ * getenv_init_argv: Return argv constructed from value of given
+ *   environment variable; argv[0] points to the given variable name.
+ */
 static char **
 getenv_init_argv (s, argc, ed)
      const char *s;
@@ -392,8 +400,10 @@ getenv_init_argv (s, argc, ed)
       strcpy (env, u);
       for (v = strtok (env, sep); v; v = strtok (NULL, sep))
         {
-          /* In addition to max length (ARG_MAX), check max number of
-             arguments, approximated as (ARG_MAX / 4). */
+          /* 
+           * In addition to max length (ARG_MAX), check max number of
+           *   arguments, approximated as (ARG_MAX / 4).
+           */
           if (*argc >= len >> 2)
             {
               ed->exec->err = _("Argument list full");

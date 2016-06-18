@@ -99,9 +99,10 @@ display_lines (from, to, io_f, ed)
     {
       INIT_FB_ROW (bp, from + lc, 0, fb);
 
-      /* If scrolling forward and last line of previous page was
-         truncated, then print remainder of that line after first
-         part. */
+      /* 
+       * If last line of previous page was truncated while scrolling
+       * forward, then resume with truncated part at top of page.
+       */
       if ((io_f & ZFWD) && ed->display->underflow
           && fb->prev_last && bp == fb->prev_last->lp)
         {
@@ -109,9 +110,10 @@ display_lines (from, to, io_f, ed)
           flags = (io_f | OFFB) & ~NMBR;
         }
 
-      /* If scrolling backward and first line of previous page was
-         truncated, then print beginning of that line before first
-         part. */
+      /* 
+       * If first line of previous page was truncated while scrolling
+       * backward, then resume with truncated part at bottom of page.
+       */
       else if ((io_f & ZBWD) && ed->display->overflow
                && fb->prev_first && bp == fb->prev_first->lp)
         {
@@ -145,7 +147,10 @@ display_lines (from, to, io_f, ed)
                             ed->state->lines, (io_f | ZBWD) & ~ZFWD, ed);
     }
 
-  /* If final backward page not full, then scroll forward from first line. */
+  /*
+   * If final backward page not full, then scroll forward from first
+   * line.
+   */
   if ((io_f & ZBWD) && from == 1 && !fb->wraps
       && (ed->display->overflow || to != ed->state->lines))
     {
@@ -162,13 +167,15 @@ display_lines (from, to, io_f, ed)
     {
       RESET_FB_PREV (fb, ed);
 
-      /* Calculate frame buffer row index of the first and last lines
-         to print. If paging forward, then first line is given and its
-         row index is trivially 0. If paging backward, then only the
-         last line is known. In this case, a starting point is
-         estimated and the frame buffer is filled, wrapping around top
-         of buffer as necessary, until the end point in the source
-         text is reached. */
+      /* 
+       * Calculate frame buffer row index of the first and last lines
+       * to print. If paging forward, then first line is given and its
+       * row index is trivially 0. If paging backward, then only the
+       * last line is known. In this case, a starting point is
+       * estimated and the frame buffer is filled, wrapping around top
+       * of buffer as necessary, until the end point in the source
+       * text is reached.
+       */
       if (io_f & ZHFW)
         {
           fb->first_i = fb->row_i;
@@ -191,19 +198,25 @@ display_lines (from, to, io_f, ed)
       /* Line address of first row. */
       ed->display->page_addr = fb->prev_first->addr;
 
-      /* Assign old prev_first `len - offset' as rem_chars to last
-         line of current page. */
+      /* 
+       * Assign old prev_first `len - offset' as rem_chars to last
+       * line of current page.
+       */
       if ((io_f & ZBWD))
         fb->rem_chars = rem_chars;
 
-      /* If next command is `scroll forward', then current page
-         becomes `page above', and ed->display->underflow is set if
-         last line of current page is truncated. */
+      /* 
+       * If next command is `scroll forward', then current page
+       * becomes `page above', and ed->display->underflow is set if
+       * last line of current page is truncated.
+       */
       ed->display->underflow = !!fb->rem_chars;
 
-      /* If next command is `scroll backward', then current page becomes
-         `page below', and ed->display->overflow is set if first line
-         of current page has non-zero offset. */
+      /* 
+       * If next command is `scroll backward', then current page
+       * becomes `page below', and ed->display->overflow is set if
+       * first line of current page has non-zero offset.
+       */
       ed->display->overflow = !!fb->prev_first->offset;
 
       if (!ed->display->off  && (status = display_frame_buffer (fb)) < 0)
@@ -270,8 +283,10 @@ init_frame_buffer (fb, io_f, ed)
       fb->columns = ed->display->ws_col;
     }
 
-  /* Don't reset row_i if scrolling forward in half-pages. Append to
-     end of frame buffer instead. */
+  /* 
+   * Don't reset row_i if scrolling forward in half-pages. Append to
+   * end of frame buffer instead.
+   */
   if (!(io_f & ZHFW))
     fb->row_i = 0;
   fb->fill_i = (fb->row_i + (fb->rows >> 1)) % (fb->rows - 1);
@@ -356,8 +371,10 @@ put_frame_buffer_line (lp, addr, io_f, fb, ed)
   unsigned int sgr_len = 0;     /* length of ANSI sgr sequence */
   int form_feed = 0;
 
-  /* Per SUSv4, 2013, the `$' (dollar sign) character is output by
-     the `l' (literal) command as the escape sequence `\$' */
+  /* 
+   * Per SUSv4, 2013, the `$' (dollar sign) character is output by the
+   * `l' (literal) command as the escape sequence `\$'
+   */
   char control_char[10] =
     {
       BELL,
@@ -422,8 +439,10 @@ put_frame_buffer_line (lp, addr, io_f, fb, ed)
       if (!(io_f & LIST) || (31 < *s && *s < 127 && *s != '\\' && *s != '$'))
         {
 
-          /* If ANSI color support is enabled, exclude SGR sequences
-             from column bookkeeping. */
+          /* 
+           * If ANSI color support is enabled, exclude SGR sequences
+           * from column bookkeeping.
+           */
           if (ed->exec->opt & ANSI_COLOR && (sgr_len = sgr_span (s)) > 0)
             {
               for (; sgr_len--; --fb->rem_chars, ++s)
@@ -436,16 +455,20 @@ put_frame_buffer_line (lp, addr, io_f, fb, ed)
             return ERR;
           col += CHAR_WIDTH ((unsigned) *s, col);
 
-          /* As with cat(1), form feed (\f) does not force a new page,
-             only a new line. Any following text continues on the next
-             line -- indented to the current column. */
+          /* 
+           * As with cat(1), form feed (\f) does not force a new page,
+           * only a new line. Any following text continues on the next
+           * line -- indented to the current column.
+           */
           if ((form_feed = (*s == '\f')))
             INC_MOD_FB_ROW (lp, addr, io_f & ZBWD, fb);
         }
       else
         {
-          /* If control char has C escape sequence, print literal
-             escape sequence - e.g., ASCII bel as `\a'. */
+          /* 
+           * If control char has C escape sequence, print literal
+           * escape sequence - e.g., ASCII bel as `\a'.
+           */
           if (*s && (cp = strchr (control_char, (unsigned) *s)))
             {
               FB_PUTS (escape_sequence[cp - control_char], fb, ed);
@@ -462,10 +485,12 @@ put_frame_buffer_line (lp, addr, io_f, fb, ed)
             col += 4;
         }
 
-      /* When listing text -- i.e., (io_f & LIST) -- first try simple
-         heuristic to split lines on word boundaries for legibility;
-         otherwise, split lines at the right margin, which starts one
-         tab stop from the right edge of the window. */
+      /* 
+       * When listing text -- i.e., (io_f & LIST) -- first try simple
+       * heuristic to split lines on word boundaries for legibility;
+       * otherwise, split lines at the right margin, which starts one
+       * tab stop from the right edge of the window.
+       */
       if ((col >= fb->columns && fb->rem_chars > 1)
           || ((io_f & LIST)
               && ((!isalnum ((unsigned) *s)

@@ -61,8 +61,10 @@ mark_global_nodes (want_match, ed)
 }
 
 
-/* exec_global: Apply command list to lines in a range in global queue;
-   return command status. */
+/* 
+ * exec_global: Apply command list to lines in a range in global
+ *   queue. Return command status.
+ */
 int
 exec_global (io_f, ed)
      unsigned io_f;             /* I/O flags */
@@ -79,8 +81,10 @@ exec_global (io_f, ed)
 
   reset_undo_queue (ed);
 
-  /* If non-interactive, read command before entering loop in the
-     event of empty global queue. */
+  /* 
+   * If non-interactive, read command before entering loop in the
+   * event of empty global queue.
+   */
   if (!interactive && !(ed->input = get_extended_line (&len, 0, ed)))
     {
       status = ERR;
@@ -145,8 +149,10 @@ exec_global (io_f, ed)
 }
 
 
-/* append_global_node: Append node to end of global queue. Return node
-   pointer. */
+/* 
+ * append_global_node: Append node to end of global queue. Return node
+ *   pointer.
+ */
 static ed_global_node_t *
 append_global_node (lp, ed)
      const ed_line_node_t *lp;
@@ -172,8 +178,10 @@ append_global_node (lp, ed)
 }
 
 
-/* next_global_node: Pop node from top of global queue; return line
-   node pointer. */
+/* 
+ * next_global_node: Pop node from top of global queue; return line
+ *   node pointer.
+ */
 static ed_line_node_t *
 next_global_node (ed)
      ed_buffer_t *ed;

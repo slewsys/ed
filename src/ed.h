@@ -9,8 +9,10 @@
 # include "config.h"
 #endif
 
-/* Work around conflicting off_t typedefs (e.g., if _LARGE_FILE
-   support enabled). Defined per configure, below. */
+/* 
+ * Work around conflicting off_t typedefs (e.g., if _LARGE_FILE
+ * support enabled). Defined per configure, below.
+ */
 #define off_t INTERNAL_OFF_T
 
 #include <ctype.h>
@@ -235,9 +237,11 @@ enum utf8_char_constant
     CIRCUMFLEX_ACCENT = '^'
   };
 
-/* Approximate max (strlen (OFF_T_MAX)) from relations:
-      2 ^ (8 * sizeof (off_t)) < 10 ^ strlen (OFF_T_MAX)
-     10 ^ strlen (OFF_T_MAX)   <  2 ^ (10 * sizeof (off_t) */
+/* 
+ * Approximate upper bound for strlen (OFF_T_MAX) from relations:
+ *     2 ^ (8 * sizeof (off_t)) < 10 ^ strlen (OFF_T_MAX)
+ *     10 ^ strlen (OFF_T_MAX)   <  2 ^ (10 * sizeof (off_t))
+ */
 #define OFF_T_LEN (3 * sizeof (off_t))
 
 #if defined (HAVE_STAT64) && !__DARWIN_64_BIT_INO_T && !defined (__linux__)
@@ -360,11 +364,14 @@ struct ed_state
   int input_is_binary;          /* If set, binary data on input. */
 };
 
+#define MARK_MAX 26             /* max number of marks */
+
 /* Ed buffer meta data and storage parameters. */
 struct ed_core
 {
-  /* List of register buffers. */
+  /* Register buffers and line markers. */
   ed_line_node_t *reg[REG_MAX];
+  ed_line_node_t *mark[MARK_MAX];
 
   /* Edit-processing buffers. */
   ed_line_node_t *line_head;     /* Head of line buffer. */
@@ -547,10 +554,17 @@ enum ed_command_error
   };
 
 #ifdef HAVE_REG_SYNTAX_T
-  /* GNU regular expression syntax flags.
-     GNU-specific operators are disabled for POSIX compatibility and clarity.
-     To use extended regular expression syntax, use either the `-E' or
-     `-r' command-line switch instead. */
+  /* 
+   * Flags for GNU regular expressions.
+   * 
+   * Historically, ed regular expressions are what POSIX refers to as
+   * "basic". POSIX "extended" regular expressions can be enabled with
+   * command-line option `-E' or `-r'.
+   *
+   * GNU extensions to "basic" regular expression syntax are disabled
+   * for POSIX compatibility. Use extended regular expressions
+   * instead.
+   */
 # define _RE_SYNTAX_ED_COMMON                                                 \
    (RE_CHAR_CLASSES |  RE_HAT_LISTS_NOT_NEWLINE | RE_INTERVALS |              \
     RE_NO_EMPTY_RANGES | RE_UNMATCHED_RIGHT_PAREN_ORD |                       \

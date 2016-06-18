@@ -8,8 +8,10 @@
 #include "ed.h"
 
 
-/* append_undo_node: Append node to end of undo queue. Return node
-   pointer. */
+/* 
+ * append_undo_node: Append node to end of undo queue. Return node
+ *   pointer.
+ */
 ed_undo_node_t *
 append_undo_node (type, from, to, ed)
      int type;

@@ -102,8 +102,9 @@ read_file (fn, after, addr, size, is_default, ed)
 }
 
 
-/* read_pipe: Read output of shell command to buffer; return line
-   count. */
+/* 
+ * read_pipe: Read output of shell command to buffer. Return line count.
+ */
 int
 read_pipe (fn, after, addr, size, ed)
      const char *fn;
@@ -150,8 +151,10 @@ read_pipe (fn, after, addr, size, ed)
   while (0)
 
 
-/* read_stream: Read a stream into the editor buffer after the given
-   address; return bytes read. */
+/* 
+ * read_stream: Read a stream into the editor buffer after the given
+ *   address. Return bytes read.
+ */
 static int
 read_stream (fp, after, size, ed)
      FILE *fp;
@@ -202,10 +205,12 @@ read_stream (fp, after, size, ed)
   ed->state->is_empty = (ed->state->is_empty
                          ? *size == ed->state->input_wants_newline : 0);
 
-  /* A newline is appended to an empty file read into an empty buffer,
-     but the buffer is still considered `empty' in the sense that a
-     subsequent read or append will overwrite the newline. This is
-     what is expected when concatenating files. */
+  /* 
+   * A newline is appended to an empty file read into an empty buffer,
+   * but the buffer is still considered `empty' in the sense that a
+   * subsequent read or append will overwrite the newline. This is
+   * what is expected when concatenating files.
+   */
   newline_inserted = (stream_appended
                       ? ed->state->newline_appended && ed->state->is_binary
                       : ed->state->input_wants_newline);
@@ -223,12 +228,14 @@ read_stream (fp, after, size, ed)
       && stream_appended && ed->state->newline_appended)
     --*size;
 
-  /* When either appending to a binary file which has no trailing
-     newline or inserting a binary file with no trailing newline into
-     another file, the lines separated by the inserted newline should
-     really be joined. This is what is expected when concatenating
-     files. For now, just warn that a newline has been inserted and
-     leave joining the lines up to the user. */
+  /* 
+   * When either appending to a binary file which has no trailing
+   * newline or inserting a binary file with no trailing newline into
+   * another file, the lines separated by the inserted newline should
+   * really be joined. This is what is expected when concatenating
+   * files. For now, just warn that a newline has been inserted and
+   * leave joining the lines up to the user.
+   */
   if (newline_inserted && *size > 0)
     puts (_("Newline inserted"));
   else if (!ed->state->is_binary && ed->state->newline_appended
@@ -316,10 +323,12 @@ read_stream_r (fp, after, size, ed)
       free (t);
     }
 
-  /* A newline is appended to an empty file read into an empty buffer,
-     but the buffer is still considered `empty' in the sense that a
-     subsequent read or append will overwrite the newline. This is
-     what is expected when concatenating files. */
+  /* 
+   * A newline is appended to an empty file read into an empty buffer,
+   * but the buffer is still considered `empty' in the sense that a
+   * subsequent read or append will overwrite the newline. This is
+   * what is expected when concatenating files.
+   */
   ed->state->is_empty = (ed->state->is_empty
                          ? *size == ed->state->input_wants_newline : 0);
 
@@ -341,14 +350,16 @@ read_stream_r (fp, after, size, ed)
       && stream_appended && ed->state->newline_appended)
     --*size;
 
-  /* When either appending to a binary file which has no trailing
-     newline or inserting a binary file with no trailing newline into
-     another file, the lines separated by the inserted newline should
-     really be joined. This is what is expected, e.g., when concatenating
-     files. The problem is that ed has historically appended a missing
-     newline, and any other behavior would likely be a source of
-     confusion. So for now, just warn that a newline has been inserted
-     and leave joining the lines up to the user. */
+  /* 
+   * When either appending to a binary file which has no trailing
+   * newline or inserting a binary file with no trailing newline into
+   * another file, the lines separated by the inserted newline should
+   * really be joined. This is what is expected, e.g., when
+   * concatenating files. The problem is that ed has historically
+   * appended a missing newline, and any other behavior would likely
+   * be a source of confusion. So for now, just warn that a newline
+   * has been inserted and leave joining the lines up to the user.
+   */
   if (newline_inserted && *size > 0)
     puts (_("Newline inserted"));
   else if (!ed->state->is_binary && ed->state->newline_appended
@@ -361,8 +372,10 @@ read_stream_r (fp, after, size, ed)
 #endif  /* WANT_EXTERNAL_FILTER */
 
 
-/* get_extended_line: Get an extended line from stdin;
-   return pointer to static buffer. */
+/* 
+ * get_extended_line: Get an extended line from stdin. Return pointer
+ *   to static buffer.
+ */
 char *
 get_extended_line (len, nonl, ed)
      size_t *len;               /* extended line length */
@@ -381,8 +394,10 @@ get_extended_line (len, nonl, ed)
   /* NB: Don't assume that ed->input is NUL-terminated. */
   memcpy (xl, ed->input, *len);
 
-  /* Shell escapes set nonl, so we are only interested in a trailing
-     escape in this case. */
+  /* 
+   * Shell escapes set nonl, so we are only interested in a trailing
+   * escape in this case.
+   */
   while (nonl ? *len > 1 && *(xl + *len - 2) == '\\'
          : has_trailing_escape (xl, xl + *len - 1))
     {
@@ -407,7 +422,10 @@ get_extended_line (len, nonl, ed)
 }
 
 
-/* get_stream_line: Read a line of text from a stream; return line length */
+/* 
+ * get_stream_line: Read a line of text from a stream. Return line
+ *   length.
+ */
 char *
 get_stream_line (fp, len, ed)
      FILE *fp;
@@ -421,8 +439,10 @@ get_stream_line (fp, len, ed)
   char fb[PATH_MAX];
   char *fn;
 
-  /* NB: stdin is not buffered to avoid I/O contention (see buf.c),
-     but other file I/O is buffered. */
+  /* 
+   * NB: stdin is not buffered to avoid I/O contention (see buf.c),
+   * but other file I/O is buffered.
+   */
 
   *len = 0;
 
@@ -478,7 +498,7 @@ get_stream_line (fp, len, ed)
 }
 
 
-/* write_file: Write buffer range to file; return line count. */
+/* write_file: Write buffer range to file. Return line count. */
 int
 write_file (fn, is_default, from, to, addr, size, mode, ed)
      const char *fn;
