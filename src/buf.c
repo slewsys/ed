@@ -580,10 +580,10 @@ init_register_queue (qno, ed)
      int qno;                   /* register queue number */
      ed_buffer_t *ed;
 {
-  ed_line_node_t *rq[REG_MAX];
+  ed_line_node_t *rq;
 
   spl1 ();
-  if (!(rq[qno] = (ed_line_node_t *) malloc (sizeof (ed_line_node_t))))
+  if (!(rq = (ed_line_node_t *) malloc (sizeof (ed_line_node_t))))
     {
       fprintf (stderr, "%s\n", strerror (errno));
       ed->exec->err = _("Memory exhausted");
@@ -591,8 +591,8 @@ init_register_queue (qno, ed)
       return ERR;
     }
 
-  LINK_NODES (rq[qno], rq[qno]);
-  ed->core->reg[qno] = rq[qno];
+  LINK_NODES (rq, rq);
+  ed->core->reg[qno] = rq;
   spl0 ();
   return 0;
 }

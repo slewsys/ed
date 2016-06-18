@@ -84,7 +84,7 @@
           reg_io |= WRITE_REGISTER;                                           \
           if ((append = *++ed->input == '>'))                                 \
             ++ed->input;                                                      \
-          reg_write = isdigit (*ed->input) ? *ed->input++ - '0' : REG_MAX - 1; \
+          write_reg = isdigit (*ed->input) ? *ed->input++ - '0' : REG_MAX - 1; \
         }                                                                     \
       else                                                                    \
         {                                                                     \
@@ -157,8 +157,6 @@ exec_command (ed)
       reg_io |= READ_REGISTER;
       ++ed->input;
       read_reg = isdigit (*ed->input) ? *ed->input++ - '0' : REG_MAX - 1;
-      if ((status = ) < 0)
-        return status;
     }
 
   SKIP_WHITESPACE (ed);

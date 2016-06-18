@@ -286,8 +286,9 @@ get_marked_node_address (n, addr, ed)
 
 /* unmark_line_node: Clear line node mark. */
 void
-unmark_line_node (lp)
+unmark_line_node (lp, ed)
      const ed_line_node_t *lp;
+     ed_buffer_t *ed;
 {
   int i;
 

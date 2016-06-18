@@ -372,6 +372,7 @@ struct ed_core
   /* Register buffers and line markers. */
   ed_line_node_t *reg[REG_MAX];
   ed_line_node_t *mark[MARK_MAX];
+  int markno;
 
   /* Edit-processing buffers. */
   ed_line_node_t *line_head;     /* Head of line buffer. */
@@ -911,7 +912,7 @@ int substitution_lhs __P ((regex_t **, unsigned *, ed_buffer_t *));
 int substitution_rhs __P ((off_t *, off_t *, unsigned *, unsigned *,
                            ed_buffer_t *));
 int undo_last_command __P ((ed_buffer_t *));
-void unmark_line_node __P ((const ed_line_node_t *));
+void unmark_line_node __P ((const ed_line_node_t *, ed_buffer_t *));
 int write_file __P ((const char *, int, off_t, off_t, off_t *, off_t *,
                      const char *, ed_buffer_t *));
 int write_pipe __P ((const char *, off_t, off_t, off_t *, off_t *,

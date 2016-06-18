@@ -120,7 +120,7 @@ reset_undo_queue (ed)
           for (lp = up->h; lp != ep; lp = lp_next)
             {
               lp_next = lp->q_forw;
-              unmark_line_node (lp);
+              unmark_line_node (lp, ed);
               free (lp);
             }
         }
