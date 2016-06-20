@@ -58,6 +58,14 @@ one_time_init (argc, argv, ed)
   init_ed_state (-1, &ed->state[1]);
 
   /* Initialize buffer meta data deques. */
+  if ((ed->core->reg =
+       (struct ed_register *) calloc (1, sizeof (struct ed_register))) == NULL)
+    {
+      fprintf (stderr, "%s\n", strerror (errno));
+      ed->exec->err = _("Memory exhausted");
+      return ERR;
+    }
+
   INIT_DEQUE (ed->core->line_head);
   INIT_DEQUE (ed->core->global_head);
   INIT_DEQUE (ed->core->undo_head);
@@ -576,8 +584,8 @@ init_global_queue (aq, lq, ed)
 
 /* init_register_queue: Initialize given ed_core register queue. */
 int
-init_register_queue (qno, ed)
-     int qno;                   /* register queue number */
+init_register_queue (idx, ed)
+     int idx;                   /* register queue number */
      ed_buffer_t *ed;
 {
   ed_line_node_t *rq;
@@ -592,7 +600,7 @@ init_register_queue (qno, ed)
     }
 
   LINK_NODES (rq, rq);
-  ed->core->reg[qno] = rq;
+  ed->core->reg->lp[idx] = rq;
   spl0 ();
   return 0;
 }

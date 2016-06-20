@@ -7,10 +7,6 @@
 
 #include "ed.h"
 
-/* Register I/O flags. */
-#define READ_REGISTER 0x01
-#define WRITE_REGISTER 0x02
-
 /* COMMAND_SUFFIX: Get command suffix from the command buffer. */
 #define COMMAND_SUFFIX(io_f, ed)                                              \
   do                                                                          \
@@ -81,10 +77,11 @@
       /* Parse "write register" command variation. */                         \
       if (*ed->input == '>')                                                  \
         {                                                                     \
-          reg_io |= WRITE_REGISTER;                                           \
+          ed->core->reg->io_f |= REGISTER_WRITE;                              \
           if ((append = *++ed->input == '>'))                                 \
             ++ed->input;                                                      \
-          write_reg = isdigit (*ed->input) ? *ed->input++ - '0' : REG_MAX - 1; \
+          ed->core->reg->write_idx =                                          \
+            isdigit (*ed->input) ? *ed->input++ - '0' : REG_MAX - 1;          \
         }                                                                     \
       else                                                                    \
         {                                                                     \
@@ -142,21 +139,21 @@ exec_command (ed)
   int cy = 0;
   int cz = 0;
   int is_default = 0;
-  int read_reg = 0;             /* Register read from. */
-  int write_reg = 0;            /* Register written to. */
-  int reg_io = 0;               /* Register I/O flags. */
   int status = 0;               /* Return status */
 
+  ed->core->reg->io_f = 0;
   ed->display->is_paging = paging;
   paging = 0;
+
   SKIP_WHITESPACE (ed);
 
   /* Register indirection. */
   if (*ed->input == '<')
     {
-      reg_io |= READ_REGISTER;
+      ed->core->reg->io_f |= REGISTER_READ;
       ++ed->input;
-      read_reg = isdigit (*ed->input) ? *ed->input++ - '0' : REG_MAX - 1;
+      ed->core->reg->read_idx =
+        isdigit (*ed->input) ? *ed->input++ - '0' : REG_MAX - 1;
     }
 
   SKIP_WHITESPACE (ed);
@@ -184,14 +181,14 @@ exec_command (ed)
     case 'r':
     case 'w':
     case 'W':
-      if (reg_io)
+      if (ed->core->reg->io_f)
         {
           ed->exec->err = _("Command prefix unexpected");
           return ERR;
         }
       break;
     default:
-      if (reg_io || ed->file->is_glob)
+      if (ed->core->reg->io_f || ed->file->is_glob)
         {
           ed->exec->err = _("Command prefix unexpected");
           return ERR;
@@ -222,8 +219,7 @@ exec_command (ed)
       /* Per SUSv4, 2013, 0c => 1c, so 0,0c => 1,1c. */
       ed->exec->region->start += !ed->exec->region->start;
       ed->exec->region->end += !ed->exec->region->end;
-      if ((status =
-           is_valid_range (ed->state->dot, ed->state->dot, ed)) < 0)
+      if ((status = is_valid_range (ed->state->dot, ed->state->dot, ed)) < 0)
         return status;
       COMMAND_SUFFIX (io_f, ed);
       if (!ed->exec->global)
@@ -240,13 +236,12 @@ exec_command (ed)
         return status;
       break;
     case 'd':
-      if ((status =
-           is_valid_range (ed->state->dot, ed->state->dot, ed)) < 0)
+      if ((status = is_valid_range (ed->state->dot, ed->state->dot, ed)) < 0)
         return status;
       COMMAND_SUFFIX (io_f, ed);
       if (!ed->exec->global)
         reset_undo_queue (ed);
-      if ((status = write_to_register (REG_MAX - 1, ed->exec->region->start,
+      if ((status = write_to_register (ed->exec->region->start,
                                        ed->exec->region->end, 0, ed)) < 0)
         return status;
       spl1 ();
@@ -532,22 +527,22 @@ exec_command (ed)
       COMMAND_SUFFIX (io_f, ed);
       if (!ed->exec->global)
         reset_undo_queue (ed);
-      switch (reg_io)
+      switch (ed->core->reg->io_f)
         {
         case 0:
-          if ((status =
-               move_lines (ed->exec->region->start,
-                           ed->exec->region->end, addr, ed)) < 0)
+          if ((status = move_lines (ed->exec->region->start,
+                                    ed->exec->region->end, addr, ed)) < 0)
             return status;
           break;
-        case READ_REGISTER:
-          if ((status = read_from_register (read_reg, addr, ed)) < 0
-              || (status = reset_register_queue (read_reg, ed)) < 0)
+        case REGISTER_READ:
+          if ((status = read_from_register (addr, ed)) < 0
+              || (status =
+                  reset_register_queue (ed->core->reg->read_idx, ed)) < 0)
             return status;
           break;
-        case WRITE_REGISTER:
+        case REGISTER_WRITE:
           if ((status =
-               write_to_register (write_reg, ed->exec->region->start,
+               write_to_register (ed->exec->region->start,
                                   ed->exec->region->end, append, ed)) < 0)
             return status;
           spl1 ();
@@ -559,8 +554,8 @@ exec_command (ed)
             }
           spl0 ();
           break;
-        case READ_REGISTER | WRITE_REGISTER:
-          if ((status = register_move (read_reg, write_reg, append, ed)) < 0)
+        case REGISTER_READ | REGISTER_WRITE:
+          if ((status = register_move (append, ed)) < 0)
             return status;
           break;
         default:
@@ -579,8 +574,8 @@ exec_command (ed)
           ed->exec->region->start = 0;
           ed->exec->region->end = 0;
         }
-      else if ((status =
-                is_valid_range (ed->state->dot, ed->state->dot, ed)) < 0)
+      else if ((status = is_valid_range (ed->state->dot, ed->state->dot, ed))
+               < 0)
         return status;
       COMMAND_SUFFIX (io_f, ed);
       return display_lines (ed->exec->region->start,
@@ -646,8 +641,7 @@ exec_command (ed)
        */
       cx = ed->state->newline_appended;
       if (ed->state->is_empty && ed->state->lines
-          && (status =
-              delete_lines (ed->state->dot, ed->state->dot, ed)) < 0)
+          && (status = delete_lines (ed->state->dot, ed->state->dot, ed)) < 0)
         {
           spl0 ();
           return status;
@@ -717,8 +711,7 @@ exec_command (ed)
       return 0;
     case 's':
       init_substitute (&lhs, &s_f, &s_nth, &s_mod, &sio_f, ed->exec->subst);
-      if ((status =
-           is_valid_range (ed->state->dot, ed->state->dot, ed)) < 0
+      if ((status = is_valid_range (ed->state->dot, ed->state->dot, ed)) < 0
           || (status = resubstitute (&s_nth, &s_mod, &s_f, &sgpr_f, ed)) < 0
           || (status = substitution_lhs (&lhs, &sgpr_f, ed)) < 0)
         return status;
@@ -761,33 +754,31 @@ exec_command (ed)
         return display_lines (ed->state->dot, ed->state->dot, sio_f, ed);
       break;
     case 't':
-      if ((status =
-           is_valid_range (ed->state->dot, ed->state->dot, ed)) < 0)
+      if ((status = is_valid_range (ed->state->dot, ed->state->dot, ed)) < 0)
         return status;
       DESTINATION_ADDRESS (addr, ed);
       COMMAND_SUFFIX (io_f, ed);
       if (!ed->exec->global)
         reset_undo_queue (ed);
-      switch (reg_io)
+      switch (ed->core->reg->io_f)
         {
         case 0:
-          if ((status =
-               copy_lines (ed->exec->region->start,
-                           ed->exec->region->end, addr, ed)) < 0)
+          if ((status = copy_lines (ed->exec->region->start,
+                                    ed->exec->region->end, addr, ed)) < 0)
             return status;
           break;
-        case READ_REGISTER:
-          if ((status = read_from_register (read_reg, addr, ed)) < 0)
+        case REGISTER_READ:
+          if ((status = read_from_register (addr, ed)) < 0)
             return status;
           break;
-        case WRITE_REGISTER:
+        case REGISTER_WRITE:
           if ((status =
-               write_to_register (write_reg, ed->exec->region->start,
+               write_to_register (ed->exec->region->start,
                                   ed->exec->region->end, append, ed)) < 0)
             return status;
           break;
-        case READ_REGISTER | WRITE_REGISTER:
-          if ((status = register_copy (read_reg, write_reg, append, ed)) < 0)
+        case REGISTER_READ | REGISTER_WRITE:
+          if ((status = register_copy (append, ed)) < 0)
             return status;
           break;
         default:
@@ -1224,10 +1215,11 @@ is_valid_range (from, to, ed)
       ed->exec->region->start = from;
       ed->exec->region->end = to;
     }
-  if (ed->exec->region->start < 1
-      || ed->state->lines < ed->exec->region->start
-      || ed->exec->region->end < 1
-      || ed->state->lines < ed->exec->region->end)
+  if ((ed->exec->region->start < 1
+       || ed->state->lines < ed->exec->region->start
+       || ed->exec->region->end < 1
+       || ed->state->lines < ed->exec->region->end)
+      && !(ed->core->reg->io_f & REGISTER_READ))
     {
       ed->exec->err = _("Address out of range");
       return ERR;

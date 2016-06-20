@@ -325,7 +325,7 @@ typedef struct ed_text_node
 /* # define UMOV    2 */
 /* # define URET    3 */
 
-/* Undo nodes types - inverse derived by toggling last bit. */
+/* Undo nodes types - inverse derived by toggling least-significant bit. */
 typedef enum ed_undo_op
   {
     UADD = 0x00,
@@ -346,10 +346,6 @@ typedef struct ed_undo_node
 
 #define ED_UNDO_NODE_T_SIZE (sizeof (ed_undo_node_t))
 
-#define REG_FIRST  '0'          /* Name of first register */
-#define REG_LAST  '9'           /* Name of last register */
-#define REG_MAX  11             /* Max number of registers, including default */
-
 /* Ed buffer state parameters. */
 struct ed_state
 {
@@ -364,15 +360,33 @@ struct ed_state
   int input_is_binary;          /* If set, binary data on input. */
 };
 
-#define MARK_MAX 26             /* max number of marks */
+/* Register I/O flags. */
+enum register_io_flags
+  {
+    REGISTER_READ  = 0x01,
+    REGISTER_WRITE = 0x02
+  };
+
+#define REG_MAX  11             /* Max registers, including default. */
+
+/* Register buffers. */
+struct ed_register
+{
+  ed_line_node_t *lp[REG_MAX];  /* List of register buffer heads. */
+  int read_idx;                 /* Input register index. */
+  int write_idx;                /* Output register index. */
+  int io_f;                     /* Register I/O flags. */
+};
+
+#define MARK_MAX 26             /* Max line markers. */
 
 /* Ed buffer meta data and storage parameters. */
 struct ed_core
 {
   /* Register buffers and line markers. */
-  ed_line_node_t *reg[REG_MAX];
+  struct ed_register *reg;
   ed_line_node_t *mark[MARK_MAX];
-  int markno;
+  int marks;
 
   /* Edit-processing buffers. */
   ed_line_node_t *line_head;     /* Head of line buffer. */
@@ -428,6 +442,8 @@ struct ed_substitute
   unsigned sio_f;               /* Substitution I/O flags. */
 };
 
+#define DEFAULT_PROMPT "*"
+
 /* Ed command parameters. */
 struct ed_execute
 {
@@ -439,8 +455,6 @@ struct ed_execute
   struct ed_region *region;     /* Address range parameters. */
 
   const char *err;              /* Error message. */
-
-#define DEFAULT_PROMPT "*"
 
   char *prompt;                 /* Interactive command prompt. */
   off_t line_no;                /* Script line number. */
@@ -881,11 +895,11 @@ int read_file __P ((const char *, off_t, off_t *, off_t *, int,
                     ed_buffer_t *));
 int read_pipe __P ((const char *, off_t, off_t *, off_t *,
                     ed_buffer_t *));
-int read_from_register __P ((int, off_t, ed_buffer_t *));
+int read_from_register __P ((off_t, ed_buffer_t *));
 int read_stream_r __P ((FILE *, off_t, off_t *, ed_buffer_t *));
 void *realloc_buffer __P ((void **, size_t *, size_t, ed_buffer_t *));
-int register_copy __P ((int, int, int, ed_buffer_t *));
-int register_move __P ((int, int, int, ed_buffer_t *));
+int register_copy __P ((int, ed_buffer_t *));
+int register_move __P ((int, ed_buffer_t *));
 char *regular_expression __P ((unsigned, size_t *, ed_buffer_t *));
 int reopen_ed_buffer __P ((ed_buffer_t *));
 void reset_global_queue __P ((ed_buffer_t *));
@@ -917,6 +931,6 @@ int write_file __P ((const char *, int, off_t, off_t, off_t *, off_t *,
                      const char *, ed_buffer_t *));
 int write_pipe __P ((const char *, off_t, off_t, off_t *, off_t *,
                      ed_buffer_t *));
-int write_to_register __P ((int, off_t, off_t, int, ed_buffer_t *));
+int write_to_register __P ((off_t, off_t, int, ed_buffer_t *));
 int write_stream __P ((FILE *, ed_line_node_t *, off_t, off_t *,
                        ed_buffer_t *));

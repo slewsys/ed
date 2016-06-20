@@ -189,14 +189,14 @@ filter_lines (from, to, sc, ed)
  *   Return node pointer.
  */
 static ed_line_node_t *
-append_node_to_register (len, offset, qno, ed)
+append_node_to_register (len, offset, idx, ed)
      size_t len;
      off_t offset;
-     int qno;
+     int idx;
      ed_buffer_t *ed;
 {
   ed_line_node_t *lp;
-  ed_line_node_t *tq = ed->core->reg[qno]->q_back;
+  ed_line_node_t *tq = ed->core->reg->lp[idx]->q_back;
 
   spl1 ();
   if (!(lp = (ed_line_node_t *) malloc (ED_LINE_NODE_T_SIZE)))
@@ -221,30 +221,29 @@ append_node_to_register (len, offset, qno, ed)
  *   address.
  */
 int
-read_from_register (qno, addr, ed)
-     int qno;                   /* source register */
+read_from_register (addr, ed)
      off_t addr;                /* destination address */
      ed_buffer_t *ed;
 {
+  int read_idx = ed->core->reg->read_idx;
+  ed_line_node_t *read_head = ed->core->reg->lp[read_idx];
+  ed_line_node_t *lp, *rp;
   ed_undo_node_t *up = NULL;
-  ed_line_node_t *lp, *rp, *rh;
 
-  if (!ed->core->reg[qno] && init_register_queue (qno, ed) < 0)
-    return ERR;
-
-  for (rh = ed->core->reg[qno], rp = rh->q_forw; rp != rh; rp = rp->q_forw)
-    {
-      spl1 ();
-      if (!(lp = append_line_node (rp->len, rp->seek, addr, ed)))
-        {
-          spl0 ();
-          return ERR;
-        }
-      ed->state->dot = ++addr;
-      APPEND_UNDO_NODE (lp, up, addr, ed);
-      ed->state->is_modified = 1;
-      spl0 ();
-    }
+  if (read_head)
+    for (rp = read_head->q_forw; rp != read_head; rp = rp->q_forw)
+      {
+        spl1 ();
+        if (!(lp = append_line_node (rp->len, rp->seek, addr, ed)))
+          {
+            spl0 ();
+            return ERR;
+          }
+        ed->state->dot = ++addr;
+        APPEND_UNDO_NODE (lp, up, addr, ed);
+        ed->state->is_modified = 1;
+        spl0 ();
+      }
   return 0;
 }
 
@@ -255,27 +254,42 @@ read_from_register (qno, addr, ed)
  *   lost.
  */
 int
-register_copy (from, to,  append, ed)
-     int from;                  /* source register */
-     int to;                    /* destination register */
+register_copy (append, ed)
      int append;
      ed_buffer_t *ed;
 {
-  ed_line_node_t *rp, *rh;
+  int read_idx = ed->core->reg->read_idx;
+  int write_idx = ed->core->reg->write_idx;
+  ed_line_node_t *read_head = ed->core->reg->lp[read_idx];
+  ed_line_node_t *write_head = ed->core->reg->lp[write_idx];
+  ed_line_node_t *rp;
 
-  if (!ed->core->reg[from]
-      && init_register_queue (from, ed) < 0)
-    return ERR;
-  if (!ed->core->reg[to] && init_register_queue (to, ed) < 0)
-    return ERR;
-  if (!append && from != to && reset_register_queue (to, ed) < 0)
-    return ERR;
-
-  /* Handle case of register appended to itself. */
-  if (append && from != to)
-    for (rh = ed->core->reg[from], rp = rh->q_forw; rp != rh; rp = rp->q_forw)
-      if (!append_node_to_register (rp->len, rp->seek, to, ed))
+  if (!write_head)
+    {
+      if (!init_register_queue (write_idx, ed))
+        write_head = ed->core->reg->lp[write_idx];
+      else
         return ERR;
+    }
+  
+  /* Appending register to itself. */
+  if (append && read_idx == write_idx)
+    {
+      ed->exec->err = _("Append register to itself not allowed.");
+      return ERR;
+    }
+
+  /* Not overwriting register with itself. */
+  else if (append || read_idx != write_idx)
+    {
+      if (!append && reset_register_queue (write_idx, ed) < 0)
+        return ERR;
+
+      if (read_head)
+        for (rp = read_head->q_forw; rp != read_head; rp = rp->q_forw)
+          if (!append_node_to_register (rp->len, rp->seek, write_idx, ed))
+            return ERR;
+    }
   return 0;
 }
 
@@ -285,27 +299,46 @@ register_copy (from, to,  append, ed)
  *   is zero, any previous contents of target register are lost.
  */
 int
-register_move (from, to,  append, ed)
-     int from;                  /* source register */
-     int to;                    /* destination register */
+register_move (append, ed)
      int append;
      ed_buffer_t *ed;
 {
-  if (!ed->core->reg[from]
-      && init_register_queue (from, ed) < 0)
-    return ERR;
-  if (!ed->core->reg[to] && init_register_queue (to, ed) < 0)
-    return ERR;
-  if (!append && from != to && reset_register_queue (to, ed) < 0)
-    return ERR;
+  int read_idx = ed->core->reg->read_idx;
+  int write_idx = ed->core->reg->write_idx;
+  ed_line_node_t *read_head = ed->core->reg->lp[read_idx];
+  ed_line_node_t *write_head = ed->core->reg->lp[write_idx];
 
-  if (from != to && ed->core->reg[from]->q_forw != ed->core->reg[from])
+  if (!write_head)
     {
-      spl1 ();
-      LINK_NODES (ed->core->reg[to]->q_back, ed->core->reg[from]->q_forw);
-      LINK_NODES (ed->core->reg[from]->q_back, ed->core->reg[to]);
-      LINK_NODES (ed->core->reg[from], ed->core->reg[from]);
-      spl0 ();
+      if (!init_register_queue (write_idx, ed))
+        write_head = ed->core->reg->lp[write_idx];
+      else
+        return ERR;
+    }
+  
+  /* Appending register to itself. */
+  if (append && read_idx == write_idx)
+    {
+      ed->exec->err = _("Append register to itself not allowed.");
+      return ERR;
+    }
+
+  /* Not overwriting register with itself. */
+  else if (append || read_idx != write_idx)
+    {
+
+      if (!append && reset_register_queue (write_idx, ed) < 0)
+        return ERR;
+
+      /* Read register not empty. */
+      if (read_head && read_head != read_head->q_forw)
+        {
+          spl1 ();
+          LINK_NODES (write_head->q_back, read_head->q_forw);
+          LINK_NODES (read_head->q_back, write_head);
+          LINK_NODES (read_head, read_head);
+          spl0 ();
+        }
     }
   return 0;
 }
@@ -313,17 +346,23 @@ register_move (from, to,  append, ed)
 
 /* reset_register_queue: Release nodes of given register. */
 int
-reset_register_queue (qno, ed)
-     int qno;
+reset_register_queue (idx, ed)
+     int idx;
      ed_buffer_t *ed;
 {
-  ed_line_node_t *rp, *rn, *rh;
+  ed_line_node_t *head = ed->core->reg->lp[idx];
+  ed_line_node_t *rp, *rn;
 
-  if (!ed->core->reg[qno] && init_register_queue (qno, ed) < 0)
-    return ERR;
-
+  if (!head)
+    {
+      if (!init_register_queue (idx, ed))
+        head = ed->core->reg->lp[idx];
+      else
+        return ERR;
+    }
+  
   spl1 ();
-  for (rh = ed->core->reg[qno], rp = rh->q_forw; rp != rh; rp = rn)
+  for (rp = head->q_forw; rp != head; rp = rn)
     {
       rn = rp->q_forw;
       UNLINK_NODE (rp);
@@ -339,24 +378,30 @@ reset_register_queue (qno, ed)
  *   `append' is zero, any previous register contents are lost.
  */
 int
-write_to_register (qno, from, to, append, ed)
-     int qno;                   /* destination register */
+write_to_register (from, to, append, ed)
      off_t from;                /* from address */
      off_t to;                  /* to address */
      int append;
      ed_buffer_t *ed;
 {
-
+  int write_idx = ed->core->reg->write_idx;
+  ed_line_node_t *write_head = ed->core->reg->lp[write_idx];
   ed_line_node_t *lp = get_line_node (from, ed);
   off_t n = from ? to - from + 1 : 0;
-
-  if (!ed->core->reg[qno] && init_register_queue (qno, ed) < 0)
-    return ERR;
-  if (!append && reset_register_queue (qno, ed) < 0)
+  
+  if (!write_head)
+    {
+      if (!init_register_queue (write_idx, ed))
+        write_head = ed->core->reg->lp[write_idx];
+      else
+        return ERR;
+    }
+  
+  if (!append && reset_register_queue (write_idx, ed) < 0)
     return ERR;
 
   for (; n; --n, lp = lp->q_forw)
-    if (!append_node_to_register (lp->len, lp->seek, qno, ed))
+    if (!append_node_to_register (lp->len, lp->seek, write_idx, ed))
       return ERR;
   return 0;
 }

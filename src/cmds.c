@@ -260,7 +260,7 @@ mark_line_node (lp, n, ed)
       return ERR;
     }
   if (!ed->core->mark[n - 'a'])
-    ++ed->core->markno;
+    ++ed->core->marks;
   ed->core->mark[n - 'a'] = lp;
   return 0;
 }
@@ -292,10 +292,10 @@ unmark_line_node (lp, ed)
 {
   int i;
 
-  for (i = 0; ed->core->markno && i < MARK_MAX; ++i)
+  for (i = 0; ed->core->marks && i < MARK_MAX; ++i)
     if (ed->core->mark[i] == lp)
       {
         ed->core->mark[i] = NULL;
-        --ed->core->markno;
+        --ed->core->marks;
       }
 }
