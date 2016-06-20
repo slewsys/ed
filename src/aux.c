@@ -353,22 +353,17 @@ reset_register_queue (idx, ed)
   ed_line_node_t *head = ed->core->reg->lp[idx];
   ed_line_node_t *rp, *rn;
 
-  if (!head)
+  if (head)
     {
-      if (!init_register_queue (idx, ed))
-        head = ed->core->reg->lp[idx];
-      else
-        return ERR;
+      spl1 ();
+      for (rp = head->q_forw; rp != head; rp = rn)
+        {
+          rn = rp->q_forw;
+          UNLINK_NODE (rp);
+          free (rp);
+        }
+      spl0 ();
     }
-  
-  spl1 ();
-  for (rp = head->q_forw; rp != head; rp = rn)
-    {
-      rn = rp->q_forw;
-      UNLINK_NODE (rp);
-      free (rp);
-    }
-  spl0 ();
   return 0;
 }
 

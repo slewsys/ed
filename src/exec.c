@@ -289,6 +289,10 @@ exec_command (ed)
         }
       reset_undo_queue (ed);
       reset_global_queue (ed);
+      for (cz = 0; cz < REG_MAX; ++cz)
+        {
+          reset_register_queue (cz, ed);
+        }
 
       if (reopen_ed_buffer (ed) < 0)
         {
