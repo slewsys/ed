@@ -372,7 +372,7 @@ enum register_io_flags
 /* Register buffers. */
 struct ed_register
 {
-  ed_line_node_t *lp[REG_MAX];  /* List of register buffer heads. */
+  ed_line_node_t *lp[REG_MAX];  /* Register buffers. */
   int read_idx;                 /* Input register index. */
   int write_idx;                /* Output register index. */
   int io_f;                     /* Register I/O flags. */

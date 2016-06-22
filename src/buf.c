@@ -58,14 +58,6 @@ one_time_init (argc, argv, ed)
   init_ed_state (-1, &ed->state[1]);
 
   /* Initialize buffer meta data deques. */
-  if ((ed->core->reg =
-       (struct ed_register *) calloc (1, sizeof (struct ed_register))) == NULL)
-    {
-      fprintf (stderr, "%s\n", strerror (errno));
-      ed->exec->err = _("Memory exhausted");
-      return ERR;
-    }
-
   INIT_DEQUE (ed->core->line_head);
   INIT_DEQUE (ed->core->global_head);
   INIT_DEQUE (ed->core->undo_head);
@@ -733,6 +725,7 @@ alloc_ed_buffer ()
   ALLOC_ED_TYPE (ed_buffer->core, 1, struct ed_core);
   ALLOC_ED_TYPE (ed_buffer->core->line_head, 1, ed_line_node_t);
   ALLOC_ED_TYPE (ed_buffer->core->global_head, 1, ed_global_node_t);
+  ALLOC_ED_TYPE (ed_buffer->core->reg, 1, struct ed_register);
   ALLOC_ED_TYPE (ed_buffer->core->undo_head, 1, ed_undo_node_t);
   ALLOC_ED_TYPE (ed_buffer->display, 1, struct ed_display);
   ALLOC_ED_TYPE (ed_buffer->exec, 1, struct ed_execute);

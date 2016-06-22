@@ -238,6 +238,10 @@ exec_command (ed)
     case 'd':
       if ((status = is_valid_range (ed->state->dot, ed->state->dot, ed)) < 0)
         return status;
+
+      /* Save deleted lines in default register. */
+      ed->core->reg->io_f |= REGISTER_WRITE;
+      ed->core->reg->write_idx = REG_MAX - 1;
       COMMAND_SUFFIX (io_f, ed);
       if (!ed->exec->global)
         reset_undo_queue (ed);
