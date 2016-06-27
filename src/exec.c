@@ -213,7 +213,7 @@ exec_command (ed)
             return status;
           break;
         }
-      /* FALLTHROUGH */
+    /* FALLTHROUGH */
     case 'c':
 
       /* Per SUSv4, 2013, 0c => 1c, so 0,0c => 1,1c. */
