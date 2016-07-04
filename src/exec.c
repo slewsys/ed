@@ -995,12 +995,10 @@ exec_command (ed)
        * (display->off = 1), then scroll from there.
        */
       ed->display->off = 1;
-      if ((status = exec_one_off ("Z", ed->input, ed)) < 0)
-        {
-          ed->display->off = 0;
-          return status;
-        }
+      status = exec_one_off ("Z", ed->input, ed);
       ed->display->off = 0;
+      if (status < 0)
+          return status;
 
       /* At start or end of buffer, so display it. */
       if ((!ed->display->is_paging && ed->exec->region->end < ed->state->dot)
@@ -1042,10 +1040,13 @@ exec_command (ed)
           ed->display->overflow = 0;
         }
 
-      /* is_valid_range () assigns addr to ed->exec->region->end by default. */
       addr = ed->state->dot + !(ed->exec->global || ed->display->underflow);
-      if ((status =
-           is_valid_range (ed->exec->region->start = 1, addr, ed)) < 0)
+
+      /* 
+       * If no address specified (i.e., ed->exec->region->addrs == 0),
+       * then is_valid_range() assigns: ed->exec->region->end = addr
+       */
+      if ((status = is_valid_range (ed->exec->region->start = 1, addr, ed)) < 0)
         return status;
       if (isdigit ((unsigned char) *ed->input))
         {
@@ -1058,11 +1059,40 @@ exec_command (ed)
       COMMAND_SUFFIX (io_f, ed);
       ++paging;
       if (c == 'z')
+
+        /* 
+         * When scrolling full page, calculate last line to display,
+         * addr, where first line is region->end >= 1, and total
+         * number of lines in a full page is ws_row - 1, since last
+         * screen line is reserved for command prompt:
+         *
+         *    total_lines == ws_row - 1 == addr - region->end + 1
+         *
+         * or
+         *
+         *    addr = region->end + (ws_row - 1) - 1
+         */
         addr = min (ed->state->lines,
                     ed->exec->region->end + ed->display->ws_row - 2);
       else
-        addr = min (ed->state->lines,
-                    ed->exec->region->end + (ed->display->ws_row >> 1) - 1);
+
+        /* 
+         * When scrolling half a page, calculate last line to display,
+         * addr, relative to  region->end >= 1 by adding half the total
+         * number of lines in a full page, i.e.,  (ws_row - 1) / 2:
+         *
+         *    total_lines / 2 == (ws_row - 1) / 2 == addr - region->end + 1
+         *
+         * or
+         *
+         *    addr = region->end + (ws_row - 1) / 2 - 1
+         *
+         * NB: In this case, region->end is displayed in the middle of
+         *     the screen, indicated by setting io_f |= ZHFW (see
+         *     case ']' above).
+         */
+        addr = min (ed->state->lines, (ed->exec->region->end
+                                       + ((ed->display->ws_row - 1) >> 1) - 1));
       io_f |= c == '[' ? ZBWD : ZFWD;
       return display_lines (ed->exec->region->end, addr, io_f, ed);
       break;
