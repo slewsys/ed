@@ -393,8 +393,8 @@ save_substitute (lhs, s_f, s_nth, s_mod, sio_f, es)
 
 
 /* Global declarations */
-char *rb;                       /* substitute_matching_text buffer */
-size_t rb_size;                 /* substitute_matching_text buffer size */
+char *rb;                       /* Substitution text buffer */
+size_t rb_size;                 /* Substitution text buffer size */
 
 /* substitute_lines: For each line in a range, replace text matching a
    pattern per substitution template; return status. */
