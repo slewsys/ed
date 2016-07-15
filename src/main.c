@@ -203,6 +203,10 @@ top:
 #endif
     }
 
+  /* Initialize editor buffer and globals. */
+  if ((status = one_time_init (argc, argv, ed)) < 0)
+    goto error;
+
   if ((status = SETJMP (env)))
     {
       ed->exec->err = _("Interrupted");
@@ -212,10 +216,6 @@ top:
       ed->display->off = 0;
       goto error;
     }
-
-  /* Initialize editor buffer and globals. */
-  if ((status = one_time_init (argc, argv, ed)) < 0)
-    goto error;
 
   /* Enable signal handlers.  */
   activate_signals ();
