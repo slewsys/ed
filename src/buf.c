@@ -127,7 +127,6 @@ init_stdio (ed)
    *    hello, world
    *    EOF
    * 
-   * See "Unix Programming Environment"
    * Line buffer stdout so that `ssh user@remote ed file' works as
    * expected.
    */

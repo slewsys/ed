@@ -77,7 +77,7 @@ read_file (fn, after, addr, size, is_default, ed)
         spl1 ();
         ed->file->inode = inode;
         ed->file->handle = fp;
-        ed->file->is_writable = 0;
+        ed->file->is_writable = 1;
         spl0 ();
       }
   /* Assert: File lock released on file close. */
@@ -540,7 +540,12 @@ write_file (fn, is_default, from, to, addr, size, mode, ed)
         }
     }
 
-  /* XXX Potential race: Reopening file for writing may lose lock. */
+  /*
+   * XXX Potential race: Reopening file for writing may lose lock.
+   *
+   * File-locking requires file write access, so this case should not
+   * be reached.
+   */
   else if (file_already_open && fclose (ed->file->handle) < 0)
     {
       fprintf (stderr, "%s: %s\n", ed->file->name, strerror (errno));
