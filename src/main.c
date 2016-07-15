@@ -207,6 +207,7 @@ top:
   if ((status = one_time_init (argc, argv, ed)) < 0)
     goto error;
 
+  /* Destination of LONGJMP () on signal SIGINT. */
   if ((status = SETJMP (env)))
     {
       ed->exec->err = _("Interrupted");
