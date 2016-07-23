@@ -198,6 +198,9 @@ top:
        * Signals are fatal before final initialization, i.e., before
        * calling one_time_init (), but SIGWINCH only sets current
        * window dimensions.
+       *
+       * Initial window dimensions are overriden if environment
+       * variables `LINES'/`COLUMNS' set, per one_time_init () below.
        */
       signal_handler (SIGWINCH);
 #endif

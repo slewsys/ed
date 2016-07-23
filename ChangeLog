@@ -1,3 +1,8 @@
+2016-07-15  System Developer  <sysdev@slewsys.org>
+
+	* src/main.c (main): Call one_time_init() prior to SETJMP(), since
+	both jump to `error'.
+
 2016-06-15  Andrew L. Moore  <alm@slewsys.org>
 
 	* src/exec.c (exec_command): Fix 'P' and 'H' commands.
