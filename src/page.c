@@ -219,7 +219,7 @@ display_lines (from, to, io_f, ed)
        */
       ed->display->overflow = !!fb->prev_first->offset;
 
-      if (!ed->display->off  && (status = display_frame_buffer (fb)) < 0)
+      if (!ed->display->hidden  && (status = display_frame_buffer (fb)) < 0)
         {
           spl0 ();
           return status;

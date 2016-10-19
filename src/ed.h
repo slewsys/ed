@@ -417,7 +417,7 @@ struct ed_display
   int is_paging;                /* If set, displaying a page of text. */
   int underflow;                /* If set, line truncated at top page. */
   int overflow;                 /* If set, line truncated at bottom of page. */
-  int off;                      /* If set, do not print frame buffer. */
+  int hidden;                   /* If set, do not print frame buffer. */
 };
 
 /* Address range parameters. */

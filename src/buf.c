@@ -159,7 +159,7 @@ init_ed_command (init_glob, ed)
   ed->display->page_addr = 0;
   ed->display->underflow = 0;
   ed->display->overflow = 0;
-  ed->display->off = 0;
+  ed->display->hidden = 0;
 
   /* Global command state */
   ed->exec->first_pass = 0;

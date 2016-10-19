@@ -1,4 +1,9 @@
-2016-07-15  System Developer  <sysdev@slewsys.org>
+2016-10-19  Andrew L. Moore  <alm@slewsys.org>
+
+	* src/exec.c (exec_command):
+	* src/io.c (read_file): Move access() checks inside read_file().
+
+2016-07-15  Andrew L. Moore  <alm@slewsys.org>
 
 	* src/main.c (main): Call one_time_init() prior to SETJMP(), since
 	both jump to `error'.

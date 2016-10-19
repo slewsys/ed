@@ -215,9 +215,6 @@ top:
     {
       ed->exec->err = _("Interrupted");
       status = ERR;
-
-      /* Re-enable stdout. */
-      ed->display->off = 0;
       goto error;
     }
 
@@ -316,7 +313,9 @@ top:
             printf (ed->exec->opt & VERBOSE ? "%s\n" : "", ed->exec->err);
           else
             script_die (4, ed);
-          ed->display->off = 0;
+
+          /* Re-enable stdout after interrupt or error. */
+          ed->display->hidden = 0;
           break;
         }
 

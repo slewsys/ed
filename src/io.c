@@ -64,8 +64,34 @@ read_file (fn, after, addr, size, is_default, ed)
   else
 #endif  /* WANT_FILE_LOCK */
 
-    /* Open for writing so that exclusive lock can be set by F_SETLK.  */
-    if (!(fp = fopen (fn, "r+")))
+    /* File does not exist. */
+    if ((status = access (fn, F_OK)) == -1)
+      {
+        fprintf (stderr, "%s: %s\n", fn, strerror (errno));
+        ed->exec->err = _("File does not exist");
+        return ERR;
+      }
+
+    /* File not writable. */
+    else if ((status = access (fn, W_OK)) == -1)
+      {
+        if (!(fp = fopen (fn, "r")))
+          {
+            fprintf (stderr, "%s: %s\n", fn, strerror (errno));
+            ed->exec->err = _("File open error");
+            return ERR;
+          }
+        if (!(ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL | SCRIPTED)))
+          fprintf (stderr, (ed->exec->opt & VERBOSE
+                            ? "%s: File is read-only\n" : ""), fn);
+      }
+
+#ifdef WANT_FILE_LOCK
+    /* Open for writing, "r+", so F_SETLK can set exclusive lock. */
+    else if (!(fp = fopen (fn, "r+")))
+#else
+    else if (!(fp = fopen (fn, "r")))
+#endif
       {
         fprintf (stderr, "%s: %s\n", fn, strerror (errno));
         ed->exec->err = _("File open error");
@@ -80,11 +106,14 @@ read_file (fn, after, addr, size, is_default, ed)
         ed->file->is_writable = 1;
         spl0 ();
       }
+
   /* Assert: File lock released on file close. */
-  if (set_file_lock (fp, 1) != 0 && isatty (0))
+  if (!status && set_file_lock (fp, 1) != 0 && isatty (0))
     fprintf (stderr, (ed->exec->opt & VERBOSE
-                      ? _("WARNING: File already locked\n") : ""));
+                      ? _("%s: File already locked\n") : ""), fn);
 #endif  /* HAVE_FILE_LOCK */
+
+
   if ((status = read_stream (fp, after, size, ed)) < 0)
     return status;
   *addr = ed->state->dot - after;
@@ -102,7 +131,7 @@ read_file (fn, after, addr, size, is_default, ed)
 }
 
 
-/* 
+/*
  * read_pipe: Read output of shell command to buffer. Return line count.
  */
 int
@@ -151,7 +180,7 @@ read_pipe (fn, after, addr, size, ed)
   while (0)
 
 
-/* 
+/*
  * read_stream: Read a stream into the editor buffer after the given
  *   address. Return bytes read.
  */
@@ -205,7 +234,7 @@ read_stream (fp, after, size, ed)
   ed->state->is_empty = (ed->state->is_empty
                          ? *size == ed->state->input_wants_newline : 0);
 
-  /* 
+  /*
    * A newline is appended to an empty file read into an empty buffer,
    * but the buffer is still considered `empty' in the sense that a
    * subsequent read or append will overwrite the newline. This is
@@ -228,7 +257,7 @@ read_stream (fp, after, size, ed)
       && stream_appended && ed->state->newline_appended)
     --*size;
 
-  /* 
+  /*
    * When either appending to a binary file which has no trailing
    * newline or inserting a binary file with no trailing newline into
    * another file, the lines separated by the inserted newline should
@@ -323,7 +352,7 @@ read_stream_r (fp, after, size, ed)
       free (t);
     }
 
-  /* 
+  /*
    * A newline is appended to an empty file read into an empty buffer,
    * but the buffer is still considered `empty' in the sense that a
    * subsequent read or append will overwrite the newline. This is
@@ -350,7 +379,7 @@ read_stream_r (fp, after, size, ed)
       && stream_appended && ed->state->newline_appended)
     --*size;
 
-  /* 
+  /*
    * When either appending to a binary file which has no trailing
    * newline or inserting a binary file with no trailing newline into
    * another file, the lines separated by the inserted newline should
@@ -372,7 +401,7 @@ read_stream_r (fp, after, size, ed)
 #endif  /* WANT_EXTERNAL_FILTER */
 
 
-/* 
+/*
  * get_extended_line: Get an extended line from stdin. Return pointer
  *   to static buffer.
  */
@@ -394,7 +423,7 @@ get_extended_line (len, nonl, ed)
   /* NB: Don't assume that ed->input is NUL-terminated. */
   memcpy (xl, ed->input, *len);
 
-  /* 
+  /*
    * Shell escapes set nonl, so we are only interested in a trailing
    * escape in this case.
    */
@@ -422,7 +451,7 @@ get_extended_line (len, nonl, ed)
 }
 
 
-/* 
+/*
  * get_stream_line: Read a line of text from a stream. Return line
  *   length.
  */
@@ -439,7 +468,7 @@ get_stream_line (fp, len, ed)
   char fb[PATH_MAX];
   char *fn;
 
-  /* 
+  /*
    * NB: stdin is not buffered to avoid I/O contention (see buf.c),
    * but other file I/O is buffered.
    */
@@ -572,7 +601,7 @@ write_file (fn, is_default, from, to, addr, size, mode, ed)
         }
       if (set_file_lock (fp, 1) != 0 && isatty (0))
         fprintf (stderr, (ed->exec->opt & VERBOSE
-                          ? _("WARNING: File already locked\n") : ""));
+                          ? _("%s: File already locked\n") : ""), fn);
     }
 #endif  /* WANT_FILE_LOCK */
   if ((status = write_stream (fp, lp, n, size, ed)) < 0)
