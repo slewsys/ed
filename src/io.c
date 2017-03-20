@@ -42,7 +42,7 @@ read_file (fn, after, addr, size, is_default, ed)
      int is_default;            /* If set, fn is default file name. */
      ed_buffer_t *ed;
 {
-  FILE *fp;
+  FILE *fp = NULL;
   INO_T inode;
   int status;
   int already_open = 0;         /* File already open. */
@@ -85,19 +85,17 @@ read_file (fn, after, addr, size, is_default, ed)
 
   /* Open for writing, "r+", so F_SETLK can set exclusive lock. */
   if (!read_only && !(fp = fopen (fn, "r+")))
-    {
       unlockable = 1;
 #endif  /* WANT_FILE_LOCK */
 
-      if (!(fp = fopen (fn, "r")))
-        {
-          fprintf (stderr, "%s: %s\n", fn, strerror (errno));
-          ed->exec->err = _("File open error");
-          return ERR;
-        }
+  if (!fp && !(fp = fopen (fn, "r")))
+    {
+      fprintf (stderr, "%s: %s\n", fn, strerror (errno));
+      ed->exec->err = _("File open error");
+      return ERR;
+    }
 
 #ifdef WANT_FILE_LOCK
-    }
 
   /* Assert: read_only status not changed after open. */
   if (!already_open && is_default)

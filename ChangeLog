@@ -4,7 +4,9 @@
 	supposed to fail due to less stringent rules.
 	* src/page.c (display_lines): Scrolling half-page forward (ed
 	command `]') failed at end-of-file.
-	* src/io.c (read_file): Add diagnostics for unlockable read-only file.
+	* src/io.c (read_file): Add diagnostics for unlockable read-only
+	file. Open read-only file without locking.
+
 
 2016-10-19  Andrew L. Moore  <slewsys@gmail.com>
 
