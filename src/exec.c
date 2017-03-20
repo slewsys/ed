@@ -694,7 +694,7 @@ exec_command (ed)
            * special case for removing any trailing newline.
            */
           if (ed->state->is_binary
-              && !strcmp ((cz ? ed->file->name
+              && !strcmp ((is_default ? ed->file->name
                            : (*fn != '\0' ? fn : "/dev/null")), "/dev/null"))
             ed->state->newline_appended = 1;
         }
@@ -1141,7 +1141,7 @@ exec_command (ed)
               is_valid_range (ed->state->dot, ed->state->dot, ed)) < 0)
         return status;
       --ed->input;
-      FILE_NAME (fn, len, cx, 0, ed);
+      FILE_NAME (fn, len, 0, 0, ed);
       if (!ed->exec->region->addrs)
         {
           /* system(3) blocks SIGCHLD. */
