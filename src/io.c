@@ -45,6 +45,9 @@ read_file (fn, after, addr, size, is_default, ed)
   FILE *fp;
   INO_T inode;
   int status;
+  int already_open = 0;         /* File already open. */
+  int read_only = 0;            /* File access permissions. */
+  int unlockable = 0;           /* Exclusive lock capability. */
 
   *addr = 0;
 #ifdef WANT_FILE_LOCK
@@ -52,9 +55,9 @@ read_file (fn, after, addr, size, is_default, ed)
     return ERR;
 
   /* File already open. */
-  if (inode && inode == ed->file->inode)
+  if (already_open = (inode && inode == ed->file->inode))
     {
-      if (FSEEK (fp = ed->file->handle, 0, SEEK_SET) == -1)
+      if (FSEEK (fp = ed->file->handle, 0L, SEEK_SET) == -1)
         {
           fprintf (stderr, "%s: %s\n", fn, strerror (errno));
           ed->exec->err = _("File seek error");
@@ -62,50 +65,49 @@ read_file (fn, after, addr, size, is_default, ed)
         }
     }
   else
+    {
 #endif  /* WANT_FILE_LOCK */
 
-    /* File does not exist. */
-    if ((status = access (fn, F_OK)) == -1)
-      {
-        fprintf (stderr, "%s: %s\n", fn, strerror (errno));
-        ed->exec->err = _("File does not exist");
-        return ERR;
-      }
+      /* File does not exist. */
+      if ((status = access (fn, F_OK)) == -1)
+        {
+          fprintf (stderr, "%s: %s\n", fn, strerror (errno));
+          ed->exec->err = _("File does not exist");
+          return ERR;
+        }
 
-    /* File not writable. */
-    else if ((status = access (fn, W_OK)) == -1)
-      {
-        if (!(fp = fopen (fn, "r")))
-          {
-            fprintf (stderr, "%s: %s\n", fn, strerror (errno));
-            ed->exec->err = _("File open error");
-            return ERR;
-          }
-        if (!(ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL | SCRIPTED)))
-          fprintf (stderr, (ed->exec->opt & VERBOSE
-                            ? "%s: File is read-only\n" : ""), fn);
-      }
+      /* File not writable. */
+      else if ((status = access (fn, W_OK)) == -1)
+        read_only = 1;
 
 #ifdef WANT_FILE_LOCK
-    /* Open for writing, "r+", so F_SETLK can set exclusive lock. */
-    else if (!(fp = fopen (fn, "r+")))
-#else
-    else if (!(fp = fopen (fn, "r")))
-#endif
-      {
-        fprintf (stderr, "%s: %s\n", fn, strerror (errno));
-        ed->exec->err = _("File open error");
-        return ERR;
-      }
+    }
+
+  /* Open for writing, "r+", so F_SETLK can set exclusive lock. */
+  if (!read_only && !(fp = fopen (fn, "r+")))
+    {
+      unlockable = 1;
+#endif  /* WANT_FILE_LOCK */
+
+      if (!(fp = fopen (fn, "r")))
+        {
+          fprintf (stderr, "%s: %s\n", fn, strerror (errno));
+          ed->exec->err = _("File open error");
+          return ERR;
+        }
+
 #ifdef WANT_FILE_LOCK
-    else if (is_default)
-      {
-        spl1 ();
-        ed->file->inode = inode;
-        ed->file->handle = fp;
-        ed->file->is_writable = 1;
-        spl0 ();
-      }
+    }
+
+  /* Assert: read_only status not changed after open. */
+  if (!already_open && is_default)
+    {
+      spl1 ();
+      ed->file->inode = inode;
+      ed->file->handle = fp;
+      ed->file->is_writable = !read_only;
+      spl0 ();
+    }
 
   /* Assert: File lock released on file close. */
   if (!status && set_file_lock (fp, 1) != 0 && isatty (0))
@@ -118,7 +120,17 @@ read_file (fn, after, addr, size, is_default, ed)
     return status;
   *addr = ed->state->dot - after;
 
+  if (read_only &&
+      !(ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL | SCRIPTED)))
+    fprintf (stderr, (ed->exec->opt & VERBOSE
+                      ? "%s: File is read-only\n" : ""), fn);
+
 #ifdef WANT_FILE_LOCK
+  if (unlockable &&
+      !(ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL | SCRIPTED)))
+    fprintf (stderr, (ed->exec->opt & VERBOSE
+                      ? "%s: Exclusive lock not set\n" : ""), fn);
+
   if (!is_default)
 #endif
     if (fclose (fp) < 0)
@@ -554,7 +566,7 @@ write_file (fn, is_default, from, to, addr, size, mode, ed)
   if ((file_already_open = (inode && inode == ed->file->inode))
       && ed->file->is_writable)
     {
-      if (FSEEK (fp = ed->file->handle, 0,
+      if (FSEEK (fp = ed->file->handle, 0L,
                  *mode == 'a' ? SEEK_END : SEEK_SET) == -1)
         {
           fprintf (stderr, "%s: %s\n", ed->file->name, strerror (errno));

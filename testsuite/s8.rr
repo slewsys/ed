@@ -1,5 +1,5 @@
 a
 hello
 .
-s/[h[=]/x/
+s/[h[:]/x/
 hello

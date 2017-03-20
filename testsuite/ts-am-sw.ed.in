@@ -11,6 +11,6 @@
 # check back here when you are done!
 #  
 e Makefile.am
-/^# .t.ok-at:/;/^# .err.fail-at:/+4s;^# ;;
-/^.t.ok-at:/;/^.err.fail-at:/+4s;^;# ;
+/^#.t.ok-at:/;/^#.err.fail-at:/+4s;^#;;
+/^.t.ok-at:/;/^.err.fail-at:/+4s;^;#;
 wq

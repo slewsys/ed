@@ -1,14 +1,22 @@
-2016-10-19  Andrew L. Moore  <alm@slewsys.org>
+2017-03-20  Andrew L. Moore  <slewsys@gmail.com>
+
+	* testsuite/Makefile.am (ED_SCRIPTS_OK): Rename tests that are not
+	supposed to fail due to less stringent rules.
+	* src/page.c (display_lines): Scrolling half-page forward (ed
+	command `]') failed at end-of-file.
+	* src/io.c (read_file): Add diagnostics for unlockable read-only file.
+
+2016-10-19  Andrew L. Moore  <slewsys@gmail.com>
 
 	* src/exec.c (exec_command):
 	* src/io.c (read_file): Move access() checks inside read_file().
 
-2016-07-15  Andrew L. Moore  <alm@slewsys.org>
+2016-07-15  Andrew L. Moore  <slewsys@gmail.com>
 
 	* src/main.c (main): Call one_time_init() prior to SETJMP(), since
 	both jump to `error'.
 
-2016-06-15  Andrew L. Moore  <alm@slewsys.org>
+2016-06-15  Andrew L. Moore  <slewsys@gmail.com>
 
 	* src/exec.c (exec_command): Fix 'P' and 'H' commands.
 
@@ -37,7 +45,7 @@
 	* m4/progtest.m4: Upgrade to gettext-0.19.7.
 	* configure.ac (AM_GNU_GETTEXT_VERSION): Bump to 0.19.7.
 
-2014-09-16  Andrew L. Moore  <alm@slewsys.org>
+2014-09-16  Andrew L. Moore  <slewsys@gmail.com>
 
 	* src/undo.c (undo_last_command):
 	* src/sub.c (substitution_rhs, substitute_lines)
@@ -92,7 +100,7 @@
 	* m4/xsize.m4: Upgrade to gettext-0.19.2.
 	* configure.ac (AM_GNU_GETTEXT_VERSION): Bump to 0.19.2.
 
-2014-02-20  Andrew L. Moore  <alm@slewsys.org>
+2014-02-20  Andrew L. Moore  <slewsys@gmail.com>
 
 	* src/exec.c (exec_command):
 	* src/aux.c (append_node_to_register, read_from_register)
@@ -118,27 +126,27 @@
 	appended to end of register. Otherwise, any previous register
 	contents are overwritten.
 
-2014-01-27  Andrew L. Moore  <alm@slewsys.org>
+2014-01-27  Andrew L. Moore  <slewsys@gmail.com>
 
 	* src/ed.h (off_t): Work around conflicting off_t typedefs (e.g.,
 	if _LARGE_FILE support enabled) and redefine using storage size
 	determined by configure. This resolves outstanding segfaults on
 	32-bit GNU/Linux platform.
 
-2014-01-26  Andrew L. Moore  <alm@slewsys.org>
+2014-01-26  Andrew L. Moore  <slewsys@gmail.com>
 
 	* src/ed.h: Use configure to set size of off_t.
 
 	* src/buf.c (realloc_buffer): Changing argument type from off_t to
 	size_t fixes segfault on 32-bit GNU/Linux.
 
-2014-01-25  Andrew L. Moore  <alm@slewsys.org>
+2014-01-25  Andrew L. Moore  <slewsys@gmail.com>
 
 	* src/*.[ch]: Refactor data structures:
 	ed->subst => ed->exec->subst
 	ed->region => ed->exec->region
 
-2014-01-20  Andrew L. Moore  <alm@slewsys.org>
+2014-01-20  Andrew L. Moore  <slewsys@gmail.com>
 
 	* src/buf.c (alloc_ed_state, alloc_ed_core, alloc_ed_display)
 	(alloc_ed_execute, alloc_ed_file, alloc_ed_region)
@@ -146,7 +154,7 @@
 	* src/ed.h: Use struct pointers to alleviate alignment issues
 	on 32-bit GNU/Linux.
 
-2013-08-08  Andrew L. Moore  <alm@slewsys.org>
+2013-08-08  Andrew L. Moore  <slewsys@gmail.com>
 
 	* Makefile.am: Ignore errors from update-po in
 	maintainer-update-dist target.
@@ -166,14 +174,14 @@
 	* src/buf.c (init_ed_command): fclose () on GNU/Linux
 	platform results in double free.
 
-2013-08-07  Andrew L. Moore  <alm@slewsys.org>
+2013-08-07  Andrew L. Moore  <slewsys@gmail.com>
 
 	* src/parse.c (file_glob): Reinitialize file.glob/list when
 	globbing fails. Return default file when file.list is empty.
 	(expand_glob): If globbing of pattern with no path separator
 	fails, then relax match criteria to permit non-existent pathname.
 
-2013-08-05  Andrew L. Moore  <alm@slewsys.org>
+2013-08-05  Andrew L. Moore  <slewsys@gmail.com>
 
 	* src/exec.c (exec_command): Don't set init_glob param of
 	init_ed_command () if ed `e' command has no arguments.
@@ -213,7 +221,7 @@
 	* m4/wint_t.m4: Upgrade to gettext-0.18.3.
 	* m4/xsize.m4: Upgrade to gettext-0.18.3.
 
-2013-08-05  Andrew L. Moore  <alm@slewsys.org>
+2013-08-05  Andrew L. Moore  <slewsys@gmail.com>
 
 	* src/parse.c (expand_glob): Support file-glob expansion of
 	non-existent pathnames. For example, `~w ~/o.tmp' writes to o.tmp
@@ -255,7 +263,7 @@
 	  29
 	  *
 
-2013-07-22  Andrew L. Moore  <alm@buttercup.local>
+2013-07-22  Andrew L. Moore  <slewsys@gmail.com>
 
 	* src/page.c (put_frame_buffer_line): Condition line enumeration
 	format on addr_last.
@@ -272,7 +280,7 @@
 	depends on "normalized" frame buffer, so load page preceding given
 	address in background (display.off = 1), then scroll from there.
 
-2013-06-08  Andrew L. Moore  <alm@slewsys.org>
+2013-06-08  Andrew L. Moore  <slewsys@gmail.com>
 
 	* src/io.c (write_pipe):
 	* src/signal.c (enable_sigpipe): Ignore SIGPIPE while writing
@@ -282,7 +290,7 @@
 	strtok_with_delimiters. Convert only escape sequences containing
 	token delimiters.
 
-2013-06-05  Andrew L. Moore  <alm@slewsys.org>
+2013-06-05  Andrew L. Moore  <slewsys@gmail.com>
 
 	* src/main.c (append_script_expression):
 	* src/main.c (main): Add command-line scripting option `-e
@@ -326,1372 +334,1372 @@
 
 2012-09-27  Andrew L. Moore  <andy@revotics.com>
 
-        * src/main.c (script_die): Clean up on script-error exit.
+	* src/main.c (script_die): Clean up on script-error exit.
 
-        * src/exec.c (exec_command): Add `fn' and `fp' commands to set
-        `default file' to next and previous in `default file list'. Syntax
-        described in 2006-12-29 log entry (q.v.).
+	* src/exec.c (exec_command): Add `fn' and `fp' commands to set
+	`default file' to next and previous in `default file list'. Syntax
+	described in 2006-12-29 log entry (q.v.).
 
-2011-09-01  Andrew L. Moore  <alm@slewsys.org>
+2011-09-01  Andrew L. Moore  <slewsys@gmail.com>
 
-        * src/sub.c (substitution_lhs): Set short-form substitution flag.
+	* src/sub.c (substitution_lhs): Set short-form substitution flag.
 
-        * src/re.c (get_compiled_regex): For a substitution command, there
-        may be two patterns available: one from previous search and one
-        from previous substitution. In the case of an empty pattern (e.g.,
-        ed command `s///'), previous substitution pattern is used only if
-        there was no previous search. In the case of a repeated
-        substitution, (e.g., `s'), the previous search pattern is used
-        only if explicitly requested via `r' modifier (i.e., `sr'). The
-        logic is not new, but is now contained in a single function.
+	* src/re.c (get_compiled_regex): For a substitution command, there
+	may be two patterns available: one from previous search and one
+	from previous substitution. In the case of an empty pattern (e.g.,
+	ed command `s///'), previous substitution pattern is used only if
+	there was no previous search. In the case of a repeated
+	substitution, (e.g., `s'), the previous search pattern is used
+	only if explicitly requested via `r' modifier (i.e., `sr'). The
+	logic is not new, but is now contained in a single function.
 
-2011-04-13  Andrew L. Moore  <alm@slewsys.org>
+2011-04-13  Andrew L. Moore  <slewsys@gmail.com>
 
-        * src/sub.c (substitute_lines, substitute_matching): Restore flag
-        `newline_appended' clobbered by delete_lines().
+	* src/sub.c (substitute_lines, substitute_matching): Restore flag
+	`newline_appended' clobbered by delete_lines().
 
 2010-06-04  gettextize  <bug-gnu-gettext@gnu.org>
 
-        * m4/gettext.m4: Upgrade to gettext-0.18.
-        * m4/iconv.m4: Upgrade to gettext-0.18.
-        * m4/lib-ld.m4: Upgrade to gettext-0.18.
-        * m4/lib-link.m4: Upgrade to gettext-0.18.
-        * m4/lib-prefix.m4: Upgrade to gettext-0.18.
-        * m4/nls.m4: Upgrade to gettext-0.18.
-        * m4/po.m4: Upgrade to gettext-0.18.
-        * m4/progtest.m4: Upgrade to gettext-0.18.
-        * m4/codeset.m4: Upgrade to gettext-0.18.
-        * m4/fcntl-o.m4: New file, from gettext-0.18.
-        * m4/glibc2.m4: Upgrade to gettext-0.18.
-        * m4/glibc21.m4: Upgrade to gettext-0.18.
-        * m4/intdiv0.m4: Upgrade to gettext-0.18.
-        * m4/intl.m4: Upgrade to gettext-0.18.
-        * m4/intldir.m4: Upgrade to gettext-0.18.
-        * m4/intlmacosx.m4: Upgrade to gettext-0.18.
-        * m4/intmax.m4: Upgrade to gettext-0.18.
-        * m4/inttypes_h.m4: Upgrade to gettext-0.18.
-        * m4/inttypes-pri.m4: Upgrade to gettext-0.18.
-        * m4/lcmessage.m4: Upgrade to gettext-0.18.
-        * m4/lock.m4: Upgrade to gettext-0.18.
-        * m4/longlong.m4: Upgrade to gettext-0.18.
-        * m4/printf-posix.m4: Upgrade to gettext-0.18.
-        * m4/size_max.m4: Upgrade to gettext-0.18.
-        * m4/stdint_h.m4: Upgrade to gettext-0.18.
-        * m4/threadlib.m4: New file, from gettext-0.18.
-        * m4/uintmax_t.m4: Upgrade to gettext-0.18.
-        * m4/visibility.m4: Upgrade to gettext-0.18.
-        * m4/wchar_t.m4: Upgrade to gettext-0.18.
-        * m4/wint_t.m4: Upgrade to gettext-0.18.
-        * m4/xsize.m4: Upgrade to gettext-0.18.
-        * configure.ac (AM_GNU_GETTEXT_VERSION): Bump to 0.18.
-
-2010-04-05  Andrew L. Moore  <alm@revotics.com>
-
-        * src/signal.c (signal_handler): Replace signal_hup (), et al.
-        with signal_handler ().  Invoke handle_* via signo-indexed list of
-        handlers.
-        (init_signal_handler): Move signal initialization from main.c to
-        signal.c.
-
-2010-01-04  Andrew L. Moore  <alm@revotics.com>
-
-        * src/sub.c (extract_subst_rhs, count_matches): Add last-match ($)
-        relative selection of substitutions. Parse match offsets using
-        line-addressing syntax.
-
-        Command                 Interpretation
-        =======                 ==============
-        s/old/new/$             Replace last (regexp match of) `old' with `new'.
-        s/old/new/$-1           Replace second to last `old' with `new'.
-        s/old/new/-1            Replace second to last `old' with `new'.
-        s/old/new/-             Replace second to last `old' with `new'.
-        s/old/new/0             Replace last `old' with `new'.
-        s/old/new/g$            Replace last `old' with `new'.
-        s/old/new/$g            Replace last `old' with `new'.
-        s/old/new/$-1g          Replace last two `old' with `new'.
-        s/old/new/g$-1          Replace second to last `old' with `new'. (1)
-
-        (1) See entry dated 2008-04-06 below for modifier syntax.
-
-2009-09-24  Andrew L. Moore  <alm@revotics.com>
-
-        * src/buf.c (one_time_init, init_ed_state, init_global_queue)
-        (init_register_queue, get_buffer_line, append_line_node)
-        (close_buffer, realloc_buffer, append_text_node, next_text_node):
-        (get_line_node):
-        * src/cmds.c (append_lines, copy_lines, delete_lines)
-        (filter_lines, join_lines, move_lines, read_register)
-        (write_register, copy_register, move_register)
-        (append_register_node, reset_register_queue):
-        * src/exec.c (DESTINATION_ADDRESS, is_valid_range)
-        (es_init_subst, es_save_subst):
-        * src/glbl.c (mark_global_nodes, exec_global):
-        * src/io.c (read_file, read_pipe, read_stream, read_stream_r)
-        (get_stream_line, write_file, write_stream, RESET_FB_PREV)
-        (put_frame_buffer_line):
-        * src/main.c (main, address_range, get_line_address)
-        (check_address_bounds):
-        * src/re.c (get_compiled_regex, get_pattern)
-        (get_matching_node_address):
-        * src/signal.c (handle_hup):
-        * src/sub.c (substitution_lhs, substitution_rhs)
-        (substitution_template, es_init_rhs, es_save_rhs)
-        (substitute_lines, substitute_matching, count_matches):
-        * src/undo.c (append_undo_node, undo_last_command, reset_undo_queue):
-        * src/sub.c (extract_subst_lhs): Lots of refactoring...
-
-        1)  Move globals vars into `struct ed_command'.
-
-        2)  Rename functions/macros more precisely - e.g.,
-            INSQUE () => APPEND_NODE (), REMQUE () => UNLINK_NODE (),
-            add_line_node () => append_line_node (), etc.
-
-        2)  Move function declarations into files where they are used and
-            declare as static if possible.
-
-        3)  Update GNU regex from glibc.
-
-        4)  Move address parsing functions to their own file, parser.c.
-
-        5)  Rename extract_part () => part (), e.g.,
-            extract_subst_lhs () => substitution_lhs (), etc.
+	* m4/gettext.m4: Upgrade to gettext-0.18.
+	* m4/iconv.m4: Upgrade to gettext-0.18.
+	* m4/lib-ld.m4: Upgrade to gettext-0.18.
+	* m4/lib-link.m4: Upgrade to gettext-0.18.
+	* m4/lib-prefix.m4: Upgrade to gettext-0.18.
+	* m4/nls.m4: Upgrade to gettext-0.18.
+	* m4/po.m4: Upgrade to gettext-0.18.
+	* m4/progtest.m4: Upgrade to gettext-0.18.
+	* m4/codeset.m4: Upgrade to gettext-0.18.
+	* m4/fcntl-o.m4: New file, from gettext-0.18.
+	* m4/glibc2.m4: Upgrade to gettext-0.18.
+	* m4/glibc21.m4: Upgrade to gettext-0.18.
+	* m4/intdiv0.m4: Upgrade to gettext-0.18.
+	* m4/intl.m4: Upgrade to gettext-0.18.
+	* m4/intldir.m4: Upgrade to gettext-0.18.
+	* m4/intlmacosx.m4: Upgrade to gettext-0.18.
+	* m4/intmax.m4: Upgrade to gettext-0.18.
+	* m4/inttypes_h.m4: Upgrade to gettext-0.18.
+	* m4/inttypes-pri.m4: Upgrade to gettext-0.18.
+	* m4/lcmessage.m4: Upgrade to gettext-0.18.
+	* m4/lock.m4: Upgrade to gettext-0.18.
+	* m4/longlong.m4: Upgrade to gettext-0.18.
+	* m4/printf-posix.m4: Upgrade to gettext-0.18.
+	* m4/size_max.m4: Upgrade to gettext-0.18.
+	* m4/stdint_h.m4: Upgrade to gettext-0.18.
+	* m4/threadlib.m4: New file, from gettext-0.18.
+	* m4/uintmax_t.m4: Upgrade to gettext-0.18.
+	* m4/visibility.m4: Upgrade to gettext-0.18.
+	* m4/wchar_t.m4: Upgrade to gettext-0.18.
+	* m4/wint_t.m4: Upgrade to gettext-0.18.
+	* m4/xsize.m4: Upgrade to gettext-0.18.
+	* configure.ac (AM_GNU_GETTEXT_VERSION): Bump to 0.18.
+
+2010-04-05  Andrew L. Moore  <slewsys@gmail.com>
+
+	* src/signal.c (signal_handler): Replace signal_hup (), et al.
+	with signal_handler ().  Invoke handle_* via signo-indexed list of
+	handlers.
+	(init_signal_handler): Move signal initialization from main.c to
+	signal.c.
+
+2010-01-04  Andrew L. Moore  <slewsys@gmail.com>
+
+	* src/sub.c (extract_subst_rhs, count_matches): Add last-match ($)
+	relative selection of substitutions. Parse match offsets using
+	line-addressing syntax.
+
+	Command                 Interpretation
+	=======                 ==============
+	s/old/new/$             Replace last (regexp match of) `old' with `new'.
+	s/old/new/$-1           Replace second to last `old' with `new'.
+	s/old/new/-1            Replace second to last `old' with `new'.
+	s/old/new/-             Replace second to last `old' with `new'.
+	s/old/new/0             Replace last `old' with `new'.
+	s/old/new/g$            Replace last `old' with `new'.
+	s/old/new/$g            Replace last `old' with `new'.
+	s/old/new/$-1g          Replace last two `old' with `new'.
+	s/old/new/g$-1          Replace second to last `old' with `new'. (1)
+
+	(1) See entry dated 2008-04-06 below for modifier syntax.
+
+2009-09-24  Andrew L. Moore  <slewsys@gmail.com>
+
+	* src/buf.c (one_time_init, init_ed_state, init_global_queue)
+	(init_register_queue, get_buffer_line, append_line_node)
+	(close_buffer, realloc_buffer, append_text_node, next_text_node):
+	(get_line_node):
+	* src/cmds.c (append_lines, copy_lines, delete_lines)
+	(filter_lines, join_lines, move_lines, read_register)
+	(write_register, copy_register, move_register)
+	(append_register_node, reset_register_queue):
+	* src/exec.c (DESTINATION_ADDRESS, is_valid_range)
+	(es_init_subst, es_save_subst):
+	* src/glbl.c (mark_global_nodes, exec_global):
+	* src/io.c (read_file, read_pipe, read_stream, read_stream_r)
+	(get_stream_line, write_file, write_stream, RESET_FB_PREV)
+	(put_frame_buffer_line):
+	* src/main.c (main, address_range, get_line_address)
+	(check_address_bounds):
+	* src/re.c (get_compiled_regex, get_pattern)
+	(get_matching_node_address):
+	* src/signal.c (handle_hup):
+	* src/sub.c (substitution_lhs, substitution_rhs)
+	(substitution_template, es_init_rhs, es_save_rhs)
+	(substitute_lines, substitute_matching, count_matches):
+	* src/undo.c (append_undo_node, undo_last_command, reset_undo_queue):
+	* src/sub.c (extract_subst_lhs): Lots of refactoring...
+
+	1)  Move globals vars into `struct ed_command'.
+
+	2)  Rename functions/macros more precisely - e.g.,
+	    INSQUE () => APPEND_NODE (), REMQUE () => UNLINK_NODE (),
+	    add_line_node () => append_line_node (), etc.
+
+	2)  Move function declarations into files where they are used and
+	    declare as static if possible.
+
+	3)  Update GNU regex from glibc.
+
+	4)  Move address parsing functions to their own file, parser.c.
+
+	5)  Rename extract_part () => part (), e.g.,
+	    extract_subst_lhs () => substitution_lhs (), etc.
 
-        6)  Introduce register commands, read_register, write_register, etc.
+	6)  Introduce register commands, read_register, write_register, etc.
 
-        * testsuite/proto-fail.at.in:
-        * testsuite/proto-err.at.in:
-        * testsuite/proto-ok.at.in:
-        * testsuite/Makefile.am (%-err.at):
-        * doc/Makefile.am: Clean up - fix build in external directory.
+	* testsuite/proto-fail.at.in:
+	* testsuite/proto-err.at.in:
+	* testsuite/proto-ok.at.in:
+	* testsuite/Makefile.am (%-err.at):
+	* doc/Makefile.am: Clean up - fix build in external directory.
 
-        * Makefile.am:
-        * doc/ed.texi (Tutorial): Clean up.
-        * doc/bwk/Makefile.am: Clean up.
+	* Makefile.am:
+	* doc/ed.texi (Tutorial): Clean up.
+	* doc/bwk/Makefile.am: Clean up.
 
-        * src/ed.h (cmd_err, cmd_qual): Replace #define's with enums.
+	* src/ed.h (cmd_err, cmd_qual): Replace #define's with enums.
 
-        * doc/ed.texi (Tutorial): Remove specious include.
+	* doc/ed.texi (Tutorial): Remove specious include.
 
-        * src/buf.c (one_time_init):
-        * src/io.c (init_stdio): Move code block from one_time_init() to
-        init_stdio().
+	* src/buf.c (one_time_init):
+	* src/io.c (init_stdio): Move code block from one_time_init() to
+	init_stdio().
 
-2009-09-18  Andrew L. Moore  <alm@revotics.com>
+2009-09-18  Andrew L. Moore  <slewsys@gmail.com>
 
-        * configure.ac: Add upgrade.ed.in and testsuite/ts-am-sw.ed.in
-        scripts. Don't use POSIX character classes in sed regex.
+	* configure.ac: Add upgrade.ed.in and testsuite/ts-am-sw.ed.in
+	scripts. Don't use POSIX character classes in sed regex.
 
-        * src/sub.c (extract_substitution_template): Handle '\\' escapes
-        as per ed 0.2.
+	* src/sub.c (extract_substitution_template): Handle '\\' escapes
+	as per ed 0.2.
 
-        * src/exec.c (get_shell_command): Replace `%%' with current
-        script file name.
+	* src/exec.c (get_shell_command): Replace `%%' with current
+	script file name.
 
-2008-07-03  Andrew L. Moore  <alm@slewsys.org>
+2008-07-03  Andrew L. Moore  <slewsys@gmail.com>
 
-        * src/signal.c (handle_hup): Don't call `return' in void
-        function.
+	* src/signal.c (handle_hup): Don't call `return' in void
+	function.
 
-2008-06-22  Andrew L. Moore  <alm@slewsys.org>
+2008-06-22  Andrew L. Moore  <slewsys@gmail.com>
 
-        * src/ed.h (EOF_GLB):
-        * src/main.c (main):
-        * src/exec.c (exec_command): Added WANT_SAFE_WRITE macro which, if
-        defined at compilation, implements `~w' as the sequence `w'
-        followed by `~e'. Writing to a globbed file can still done with
-        the sequence `~f fileglob' followed by `w'. It is neither defined
-        by default, nor available as an autoconf option.
-
-        * src/buf.c (init_ed_state):
-        * src/exec.c (exec_command, get_file_glob): Implement experimental
-        syntax for traversing `default file list'. Syntax is described in
-        the 2006-12-29 entry.
-
-        * src/main.c (main): Always initialize buf_size prior to use.
-
-2008-04-06  Andrew L. Moore  <alm@slewsys.org>
-
-        * src/buf.c (init_ed_state):
-        * src/undo.c (reset_undo_queue):
-        * src/sub.c (extract_subst_lhs): Revert saved substitution state
-        after undo command.
-
-        * src/sub.c (extract_substitution_rhs, substitute_matching):
-        * src/exec.c (exec_command): A substitution command suffix of the
-        form NgM, where N = 1, 2, ... and M = 1, 2, .. is interpreted as
-        "substitute Nth match and every Mth match thereafter". For
-        example, the ed command `s/./X/g3' (implicit: N=1) applied to
-        the text `123456789' yields `X23X56X89', while the command
-        `s/./X/3g' (implicit: M=1) produces `12XXXXXXX'.
-
-        NB: Ed interprets the substitution command suffix gN (N = 1, 2,..)
-        differently from GNU sed, which defines both suffices Ng and
-        gN as "substitute globally from the Nth match".
-
-2008-02-16  Andrew Moore  <alm@slewsys.org>
-
-        * src/cmds.c (filter_lines):
-        * src/exec.c (exec_command):
-        * src/io.c (put_frame_buffer_line):
-        * src/main.c (script_die):
-        * configure.ac: Define OFF_T_FORMAT_STRING without "%" prefix or
-        "\n" suffix so that it can be used in additional contexts.
-
-        * src/buf.c (one_time_init): Use freopen(3) instread of open(2) +
-        dup2(2). Initialize file_glob structure directly, rather than via
-        call to init_file_args ().
-        (init_ed_state): Initialize new ed_state_t fields, es.file_handle,
-        et al.
-
-        * src/exec.c (GET_COMMAND_SUFFIX): Allow at most one print suffix,
-        not an arbitrary number.
-        (exec_command): In verbose mode, print diagnostic when opening a
-        file for which the user does not have write permission.
-
-        * configure.ac: Restore some missing tests (sigaction, siglongjmp,
-        setbuffer, sig_atomic_t). Add checks for F_SETLK (in <fcntl.h>)
-        and flock(2).  Add configure option `--enable-file-lock' to
-        enable support for advisory locks.  If available flock(2) is used,
-        otherwise fcntl(2) (not both).
-
-        * src/io.c (display_lines): Trivially allow printing an empty buffer.
-        (get_stream_line): Resume getc(3)/putc(3) if signal received.
-        (read_file, read_shell_output)
-        (write_file, write_shell_input)
-        (get_inode, set_file_lock): If file locking is enabled, then:
-
-        1) Reading from a file with an advisory lock prints a warning
-           diagnostic in verbose mode if stdin is a tty.
-
-        2) Writing to a file with an advisory lock succeeds, barring other
-           issues, by ignoring any file locking errors.
-
-2008-02-08  Andrew Moore  <alm@slewsys.org>
-
-        * src/*.[ch]: Correct most errors reported by -Wall -Wextra.
-        Use `(type) 0' in place of NULL assignment.
-
-        * doc/Makefile.am (): Rewrite dependencies so that docs don't
-        always rebuild.
-
-        * src/buf.c (add_line_node put_buffer_line):
-        * src/cmds.c (copy_lines): Code clean up.
-
-        * m4/gettext.m4: Upgrade to gettext-0.17.
-        * m4/iconv.m4: Upgrade to gettext-0.17.
-        * m4/lib-link.m4: Upgrade to gettext-0.17.
-        * m4/po.m4: Upgrade to gettext-0.17.
-        * m4/intdiv0.m4: Upgrade to gettext-0.17.
-        * m4/intl.m4: Upgrade to gettext-0.17.
-        * m4/intlmacosx.m4: New file, from gettext-0.17.
-        * m4/lock.m4: Upgrade to gettext-0.17.
-        * m4/longlong.m4: Upgrade to gettext-0.17.
-        * m4/printf-posix.m4: Upgrade to gettext-0.17.
-        * m4/size_max.m4: Upgrade to gettext-0.17.
-        * m4/uintmax_t.m4: Upgrade to gettext-0.17.
-        * m4/wint_t.m4: Upgrade to gettext-0.17.
-
-2008-01-12  Andrew Moore  <alm@slewsys.org>
-
-        * src/ed.h (ADD_UNDO_NODE, REVQUE):
-        * src/buf.c (init_undo_queue):
-        * src/undo.c (add_undo_node, undo_last_command)
-        (reset_undo_queue): Change undo list from dynamic array to linked
-        list to avoid malloc(3) size restrictions. Clean up name space.
-
-        * src/buf.c (add_text_node, get_text_node, reset_text_queue):
-        * src/io.c (read_stream_r): Change filter output list from dynamic
-        array to linked list to avoid malloc(3) size restrictions. Clean
-        up name space.
-
-        * src/ed.h (active_node_t):
-        * src/buf.c (one_time_init, init_global):
-        * src/glbl.c (add_active_node, get_active_node)
-        (FIND_ACTIVE_LINE, delete_active_nodes)
-        (reset_active_queue, set_active_queue): Change global active list
-        from dynamic array to linked list to avoid malloc(3) size
-        restrictions. Clean up name space.
-
-2007-12-24  Andrew Moore  <alm@slewsys.org>
-
-        * src/buf.c (put_buffer_line, add_line_node)
-        (get_line_node_address, get_addressed_line_node):
-        * src/cmds.c (copy_lines, delete_lines, filter_lines)
-        (join_lines, move_lines, get_marked_node_address):
-        * src/exec.c (GET_THIRD_ADDR, exec_command, check_address_range):
-        * src/glbl.c (build_global_active_list):
-        * src/io.c (read_file, read_stream, read_stream_r, write_file)
-        (write_stream, display_lines, put_frame_buffer_line):
-        * src/main.c (main, extract_address_range, get_next_address):
-        (get_line_address, get_address_offset, check_address_bounds):
-        * src/signal.c (handle_hup):
-        * src/sub.c (substitute):
-        * src/undo.c (push_undo_stack): Use off_t instead of size_t for
-        line addresses.
-
-        * src/main.c (script_die): Refactor error handler.
-
-2007-09-07  Andrew L. Moore  <alm@slewsys.org>
-
-        * src/main.c (usage):
-        * configure.ac: Preserve configure options for displaying in
-        --version output.
-
-2007-08-07  Andrew L. Moore  <alm@slewsys.org>
-
-        * src/exec.c (strip_escapes): Remove superfluous escape processing
-        of file names. To access a file whose name begins with `!', prefix
-        the name with a path delimiter -- e.g., `w ./!pwd'. NB: File
-        globbing commands (see entry dated 2006-12-29 below) still use
-        escape processing prior to expansion via glob(3). This is
-        necessary to include whitespace in (globbed) file arguments.
-
-2007-07-17  Andrew L. Moore  <alm@slewsys.org>
-
-        * src/buf.c (init_frame_buffer):
-        * src/cmds.c (dup_row_node):
-        * src/io.c (put_frame_buffer_line):
-        (display_frame_buffer):
-        (display_lines): Add a frame buffer to support paging. In
-        particular, when paging up only the last line is given, and the
-        first line is determined by "positioning" the frame buffer such
-        that the last line is the given one.
-
-        * src/exec.c (exec_command): Add page up command.
-
-        * src/io.c (put_stdout_line): Add `-R' command-line switch to
-        handle ANSI SGR color codes in paging commands `z' and
-        `Z' (similar to `-R' option of less(1)).
-        (display_lines): When printing lines, "dot is not changed until
-        printing is done", as per bwk in "Advanced Editing on Unix".
-
-2007-02-18  Andrew L. Moore  <alm@slewsys.org>
-
-        * src/undo.c (clear_undo_stack): Disable interrupts while
-        free ()'ing undo stack.
-
-        * src/exec.c (exec_command):
-        * src/glbl.c (exec_global): The short form of the substitution
-        command repeats a variation of the previous substitution. For
-        instance, after the command `s/old/new/g', the command `sg'
-        toggles the global suffix of the previous substitution, i.e., it
-        is equivalent to `s/old/new/'. Within a non-interactive global
-        command, modifiers to the short form of substitution should be
-        evaluated only once, i.e., `g/old/sg' should execute `s/old/new/'
-        for each line matching `old', not `s/old/new/' on the first one,
-        `s/old/new/g' on the second, and so on.
-
-        Preserve all print flags when toggling print state in the short
-        form of the substitute command. For example, after 's/old/new/nl',
-        the command `sp' is equivalent to `s/old/new/'. A subsequent `sp'
-        command should be equivalent to `s/old/new/nl' again, not
-        `s/old/new/p'.
-
-        If global command is non-interactive, read command input before
-        entering loop -- fixes unexpected input after exec_global ()
-        returns in the event that no lines were tagged.
-
-        * src/cmds.c (filter_lines):
-
-        * src/io.c (read_stream_r): If read_stream_r() returns error, then
-        clear_input_stack() must be called to avoid memory leak. Flush I/O
-        after writing to buffer.
-        (PUT_IS_LINE): Add length field to input_t struct.
-        (clear_input_stack): Disable interrupts while free ()'ing input stack.
-
-        * src/sub.c (search_and_replace):
-        * src/cmds.c (append_lines):
-        * src/buf.c (put_buffer_line): Call put_buffer_line with length
-        argument -- this is more efficient for common cases since we
-        already have it.
-
-2007-02-16  Andrew L. Moore  <alm@slewsys.org>
-
-        * src/ed.h (RE_SYNTAX_ED_*): Tune GNU regular expression syntax:
-        Allow dot (.) to match NULs unless posixly_correct is set, and
-        disable GNU-specific operators for POSIX compatibility and to
-        simplify documentation. To enable extended regular
-        expression syntax, use either the `-E' or `-r' command-line switch.
-
-        * src/glbl.c (build_global_active_list):
-        * src/main.c (get_matching_node_address):
-        * src/sub.c (substitute_matching): Enable GNU and BSD regex(3)
-        support for matching binary text (i.e., text containing NULs).
-
-        * src/re.c (extract_regex):
-        (get_compiled_regex): Enable GNU and BSD regex(3) support for
-        binary regular expressions (i.e., patterns containing NULs).
-
-        * configure.ac: Check for re_syntax_options in regex.h.
-
-        * src/sub.c (substitute_matching): When a match is found, but
-        not the nth match, reset the match length to 0 -- fixes a core
-        dump that could be caused by a failed substitution.
-        (search_and_replace): Don't append newline when substituting the
-        last line of a binary file.
-
-2007-02-14  Andrew L. Moore  <alm@slewsys.org>
-
-        * src/exec.c (get_shell_command): Preserve unexpanded shell
-        command. For instance, given the shell command `!echo %' which
-        echos the current file name, if the file name is subsequently
-        changed (or did not previously exist), then `!!' should echo
-        the new name.
-
-2007-02-09  Andrew L. Moore  <alm@slewsys.org>
-
-        * configure.ac:
-        * doc/tutorial/Makefile.am (INTRODUCTION and ADVANCED): Build with
-        troff(1)/dpost(1) if groff(1) unavailable (e.g., on Solaris).
-
-2007-01-26  Andrew L. Moore  <alm@slewsys.org>
-
-        * src/ed.h (SUBSTITUTE_IN_STRING):
-        * src/buf.c (translit_text): Redefine translit_text () as macro
-        SUBSTITUTE_IN_STRING ().
-
-        * src/buf.c (put_buffer_line): Add #ifdef HAVE_FSEEKO.
-        If not set, then hopefully off_t is 32-bit.
-        (realloc_buffer): Add #ifdef HAVE_REALLOC.
-
-        * src/io.c (put_stdout_line): When displaying text unambiguously
-        -- i.e., with `l' (list) command -- use simple heuristic to split
-        lines on word boundaries for legibility.
-
-        * configure.ac: Darwin disables nested functions which are used by
-        some autoconf(1) tests, so check `whether gcc needs
-        -fnested-functions'.
-
-        * src/exec.c (get_shell_command):
-        (get_file_name):
-        (get_file_glob): Overwriting command buffer truncates global commands.
-
-        Use stat(2) to test validity of file names -- assumes that stat(2)
-        returns error if path exceeds PATH_MAX or any component exceeds
-        NAME_MAX.
-
-2007-01-19  Andrew L. Moore  <alm@slewsys.org>
-
-        * src/exec.c (exec_command): Identify improperly constructed
-        addresses by checking if an "unknown command" is a valid address.
-        For instance, given the illegal address `2+/./', the function
-        `extract_ address_range' returns the address `3' (from `2+') and
-        leaves `/./' in the command buffer to be interpreted as
-        a (single-letter) command. When this fails, `extract_address_range'
-        is called again with argument '/./' and succeeds, indicating a badly
-        formed address -- in this case, because of a non-constant offset.
-
-        * src/main.c (extract_address_range):
-        (get_next_address):
-        (get_line_address):
-        (get_address_offset):
-        (check_address_bounds): As per SUSv3, 2004, the line addresses
-        `3-2' and `3 - 2' (i.e., with spaces) are interpreted differently.
-        Ed 0.2 disallows this ambiguity, but SUSv3 mandates it: the
-        address `3-2' is equivalent to the address `1', as expected, but
-        `3 - 2' is expanded per SUSv3 to `3 + -1 + 2' or `4'.
-
-        SUSv3 relaxes the historical requirement that intermediate
-        addresses in a range be legal, as long as the final range is. For
-        instance, the address range `$;+10;-10;' is legal even though it
-        temporarily sets dot (the current address) beyond the last line,
-        but the address range `$;+10;-10,' is not legal: the resultant
-        range (`$,$') is valid, however it has the side effect of setting
-        dot to `$+10' -- i.e., beyond the last line.
-
-        Some code refactoring to improve readability. (See also 2007-08-07).
-
-2007-01-16  Andrew L. Moore  <alm@slewsys.org>
-
-        * src/exec.c (escaped_strtok): Add escape processing to arguments
-        of get_file_glob (). Whitespace within a single argument must be
-        \ (backslash) escaped since otherwise it is interpreted as an
-        field separator.  NB: If the first character is `!', then the
-        remainder of the line is interpreted as a (single) shell command.
-        To define multiple shell commands, prefix the first `!' with `\'.
-        For example, `~f \!cal !!' defines a file list with two
-        shell commands: `!cal' and `!!'.
-        (check_file_arg): Add validation to file list arguments.  This is
-        necessary if the file list
-        1) was defined on the command line, or
-        2) contains shell commands which require expansion (e.g., `!!').
-        (get_shell_command): As per SUSv3, 2004, in a shell
-        command, `\%' maps to `%', not `\%', and the `!' character is
-        expanded (to the last shell command) only if it is the first
-        character in the command.
-        (exec_command): When paging via the `z' command, a line which
-        extends beyond the end of the page is truncated. The remainder of
-        the line can be displayed by repeating the `z' command without any
-        addresses. Paging tries to account for control sequences, like
-        <TAB>, but multi-byte characters are not yet supported.
-
-        * src/io.c (display_lines): Move function `display_lines' to io.c.
-        Remove all remnants of interactive paging: The `p', `l' and `n'
-        and `z' commands no longer pause for user input.
-        (put_stdout_line): As per SUSv3, 2004, the `l' (list) command
-        prefixes any `$' (dollar sign) characters in its output with a
-        `\' (backslash).
-
-        * src/buf.c (one_time_init): Don't adjust the internal values of
-        LINES and COLUMNS environment variables, or upon a window size
-        change. This just confounds subsequent calculations.
-
-2007-01-13  Andrew L. Moore  <alm@slewsys.org>
-
-        * src/buf.c: To disable I/O buffering under SunOS, call
-        setbuffer(3) with a NULL buffer.
-
-        * lib/Makefile.am: Add support for BSD getopt(3).
-
-        * lib/getopt_long.c:
-        * lib/bsd_getopt.h: Add BSD version of getopt(3). To use, link
-        getopt.h => bsd_getopt.h and uncomment corresponding section of
-        lib/Makefile.am. Requires running autoconf(1) via bootstrap.
-
-        * po/es.gmo:
-        * po/es.po: Add (attempted) Spanish translation.
-
-2007-01-06  Andrew L. Moore  <alm@slewsys.org>
-
-        * configure.ac: Define DLL_VARIABLE so that getopt.h compiles.
-
-        * lib/getopt.c:
-        * lib/getopt.h:
-        * lib/getopt1.c:
-        * lib/getopt_int.h: New versions from GNU libc.
-
-        * configure.ac: Add checks for strtoul and strtoll.
-
-        * src/ed.h: Rename STRTOL to STRTOL_THROW. Call with explicit
-        exception argument. Add STRTOUL_THROW and STRTOLL_THROW for
-        getting line addresses.
-
-        * buf.c/realloc_buffer:
-        * src/ed.h (REALLOC_THROW): Implement as a function call to
-        realloc_buffer (). Reduction in text size (about 20k) dubiously
-        offsets function call overhead.
-
-2006-12-29  Andrew L. Moore  <alm@slewsys.org>
-
-        * src/exec.c (GET_FILE_NAME): Add `overwrite' parameter for
-        get_file_glob () to indicate whether a glob should set the default
-        file list.
-
-        (exec_command):
-        (get_file_glob):
-        * src/main.c (main): Experimental: If multiple file arguments are
-        given on the command line, they define a `default file list'. The
-        first file in the list is opened for editing. The remaining files
-        are accessed via the following commands, which extend traditional
-        ed syntax.
-
-        extended ed command     description
-        -------------------     -----------
-
-        en or En                Edits next file in `default file list' and
-                                sets `default file name'. Any lines in the
-                                editor buffer are deleted before the new
-                                file is read. Attempting to go past end of
-                                list raises an error. The new `default
-                                file name' and size are printed to stdout.
-
-        ep or Ep                Edits previous file in `default file list'
-                                and sets `default file name'.  Any lines
-                                in the editor buffer are deleted before
-                                the new file is read. Attempting to go
-                                past beginning of list raises an error.
-                                The new `default file name' and size are
-                                printed to stdout.
-
-        ~e or ~E                Edits first file in `default file list' and
-                                sets `default file name' -- i.e., the `~e'
-                                command with no arguments effectively
-                                rewinds the `default file list'. To re-read
-	                        the current file from disk, use the `e' or
+	* src/ed.h (EOF_GLB):
+	* src/main.c (main):
+	* src/exec.c (exec_command): Added WANT_SAFE_WRITE macro which, if
+	defined at compilation, implements `~w' as the sequence `w'
+	followed by `~e'. Writing to a globbed file can still done with
+	the sequence `~f fileglob' followed by `w'. It is neither defined
+	by default, nor available as an autoconf option.
+
+	* src/buf.c (init_ed_state):
+	* src/exec.c (exec_command, get_file_glob): Implement experimental
+	syntax for traversing `default file list'. Syntax is described in
+	the 2006-12-29 entry.
+
+	* src/main.c (main): Always initialize buf_size prior to use.
+
+2008-04-06  Andrew L. Moore  <slewsys@gmail.com>
+
+	* src/buf.c (init_ed_state):
+	* src/undo.c (reset_undo_queue):
+	* src/sub.c (extract_subst_lhs): Revert saved substitution state
+	after undo command.
+
+	* src/sub.c (extract_substitution_rhs, substitute_matching):
+	* src/exec.c (exec_command): A substitution command suffix of the
+	form NgM, where N = 1, 2, ... and M = 1, 2, .. is interpreted as
+	"substitute Nth match and every Mth match thereafter". For
+	example, the ed command `s/./X/g3' (implicit: N=1) applied to
+	the text `123456789' yields `X23X56X89', while the command
+	`s/./X/3g' (implicit: M=1) produces `12XXXXXXX'.
+
+	NB: Ed interprets the substitution command suffix gN (N = 1, 2,..)
+	differently from GNU sed, which defines both suffices Ng and
+	gN as "substitute globally from the Nth match".
+
+2008-02-16  Andrew Moore  <slewsys@gmail.com>
+
+	* src/cmds.c (filter_lines):
+	* src/exec.c (exec_command):
+	* src/io.c (put_frame_buffer_line):
+	* src/main.c (script_die):
+	* configure.ac: Define OFF_T_FORMAT_STRING without "%" prefix or
+	"\n" suffix so that it can be used in additional contexts.
+
+	* src/buf.c (one_time_init): Use freopen(3) instread of open(2) +
+	dup2(2). Initialize file_glob structure directly, rather than via
+	call to init_file_args ().
+	(init_ed_state): Initialize new ed_state_t fields, es.file_handle,
+	et al.
+
+	* src/exec.c (GET_COMMAND_SUFFIX): Allow at most one print suffix,
+	not an arbitrary number.
+	(exec_command): In verbose mode, print diagnostic when opening a
+	file for which the user does not have write permission.
+
+	* configure.ac: Restore some missing tests (sigaction, siglongjmp,
+	setbuffer, sig_atomic_t). Add checks for F_SETLK (in <fcntl.h>)
+	and flock(2).  Add configure option `--enable-file-lock' to
+	enable support for advisory locks.  If available flock(2) is used,
+	otherwise fcntl(2) (not both).
+
+	* src/io.c (display_lines): Trivially allow printing an empty buffer.
+	(get_stream_line): Resume getc(3)/putc(3) if signal received.
+	(read_file, read_shell_output)
+	(write_file, write_shell_input)
+	(get_inode, set_file_lock): If file locking is enabled, then:
+
+	1) Reading from a file with an advisory lock prints a warning
+	   diagnostic in verbose mode if stdin is a tty.
+
+	2) Writing to a file with an advisory lock succeeds, barring other
+	   issues, by ignoring any file locking errors.
+
+2008-02-08  Andrew Moore  <slewsys@gmail.com>
+
+	* src/*.[ch]: Correct most errors reported by -Wall -Wextra.
+	Use `(type) 0' in place of NULL assignment.
+
+	* doc/Makefile.am (): Rewrite dependencies so that docs don't
+	always rebuild.
+
+	* src/buf.c (add_line_node put_buffer_line):
+	* src/cmds.c (copy_lines): Code clean up.
+
+	* m4/gettext.m4: Upgrade to gettext-0.17.
+	* m4/iconv.m4: Upgrade to gettext-0.17.
+	* m4/lib-link.m4: Upgrade to gettext-0.17.
+	* m4/po.m4: Upgrade to gettext-0.17.
+	* m4/intdiv0.m4: Upgrade to gettext-0.17.
+	* m4/intl.m4: Upgrade to gettext-0.17.
+	* m4/intlmacosx.m4: New file, from gettext-0.17.
+	* m4/lock.m4: Upgrade to gettext-0.17.
+	* m4/longlong.m4: Upgrade to gettext-0.17.
+	* m4/printf-posix.m4: Upgrade to gettext-0.17.
+	* m4/size_max.m4: Upgrade to gettext-0.17.
+	* m4/uintmax_t.m4: Upgrade to gettext-0.17.
+	* m4/wint_t.m4: Upgrade to gettext-0.17.
+
+2008-01-12  Andrew Moore  <slewsys@gmail.com>
+
+	* src/ed.h (ADD_UNDO_NODE, REVQUE):
+	* src/buf.c (init_undo_queue):
+	* src/undo.c (add_undo_node, undo_last_command)
+	(reset_undo_queue): Change undo list from dynamic array to linked
+	list to avoid malloc(3) size restrictions. Clean up name space.
+
+	* src/buf.c (add_text_node, get_text_node, reset_text_queue):
+	* src/io.c (read_stream_r): Change filter output list from dynamic
+	array to linked list to avoid malloc(3) size restrictions. Clean
+	up name space.
+
+	* src/ed.h (active_node_t):
+	* src/buf.c (one_time_init, init_global):
+	* src/glbl.c (add_active_node, get_active_node)
+	(FIND_ACTIVE_LINE, delete_active_nodes)
+	(reset_active_queue, set_active_queue): Change global active list
+	from dynamic array to linked list to avoid malloc(3) size
+	restrictions. Clean up name space.
+
+2007-12-24  Andrew Moore  <slewsys@gmail.com>
+
+	* src/buf.c (put_buffer_line, add_line_node)
+	(get_line_node_address, get_addressed_line_node):
+	* src/cmds.c (copy_lines, delete_lines, filter_lines)
+	(join_lines, move_lines, get_marked_node_address):
+	* src/exec.c (GET_THIRD_ADDR, exec_command, check_address_range):
+	* src/glbl.c (build_global_active_list):
+	* src/io.c (read_file, read_stream, read_stream_r, write_file)
+	(write_stream, display_lines, put_frame_buffer_line):
+	* src/main.c (main, extract_address_range, get_next_address):
+	(get_line_address, get_address_offset, check_address_bounds):
+	* src/signal.c (handle_hup):
+	* src/sub.c (substitute):
+	* src/undo.c (push_undo_stack): Use off_t instead of size_t for
+	line addresses.
+
+	* src/main.c (script_die): Refactor error handler.
+
+2007-09-07  Andrew L. Moore  <slewsys@gmail.com>
+
+	* src/main.c (usage):
+	* configure.ac: Preserve configure options for displaying in
+	--version output.
+
+2007-08-07  Andrew L. Moore  <slewsys@gmail.com>
+
+	* src/exec.c (strip_escapes): Remove superfluous escape processing
+	of file names. To access a file whose name begins with `!', prefix
+	the name with a path delimiter -- e.g., `w ./!pwd'. NB: File
+	globbing commands (see entry dated 2006-12-29 below) still use
+	escape processing prior to expansion via glob(3). This is
+	necessary to include whitespace in (globbed) file arguments.
+
+2007-07-17  Andrew L. Moore  <slewsys@gmail.com>
+
+	* src/buf.c (init_frame_buffer):
+	* src/cmds.c (dup_row_node):
+	* src/io.c (put_frame_buffer_line):
+	(display_frame_buffer):
+	(display_lines): Add a frame buffer to support paging. In
+	particular, when paging up only the last line is given, and the
+	first line is determined by "positioning" the frame buffer such
+	that the last line is the given one.
+
+	* src/exec.c (exec_command): Add page up command.
+
+	* src/io.c (put_stdout_line): Add `-R' command-line switch to
+	handle ANSI SGR color codes in paging commands `z' and
+	`Z' (similar to `-R' option of less(1)).
+	(display_lines): When printing lines, "dot is not changed until
+	printing is done", as per bwk in "Advanced Editing on Unix".
+
+2007-02-18  Andrew L. Moore  <slewsys@gmail.com>
+
+	* src/undo.c (clear_undo_stack): Disable interrupts while
+	free ()'ing undo stack.
+
+	* src/exec.c (exec_command):
+	* src/glbl.c (exec_global): The short form of the substitution
+	command repeats a variation of the previous substitution. For
+	instance, after the command `s/old/new/g', the command `sg'
+	toggles the global suffix of the previous substitution, i.e., it
+	is equivalent to `s/old/new/'. Within a non-interactive global
+	command, modifiers to the short form of substitution should be
+	evaluated only once, i.e., `g/old/sg' should execute `s/old/new/'
+	for each line matching `old', not `s/old/new/' on the first one,
+	`s/old/new/g' on the second, and so on.
+
+	Preserve all print flags when toggling print state in the short
+	form of the substitute command. For example, after 's/old/new/nl',
+	the command `sp' is equivalent to `s/old/new/'. A subsequent `sp'
+	command should be equivalent to `s/old/new/nl' again, not
+	`s/old/new/p'.
+
+	If global command is non-interactive, read command input before
+	entering loop -- fixes unexpected input after exec_global ()
+	returns in the event that no lines were tagged.
+
+	* src/cmds.c (filter_lines):
+
+	* src/io.c (read_stream_r): If read_stream_r() returns error, then
+	clear_input_stack() must be called to avoid memory leak. Flush I/O
+	after writing to buffer.
+	(PUT_IS_LINE): Add length field to input_t struct.
+	(clear_input_stack): Disable interrupts while free ()'ing input stack.
+
+	* src/sub.c (search_and_replace):
+	* src/cmds.c (append_lines):
+	* src/buf.c (put_buffer_line): Call put_buffer_line with length
+	argument -- this is more efficient for common cases since we
+	already have it.
+
+2007-02-16  Andrew L. Moore  <slewsys@gmail.com>
+
+	* src/ed.h (RE_SYNTAX_ED_*): Tune GNU regular expression syntax:
+	Allow dot (.) to match NULs unless posixly_correct is set, and
+	disable GNU-specific operators for POSIX compatibility and to
+	simplify documentation. To enable extended regular
+	expression syntax, use either the `-E' or `-r' command-line switch.
+
+	* src/glbl.c (build_global_active_list):
+	* src/main.c (get_matching_node_address):
+	* src/sub.c (substitute_matching): Enable GNU and BSD regex(3)
+	support for matching binary text (i.e., text containing NULs).
+
+	* src/re.c (extract_regex):
+	(get_compiled_regex): Enable GNU and BSD regex(3) support for
+	binary regular expressions (i.e., patterns containing NULs).
+
+	* configure.ac: Check for re_syntax_options in regex.h.
+
+	* src/sub.c (substitute_matching): When a match is found, but
+	not the nth match, reset the match length to 0 -- fixes a core
+	dump that could be caused by a failed substitution.
+	(search_and_replace): Don't append newline when substituting the
+	last line of a binary file.
+
+2007-02-14  Andrew L. Moore  <slewsys@gmail.com>
+
+	* src/exec.c (get_shell_command): Preserve unexpanded shell
+	command. For instance, given the shell command `!echo %' which
+	echos the current file name, if the file name is subsequently
+	changed (or did not previously exist), then `!!' should echo
+	the new name.
+
+2007-02-09  Andrew L. Moore  <slewsys@gmail.com>
+
+	* configure.ac:
+	* doc/tutorial/Makefile.am (INTRODUCTION and ADVANCED): Build with
+	troff(1)/dpost(1) if groff(1) unavailable (e.g., on Solaris).
+
+2007-01-26  Andrew L. Moore  <slewsys@gmail.com>
+
+	* src/ed.h (SUBSTITUTE_IN_STRING):
+	* src/buf.c (translit_text): Redefine translit_text () as macro
+	SUBSTITUTE_IN_STRING ().
+
+	* src/buf.c (put_buffer_line): Add #ifdef HAVE_FSEEKO.
+	If not set, then hopefully off_t is 32-bit.
+	(realloc_buffer): Add #ifdef HAVE_REALLOC.
+
+	* src/io.c (put_stdout_line): When displaying text unambiguously
+	-- i.e., with `l' (list) command -- use simple heuristic to split
+	lines on word boundaries for legibility.
+
+	* configure.ac: Darwin disables nested functions which are used by
+	some autoconf(1) tests, so check `whether gcc needs
+	-fnested-functions'.
+
+	* src/exec.c (get_shell_command):
+	(get_file_name):
+	(get_file_glob): Overwriting command buffer truncates global commands.
+
+	Use stat(2) to test validity of file names -- assumes that stat(2)
+	returns error if path exceeds PATH_MAX or any component exceeds
+	NAME_MAX.
+
+2007-01-19  Andrew L. Moore  <slewsys@gmail.com>
+
+	* src/exec.c (exec_command): Identify improperly constructed
+	addresses by checking if an "unknown command" is a valid address.
+	For instance, given the illegal address `2+/./', the function
+	`extract_ address_range' returns the address `3' (from `2+') and
+	leaves `/./' in the command buffer to be interpreted as
+	a (single-letter) command. When this fails, `extract_address_range'
+	is called again with argument '/./' and succeeds, indicating a badly
+	formed address -- in this case, because of a non-constant offset.
+
+	* src/main.c (extract_address_range):
+	(get_next_address):
+	(get_line_address):
+	(get_address_offset):
+	(check_address_bounds): As per SUSv3, 2004, the line addresses
+	`3-2' and `3 - 2' (i.e., with spaces) are interpreted differently.
+	Ed 0.2 disallows this ambiguity, but SUSv3 mandates it: the
+	address `3-2' is equivalent to the address `1', as expected, but
+	`3 - 2' is expanded per SUSv3 to `3 + -1 + 2' or `4'.
+
+	SUSv3 relaxes the historical requirement that intermediate
+	addresses in a range be legal, as long as the final range is. For
+	instance, the address range `$;+10;-10;' is legal even though it
+	temporarily sets dot (the current address) beyond the last line,
+	but the address range `$;+10;-10,' is not legal: the resultant
+	range (`$,$') is valid, however it has the side effect of setting
+	dot to `$+10' -- i.e., beyond the last line.
+
+	Some code refactoring to improve readability. (See also 2007-08-07).
+
+2007-01-16  Andrew L. Moore  <slewsys@gmail.com>
+
+	* src/exec.c (escaped_strtok): Add escape processing to arguments
+	of get_file_glob (). Whitespace within a single argument must be
+	\ (backslash) escaped since otherwise it is interpreted as an
+	field separator.  NB: If the first character is `!', then the
+	remainder of the line is interpreted as a (single) shell command.
+	To define multiple shell commands, prefix the first `!' with `\'.
+	For example, `~f \!cal !!' defines a file list with two
+	shell commands: `!cal' and `!!'.
+	(check_file_arg): Add validation to file list arguments.  This is
+	necessary if the file list
+	1) was defined on the command line, or
+	2) contains shell commands which require expansion (e.g., `!!').
+	(get_shell_command): As per SUSv3, 2004, in a shell
+	command, `\%' maps to `%', not `\%', and the `!' character is
+	expanded (to the last shell command) only if it is the first
+	character in the command.
+	(exec_command): When paging via the `z' command, a line which
+	extends beyond the end of the page is truncated. The remainder of
+	the line can be displayed by repeating the `z' command without any
+	addresses. Paging tries to account for control sequences, like
+	<TAB>, but multi-byte characters are not yet supported.
+
+	* src/io.c (display_lines): Move function `display_lines' to io.c.
+	Remove all remnants of interactive paging: The `p', `l' and `n'
+	and `z' commands no longer pause for user input.
+	(put_stdout_line): As per SUSv3, 2004, the `l' (list) command
+	prefixes any `$' (dollar sign) characters in its output with a
+	`\' (backslash).
+
+	* src/buf.c (one_time_init): Don't adjust the internal values of
+	LINES and COLUMNS environment variables, or upon a window size
+	change. This just confounds subsequent calculations.
+
+2007-01-13  Andrew L. Moore  <slewsys@gmail.com>
+
+	* src/buf.c: To disable I/O buffering under SunOS, call
+	setbuffer(3) with a NULL buffer.
+
+	* lib/Makefile.am: Add support for BSD getopt(3).
+
+	* lib/getopt_long.c:
+	* lib/bsd_getopt.h: Add BSD version of getopt(3). To use, link
+	getopt.h => bsd_getopt.h and uncomment corresponding section of
+	lib/Makefile.am. Requires running autoconf(1) via bootstrap.
+
+	* po/es.gmo:
+	* po/es.po: Add (attempted) Spanish translation.
+
+2007-01-06  Andrew L. Moore  <slewsys@gmail.com>
+
+	* configure.ac: Define DLL_VARIABLE so that getopt.h compiles.
+
+	* lib/getopt.c:
+	* lib/getopt.h:
+	* lib/getopt1.c:
+	* lib/getopt_int.h: New versions from GNU libc.
+
+	* configure.ac: Add checks for strtoul and strtoll.
+
+	* src/ed.h: Rename STRTOL to STRTOL_THROW. Call with explicit
+	exception argument. Add STRTOUL_THROW and STRTOLL_THROW for
+	getting line addresses.
+
+	* buf.c/realloc_buffer:
+	* src/ed.h (REALLOC_THROW): Implement as a function call to
+	realloc_buffer (). Reduction in text size (about 20k) dubiously
+	offsets function call overhead.
+
+2006-12-29  Andrew L. Moore  <slewsys@gmail.com>
+
+	* src/exec.c (GET_FILE_NAME): Add `overwrite' parameter for
+	get_file_glob () to indicate whether a glob should set the default
+	file list.
+
+	(exec_command):
+	(get_file_glob):
+	* src/main.c (main): Experimental: If multiple file arguments are
+	given on the command line, they define a `default file list'. The
+	first file in the list is opened for editing. The remaining files
+	are accessed via the following commands, which extend traditional
+	ed syntax.
+
+	extended ed command     description
+	-------------------     -----------
+
+	en or En                Edits next file in `default file list' and
+				sets `default file name'. Any lines in the
+				editor buffer are deleted before the new
+				file is read. Attempting to go past end of
+				list raises an error. The new `default
+				file name' and size are printed to stdout.
+
+	ep or Ep                Edits previous file in `default file list'
+				and sets `default file name'.  Any lines
+				in the editor buffer are deleted before
+				the new file is read. Attempting to go
+				past beginning of list raises an error.
+				The new `default file name' and size are
+				printed to stdout.
+
+	~e or ~E                Edits first file in `default file list' and
+				sets `default file name' -- i.e., the `~e'
+				command with no arguments effectively
+				rewinds the `default file list'. To re-read
+				the current file from disk, use the `e' or
 				`E' command instead.  Any lines
-                                in the editor buffer are deleted before
-                                the new file is read. The new `default
-                                file name' and size are printed to stdout.
+				in the editor buffer are deleted before
+				the new file is read. The new `default
+				file name' and size are printed to stdout.
 
-        ~e PATTERN or           Edits first file in list generated by
-        ~E PATTERN              glob (PATTERN) relative to the current
-                                directory.  Sets the `default file list'
-                                and `default file name' accordingly. The
-                                new `default file name' and size are
-                                printed to stdout.
+	~e PATTERN or           Edits first file in list generated by
+	~E PATTERN              glob (PATTERN) relative to the current
+				directory.  Sets the `default file list'
+				and `default file name' accordingly. The
+				new `default file name' and size are
+				printed to stdout.
 
 
-                                If no files match `PATTERN' then PATTERN
-	                        is modified by removing the basename
-	                        portion, if any, and expansion of the
-	                        remaining directory glob is attempted. If
-	                        this succeeds, then a fictitious pathname
-	                        list is constructed by appending the
-	                        basename glob (unexpanded) to each
-	                        directory in the expansion.
+				If no files match `PATTERN' then PATTERN
+				is modified by removing the basename
+				portion, if any, and expansion of the
+				remaining directory glob is attempted. If
+				this succeeds, then a fictitious pathname
+				list is constructed by appending the
+				basename glob (unexpanded) to each
+				directory in the expansion.
 
-                                If pattern begins with exclamation mark
-	                        (!), it is interpreted as a shell command
-	                        and affects neither the `default file
-	                        name' nor default `default file list', i.e.,
-	                        it is equivalent to the command:
-                                    e !shell command
-                                (q.v.).
+				If pattern begins with exclamation mark
+				(!), it is interpreted as a shell command
+				and affects neither the `default file
+				name' nor default `default file list', i.e.,
+				it is equivalent to the command:
+				    e !shell command
+				(q.v.).
 
-                                Since the `~e' command accepts multiple
-                                arguments separated by whitespace,
-                                whitespace within an argument must be
-                                backslash (\) escaped -- e.g.:
-                                    ~e file\ one file\ two
+				Since the `~e' command accepts multiple
+				arguments separated by whitespace,
+				whitespace within an argument must be
+				backslash (\) escaped -- e.g.:
+				    ~e file\ one file\ two
 
-        ~f                      Prints `default file list' to stdout. The
-                                `default file name' is unchanged.
+	~f                      Prints `default file list' to stdout. The
+				`default file name' is unchanged.
 
-        ~f PATTERN              Sets `default file list' generated  by
-                                glob (PATTERN) and sets `default file
-                                name' to first file in list. Prints (new)
-                                `default file list' to stdout. If no files
-                                match `PATTERN', then `PATTERN' is used
-                                instead.
+	~f PATTERN              Sets `default file list' generated  by
+				glob (PATTERN) and sets `default file
+				name' to first file in list. Prints (new)
+				`default file list' to stdout. If no files
+				match `PATTERN', then `PATTERN' is used
+				instead.
 
-        fn                      Sets `default file name' to next in
-                                `default file list' without affecting the
-                                contents of the editor buffer.  Attempting
-                                to go past end of list raises an error.
-                                The new `default file name' is
-                                printed to stdout.
+	fn                      Sets `default file name' to next in
+				`default file list' without affecting the
+				contents of the editor buffer.  Attempting
+				to go past end of list raises an error.
+				The new `default file name' is
+				printed to stdout.
 
-        fp                      Sets `default file name' to previous in
-                                `default file list' without affecting the
-                                contents of the editor buffer.  Attempting
-                                to go past beginning of list raises an
-                                error. The new `default file name' is
-                                printed to stdout.
+	fp                      Sets `default file name' to previous in
+				`default file list' without affecting the
+				contents of the editor buffer.  Attempting
+				to go past beginning of list raises an
+				error. The new `default file name' is
+				printed to stdout.
 
-        ($)~r                   Reads current file in `default file list'
-	                        to after the addressed line. The `default
-                                file name' is unchanged. The name and size
-	                        of the file read are printed to stdout.
+	($)~r                   Reads current file in `default file list'
+				to after the addressed line. The `default
+				file name' is unchanged. The name and size
+				of the file read are printed to stdout.
 
-        ($)~r PATTERN           Reads first file in list generated by
-                                glob (PATTERN) to after the addressed
-                                line. Sets the `default file list' and
-                                `default file name' iff they were
-                                previously unset.
+	($)~r PATTERN           Reads first file in list generated by
+				glob (PATTERN) to after the addressed
+				line. Sets the `default file list' and
+				`default file name' iff they were
+				previously unset.
 
-                                If no files match `PATTERN', then
-                                `PATTERN' is used instead. If PATTERN
-                                begins with exclamation mark (!), it is
-                                interpreted as a shell command and affects
-                                neither the `default file name' nor
-                                default `default file list' -- i.e., it is
-                                equivalent to the command:
-                                    r !shell command
-                                (q.v.).
+				If no files match `PATTERN', then
+				`PATTERN' is used instead. If PATTERN
+				begins with exclamation mark (!), it is
+				interpreted as a shell command and affects
+				neither the `default file name' nor
+				default `default file list' -- i.e., it is
+				equivalent to the command:
+				    r !shell command
+				(q.v.).
 
-        (1,$)wn or Wn           Equivalent to a `w' (or `W') command fol-
-                                lowed by an `en' command. The name and
-                                size of the file written to are printed to
-                                stdout.
+	(1,$)wn or Wn           Equivalent to a `w' (or `W') command fol-
+				lowed by an `en' command. The name and
+				size of the file written to are printed to
+				stdout.
 
-        (1,$)wp or Wp           Equivalent to a `w' (or `W') command fol-
-                                lowed by an `ep' command. The name and
-                                size of the file written to are printed to
-                                stdout.
+	(1,$)wp or Wp           Equivalent to a `w' (or `W') command fol-
+				lowed by an `ep' command. The name and
+				size of the file written to are printed to
+				stdout.
 
-        (1,$)~w or ~W           Writes to current file in `default file
-	                        list'. The `default file name' is unchanged.
-                                The name and size of the file written to are
-                                printed to stdout.
+	(1,$)~w or ~W           Writes to current file in `default file
+				list'. The `default file name' is unchanged.
+				The name and size of the file written to are
+				printed to stdout.
 
-        (1,$)~w PATTERN or      Writes to the first file matching PATTERN.
-        ~W PATTERN              The `define file name' is set if and only
-	                        if it was not previously set. The name and
-                                size of the file written to are printed
-                                to stdout.
+	(1,$)~w PATTERN or      Writes to the first file matching PATTERN.
+	~W PATTERN              The `define file name' is set if and only
+				if it was not previously set. The name and
+				size of the file written to are printed
+				to stdout.
 
-                                If no files match `PATTERN' then PATTERN
-	                        is modified by removing the basename
-	                        portion, if any, and expansion of the
-	                        remaining directory glob is attempted. If
-	                        this succeeds, then a fictitious pathname
-	                        list is constructed by appending the
-	                        basename glob (unexpanded) to each
-	                        directory in the expansion.
+				If no files match `PATTERN' then PATTERN
+				is modified by removing the basename
+				portion, if any, and expansion of the
+				remaining directory glob is attempted. If
+				this succeeds, then a fictitious pathname
+				list is constructed by appending the
+				basename glob (unexpanded) to each
+				directory in the expansion.
 
-                                If PATTERN begins with exclamation mark (!),
-                                then it is equivalent to the command:
-                                    w !shell command
-                                (q.v.).
+				If PATTERN begins with exclamation mark (!),
+				then it is equivalent to the command:
+				    w !shell command
+				(q.v.).
 
-        The logic of `~w' and `~W' may be altered with the compilation flag
-        WANT_SAFE_WRITE. If set, `~w' is equivalent to the sequence `w'
-        followed by `~e'.
+	The logic of `~w' and `~W' may be altered with the compilation flag
+	WANT_SAFE_WRITE. If set, `~w' is equivalent to the sequence `w'
+	followed by `~e'.
 
-        Escape processing of globbing arguments added 2007-01-16 (q.v.).
+	Escape processing of globbing arguments added 2007-01-16 (q.v.).
 
-        * src/exec.c (yank_lines):
-        * src/exec.c (put_lines): Moved (GNU) `x' and `y' commands to
-        `contrib' subdirectory as `cut-and-paste.patch'.
+	* src/exec.c (yank_lines):
+	* src/exec.c (put_lines): Moved (GNU) `x' and `y' commands to
+	`contrib' subdirectory as `cut-and-paste.patch'.
 
 2006-12-14  gettextize  <bug-gnu-gettext@gnu.org>
 
-        * m4/gettext.m4: Upgrade to gettext-0.16.1.
-        * m4/lib-link.m4: Upgrade to gettext-0.16.1.
-        * m4/lib-prefix.m4: Upgrade to gettext-0.16.1.
-        * m4/nls.m4: Upgrade to gettext-0.16.1.
-        * m4/po.m4: Upgrade to gettext-0.16.1.
-        * m4/codeset.m4: Upgrade to gettext-0.16.1.
-        * m4/intl.m4: New file, from gettext-0.16.1.
-        * m4/intldir.m4: New file, from gettext-0.16.1.
-        * m4/intmax.m4: Upgrade to gettext-0.16.1.
-        * m4/inttypes_h.m4: Upgrade to gettext-0.16.1.
-        * m4/inttypes-pri.m4: Upgrade to gettext-0.16.1.
-        * m4/lock.m4: New file, from gettext-0.16.1.
-        * m4/longdouble.m4: Upgrade to gettext-0.16.1.
-        * m4/longlong.m4: Upgrade to gettext-0.16.1.
-        * m4/size_max.m4: Upgrade to gettext-0.16.1.
-        * m4/stdint_h.m4: Upgrade to gettext-0.16.1.
-        * m4/ulonglong.m4: Upgrade to gettext-0.16.1.
-        * m4/visibility.m4: New file, from gettext-0.16.1.
+	* m4/gettext.m4: Upgrade to gettext-0.16.1.
+	* m4/lib-link.m4: Upgrade to gettext-0.16.1.
+	* m4/lib-prefix.m4: Upgrade to gettext-0.16.1.
+	* m4/nls.m4: Upgrade to gettext-0.16.1.
+	* m4/po.m4: Upgrade to gettext-0.16.1.
+	* m4/codeset.m4: Upgrade to gettext-0.16.1.
+	* m4/intl.m4: New file, from gettext-0.16.1.
+	* m4/intldir.m4: New file, from gettext-0.16.1.
+	* m4/intmax.m4: Upgrade to gettext-0.16.1.
+	* m4/inttypes_h.m4: Upgrade to gettext-0.16.1.
+	* m4/inttypes-pri.m4: Upgrade to gettext-0.16.1.
+	* m4/lock.m4: New file, from gettext-0.16.1.
+	* m4/longdouble.m4: Upgrade to gettext-0.16.1.
+	* m4/longlong.m4: Upgrade to gettext-0.16.1.
+	* m4/size_max.m4: Upgrade to gettext-0.16.1.
+	* m4/stdint_h.m4: Upgrade to gettext-0.16.1.
+	* m4/ulonglong.m4: Upgrade to gettext-0.16.1.
+	* m4/visibility.m4: New file, from gettext-0.16.1.
 
-2006-12-13  Andrew L. Moore  <alm@slewsys.org>
+2006-12-13  Andrew L. Moore  <slewsys@gmail.com>
 
-        * src/buf.c:
-        * src/ed.h:
-        * src/main.c: Clean up #include's.
+	* src/buf.c:
+	* src/ed.h:
+	* src/main.c: Clean up #include's.
 
-2006-12-06  Andrew L. Moore  <alm@slewsys.org>
+2006-12-06  Andrew L. Moore  <slewsys@gmail.com>
 
-        * src/exec.c (exec_command): Remove redundant call to
-        clear_undo_stack ().
+	* src/exec.c (exec_command): Remove redundant call to
+	clear_undo_stack ().
 
-        * src/cmds.c (display_lines):
-        * src/exec.c (GET_THIRD_ADDR):
-        (exec_command):
-        (get_shell_command):
-        * src/io.c (put_stdout_line):
-        * src/main.c (main):
-        * src/buf.c (one_time_init): Check environment for
-        POSIXLY_CORRECT. Equate posixly_correct variable with
-        `--traditional' command-line option (first shot).
+	* src/cmds.c (display_lines):
+	* src/exec.c (GET_THIRD_ADDR):
+	(exec_command):
+	(get_shell_command):
+	* src/io.c (put_stdout_line):
+	* src/main.c (main):
+	* src/buf.c (one_time_init): Check environment for
+	POSIXLY_CORRECT. Equate posixly_correct variable with
+	`--traditional' command-line option (first shot).
 
-2006-11-17  Andrew L. Moore  <alm@SlewSys.org>
+2006-11-17  Andrew L. Moore  <slewsys@gmail.com>
 
-        * src/exec.c (exec_command): Make reading `/dev/null' to end of
-        binary  file special case for removing any trailing newline.
+	* src/exec.c (exec_command): Make reading `/dev/null' to end of
+	binary  file special case for removing any trailing newline.
 
-        * src/io.c (read_stream): Remove extraneous '\n'.
+	* src/io.c (read_stream): Remove extraneous '\n'.
 
-        Reading a sequence of files is similar to concatenation, except
-        that missing newlines are appended. Reading an empty file, on the
-        other hand, should not append a newline unless the buffer is
-        empty. In this event, the buffer is still (logically) empty since
-        concatenating an empty file and any other file yields the other
-        file. For instance, if file `o1.tmp' is empty (i.e., size of
-        0 (zero) bytes) and file `o2.tmp' has size 6, then the Unix command:
+	Reading a sequence of files is similar to concatenation, except
+	that missing newlines are appended. Reading an empty file, on the
+	other hand, should not append a newline unless the buffer is
+	empty. In this event, the buffer is still (logically) empty since
+	concatenating an empty file and any other file yields the other
+	file. For instance, if file `o1.tmp' is empty (i.e., size of
+	0 (zero) bytes) and file `o2.tmp' has size 6, then the Unix command:
 
-            $ cat o1.tmp o2.tmp >o3.tmp
+	    $ cat o1.tmp o2.tmp >o3.tmp
 
-        produces a file `o3.tmp' of size 6 also. Likewise, the sequence of
-        commands on the same files within ed:
+	produces a file `o3.tmp' of size 6 also. Likewise, the sequence of
+	commands on the same files within ed:
 
-            $ ed -p '*'
-            *r o1.tmp
-            Newline appended
-            1
-            *r o2.tmp
-            6
-            *w o3.tmp
-            6
+	    $ ed -p '*'
+	    *r o1.tmp
+	    Newline appended
+	    1
+	    *r o2.tmp
+	    6
+	    *w o3.tmp
+	    6
 
-        again produces a file `o3.tmp' which has size 6, even though ed
-        reported appending a newline upon reading the file `o1.tmp'.
+	again produces a file `o3.tmp' which has size 6, even though ed
+	reported appending a newline upon reading the file `o1.tmp'.
 
-        * src/cmds.c (delete_lines) Reset `es.nl_added' flag when removing last
-        line of a file.
+	* src/cmds.c (delete_lines) Reset `es.nl_added' flag when removing last
+	line of a file.
 
-        * src/ed.h (ed_state_t): Define new type ed_state_t to contain
-        state info.
+	* src/ed.h (ed_state_t): Define new type ed_state_t to contain
+	state info.
 
-2006-11-14  Andrew L. Moore  <alm@SlewSys.org>
+2006-11-14  Andrew L. Moore  <slewsys@gmail.com>
 
-        * src/main.c (getenv_init_argv):
-        (main): Remove explicit size checks done by REALLOC_THROW.
+	* src/main.c (getenv_init_argv):
+	(main): Remove explicit size checks done by REALLOC_THROW.
 
-        Fix memory leak if invoked with command output, e.g., `ed \!cal'.
+	Fix memory leak if invoked with command output, e.g., `ed \!cal'.
 
-        Fix ED environment variable overshadowing command-line options.
+	Fix ED environment variable overshadowing command-line options.
 
-        * src/exec.c (exec_command): If ed is configured with the
-        `--enable-file-glob' option, then `q' command returns EOF_NXT
-        instead of EOF to accommodate editing multiple files. (Corrected
-        on 2007-03-29 -- see comments above.)
+	* src/exec.c (exec_command): If ed is configured with the
+	`--enable-file-glob' option, then `q' command returns EOF_NXT
+	instead of EOF to accommodate editing multiple files. (Corrected
+	on 2007-03-29 -- see comments above.)
 
-        * configure.ac: Autoconf 2.60 is required for AC_TYPE_INT32_T.
-        Define OFF_T_FORMAT_STRING to either "%ld\n" or "%lld\n".
+	* configure.ac: Autoconf 2.60 is required for AC_TYPE_INT32_T.
+	Define OFF_T_FORMAT_STRING to either "%ld\n" or "%lld\n".
 
-2006-11-12  Andrew L. Moore  <alm@SlewSys.org>
+2006-11-12  Andrew L. Moore  <slewsys@gmail.com>
 
-        * src/undo.c (USWAP): Prefix local vars in macros with
-        underscore (`_') to avoid overshadowing macro arguments.
+	* src/undo.c (USWAP): Prefix local vars in macros with
+	underscore (`_') to avoid overshadowing macro arguments.
 
-        * src/exec.c (GET_FILE_NAME):
-        (GET_THIRD_ADDR):
-        (GET_COMMAND_SUFFIX): Prefix local vars in macros with
-        underscore (`_') to avoid overshadowing macro arguments.
+	* src/exec.c (GET_FILE_NAME):
+	(GET_THIRD_ADDR):
+	(GET_COMMAND_SUFFIX): Prefix local vars in macros with
+	underscore (`_') to avoid overshadowing macro arguments.
 
-        * src/ed.h (STRTOL):
-        (REALLOC_THROW): Prefix local vars in macro definitions with
-        underscore (`_') to avoid overshadowing macro arguments.
+	* src/ed.h (STRTOL):
+	(REALLOC_THROW): Prefix local vars in macro definitions with
+	underscore (`_') to avoid overshadowing macro arguments.
 
-2006-11-05  Andrew L. Moore  <alm@SlewSys.org>
+2006-11-05  Andrew L. Moore  <slewsys@gmail.com>
 
-        * src/ed.h (REALLOC_THROW): Requested size argument(s) must be
-        cast to off_t in order to make valid comparisons.  This is due to
-        the unsigned-ness of size_t: (size_t) SIZE_T_MAX + 1 > SIZE_T_MAX
-        is always false.  Cast must be made by caller of REALLOC_THROW to
-        components of potential overflow. For example:
+	* src/ed.h (REALLOC_THROW): Requested size argument(s) must be
+	cast to off_t in order to make valid comparisons.  This is due to
+	the unsigned-ness of size_t: (size_t) SIZE_T_MAX + 1 > SIZE_T_MAX
+	is always false.  Cast must be made by caller of REALLOC_THROW to
+	components of potential overflow. For example:
 
-            REALLOC_THROW (buf, buf_size, (off_t) buf_size + big_inc, ERR);
+	    REALLOC_THROW (buf, buf_size, (off_t) buf_size + big_inc, ERR);
 
-        (STRTOL): As with REALLOC_THROW, use intermediate variable of type
-        long to test limits.
+	(STRTOL): As with REALLOC_THROW, use intermediate variable of type
+	long to test limits.
 
-        * src/*.c (*): Synchronize with *BSD:
-        Print help messages to stdout, not stderr. <tg.FreeBSD*org>
-        Make is*() 8-bit clean <ache.FreeBSD*org>
-        Add const to function parameter lists <mike.FreeBSD.org>
-        Use fseeko() and ftello() <ache.FreeBSD*org>
-        Use volatile sig_atomic_t <deraadt.OpenBSD*org>
-        Preserve errno in signal handlers. <deraadt.OpenBSD.org>
-        Free malloc'ed object on error <itojun*NetBSD.org>
-        Reset errno before strtol () <xtraeme.NetBSD*org>
+	* src/*.c (*): Synchronize with *BSD:
+	Print help messages to stdout, not stderr. <tg.FreeBSD*org>
+	Make is*() 8-bit clean <ache.FreeBSD*org>
+	Add const to function parameter lists <mike.FreeBSD.org>
+	Use fseeko() and ftello() <ache.FreeBSD*org>
+	Use volatile sig_atomic_t <deraadt.OpenBSD*org>
+	Preserve errno in signal handlers. <deraadt.OpenBSD.org>
+	Free malloc'ed object on error <itojun*NetBSD.org>
+	Reset errno before strtol () <xtraeme.NetBSD*org>
 
-        * src/io.c (read_stream_r):
-        (get_extended_line):
-        (get_stream_line): Remove redundant limit check.
+	* src/io.c (read_stream_r):
+	(get_extended_line):
+	(get_stream_line): Remove redundant limit check.
 
-        * src/main.c (main): On startup, print diagnostic on file name errors.
+	* src/main.c (main): On startup, print diagnostic on file name errors.
 
-        * src/glbl.c (unset_active_nodes): Add braces (from NetBSD).
+	* src/glbl.c (unset_active_nodes): Add braces (from NetBSD).
 
-        * src/buf.c (open_buffer): Replace malloc () with REALLOC_THROW ().
+	* src/buf.c (open_buffer): Replace malloc () with REALLOC_THROW ().
 
-        * src/signal.c (handle_hup): Replace malloc () with REALLOC_THROW ().
+	* src/signal.c (handle_hup): Replace malloc () with REALLOC_THROW ().
 
-2006-11-04  Andrew L. Moore  <alm@SlewSys.org>
+2006-11-04  Andrew L. Moore  <slewsys@gmail.com>
 
-        * src/io.c (write_stream): Initialize size.
-        (read_stream_r): Initialize size.
+	* src/io.c (write_stream): Initialize size.
+	(read_stream_r): Initialize size.
 
-        * src/buf.c (open_buffer): Check requested buffer size.
+	* src/buf.c (open_buffer): Check requested buffer size.
 
-        * src/signal.c (handle_hup): Check requested buffer size.
+	* src/signal.c (handle_hup): Check requested buffer size.
 
-        * src/*.[ch]: Correct most errors reported by -Wall -Wextra.
+	* src/*.[ch]: Correct most errors reported by -Wall -Wextra.
 
-        * src/main.c (main): Change line address type from off_t to size_t
-        because, to manipulate the in-core buffer, we use stacks whose
-        size is limited by malloc(2) (see glbl.c, undo.c).
+	* src/main.c (main): Change line address type from off_t to size_t
+	because, to manipulate the in-core buffer, we use stacks whose
+	size is limited by malloc(2) (see glbl.c, undo.c).
 
-        * src/ed.h (REALLOC_THROW): Verify that requested allocation size
-        does not exceed max value of size_t.
-        (STRTOL): Cast l-value as long when comparing against LONG_MIN and
-        LONG_MAX.
-        (PUSH_UNDO): Make parameters explicit.
+	* src/ed.h (REALLOC_THROW): Verify that requested allocation size
+	does not exceed max value of size_t.
+	(STRTOL): Cast l-value as long when comparing against LONG_MIN and
+	LONG_MAX.
+	(PUSH_UNDO): Make parameters explicit.
 
-        * src/io.c (read_stream): Change return type to int. Return size
-        as reference.
-        (write_stream): Change return type to int. Return size as
-        reference.
+	* src/io.c (read_stream): Change return type to int. Return size
+	as reference.
+	(write_stream): Change return type to int. Return size as
+	reference.
 
-        * src/cmds.c (get_marked_node_addr): Change return type to
-        int. Return address as reference.
+	* src/cmds.c (get_marked_node_addr): Change return type to
+	int. Return address as reference.
 
-        * src/main.c (get_matching_node_addr): Change return type to
-        int. Return address as reference.
-        (getenv_init_argv): Return argc as reference.  *argv points to given
-        environment variable.
+	* src/main.c (get_matching_node_addr): Change return type to
+	int. Return address as reference.
+	(getenv_init_argv): Return argc as reference.  *argv points to given
+	environment variable.
 
-        * src/sub.c (apply_subst_template): Change return type to int.
-        Return offset as reference.
-        (substitute_matching): Change return type to int. Return
-        length as reference.
+	* src/sub.c (apply_subst_template): Change return type to int.
+	Return offset as reference.
+	(substitute_matching): Change return type to int. Return
+	length as reference.
 
-        * src/buf.c (add_line_node): Return error if addr_last exceeds max
-        value of its type.
-        (get_line_node_addr): Change return type to int.  Return address
-        as reference.
+	* src/buf.c (add_line_node): Return error if addr_last exceeds max
+	value of its type.
+	(get_line_node_addr): Change return type to int.  Return address
+	as reference.
 
-        * src/exec.c (exec_command): `]' command displays the addressed
-        line (current address, by default) in the center of the page and
-        sets the current address to the last line displayed. Its syntax is
-        `(.)]n', where n is scroll length.  NB: To view the buffer with an
-        external pager, use, e.g.,  `w !more'
+	* src/exec.c (exec_command): `]' command displays the addressed
+	line (current address, by default) in the center of the page and
+	sets the current address to the last line displayed. Its syntax is
+	`(.)]n', where n is scroll length.  NB: To view the buffer with an
+	external pager, use, e.g.,  `w !more'
 
-        `[' command displays the addressed line (current address, by
+	`[' command displays the addressed line (current address, by
 	default) in the center of the page and sets the current address to
 	the first line displayed. Its syntax is `(.)[n', where n is scroll
 	length. NB: To view the buffer with an external pager, use, e.g.,
 	`w !more'
 
-2006-10-31  Andrew L. Moore  <alm@SlewSys.org>
+2006-10-31  Andrew L. Moore  <slewsys@gmail.com>
 
-        * src/cmds.c (filter_lines): Enable ex(1) style filter command,
-         `!', if ed is configured with `--enable-external-filter'.
-         Function `read_stream_r' (see next comment) works around
-         reentrancy issues in standard I/O libraries. SIGPIPE does not
-         appear to be an issue, for instance, when a shell command
-         terminates unexpectedly and closes the read end of its standard
-         input.
+	* src/cmds.c (filter_lines): Enable ex(1) style filter command,
+	 `!', if ed is configured with `--enable-external-filter'.
+	 Function `read_stream_r' (see next comment) works around
+	 reentrancy issues in standard I/O libraries. SIGPIPE does not
+	 appear to be an issue, for instance, when a shell command
+	 terminates unexpectedly and closes the read end of its standard
+	 input.
 
-        * src/io.c (read_stream_r): Add re-entrant version of read_stream.
-        Read input to memory until EOF then write to editor buffer.  This
-        works around non-reentrant standard I/O when input source is
-        itself the editor buffer.
+	* src/io.c (read_stream_r): Add re-entrant version of read_stream.
+	Read input to memory until EOF then write to editor buffer.  This
+	works around non-reentrant standard I/O when input source is
+	itself the editor buffer.
 
-        * src/io.c (read_stream): Handle buffer_empty.
+	* src/io.c (read_stream): Handle buffer_empty.
 
-        * src/cmds.c (append_lines):
-        (copy_lines):
-        (delete_lines): Handle buffer_empty.
+	* src/cmds.c (append_lines):
+	(copy_lines):
+	(delete_lines): Handle buffer_empty.
 
-        * src/undo.c (pop_undo_stack): Handle buffer_empty.
+	* src/undo.c (pop_undo_stack): Handle buffer_empty.
 
-        * src/exec.c (exec_command): Appending to an empty buffer and to a
-        buffer which contains an empty file treated consistently.
+	* src/exec.c (exec_command): Appending to an empty buffer and to a
+	buffer which contains an empty file treated consistently.
 
-        * src/Makefile.am (ed_DEPENDENCIES): Add libgnuregex.a to LDADD if
-        configured with --with-included-regex.
+	* src/Makefile.am (ed_DEPENDENCIES): Add libgnuregex.a to LDADD if
+	configured with --with-included-regex.
 
-2006-10-29  Andrew L. Moore  <alm@SlewSys.org>
+2006-10-29  Andrew L. Moore  <slewsys@gmail.com>
 
-        * src/sub.c (extract_subst_rhs): Return useful error values.
+	* src/sub.c (extract_subst_rhs): Return useful error values.
 
-        * src/buf.c (get_buffer_line): Return NUL string (i.e., "") rather
-        than error when fetching a line from an empty buffer for writing.
+	* src/buf.c (get_buffer_line): Return NUL string (i.e., "") rather
+	than error when fetching a line from an empty buffer for writing.
 
-        * src/exec.c (exec_command):
-        * src/io.c (read_stream): Boundary conditions: Append newline when
-        empty file is read into an otherwise empty buffer unless buffer
-        previously contained binary data.  Creates a line in the buffer,
-        though buffer is still `logically' empty. Reading a second empty
-        file does not add a second newline - buffer remains `logically'
-        empty. (Corrected again on 2006-11-17. See comments above.)
-        (write_file): Permit writing an empty buffer.
+	* src/exec.c (exec_command):
+	* src/io.c (read_stream): Boundary conditions: Append newline when
+	empty file is read into an otherwise empty buffer unless buffer
+	previously contained binary data.  Creates a line in the buffer,
+	though buffer is still `logically' empty. Reading a second empty
+	file does not add a second newline - buffer remains `logically'
+	empty. (Corrected again on 2006-11-17. See comments above.)
+	(write_file): Permit writing an empty buffer.
 
-        * src/cmds.c (append_lines): Return useful error values.
-        (display_lines):  Return useful error values.
+	* src/cmds.c (append_lines): Return useful error values.
+	(display_lines):  Return useful error values.
 
-        * src/glbl.c (exec_global): Return useful error values.
+	* src/glbl.c (exec_global): Return useful error values.
 
-        * src/exec.c (exec_command): Propagate errors. Clean up name
-        space. If no file name is specified for file I/O and default
-        file name is not set, use `/dev/null'. This is not mandated by
-        SUSv3, but is in the spirit of providing reasonable defaults to
-        minimize error conditions. Writing to /dev/null in an interactive
-        session reports the file size, but does not reset buffer_modified.
+	* src/exec.c (exec_command): Propagate errors. Clean up name
+	space. If no file name is specified for file I/O and default
+	file name is not set, use `/dev/null'. This is not mandated by
+	SUSv3, but is in the spirit of providing reasonable defaults to
+	minimize error conditions. Writing to /dev/null in an interactive
+	session reports the file size, but does not reset buffer_modified.
 
-        The print commands, `p', `n' and `l', trivially succeed on an
-        empty buffer.
-        (GET_FILE_NAME): Return useful error values.
+	The print commands, `p', `n' and `l', trivially succeed on an
+	empty buffer.
+	(GET_FILE_NAME): Return useful error values.
 
-2006-10-28  Andrew L. Moore  <alm@SlewSys.org>
+2006-10-28  Andrew L. Moore  <slewsys@gmail.com>
 
-        * src/io.c (read_stream): Print diagnostic `Newline inserted'
-        when data without a trailing newline is inserted into buffer.
+	* src/io.c (read_stream): Print diagnostic `Newline inserted'
+	when data without a trailing newline is inserted into buffer.
 
-        * src/cmds.c (display_lines): When paging long lines, scroll
-        previous prompt off top of screen. Remove interactive paging.
-        (Corrected again on 2007-04-16 -- see comments above.)
+	* src/cmds.c (display_lines): When paging long lines, scroll
+	previous prompt off top of screen. Remove interactive paging.
+	(Corrected again on 2007-04-16 -- see comments above.)
 
-        * src/io.c (get_extended_line): Handle `\' (backslash) escape
-        processing for extended shell commands differently from ed
-        commands. In particular, a trailing backslash always embeds a
-        newline in a shell command. No other backslash escape processing
-        is done on shell commands. (Expansions in shell commands and file
-        names corrected on 2007-04-16 -- see comments above.)
+	* src/io.c (get_extended_line): Handle `\' (backslash) escape
+	processing for extended shell commands differently from ed
+	commands. In particular, a trailing backslash always embeds a
+	newline in a shell command. No other backslash escape processing
+	is done on shell commands. (Expansions in shell commands and file
+	names corrected on 2007-04-16 -- see comments above.)
 
-2006-10-27  Andrew L. Moore  <alm@SlewSys.org>
+2006-10-27  Andrew L. Moore  <slewsys@gmail.com>
 
-        * src/io.c (read_stream): Advance line node pointer outside call
-        to PUSH_UNDO macro.  Undo (`u') immediately after a read (`r' or
-        `e') corrupted editor buffer.  TODO: Add more exhaustive I/O tests
-        to testsuite.
+	* src/io.c (read_stream): Advance line node pointer outside call
+	to PUSH_UNDO macro.  Undo (`u') immediately after a read (`r' or
+	`e') corrupted editor buffer.  TODO: Add more exhaustive I/O tests
+	to testsuite.
 
-        * testsuite/e5.t: Update testsuite scripts to reflect previous (`-f')
-        change.
+	* testsuite/e5.t: Update testsuite scripts to reflect previous (`-f')
+	change.
 
-        * src/buf.c (one_time_init): Set `exit_on_errors' variable when ed
-        is invoked with option `-f'.
+	* src/buf.c (one_time_init): Set `exit_on_errors' variable when ed
+	is invoked with option `-f'.
 
-        * src/io.c (get_extended_line): Increment script line number for
-        lines extended with a trailing backslash (\).
+	* src/io.c (get_extended_line): Increment script line number for
+	lines extended with a trailing backslash (\).
 
-        * src/main.c (main): Make error messages Emacs-compatible so that
-        ed scripts can be debugged in shell-script mode. The first line
-        of an ed script should be set to `#! /bin/ed -f', and the first
-        non-comment command should be `H' to generate error diagnostics.
-        (main.c): Use printf (3) spec `%lld' to print `off_t' variables
-        -- now tested in configure.ac (see OFF_T_FORMAT_STRING).
+	* src/main.c (main): Make error messages Emacs-compatible so that
+	ed scripts can be debugged in shell-script mode. The first line
+	of an ed script should be set to `#! /bin/ed -f', and the first
+	non-comment command should be `H' to generate error diagnostics.
+	(main.c): Use printf (3) spec `%lld' to print `off_t' variables
+	-- now tested in configure.ac (see OFF_T_FORMAT_STRING).
 
-2006-10-26  Andrew L. Moore  <alm@SlewSys.org>
+2006-10-26  Andrew L. Moore  <slewsys@gmail.com>
 
-        * testsuite/e5.t: Test script to verify that edit command changes
-        default file name unconditionally.  Not tested: `e', `E', 'w' and
-        'W' with no file arguments and no default file name is not an
-        error.
+	* testsuite/e5.t: Test script to verify that edit command changes
+	default file name unconditionally.  Not tested: `e', `E', 'w' and
+	'W' with no file arguments and no default file name is not an
+	error.
 
-        * testsuite/(c2.t, i3.t): Update test scripts to reflect SUSv3
-        changes for insert and change commands.
+	* testsuite/(c2.t, i3.t): Update test scripts to reflect SUSv3
+	changes for insert and change commands.
 
-        * src/exec.c (exec_command): Per SUSv3, line address `0' should
-        be treated as address `1' for insert (`i') and change (`c')
-        commands.
-        (exec_command): Per SUSv3, file argument is optional for file
-        commands `f', `e', `r' and `w'.
+	* src/exec.c (exec_command): Per SUSv3, line address `0' should
+	be treated as address `1' for insert (`i') and change (`c')
+	commands.
+	(exec_command): Per SUSv3, file argument is optional for file
+	commands `f', `e', `r' and `w'.
 
-        * src/sub.c (substitute_matching): Keep track of NUL matches
-        so that they can be counted. Added new test script s5.t.
+	* src/sub.c (substitute_matching): Keep track of NUL matches
+	so that they can be counted. Added new test script s5.t.
 
-2006-10-25  Andrew L. Moore  <alm@SlewSys.org>
+2006-10-25  Andrew L. Moore  <slewsys@gmail.com>
 
-        * lib/Makefile.am (noinst_HEADERS): Remove `regex.h' `regex_.h'
-        `regex_internal.h' from `noinst_HEADERS' so that these don't get
-        pulled in when system regex is used.
+	* lib/Makefile.am (noinst_HEADERS): Remove `regex.h' `regex_.h'
+	`regex_internal.h' from `noinst_HEADERS' so that these don't get
+	pulled in when system regex is used.
 
-        * configure.ac: Isolate GNU regex library to enable linking
-        against system regex. Previously, lib/regex.h was getting pulled
-        in, causing the system regex to crash. Included regex library is
-        hidden/exposed via AC_SUBST which excludes/includes the sub-
-        directory `regex' in SUBDIRS variable in $(toplevel_srcdir)/Makefile
-        when configure is run.
+	* configure.ac: Isolate GNU regex library to enable linking
+	against system regex. Previously, lib/regex.h was getting pulled
+	in, causing the system regex to crash. Included regex library is
+	hidden/exposed via AC_SUBST which excludes/includes the sub-
+	directory `regex' in SUBDIRS variable in $(toplevel_srcdir)/Makefile
+	when configure is run.
 
-        * src/exec.c (check_addr_range): Report errors in address ranges
-        first, otherwise error message is confusing.
+	* src/exec.c (check_addr_range): Report errors in address ranges
+	first, otherwise error message is confusing.
 
-2006-10-24  Andrew L. Moore  <alm@SlewSys.org>
+2006-10-24  Andrew L. Moore  <slewsys@gmail.com>
 
-        * src/sub.c (search_and_replace): Third attempt at global NUL
-        match. Added new test script s4.t. In summary, it works like this:
-        abc => s/a*/x/g => xbxcx. Rationale:
+	* src/sub.c (search_and_replace): Third attempt at global NUL
+	match. Added new test script s4.t. In summary, it works like this:
+	abc => s/a*/x/g => xbxcx. Rationale:
 
-        1) The regular expression operators `^' and '$' match the (empty
-        string at the) beginning and end of a line, repectively.
+	1) The regular expression operators `^' and '$' match the (empty
+	string at the) beginning and end of a line, repectively.
 
-        2) The regular expression `X*', where X is not the first character
-        on the line, matches the (empty string at the) beginning of the
-        line.
+	2) The regular expression `X*', where X is not the first character
+	on the line, matches the (empty string at the) beginning of the
+	line.
 
-        3) For a line beginning with the character sequence `XO', the
-        regular expression `X*' matches `X'. As the left-most longest
-        match, it also matches the (empty string at the) beginning of the
-        line as well as (the empty string) between `X' and `O'.
+	3) For a line beginning with the character sequence `XO', the
+	regular expression `X*' matches `X'. As the left-most longest
+	match, it also matches the (empty string at the) beginning of the
+	line as well as (the empty string) between `X' and `O'.
 
-        4) Since the expression `X*' (in 2 above) matches the (empty
-        string at the) beginning of any line, it seems reasonable to
-        expect a corresponding expression to match the (empty string at
-        the) end of any line.
+	4) Since the expression `X*' (in 2 above) matches the (empty
+	string at the) beginning of any line, it seems reasonable to
+	expect a corresponding expression to match the (empty string at
+	the) end of any line.
 
-        5) If we allow that `X*' matches (the empty string) before the
-        first character and (the empty string) after the last character of
-        any line, it seems reasonable to allow that `X*' matches (the
-        empty string) before and after any character within the line as
-        well.
+	5) If we allow that `X*' matches (the empty string) before the
+	first character and (the empty string) after the last character of
+	any line, it seems reasonable to allow that `X*' matches (the
+	empty string) before and after any character within the line as
+	well.
 
-        * testsuite/nl[34].t: Add tests for address rules specified by
-        Open Group's Single Unix Spec (SUSv3)
+	* testsuite/nl[34].t: Add tests for address rules specified by
+	Open Group's Single Unix Spec (SUSv3)
 
-        * src/exec.c (GET_THIRD_ADDR): Propagate return status.
+	* src/exec.c (GET_THIRD_ADDR): Propagate return status.
 
-        * src/main.c (extract_addr_range): Don't corrupt return status.
+	* src/main.c (extract_addr_range): Don't corrupt return status.
 
-2006-10-23  Andrew L. Moore  <alm@SlewSys.org>
+2006-10-23  Andrew L. Moore  <slewsys@gmail.com>
 
-        * testsuite/proto-ok.at.in (Script: *.t *.err): Replace
-        `testsuite/proto.at.in' with three script templates:
-        proto-ok.at.in, for scripts that should complete successfully,
-        proto-err.at.in, for scripts that should complete with non-zero
-        exit status, and proto-fail.at.in, for scripts that should not
-        complete.
+	* testsuite/proto-ok.at.in (Script: *.t *.err): Replace
+	`testsuite/proto.at.in' with three script templates:
+	proto-ok.at.in, for scripts that should complete successfully,
+	proto-err.at.in, for scripts that should complete with non-zero
+	exit status, and proto-fail.at.in, for scripts that should not
+	complete.
 
-        * testsuite/Makefile.am ($(PACKAGE_M4)): Bring remainder of test
-        scripts into Autotest framework. Add `quick-check' target to avoid
-        rebuilding test scripts.
+	* testsuite/Makefile.am ($(PACKAGE_M4)): Bring remainder of test
+	scripts into Autotest framework. Add `quick-check' target to avoid
+	rebuilding test scripts.
 
-        * src/signal.c (handle_int): On Linux, configure should test for
-        SIGLONGJMP, not SIGSETJMP. Fix by <sick_soul*yahoo@it>.
+	* src/signal.c (handle_int): On Linux, configure should test for
+	SIGLONGJMP, not SIGSETJMP. Fix by <sick_soul*yahoo@it>.
 
-        * src/sub.c (substitute_matching): Another attempt at implementing
-        global NUL match. For instance, the command `s/x*/./g' applied to
-        the text `abc' yields `.a.b.c.'. Ed previously flagged a global
-        NUL substitution as an error. (Corrected again on 2006-10-24 and
-        2006-10-26 -- see comments above.)
+	* src/sub.c (substitute_matching): Another attempt at implementing
+	global NUL match. For instance, the command `s/x*/./g' applied to
+	the text `abc' yields `.a.b.c.'. Ed previously flagged a global
+	NUL substitution as an error. (Corrected again on 2006-10-24 and
+	2006-10-26 -- see comments above.)
 
-2006-10-22  Andrew L. Moore  <alm@SlewSys.org>
+2006-10-22  Andrew L. Moore  <slewsys@gmail.com>
 
-        * testsuite/local.at: Static header for Autotest testsuite script.
-        This and `ed' wrapper taken from GNU Bison distribution, whose
-        mind-numbingly complex testsuite cries out for renaming `Autotest'
-        to `Oughta not test'.
+	* testsuite/local.at: Static header for Autotest testsuite script.
+	This and `ed' wrapper taken from GNU Bison distribution, whose
+	mind-numbingly complex testsuite cries out for renaming `Autotest'
+	to `Oughta not test'.
 
-        * testsuite/Makefile.am: Add rule for generating Autotest scripts
-        from ed scripts (%.at: %.t).
+	* testsuite/Makefile.am: Add rule for generating Autotest scripts
+	from ed scripts (%.at: %.t).
 
-        * testsuite/proto.at.in (Script: *.at): Convert testsuite to
-        Autotest framework.  All *.t tests pass.  Still need to convert
-        *.err and add new *.t.  Proto.at.in is a template used in
-        generating new *.at Autotest scripts from old *.t ed scripts.
+	* testsuite/proto.at.in (Script: *.at): Convert testsuite to
+	Autotest framework.  All *.t tests pass.  Still need to convert
+	*.err and add new *.t.  Proto.at.in is a template used in
+	generating new *.at Autotest scripts from old *.t ed scripts.
 
-2006-10-20  Andrew L. Moore  <alm@SlewSys.org>
+2006-10-20  Andrew L. Moore  <slewsys@gmail.com>
 
-        * src/exec.c (exec_command): Use enumerated `global_state' instead
-        of `global_active' to reflect specific conditions - e.g., whether
-        global command is interactive.
+	* src/exec.c (exec_command): Use enumerated `global_state' instead
+	of `global_active' to reflect specific conditions - e.g., whether
+	global command is interactive.
 
-        * src/buf.c (one_time_init): Return 0 for success instead of 1.
-        Value (0) used in constructing `r' command during initialization.
+	* src/buf.c (one_time_init): Return 0 for success instead of 1.
+	Value (0) used in constructing `r' command during initialization.
 
-        * src/cmds.c (append_lines): Remove references to command buffer.
-        (filter_lines): Capitalize comments. Filter works with re-entrant
-        Standard I/O library. Still need to implement input and output on
-        separate I/O streams for non re-entrant I/O libraries.
+	* src/cmds.c (append_lines): Remove references to command buffer.
+	(filter_lines): Capitalize comments. Filter works with re-entrant
+	Standard I/O library. Still need to implement input and output on
+	separate I/O streams for non re-entrant I/O libraries.
 
-        * src/main.c (main): Remove command buffer after merging I/O input
-        functions.
+	* src/main.c (main): Remove command buffer after merging I/O input
+	functions.
 
-        * src/sub.c (extract_subst_rhs): Protect input buffer within
-        global command.
+	* src/sub.c (extract_subst_rhs): Protect input buffer within
+	global command.
 
-        * src/glbl.c (exec_global): Merge handling of non-interactive (`g'
-        and `v') and interactive (`G' and `V') global commands. Work
-        with copy of command buffer after merging input functions.
+	* src/glbl.c (exec_global): Merge handling of non-interactive (`g'
+	and `v') and interactive (`G' and `V') global commands. Work
+	with copy of command buffer after merging input functions.
 
-        * src/ed.h: Implement `get_stdin_line' function as macro call to
-        `get_stream_line (stdin)'.
+	* src/ed.h: Implement `get_stdin_line' function as macro call to
+	`get_stream_line (stdin)'.
 
-        * src/io.c (get_stream_line): Complete `get_stdin_line' variant.
-        NB: `get_stdin_line' and `get_stream_line' now use the same input
-        buffer, which introduces potential re-entrancy issues that
-        primarily affect the global command. See, e.g., extract_subst_rhs
-        comments above.
+	* src/io.c (get_stream_line): Complete `get_stdin_line' variant.
+	NB: `get_stdin_line' and `get_stream_line' now use the same input
+	buffer, which introduces potential re-entrancy issues that
+	primarily affect the global command. See, e.g., extract_subst_rhs
+	comments above.
 
-2006-10-19  Andrew L. Moore  <alm@SlewSys.org>
+2006-10-19  Andrew L. Moore  <slewsys@gmail.com>
 
-        * testsuite/mkscripts.sh: Make pathname of ED variable absolute.
+	* testsuite/mkscripts.sh: Make pathname of ED variable absolute.
 
-        * src/sub.c (extract_subst_template): Initialize template buffer
-        pointer so that substitutions are not cumulative.
+	* src/sub.c (extract_subst_template): Initialize template buffer
+	pointer so that substitutions are not cumulative.
 
-        * src/io.c (read_file): Add missing parens around file size
-        assignment - size now reported correctly upon reading.
+	* src/io.c (read_file): Add missing parens around file size
+	assignment - size now reported correctly upon reading.
 
-        * lib/alloca.h: Add `alloca.h' - required for regex.
+	* lib/alloca.h: Add `alloca.h' - required for regex.
 
-        * lib/Makefile.am: Move regex source listing to AM_ED_INCLUDE_REGEX.
+	* lib/Makefile.am: Move regex source listing to AM_ED_INCLUDE_REGEX.
 
-        * configure.ac: Replace regex hackery with AM_ED_INCLUDE_REGEX.
+	* configure.ac: Replace regex hackery with AM_ED_INCLUDE_REGEX.
 
-        * m4/regex.m4: First shot at adding `--with-included-regex' switch
-        to configure.  Substitution dumps core when linked to BSD libc
-        regex (regex not compiling properly). Linking against GNU regex is
-        okay. Needs further investigation... (Corrected on 2006-10-25 -- see
-        comments above.)
+	* m4/regex.m4: First shot at adding `--with-included-regex' switch
+	to configure.  Substitution dumps core when linked to BSD libc
+	regex (regex not compiling properly). Linking against GNU regex is
+	okay. Needs further investigation... (Corrected on 2006-10-25 -- see
+	comments above.)
 
-2006-10-17  Andrew L. Moore  <alm@SlewSys.org>
+2006-10-17  Andrew L. Moore  <slewsys@gmail.com>
 
-        * src/main.c (main): Don't clobber argc when handling ED
-        environment variable.
+	* src/main.c (main): Don't clobber argc when handling ED
+	environment variable.
 
-        * src/exec.c (get_shell_command): Don't use buffer size for string
-        length - was causing truncation of shell commands.
+	* src/exec.c (get_shell_command): Don't use buffer size for string
+	length - was causing truncation of shell commands.
 
-        * src/ed.h (REALLOC_THROW): Allocate memory even though buf_size
-        == requested_size == 0.
+	* src/ed.h (REALLOC_THROW): Allocate memory even though buf_size
+	== requested_size == 0.
 
-2006-10-15  Andrew L. Moore  <alm@SlewSys.org>
+2006-10-15  Andrew L. Moore  <slewsys@gmail.com>
 
-        * src/exec.c (exec_command): Rename `filename' to `file_name'.
+	* src/exec.c (exec_command): Rename `filename' to `file_name'.
 
-        * src/buf.c (one_time_init): When ed is invoked with command
-        script via `-f script' command-line option, redirect script to
-        standard input.
+	* src/buf.c (one_time_init): When ed is invoked with command
+	script via `-f script' command-line option, redirect script to
+	standard input.
 
-        * src/main.c (main): Add `-f' command-line switch. Ed scripts
-        can be written with the shebang line `#! /bin/ed -f'.
-        Alternatively, a file containing ed commands can be invoked via
-        `ed -f script'.
+	* src/main.c (main): Add `-f' command-line switch. Ed scripts
+	can be written with the shebang line `#! /bin/ed -f'.
+	Alternatively, a file containing ed commands can be invoked via
+	`ed -f script'.
 
-        (main): Move initialization of `default_prompt' to buf.c to avoid
-        memory leak in case `-p prompt' is supplied multiple times.
+	(main): Move initialization of `default_prompt' to buf.c to avoid
+	memory leak in case `-p prompt' is supplied multiple times.
 
-        * src/ed.h (BUFSIZ_LOG2): Calculate BUFSIZ_LOG2 from BUFSIZ.
+	* src/ed.h (BUFSIZ_LOG2): Calculate BUFSIZ_LOG2 from BUFSIZ.
 
-2006-07-11  Andrew L. Moore  <alm@slewsys.org>
+2006-07-11  Andrew L. Moore  <slewsys@gmail.com>
 
-        * src/*.c: General clean up of namespace, diagnostics and code.
-        Split main.c into cmds.c (misc. commands) and exec.c (command
-        switch).
+	* src/*.c: General clean up of namespace, diagnostics and code.
+	Split main.c into cmds.c (misc. commands) and exec.c (command
+	switch).
 
-        * src/main.c (main): Preliminary support for --file
-        switch.
+	* src/main.c (main): Preliminary support for --file
+	switch.
 
-        * src/sub.c (substitute_matching): Enable NUL global match
-        for historical reasons, blech, e.g., `aaa' == s/x*/h/g ==>
-        `hahahah'. (Completed 2006-10-24 and 2006-10-26 -- see comments
-        above.)
+	* src/sub.c (substitute_matching): Enable NUL global match
+	for historical reasons, blech, e.g., `aaa' == s/x*/h/g ==>
+	`hahahah'. (Completed 2006-10-24 and 2006-10-26 -- see comments
+	above.)
 
-        * src/glbl.c (set_active_node): Call REALLOC_THROW () instead of
-        realloc directly.
+	* src/glbl.c (set_active_node): Call REALLOC_THROW () instead of
+	realloc directly.
 
-        * src/sub.c (extract_subst_template): Move I/O up one level to
-        extract_subst_rhs () via call to get_extended_line ().  Untested.
+	* src/sub.c (extract_subst_template): Move I/O up one level to
+	extract_subst_rhs () via call to get_extended_line ().  Untested.
 
-        * src/io.c (get_stdin_line): Attempt merger of get_stdin_line ()
-        and get_stream_line () - possible re-entrancy issues. (Completed
-        2006-10-20 -- see comments above.)
+	* src/io.c (get_stdin_line): Attempt merger of get_stdin_line ()
+	and get_stream_line () - possible re-entrancy issues. (Completed
+	2006-10-20 -- see comments above.)
 
-2006-07-02  Andrew L. Moore  <alm@slewsys.org>
+2006-07-02  Andrew L. Moore  <slewsys@gmail.com>
 
-        * src/buf.c (init_buffers): [SETVBUF_REVERSED]: Portability check.
-        Don't exit on errors if stdin is pipe (e.g.,  `cat ed.script | ed -').
+	* src/buf.c (init_buffers): [SETVBUF_REVERSED]: Portability check.
+	Don't exit on errors if stdin is pipe (e.g.,  `cat ed.script | ed -').
 
-        * src/main.c: [ENABLE_NLS]: Finish gettext support.
-        (exec_command): Add extended regex option to match GNU sed (-r
-        or --regexp-extended).  Sanity check file name command-line arg.
-        (main): Add short options '-v' and `-h'.  Replace `--quiet' and
-        `--silent' options with `--scripted', since these are misnomers.
+	* src/main.c: [ENABLE_NLS]: Finish gettext support.
+	(exec_command): Add extended regex option to match GNU sed (-r
+	or --regexp-extended).  Sanity check file name command-line arg.
+	(main): Add short options '-v' and `-h'.  Replace `--quiet' and
+	`--silent' options with `--scripted', since these are misnomers.
 
-        * src/*.c: Change `char *errmsg' ==> `const char *err_msg' as per
-        FreeBSD.
+	* src/*.c: Change `char *errmsg' ==> `const char *err_msg' as per
+	FreeBSD.
 
-        * lib/pathmax.h: [HAVE_LIMTS_H]: Include <limits.h>, where
-        PATH_MAX lives on *BSD.
+	* lib/pathmax.h: [HAVE_LIMTS_H]: Include <limits.h>, where
+	PATH_MAX lives on *BSD.
 
 2004-08-26  gettextize  <bug-gnu-gettext@gnu.org>
 
-        * Makefile.am (SUBDIRS): Add intl.
+	* Makefile.am (SUBDIRS): Add intl.
 
-        * configure.ac (AC_CONFIG_FILES): Add intl/Makefile.
+	* configure.ac (AC_CONFIG_FILES): Add intl/Makefile.
 
-2002-09-22  Andrew L. Moore  <alm@SlewSys.org>
+2002-09-22  Andrew L. Moore  <slewsys@gmail.com>
 
-        * ed.1: Adopt mdoc(7) macro usage from FreeBSD.  Fix many typos.
-        <ulf*elektron*se>, <ru.FreeBSD*org> <charnier*FreeBSD*org>, et al.
-        * main.c (main): Save file name command-line arg before flagging
-         an error if file does not exist.
-        (main): Add `-E' flag for extended regular expressions. (This is
-        *BSD syntax -- added GNU syntax on 2007-07-02 -- see comments above.)
+	* ed.1: Adopt mdoc(7) macro usage from FreeBSD.  Fix many typos.
+	<ulf*elektron*se>, <ru.FreeBSD*org> <charnier*FreeBSD*org>, et al.
+	* main.c (main): Save file name command-line arg before flagging
+	 an error if file does not exist.
+	(main): Add `-E' flag for extended regular expressions. (This is
+	*BSD syntax -- added GNU syntax on 2007-07-02 -- see comments above.)
 
-        (main): Copy `-p' (prompt) optarg to global variable, since optarg
-        gets clobbered by GNU getopts. Reported by <Marc Rochkind>. (Corrected again
-        2006-10-15 -- see comments above.)
+	(main): Copy `-p' (prompt) optarg to global variable, since optarg
+	gets clobbered by GNU getopts. Reported by <Marc Rochkind>. (Corrected again
+	2006-10-15 -- see comments above.)
 
-2002-05-03  Andrew L. Moore  <alm@SlewSys.org>
+2002-05-03  Andrew L. Moore  <slewsys@gmail.com>
 
-        * signal.c (handle_winch): Support POSIX `COLUMNS' and `LINES'
-        environment variables - these override any TERM capabilities,
-        NB: POSIX does not specify that ed recognize these.
+	* signal.c (handle_winch): Support POSIX `COLUMNS' and `LINES'
+	environment variables - these override any TERM capabilities,
+	NB: POSIX does not specify that ed recognize these.
 
-        * buf.c (open_sbuf): Avoid race when opening a temporary buffer.
-        (open_sbuf): Support POSIX `TMPDIR' environment variable.
-        NB: TMPDIR is honored even in restricted mode.
+	* buf.c (open_sbuf): Avoid race when opening a temporary buffer.
+	(open_sbuf): Support POSIX `TMPDIR' environment variable.
+	NB: TMPDIR is honored even in restricted mode.
 
-2002-04-30  (derived from OpenBSD by) Andrew L. Moore  <alm@SlewSys.org>
+2002-04-30  (derived from OpenBSD by) Andrew L. Moore  <slewsys@gmail.com>
 
-        * buf.c (init_buffers): Force line-buffered stdout if stdin is not
-        seekable to avoid delayed output, e.g., when using ed over rsh.
-        Fix by <deraadt.newt*fsa.ca>.
+	* buf.c (init_buffers): Force line-buffered stdout if stdin is not
+	seekable to avoid delayed output, e.g., when using ed over rsh.
+	Fix by <deraadt.newt*fsa.ca>.
 
-        (init_buffers): Replace boolean `is_regular_file' with
-        `discretionary': Terminate on errors when stdin is any seekable
-        device other than a tty. (Corrected again 2006-07-02 -- see comments
-        above.)
+	(init_buffers): Replace boolean `is_regular_file' with
+	`discretionary': Terminate on errors when stdin is any seekable
+	device other than a tty. (Corrected again 2006-07-02 -- see comments
+	above.)
 
-        * main.c (main): Qualify argc, argv as volatile to avoid longjmp
-        clobbering.
-        (main): Fix two buffer overflows in file handling:
-        1. replace strcpy (,*argv) with strncpy (,*argv,) + strcmp (), and
-        2. PATH_MAX is a buffer size, not a string length,
-        limit. (W. R. Stevens got this wrong??)
-        (main): Include <unistd.h>; remove optarg, optind externs.
-        (main): getopt(3) returns -1, not EOF.
+	* main.c (main): Qualify argc, argv as volatile to avoid longjmp
+	clobbering.
+	(main): Fix two buffer overflows in file handling:
+	1. replace strcpy (,*argv) with strncpy (,*argv,) + strcmp (), and
+	2. PATH_MAX is a buffer size, not a string length,
+	limit. (W. R. Stevens got this wrong??)
+	(main): Include <unistd.h>; remove optarg, optind externs.
+	(main): getopt(3) returns -1, not EOF.
 
-        * signal.c: (handle_hup): Don't exit(3) in a signal handler, use
-        _exit(2) instead.
+	* signal.c: (handle_hup): Don't exit(3) in a signal handler, use
+	_exit(2) instead.
 
-2002-04-21  Andrew L. Moore  <alm@SlewSys.org>
+2002-04-21  Andrew L. Moore  <slewsys@gmail.com>
 
-        * io.c (put_tty_line): Offensive `Press <RET> ...' message only
-        while paging (`z' command), and then, only for long lines.
-        Preserve line count between calls to put_tty_line so that, in the
-        case of wrapping lines, page size is enforced. Reported by
-        <miles*lsi.nec*co.jp>.  (Corrected on 2007-04-16 -- see comments above.)
+	* io.c (put_tty_line): Offensive `Press <RET> ...' message only
+	while paging (`z' command), and then, only for long lines.
+	Preserve line count between calls to put_tty_line so that, in the
+	case of wrapping lines, page size is enforced. Reported by
+	<miles*lsi.nec*co.jp>.  (Corrected on 2007-04-16 -- see comments above.)
 
-        * main.c (main): Initialize `errmsg' and change type to `const
-        char *' so that error messages can be assigned, avoiding sprintf()
-        <mike.FreeBSD.org>.
+	* main.c (main): Initialize `errmsg' and change type to `const
+	char *' so that error messages can be assigned, avoiding sprintf()
+	<mike.FreeBSD.org>.
 
-        (main): For interactive sessions, set ed's exit status to 0 (okay)
-        after a successful `w' (write) or `e' (edit). Suggested by
-        <karl*cs.umb*edu>.
+	(main): For interactive sessions, set ed's exit status to 0 (okay)
+	after a successful `w' (write) or `e' (edit). Suggested by
+	<karl*cs.umb*edu>.
 
-        (getenv_init_argv): If ed is configured with the option
-        `--enable-ed-envar', then when ed is run read default command-line
-        switches set via "ED" environment variable upon. These can be
-        overriden by options on the command-line. Suggested by
-        <karl*cs.umb*edu>.
+	(getenv_init_argv): If ed is configured with the option
+	`--enable-ed-envar', then when ed is run read default command-line
+	switches set via "ED" environment variable upon. These can be
+	overriden by options on the command-line. Suggested by
+	<karl*cs.umb*edu>.
 
-Mon Sep 11 02:54:55 1995    (alm@SlewSys.org)
+Mon Sep 11 02:54:55 1995    (slewsys@gmail.com)
 
-        * sub.c (search_and_replace): Set dot to the last affected line of
-          a substitution.
+	* sub.c (search_and_replace): Set dot to the last affected line of
+	  a substitution.
 
-Sun Jun 26 22:21:59 1994    (alm@SlewSys.org)
+Sun Jun 26 22:21:59 1994    (slewsys@gmail.com)
 
-        * ed 0.2 release.
+	* ed 0.2 release.
 
-        * main.c (yank_lines): Added yank buffer. A range of lines can be
-          either cut ('d') or copied ('y') to a yank buffer. Lines in the
-          yank buffer can then be put ('x') after the addressed line --
-          current address by default. Suggested by <karl*cs.umb*edu>.
-          (Removed on 2007-03-29 -- see comments above.)
+	* main.c (yank_lines): Added yank buffer. A range of lines can be
+	  either cut ('d') or copied ('y') to a yank buffer. Lines in the
+	  yank buffer can then be put ('x') after the addressed line --
+	  current address by default. Suggested by <karl*cs.umb*edu>.
+	  (Removed on 2007-03-29 -- see comments above.)
 
-        * main.c (display_lines): Page output of listed ('l') lines if
-          isatty(0) (Corrected on 2007-04-16 -- see comments above.)
+	* main.c (display_lines): Page output of listed ('l') lines if
+	  isatty(0) (Corrected on 2007-04-16 -- see comments above.)
 
-        * main.c (main): Replaced isatty(0) with !is_regular_file().
-          Errors in piped scripts, as opposed to regular scripts or
-          here documents, do not force ed to exit. (Corrected on
-          2006-07-02 -- see comments above.)
+	* main.c (main): Replaced isatty(0) with !is_regular_file().
+	  Errors in piped scripts, as opposed to regular scripts or
+	  here documents, do not force ed to exit. (Corrected on
+	  2006-07-02 -- see comments above.)
 
-        * Capitilize error messages per the standard.
+	* Capitilize error messages per the standard.
 
-Wed Jun 22 01:06:11 1994    (alm@SlewSys.org)
+Wed Jun 22 01:06:11 1994    (slewsys@gmail.com)
 
-        * ed.h: Generic definition of INT_MAX <bson.ai*mit.edu>
+	* ed.h: Generic definition of INT_MAX <bson.ai*mit.edu>
 
-        * signal.c: Added #ifndef SIG_ERR <assar*stacken.kth*se>
+	* signal.c: Added #ifndef SIG_ERR <assar*stacken.kth*se>
 
-Tue Apr 19 10:52:51 1994    (alm@SlewSys.org)
+Tue Apr 19 10:52:51 1994    (slewsys@gmail.com)
 
-        * Version 0.1.  Initial release for GNU.
+	* Version 0.1.  Initial release for GNU.
 
-        * main.c (exec_command): Add comment command `#'.
+	* main.c (exec_command): Add comment command `#'.
 
-Mon Mar 21 21:58:11 PST 1994 Andrew Moore <alm@SlewSys.org>
+Mon Mar 21 21:58:11 PST 1994 Andrew Moore <slewsys@gmail.com>
 
-        *  Use umask 077 to open buffer file.
+	*  Use umask 077 to open buffer file.
 
-Sat Mar 19 14:06:52 PST 1994 Andrew Moore <alm@SlewSys.org>
+Sat Mar 19 14:06:52 PST 1994 Andrew Moore <slewsys@gmail.com>
 
-        * Removed problematic DES and insque support.
+	* Removed problematic DES and insque support.
 
-Wed Jan 19 20:42:50 PST 1994 Andrew Moore <alm@SlewSys.org>
+Wed Jan 19 20:42:50 PST 1994 Andrew Moore <slewsys@gmail.com>
 
-        * Added reliable signal(2) for SysV.
+	* Added reliable signal(2) for SysV.
 
 Dec 1993  François Pinard  (pinard@icule)
 
-        * GNUified ed.
+	* GNUified ed.

@@ -16,7 +16,7 @@
 
 # Makefile.am: Testsuite subdirectory automake template for the ed line editor.
 #
-# Copyright © 1993-2016 Andrew L. Moore, SlewSys Research
+# Copyright © 1993-2017 Andrew L. Moore, SlewSys Research
 #
 # Process this file with automake to create Makefile.in.
 VPATH = @srcdir@
@@ -347,38 +347,38 @@ SUFFIXES = .t .err .ok-at .err-at .fail-at
 # Please update $(top_srcdir)/testsuite/ts-am-sw.in to reflect any
 # changes in the format of this file.
 #
-# .t.ok-at:
-# 	sed -e "s^@SCRIPT_NAME@^$*^g"                                         \
-# 	    -e "s^@SCRIPT_SRC@^../../$*^g" "$(AT_PROTO_OK)"                   \
-# 	>"$@".tmp
-# 	mv "$@".tmp "$@"
-# 
-# .err.err-at:
-# 	sed -e "s^@SCRIPT_NAME@^$*^g"                                         \
-# 	    -e "s^@SCRIPT_SRC@^../../$*^g" "$(AT_PROTO_ERR)"                  \
-# 	>"$@".tmp
-# 	mv "$@".tmp "$@"
-# 
-# .err.fail-at:
-# 	sed -e "s^@SCRIPT_NAME@^$*^g"                                         \
-# 	    -e "s^@SCRIPT_SRC@^../../$*^g" "$(AT_PROTO_FAIL)"                 \
-# 	>"$@".tmp
-# 	mv "$@".tmp "$@"
+#.t.ok-at:
+#	sed -e "s^@SCRIPT_NAME@^$*^g"                                         \
+#	    -e "s^@SCRIPT_SRC@^../../$*^g" "$(AT_PROTO_OK)"                   \
+#	>"$@".tmp
+#	mv "$@".tmp "$@"
+#
+#.err.err-at:
+#	sed -e "s^@SCRIPT_NAME@^$*^g"                                         \
+#	    -e "s^@SCRIPT_SRC@^../../$*^g" "$(AT_PROTO_ERR)"                  \
+#	>"$@".tmp
+#	mv "$@".tmp "$@"
+#
+#.err.fail-at:
+#	sed -e "s^@SCRIPT_NAME@^$*^g"                                         \
+#	    -e "s^@SCRIPT_SRC@^../../$*^g" "$(AT_PROTO_FAIL)"                 \
+#	>"$@".tmp
+#	mv "$@".tmp "$@"
 
 # Ed scripts which should complete sucessfully.
 ED_SCRIPTS_OK = \
 	a.t addr.t ascii.t bang1.t c1.t c2.t comment.t d.t e1.t e2.t          \
 	e3.t e4.t e5.t g1.t g2.t g3.t g4.t g5.t i1.t i2.t j.t k.t l.t         \
 	m.t n.t nl1.t nl2.t nl3.t nl4.t p.t q2.t r1.t r2.t r3.t s1.t          \
-	s2.t s3.t s4.t s5.t t1.t t2.t u.t v.t w.t
+	s2.t s3.t s4.t s5.t s6.t t1.t t2.t u.t v.t w.t
 
 
 # Ed scripts which should complete, but with non-zero exit status.
 ED_SCRIPTS_ERR = \
-	a2.err addr1.err addr2.err bang1.err bang2.err c1.err d.err           \
+	a2.err addr1.err addr2.err bang1.err c1.err d.err                     \
 	e1.err e2.err e3.err f1.err f2.err g1.err g2.err g3.err h.err         \
 	i2.err k2.err k3.err k4.err m.err q1.err r2.err s1.err s10.err        \
-	s3.err s4.err s5.err s6.err s7.err s8.err s9.err t1.err t2.err        \
+	s3.err s4.err s5.err s6.err s7.err s8.err t1.err t2.err		      \
 	u.err w1.err w2.err w3.err z.err
 
 

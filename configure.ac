@@ -5,7 +5,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.65])
-AC_INIT([ed],[2.0.1],[bug-ed@gnu.org])
+AC_INIT([ed],[2.0.2],[bug-ed@gnu.org])
 AC_CONFIG_AUX_DIR([.])
 AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADERS([config.h])
@@ -254,7 +254,7 @@ if test ."$ac_cv_sizeof_off_t" = ."$ac_cv_sizeof_long"; then
       [Define int with storage size of off_t.])
    AC_DEFINE_UNQUOTED([OFF_T_FORMAT_STRING], ["ld"],
       [Define format string to print value of type off_t.])
-      
+
 elif test ."$ac_cv_sizeof_off_t" = ."$ac_cv_sizeof_long_long"; then
    AC_DEFINE_UNQUOTED([OFF_T_SIZE], [long long],
       [Define int with storage size of off_t.])

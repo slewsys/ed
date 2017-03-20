@@ -1,5 +1,4 @@
 a
-hello world
+hello
 .
-/./
-sr
+s/[h[=]/x/

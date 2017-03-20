@@ -99,7 +99,7 @@ display_lines (from, to, io_f, ed)
     {
       INIT_FB_ROW (bp, from + lc, 0, fb);
 
-      /* 
+      /*
        * If last line of previous page was truncated while scrolling
        * forward, then resume with truncated part at top of page.
        */
@@ -110,7 +110,7 @@ display_lines (from, to, io_f, ed)
           flags = (io_f | OFFB) & ~NMBR;
         }
 
-      /* 
+      /*
        * If first line of previous page was truncated while scrolling
        * backward, then resume with truncated part at bottom of page.
        */
@@ -144,7 +144,7 @@ display_lines (from, to, io_f, ed)
       /* Ignore frame buffer status. */
       RESET_FB_PREV (fb, ed);
       return display_lines (max (1, ed->state->lines - fb->rows + 2),
-                            ed->state->lines, (io_f | ZBWD) & ~ZFWD, ed);
+                            ed->state->lines, (io_f | ZBWD) & ~(ZFWD | ZHFW), ed);
     }
 
   /*
@@ -157,7 +157,7 @@ display_lines (from, to, io_f, ed)
       /* Ignore frame buffer status. */
       RESET_FB_PREV (fb, ed);
       return display_lines (1, min (ed->state->lines, fb->rows - 1),
-                            (io_f | ZFWD) & ~ZBWD, ed);
+                            (io_f | ZFWD) & ~(ZBWD | ZHBW), ed);
     }
 
   spl1 ();
@@ -167,7 +167,7 @@ display_lines (from, to, io_f, ed)
     {
       RESET_FB_PREV (fb, ed);
 
-      /* 
+      /*
        * Calculate frame buffer row index of the first and last lines
        * to print. If paging forward, then first line is given and its
        * row index is trivially 0. If paging backward, then only the
@@ -198,21 +198,21 @@ display_lines (from, to, io_f, ed)
       /* Line address of first row. */
       ed->display->page_addr = fb->prev_first->addr;
 
-      /* 
+      /*
        * Assign old prev_first `len - offset' as rem_chars to last
        * line of current page.
        */
       if ((io_f & ZBWD))
         fb->rem_chars = rem_chars;
 
-      /* 
+      /*
        * If next command is `scroll forward', then current page
        * becomes `page above', and ed->display->underflow is set if
        * last line of current page is truncated.
        */
       ed->display->underflow = !!fb->rem_chars;
 
-      /* 
+      /*
        * If next command is `scroll backward', then current page
        * becomes `page below', and ed->display->overflow is set if
        * first line of current page has non-zero offset.
@@ -283,7 +283,7 @@ init_frame_buffer (fb, io_f, ed)
       fb->columns = ed->display->ws_col;
     }
 
-  /* 
+  /*
    * Don't reset row_i if scrolling forward in half-pages. Append to
    * end of frame buffer instead.
    */
@@ -371,7 +371,7 @@ put_frame_buffer_line (lp, addr, io_f, fb, ed)
   unsigned int sgr_len = 0;     /* length of ANSI sgr sequence */
   int form_feed = 0;
 
-  /* 
+  /*
    * Per SUSv4, 2013, the `$' (dollar sign) character is output by the
    * `l' (literal) command as the escape sequence `\$'
    */
@@ -439,7 +439,7 @@ put_frame_buffer_line (lp, addr, io_f, fb, ed)
       if (!(io_f & LIST) || (31 < *s && *s < 127 && *s != '\\' && *s != '$'))
         {
 
-          /* 
+          /*
            * If ANSI color support is enabled, exclude SGR sequences
            * from column bookkeeping.
            */
@@ -455,7 +455,7 @@ put_frame_buffer_line (lp, addr, io_f, fb, ed)
             return ERR;
           col += CHAR_WIDTH ((unsigned) *s, col);
 
-          /* 
+          /*
            * As with cat(1), form feed (\f) does not force a new page,
            * only a new line. Any following text continues on the next
            * line -- indented to the current column.
@@ -465,7 +465,7 @@ put_frame_buffer_line (lp, addr, io_f, fb, ed)
         }
       else
         {
-          /* 
+          /*
            * If control char has C escape sequence, print literal
            * escape sequence - e.g., ASCII bel as `\a'.
            */
@@ -485,7 +485,7 @@ put_frame_buffer_line (lp, addr, io_f, fb, ed)
             col += 4;
         }
 
-      /* 
+      /*
        * When listing text -- i.e., (io_f & LIST) -- first try simple
        * heuristic to split lines on word boundaries for legibility;
        * otherwise, split lines at the right margin, which starts one
