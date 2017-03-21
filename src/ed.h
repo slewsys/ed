@@ -414,7 +414,8 @@ struct ed_display
   volatile sig_atomic_t ws_row; /* Display height. */
   volatile sig_atomic_t ws_col; /* Display width. */
   off_t page_addr;              /* Address of first displayed line in page. */
-  int is_paging;                /* If set, displaying a page of text. */
+  int paging;                   /* Set when displaying a page of text. */
+  int is_paging;                /* If set, continuing paging of text. */
   int underflow;                /* If set, line truncated at top page. */
   int overflow;                 /* If set, line truncated at bottom of page. */
   int hidden;                   /* If set, do not print frame buffer. */

@@ -224,6 +224,8 @@ exec_command (ed)
     };
 
   ed->core->reg->io_f = 0;
+  ed->display->is_paging = ed->display->paging;
+  ed->display->paging = 0;
 
   SKIP_WHITESPACE (ed);
 
@@ -310,11 +312,8 @@ a_cmd (ed)
         reset_undo_queue (ed);
       if ((status = append_lines (ed->exec->region->end, ed)) < 0)
         return status;
-      /* break; */
       return io_f;
     }
-
-  /* FALLTHROUGH */
   return c_cmd (ed);
 }
 
@@ -343,7 +342,6 @@ c_cmd (ed)
   spl0 ();
   if ((status = append_lines (ed->state->dot, ed)) < 0)
     return status;
-  /* break; */
   return io_f;
 }
 
@@ -379,7 +377,6 @@ d_cmd (ed)
   if ((ed->state->is_empty = !ed->state->lines))
     ed->state->is_binary = 0;
   spl0 ();
-  /* break; */
   return io_f;
 }
 
@@ -389,7 +386,6 @@ e_cmd (ed)
 {
   if (ed->state->is_modified && !(ed->exec->opt & SCRIPTED))
     return EMOD;
-  /* FALLTHROUGH */
   return E_cmd (ed);
 }
 
@@ -562,12 +558,6 @@ g_cmd (ed)
   unsigned io_f = 0;            /* Print I/O flags */
   int status = 0;               /* Return status */
   int c = *(ed->input - 1);
-  /*
-   * case 'G':
-   * case 'g':
-   * case 'V':
-   * case 'v':
-   */
 
   if (ed->exec->global)
     {
@@ -586,7 +576,6 @@ g_cmd (ed)
 
   if ((status = exec_global (io_f, ed)) < 0)
     return status;
-  /* break; */
   return io_f;
 }
 
@@ -607,7 +596,6 @@ H_cmd (ed)
   ed->exec->opt ^= VERBOSE;
   if (ed->exec->opt & VERBOSE && ed->exec->err)
     puts (ed->exec->err);
-  /* break; */
   return io_f;
 }
 
@@ -628,7 +616,6 @@ h_cmd (ed)
     }
   COMMAND_SUFFIX (io_f, ed);
   puts (ed->exec->err ? ed->exec->err : _("No previous error"));
-  /* break; */
   return io_f;
 }
 
@@ -650,7 +637,6 @@ i_cmd (ed)
   /* Per SUSv4, 2013, empty insert sets dot to addressed line. */
   if (ed->state->dot == ed->exec->region->end - 1)
     ed->state->dot = ed->exec->region->end;
-  /* break; */
   return io_f;
 }
 
@@ -680,7 +666,6 @@ j_cmd (ed)
       && (status = join_lines (ed->exec->region->start,
                                ed->exec->region->end, ed)) < 0)
     return status;
-  /* break; */
   return io_f;
 }
 
@@ -702,7 +687,6 @@ k_cmd (ed)
   if ((status =
        mark_line_node (get_line_node (ed->exec->region->end, ed), cx, ed)) < 0)
     return status;
-  /* break; */
   return io_f;
 }
 
@@ -784,7 +768,6 @@ m_cmd (ed)
       ed->exec->err = _("Invalid register");
       return ERR;
     }
-  /* break; */
   return io_f;
 }
 
@@ -827,7 +810,6 @@ P_cmd (ed)
 
   /* Toggle PROMPT settings. */
   ed->exec->opt ^= PROMPT;
-  /* break; */
   return io_f;
 }
 
@@ -861,10 +843,6 @@ q_cmd (ed)
   unsigned io_f = 0;            /* Print I/O flags */
   int c = *(ed->input - 1);
 
-  /*
-   * case 'Q':
-   * case 'q':
-   */
   if (ed->exec->region->addrs)
     {
       ed->exec->err = _("Address unexpected");
@@ -1027,7 +1005,6 @@ s_cmd (ed)
     return status;
   if (sio_f && !(s_f & PRSW))
     return display_lines (ed->state->dot, ed->state->dot, sio_f, ed);
-  /* break; */
   return io_f;
 }
 
@@ -1071,7 +1048,6 @@ t_cmd (ed)
       ed->exec->err = _("Invalid register");
       return ERR;
     }
-  /* break; */
   return io_f;
 }
 
@@ -1090,7 +1066,6 @@ u_cmd (ed)
   COMMAND_SUFFIX (io_f, ed);
   if ((status = undo_last_command (ed)) < 0)
     return status;
-  /* break; */
   return io_f;
 }
 
@@ -1108,10 +1083,6 @@ w_cmd (ed)
   int cx = 0;
   int cy = 0;
   int cz = 0;
-  /*
-   * case 'W':
-   * case 'w':
-   */
 
   /*
    * Allow writing an empty buffer provided no addresses are
@@ -1269,8 +1240,6 @@ w_cmd (ed)
   return (cx == 'q' ? (ed->state->is_modified && !(ed->exec->opt & SCRIPTED)
                        ? EMOD : EOF) : 0);
 #endif  /* !WANT_FILE_GLOB */
-
-  /* break; */
 }
 
 static int
@@ -1279,7 +1248,6 @@ left_bracket_cmd (ed)
 {
   int status = 0;               /* Return status */
 
-  /* case '[': */
   /*
    * (.)[n - Displays page of `n' lines centered around addressed
    * line, where `n' defaults to current window size. The current
@@ -1297,7 +1265,10 @@ left_bracket_cmd (ed)
        is_valid_range (ed->display->page_addr, ed->display->page_addr, ed)) < 0)
     return status;
 
-  /* XXX - Required, so explain why */
+  /*
+   * Freeze values of ed->exec->region->start and
+   * ed->exec->region->end from assignment by exec_one_off() below.
+   */
   ed->exec->region->addrs = 1;
 
   /*
@@ -1315,11 +1286,12 @@ left_bracket_cmd (ed)
       || ed->state->dot == ed->state->lines)
     return exec_one_off ("Z", ed->input, ed);
 
-  /* XXX - Required, so explain why */
+  /*
+   * Unfreeze values of ed->exec->region->start and ed->exec->region->end.
+   */
   ed->exec->region->addrs = 0;
 
-  /* FALLTHROUGH */
-  return left_bracket_cmd (ed);
+  return right_bracket_cmd (ed);
 }
 
 static int
@@ -1328,7 +1300,6 @@ right_bracket_cmd (ed)
 {
   int c = *(ed->input - 1);
 
-  /* case ']': */
   /*
    * (.)]n - Displays page of `n' lines centered around addressed
    * line, where `n' defaults to current window size. The current
@@ -1342,9 +1313,6 @@ right_bracket_cmd (ed)
     }
   if (c == ']' && (ed->exec->region->addrs || !ed->display->is_paging))
     return exec_one_off ("[", ed->input, ed);
-  /* io_f |= ZHFW; */
-
-  /* FALLTHROUGH */
   return z_cmd (ed);
 }
 
@@ -1352,16 +1320,11 @@ static int
 z_cmd (ed)
      ed_buffer_t *ed;
 {
-  static int paging = 0;        /* If set, last command was page */
-
   off_t addr = 0;
   size_t len = 0;
   unsigned io_f = 0;            /* Print I/O flags */
   int status = 0;               /* Return status */
   int c = *(ed->input - 1);
-
-  ed->display->is_paging = paging;
-  paging = 0;
 
   /* scroll forward */
   if (ed->exec->opt & POSIXLY_CORRECT)
@@ -1394,12 +1357,7 @@ z_cmd (ed)
         ed->display->ws_row = len;
     }
   COMMAND_SUFFIX (io_f, ed);
-  ++paging;
-  /*
-   * if (c == 'z')
-   *
-   * else
-   */
+  ++ed->display->paging;
 
   switch (c)
     {
@@ -1421,6 +1379,7 @@ z_cmd (ed)
       io_f |= ZFWD;
       break;
     case '[':
+    case ']':
       /*
        * When scrolling half a page, calculate last line to display,
        * addr, relative to  region->end >= 1 by adding half the total
@@ -1437,32 +1396,20 @@ z_cmd (ed)
        */
       addr = min (ed->state->lines, (ed->exec->region->end +
                                      ((ed->display->ws_row - 1) >> 1) - 1));
-      io_f |= ZBWD | ZHBW;
-      break;
-    case ']':
       io_f |= ZFWD | ZHFW;
-      addr = min (ed->state->lines, (ed->exec->region->end +
-                                     ((ed->display->ws_row - 1) >> 1) - 1));
       break;
     }
-  /* io_f |= c == '[' ? ZBWD : ZFWD; */
   return display_lines (ed->exec->region->end, addr, io_f, ed);
-  /* break; */
 }
 
 static int
 Z_cmd (ed)
      ed_buffer_t *ed;
 {
-  static int paging = 0;        /* If set, last command was page */
-
   off_t addr = 0;
   size_t len = 0;
   unsigned io_f = 0;            /* Print I/O flags */
   int status = 0;               /* Return status */
-
-  ed->display->is_paging = paging;
-  paging = 0;
 
   /* scroll backward */
   if (ed->exec->opt & (TRADITIONAL | POSIXLY_CORRECT))
@@ -1494,7 +1441,7 @@ Z_cmd (ed)
         ed->display->ws_row = len;
     }
   COMMAND_SUFFIX (io_f, ed);
-  ++paging;
+  ++ed->display->paging;
 
   /*
    * Display page preceding either given line or already displayed
@@ -1503,7 +1450,6 @@ Z_cmd (ed)
   return display_lines (max (1, (off_t) ed->exec->region->end -
                              ed->display->ws_row + 2),
                         ed->exec->region->end, io_f | ZBWD, ed);
-  /* break; */
 }
 
 static int
@@ -1516,7 +1462,6 @@ equals_cmd (ed)
   COMMAND_SUFFIX (io_f, ed);
   printf ("%" OFF_T_FORMAT_STRING "\n",
           (ed->exec->region->addrs ? ed->exec->region->end : ed->state->lines));
-  /* break; */
   return io_f;
 }
 
