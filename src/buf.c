@@ -21,7 +21,7 @@
 /* Static function declarations. */
 static int init_stdio __P ((ed_buffer_t *));
 
-/* 
+/*
  * one_time_init: Open ed buffer file; initialize queues, I/O buffers
  *   and translation table; read environment variables.
  */
@@ -40,7 +40,7 @@ one_time_init (argc, argv, ed)
                                        &ed->core->pathname, ed)) < 0)
     return status;
 
-  /* 
+  /*
    * If ed is invoked with file args, any file globbing is done at the
    * shell level. The results are stored in the file_glob structure
    * even if file globbing support is not enabled.
@@ -48,7 +48,7 @@ one_time_init (argc, argv, ed)
   ed->file->list->gl_pathc = argc;
   ed->file->list->gl_pathv = argv;
 
-  /* 
+  /*
    * Reset file_glob->gl_offs after first glob(3) -- see file_glob().
    */
   ed->file->list->gl_offs = 1;
@@ -118,7 +118,7 @@ init_stdio (ed)
       return FATAL;
     }
 
-  /* 
+  /*
    * Read stdin one character at a time to avoid I/O contention with
    * shell escapes invoked by nonterminal input, e.g.,
    *
@@ -126,7 +126,7 @@ init_stdio (ed)
    *    ! cat
    *    hello, world
    *    EOF
-   * 
+   *
    * Line buffer stdout so that `ssh user@remote ed file' works as
    * expected.
    */
@@ -155,7 +155,7 @@ init_ed_command (init_glob, ed)
   /* Assert: spl1 () */
 
   /* Display state */
-  ed->display->is_paging = 0;
+  ed->display->paging = 0;
   ed->display->page_addr = 0;
   ed->display->underflow = 0;
   ed->display->overflow = 0;
@@ -266,7 +266,7 @@ create_disk_buffer (fp, buf, ed)
       return ERR;
     }
 
-  /* 
+  /*
    * fstat(3) is supposed to fail if any subpath of `buf' is not a
    * directory. Even on systems for which this does not hold, if the
    * default `/tmp' folder is used, it's reasonable to assume that all
@@ -350,7 +350,7 @@ get_buffer_line (lp, ed)
 }
 
 
-/* 
+/*
  * put_buffer_line: Append given text to end of ed buffer file, and
  *   reference it from in-core buffer. Return pointer to end of text.
  */
@@ -360,7 +360,7 @@ put_buffer_line (t, len, ed)
      size_t len;
      ed_buffer_t *ed;
 {
-  /* 
+  /*
    * If ed buffer file was read since last write, seek to end of file
    * before writing.
    */
@@ -403,7 +403,7 @@ put_buffer_line (t, len, ed)
 }
 
 
-/* 
+/*
  * append_line_node: Append line in buffer after given address. Return
  *   node pointer.
  */
@@ -529,7 +529,7 @@ realloc_buffer (b, n, i, ed)
   char *_ts;
   size_t _ti;
 
-  /* 
+  /*
    * Assert: i >= 0.
    * NB: Allocate memory if i == *n == 0.
    */
@@ -620,7 +620,7 @@ void init_text_deque (th)
 }
 
 
-/* 
+/*
  * append_text_node: Append text to end of text deque. Return pointer
  *   to new node, or NULL is out of memory.
  */
@@ -649,7 +649,7 @@ append_text_node (th, tb, len)
 }
 
 
-/* 
+/*
  * pop_text_node: Remove last node of text queue and return pointer to
  *   copy of its text, otherwise NULL.
  */
@@ -676,7 +676,7 @@ pop_text_node (th, len)
 }
 
 
-/* 
+/*
  * shift_text_node: Remove first node of text queue and return pointer
  *   to copy of its text, otherwise NULL.
  */

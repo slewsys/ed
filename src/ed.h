@@ -9,7 +9,7 @@
 # include "config.h"
 #endif
 
-/* 
+/*
  * Work around conflicting off_t typedefs (e.g., if _LARGE_FILE
  * support enabled). Defined per configure, below.
  */
@@ -237,7 +237,7 @@ enum utf8_char_constant
     CIRCUMFLEX_ACCENT = '^'
   };
 
-/* 
+/*
  * Approximate upper bound for strlen (OFF_T_MAX) from relations:
  *     2 ^ (8 * sizeof (off_t)) < 10 ^ strlen (OFF_T_MAX)
  *     10 ^ strlen (OFF_T_MAX)   <  2 ^ (10 * sizeof (off_t))
@@ -414,7 +414,8 @@ struct ed_display
   volatile sig_atomic_t ws_row; /* Display height. */
   volatile sig_atomic_t ws_col; /* Display width. */
   off_t page_addr;              /* Address of first displayed line in page. */
-  int is_paging;                /* If set, displaying a page of text. */
+  int paging;                   /* Set when displaying a page of text. */
+  int is_paging;                /* If set, continuing paging of text. */
   int underflow;                /* If set, line truncated at top page. */
   int overflow;                 /* If set, line truncated at bottom of page. */
   int hidden;                   /* If set, do not print frame buffer. */
@@ -509,6 +510,8 @@ typedef struct ed_buffer
   struct ed_file *file;         /* File parameters. */
 } ed_buffer_t;
 
+typedef int (*ed_command_t) (ed_buffer_t *);
+
 /* Ed command-modifier flags. */
 enum ed_modifier_flags
   {
@@ -569,9 +572,9 @@ enum ed_command_error
   };
 
 #ifdef HAVE_REG_SYNTAX_T
-  /* 
+  /*
    * Flags for GNU regular expressions.
-   * 
+   *
    * Historically, ed regular expressions are what POSIX refers to as
    * "basic". POSIX "extended" regular expressions can be enabled with
    * command-line option `-E' or `-r'.

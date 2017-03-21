@@ -1,3 +1,8 @@
+2017-03-21  Andrew L. Moore  <slewsys@gmail.com>
+
+	* src/exec.c (exec_command): Split out command switch into
+	separate functions called via function pointer.
+
 2017-03-20  Andrew L. Moore  <slewsys@gmail.com>
 
 	* testsuite/Makefile.am (ED_SCRIPTS_OK): Rename tests that are not
