@@ -24,7 +24,36 @@ Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 #include <assert.h>
 #include <ctype.h>
 #include <stdio.h>
+
+#ifdef STDC_HEADERS
+# include <stdlib.h>
+# include <stddef.h>
+#else
+# ifdef HAVE_STDLIB_H
+#  include <stdlib.h>
+# endif
+#endif
+#ifdef HAVE_ALLOCA_H
+# include <alloca.h>
+#elif !defined alloca
+# ifdef __GNUC__
+#  define alloca __builtin_alloca
+# elif defined _AIX
+#  define alloca __alloca
+# elif defined _MSC_VER
+#  include <malloc.h>
+#  define alloca _alloca
+# elif !defined HAVE_ALLOCA
+#  ifdef  __cplusplus
+extern "C"
+#  endif
+void *alloca (size_t);
+# endif
+#endif
+
+/*
 #include <stdlib.h>
+*/
 #include <string.h>
 
 #if defined HAVE_LANGINFO_H || defined HAVE_LANGINFO_CODESET || defined _LIBC
@@ -425,7 +454,9 @@ static unsigned int re_string_context_at (const re_string_t *input, int idx,
 #define re_string_skip_bytes(pstr,idx) ((pstr)->cur_idx += (idx))
 #define re_string_set_index(pstr,idx) ((pstr)->cur_idx = (idx))
 
+/*
 #include <alloca.h>
+*/
 
 #ifndef _LIBC
 # if HAVE_ALLOCA

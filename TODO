@@ -7,6 +7,7 @@ These are more or less in decreasing order of priority.
 ** Submit ed.pot to translation group
 ** Update testsuite
 ** Allow editing of wide-char and UTF-8 text.
+** Allow linking against GNU Libc to pick up regex.
 
 * I/O
 ** Speed up file I/O  via mmap(2), database and/or in-core buffer.
@@ -19,4 +20,4 @@ These are more or less in decreasing order of priority.
 ** get_path_max () should identify per filesystem limits, not POSIX limits.
 
 * Undo
-** Add multiple undo.
+** Add multiple undo for the user (as opposed to undoing a global command).
