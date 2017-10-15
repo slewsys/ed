@@ -8,11 +8,13 @@ ACLOCAL_AMFLAGS = -I m4
 
 SUBDIRS =
 
-if LDADD_LIBED
+if LDADD_LIBGNU
 SUBDIRS += lib
-endif LDADD_LIBED
+endif LDADD_LIBGNU
 
 SUBDIRS += src po doc testsuite
+
+EXTRA_DIST = m4/gnulib-cache.m4
 
 .PHONY: quick-check maintainer-update-dist update-testsuite-dist update-po
 

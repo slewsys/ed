@@ -4,8 +4,8 @@
 #
 # Process this file with autoconf to produce a configure script.
 
-AC_PREREQ([2.65])
-AC_INIT([ed],[2.0.2],[bug-ed@gnu.org])
+AC_PREREQ([2.69])
+AC_INIT([ed],[2.0.3],[bug-ed@gnu.org])
 AC_CONFIG_AUX_DIR([.])
 AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADERS([config.h])
@@ -91,22 +91,16 @@ AC_CACHE_CHECK([for ed], [ac_cv_path_ED_COMMAND],
 AC_SUBST(ED_COMMAND, [$ac_cv_path_ED_COMMAND])
 
 # Checks availability of GNU make
-dnl AC_CACHE_CHECK([for GNU make], [ac_cv_path_GNU_MAKE_COMMAND],
-dnl     [AC_PATH_PROGS_FEATURE_CHECK([GNU_MAKE_COMMAND],
-dnl     ["$MAKE" make gmake gnumake],
-dnl     [if $ac_path_GNU_MAKE_COMMAND --version 2>&1 |                            \
-dnl        grep -i 'gnu' >/dev/null 2>&1; then
-dnl          ac_cv_path_GNU_MAKE_COMMAND=$ac_path_GNU_MAKE_COMMAND
-dnl          ac_path_GNU_MAKE_COMMAND_found=:
-dnl        fi],
-dnl       [])])
 AX_CHECK_GNU_MAKE()
 if test ."$_cv_gnu_make_command" != .''; then
    AC_SUBST(GNU_MAKE_COMMAND, [$_cv_gnu_make_command])
 fi
 
 AC_SYS_LARGEFILE
+
 AC_PROG_CC
+gl_EARLY
+
 AC_PROG_LN_S
 AC_PROG_INSTALL
 AC_PROG_MKDIR_P
@@ -115,26 +109,6 @@ AC_PROG_YACC
 #
 # Checks feature requests.
 #
-AC_MSG_CHECKING([whether included regex is requested])
-AC_ARG_WITH([included-regex],
-  [AS_HELP_STRING([--with-included-regex],
-    [use GNU regex library included here])],[],
-    [with_included_regex=check])
-AC_MSG_RESULT([$with_included_regex])
-AS_IF([test ."$with_included_regex" != .'yes'],
-  [AC_CHECK_FUNCS([regcomp],[],
-    [AC_MSG_WARN([System regex not found, falling back to included version])
-     with_included_regex=yes])])
-AM_CONDITIONAL([LIBADD_REGEX], [test ."$with_included_regex" = .'yes'])
-AM_COND_IF([LIBADD_REGEX],
-  [AC_DEFINE([HAVE_REG_SYNTAX_T], [1],
-    [Define to 1 if regex.h defines `reg_syntax_t'.])],
-  [AC_CHECK_TYPES([reg_syntax_t],
-    [AC_DEFINE([HAVE_REG_SYNTAX_T], [1],
-      [Define to 1 if regex.h defines `reg_syntax_t'.])],[],
-      [[#include <sys/types.h>
-#include <regex.h>]])])
-
 AC_MSG_CHECKING([whether ED environment variable support is requested])
 AC_ARG_ENABLE([ed-envar],
   [AS_HELP_STRING([--enable-ed-envar],
@@ -159,14 +133,6 @@ AC_ARG_ENABLE([file-glob],
     [Define to 1 to enable file glob and multi-file support.])],[])
 AC_MSG_RESULT([${enable_file_glob:-no}])
 
-dnl AC_MSG_CHECKING([whether safe write support is requested])
-dnl AC_ARG_ENABLE([safe-write],
-dnl   [AS_HELP_STRING([--enable-safe-write],
-dnl     [enable safe write])],
-dnl   [AC_DEFINE([WANT_SAFE_WRITE], [1],
-dnl     [Define to 1 to interpret `~w' as `w' followed by `~e'.])],[])
-dnl AC_MSG_RESULT([${enable_safe_write:-no}])
-
 AC_MSG_CHECKING([whether file lock support is requested])
 AC_ARG_ENABLE([file-lock],
   [AS_HELP_STRING([--enable-file-lock],
@@ -181,6 +147,29 @@ if test ."$[enable_file_lock]" = .'yes'; then
      [Define to 1 to enable file lock support.])
   fi
 fi
+
+AC_MSG_CHECKING([whether included regex is requested])
+AC_ARG_WITH([included-regex],
+  [AS_HELP_STRING([--with-included-regex],
+    [use GNU regex library included here])],[],
+    [with_included_regex=check])
+AC_MSG_RESULT([$with_included_regex])
+AS_IF([test ."$with_included_regex" != .'yes'],
+  [AC_CHECK_FUNCS([regcomp],[with_included_regex=no],
+    [AC_MSG_WARN([System regex not found, falling back to included version])
+     with_included_regex=yes])])
+AM_CONDITIONAL([LIBADD_REGEX], [test ."$with_included_regex" = .'yes'])
+AM_COND_IF([LIBADD_REGEX],
+  [AC_DEFINE([HAVE_REG_SYNTAX_T], [1],
+    [Define to 1 if regex.h defines `reg_syntax_t'.])],
+  [AC_CHECK_TYPES([reg_syntax_t],
+    [AC_DEFINE([HAVE_REG_SYNTAX_T], [1],
+      [Define to 1 if regex.h defines `reg_syntax_t'.])],[],
+      [[#include <sys/types.h>
+#include <regex.h>]])])
+
+AM_CONDITIONAL([LDADD_LIBGNU], [test ."$with_included_regex" = .'yes'])
+gl_INIT
 
 #
 # Checks for libraries.
@@ -267,17 +256,10 @@ else
       [Define format string to print value of type off_t.])
 fi
 
-#
-# Checks for system calls and library functions.
-#
-AC_CHECK_FUNC([getopt_long])
-AM_CONDITIONAL([LIBADD_GETOPT_LONG],
-    [test ."$ac_cv_func_getopt_long" = .'no'])
-
 AC_PROG_LIBTOOL
 
 AM_GNU_GETTEXT([no-libtool], [need-formatstring-macros], [../intl])
-AM_GNU_GETTEXT_VERSION([0.19.7])
+AM_GNU_GETTEXT_VERSION([0.19.8])
 AM_CONDITIONAL([LDADD_LIBINTL], [test ."$LTLIBINTL" != .''])
 AM_COND_IF([LDADD_LIBINTL], [],
     [AM_GNU_GETTEXT([external])]
@@ -300,13 +282,6 @@ AC_REPLACE_FUNCS([memset strspn strtok])
 AC_CHECK_FUNCS_ONCE([dup2 flock ftruncate memmove pathconf sigaction          \
   siglongjmp setbuffer setlocale stat64 strchr strerror strtol                \
   strtoul strtoll])
-
-AM_CONDITIONAL([LDADD_LIBED],
-  [test ."$LIBOBJS" != .'' ||
-   test ."$with_included_regex" = .'yes' ||
-   test ."$ac_cv_func_getopt_long" = .'no' ||
-   test ."$ac_cv_func_malloc_0_nonnull" = .'no' ||
-   test ."$ac_cv_func_realloc_0_nonnull" = .'no'])
 
 # Generate autotest helpers.
 AC_CONFIG_TESTDIR([testsuite])

@@ -6,20 +6,20 @@
 
 bin_PROGRAMS = ed
 ed_SOURCES = aux.c							      \
-             buf.c							      \
-             cmds.c							      \
-             ed.h							      \
-             exec.c							      \
-             glbl.c							      \
-             io.c							      \
-             main.c							      \
-             page.c							      \
-             parse.c							      \
-             re.c							      \
-             signal.c							      \
-             sub.c							      \
-             undo.c							      \
-             version.c
+	     buf.c							      \
+	     cmds.c							      \
+	     ed.h							      \
+	     exec.c							      \
+	     glbl.c							      \
+	     io.c							      \
+	     main.c							      \
+	     page.c							      \
+	     parse.c							      \
+	     re.c							      \
+	     signal.c							      \
+	     sub.c							      \
+	     undo.c							      \
+	     version.c
 
 ed_LDADD =
 
@@ -27,16 +27,16 @@ ed_LDADD =
 localedir = $(datadir)/locale
 
 AM_CPPFLAGS = -I$(top_srcdir)						      \
-              -I$(top_builddir)						      \
-              -I$(top_srcdir)/lib					      \
-              -I$(top_builddir)/lib					      \
-              -I$(top_srcdir)/include					      \
-              -I$(top_builddir)/include					      \
-              -DLOCALEDIR=\"$(localedir)\"
+	      -I$(top_builddir)						      \
+	      -I$(top_srcdir)/lib					      \
+	      -I$(top_builddir)/lib					      \
+	      -I$(top_srcdir)/include					      \
+	      -I$(top_builddir)/include					      \
+	      -DLOCALEDIR=\"$(localedir)\"
 
-if LDADD_LIBED
-ed_LDADD += ../lib/libed.a
-endif LDADD_LIBED
+if LDADD_LIBGNU
+ed_LDADD += ../lib/libgnu.a
+endif LDADD_LIBGNU
 
 if LIBADD_REGEX
 AM_CPPFLAGS += -DRE_ENABLE_I18N=1 -D__USE_GNU=1

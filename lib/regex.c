@@ -1,29 +1,36 @@
 /* Extended regular expression matching and search library.
-   Copyright © 2002, 2003, 2005 Free Software Foundation, Inc.
+   Copyright (C) 2002-2017 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
    Contributed by Isamu Hasegawa <isamu@yamato.ibm.com>.
 
    The GNU C Library is free software; you can redistribute it and/or
-   modify it under the terms of the GNU Lesser General Public
+   modify it under the terms of the GNU General Public
    License as published by the Free Software Foundation; either
-   version 2.1 of the License, or (at your option) any later version.
+   version 3 of the License, or (at your option) any later version.
 
    The GNU C Library is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-   Lesser General Public License for more details.
+   General Public License for more details.
 
-   You should have received a copy of the GNU Lesser General Public
-   License along with the GNU C Library; if not, write to the Free
-   Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
-   02111-1307 USA.  */
+   You should have received a copy of the GNU General Public
+   License along with the GNU C Library; if not, see
+   <https://www.gnu.org/licenses/>.  */
 
-#ifdef HAVE_CONFIG_H
-#include "config.h"
+#ifndef _LIBC
+# include <config.h>
+
+# if (__GNUC__ == 4 && 6 <= __GNUC_MINOR__) || 4 < __GNUC__
+#  pragma GCC diagnostic ignored "-Wsuggest-attribute=pure"
+# endif
+# if (__GNUC__ == 4 && 3 <= __GNUC_MINOR__) || 4 < __GNUC__
+#  pragma GCC diagnostic ignored "-Wold-style-definition"
+#  pragma GCC diagnostic ignored "-Wtype-limits"
+# endif
 #endif
 
-/* Make sure noone compiles this code with a C++ compiler.  */
-#ifdef __cplusplus
+/* Make sure no one compiles this code with a C++ compiler.  */
+#if defined __cplusplus && defined _LIBC
 # error "This is C code, use a C compiler"
 #endif
 
@@ -50,23 +57,7 @@
 # define re_compile_fastmap(bufp) __re_compile_fastmap (bufp)
 
 # include "../locale/localeinfo.h"
-#else
-
-# define __attribute_warn_unused_result__
-# ifdef HAVE_STDBOOL_H
-#  include <stdbool.h>
-# else
-#  define bool int
-#  define false 0
-#  define true  1
-# endif  /* !HAVE_STDBOOL_H */
-# ifdef HAVE_SYS_PARAM_H
-#  include <sys/param.h>
-# else
-#  define MAX(x, y) ((x) > (y) ? (x) : (y))
-# endif  /* !HAVE_SYS_PARAM_H */
-
-#endif  /* !_LIBC */
+#endif
 
 /* On some systems, limits.h sets RE_DUP_MAX to a lower value than
    GNU regex allows.  Include it before <regex.h>, which correctly
