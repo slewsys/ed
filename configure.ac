@@ -168,8 +168,10 @@ AM_COND_IF([LIBADD_REGEX],
       [[#include <sys/types.h>
 #include <regex.h>]])])
 
-AM_CONDITIONAL([LDADD_LIBGNU], [test ."$with_included_regex" = .'yes'])
 gl_INIT
+AM_CONDITIONAL([LDADD_LIBGNU],
+ [test ."$with_included_regex" = .'yes' || \
+  test ."$ac_cv_func_getopt_long_only" = .'yes'])
 
 #
 # Checks for libraries.

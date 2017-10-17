@@ -704,6 +704,8 @@ LD
 FGREP
 SED
 LIBTOOL
+LDADD_LIBGNU_FALSE
+LDADD_LIBGNU_TRUE
 LIBGNU_LTLIBDEPS
 LIBGNU_LIBDEPS
 gltests_WITNESS
@@ -1194,8 +1196,6 @@ ALLOCA_H
 ALLOCA
 GL_COND_LIBTOOL_FALSE
 GL_COND_LIBTOOL_TRUE
-LDADD_LIBGNU_FALSE
-LDADD_LIBGNU_TRUE
 LIBADD_REGEX_FALSE
 LIBADD_REGEX_TRUE
 YFLAGS
@@ -1311,14 +1311,14 @@ enable_dependency_tracking
 enable_silent_rules
 enable_largefile
 enable_threads
-with_included_regex
-with_gnu_ld
-enable_rpath
-with_libpth_prefix
 enable_ed_envar
 enable_external_filter
 enable_file_glob
 enable_file_lock
+with_included_regex
+with_gnu_ld
+enable_rpath
+with_libpth_prefix
 enable_shared
 enable_static
 with_pic
@@ -1975,12 +1975,12 @@ Optional Features:
   --enable-threads={posix|solaris|pth|windows}
                           specify multithreading API
   --disable-threads       build without multithread safety
-  --disable-rpath         do not hardcode runtime library paths
   --enable-ed-envar       enable ED environment variable
   --enable-external-filter
                           enable external filtering of buffer
   --enable-file-glob      enable file globbing and multi-file support
   --enable-file-lock      enable file locking support
+  --disable-rpath         do not hardcode runtime library paths
   --enable-shared[=PKGS]  build shared libraries [default=yes]
   --enable-static[=PKGS]  build static libraries [default=yes]
   --enable-fast-install[=PKGS]
@@ -6996,6 +6996,63 @@ test -n "$YACC" || YACC="yacc"
 #
 # Checks feature requests.
 #
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether ED environment variable support is requested" >&5
+$as_echo_n "checking whether ED environment variable support is requested... " >&6; }
+# Check whether --enable-ed-envar was given.
+if test "${enable_ed_envar+set}" = set; then :
+  enableval=$enable_ed_envar;
+$as_echo "#define WANT_ED_ENVAR 1" >>confdefs.h
+
+fi
+
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: ${enable_ed_envar:-no}" >&5
+$as_echo "${enable_ed_envar:-no}" >&6; }
+
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether external filter support is requested" >&5
+$as_echo_n "checking whether external filter support is requested... " >&6; }
+# Check whether --enable-external-filter was given.
+if test "${enable_external_filter+set}" = set; then :
+  enableval=$enable_external_filter;
+$as_echo "#define WANT_EXTERNAL_FILTER 1" >>confdefs.h
+
+fi
+
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: ${enable_external_filter:-no}" >&5
+$as_echo "${enable_external_filter:-no}" >&6; }
+
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether file glob support is requested" >&5
+$as_echo_n "checking whether file glob support is requested... " >&6; }
+# Check whether --enable-file-glob was given.
+if test "${enable_file_glob+set}" = set; then :
+  enableval=$enable_file_glob;
+$as_echo "#define WANT_FILE_GLOB 1" >>confdefs.h
+
+fi
+
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: ${enable_file_glob:-no}" >&5
+$as_echo "${enable_file_glob:-no}" >&6; }
+
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether file lock support is requested" >&5
+$as_echo_n "checking whether file lock support is requested... " >&6; }
+# Check whether --enable-file-lock was given.
+if test "${enable_file_lock+set}" = set; then :
+  enableval=$enable_file_lock;
+fi
+
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: ${enable_file_lock:-no}" >&5
+$as_echo "${enable_file_lock:-no}" >&6; }
+if test ."$enable_file_lock" = .'yes'; then
+  if test ."$ac_cv_func_flock" = .'no' &&
+    test ."$ac_cv_have_decl_f_setlk" = .'no'; then
+    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Don't know how to set file locks; disabling" >&5
+$as_echo "$as_me: WARNING: Don't know how to set file locks; disabling" >&2;}
+  else
+
+$as_echo "#define WANT_FILE_LOCK 1" >>confdefs.h
+
+  fi
+fi
+
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether included regex is requested" >&5
 $as_echo_n "checking whether included regex is requested... " >&6; }
 
@@ -7052,14 +7109,6 @@ $as_echo "#define HAVE_REG_SYNTAX_T 1" >>confdefs.h
 
 fi
 
-fi
-
- if test ."$with_included_regex" = .'yes'; then
-  LDADD_LIBGNU_TRUE=
-  LDADD_LIBGNU_FALSE='#'
-else
-  LDADD_LIBGNU_TRUE='#'
-  LDADD_LIBGNU_FALSE=
 fi
 
 
@@ -16840,64 +16889,15 @@ fi
   LIBGNU_LTLIBDEPS="$gl_ltlibdeps"
 
 
-
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether ED environment variable support is requested" >&5
-$as_echo_n "checking whether ED environment variable support is requested... " >&6; }
-# Check whether --enable-ed-envar was given.
-if test "${enable_ed_envar+set}" = set; then :
-  enableval=$enable_ed_envar;
-$as_echo "#define WANT_ED_ENVAR 1" >>confdefs.h
-
+ if test ."$with_included_regex" = .'yes' || \
+  test ."$ac_cv_func_getopt_long_only" = .'yes'; then
+  LDADD_LIBGNU_TRUE=
+  LDADD_LIBGNU_FALSE='#'
+else
+  LDADD_LIBGNU_TRUE='#'
+  LDADD_LIBGNU_FALSE=
 fi
 
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: ${enable_ed_envar:-no}" >&5
-$as_echo "${enable_ed_envar:-no}" >&6; }
-
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether external filter support is requested" >&5
-$as_echo_n "checking whether external filter support is requested... " >&6; }
-# Check whether --enable-external-filter was given.
-if test "${enable_external_filter+set}" = set; then :
-  enableval=$enable_external_filter;
-$as_echo "#define WANT_EXTERNAL_FILTER 1" >>confdefs.h
-
-fi
-
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: ${enable_external_filter:-no}" >&5
-$as_echo "${enable_external_filter:-no}" >&6; }
-
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether file glob support is requested" >&5
-$as_echo_n "checking whether file glob support is requested... " >&6; }
-# Check whether --enable-file-glob was given.
-if test "${enable_file_glob+set}" = set; then :
-  enableval=$enable_file_glob;
-$as_echo "#define WANT_FILE_GLOB 1" >>confdefs.h
-
-fi
-
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: ${enable_file_glob:-no}" >&5
-$as_echo "${enable_file_glob:-no}" >&6; }
-
-
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether file lock support is requested" >&5
-$as_echo_n "checking whether file lock support is requested... " >&6; }
-# Check whether --enable-file-lock was given.
-if test "${enable_file_lock+set}" = set; then :
-  enableval=$enable_file_lock;
-fi
-
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: ${enable_file_lock:-no}" >&5
-$as_echo "${enable_file_lock:-no}" >&6; }
-if test ."$enable_file_lock" = .'yes'; then
-  if test ."$ac_cv_func_flock" = .'no' &&
-    test ."$ac_cv_have_decl_f_setlk" = .'no'; then
-    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Don't know how to set file locks; disabling" >&5
-$as_echo "$as_me: WARNING: Don't know how to set file locks; disabling" >&2;}
-  else
-
-$as_echo "#define WANT_FILE_LOCK 1" >>confdefs.h
-
-  fi
-fi
 
 #
 # Checks for libraries.
@@ -30465,10 +30465,6 @@ if test -z "${LIBADD_REGEX_TRUE}" && test -z "${LIBADD_REGEX_FALSE}"; then
   as_fn_error $? "conditional \"LIBADD_REGEX\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
-if test -z "${LDADD_LIBGNU_TRUE}" && test -z "${LDADD_LIBGNU_FALSE}"; then
-  as_fn_error $? "conditional \"LDADD_LIBGNU\" was never defined.
-Usually this means the macro was only invoked conditionally." "$LINENO" 5
-fi
 if test -z "${GL_COND_LIBTOOL_TRUE}" && test -z "${GL_COND_LIBTOOL_FALSE}"; then
   as_fn_error $? "conditional \"GL_COND_LIBTOOL\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
@@ -30629,6 +30625,10 @@ fi
     gltests_LTLIBOBJS=$gltests_ltlibobjs
 
 
+if test -z "${LDADD_LIBGNU_TRUE}" && test -z "${LDADD_LIBGNU_FALSE}"; then
+  as_fn_error $? "conditional \"LDADD_LIBGNU\" was never defined.
+Usually this means the macro was only invoked conditionally." "$LINENO" 5
+fi
 if test -z "${LDADD_LIBINTL_TRUE}" && test -z "${LDADD_LIBINTL_FALSE}"; then
   as_fn_error $? "conditional \"LDADD_LIBINTL\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5

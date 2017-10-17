@@ -124,14 +124,17 @@ host_triplet = @host@
 @gl_GNULIB_ENABLED_locale_TRUE@am__append_10 = locale.h
 @gl_GNULIB_ENABLED_locale_TRUE@am__append_11 = locale.h locale.h-t
 @gl_GNULIB_ENABLED_lock_TRUE@am__append_12 = glthread/lock.h glthread/lock.c
-@gl_GNULIB_ENABLED_stdlib_TRUE@am__append_13 = stdlib.h
-@gl_GNULIB_ENABLED_stdlib_TRUE@am__append_14 = stdlib.h stdlib.h-t
-@gl_GNULIB_ENABLED_threadlib_TRUE@am__append_15 = glthread/threadlib.c
-@gl_GNULIB_ENABLED_wchar_TRUE@am__append_16 = wchar.h
-@gl_GNULIB_ENABLED_wchar_TRUE@am__append_17 = wchar.h wchar.h-t
-@gl_GNULIB_ENABLED_3dcce957eadc896e63ab5f137947b410_TRUE@am__append_18 = wctype.h
-@gl_GNULIB_ENABLED_3dcce957eadc896e63ab5f137947b410_TRUE@am__append_19 = wctype-h.c
-@gl_GNULIB_ENABLED_3dcce957eadc896e63ab5f137947b410_TRUE@am__append_20 = wctype.h wctype.h-t
+@LIBADD_REGEX_TRUE@am__append_13 = regex.h
+@LIBADD_REGEX_TRUE@am__append_14 = regex.h
+@LIBADD_REGEX_TRUE@am__append_15 = -DRE_ENABLE_I18N=1 -D__USE_GNU=1
+@gl_GNULIB_ENABLED_stdlib_TRUE@am__append_16 = stdlib.h
+@gl_GNULIB_ENABLED_stdlib_TRUE@am__append_17 = stdlib.h stdlib.h-t
+@gl_GNULIB_ENABLED_threadlib_TRUE@am__append_18 = glthread/threadlib.c
+@gl_GNULIB_ENABLED_wchar_TRUE@am__append_19 = wchar.h
+@gl_GNULIB_ENABLED_wchar_TRUE@am__append_20 = wchar.h wchar.h-t
+@gl_GNULIB_ENABLED_3dcce957eadc896e63ab5f137947b410_TRUE@am__append_21 = wctype.h
+@gl_GNULIB_ENABLED_3dcce957eadc896e63ab5f137947b410_TRUE@am__append_22 = wctype-h.c
+@gl_GNULIB_ENABLED_3dcce957eadc896e63ab5f137947b410_TRUE@am__append_23 = wctype.h wctype.h-t
 subdir = lib
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/00gnulib.m4 \
@@ -928,31 +931,32 @@ EXTRA_DIST = alloca.in.h btowc.c getopt-cdefs.in.h getopt-core.h \
 	$(top_srcdir)/./config.rpath intprops.h langinfo.in.h \
 	limits.in.h config.charset ref-add.sin ref-del.sin locale.in.h \
 	localeconv.c mbrtowc.c mbsinit.c mbtowc-impl.h mbtowc.c \
-	nl_langinfo.c regcomp.c regex.c regex.h regex_internal.c \
+	nl_langinfo.c regcomp.c regex.c regex.h.in regex_internal.c \
 	regex_internal.h regexec.c _Noreturn.h arg-nonnull.h c++defs.h \
 	warn-on-use.h stdbool.in.h stddef.in.h stdint.in.h stdlib.in.h \
 	streq.h sys_types.in.h $(top_srcdir)/./config.rpath \
 	unistd.in.h verify.h wchar.in.h wcrtomb.c wctype.in.h
 BUILT_SOURCES = $(ALLOCA_H) $(am__append_1) $(GETOPT_H) \
 	$(GETOPT_CDEFS_H) $(am__append_5) $(LIMITS_H) $(am__append_10) \
-	$(STDBOOL_H) $(STDDEF_H) $(STDINT_H) $(am__append_13) \
-	sys/types.h unistd.h $(am__append_16) $(am__append_18)
+	$(am__append_13) $(STDBOOL_H) $(STDDEF_H) $(STDINT_H) \
+	$(am__append_16) sys/types.h unistd.h $(am__append_19) \
+	$(am__append_21)
 SUFFIXES = $(am__append_8)
 MOSTLYCLEANFILES = core *.stackdump alloca.h alloca.h-t getopt.h \
 	getopt.h-t getopt-cdefs.h getopt-cdefs.h-t $(am__append_6) \
 	limits.h limits.h-t $(am__append_11) stdbool.h stdbool.h-t \
-	stddef.h stddef.h-t stdint.h stdint.h-t $(am__append_14) \
-	sys/types.h sys/types.h-t unistd.h unistd.h-t $(am__append_17) \
-	$(am__append_20)
+	stddef.h stddef.h-t stdint.h stdint.h-t $(am__append_17) \
+	sys/types.h sys/types.h-t unistd.h unistd.h-t $(am__append_20) \
+	$(am__append_23)
 MOSTLYCLEANDIRS = 
 CLEANFILES = $(am__append_2) $(am__append_9)
-DISTCLEANFILES = 
+DISTCLEANFILES = $(am__append_14)
 MAINTAINERCLEANFILES = 
 # No GNU Make output.
-AM_CPPFLAGS = 
+AM_CPPFLAGS = $(am__append_15)
 AM_CFLAGS = 
 libgnu_a_SOURCES = $(am__append_3) $(am__append_4) $(am__append_7) \
-	$(am__append_12) $(am__append_15) unistd.c $(am__append_19)
+	$(am__append_12) $(am__append_18) unistd.c $(am__append_22)
 libgnu_a_LIBADD = $(gl_LIBOBJS)
 libgnu_a_DEPENDENCIES = $(gl_LIBOBJS)
 EXTRA_libgnu_a_SOURCES = btowc.c getopt.c getopt1.c localeconv.c \
@@ -1468,7 +1472,7 @@ getopt.h: getopt.in.h $(top_builddir)/config.status
 getopt-cdefs.h: getopt-cdefs.in.h $(top_builddir)/config.status
 	$(AM_V_GEN)rm -f $@-t $@ && \
 	{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */'; \
-          sed -e 's|@''HAVE_SYS_CDEFS_H''@|$(HAVE_SYS_CDEFS_H)|g' \
+	  sed -e 's|@''HAVE_SYS_CDEFS_H''@|$(HAVE_SYS_CDEFS_H)|g' \
 	      < $(srcdir)/getopt-cdefs.in.h; \
 	} > $@-t && \
 	mv -f $@-t $@
@@ -1597,6 +1601,8 @@ getopt-cdefs.h: getopt-cdefs.in.h $(top_builddir)/config.status
 @gl_GNULIB_ENABLED_locale_TRUE@	      < $(srcdir)/locale.in.h; \
 @gl_GNULIB_ENABLED_locale_TRUE@	} > $@-t && \
 @gl_GNULIB_ENABLED_locale_TRUE@	mv $@-t $@
+@LIBADD_REGEX_TRUE@regex.h: regex.h.in
+@LIBADD_REGEX_TRUE@	$(LN_S) $(top_srcdir)/lib/$@.in $@
 
 # We need the following in order to create <stdbool.h> when the system
 # doesn't have one that works.

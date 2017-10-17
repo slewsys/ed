@@ -452,16 +452,8 @@ EXTRA_libgnu_a_SOURCES += nl_langinfo.c
 
 ## begin gnulib module regex
 
-if LIBADD_REGEX
-BUILT_SOURCES += regex.h
-DISTCLEANFILES += regex.h
-AM_CPPFLAGS += -DRE_ENABLE_I18N=1 -D__USE_GNU=1
-regex.h: regex.h.in
-	$(LN_S) $(top_srcdir)/lib/$@.in $@
 
-endif LIBADD_REGEX
-
-EXTRA_DIST += regcomp.c regex.c regex.h.in regex_internal.c regex_internal.h regexec.c
+EXTRA_DIST += regcomp.c regex.c regex.h regex_internal.c regex_internal.h regexec.c
 
 EXTRA_libgnu_a_SOURCES += regcomp.c regex.c regex_internal.c regexec.c
 
