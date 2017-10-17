@@ -177,7 +177,17 @@ get_compiled_regex (dc, re_type, ed)
     }
 
 #else
-# ifdef REG_PEND
+# ifdef REG_ENHANCED
+
+  /* Darwin regcomp () supports enhanced basic and extended regular
+     expressions. */
+  re->re_endp = pattern + len;
+  if (status =
+      regcomp (re, pattern, (REG_PEND | REG_ENHANCED |
+                             (ed->exec->opt & REGEX_EXTENDED
+                              ? REG_EXTENDED : 0))))
+# else
+#  ifdef REG_PEND
 
   /* BSD regcomp () accepts pattern with NUL chars via REG_PEND, but
      has no equivalent of GNU's re_syntax_options. */
@@ -185,12 +195,13 @@ get_compiled_regex (dc, re_type, ed)
   if (status =
       regcomp (re, pattern, (REG_PEND | (ed->exec->opt & REGEX_EXTENDED
                                          ? REG_EXTENDED : 0))))
-# else
+#  else
 
   /* Use generic POSIX regular expression library. */
   if (status = regcomp (re, pattern, (ed->exec->opt & REGEX_EXTENDED
                                       ? REG_EXTENDED : 0)))
-# endif /* !defined (REG_PEND) */
+#  endif /* !defined (REG_PEND) */
+# endif   /* !defined (REG_ENHANCED) */
     {
       regerror (status, re, re_err, sizeof re_err);
       ed->exec->err = re_err;

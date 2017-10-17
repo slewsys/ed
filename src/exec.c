@@ -77,11 +77,11 @@
       /* Parse "write register" command variation. */                         \
       if (*ed->input == '>')                                                  \
         {                                                                     \
-          ed->core->reg->io_f |= REGISTER_WRITE;                              \
+          ed->core->regbuf->io_f |= REGISTER_WRITE;                           \
           if ((append = *++ed->input == '>'))                                 \
             ++ed->input;                                                      \
-          ed->core->reg->write_idx =                                          \
-            isdigit (*ed->input) ? *ed->input++ - '0' : REG_MAX - 1;          \
+          ed->core->regbuf->write_idx =                                       \
+            isdigit (*ed->input) ? *ed->input++ - '0' : REGBUF_MAX - 1;       \
         }                                                                     \
       else                                                                    \
         {                                                                     \
@@ -107,6 +107,7 @@
 
 
 /* Static function declarations. */
+static int at_cmd __P ((ed_buffer_t *));
 static int E_cmd __P ((ed_buffer_t *));
 static int H_cmd __P ((ed_buffer_t *));
 static int P_cmd __P ((ed_buffer_t *));
@@ -131,7 +132,7 @@ static int is_valid_range __P ((off_t, off_t, ed_buffer_t *));
 static int j_cmd __P ((ed_buffer_t *));
 static int k_cmd __P ((ed_buffer_t *));
 static int l_cmd __P ((ed_buffer_t *));
-static int left_bracket_cmd __P ((ed_buffer_t *));
+static int lbracket_cmd __P ((ed_buffer_t *));
 static int m_cmd __P ((ed_buffer_t *));
 static int n_cmd __P ((ed_buffer_t *));
 static int newline_cmd __P ((ed_buffer_t *));
@@ -139,7 +140,7 @@ static int p_cmd __P ((ed_buffer_t *));
 static int q_cmd __P ((ed_buffer_t *));
 static int q_cmd __P ((ed_buffer_t *));
 static int r_cmd __P ((ed_buffer_t *));
-static int right_bracket_cmd __P ((ed_buffer_t *));
+static int rbracket_cmd __P ((ed_buffer_t *));
 static int s_cmd __P ((ed_buffer_t *));
 static int t_cmd __P ((ed_buffer_t *));
 static int u_cmd __P ((ed_buffer_t *));
@@ -147,6 +148,76 @@ static int w_cmd __P ((ed_buffer_t *));
 static int w_cmd __P ((ed_buffer_t *));
 static int z_cmd __P ((ed_buffer_t *));
 
+#define ED_CMD_FIRST 0x3c
+#define ED_CMD_MASK  0x3f
+
+static const ed_command_t ed_cmd[] =
+  {
+   invalid_cmd,
+   equals_cmd,
+   invalid_cmd,
+   invalid_cmd,
+   at_cmd,
+   invalid_cmd,
+   invalid_cmd,
+   invalid_cmd,
+   invalid_cmd,
+   E_cmd,
+   invalid_cmd,
+   g_cmd,                       /* G_cmd */
+   H_cmd,
+   invalid_cmd,
+   invalid_cmd,
+   invalid_cmd,
+   invalid_cmd,
+   invalid_cmd,
+   invalid_cmd,
+   invalid_cmd,
+   P_cmd,
+   q_cmd,                       /* Q_cmd */
+   invalid_cmd,
+   invalid_cmd,
+   invalid_cmd,
+   invalid_cmd,
+   g_cmd,                       /* V_cmd */
+   w_cmd,                       /* W_cmd */
+   invalid_cmd,
+   invalid_cmd,
+   Z_cmd,
+   lbracket_cmd,
+   invalid_cmd,
+   rbracket_cmd,
+   invalid_cmd,
+   invalid_cmd,
+   invalid_cmd,
+   a_cmd,
+   invalid_cmd,
+   c_cmd,
+   d_cmd,
+   e_cmd,
+   f_cmd,
+   g_cmd,
+   h_cmd,
+   i_cmd,
+   j_cmd,
+   k_cmd,
+   l_cmd,
+   m_cmd,
+   n_cmd,
+   invalid_cmd,
+   p_cmd,
+   q_cmd,
+   r_cmd,
+   s_cmd,
+   t_cmd,
+   u_cmd,
+   g_cmd,                       /* v_cmd */
+   w_cmd,
+   invalid_cmd,
+   invalid_cmd,
+   z_cmd,
+   invalid_cmd,
+  };
 
 /*
  * exec_command: Execute the next command in command buffer; return
@@ -157,73 +228,8 @@ exec_command (ed)
      ed_buffer_t *ed;
 {
   int c = 0;
-  ed_command_t ed_command[] =
-    {
-     equals_cmd,
-     invalid_cmd,
-     invalid_cmd,
-     invalid_cmd,
-     invalid_cmd,
-     invalid_cmd,
-     invalid_cmd,
-     invalid_cmd,
-     E_cmd,
-     invalid_cmd,
-     g_cmd,                       /* G_cmd */
-     H_cmd,
-     invalid_cmd,
-     invalid_cmd,
-     invalid_cmd,
-     invalid_cmd,
-     invalid_cmd,
-     invalid_cmd,
-     invalid_cmd,
-     P_cmd,
-     q_cmd,                       /* Q_cmd */
-     invalid_cmd,
-     invalid_cmd,
-     invalid_cmd,
-     invalid_cmd,
-     g_cmd,                       /* V_cmd */
-     w_cmd,                       /* W_cmd */
-     invalid_cmd,
-     invalid_cmd,
-     Z_cmd,
-     left_bracket_cmd,
-     invalid_cmd,
-     right_bracket_cmd,
-     invalid_cmd,
-     invalid_cmd,
-     invalid_cmd,
-     a_cmd,
-     invalid_cmd,
-     c_cmd,
-     d_cmd,
-     e_cmd,
-     f_cmd,
-     g_cmd,
-     h_cmd,
-     i_cmd,
-     j_cmd,
-     k_cmd,
-     l_cmd,
-     m_cmd,
-     n_cmd,
-     invalid_cmd,
-     p_cmd,
-     q_cmd,
-     r_cmd,
-     s_cmd,
-     t_cmd,
-     u_cmd,
-     g_cmd,                       /* v_cmd */
-     w_cmd,
-     invalid_cmd,
-     invalid_cmd,
-     z_cmd,
-    };
 
-  ed->core->reg->io_f = 0;
+  ed->core->regbuf->io_f = 0;
   ed->display->is_paging = ed->display->paging;
   ed->display->paging = 0;
 
@@ -232,10 +238,10 @@ exec_command (ed)
   /* Register indirection. */
   if (*ed->input == '<')
     {
-      ed->core->reg->io_f |= REGISTER_READ;
+      ed->core->regbuf->io_f |= REGISTER_READ;
       ++ed->input;
-      ed->core->reg->read_idx =
-        isdigit (*ed->input) ? *ed->input++ - '0' : REG_MAX - 1;
+      ed->core->regbuf->read_idx =
+        isdigit (*ed->input) ? *ed->input++ - '0' : REGBUF_MAX - 1;
     }
 
   SKIP_WHITESPACE (ed);
@@ -263,23 +269,20 @@ exec_command (ed)
     case 'r':
     case 'w':
     case 'W':
-      if (ed->core->reg->io_f)
+      if (ed->core->regbuf->io_f)
         {
           ed->exec->err = _("Command prefix unexpected");
           return ERR;
         }
       break;
     default:
-      if (ed->core->reg->io_f || ed->file->is_glob)
+      if (ed->core->regbuf->io_f || ed->file->is_glob)
         {
           ed->exec->err = _("Command prefix unexpected");
           return ERR;
         }
       break;
     }
-
-  if ('=' <= c && c <= 'z')
-    return ed_command[c - '='](ed);
 
   switch (c)
     {
@@ -289,8 +292,12 @@ exec_command (ed)
       return bang_cmd (ed);
     case '#':
       return hash_cmd (ed);
+    case '=':
+      return equals_cmd (ed);
     default:
-      return invalid_cmd (ed);
+      return (c >= ED_CMD_FIRST ? ed_cmd[(c - ED_CMD_FIRST) & ED_CMD_MASK](ed) :
+              invalid_cmd(ed));
+
     }
 }
 
@@ -357,12 +364,12 @@ d_cmd (ed)
     return status;
 
   /* Save deleted lines in default register. */
-  ed->core->reg->io_f |= REGISTER_WRITE;
-  ed->core->reg->write_idx = REG_MAX - 1;
+  ed->core->regbuf->io_f |= REGISTER_WRITE;
+  ed->core->regbuf->write_idx = REGBUF_MAX - 1;
   COMMAND_SUFFIX (io_f, ed);
   if (!ed->exec->global)
     reset_undo_queue (ed);
-  if ((status = write_to_register (ed->exec->region->start,
+  if ((status = append_to_register (ed->exec->region->start,
                                    ed->exec->region->end, 0, ed)) < 0)
     return status;
   spl1 ();
@@ -431,7 +438,7 @@ E_cmd (ed)
     }
   reset_undo_queue (ed);
   reset_global_queue (ed);
-  for (cz = 0; cz < REG_MAX; ++cz)
+  for (cz = 0; cz < REGBUF_MAX; ++cz)
     {
       reset_register_queue (cz, ed);
     }
@@ -733,7 +740,7 @@ m_cmd (ed)
   COMMAND_SUFFIX (io_f, ed);
   if (!ed->exec->global)
     reset_undo_queue (ed);
-  switch (ed->core->reg->io_f)
+  switch (ed->core->regbuf->io_f)
     {
     case 0:
       if ((status = move_lines (ed->exec->region->start,
@@ -741,15 +748,15 @@ m_cmd (ed)
         return status;
       break;
     case REGISTER_READ:
-      if ((status = read_from_register (addr, ed)) < 0
+      if ((status = append_from_register (addr, ed)) < 0
           || (status =
-              reset_register_queue (ed->core->reg->read_idx, ed)) < 0)
+              reset_register_queue (ed->core->regbuf->read_idx, ed)) < 0)
         return status;
       break;
     case REGISTER_WRITE:
       if ((status =
-           write_to_register (ed->exec->region->start,
-                              ed->exec->region->end, append, ed)) < 0)
+           append_to_register (ed->exec->region->start,
+                               ed->exec->region->end, append, ed)) < 0)
         return status;
       spl1 ();
       if ((status = delete_lines (ed->exec->region->start,
@@ -761,7 +768,7 @@ m_cmd (ed)
       spl0 ();
       break;
     case REGISTER_READ | REGISTER_WRITE:
-      if ((status = register_move (append, ed)) < 0)
+      if ((status = inter_register_move (append, ed)) < 0)
         return status;
       break;
     default:
@@ -1023,7 +1030,7 @@ t_cmd (ed)
   COMMAND_SUFFIX (io_f, ed);
   if (!ed->exec->global)
     reset_undo_queue (ed);
-  switch (ed->core->reg->io_f)
+  switch (ed->core->regbuf->io_f)
     {
     case 0:
       if ((status = copy_lines (ed->exec->region->start,
@@ -1031,17 +1038,16 @@ t_cmd (ed)
         return status;
       break;
     case REGISTER_READ:
-      if ((status = read_from_register (addr, ed)) < 0)
+      if ((status = append_from_register (addr, ed)) < 0)
         return status;
       break;
     case REGISTER_WRITE:
-      if ((status =
-           write_to_register (ed->exec->region->start,
-                              ed->exec->region->end, append, ed)) < 0)
+      if ((status = append_to_register (ed->exec->region->start,
+                                        ed->exec->region->end, append, ed)) < 0)
         return status;
       break;
     case REGISTER_READ | REGISTER_WRITE:
-      if ((status = register_copy (append, ed)) < 0)
+      if ((status = inter_register_copy (append, ed)) < 0)
         return status;
       break;
     default:
@@ -1243,7 +1249,7 @@ w_cmd (ed)
 }
 
 static int
-left_bracket_cmd (ed)
+lbracket_cmd (ed)
      ed_buffer_t *ed;
 {
   int status = 0;               /* Return status */
@@ -1291,11 +1297,11 @@ left_bracket_cmd (ed)
    */
   ed->exec->region->addrs = 0;
 
-  return right_bracket_cmd (ed);
+  return rbracket_cmd (ed);
 }
 
 static int
-right_bracket_cmd (ed)
+rbracket_cmd (ed)
      ed_buffer_t *ed;
 {
   int c = *(ed->input - 1);
@@ -1548,6 +1554,14 @@ invalid_cmd (ed)
   return ERR;
 }
 
+static int
+at_cmd (ed)
+     ed_buffer_t *ed;
+{
+  /* Stub for '@' command. */
+  return 0;
+}
+
 
 /* exec_one_off: Exec single command. */
 static int
@@ -1602,7 +1616,7 @@ is_valid_range (from, to, ed)
        || ed->state->lines < ed->exec->region->start
        || ed->exec->region->end < 1
        || ed->state->lines < ed->exec->region->end)
-      && !(ed->core->reg->io_f & REGISTER_READ))
+      && !(ed->core->regbuf->io_f & REGISTER_READ))
     {
       ed->exec->err = _("Address out of range");
       return ERR;

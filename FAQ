@@ -1,0 +1,6 @@
+Q. Why is ed failing tests?
+
+A. This ed supports both GNU gnulib and BSD/Darwin regex(3)
+   libraries. To avoid a collision between these, before
+   switching to an alternative regex, run `make distclean'
+   followed by `configure'.

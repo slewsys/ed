@@ -367,12 +367,12 @@ enum register_io_flags
     REGISTER_WRITE = 0x02
   };
 
-#define REG_MAX  11             /* Max registers, including default. */
+#define REGBUF_MAX  11          /* Max registers, including default. */
 
 /* Register buffers. */
 struct ed_register
 {
-  ed_line_node_t *lp[REG_MAX];  /* Register buffers. */
+  ed_line_node_t *lp[REGBUF_MAX];  /* Register buffers. */
   int read_idx;                 /* Input register index. */
   int write_idx;                /* Output register index. */
   int io_f;                     /* Register I/O flags. */
@@ -384,7 +384,7 @@ struct ed_register
 struct ed_core
 {
   /* Register buffers and line markers. */
-  struct ed_register *reg;
+  struct ed_register *regbuf;
   ed_line_node_t *mark[MARK_MAX];
   int marks;
 
@@ -843,12 +843,14 @@ void activate_signals __P ((void));
 int address_offset __P ((off_t *, ed_buffer_t *));
 int address_range __P ((ed_buffer_t *));
 ed_buffer_t *alloc_ed_buffer __P ((void));
+int append_from_register __P ((off_t, ed_buffer_t *));
+int append_lines __P ((off_t, ed_buffer_t *));
 int append_script_expression __P ((const char *, ed_buffer_t *ed));
 int append_script_file __P ((char *, ed_buffer_t *ed));
 ed_line_node_t *append_line_node __P ((size_t, off_t, off_t,
                                        ed_buffer_t *));
-int append_lines __P ((off_t, ed_buffer_t *));
 ed_text_node_t *append_text_node __P ((ed_text_node_t *, const char *, size_t));
+int append_to_register __P ((off_t, off_t, int, ed_buffer_t *));
 ed_undo_node_t *append_undo_node __P ((int, off_t, off_t, ed_buffer_t *));
 int close_ed_buffer __P ((ed_buffer_t *));
 int copy_lines __P ((off_t, off_t, off_t, ed_buffer_t *));
@@ -885,6 +887,8 @@ void init_substitute __P ((regex_t **, unsigned *, off_t *, off_t *,
                            unsigned *, struct ed_substitute *));
 void init_text_deque __P ((ed_text_node_t *));
 void init_undo_queue __P ((ed_undo_node_t **, ed_buffer_t *));
+int inter_register_copy __P ((int, ed_buffer_t *));
+int inter_register_move __P ((int, ed_buffer_t *));
 int join_lines __P ((off_t, off_t, ed_buffer_t *));
 int mark_global_nodes __P ((int, ed_buffer_t *));
 int mark_line_node __P ((const ed_line_node_t *, int, ed_buffer_t *));
@@ -898,11 +902,8 @@ int read_file __P ((const char *, off_t, off_t *, off_t *, int,
                     ed_buffer_t *));
 int read_pipe __P ((const char *, off_t, off_t *, off_t *,
                     ed_buffer_t *));
-int read_from_register __P ((off_t, ed_buffer_t *));
 int read_stream_r __P ((FILE *, off_t, off_t *, ed_buffer_t *));
 void *realloc_buffer __P ((void **, size_t *, size_t, ed_buffer_t *));
-int register_copy __P ((int, ed_buffer_t *));
-int register_move __P ((int, ed_buffer_t *));
 char *regular_expression __P ((unsigned, size_t *, ed_buffer_t *));
 int reopen_ed_buffer __P ((ed_buffer_t *));
 void reset_global_queue __P ((ed_buffer_t *));
@@ -934,6 +935,5 @@ int write_file __P ((const char *, int, off_t, off_t, off_t *, off_t *,
                      const char *, ed_buffer_t *));
 int write_pipe __P ((const char *, off_t, off_t, off_t *, off_t *,
                      ed_buffer_t *));
-int write_to_register __P ((off_t, off_t, int, ed_buffer_t *));
 int write_stream __P ((FILE *, ed_line_node_t *, off_t, off_t *,
                        ed_buffer_t *));

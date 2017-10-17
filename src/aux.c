@@ -40,7 +40,7 @@ static ed_line_node_t *append_node_to_register __P ((size_t, off_t, int,
   while (0)
 
 
-/* 
+/*
  * filter_lines: Filter a range of lines through a shell command;
  *    return status.
  */
@@ -62,7 +62,7 @@ filter_lines (from, to, sc, ed)
   /* Flush any buffered I/O. */
   fflush (NULL);
 
-  /* 
+  /*
    * Create two pipes: one for writing to the shell command and
    * another for reading from it.
    */
@@ -88,7 +88,7 @@ filter_lines (from, to, sc, ed)
       signal (SIGINT, SIG_DFL);
       signal (SIGQUIT, SIG_DFL);
 
-      /* 
+      /*
        * Redirect read/write pipes to command's standard I/O. Close
        * write end of pipe ip, ip[1], so that EOF is seen. Execute
        * shell command.
@@ -136,7 +136,7 @@ filter_lines (from, to, sc, ed)
       goto err;
     case 0:
 
-      /* 
+      /*
        * Close unused pipe ends, then open and write to shell
        * process's standard input.
        */
@@ -184,49 +184,17 @@ filter_lines (from, to, sc, ed)
 #endif  /* defined (HAVE_FORK) && defined (WANT_EXTERNAL_FILTER) */
 
 
-/* 
- * append_node_to_register: Append node to end of given register.
- *   Return node pointer.
- */
-static ed_line_node_t *
-append_node_to_register (len, offset, idx, ed)
-     size_t len;
-     off_t offset;
-     int idx;
-     ed_buffer_t *ed;
-{
-  ed_line_node_t *lp;
-  ed_line_node_t *tq = ed->core->reg->lp[idx]->q_back;
-
-  spl1 ();
-  if (!(lp = (ed_line_node_t *) malloc (ED_LINE_NODE_T_SIZE)))
-    {
-      fprintf (stderr, "%s\n", strerror (errno));
-      ed->exec->err = _("Memory exhausted");
-      spl0 ();
-      return NULL;
-    }
-  lp->len = len;
-  lp->seek = offset;
-
-  /* APPEND_NODE is macro, so tq variable is mandatory! */
-  APPEND_NODE (lp, tq);
-  spl0 ();
-  return lp;
-}
-
-
-/* 
+/*
  * append_from_register: Append lines from register to buffer after given
  *   address.
  */
 int
-read_from_register (addr, ed)
+append_from_register (addr, ed)
      off_t addr;                /* destination address */
      ed_buffer_t *ed;
 {
-  int read_idx = ed->core->reg->read_idx;
-  ed_line_node_t *read_head = ed->core->reg->lp[read_idx];
+  int read_idx = ed->core->regbuf->read_idx;
+  ed_line_node_t *read_head = ed->core->regbuf->lp[read_idx];
   ed_line_node_t *lp, *rp;
   ed_undo_node_t *up = NULL;
 
@@ -248,30 +216,96 @@ read_from_register (addr, ed)
 }
 
 
-/* 
- * register_copy: Write lines from one register to another. If
+/*
+ * append_node_to_register: Append node to end of given register.
+ *   Return node pointer.
+ */
+static ed_line_node_t *
+append_node_to_register (len, offset, idx, ed)
+     size_t len;
+     off_t offset;
+     int idx;
+     ed_buffer_t *ed;
+{
+  ed_line_node_t *lp;
+  ed_line_node_t *tq = ed->core->regbuf->lp[idx]->q_back;
+
+  spl1 ();
+  if (!(lp = (ed_line_node_t *) malloc (ED_LINE_NODE_T_SIZE)))
+    {
+      fprintf (stderr, "%s\n", strerror (errno));
+      ed->exec->err = _("Memory exhausted");
+      spl0 ();
+      return NULL;
+    }
+  lp->len = len;
+  lp->seek = offset;
+
+  /* APPEND_NODE is macro, so tq variable is mandatory! */
+  APPEND_NODE (lp, tq);
+  spl0 ();
+  return lp;
+}
+
+
+/*
+ * append_to_register: Write addressed lines to given register. If
+ *   `append' is zero, any previous register contents are lost.
+ */
+int
+append_to_register (from, to, append, ed)
+     off_t from;                /* from address */
+     off_t to;                  /* to address */
+     int append;
+     ed_buffer_t *ed;
+{
+  int write_idx = ed->core->regbuf->write_idx;
+  ed_line_node_t *write_head = ed->core->regbuf->lp[write_idx];
+  ed_line_node_t *lp = get_line_node (from, ed);
+  off_t n = from ? to - from + 1 : 0;
+
+  if (!write_head)
+    {
+      if (!init_register_queue (write_idx, ed))
+        write_head = ed->core->regbuf->lp[write_idx];
+      else
+        return ERR;
+    }
+
+  if (!append && reset_register_queue (write_idx, ed) < 0)
+    return ERR;
+
+  for (; n; --n, lp = lp->q_forw)
+    if (!append_node_to_register (lp->len, lp->seek, write_idx, ed))
+      return ERR;
+  return 0;
+}
+
+
+/*
+ * inter_register_copy: Write lines from one register to another. If
  *   `append' is zero, any previous contents of target register are
  *   lost.
  */
 int
-register_copy (append, ed)
+inter_register_copy (append, ed)
      int append;
      ed_buffer_t *ed;
 {
-  int read_idx = ed->core->reg->read_idx;
-  int write_idx = ed->core->reg->write_idx;
-  ed_line_node_t *read_head = ed->core->reg->lp[read_idx];
-  ed_line_node_t *write_head = ed->core->reg->lp[write_idx];
+  int read_idx = ed->core->regbuf->read_idx;
+  int write_idx = ed->core->regbuf->write_idx;
+  ed_line_node_t *read_head = ed->core->regbuf->lp[read_idx];
+  ed_line_node_t *write_head = ed->core->regbuf->lp[write_idx];
   ed_line_node_t *rp;
 
   if (!write_head)
     {
       if (!init_register_queue (write_idx, ed))
-        write_head = ed->core->reg->lp[write_idx];
+        write_head = ed->core->regbuf->lp[write_idx];
       else
         return ERR;
     }
-  
+
   /* Appending register to itself. */
   if (append && read_idx == write_idx)
     {
@@ -294,28 +328,28 @@ register_copy (append, ed)
 }
 
 
-/* 
- * move_register: Move lines from one register to another. If `append'
+/*
+ * inter_register_move: Move lines from one register to another. If `append'
  *   is zero, any previous contents of target register are lost.
  */
 int
-register_move (append, ed)
+inter_register_move (append, ed)
      int append;
      ed_buffer_t *ed;
 {
-  int read_idx = ed->core->reg->read_idx;
-  int write_idx = ed->core->reg->write_idx;
-  ed_line_node_t *read_head = ed->core->reg->lp[read_idx];
-  ed_line_node_t *write_head = ed->core->reg->lp[write_idx];
+  int read_idx = ed->core->regbuf->read_idx;
+  int write_idx = ed->core->regbuf->write_idx;
+  ed_line_node_t *read_head = ed->core->regbuf->lp[read_idx];
+  ed_line_node_t *write_head = ed->core->regbuf->lp[write_idx];
 
   if (!write_head)
     {
       if (!init_register_queue (write_idx, ed))
-        write_head = ed->core->reg->lp[write_idx];
+        write_head = ed->core->regbuf->lp[write_idx];
       else
         return ERR;
     }
-  
+
   /* Appending register to itself. */
   if (append && read_idx == write_idx)
     {
@@ -350,7 +384,7 @@ reset_register_queue (idx, ed)
      int idx;
      ed_buffer_t *ed;
 {
-  ed_line_node_t *head = ed->core->reg->lp[idx];
+  ed_line_node_t *head = ed->core->regbuf->lp[idx];
   ed_line_node_t *rp, *rn;
 
   if (head)
@@ -364,39 +398,5 @@ reset_register_queue (idx, ed)
         }
       spl0 ();
     }
-  return 0;
-}
-
-
-/* 
- * write_to_register: Write addressed lines to given register. If
- *   `append' is zero, any previous register contents are lost.
- */
-int
-write_to_register (from, to, append, ed)
-     off_t from;                /* from address */
-     off_t to;                  /* to address */
-     int append;
-     ed_buffer_t *ed;
-{
-  int write_idx = ed->core->reg->write_idx;
-  ed_line_node_t *write_head = ed->core->reg->lp[write_idx];
-  ed_line_node_t *lp = get_line_node (from, ed);
-  off_t n = from ? to - from + 1 : 0;
-  
-  if (!write_head)
-    {
-      if (!init_register_queue (write_idx, ed))
-        write_head = ed->core->reg->lp[write_idx];
-      else
-        return ERR;
-    }
-  
-  if (!append && reset_register_queue (write_idx, ed) < 0)
-    return ERR;
-
-  for (; n; --n, lp = lp->q_forw)
-    if (!append_node_to_register (lp->len, lp->seek, write_idx, ed))
-      return ERR;
   return 0;
 }

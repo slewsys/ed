@@ -591,7 +591,7 @@ init_register_queue (idx, ed)
     }
 
   LINK_NODES (rq, rq);
-  ed->core->reg->lp[idx] = rq;
+  ed->core->regbuf->lp[idx] = rq;
   spl0 ();
   return 0;
 }
@@ -724,7 +724,7 @@ alloc_ed_buffer ()
   ALLOC_ED_TYPE (ed_buffer->core, 1, struct ed_core);
   ALLOC_ED_TYPE (ed_buffer->core->line_head, 1, ed_line_node_t);
   ALLOC_ED_TYPE (ed_buffer->core->global_head, 1, ed_global_node_t);
-  ALLOC_ED_TYPE (ed_buffer->core->reg, 1, struct ed_register);
+  ALLOC_ED_TYPE (ed_buffer->core->regbuf, 1, struct ed_register);
   ALLOC_ED_TYPE (ed_buffer->core->undo_head, 1, ed_undo_node_t);
   ALLOC_ED_TYPE (ed_buffer->display, 1, struct ed_display);
   ALLOC_ED_TYPE (ed_buffer->exec, 1, struct ed_execute);
