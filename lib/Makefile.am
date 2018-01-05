@@ -455,7 +455,7 @@ EXTRA_libgnu_a_SOURCES += nl_langinfo.c
 if LIBADD_REGEX
 BUILT_SOURCES += regex.h
 DISTCLEANFILES += regex.h
-AM_CPPFLAGS += -DRE_ENABLE_I18N=1 -D__USE_GNU=1
+AM_CPPFLAGS += -DRE_ENABLE_I18N=1
 regex.h: regex.h.in
 	$(LN_S) $(top_srcdir)/lib/$@.in $@
 

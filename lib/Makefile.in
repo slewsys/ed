@@ -126,7 +126,7 @@ host_triplet = @host@
 @gl_GNULIB_ENABLED_lock_TRUE@am__append_12 = glthread/lock.h glthread/lock.c
 @LIBADD_REGEX_TRUE@am__append_13 = regex.h
 @LIBADD_REGEX_TRUE@am__append_14 = regex.h
-@LIBADD_REGEX_TRUE@am__append_15 = -DRE_ENABLE_I18N=1 -D__USE_GNU=1
+@LIBADD_REGEX_TRUE@am__append_15 = -DRE_ENABLE_I18N=1
 @gl_GNULIB_ENABLED_stdlib_TRUE@am__append_16 = stdlib.h
 @gl_GNULIB_ENABLED_stdlib_TRUE@am__append_17 = stdlib.h stdlib.h-t
 @gl_GNULIB_ENABLED_threadlib_TRUE@am__append_18 = glthread/threadlib.c
@@ -1309,8 +1309,8 @@ maintainer-clean-generic:
 	@echo "it deletes files that may require special tools to rebuild."
 	-test -z "$(BUILT_SOURCES)" || rm -f $(BUILT_SOURCES)
 	-test -z "$(MAINTAINERCLEANFILES)" || rm -f $(MAINTAINERCLEANFILES)
-@gl_GNULIB_ENABLED_localcharset_FALSE@uninstall-local:
 @gl_GNULIB_ENABLED_localcharset_FALSE@install-exec-local:
+@gl_GNULIB_ENABLED_localcharset_FALSE@uninstall-local:
 clean: clean-recursive
 
 clean-am: clean-generic clean-libtool clean-noinstLIBRARIES \

@@ -1,6 +1,6 @@
-#!/bin/bash -
+#!/usr/bin/env bash
 #
-# @(#)bootstrap-sh
+# @(#)bootstrap.sh
 #
 # Copyright © 2006-2016 Andrew L. Moore, SlewSys Research
 #
@@ -62,7 +62,7 @@ if $verbose; then
 ========================================================================
 
      Autoreconf appears to have completed successfully. To continue,
-     optionally create a build directory, then run:
+     optionally create and cd to a build directory, then run:
 
              $ $top_srcdir/configure
              $ make

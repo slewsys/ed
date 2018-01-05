@@ -95,7 +95,7 @@ build_triplet = @build@
 host_triplet = @host@
 bin_PROGRAMS = ed$(EXEEXT)
 @LDADD_LIBGNU_TRUE@am__append_1 = ../lib/libgnu.a
-@LIBADD_REGEX_TRUE@am__append_2 = -DRE_ENABLE_I18N=1 -D__USE_GNU=1
+@LIBADD_REGEX_TRUE@am__append_2 = -DRE_ENABLE_I18N=1
 @LDADD_LIBINTL_TRUE@am__append_3 = -I$(top_srcdir)/intl -I$(top_builddir)/intl
 @LDADD_LIBINTL_TRUE@am__append_4 = @LIBINTL@
 @LDADD_LIBINTL_FALSE@am__append_5 = @LTLIBINTL@
