@@ -278,7 +278,7 @@ msgid ""
 "  !info ed RET m switches RET\n"
 "to see full documentation of these options.\n"
 "\n"
-"Report bugs to: <bug-ed@gnu.org>.\n"
+"Report bugs to: <https://github.com/slewsys/ed>.\n"
 msgstr ""
 
 #: ../src/parse.c:260 ../src/parse.c:610

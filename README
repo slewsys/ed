@@ -10,4 +10,4 @@ Laboratories. See `doc/tutorial/' or, from within ed, type:
 The ed algorithm is described in Kernighan and Plauger's book
 "Software Tools in Pascal," Addison-Wesley, 1981.
 
-Send bug reports to: bug-ed@gnu.org
+Submit Issues or Pull Requests to: <https://github.com/slewsys/ed>.

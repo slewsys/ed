@@ -180,7 +180,7 @@ top:
 
 #ifdef WANT_FILE_GLOB
 
-  /* 
+  /*
    * If file globbing is enabled and ed is given multiple file args,
    * then print name of each as it becomes current, i.e., opened for
    * editing. For SUSv4 compatibility, suppress printing the name if
@@ -194,7 +194,7 @@ top:
     {
 #ifdef SIGWINCH
 
-      /* 
+      /*
        * Signals are fatal before final initialization, i.e., before
        * calling one_time_init (), but SIGWINCH only sets current
        * window dimensions.
@@ -327,7 +327,7 @@ top:
 }
 
 
-/* 
+/*
  * next_edit: Construct ed command per status, pointed to by
  *   ed->input. Return status.
  */
@@ -371,7 +371,7 @@ next_edit (status, ed)
 
 
 #ifdef WANT_ED_ENVAR
-/* 
+/*
  * getenv_init_argv: Return argv constructed from value of given
  *   environment variable; argv[0] points to the given variable name.
  */
@@ -403,7 +403,7 @@ getenv_init_argv (s, argc, ed)
       strcpy (env, u);
       for (v = strtok (env, sep); v; v = strtok (NULL, sep))
         {
-          /* 
+          /*
            * In addition to max length (ARG_MAX), check max number of
            *   arguments, approximated as (ARG_MAX / 4).
            */
@@ -586,7 +586,7 @@ If FILE is given, read it for editing.  From within ed, run:\n\
   !info ed RET m switches RET\n\
 to see full documentation of these options.\n\
 \n\
-Report bugs to: <bug-ed@gnu.org>.\n"));
+Submit Issues or Pull Requests to: <https://github.com/slewsys/ed>.\n"));
     }
   exit (status);
 }

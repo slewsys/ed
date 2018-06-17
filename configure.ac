@@ -5,27 +5,25 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT([ed],[2.0.3],[bug-ed@gnu.org])
+AC_INIT([ed],[2.0.4],[https://github.com/slewsys/ed])
 AC_CONFIG_AUX_DIR([.])
 AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_LIBOBJ_DIR([lib])
 AC_CONFIG_MACRO_DIR([m4])
 AC_USE_SYSTEM_EXTENSIONS
-AM_INIT_AUTOMAKE([gnits])
+AM_INIT_AUTOMAKE([foreign])
 
 # Preserve configured options for displaying in --info output.
 [ac_cv_configure_args=''
  while read line; do
-    configure_args=`expr ."$line" : '^..*configure \{1,\}\(--.*\)$'`
+    configure_args=`expr ."$line" : '^..*set X /bin/sh.*configure. \(.*\)$ac_configure_extra_args.*$'`
     test ."$configure_args" != .'' && break
- done <config.log
+ done <config.status
  for ac_option in $configure_args; do
-     expr ."$ac_option" : .'-' >/dev/null 2>&1 &&
-     ! expr ."$ac_option" : .'--no-create' >/dev/null 2>&1 &&
-     ! expr ."$ac_option" : .'--no-recursion' >/dev/null 2>&1 &&
-     ac_cv_configure_args="$ac_cv_configure_args  $ac_option\\n"
- done]
+   ac_cv_configure_args="$ac_cv_configure_args $ac_option\n"
+ done
+]
 if test ! ."$[ac_cv_configure_args]" = .''; then
   AC_DEFINE_UNQUOTED([CONFIGURE_ARGS],
     ["Configured options:\n$ac_cv_configure_args"],

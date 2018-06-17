@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 #
-# @(#)bootstrap.sh
-#
-# Copyright © 2006-2016 Andrew L. Moore, SlewSys Research
+# @(#)autogen.sh
 #
 # This script generates a GNU Autoconf configure script for the ed
 # line editor.
@@ -77,7 +75,7 @@ if $verbose; then
 
              $ gnumake check
 
-      Report bugs to: bug-ed@gnu.org
+      Submit issues or pull requests to: <https://github.com/slewsys/ed>.
 
 ------------------------------------------------------------------------
 EOF
