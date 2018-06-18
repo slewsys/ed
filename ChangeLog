@@ -1,3 +1,18 @@
+2018-06-18  Andrew L. Moore  <slewsys@gmail.com>
+
+	* src/exec.c (rbracket_cmd): Call lbracket_cmd (), not
+	exec_one_off ('[').
+	(lbracket_cmd): Call Z_cmd (), not exec_one_off ('Z').
+	Call z_cmd () directly, not via rbracket_cmd ().
+
+2017-06-17  Andrew L. Moore  <slewsys@gmail.com>
+
+	* configure.ac: Record configure args and environment vars.
+
+2017-10-17  Andrew L. Moore  <slewsys@gmail.com>
+
+	* src/re.c: Add support for Darwin ENHANCED regex.
+
 2017-10-15  gettextize  <bug-gnu-gettext@gnu.org>
 
 	* m4/gettext.m4: Upgrade to gettext-0.19.8.1.
@@ -9,6 +24,11 @@
 	* m4/po.m4: Upgrade to gettext-0.19.8.1.
 	* m4/progtest.m4: Upgrade to gettext-0.19.8.1.
 	* configure.ac (AM_GNU_GETTEXT_VERSION): Bump to 0.19.8.
+
+2017-10-15  Andrew L. Moore  <slewsys@gmail.com>
+
+	* Makefile.am: Update included GNU regex via gnulib.
+	Version 2.0.3.
 
 2017-03-21  Andrew L. Moore  <slewsys@gmail.com>
 

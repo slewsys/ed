@@ -2,18 +2,6 @@ Submit issues or pull requests to: <https://github.com/slewsys/ed>.
 
 * KNOWN BUGS
 
-** Scroll half-page forward command, `]', does not work if given line
-    address great than (lines-per-page / 2).  In particular:
-
-  *** If given an address from (lines-per-page / 2) + 1 to
-      lines-per-page - 2, it displays lines 1 through lines-per-page - 1.
-
-  *** If given an address of lines-per-page - 1 or above, only the line
-      after the addressed line is displayed.
-
-** Scroll half-page backward command, `[', does not work if given line
-    address from (lines-per-page / 2) + 1 to lines-per-page - 2. In
-    particular:
-
-  *** If given an address from (lines-per-page / 2) + 1 to
-      lines-per-page - 2, it displays lines 1 through lines-per-page - 1.
+** Scroll half-page backward and forward commands (`[' and `]',
+   respectively), if given an address from (lines-per-page / 2) + 1 to
+   lines-per-page - 2, always display lines 1 through lines-per-page - 1.

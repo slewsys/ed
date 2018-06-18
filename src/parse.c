@@ -42,12 +42,7 @@ address_range (ed)
       if (have_dc)
         {
           if (ed->exec->region->addrs)
-            {
-              /* first = *ed->input == ';' ? (dot = second) : second; */
-              first = second;
-              if (*ed->input == ';')
-                dot = first; 
-            }
+            first = *ed->input == ';' ? (dot = second) : second;
           else
             {
               first = *ed->input == ';' ? dot : 1;

@@ -1253,6 +1253,9 @@ lbracket_cmd (ed)
      ed_buffer_t *ed;
 {
   int status = 0;               /* Return status */
+  /*
+   * off_t page_addr = ed->display->page_addr;
+   */
 
   /*
    * (.)[n - Displays page of `n' lines centered around addressed
@@ -1288,16 +1291,19 @@ lbracket_cmd (ed)
   ed->display->hidden = 0;
 
   /* At start or end of buffer, so display it. */
+  /*
+   * ed->exec->region->start = ed->exec->region->end = page_addr;
+   */
   if ((!ed->display->is_paging && ed->exec->region->end < ed->state->dot)
       || ed->state->dot == ed->state->lines)
-    return exec_one_off ("Z", ed->input, ed);
+    return Z_cmd (ed);
 
   /*
    * Unfreeze values of ed->exec->region->start and ed->exec->region->end.
    */
   ed->exec->region->addrs = 0;
 
-  return rbracket_cmd (ed);
+  return z_cmd (ed);
 }
 
 static int
@@ -1318,7 +1324,7 @@ rbracket_cmd (ed)
       return ERR;
     }
   if (c == ']' && (ed->exec->region->addrs || !ed->display->is_paging))
-    return exec_one_off ("[", ed->input, ed);
+    return lbracket_cmd (ed);
   return z_cmd (ed);
 }
 
