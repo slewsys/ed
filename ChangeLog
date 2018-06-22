@@ -1,3 +1,12 @@
+2018-06-22  Andrew L. Moore  <alm@slewsys.org>
+
+	* src/exec.c (lbracket_cmd): Off-by-one fix for half-page scrolling.
+	(z_cmd): Handle half-page scrolling given address in second half
+	of first page. For example, on terminal with 24 rows, opening a
+	file with at least 41 (non-wrapping) lines in ed and running the
+	command `20[' prints lines 8 through 41, with line 20 in the
+	middle of the window.
+
 2018-06-18  Andrew L. Moore  <slewsys@gmail.com>
 
 	* src/exec.c (rbracket_cmd): Call lbracket_cmd (), not

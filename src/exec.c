@@ -118,7 +118,7 @@ static int c_cmd __P ((ed_buffer_t *));
 static int d_cmd __P ((ed_buffer_t *));
 static int e_cmd __P ((ed_buffer_t *));
 static int equals_cmd __P ((ed_buffer_t *));
-static int exec_one_off __P ((const char *, char *, ed_buffer_t *ed));
+static int normalize_frame_buffer __P ((ed_buffer_t *));
 static int f_cmd __P ((ed_buffer_t *));
 static int g_cmd __P ((ed_buffer_t *));
 static int g_cmd __P ((ed_buffer_t *));
@@ -1253,9 +1253,6 @@ lbracket_cmd (ed)
      ed_buffer_t *ed;
 {
   int status = 0;               /* Return status */
-  /*
-   * off_t page_addr = ed->display->page_addr;
-   */
 
   /*
    * (.)[n - Displays page of `n' lines centered around addressed
@@ -1263,8 +1260,6 @@ lbracket_cmd (ed)
    * address is set to the last line displayed. A subsequent `['
    * command, therefore, scrolls backward one-half page.
    */
-
-  /* ed->state->dot = ed->display->page_addr; */
   if (ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL))
     {
       ed->exec->err = _("Unknown command");
@@ -1275,33 +1270,21 @@ lbracket_cmd (ed)
     return status;
 
   /*
-   * Freeze values of ed->exec->region->start and
-   * ed->exec->region->end from assignment by exec_one_off() below.
-   */
-  ed->exec->region->addrs = 1;
-
-  /*
    * Half-page scrolling implemenation requires "normalized" frame
-   * buffer, so load page preceding given address in background
+   * buffer, so load page preceding current address in background
    * (display->hidden = 1), then scroll from there.
    */
-  ed->display->hidden = 1;
-  if ((status = exec_one_off ("Z", ed->input, ed)) < 0)
+  if ((status = normalize_frame_buffer (ed)) < 0)
     return status;
-  ed->display->hidden = 0;
 
   /* At start or end of buffer, so display it. */
   /*
-   * ed->exec->region->start = ed->exec->region->end = page_addr;
+   * if ((!ed->display->is_paging && ed->exec->region->end < ed->state->dot)
    */
-  if ((!ed->display->is_paging && ed->exec->region->end < ed->state->dot)
+  if ((!ed->display->is_paging &&
+       ed->exec->region->end <= ed->display->ws_row / 2 + 1)
       || ed->state->dot == ed->state->lines)
     return Z_cmd (ed);
-
-  /*
-   * Unfreeze values of ed->exec->region->start and ed->exec->region->end.
-   */
-  ed->exec->region->addrs = 0;
 
   return z_cmd (ed);
 }
@@ -1310,8 +1293,6 @@ static int
 rbracket_cmd (ed)
      ed_buffer_t *ed;
 {
-  int c = *(ed->input - 1);
-
   /*
    * (.)]n - Displays page of `n' lines centered around addressed
    * line, where `n' defaults to current window size. The current
@@ -1323,7 +1304,7 @@ rbracket_cmd (ed)
       ed->exec->err = _("Unknown command");
       return ERR;
     }
-  if (c == ']' && (ed->exec->region->addrs || !ed->display->is_paging))
+  if (ed->exec->region->addrs || !ed->display->is_paging)
     return lbracket_cmd (ed);
   return z_cmd (ed);
 }
@@ -1336,6 +1317,7 @@ z_cmd (ed)
   size_t len = 0;
   unsigned io_f = 0;            /* Print I/O flags */
   int status = 0;               /* Return status */
+  int fhp_off = 0;              /* First half-page-scroll forward offset. */
   int c = *(ed->input - 1);
 
   /* scroll forward */
@@ -1352,7 +1334,8 @@ z_cmd (ed)
       ed->display->overflow = 0;
     }
 
-  addr = ed->state->dot + !(ed->exec->global || ed->display->underflow);
+  addr = c == 'z' ? ed->state->dot : ed->exec->region->end;
+  addr += !(ed->exec->global || ed->display->underflow);
 
   /*
    * If no address specified (i.e., ed->exec->region->addrs == 0),
@@ -1408,6 +1391,9 @@ z_cmd (ed)
        */
       addr = min (ed->state->lines, (ed->exec->region->end +
                                      ((ed->display->ws_row - 1) >> 1) - 1));
+      if ((fhp_off = ed->display->ws_row - ed->exec->region->end + 1) > 0 &&
+          ed->exec->region->end + fhp_off <= addr)
+          ed->exec->region->end += fhp_off;
       io_f |= ZFWD | ZHFW;
       break;
     }
@@ -1569,40 +1555,42 @@ at_cmd (ed)
 }
 
 
-/* exec_one_off: Exec single command. */
+/* normalize_frame_buffer: Exec hidden `Z' command with currrent address. */
 static int
-exec_one_off (cmd, modifier, ed)
-     const char *cmd;
-     char *modifier;
+normalize_frame_buffer (ed)
      ed_buffer_t *ed;
 {
   static char *buf = NULL;
   static size_t buf_size = 0;
 
-  char *saved_modifier = modifier;
+  char *modifier = ed->input;
   size_t len;
   int status;
 
-  /* Allocate for `start,end' + cmd + modifier. */
-  if (strlen (cmd) != 1
-      || (len = 2 * OFF_T_LEN + strlen (modifier) + 3) > SIZE_T_MAX)
+  /* Allocate for `start,end' + `Z' + modifier. */
+  if ((len = 2 * OFF_T_LEN + strlen (modifier) + 3) > SIZE_T_MAX)
     {
       ed->exec->err = _("Command too long");
       return ERR;
     }
   REALLOC_THROW (buf, buf_size, len, ERR, ed);
-  if (ed->exec->region->addrs)
-    snprintf (buf, len,
-              "%" OFF_T_FORMAT_STRING ",%" OFF_T_FORMAT_STRING "%s%s",
-              ed->exec->region->start,
-              ed->exec->region->end, cmd, modifier);
-  else
-    snprintf (buf, len, "%s%s", cmd, modifier);
+
+  /* Always use default address range. */
+  snprintf (buf, len,
+            "%" OFF_T_FORMAT_STRING ",%" OFF_T_FORMAT_STRING "%c%s",
+            ed->exec->region->start,
+            ed->exec->region->end, 'Z', modifier);
   ed->input = buf;
+  ed->display->hidden = 1;
   if ((status = address_range (ed)) < 0
       || (status = exec_command (ed)) < 0)
     return status;
-  ed->input = saved_modifier;
+  ed->display->hidden = 0;
+  ed->input = modifier;
+
+  /* Forget any given address - necessary for consistent behavior of
+     half-forward and half-backward scrolling. */
+  ed->exec->region->addrs = 0;
   return 0;
 }
 

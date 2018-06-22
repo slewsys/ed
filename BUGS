@@ -1,7 +1,1 @@
-Submit issues or pull requests to: <https://github.com/slewsys/ed>.
-
-* KNOWN BUGS
-
-** Scroll half-page backward and forward commands (`[' and `]',
-   respectively), if given an address from (lines-per-page / 2) + 1 to
-   lines-per-page - 2, always display lines 1 through lines-per-page - 1.
+Submit Issues or Pull Requests to: <https://github.com/slewsys/ed>.

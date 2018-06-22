@@ -320,11 +320,6 @@ typedef struct ed_text_node
 
 #define ED_TEXT_NODE_T_SIZE (sizeof (ed_text_node_t))
 
-/* # define UADD    0 */
-/* # define UDEL    1 */
-/* # define UMOV    2 */
-/* # define URET    3 */
-
 /* Undo nodes types - inverse derived by toggling least-significant bit. */
 typedef enum ed_undo_op
   {
