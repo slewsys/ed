@@ -32,7 +32,7 @@ update-testsuite-dist:
 	    echo "$@: $(top_srcdir): Permission denied.";		      \
 	    exit 1;							      \
 	fi;								      \
-	chmod +x $(top_srcdir)/bootstrap-sh;				      \
+	chmod +x $(top_srcdir)/upgrade.sh;				      \
 	chmod +x $(top_srcdir)/testsuite/ts-am-sw.ed;			      \
 	if test -f $(top_srcdir)/testsuite/.ts-am-sw; then		      \
 	  (cd $(top_srcdir)/testsuite && ./ts-am-sw.ed && rm -f ./ts-am-sw);  \
@@ -40,7 +40,7 @@ update-testsuite-dist:
 	if test ! -f $(top_srcdir)/testsuite/.ts-am-sw; then		      \
 	  (cd $(top_srcdir)/testsuite && ./ts-am-sw.ed && touch ./.ts-am-sw); \
 	fi;								      \
-	(cd $(top_srcdir)/ && ./bootstrap-sh);				      \
+	(cd $(top_srcdir)/ && ./upgrade.sh);				      \
 	$(MAKE) $(AM_MAKEFLAGS) all
 	-rm -f $(top_srcdir)/testsuite/testsuite;			      \
 	$(MAKE) $(AM_MAKEFLAGS) check;					      \
@@ -52,7 +52,7 @@ update-po:
 	if test -f $(top_srcdir)/testsuite/.ts-am-sw; then		      \
 	  (cd $(top_srcdir)/testsuite && ./ts-am-sw.ed && rm -f ./ts-am-sw);  \
 	fi;								      \
-	(cd $(top_srcdir)/ && ./bootstrap-sh);				      \
+	(cd $(top_srcdir)/ && ./upgrade.sh);				      \
 	$(MAKE) $(AM_MAKEFLAGS) distclean
 
 distclean-local:

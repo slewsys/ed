@@ -1,1 +1,9 @@
 Submit Issues or Pull Requests to: <https://github.com/slewsys/ed>.
+
+KNOWN BUGS
+
+* Paging algorithm should use UTF-8 character width instead of ASCII.
+
+* Half-page scrolling assumes that width of a printed line does not
+  exceed terminal width (i.e., value of shell environment variable
+  $COLUMNS).

@@ -1,35 +1,39 @@
-#!/usr/bin/env bash
+#!/bin/sh
 #
 # @(#)autogen.sh
 #
 # This script generates a GNU Autoconf configure script for the ed
 # line editor.
 #
-PGM="${0##*/}"
+script_name=$(basename $0)
 
-if [[ ."$1" = .-h* ]] || [[ ."$1" = .--h* ]]; then
-    echo "Usage: $PGM [-h|--help] [-s|--silent] [maintainer-update-dist]"
-    exit 1
-fi
+case "$1" in
+    -h*|--h*)
+        echo "Usage: $script_name [-h|--help] [-s|--silent] [maintainer-update-dist]"
+        exit
+        ;;
+esac
 
 verbose='true'
-if [[ ."$1" = .-s* ]] || [[ ."$1" = .--s* ]]; then
-    verbose='false'
-    shift
-fi
+case "$1" in
+    -s*|--s*)
+        verbose='false'
+        shift
+        ;;
+esac
 
-srcdir="${0%/*}"
+srcdir=$(dirname $0)
 abs_srcdir="$(cd "$srcdir" && pwd)"
 if [ ! -w "$abs_srcdir" ]; then
-    echo "$PGM: $abs_srcdir: Permission denied"
+    echo "$script_name: $abs_srcdir: Permission denied"
     exit 2
 fi
 
-AUTORECONF=$(which autoreconf)
+autoreconf_cmd=$(which autoreconf)
 exit_status=$?
-if (( exit_status != 0 )); then
+if test $exit_status -ne 0; then
     cat <<EOF
-$PGM: autoreconf: File not found
+$script_name: autoreconf: File not found
 Please verify installation of GNU Autoconf, Automake, Gettext and
 Libtool before running this script.
 EOF
@@ -37,25 +41,25 @@ EOF
 fi
 
 $verbose && cat <<EOF
-$PGM: Running:
+$script_name: Running:
   cd "$abs_srcdir" &&
-  $AUTORECONF --verbose --force --install -I ./m4 >&2
+  autoreconf --verbose --force --install -I ./m4 >&2
 
 EOF
 
 
-autoconf_output="$(cd "$abs_srcdir" && $AUTORECONF --verbose --force --install -I ./m4 2>&1)"
+autoconf_output=$(cd "$abs_srcdir" && autoreconf --verbose --force --install -I ./m4 2>&1)
 exit_status=$?
 if (( exit_status != 0 )); then
     cat <<EOF
-$PGM:
+$script_name:
 $autoconf_output
 EOF
     exit $exit_status
 fi
 
 if $verbose; then
-    echo "$PGM:" >&2
+    echo "$script_name:" >&2
     cat >&2 <<'EOF'
 ========================================================================
 

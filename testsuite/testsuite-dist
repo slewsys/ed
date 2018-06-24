@@ -1012,7 +1012,7 @@ Execution tuning:
 _ATEOF
 cat <<_ATEOF || at_write_fail=1
 
-Report bugs to <bug-ed@gnu.org>.
+Report bugs to <https://github.com/slewsys/ed>.
 _ATEOF
   exit $at_write_fail
 fi
@@ -1020,7 +1020,7 @@ fi
 # List of tests.
 if $at_list_p; then
   cat <<_ATEOF || at_write_fail=1
-ed 2.0.3 test suite test groups:
+ed 2.0.4 test suite test groups:
 
  NUM: FILE-NAME:LINE     TEST-GROUP-NAME
       KEYWORDS
@@ -1061,7 +1061,7 @@ _ATEOF
   exit $at_write_fail
 fi
 if $at_version_p; then
-  $as_echo "$as_me (ed 2.0.3)" &&
+  $as_echo "$as_me (ed 2.0.4)" &&
   cat <<\_ATEOF || at_write_fail=1
 
 Copyright (C) 2012 Free Software Foundation, Inc.
@@ -1238,11 +1238,11 @@ exec 5>>"$at_suite_log"
 
 # Banners and logs.
 $as_echo "## -------------------- ##
-## ed 2.0.3 test suite. ##
+## ed 2.0.4 test suite. ##
 ## -------------------- ##"
 {
   $as_echo "## -------------------- ##
-## ed 2.0.3 test suite. ##
+## ed 2.0.4 test suite. ##
 ## -------------------- ##"
   echo
 
@@ -1667,7 +1667,7 @@ at_fn_group_postprocess ()
     sed "s/^ */$as_me: WARNING: /" <<_ATEOF
       A failure happened in a test group before any test could be
       run. This means that test suite is improperly designed.  Please
-      report this failure to <bug-ed@gnu.org>.
+      report this failure to <https://github.com/slewsys/ed>.
 _ATEOF
     $as_echo "$at_setup_line" >"$at_check_line_file"
     at_status=99
@@ -2085,8 +2085,8 @@ _ASBOX
   fi
   $as_echo "Please send $at_msg and all information you think might help:
 
-   To: <bug-ed@gnu.org>
-   Subject: [ed 2.0.3] $as_me: $at_fail_list${at_fail_list:+ failed${at_xpass_list:+, }}$at_xpass_list${at_xpass_list:+ passed unexpectedly}
+   To: <https://github.com/slewsys/ed>
+   Subject: [ed 2.0.4] $as_me: $at_fail_list${at_fail_list:+ failed${at_xpass_list:+, }}$at_xpass_list${at_xpass_list:+ passed unexpectedly}
 
 You may investigate any problem if you feel able to do so, in which
 case the test suite provides a good starting point.  Its output may

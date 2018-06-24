@@ -1,95 +1,100 @@
-#!/bin/bash -
+#!/bin/sh
 #
 # @(#)upgrade-sh
 #
-# Copyright © 2006-2016 Andrew L. Moore, SlewSys Research
-#
 # This script invokes `configure' with options listed by `ed --info'.
 #
-declare -i _exit_status=''
-declare _process_output=''
-declare verbose='true'
-declare pgm="${0##*/}"
+script_name=$(basename $0)
 
-ed  --info >/dev/null 2>&1 || {
-    echo "ed: --info: Unrecognized option." >&2
+_exit_status=''
+_process_output=''
+verbose='true'
+
+if ! ed  --info >/dev/null 2>&1; then
+    echo "$script_name: ed: --info: Unrecognized option." >&2
     exit 1
-}
+fi
 
 usage() {
-    echo "Usage: $pgm [-h|--help] [-s|--silent] [maintainer-update-dist]" >&2
-    exit 1
+    echo "Usage: $script_name [-h|--help] [-s|--silent] [maintainer-update-dist]" >&2
+    exit
 }
 
 #
 # check_exit_status: Print diagnostic and exit on errors.
 #
 check_exit_status() {
-    if (( _exit_status != 0 )); then
+    if test $_exit_status -ne 0; then
         cat >&2 <<EOF
-$pgm: Process terminated with errors.
-$process_output
+$script_name: Process terminated with errors.
+$_process_output
 EOF
 
         exit $_exit_status
     fi
 }
 
-if [[ ."$1" = .-h* ]] || [[ ."$1" = .--h* ]]; then
-    usage
-fi
+case "$1" in
+    -h*|--h*)
+        usage
+        ;;
+esac
 
-if [[ ."$1" = .-s* ]] || [[ ."$1" = .--s* ]]; then
-    verbose='false'
-    shift
-fi
+case "$1" in
+    -s*|--s*)
+        verbose='false'
+        shift
+        ;;
+esac
 
-if [[ ."$1" = .-* ]]; then
-    usage
-fi
+case "$1" in
+    -*)
+        usage
+        ;;
+esac
 
-srcdir="${0%/*}"
+srcdir=$(dirname $0)
 
 $verbose && cat >&2 <<EOF
-$pgm: Running:
-  ( cd "$srcdir" && ./bootstrap-sh --silent )
+$script_name: Running:
+  ( cd "$srcdir" && ./autogen.sh --silent )
 
 EOF
 
-process_output="$( cd "$srcdir" && ./bootstrap-sh --silent )"
+_process_output="$( cd "$srcdir" && ./autogen.sh --silent )"
 _exit_status=$?
 
 $verbose && cat >&2 <<EOF
-$pgm: Running:
-  "$srcdir/configure" $(ed --info | tail -n +3 | tr -d '\n')
+$script_name: Running:
+  $(eval echo "$srcdir/configure" $(ed --info | tail -n +3 | tr -d '\n'))
 
 EOF
 
-process_output=$("${srcdir}/configure" $(ed --info | tail -n +3 | tr -d '\n'))
+_process_output=$(eval \"$srcdir/configure\" $(ed --info | tail -n +3 | tr -d '\n'))
 _exit_status=$?
 check_exit_status
 
 
 # If no args, try just compiling.
-if [ $# -eq 0 ]; then
+if test $# -eq 0; then
     $verbose && cat <<EOF
-$pgm: Running:
+$script_name: Running:
   make all
 
 EOF
 
-    process_output=$(make all 2>&1)
+    _process_output=$(make all 2>&1)
     _exit_status=$?
 
 # Otherwise, update distribution.
 else
     $verbose && cat >&2 <<EOF
-$pgm: Running:
+$script_name: Running:
   make maintainer-update-dist
 
 EOF
 
-    process_output=$(make maintainer-update-dist)
+    _process_output=$(make maintainer-update-dist)
     _exit_status=$?
     check_exit_status
 
@@ -99,53 +104,53 @@ EOF
 wq po/ed.pot.in
 EOF
 
-    process_output=$("${srcdir}/configure" $(ed --info | tail -n +3 | tr -d '\n') 2>&1)
+    _process_output=$(eval \"${srcdir}/configure\" $(ed --info | tail -n +3 | tr -d '\n') 2>&1)
     _exit_status=$?
 fi
 check_exit_status
 
 
 # Try Invoking testsuite.
-abs_srcdir="$(cd "$srcdir" && pwd)"
+abs_srcdir=$(cd "$srcdir" >/dev/null 2>&1 && pwd)
 
 # If builddir = srcdir, use quick-check.
-if [ ."$abs_srcdir" = ."$(pwd)" ]; then
+if test ."$abs_srcdir" = ."$(pwd)"; then
     $verbose && cat >&2 <<EOF
-$pgm: Running:
+$script_name: Running:
   make quick-check
 
 EOF
 
-    process_output=$(make quick-check 2>&1)
+    _process_output=$(make quick-check 2>&1)
     _exit_status=$?
 
 # Otherwise, try invoking GNU make.
-elif [ -x "$(which gmake)" ]; then
+elif test -x "$(which gmake)"; then
     $verbose && cat >&2 <<EOF
-$pgm: Running:
+$script_name: Running:
   gmake check
 
 EOF
 
-    process_output=$(gmake check 2>&1)
+    _process_output=$(gmake check 2>&1)
     _exit_status=$?
-elif [ -x "$(which gnumake)" ]; then
+elif test -x "$(which gnumake)"; then
     $verbose && cat >&2 <<EOF
-$pgm: Running:
+$script_name: Running:
   gnumake check
 
 EOF
 
-    process_output=$(gnumake check 2>&1)
+    _process_output=$(gnumake check 2>&1)
     _exit_status=$?
-elif [[ "$(make --version | head -1)" =~ "GNU Make" ]]; then
+elif test ."$(expr "$(make --version)"  : '\(GNU Make\)')" = .'GNU Make'; then
     $verbose && cat >&2  <<EOF
-$pgm: Running:
+$script_name: Running:
   make check
 
 EOF
 
-    process_output=$(make check 2>&1)
+    _process_output=$(make check 2>&1)
     _exit_status=$?
 else
     cat >&2 <<EOF

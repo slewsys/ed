@@ -1258,7 +1258,7 @@ lbracket_cmd (ed)
    * (.)[n - Displays page of `n' lines centered around addressed
    * line, where `n' defaults to current window size. The current
    * address is set to the last line displayed. A subsequent `['
-   * command, therefore, scrolls backward one-half page.
+   * command scrolls backward (up) one half-page.
    */
   if (ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL))
     {
@@ -1297,7 +1297,7 @@ rbracket_cmd (ed)
    * (.)]n - Displays page of `n' lines centered around addressed
    * line, where `n' defaults to current window size. The current
    * address is set to the last line printed. A subsequent `]'
-   * command, therefore, scrolls forward one-half page.
+   * command scrolls forward (down) one half-page.
    */
   if (ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL))
     {
@@ -1317,7 +1317,7 @@ z_cmd (ed)
   size_t len = 0;
   unsigned io_f = 0;            /* Print I/O flags */
   int status = 0;               /* Return status */
-  int fhp_off = 0;              /* First half-page-scroll forward offset. */
+  int zhfw_off = 0;             /* Half-page-scroll-forward offset. */
   int c = *(ed->input - 1);
 
   /* scroll forward */
@@ -1391,9 +1391,12 @@ z_cmd (ed)
        */
       addr = min (ed->state->lines, (ed->exec->region->end +
                                      ((ed->display->ws_row - 1) >> 1) - 1));
-      if ((fhp_off = ed->display->ws_row - ed->exec->region->end + 1) > 0 &&
-          ed->exec->region->end + fhp_off <= addr)
-          ed->exec->region->end += fhp_off;
+
+      /* Adjustment for half-page scroll when given address in bottom
+         half of first page. */
+      if ((zhfw_off = ed->display->ws_row - ed->exec->region->end + 1) > 0 &&
+          zhfw_off <= addr - ed->exec->region->end)
+          ed->exec->region->end += zhfw_off;
       io_f |= ZFWD | ZHFW;
       break;
     }

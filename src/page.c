@@ -144,7 +144,8 @@ display_lines (from, to, io_f, ed)
       /* Ignore frame buffer status. */
       RESET_FB_PREV (fb, ed);
       return display_lines (max (1, ed->state->lines - fb->rows + 2),
-                            ed->state->lines, (io_f | ZBWD) & ~(ZFWD | ZHFW), ed);
+                            ed->state->lines, (io_f | ZBWD) & ~(ZFWD | ZHFW),
+                            ed);
     }
 
   /*
@@ -313,8 +314,8 @@ init_frame_node (rp)
 #define RIGHT_MARGIN TAB_WIDTH
 
 
-/* CHAR_WIDTH: Assert: Tabstops are of fixed length. */
-#define CHAR_WIDTH(i, c)                                                      \
+/* GET_CHAR_WIDTH: Assert: Tabstops are of fixed length. */
+#define GET_CHAR_WIDTH(i, c)                                                  \
   ((i) == '\b' ? -1                                                           \
    : (i) == '\f' ? 0                                                          \
    : (i) == '\r' ? -(c)                                                       \
@@ -421,7 +422,7 @@ put_frame_buffer_line (lp, addr, io_f, fb, ed)
       snprintf (line_no, OFF_T_LEN + TAB_WIDTH + 1, fmt, addr);
       FB_PUTS (line_no, fb, ed);
       col = lines_len;
-      col += CHAR_WIDTH ('\t', lines_len);
+      col += GET_CHAR_WIDTH ('\t', lines_len);
     }
 
   if (!(s = get_buffer_line (lp, ed)))
@@ -453,7 +454,7 @@ put_frame_buffer_line (lp, addr, io_f, fb, ed)
 
           if (fb_putc ((unsigned) *s, fb, ed) < 0)
             return ERR;
-          col += CHAR_WIDTH ((unsigned) *s, col);
+          col += GET_CHAR_WIDTH ((unsigned) *s, col);
 
           /*
            * As with cat(1), form feed (\f) does not force a new page,
