@@ -1,3 +1,16 @@
+2018-07-07  Andrew L. Moore  <slewsys@gmail.com>
+
+	* src/exec.c (exec_macro): Initial attempt to implement register
+	macros à la ex(1). Syntax: (<k)@ where k is a register containing
+	an ed(1) script to execute. If no register given, default register
+	is used.
+
+	* src/aux.c (script_from_register): Write register lines to script
+	buffer, used by register macros.
+
+	* src/buf.c (init_stdio): Support stack frames in script buffer,
+	used by register macros.
+
 2018-06-24  Andrew L. Moore  <slewsys@gmail.com>
 
 	* src/page.c (put_frame_buffer_line): Rename CHAR_WIDTH macro to

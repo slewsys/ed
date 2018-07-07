@@ -98,7 +98,7 @@ top:
         break;
       case 'e':
         ed->exec->opt |=  SCRIPTED;
-        if (append_script_expression (optarg, ed) < 0)
+        if (append_script_expression (optarg, 0L, ed) < 0)
               script_die (3, ed);
         break;
       case 'f':                 /* Read commands from file arg. */
@@ -213,6 +213,7 @@ top:
   /* Destination of LONGJMP () on signal SIGINT. */
   if ((status = SETJMP (env)))
     {
+      (void) unwind_stack_frame (ed);
       ed->exec->err = _("Interrupted");
       status = ERR;
       goto error;
@@ -426,8 +427,9 @@ getenv_init_argv (s, argc, ed)
 
 /* append_script_expression: Append expression to script. */
 int
-append_script_expression (s, ed)
+append_script_expression (s, pos, ed)
      const char *s;
+     off_t pos;                 /* File postion of script in ed->exec->fp. */
      ed_buffer_t *ed;
 {
   size_t n;
@@ -456,7 +458,7 @@ append_script_expression (s, ed)
           clearerr (ed->exec->fp);
           return ERR;
         }
-      if (FSEEK (ed->exec->fp, 0L, SEEK_SET) == -1)
+      if (FSEEK (ed->exec->fp, pos, SEEK_SET) == -1)
         {
           fprintf (stderr, "%s: %s\n", ed->exec->pathname, strerror (errno));
           ed->exec->err = _("File seek error");

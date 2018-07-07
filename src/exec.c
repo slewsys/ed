@@ -107,57 +107,58 @@
 
 
 /* Static function declarations. */
-static int at_cmd __P ((ed_buffer_t *));
+static int address_cmd __P ((ed_buffer_t *)); /* ($)= */
+static int comment_cmd __P ((ed_buffer_t *));
 static int E_cmd __P ((ed_buffer_t *));
 static int H_cmd __P ((ed_buffer_t *));
 static int P_cmd __P ((ed_buffer_t *));
 static int Z_cmd __P ((ed_buffer_t *));
 static int a_cmd __P ((ed_buffer_t *));
-static int bang_cmd __P ((ed_buffer_t *));
 static int c_cmd __P ((ed_buffer_t *));
 static int d_cmd __P ((ed_buffer_t *));
 static int e_cmd __P ((ed_buffer_t *));
-static int equals_cmd __P ((ed_buffer_t *));
-static int normalize_frame_buffer __P ((ed_buffer_t *));
 static int f_cmd __P ((ed_buffer_t *));
 static int g_cmd __P ((ed_buffer_t *));
 static int g_cmd __P ((ed_buffer_t *));
 static int g_cmd __P ((ed_buffer_t *));
 static int g_cmd __P ((ed_buffer_t *));
 static int h_cmd __P ((ed_buffer_t *));
-static int hash_cmd __P ((ed_buffer_t *));
 static int i_cmd __P ((ed_buffer_t *));
 static int invalid_cmd __P ((ed_buffer_t *));
 static int is_valid_range __P ((off_t, off_t, ed_buffer_t *));
 static int j_cmd __P ((ed_buffer_t *));
 static int k_cmd __P ((ed_buffer_t *));
 static int l_cmd __P ((ed_buffer_t *));
-static int lbracket_cmd __P ((ed_buffer_t *));
 static int m_cmd __P ((ed_buffer_t *));
+static int exec_macro __P ((ed_buffer_t *));
 static int n_cmd __P ((ed_buffer_t *));
 static int newline_cmd __P ((ed_buffer_t *));
+static int normalize_frame_buffer __P ((ed_buffer_t *));
 static int p_cmd __P ((ed_buffer_t *));
 static int q_cmd __P ((ed_buffer_t *));
 static int q_cmd __P ((ed_buffer_t *));
 static int r_cmd __P ((ed_buffer_t *));
-static int rbracket_cmd __P ((ed_buffer_t *));
 static int s_cmd __P ((ed_buffer_t *));
+static int scroll_forward_half __P ((ed_buffer_t *));
+static int scroll_backward_half __P ((ed_buffer_t *));
+static int shell_cmd __P ((ed_buffer_t *));
 static int t_cmd __P ((ed_buffer_t *));
 static int u_cmd __P ((ed_buffer_t *));
 static int w_cmd __P ((ed_buffer_t *));
 static int w_cmd __P ((ed_buffer_t *));
 static int z_cmd __P ((ed_buffer_t *));
 
-#define ED_CMD_FIRST 0x3c
-#define ED_CMD_MASK  0x3f
+#define ED_KEY_FIRST 0x3c
+#define ED_KEY_MASK  0x3f
 
+/* Ed command key map for ASCII characters in the range  [0x3c-0x7b]. */
 static const ed_command_t ed_cmd[] =
   {
    invalid_cmd,
-   equals_cmd,
+   address_cmd,                 /* Bound to key `='. */
    invalid_cmd,
    invalid_cmd,
-   at_cmd,
+   exec_macro,                   /* Bound to key `@'. */
    invalid_cmd,
    invalid_cmd,
    invalid_cmd,
@@ -184,9 +185,9 @@ static const ed_command_t ed_cmd[] =
    invalid_cmd,
    invalid_cmd,
    Z_cmd,
-   lbracket_cmd,
+   scroll_backward_half,            /* Bound to key `['. */
    invalid_cmd,
-   rbracket_cmd,
+   scroll_forward_half,          /* Bound to key `]'. */
    invalid_cmd,
    invalid_cmd,
    invalid_cmd,
@@ -289,13 +290,11 @@ exec_command (ed)
     case '\n':
       return newline_cmd (ed);
     case '!':
-      return bang_cmd (ed);
+      return shell_cmd (ed);
     case '#':
-      return hash_cmd (ed);
-    case '=':
-      return equals_cmd (ed);
+      return comment_cmd (ed);
     default:
-      return (c >= ED_CMD_FIRST ? ed_cmd[(c - ED_CMD_FIRST) & ED_CMD_MASK](ed) :
+      return (c >= ED_KEY_FIRST ? ed_cmd[(c - ED_KEY_FIRST) & ED_KEY_MASK](ed) :
               invalid_cmd(ed));
 
     }
@@ -492,6 +491,75 @@ E_cmd (ed)
     ed->exec->status = 0;
   return 0;
 }
+
+static int
+exec_macro (ed)
+     ed_buffer_t *ed;
+{
+  size_t len;
+  int status;
+  int saved = dup (fileno (stdin));
+
+  /* case '@': */
+  if (ed->core->regbuf->io_f == 0)
+    ed->core->regbuf->read_idx = REGBUF_MAX - 1;
+
+  if ((status = script_from_register (ed)) < 0 || !ed->exec->fp)
+    return status;
+
+  /* Execute macro. */
+  do
+    {
+      if (!(ed->input = get_stdin_line (&len, ed)))
+        {
+          clearerr (stdin);
+          goto error;
+        }
+
+      /* Input not newline ('\n') terminated. */
+      else if (*(ed->input + len - 1) != '\n')
+        {
+          ed->exec->err = _("End-of-file unexpected");
+          status = ERR;
+          clearerr (stdin);
+          goto error;
+        }
+      /*
+       * ++ed->exec->line_no;
+       */
+      ed->exec->global = 0;
+
+      if ((status = address_range (ed)) >= 0
+          && (status = exec_command (ed)) >= 0)
+
+        /* ... */
+        if (!status
+            || (status = display_lines (ed->state->dot,
+                                        ed->state->dot, status, ed)) >= 0)
+          continue;
+    }
+  while (!status);
+
+ error:
+
+  /* Restore stack frame and standard input. */
+  spl1 ();
+  --ed->core->sp;
+  ftruncate (fileno (ed->exec->fp), ed->core->frame[ed->core->sp]->size);
+  FSEEK (ed->exec->fp, ed->core->frame[ed->core->sp]->rtrn, SEEK_SET);
+  free (ed->core->frame[ed->core->sp]);
+  spl0 ();
+
+  if (!(ed->exec->opt & SCRIPTED) && !(stdin = fdopen (saved, "r+")))
+    {
+      fprintf (stderr, "stdin: %s\n", strerror (errno));
+      ed->exec->err = _("File open error");
+      status = ERR;
+    }
+
+  return status == EOF ? 0 : status;
+}
+
 
 static int
 f_cmd (ed)
@@ -1016,6 +1084,67 @@ s_cmd (ed)
 }
 
 static int
+scroll_backward_half (ed)
+     ed_buffer_t *ed;
+{
+  int status = 0;               /* Return status */
+
+  /*
+   * (.)[n - Displays page of `n' lines centered around addressed
+   * line, where `n' defaults to current window size. The current
+   * address is set to the last line displayed. A subsequent `['
+   * command displays 'n' lines centered around first line in page.
+   */
+  if (ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL))
+    {
+      ed->exec->err = _("Unknown command");
+      return ERR;
+    }
+  if ((status =
+       is_valid_range (ed->display->page_addr, ed->display->page_addr, ed)) < 0)
+    return status;
+
+  /*
+   * Half-page scrolling implemenation requires "normalized" frame
+   * buffer, so load page preceding current address in background
+   * (display->hidden = 1), then scroll from there.
+   */
+  if ((status = normalize_frame_buffer (ed)) < 0)
+    return status;
+
+  /* At start or end of buffer, so display it. */
+  /*
+   * if ((!ed->display->is_paging && ed->exec->region->end < ed->state->dot)
+   */
+  if ((!ed->display->is_paging &&
+       ed->exec->region->end <= ed->display->ws_row / 2 + 1)
+      || ed->state->dot == ed->state->lines)
+    return Z_cmd (ed);
+
+  return z_cmd (ed);
+}
+
+static int
+scroll_forward_half (ed)
+     ed_buffer_t *ed;
+{
+  /*
+   * (.)]n - Displays page of `n' lines centered around addressed
+   * line, where `n' defaults to current window size. The current
+   * address is set to the last line printed. A subsequent `]'
+   * command displays `n' lines centered around last line in page.
+   */
+  if (ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL))
+    {
+      ed->exec->err = _("Unknown command");
+      return ERR;
+    }
+  if (ed->exec->region->addrs || !ed->display->is_paging)
+    return scroll_backward_half (ed);
+  return z_cmd (ed);
+}
+
+static int
 t_cmd (ed)
      ed_buffer_t *ed;
 {
@@ -1249,67 +1378,6 @@ w_cmd (ed)
 }
 
 static int
-lbracket_cmd (ed)
-     ed_buffer_t *ed;
-{
-  int status = 0;               /* Return status */
-
-  /*
-   * (.)[n - Displays page of `n' lines centered around addressed
-   * line, where `n' defaults to current window size. The current
-   * address is set to the last line displayed. A subsequent `['
-   * command scrolls backward (up) one half-page.
-   */
-  if (ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL))
-    {
-      ed->exec->err = _("Unknown command");
-      return ERR;
-    }
-  if ((status =
-       is_valid_range (ed->display->page_addr, ed->display->page_addr, ed)) < 0)
-    return status;
-
-  /*
-   * Half-page scrolling implemenation requires "normalized" frame
-   * buffer, so load page preceding current address in background
-   * (display->hidden = 1), then scroll from there.
-   */
-  if ((status = normalize_frame_buffer (ed)) < 0)
-    return status;
-
-  /* At start or end of buffer, so display it. */
-  /*
-   * if ((!ed->display->is_paging && ed->exec->region->end < ed->state->dot)
-   */
-  if ((!ed->display->is_paging &&
-       ed->exec->region->end <= ed->display->ws_row / 2 + 1)
-      || ed->state->dot == ed->state->lines)
-    return Z_cmd (ed);
-
-  return z_cmd (ed);
-}
-
-static int
-rbracket_cmd (ed)
-     ed_buffer_t *ed;
-{
-  /*
-   * (.)]n - Displays page of `n' lines centered around addressed
-   * line, where `n' defaults to current window size. The current
-   * address is set to the last line printed. A subsequent `]'
-   * command scrolls forward (down) one half-page.
-   */
-  if (ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL))
-    {
-      ed->exec->err = _("Unknown command");
-      return ERR;
-    }
-  if (ed->exec->region->addrs || !ed->display->is_paging)
-    return lbracket_cmd (ed);
-  return z_cmd (ed);
-}
-
-static int
 z_cmd (ed)
      ed_buffer_t *ed;
 {
@@ -1454,7 +1522,7 @@ Z_cmd (ed)
 }
 
 static int
-equals_cmd (ed)
+address_cmd (ed)
      ed_buffer_t *ed;
 {
   unsigned io_f = 0;            /* Print I/O flags */
@@ -1467,7 +1535,7 @@ equals_cmd (ed)
 }
 
 static int
-bang_cmd (ed)
+shell_cmd (ed)
      ed_buffer_t *ed;
 {
   off_t addr = 0;
@@ -1528,7 +1596,7 @@ newline_cmd (ed)
 }
 
 static int
-hash_cmd (ed)
+comment_cmd (ed)
      ed_buffer_t *ed;
 {
   /* case '#': */
@@ -1548,15 +1616,6 @@ invalid_cmd (ed)
     (next_address (&dot, ed) > 0 ? _("Invalid address") : _("Unknown command"));
   return ERR;
 }
-
-static int
-at_cmd (ed)
-     ed_buffer_t *ed;
-{
-  /* Stub for '@' command. */
-  return 0;
-}
-
 
 /* normalize_frame_buffer: Exec hidden `Z' command with currrent address. */
 static int

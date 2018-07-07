@@ -362,7 +362,7 @@ put_frame_buffer_line (lp, addr, io_f, fb, ed)
 {
   static off_t lines = 0;
   static int lines_len = 0;      /* strlen (lines) */
-  static char fmt[9] = { '\0' }; /* Line no. format string, e.g., "% 3lld\t" */
+  static char fmt[27] = { '\0' }; /* Line no. format, e.g., "% 3lld\t" */
 
   off_t n;
   ed_frame_node_t *rp;

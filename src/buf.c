@@ -18,9 +18,6 @@
 #endif
 
 
-/* Static function declarations. */
-static int init_stdio __P ((ed_buffer_t *));
-
 /*
  * one_time_init: Open ed buffer file; initialize queues, I/O buffers
  *   and translation table; read environment variables.
@@ -35,7 +32,7 @@ one_time_init (argc, argv, ed)
   long l;
   int status;
 
-  if ((status = init_stdio (ed)) < 0
+  if ((status = init_stdio (1, ed)) < 0
       || (status = create_disk_buffer (&ed->core->fp,
                                        &ed->core->pathname, ed)) < 0)
     return status;
@@ -106,12 +103,13 @@ one_time_init (argc, argv, ed)
 
 
 /* init_stdio: Initialize standard I/O. */
-static int
-init_stdio (ed)
+int
+init_stdio (first_time, ed)
+     int first_time;            /* Set up buffering if first_time. */
      ed_buffer_t *ed;
 {
   /* Redirect command script to stdin. */
-  if (ed->exec->pathname && !freopen (ed->exec->pathname, "r", stdin))
+  if (ed->exec->pathname && !freopen (ed->exec->pathname, "r+", stdin))
     {
       fprintf (stderr, "%s: %s\n", ed->exec->pathname, strerror (errno));
       ed->exec->err = _("Buffer open error");
@@ -130,18 +128,29 @@ init_stdio (ed)
    * Line buffer stdout so that `ssh user@remote ed file' works as
    * expected.
    */
+  if (first_time)
+    {
 #ifdef HAVE_SETBUFFER
-  setbuffer (stdin, NULL, 0);
-  setlinebuf (stdout);
+      setbuffer (stdin, NULL, 0);
+      setlinebuf (stdout);
 #else
-  SETVBUF (stdin, NULL, _IONBF, 0);
-  SETVBUF (stdout, NULL, _IOLBF, 0);
+      SETVBUF (stdin, NULL, _IONBF, 0);
+      SETVBUF (stdout, NULL, _IOLBF, 0);
 #endif   /* !HAVE_SETBUFFER */
 
   /* Don't exit on errors if stdin is non-seekable, e.g., piped or tty. */
-  if (lseek (0, 0, SEEK_CUR) != -1
-      && (ed->exec->opt & SCRIPTED || !isatty (0)))
-    ed->exec->opt |= EXIT_ON_ERROR;
+      if (lseek (0, 0, SEEK_CUR) != -1
+          && (ed->exec->opt & SCRIPTED || !isatty (0)))
+        ed->exec->opt |= EXIT_ON_ERROR;
+    }
+  else if (ed->core->sp && FSEEK (stdin,
+                                  ed->core->frame[ed->core->sp - 1]->size,
+                                  SEEK_SET) < 0)
+    {
+      fprintf (stderr, "%s: %s\n", ed->exec->pathname, strerror (errno));
+      ed->exec->err = _("Buffer seek error");
+      return ERR;
+    }
   return 0;
 }
 

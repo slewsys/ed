@@ -217,6 +217,81 @@ append_from_register (addr, ed)
 
 
 /*
+ * script_from_register: Append lines from register to script buffer and
+ *   redirect buffer contents as standard input.
+ */
+int
+script_from_register (ed)
+     ed_buffer_t *ed;
+{
+  int read_idx = ed->core->regbuf->read_idx;
+  ed_line_node_t *read_head = ed->core->regbuf->lp[read_idx];
+  ed_line_node_t *rp;
+  int status;
+
+  /* Save current script size and return address. */
+  spl1 ();
+  if (!(ed->core->frame[ed->core->sp] =
+        (struct ed_frame_buffer *) malloc (ED_STACK_FRAME_T_SIZE)))
+    {
+      fprintf (stderr, "%s\n", strerror (errno));
+      ed->exec->err = _("Memory exhausted");
+      spl0 ();
+      return ERR;
+    }
+  else if (ed->exec->fp)
+    {
+      ed->core->frame[ed->core->sp]->rtrn = FTELL (ed->exec->fp);
+      ed->core->frame[ed->core->sp]->size = FSEEK (ed->exec->fp, 0, SEEK_END);
+    }
+  else
+    {
+      ed->core->frame[ed->core->sp]->rtrn = 0;
+      ed->core->frame[ed->core->sp]->size = 0;
+    }
+  ++ed->core->sp;
+  spl0 ();
+
+  if (!read_head)
+    return 0;
+
+  for (rp = read_head->q_forw; rp != read_head; rp = rp->q_forw)
+    {
+      spl1 ();
+      if ((status =
+           append_script_expression (get_buffer_line (rp, ed),
+                                     ed->core->frame[ed->core->sp - 1]->size,
+                                     ed)) < 0)
+        {
+          /* Restore stack frame. */
+          --ed->core->sp;
+          ftruncate (fileno (ed->exec->fp),
+                     ed->core->frame[ed->core->sp]->size);
+          FSEEK (ed->exec->fp, ed->core->frame[ed->core->sp]->rtrn, SEEK_SET);
+          free (ed->core->frame[ed->core->sp]);
+          spl0 ();
+          return status;
+        }
+      spl0 ();
+    }
+  spl1 ();
+  if ((status = init_stdio (0, ed)) < 0)
+    {
+      /* Restore stack frame. */
+      --ed->core->sp;
+      ftruncate (fileno (ed->exec->fp),
+                 ed->core->frame[ed->core->sp]->size);
+      FSEEK (ed->exec->fp, ed->core->frame[ed->core->sp]->rtrn, SEEK_SET);
+      free (ed->core->frame[ed->core->sp]);
+      spl0 ();
+      return status;
+    }
+  spl0 ();
+  return 0;
+}
+
+
+/*
  * append_node_to_register: Append node to end of given register.
  *   Return node pointer.
  */
@@ -399,4 +474,23 @@ reset_register_queue (idx, ed)
       spl0 ();
     }
   return 0;
+}
+
+/* unwind_stack_frame: Free stack frames. */
+int
+unwind_stack_frame (ed)
+     ed_buffer_t *ed;
+{
+  if (ed->core->sp)
+    {
+      while (ed->core->sp > 0)
+        free (ed->core->frame[ed->core->sp--]);
+      if (ed->exec->fp)
+        {
+          ftruncate (fileno (ed->exec->fp),
+                     ed->core->frame[ed->core->sp]->size);
+          FSEEK (ed->exec->fp, ed->core->frame[ed->core->sp]->rtrn, SEEK_SET);
+        }
+      free (ed->core->frame[ed->core->sp]);
+    }
 }

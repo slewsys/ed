@@ -373,6 +373,17 @@ struct ed_register
   int io_f;                     /* Register I/O flags. */
 };
 
+/* Script buffer stack frame. */
+typedef struct ed_stack_frame
+{
+  off_t size;  /* Nominal script buffer size. */
+  off_t rtrn;  /* Nominal script buffer position
+                                   (i.e., return address). */
+} ed_stack_frame_t;
+
+#define ED_STACK_FRAME_T_SIZE (sizeof (ed_stack_frame_t))
+
+#define FRAME_MAX 10            /* Max stack frames in script buffer. */
 #define MARK_MAX 26             /* Max line markers. */
 
 /* Ed buffer meta data and storage parameters. */
@@ -382,6 +393,10 @@ struct ed_core
   struct ed_register *regbuf;
   ed_line_node_t *mark[MARK_MAX];
   int marks;
+
+  /* Script buffer stack frame. */
+  struct ed_stack_frame *frame[FRAME_MAX];
+  int sp;                       /* Script buffer stack pointer. */
 
   /* Edit-processing buffers. */
   ed_line_node_t *line_head;     /* Head of line buffer. */
@@ -840,8 +855,8 @@ int address_range __P ((ed_buffer_t *));
 ed_buffer_t *alloc_ed_buffer __P ((void));
 int append_from_register __P ((off_t, ed_buffer_t *));
 int append_lines __P ((off_t, ed_buffer_t *));
-int append_script_expression __P ((const char *, ed_buffer_t *ed));
-int append_script_file __P ((char *, ed_buffer_t *ed));
+int append_script_expression __P ((const char *, off_t, ed_buffer_t *));
+int append_script_file __P ((char *, ed_buffer_t *));
 ed_line_node_t *append_line_node __P ((size_t, off_t, off_t,
                                        ed_buffer_t *));
 ed_text_node_t *append_text_node __P ((ed_text_node_t *, const char *, size_t));
@@ -878,6 +893,7 @@ void init_global_queue __P ((ed_global_node_t **, ed_line_node_t **,
                              ed_buffer_t *));
 int init_register_queue __P ((int, ed_buffer_t *));
 int init_signal_handler __P ((ed_buffer_t *));
+int init_stdio __P ((int, ed_buffer_t *));
 void init_substitute __P ((regex_t **, unsigned *, off_t *, off_t *,
                            unsigned *, struct ed_substitute *));
 void init_text_deque __P ((ed_text_node_t *));
@@ -908,7 +924,8 @@ int resubstitute __P ((off_t *, off_t *, unsigned *, unsigned *,
                                 ed_buffer_t *));
 void save_substitute __P ((regex_t *, unsigned, off_t, off_t, unsigned,
                                   struct ed_substitute *));
-int scroll_forward __P ((off_t, off_t, unsigned int, ed_buffer_t *ed));
+int script_from_register  __P ((ed_buffer_t *));
+int scroll_forward __P ((off_t, off_t, unsigned int, ed_buffer_t *));
 
 #ifdef WANT_FILE_LOCK
 int set_file_lock __P ((FILE *, int));
@@ -925,6 +942,7 @@ int substitution_lhs __P ((regex_t **, unsigned *, ed_buffer_t *));
 int substitution_rhs __P ((off_t *, off_t *, unsigned *, unsigned *,
                            ed_buffer_t *));
 int undo_last_command __P ((ed_buffer_t *));
+int unwind_stack_frame __P ((ed_buffer_t *));
 void unmark_line_node __P ((const ed_line_node_t *, ed_buffer_t *));
 int write_file __P ((const char *, int, off_t, off_t, off_t *, off_t *,
                      const char *, ed_buffer_t *));
