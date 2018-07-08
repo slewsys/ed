@@ -61,7 +61,7 @@ mark_global_nodes (want_match, ed)
 }
 
 
-/* 
+/*
  * exec_global: Apply command list to lines in a range in global
  *   queue. Return command status.
  */
@@ -81,7 +81,7 @@ exec_global (io_f, ed)
 
   reset_undo_queue (ed);
 
-  /* 
+  /*
    * If non-interactive, read command before entering loop in the
    * event of empty global queue.
    */
@@ -140,16 +140,16 @@ exec_global (io_f, ed)
       for (ed->input = gcb; *ed->input;)
         if ((status = address_range (ed)) < 0
             || (status = exec_command (ed)) < 0
-            || (status > 0 &&
-                (status = display_lines (ed->state->dot,
-                                         ed->state->dot, status, ed)) < 0))
+            || (status > 0
+                && (status = display_lines (ed->state->dot,
+                                            ed->state->dot, status, ed)) < 0))
           return status;
     }
   return 0;
 }
 
 
-/* 
+/*
  * append_global_node: Append node to end of global queue. Return node
  *   pointer.
  */
@@ -178,7 +178,7 @@ append_global_node (lp, ed)
 }
 
 
-/* 
+/*
  * next_global_node: Pop node from top of global queue; return line
  *   node pointer.
  */

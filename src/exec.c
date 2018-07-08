@@ -258,6 +258,7 @@ exec_command (ed)
     {
     case 'm':
     case 't':
+    case '@':
       if (ed->file->is_glob)
         {
           ed->exec->err = _("Command prefix unexpected");
@@ -524,21 +525,20 @@ exec_macro (ed)
           clearerr (stdin);
           goto error;
         }
+
       /*
        * ++ed->exec->line_no;
+       * ed->exec->global = 0;
        */
-      ed->exec->global = 0;
 
-      if ((status = address_range (ed)) >= 0
-          && (status = exec_command (ed)) >= 0)
-
-        /* ... */
-        if (!status
-            || (status = display_lines (ed->state->dot,
-                                        ed->state->dot, status, ed)) >= 0)
-          continue;
+      if ((status = address_range (ed)) < 0
+          || (status = exec_command (ed)) < 0
+          || (status > 0
+              && (status = display_lines (ed->state->dot,
+                                          ed->state->dot, status, ed)) < 0))
+          break;
     }
-  while (!status);
+  while (1);
 
  error:
 
