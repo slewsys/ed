@@ -498,23 +498,26 @@ exec_macro (ed)
      ed_buffer_t *ed;
 {
   size_t len;
-  int status;
+  int status = 0;
   int saved = dup (fileno (stdin));
 
   /* case '@': */
-  if (ed->core->regbuf->io_f == 0)
+
+  /* Use default register if none specified. */
+  if (!ed->core->regbuf->io_f)
     ed->core->regbuf->read_idx = REGBUF_MAX - 1;
 
   if ((status = script_from_register (ed)) < 0 || !ed->exec->fp)
     return status;
 
-  /* Execute macro. */
-  do
+  /* Execute script. */
+  for (;;)
     {
       if (!(ed->input = get_stdin_line (&len, ed)))
         {
+          status = feof (stdin) ? EOF : ERR;
           clearerr (stdin);
-          goto error;
+          break;
         }
 
       /* Input not newline ('\n') terminated. */
@@ -523,7 +526,7 @@ exec_macro (ed)
           ed->exec->err = _("End-of-file unexpected");
           status = ERR;
           clearerr (stdin);
-          goto error;
+          break;
         }
 
       /*
@@ -536,19 +539,8 @@ exec_macro (ed)
           || (status > 0
               && (status = display_lines (ed->state->dot,
                                           ed->state->dot, status, ed)) < 0))
-          break;
+        break;
     }
-  while (1);
-
- error:
-
-  /* Restore stack frame and standard input. */
-  spl1 ();
-  --ed->core->sp;
-  ftruncate (fileno (ed->exec->fp), ed->core->frame[ed->core->sp]->size);
-  FSEEK (ed->exec->fp, ed->core->frame[ed->core->sp]->rtrn, SEEK_SET);
-  free (ed->core->frame[ed->core->sp]);
-  spl0 ();
 
   if (!(ed->exec->opt & SCRIPTED) && !(stdin = fdopen (saved, "r+")))
     {
@@ -556,6 +548,15 @@ exec_macro (ed)
       ed->exec->err = _("File open error");
       status = ERR;
     }
+
+  /* Unwind stack frame on error. */
+  if (status < 0 && status != EOF)
+    unwind_stack_frame (ed);
+
+  /* Otherwise, restore previous frame. */
+  else
+    status = pop_stack_frame (ed);
+
 
   return status == EOF ? 0 : status;
 }

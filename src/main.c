@@ -98,7 +98,7 @@ top:
         break;
       case 'e':
         ed->exec->opt |=  SCRIPTED;
-        if (append_script_expression (optarg, 0L, ed) < 0)
+        if (append_script_expression (optarg, ed) < 0)
               script_die (3, ed);
         break;
       case 'f':                 /* Read commands from file arg. */
@@ -165,6 +165,15 @@ top:
       goto top;
     }
 
+  /* Rewind script file. */
+  if (fflush (ed->exec->fp) == EOF
+      || ed->exec->fp && FSEEK (ed->exec->fp, 0L, SEEK_SET) == -1)
+    {
+      fprintf (stderr, "%s\n", strerror(errno));
+      ed->exec->err = _("File seek error");
+      script_die (3, ed);
+    }
+
 #ifdef HAVE_LOCALE_H
 
   /* Native locale unavailable. */
@@ -213,7 +222,9 @@ top:
   /* Destination of LONGJMP () on signal SIGINT. */
   if ((status = SETJMP (env)))
     {
-      (void) unwind_stack_frame (ed);
+      /* Unwind stack frame on interrupt. */
+      unwind_stack_frame (ed);
+
       ed->exec->err = _("Interrupted");
       status = ERR;
       goto error;
@@ -427,9 +438,8 @@ getenv_init_argv (s, argc, ed)
 
 /* append_script_expression: Append expression to script. */
 int
-append_script_expression (s, pos, ed)
+append_script_expression (s, ed)
      const char *s;
-     off_t pos;                 /* File postion of script in ed->exec->fp. */
      ed_buffer_t *ed;
 {
   size_t n;
@@ -448,23 +458,14 @@ append_script_expression (s, pos, ed)
       clearerr (ed->exec->fp);
       return ERR;
     }
-  if ((n = strlen (s)) > 0)
+  if ((n = strlen (s)) > 0
+      && (fwrite (s, 1, n, ed->exec->fp) != n
+          || (s[n - 1] != '\n' && fwrite ("\n", 1, 1, ed->exec->fp) != 1)))
     {
-      if (fwrite (s, 1, n, ed->exec->fp) != n
-          || (s[n - 1] != '\n' && fwrite ("\n", 1, 1, ed->exec->fp) != 1))
-        {
           fprintf (stderr, "%s: %s\n", ed->exec->pathname, strerror (errno));
           ed->exec->err = _("File write error");
           clearerr (ed->exec->fp);
           return ERR;
-        }
-      if (FSEEK (ed->exec->fp, pos, SEEK_SET) == -1)
-        {
-          fprintf (stderr, "%s: %s\n", ed->exec->pathname, strerror (errno));
-          ed->exec->err = _("File seek error");
-          clearerr (ed->exec->fp);
-          return ERR;
-        }
     }
   return 0;
 }

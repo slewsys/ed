@@ -217,81 +217,6 @@ append_from_register (addr, ed)
 
 
 /*
- * script_from_register: Append lines from register to script buffer and
- *   redirect buffer contents as standard input.
- */
-int
-script_from_register (ed)
-     ed_buffer_t *ed;
-{
-  int read_idx = ed->core->regbuf->read_idx;
-  ed_line_node_t *read_head = ed->core->regbuf->lp[read_idx];
-  ed_line_node_t *rp;
-  int status;
-
-  /* Save current script size and return address. */
-  spl1 ();
-  if (!(ed->core->frame[ed->core->sp] =
-        (struct ed_frame_buffer *) malloc (ED_STACK_FRAME_T_SIZE)))
-    {
-      fprintf (stderr, "%s\n", strerror (errno));
-      ed->exec->err = _("Memory exhausted");
-      spl0 ();
-      return ERR;
-    }
-  else if (ed->exec->fp)
-    {
-      ed->core->frame[ed->core->sp]->rtrn = FTELL (ed->exec->fp);
-      ed->core->frame[ed->core->sp]->size = FSEEK (ed->exec->fp, 0, SEEK_END);
-    }
-  else
-    {
-      ed->core->frame[ed->core->sp]->rtrn = 0;
-      ed->core->frame[ed->core->sp]->size = 0;
-    }
-  ++ed->core->sp;
-  spl0 ();
-
-  if (!read_head)
-    return 0;
-
-  for (rp = read_head->q_forw; rp != read_head; rp = rp->q_forw)
-    {
-      spl1 ();
-      if ((status =
-           append_script_expression (get_buffer_line (rp, ed),
-                                     ed->core->frame[ed->core->sp - 1]->size,
-                                     ed)) < 0)
-        {
-          /* Restore stack frame. */
-          --ed->core->sp;
-          ftruncate (fileno (ed->exec->fp),
-                     ed->core->frame[ed->core->sp]->size);
-          FSEEK (ed->exec->fp, ed->core->frame[ed->core->sp]->rtrn, SEEK_SET);
-          free (ed->core->frame[ed->core->sp]);
-          spl0 ();
-          return status;
-        }
-      spl0 ();
-    }
-  spl1 ();
-  if ((status = init_stdio (0, ed)) < 0)
-    {
-      /* Restore stack frame. */
-      --ed->core->sp;
-      ftruncate (fileno (ed->exec->fp),
-                 ed->core->frame[ed->core->sp]->size);
-      FSEEK (ed->exec->fp, ed->core->frame[ed->core->sp]->rtrn, SEEK_SET);
-      free (ed->core->frame[ed->core->sp]);
-      spl0 ();
-      return status;
-    }
-  spl0 ();
-  return 0;
-}
-
-
-/*
  * append_node_to_register: Append node to end of given register.
  *   Return node pointer.
  */
@@ -384,7 +309,7 @@ inter_register_copy (append, ed)
   /* Appending register to itself. */
   if (append && read_idx == write_idx)
     {
-      ed->exec->err = _("Append register to itself not allowed.");
+      ed->exec->err = _("Cannot append register to itself.");
       return ERR;
     }
 
@@ -428,7 +353,7 @@ inter_register_move (append, ed)
   /* Appending register to itself. */
   if (append && read_idx == write_idx)
     {
-      ed->exec->err = _("Append register to itself not allowed.");
+      ed->exec->err = _("Cannot append register to itself.");
       return ERR;
     }
 
@@ -476,21 +401,143 @@ reset_register_queue (idx, ed)
   return 0;
 }
 
-/* unwind_stack_frame: Free stack frames. */
+
+/*
+ * script_from_register: Append lines from register to script buffer and
+ *   redirect buffer contents as standard input.
+ */
 int
+script_from_register (ed)
+     ed_buffer_t *ed;
+{
+  int read_idx = ed->core->regbuf->read_idx;
+  ed_line_node_t *read_head = ed->core->regbuf->lp[read_idx];
+  ed_line_node_t *rp;
+  int status;
+
+  if (ed->core->sp >= STACK_FRAMES_MAX)
+    {
+      ed->exec->err = _("Exceeded maximum stack frame depth");
+      return ERR;
+    }
+  else if ((status = push_stack_frame (ed)) < 0)
+    return status;
+  else if (!read_head)
+    return 0;
+
+  for (rp = read_head->q_forw; rp != read_head; rp = rp->q_forw)
+    {
+      if ((status =
+           append_script_expression (get_buffer_line (rp, ed), ed)) < 0)
+        return status;
+    }
+
+  if (fflush (ed->exec->fp) == EOF)
+    {
+      fprintf (stderr, "%s: %s\n", ed->exec->pathname, strerror (errno));
+      ed->exec->err = _("File seek error");
+      clearerr (ed->exec->fp);
+      return ERR;
+    }
+  else if ((status = init_stdio (ed)) < 0)
+    return status;
+
+  /* Set file pointer to beginning of frame. */
+  /*
+   * else if (FSEEK (/\* ed->exec->fp *\/ stdin,
+   *            ed->core->frame[ed->core->sp - 1]->size, SEEK_SET) == -1)
+   *   {
+   *     fprintf (stderr, "%s: %s\n", ed->exec->pathname, strerror (errno));
+   *     ed->exec->err = _("File seek error");
+   *     clearerr (ed->exec->fp);
+   *     return ERR;
+   *   }
+   */
+  return 0;
+}
+
+
+/* push_stack_frame: Push macro frame on script buffer. */
+int
+push_stack_frame (ed)
+     ed_buffer_t *ed;
+{
+  off_t off = FTELL (stdin);
+
+  spl1 ();
+
+  /* Create new frame. */
+  if (!(ed->core->frame[ed->core->sp] =
+        (struct ed_frame_buffer *) malloc (ED_STACK_FRAME_T_SIZE)))
+    {
+      fprintf (stderr, "%s\n", strerror (errno));
+      ed->exec->err = _("Memory exhausted");
+      spl0 ();
+      return ERR;
+    }
+
+  /* Save current script return address and size. */
+  if (ed->core->sp)
+    {
+      if ((ed->core->frame[ed->core->sp]->rtrn = FTELL (/* ed->exec->fp */ stdin)) == - 1
+          || FSEEK (/* ed->exec->fp */ stdin, 0, SEEK_END) == -1
+          || (ed->core->frame[ed->core->sp]->size = FTELL (/* ed->exec->fp */ stdin)) == -1)
+        {
+          fprintf (stderr, "%s\n", strerror (errno));
+          ed->exec->err = _("File seek error");
+          spl0 ();
+          return ERR;
+        }
+    }
+  else
+    {
+      ed->core->frame[ed->core->sp]->rtrn = 0;
+      ed->core->frame[ed->core->sp]->size = 0;
+    }
+  ++ed->core->sp;
+  spl0 ();
+  return 0;
+}
+
+
+/* pop_stack_frame: Pop macro frame from script buffer. */
+int
+pop_stack_frame (ed)
+     ed_buffer_t *ed;
+{
+  spl1 ();
+  --ed->core->sp;
+  if (ftruncate (fileno (ed->exec->fp /* stdin */),
+                 ed->core->frame[ed->core->sp]->size) == -1
+      || fflush (stdin) == EOF
+      || FSEEK (ed->exec->fp /* stdin */,
+                ed->core->frame[ed->core->sp]->rtrn, SEEK_SET) == -1)
+    {
+      fprintf (stderr, "%s\n", strerror (errno));
+      ed->exec->err = _("File seek error");
+      spl0 ();
+      return ERR;
+    }
+  free (ed->core->frame[ed->core->sp]);
+  spl0 ();
+}
+
+
+void
 unwind_stack_frame (ed)
      ed_buffer_t *ed;
 {
   if (ed->core->sp)
     {
-      while (ed->core->sp > 0)
-        free (ed->core->frame[ed->core->sp--]);
+      spl1 ();
       if (ed->exec->fp)
         {
-          ftruncate (fileno (ed->exec->fp),
-                     ed->core->frame[ed->core->sp]->size);
-          FSEEK (ed->exec->fp, ed->core->frame[ed->core->sp]->rtrn, SEEK_SET);
+          ftruncate (fileno (/* ed->exec->fp */ stdin), ed->core->frame[0]->size);
+          fflush (stdin);
+          FSEEK (/* ed->exec->fp */ stdin, ed->core->frame[0]->rtrn, SEEK_SET);
         }
-      free (ed->core->frame[ed->core->sp]);
+      while (ed->core->sp > 0)
+        free (ed->core->frame[--ed->core->sp]);
+      spl0 ();
     }
 }

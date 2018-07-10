@@ -571,7 +571,8 @@ write_file (fn, is_default, from, to, addr, size, mode, ed)
           ed->exec->err = _("File seek error");
           return ERR;
         }
-      if (*mode == 'w' && ftruncate (fileno (fp), 0) == -1)
+      if (*mode == 'w' && ftruncate (fileno (fp), 0) == -1
+        || fflush (fp) == EOF)
         {
           fprintf (stderr, "%s: %s\n", ed->file->name, strerror (errno));
           ed->exec->err = _("File truncate error");

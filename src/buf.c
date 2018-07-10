@@ -32,7 +32,7 @@ one_time_init (argc, argv, ed)
   long l;
   int status;
 
-  if ((status = init_stdio (1, ed)) < 0
+  if ((status = init_stdio (ed)) < 0
       || (status = create_disk_buffer (&ed->core->fp,
                                        &ed->core->pathname, ed)) < 0)
     return status;
@@ -104,8 +104,7 @@ one_time_init (argc, argv, ed)
 
 /* init_stdio: Initialize standard I/O. */
 int
-init_stdio (first_time, ed)
-     int first_time;            /* Set up buffering if first_time. */
+init_stdio (ed)
      ed_buffer_t *ed;
 {
   /* Redirect command script to stdin. */
@@ -116,20 +115,29 @@ init_stdio (first_time, ed)
       return FATAL;
     }
 
-  /*
-   * Read stdin one character at a time to avoid I/O contention with
-   * shell escapes invoked by nonterminal input, e.g.,
-   *
-   *    ed - <<EOF
-   *    ! cat
-   *    hello, world
-   *    EOF
-   *
-   * Line buffer stdout so that `ssh user@remote ed file' works as
-   * expected.
-   */
-  if (first_time)
+  if (ed->core->sp)
+
+    /* Position stdin to beginning of script. */
+    if (FSEEK (stdin, ed->core->frame[ed->core->sp - 1]->size, SEEK_SET) < 0)
+      {
+        fprintf (stderr, "%s: %s\n", ed->exec->pathname, strerror (errno));
+        ed->exec->err = _("Buffer seek error");
+        return ERR;
+      }
+  else
     {
+      /*
+       * Read stdin one character at a time to avoid I/O contention with
+       * shell escapes invoked by nonterminal input, e.g.,
+       *
+       *    ed - <<EOF
+       *    ! cat
+       *    hello, world
+       *    EOF
+       *
+       * Line buffer stdout so that `ssh user@remote ed file' works as
+       * expected.
+       */
 #ifdef HAVE_SETBUFFER
       setbuffer (stdin, NULL, 0);
       setlinebuf (stdout);
@@ -138,18 +146,10 @@ init_stdio (first_time, ed)
       SETVBUF (stdout, NULL, _IOLBF, 0);
 #endif   /* !HAVE_SETBUFFER */
 
-  /* Don't exit on errors if stdin is non-seekable, e.g., piped or tty. */
+      /* Don't exit on errors if stdin is non-seekable, e.g., piped or tty. */
       if (lseek (0, 0, SEEK_CUR) != -1
           && (ed->exec->opt & SCRIPTED || !isatty (0)))
         ed->exec->opt |= EXIT_ON_ERROR;
-    }
-  else if (ed->core->sp && FSEEK (stdin,
-                                  ed->core->frame[ed->core->sp - 1]->size,
-                                  SEEK_SET) < 0)
-    {
-      fprintf (stderr, "%s: %s\n", ed->exec->pathname, strerror (errno));
-      ed->exec->err = _("Buffer seek error");
-      return ERR;
     }
   return 0;
 }
@@ -521,7 +521,10 @@ quit (n, ed)
   if (ed->core->fp)
     {
       (void) fclose (ed->core->fp);
-      unlink (ed->core->pathname);
+      if (ed->core->fp)
+        unlink (ed->core->pathname);
+      if (ed->exec->fp)
+        unlink (ed->exec->pathname);
     }
   _exit (n);
 }

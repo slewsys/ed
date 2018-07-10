@@ -1,3 +1,41 @@
+2018-07-10  Andrew L. Moore  <slewsys@gmail.com>
+
+	* src/main.c (main, append_script_expression):
+	* src/exec.c (exec_macro):
+	* src/buf.c (init_stdio):
+	* src/aux.c (script_from_register):
+	(push_stack_frame):
+	(pop_stack_frame):
+	(unwind_stack_frame): Initial attempt to implement nested macros.
+	Once stdin is associated with script, use stdin for FTELL, etc.
+	instead of ed->exec->fp. The following script creates two macros
+	in registers 1 and 2, with macro 1 calling macro 2. The
+	second-to-last command, `<1@', invokes macro 1 with output:
+
+	    hello
+	    world
+
+	Here is the (tab-indented) script:
+
+	ed -s <<EOF
+	    a
+	    a
+	    world
+	    y
+	    p
+	    a
+	    hello
+	    y
+	    p
+	    <2@
+	    .
+	    g/^y/s;;.;
+	    1;/^p/m>2
+	    ,m>1
+	    <1@
+	    wq o.tmp
+	EOF
+
 2018-07-07  Andrew L. Moore  <slewsys@gmail.com>
 
 	* src/exec.c (exec_macro): Initial attempt to implement register
