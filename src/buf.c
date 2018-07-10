@@ -124,33 +124,31 @@ init_stdio (ed)
         ed->exec->err = _("Buffer seek error");
         return ERR;
       }
-  else
-    {
-      /*
-       * Read stdin one character at a time to avoid I/O contention with
-       * shell escapes invoked by nonterminal input, e.g.,
-       *
-       *    ed - <<EOF
-       *    ! cat
-       *    hello, world
-       *    EOF
-       *
-       * Line buffer stdout so that `ssh user@remote ed file' works as
-       * expected.
-       */
+  /*
+   * Read stdin one character at a time to avoid I/O contention with
+   * shell escapes invoked by nonterminal input, e.g.,
+   *
+   *    ed - <<EOF
+   *    ! cat
+   *    hello, world
+   *    EOF
+   *
+   * Line buffer stdout so that `ssh user@remote ed file' works as
+   * expected.
+   */
 #ifdef HAVE_SETBUFFER
-      setbuffer (stdin, NULL, 0);
-      setlinebuf (stdout);
+  setbuffer (stdin, NULL, 0);
+  setlinebuf (stdout);
 #else
-      SETVBUF (stdin, NULL, _IONBF, 0);
-      SETVBUF (stdout, NULL, _IOLBF, 0);
+  SETVBUF (stdin, NULL, _IONBF, 0);
+  SETVBUF (stdout, NULL, _IOLBF, 0);
 #endif   /* !HAVE_SETBUFFER */
 
-      /* Don't exit on errors if stdin is non-seekable, e.g., piped or tty. */
-      if (lseek (0, 0, SEEK_CUR) != -1
-          && (ed->exec->opt & SCRIPTED || !isatty (0)))
-        ed->exec->opt |= EXIT_ON_ERROR;
-    }
+  /* Don't exit on errors if stdin is non-seekable, e.g., piped or tty. */
+  if (lseek (0, 0, SEEK_CUR) != -1
+      && (ed->exec->opt & SCRIPTED || !isatty (0)))
+    ed->exec->opt |= EXIT_ON_ERROR;
+
   return 0;
 }
 
@@ -521,10 +519,12 @@ quit (n, ed)
   if (ed->core->fp)
     {
       (void) fclose (ed->core->fp);
-      if (ed->core->fp)
-        unlink (ed->core->pathname);
-      if (ed->exec->fp)
-        unlink (ed->exec->pathname);
+      unlink (ed->core->pathname);
+    }
+  if (ed->exec->fp)
+    {
+      (void) fclose (ed->core->fp);
+      unlink (ed->exec->pathname);
     }
   _exit (n);
 }
