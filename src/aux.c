@@ -489,6 +489,20 @@ push_stack_frame (ed)
           return ERR;
         }
     }
+
+  /* Input from script file via ed(1) command-line option `-f FILE'. */
+  else if (!isatty (0))
+    {
+      if ((ed->core->frame[ed->core->sp]->rtrn = FTELL (ed->exec->fp)) == - 1
+          || FSEEK (ed->exec->fp, 0, SEEK_END) == -1
+          || (ed->core->frame[ed->core->sp]->size = FTELL (ed->exec->fp)) == -1)
+        {
+          fprintf (stderr, "%s\n", strerror (errno));
+          ed->exec->err = _("File seek error");
+          spl0 ();
+          return ERR;
+        }
+    }
   else
     {
       ed->core->frame[ed->core->sp]->rtrn = 0;
