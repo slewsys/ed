@@ -542,7 +542,9 @@ exec_macro (ed)
         break;
     }
 
-  if (!(ed->exec->opt & SCRIPTED) && !(stdin = fdopen (saved, "r+")))
+  if (!(ed->exec->opt & SCRIPTED)
+      && lseek (saved, 0, SEEK_CUR) != -1
+      && !(stdin = fdopen (saved, "r+")))
     {
       fprintf (stderr, "stdin: %s\n", strerror (errno));
       ed->exec->err = _("File open error");
@@ -557,7 +559,7 @@ exec_macro (ed)
   else
     (void) pop_stack_frame (ed);
 
-  return status;
+  return status == EOF ? 0 : status;
 }
 
 

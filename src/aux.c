@@ -7,7 +7,6 @@
 
 #include "ed.h"
 
-
 #ifdef HAVE_SYS_WAIT_H
 # include <sys/wait.h>
 #endif
@@ -462,7 +461,9 @@ int
 push_stack_frame (ed)
      ed_buffer_t *ed;
 {
-  off_t off = FTELL (stdin);
+  /*
+   * off_t off = FTELL (stdin);
+   */
 
   spl1 ();
 
@@ -482,6 +483,23 @@ push_stack_frame (ed)
       if ((ed->core->frame[ed->core->sp]->rtrn = FTELL (/* ed->exec->fp */ stdin)) == - 1
           || FSEEK (/* ed->exec->fp */ stdin, 0, SEEK_END) == -1
           || (ed->core->frame[ed->core->sp]->size = FTELL (/* ed->exec->fp */ stdin)) == -1)
+        {
+          fprintf (stderr, "%s\n", strerror (errno));
+          ed->exec->err = _("File seek error");
+          spl0 ();
+          return ERR;
+        }
+    }
+
+  /* Input from script file via ed(1) command-line option `-f FILE'. */
+  else if (fileno (stdin) == 0
+           && ed->exec->opt & FSCRIPT
+           && !isatty (0)
+           && lseek (0, 0, SEEK_CUR) != -1)
+    {
+      if ((ed->core->frame[ed->core->sp]->rtrn = FTELL (ed->exec->fp)) == - 1
+          || FSEEK (ed->exec->fp, 0, SEEK_END) == -1
+          || (ed->core->frame[ed->core->sp]->size = FTELL (ed->exec->fp)) == -1)
         {
           fprintf (stderr, "%s\n", strerror (errno));
           ed->exec->err = _("File seek error");

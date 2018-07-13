@@ -97,12 +97,12 @@ top:
         ed->exec->opt |=  REGEX_EXTENDED;
         break;
       case 'e':
-        ed->exec->opt |=  SCRIPTED;
+        ed->exec->opt |= FSCRIPT | SCRIPTED;
         if (append_script_expression (optarg, ed) < 0)
               script_die (3, ed);
         break;
       case 'f':                 /* Read commands from file arg. */
-        ed->exec->opt |= SCRIPTED;
+        ed->exec->opt |= FSCRIPT | SCRIPTED;
         if (append_script_file (optarg, ed) < 0)
           script_die (3, ed);
         break;
