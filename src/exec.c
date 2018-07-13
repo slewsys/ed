@@ -542,7 +542,9 @@ exec_macro (ed)
         break;
     }
 
-  if (!(ed->exec->opt & SCRIPTED) && !(stdin = fdopen (saved, "r+")))
+  if (!(ed->exec->opt & SCRIPTED)
+      && lseek (saved, 0, SEEK_CUR) != -1
+      && !(stdin = fdopen (saved, "r+")))
     {
       fprintf (stderr, "stdin: %s\n", strerror (errno));
       ed->exec->err = _("File open error");
@@ -556,7 +558,6 @@ exec_macro (ed)
   /* Otherwise, restore previous frame. */
   else
     (void) pop_stack_frame (ed);
-
 
   return status == EOF ? 0 : status;
 }
@@ -1338,24 +1339,24 @@ w_cmd (ed)
    *                        State Variables
    * Write command          cx    cy    cz
    * =============          ===============
-   *   w                    '\n'
-   *   w filename           ' '
-   *   w !shell-cmd         ' '         '!'
-   *   wn                   '\n'  'n'
-   *   wn filename          ' '   'n'
-   *   wn !shell-cmd        ' '   'n'   '!'
-   *   wp                   '\n'  'p'
-   *   wp filename          ' '   'p'
-   *   wp !shell-cmd        ' '   'p'   '!'
-   *   wq                   '\n'  'q'
-   *   wq filename          ' '   'q'
-   *   wq !shell-cmd        ' '   'q'   '!'
-   *   ~w                   '\n'
-   *   ~w fileglob          ' '
-   *   ~w !shell-cmd        ' '         '!'
-   *   ~wq                  '\n'  'q'
-   *   ~wq fileglob         ' '   'q'
-   *   ~wq !shell-cmd       ' '   'q'   '!'
+   *   w                    '\n'  '\n'  '\0'
+   *   w filename           ' '   ' '   'f'
+   *   w !shell-cmd         '\n'  '\n'  '!'
+   *   wn                         'n'   '\0'
+   *   wn filename                'n'   '\0'
+   *   wn !shell-cmd              'n'   '!'
+   *   wp                         'p'   '\0'
+   *   wp filename                'p'   '\0'
+   *   wp !shell-cmd              'p'   '!'
+   *   wq                   'q'   'q'   '\0'
+   *   wq filename          'q'   'q'   'f'
+   *   wq !shell-cmd        'q'   'q'   '!'
+   *   ~w                   '\n'  '\n'  '\0'
+   *   ~w fileglob          ' '   ' '   'f'
+   *   ~w !shell-cmd        ' '   ' '   '!'
+   *   ~wq                  'q'   'q'   '\0'
+   *   ~wq fileglob         'q'   'q'   'f'
+   *   ~wq !shell-cmd       'q'   'q'   '!'
    */
 
 #ifdef WANT_FILE_GLOB

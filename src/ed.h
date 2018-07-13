@@ -503,9 +503,10 @@ enum ed_command_flags
   PROMPT            = 0x0080,   /* If set, print command prompt. */
   REGEX_EXTENDED    = 0x0100,   /* If set, use extended regexps. */
   RESTRICTED        = 0x0200,   /* If set, restricted mode enabled. */
-  SCRIPTED          = 0x0400,   /* If set, script mode enabled. */
-  TRADITIONAL       = 0x0800,   /* If set, be backwards compatible. */
-  VERBOSE           = 0x1000    /* If set, print error diagnostics. */
+  FSCRIPT           = 0x0400,   /* If set, script via option `-f'.. */
+  SCRIPTED          = 0x0800,   /* If set, script mode enabled. */
+  TRADITIONAL       = 0x1000,   /* If set, be backwards compatible. */
+  VERBOSE           = 0x2000    /* If set, print error diagnostics. */
 };
 
 /* Ed state parameters. */
