@@ -555,7 +555,7 @@ exec_macro (ed)
 
   /* Otherwise, restore previous frame. */
   else
-    status = pop_stack_frame (ed);
+    (void) pop_stack_frame (ed);
 
 
   return status == EOF ? 0 : status;
