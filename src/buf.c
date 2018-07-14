@@ -108,7 +108,10 @@ init_stdio (ed)
      ed_buffer_t *ed;
 {
   /* Redirect command script to stdin. */
-  if (ed->exec->pathname && !freopen (ed->exec->pathname, "r+", stdin))
+  /*
+   * if (ed->exec->pathname && !freopen (ed->exec->pathname, "r+", stdin))
+   */
+  if (ed->exec->pathname && (stdin = fopen (ed->exec->pathname, "r+")) == NULL)
     {
       fprintf (stderr, "%s: %s\n", ed->exec->pathname, strerror (errno));
       ed->exec->err = _("Buffer open error");

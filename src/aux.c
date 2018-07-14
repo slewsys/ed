@@ -480,6 +480,7 @@ push_stack_frame (ed)
   /* Save current script return address and size. */
   if (ed->core->sp)
     {
+      ed->core->stack_frame[ed->core->sp]->fp = stdin;
       if ((ed->core->stack_frame[ed->core->sp]->rtrn =
            FTELL (/* ed->exec->fp */ stdin)) == - 1
           || FSEEK (/* ed->exec->fp */ stdin, 0, SEEK_END) == -1
@@ -499,6 +500,7 @@ push_stack_frame (ed)
             * && lseek (0, 0, SEEK_CUR) != -1)
             */
     {
+      ed->core->stack_frame[ed->core->sp]->fp = stdin;
       if ((ed->core->stack_frame[ed->core->sp]->rtrn =
            FTELL (ed->exec->fp)) == - 1
           || FSEEK (ed->exec->fp, 0, SEEK_END) == -1
@@ -513,6 +515,7 @@ push_stack_frame (ed)
     }
   else
     {
+      ed->core->stack_frame[ed->core->sp]->fp = stdin;
       ed->core->stack_frame[ed->core->sp]->rtrn = 0;
       ed->core->stack_frame[ed->core->sp]->size = 0;
     }
@@ -529,6 +532,7 @@ pop_stack_frame (ed)
 {
   spl1 ();
   --ed->core->sp;
+  stdin = ed->core->stack_frame[ed->core->sp]->fp;
   if (ftruncate (fileno (ed->exec->fp /* stdin */),
                  ed->core->stack_frame[ed->core->sp]->size) == -1
       || fflush (stdin) == EOF

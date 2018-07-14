@@ -376,9 +376,9 @@ struct ed_register
 /* Script buffer stack frame. */
 typedef struct ed_stack_frame
 {
-  off_t size;  /* Nominal script buffer size. */
-  off_t rtrn;  /* Nominal script buffer position
-                                   (i.e., return address). */
+  FILE *fp;                     /* Nominal standard input. */
+  off_t size;                   /* Nominal script buffer size. */
+  off_t rtrn;                   /* Nominal script buffer position. */
 } ed_stack_frame_t;
 
 #define ED_STACK_FRAME_T_SIZE (sizeof (ed_stack_frame_t))

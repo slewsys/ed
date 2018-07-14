@@ -1,9 +1,21 @@
+2018-07-14  Andrew L. Moore  <alm@slewsys.org>
+
+	* ed.h:
+	* src/buf.c (init_stdio):
+	* src/aux.c (push_stack_frame):
+	(pop_stack_frame): When pushing stack frames, preserve original
+	standard input This fixes case where a script containing a macro
+	is provided via option `-f' and where a script is read from a
+	pipe.
+
+	TODO: Redirecting script from file still seqfaults.
+
 2018-07-13  Andrew L. Moore  <alm@slewsys.org>
 
 	* src/aux.c (push_stack_frame): Add FSCRIPT flag.
 
-	(push_stack_frame): needs to distinguish between redirected file
-	and script file via option `-f'.
+	(push_stack_frame): Distinguish between redirected file and script
+	file via option `-f'.
 
 2018-07-10  Andrew L. Moore  <slewsys@gmail.com>
 
