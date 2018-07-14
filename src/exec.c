@@ -500,6 +500,7 @@ exec_macro (ed)
   size_t len;
   int status = 0;
   int saved = dup (fileno (stdin));
+  int fp_is_null = !ed->exec->fp;
 
   /* case '@': */
 
@@ -542,9 +543,12 @@ exec_macro (ed)
         break;
     }
 
-  if (!(ed->exec->opt & SCRIPTED)
+  if (!(ed->exec->opt & FSCRIPT)
       && lseek (saved, 0, SEEK_CUR) != -1
-      && !(stdin = fdopen (saved, "r+")))
+      && (stdin = fdopen (saved, "r+")) == NULL)
+      /*
+       * && freopen (ed->exec->, "r+", stdin) == NULL)
+       */
     {
       fprintf (stderr, "stdin: %s\n", strerror (errno));
       ed->exec->err = _("File open error");

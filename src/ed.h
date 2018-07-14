@@ -395,7 +395,7 @@ struct ed_core
   int marks;
 
   /* Script buffer stack frame. */
-  struct ed_stack_frame *frame[STACK_FRAMES_MAX];
+  struct ed_stack_frame *stack_frame[STACK_FRAMES_MAX];
   int sp;                       /* Script buffer stack pointer. */
 
   /* Edit-processing buffers. */

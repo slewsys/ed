@@ -118,7 +118,8 @@ init_stdio (ed)
   if (ed->core->sp)
 
     /* Position stdin to beginning of script. */
-    if (FSEEK (stdin, ed->core->frame[ed->core->sp - 1]->size, SEEK_SET) < 0)
+    if (FSEEK (stdin,
+               ed->core->stack_frame[ed->core->sp - 1]->size, SEEK_SET) < 0)
       {
         fprintf (stderr, "%s: %s\n", ed->exec->pathname, strerror (errno));
         ed->exec->err = _("Buffer seek error");

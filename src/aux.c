@@ -444,7 +444,7 @@ script_from_register (ed)
   /* Set file pointer to beginning of frame. */
   /*
    * else if (FSEEK (/\* ed->exec->fp *\/ stdin,
-   *            ed->core->frame[ed->core->sp - 1]->size, SEEK_SET) == -1)
+   *            ed->core->stack_frame[ed->core->sp - 1]->size, SEEK_SET) == -1)
    *   {
    *     fprintf (stderr, "%s: %s\n", ed->exec->pathname, strerror (errno));
    *     ed->exec->err = _("File seek error");
@@ -468,8 +468,8 @@ push_stack_frame (ed)
   spl1 ();
 
   /* Create new frame. */
-  if (!(ed->core->frame[ed->core->sp] =
-        (struct ed_frame_buffer *) malloc (ED_STACK_FRAME_T_SIZE)))
+  if (!(ed->core->stack_frame[ed->core->sp] =
+        (struct ed_stack_frame *) malloc (ED_STACK_FRAME_T_SIZE)))
     {
       fprintf (stderr, "%s\n", strerror (errno));
       ed->exec->err = _("Memory exhausted");
@@ -480,9 +480,11 @@ push_stack_frame (ed)
   /* Save current script return address and size. */
   if (ed->core->sp)
     {
-      if ((ed->core->frame[ed->core->sp]->rtrn = FTELL (/* ed->exec->fp */ stdin)) == - 1
+      if ((ed->core->stack_frame[ed->core->sp]->rtrn =
+           FTELL (/* ed->exec->fp */ stdin)) == - 1
           || FSEEK (/* ed->exec->fp */ stdin, 0, SEEK_END) == -1
-          || (ed->core->frame[ed->core->sp]->size = FTELL (/* ed->exec->fp */ stdin)) == -1)
+          || (ed->core->stack_frame[ed->core->sp]->size =
+              FTELL (/* ed->exec->fp */ stdin)) == -1)
         {
           fprintf (stderr, "%s\n", strerror (errno));
           ed->exec->err = _("File seek error");
@@ -492,14 +494,16 @@ push_stack_frame (ed)
     }
 
   /* Input from script file via ed(1) command-line option `-f FILE'. */
-  else if (fileno (stdin) == 0
-           && ed->exec->opt & FSCRIPT
-           && !isatty (0)
-           && lseek (0, 0, SEEK_CUR) != -1)
+  else if (ed->exec->opt & FSCRIPT)
+           /*
+            * && lseek (0, 0, SEEK_CUR) != -1)
+            */
     {
-      if ((ed->core->frame[ed->core->sp]->rtrn = FTELL (ed->exec->fp)) == - 1
+      if ((ed->core->stack_frame[ed->core->sp]->rtrn =
+           FTELL (ed->exec->fp)) == - 1
           || FSEEK (ed->exec->fp, 0, SEEK_END) == -1
-          || (ed->core->frame[ed->core->sp]->size = FTELL (ed->exec->fp)) == -1)
+          || (ed->core->stack_frame[ed->core->sp]->size =
+              FTELL (ed->exec->fp)) == -1)
         {
           fprintf (stderr, "%s\n", strerror (errno));
           ed->exec->err = _("File seek error");
@@ -509,8 +513,8 @@ push_stack_frame (ed)
     }
   else
     {
-      ed->core->frame[ed->core->sp]->rtrn = 0;
-      ed->core->frame[ed->core->sp]->size = 0;
+      ed->core->stack_frame[ed->core->sp]->rtrn = 0;
+      ed->core->stack_frame[ed->core->sp]->size = 0;
     }
   ++ed->core->sp;
   spl0 ();
@@ -526,18 +530,20 @@ pop_stack_frame (ed)
   spl1 ();
   --ed->core->sp;
   if (ftruncate (fileno (ed->exec->fp /* stdin */),
-                 ed->core->frame[ed->core->sp]->size) == -1
+                 ed->core->stack_frame[ed->core->sp]->size) == -1
       || fflush (stdin) == EOF
       || FSEEK (ed->exec->fp /* stdin */,
-                ed->core->frame[ed->core->sp]->rtrn, SEEK_SET) == -1)
+                ed->core->stack_frame[ed->core->sp]->rtrn, SEEK_SET) == -1)
     {
       fprintf (stderr, "%s\n", strerror (errno));
       ed->exec->err = _("File seek error");
       spl0 ();
       return ERR;
     }
-  free (ed->core->frame[ed->core->sp]);
+  free (ed->core->stack_frame[ed->core->sp]);
   spl0 ();
+
+  return 0;
 }
 
 
@@ -550,12 +556,12 @@ unwind_stack_frame (ed)
       spl1 ();
       if (ed->exec->fp)
         {
-          ftruncate (fileno (/* ed->exec->fp */ stdin), ed->core->frame[0]->size);
+          ftruncate (fileno (/* ed->exec->fp */ stdin), ed->core->stack_frame[0]->size);
           fflush (stdin);
-          FSEEK (/* ed->exec->fp */ stdin, ed->core->frame[0]->rtrn, SEEK_SET);
+          FSEEK (/* ed->exec->fp */ stdin, ed->core->stack_frame[0]->rtrn, SEEK_SET);
         }
       while (ed->core->sp > 0)
-        free (ed->core->frame[--ed->core->sp]);
+        free (ed->core->stack_frame[--ed->core->sp]);
       spl0 ();
     }
 }
