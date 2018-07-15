@@ -223,10 +223,9 @@ top:
   if ((status = SETJMP (env)))
     {
       /* Unwind stack frame on interrupt. */
-      unwind_stack_frame (ed);
+      status = unwind_stack_frame (ERR, ed);
 
       ed->exec->err = _("Interrupted");
-      status = ERR;
       goto error;
     }
 

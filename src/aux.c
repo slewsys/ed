@@ -441,17 +441,6 @@ script_from_register (ed)
   else if ((status = init_stdio (ed)) < 0)
     return status;
 
-  /* Set file pointer to beginning of frame. */
-  /*
-   * else if (FSEEK (/\* ed->exec->fp *\/ stdin,
-   *            ed->core->stack_frame[ed->core->sp - 1]->size, SEEK_SET) == -1)
-   *   {
-   *     fprintf (stderr, "%s: %s\n", ed->exec->pathname, strerror (errno));
-   *     ed->exec->err = _("File seek error");
-   *     clearerr (ed->exec->fp);
-   *     return ERR;
-   *   }
-   */
   return 0;
 }
 
@@ -461,10 +450,6 @@ int
 push_stack_frame (ed)
      ed_buffer_t *ed;
 {
-  /*
-   * off_t off = FTELL (stdin);
-   */
-
   spl1 ();
 
   /* Create new frame. */
@@ -481,11 +466,9 @@ push_stack_frame (ed)
   if (ed->core->sp)
     {
       ed->core->stack_frame[ed->core->sp]->fp = stdin;
-      if ((ed->core->stack_frame[ed->core->sp]->rtrn =
-           FTELL (/* ed->exec->fp */ stdin)) == - 1
-          || FSEEK (/* ed->exec->fp */ stdin, 0, SEEK_END) == -1
+      if (FSEEK (stdin, 0, SEEK_END) == -1
           || (ed->core->stack_frame[ed->core->sp]->size =
-              FTELL (/* ed->exec->fp */ stdin)) == -1)
+              FTELL (stdin)) == -1)
         {
           fprintf (stderr, "%s\n", strerror (errno));
           ed->exec->err = _("File seek error");
@@ -496,14 +479,9 @@ push_stack_frame (ed)
 
   /* Input from script file via ed(1) command-line option `-f FILE'. */
   else if (ed->exec->opt & FSCRIPT)
-           /*
-            * && lseek (0, 0, SEEK_CUR) != -1)
-            */
     {
       ed->core->stack_frame[ed->core->sp]->fp = stdin;
-      if ((ed->core->stack_frame[ed->core->sp]->rtrn =
-           FTELL (ed->exec->fp)) == - 1
-          || FSEEK (ed->exec->fp, 0, SEEK_END) == -1
+      if (FSEEK (ed->exec->fp, 0, SEEK_END) == -1
           || (ed->core->stack_frame[ed->core->sp]->size =
               FTELL (ed->exec->fp)) == -1)
         {
@@ -513,10 +491,11 @@ push_stack_frame (ed)
           return ERR;
         }
     }
+
+  /* Other input, e.g., pipe, tty, redirection. */
   else
     {
       ed->core->stack_frame[ed->core->sp]->fp = stdin;
-      ed->core->stack_frame[ed->core->sp]->rtrn = 0;
       ed->core->stack_frame[ed->core->sp]->size = 0;
     }
   ++ed->core->sp;
@@ -533,13 +512,13 @@ pop_stack_frame (ed)
   spl1 ();
   --ed->core->sp;
   stdin = ed->core->stack_frame[ed->core->sp]->fp;
-  if (ftruncate (fileno (ed->exec->fp /* stdin */),
-                 ed->core->stack_frame[ed->core->sp]->size) == -1
-      || fflush (stdin) == EOF
-      || FSEEK (ed->exec->fp /* stdin */,
-                ed->core->stack_frame[ed->core->sp]->rtrn, SEEK_SET) == -1)
+  if (FSEEK (ed->exec->fp, 0, SEEK_CUR) != -1
+
+      && (ftruncate (fileno (ed->exec->fp),
+                    ed->core->stack_frame[ed->core->sp]->size) == -1
+          || fflush (ed->exec->fp) == EOF))
     {
-      fprintf (stderr, "%s\n", strerror (errno));
+      fprintf (stderr, "stdin: %s\n", strerror (errno));
       ed->exec->err = _("File seek error");
       spl0 ();
       return ERR;
@@ -551,21 +530,29 @@ pop_stack_frame (ed)
 }
 
 
-void
-unwind_stack_frame (ed)
+int
+unwind_stack_frame (status, ed)
+     int status;
      ed_buffer_t *ed;
 {
   if (ed->core->sp)
     {
       spl1 ();
-      if (ed->exec->fp)
+      stdin = ed->core->stack_frame[ed->core->sp]->fp;
+      if (FSEEK (ed->exec->fp, 0, SEEK_CUR) != -1
+
+          && (ftruncate (fileno (ed->exec->fp),
+                         ed->core->stack_frame[ed->core->sp]->size) == -1
+              || fflush (ed->exec->fp) == EOF))
         {
-          ftruncate (fileno (/* ed->exec->fp */ stdin), ed->core->stack_frame[0]->size);
-          fflush (stdin);
-          FSEEK (/* ed->exec->fp */ stdin, ed->core->stack_frame[0]->rtrn, SEEK_SET);
+          fprintf (stderr, "stdin: %s\n", strerror (errno));
+          ed->exec->err = _("File seek error");
+          spl0 ();
+          return ERR;
         }
       while (ed->core->sp > 0)
         free (ed->core->stack_frame[--ed->core->sp]);
       spl0 ();
     }
+  return status;
 }

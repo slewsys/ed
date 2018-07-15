@@ -378,7 +378,6 @@ typedef struct ed_stack_frame
 {
   FILE *fp;                     /* Nominal standard input. */
   off_t size;                   /* Nominal script buffer size. */
-  off_t rtrn;                   /* Nominal script buffer position. */
 } ed_stack_frame_t;
 
 #define ED_STACK_FRAME_T_SIZE (sizeof (ed_stack_frame_t))
@@ -945,7 +944,7 @@ int substitution_lhs __P ((regex_t **, unsigned *, ed_buffer_t *));
 int substitution_rhs __P ((off_t *, off_t *, unsigned *, unsigned *,
                            ed_buffer_t *));
 int undo_last_command __P ((ed_buffer_t *));
-void unwind_stack_frame __P ((ed_buffer_t *));
+int unwind_stack_frame __P ((int, ed_buffer_t *));
 void unmark_line_node __P ((const ed_line_node_t *, ed_buffer_t *));
 int write_file __P ((const char *, int, off_t, off_t, off_t *, off_t *,
                      const char *, ed_buffer_t *));

@@ -1,3 +1,13 @@
+2018-07-15  Andrew L. Moore  <alm@slewsys.org>
+
+	* src/exec.c (exec_macro): Remove unused code.
+
+	* src/ed.h (struct ed_stack_frame):
+	* src/aux.c (push_stack_frame): Remove unused rtrn address.
+
+	(pop_stack_frame): Enter ftruncate block conditionally on FSEEK.
+	Fixes macros for remaining cases.
+
 2018-07-14  Andrew L. Moore  <alm@slewsys.org>
 
 	* ed.h:
