@@ -538,6 +538,7 @@ unwind_stack_frame (status, ed)
   if (ed->core->sp)
     {
       spl1 ();
+      --ed->core->sp;
       stdin = ed->core->stack_frame[ed->core->sp]->fp;
       if (FSEEK (ed->exec->fp, 0, SEEK_CUR) != -1
 
@@ -551,7 +552,8 @@ unwind_stack_frame (status, ed)
           return ERR;
         }
       while (ed->core->sp > 0)
-        free (ed->core->stack_frame[--ed->core->sp]);
+        free (ed->core->stack_frame[ed->core->sp--]);
+      free (ed->core->stack_frame[ed->core->sp]);
       spl0 ();
     }
   return status;
