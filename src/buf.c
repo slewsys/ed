@@ -108,10 +108,19 @@ init_stdio (ed)
      ed_buffer_t *ed;
 {
   /* If scripting, redirect script to standard input. */
-  if (ed->exec->fp)
+  if (ed->exec->fp && !(ed->exec->opt & FSCRIPT && !ed->core->sp))
     stdin = ed->exec->fp;
 
-  /* Position stdin to beginning of script. */
+  /* In case of option `-f', reopen script to allow shell escape
+     access to I/O as described below. */
+  else if (ed->exec->pathname && !freopen (ed->exec->pathname, "r+", stdin))
+    {
+      fprintf (stderr, "%s: %s\n", ed->exec->pathname, strerror (errno));
+      ed->exec->err = _("Buffer open error");
+      return FATAL;
+    }
+
+  /* If in a macro, position stdin to beginning of script. */
   if (ed->core->sp
       && FSEEK (stdin,
                 ed->core->stack_frame[ed->core->sp - 1]->size, SEEK_SET) < 0)
@@ -140,8 +149,8 @@ init_stdio (ed)
   SETVBUF (stdout, NULL, _IOLBF, 0);
 #endif   /* !HAVE_SETBUFFER */
 
-  /* Don't exit on errors if (the original) standard input is
-     non-seekable, e.g., piped or tty. */
+  /* Don't exit on errors if (nominal) standard input is non-seekable,
+     e.g., piped or tty. */
   if (lseek (0, 0, SEEK_CUR) != -1
       && (ed->exec->opt & SCRIPTED || !isatty (0)))
     ed->exec->opt |= EXIT_ON_ERROR;

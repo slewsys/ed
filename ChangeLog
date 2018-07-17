@@ -2,7 +2,9 @@
 
 	* src/aux.c (push_stack_frame, pop_stack_frame, unwind_stack_frame):
 	* src/ed.h (struct ed_stack_frame):
-	* src/buf.c (init_stdio): Don't reopen internal script.
+	* src/buf.c (init_stdio): Reopen internal script only in case of
+	option `-f' and when not in a macro.  This fixes a regression
+	where shell escapes don't have access to stdin.
 
 	* src/main.c (append_script_file):
 	* src/aux.c (push_stack_frame): Clean up.
