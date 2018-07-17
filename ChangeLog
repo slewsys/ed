@@ -1,3 +1,9 @@
+2018-07-17  Andrew L. Moore  <alm@slewsys.org>
+
+	* src/main.c (append_script_file):
+	* src/buf.c (init_stdio):
+	* src/aux.c (push_stack_frame): Clean up.  Comment on code options.
+
 2018-07-15  Andrew L. Moore  <alm@slewsys.org>
 
 	* src/aux.c (unwind_stack_frame): Decrement stack frame index

@@ -107,10 +107,19 @@ int
 init_stdio (ed)
      ed_buffer_t *ed;
 {
-  /* Redirect command script to stdin. */
+  /* Redirect command script, if any, to stdin. */
   /*
    * if (ed->exec->pathname && !freopen (ed->exec->pathname, "r+", stdin))
    */
+  /*
+   * if (ed->exec->fp && (stdin = fdopen (fileno (ed->exec->fp), "r+")) == NULL)
+   */
+  /*
+   * if (ed->exec->fp)
+   *   stdin = ed->exec->fp;
+   */
+
+  /* In case of option `-f' or `-e', can't assign: stdin = ed->exec->fp. */
   if (ed->exec->pathname && (stdin = fopen (ed->exec->pathname, "r+")) == NULL)
     {
       fprintf (stderr, "%s: %s\n", ed->exec->pathname, strerror (errno));
@@ -118,11 +127,10 @@ init_stdio (ed)
       return FATAL;
     }
 
-  if (ed->core->sp)
-
-    /* Position stdin to beginning of script. */
-    if (FSEEK (stdin,
-               ed->core->stack_frame[ed->core->sp - 1]->size, SEEK_SET) < 0)
+  /* Position stdin to beginning of script. */
+  if (ed->core->sp
+      && FSEEK (stdin,
+                ed->core->stack_frame[ed->core->sp - 1]->size, SEEK_SET) < 0)
       {
         fprintf (stderr, "%s: %s\n", ed->exec->pathname, strerror (errno));
         ed->exec->err = _("Buffer seek error");

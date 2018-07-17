@@ -165,9 +165,10 @@ top:
       goto top;
     }
 
-  /* Rewind script file. */
-  if (fflush (ed->exec->fp) == EOF
-      || ed->exec->fp && FSEEK (ed->exec->fp, 0L, SEEK_SET) == -1)
+  /* In case of option `-f' or `-e', rewind internal script file. */
+  if (ed->exec->fp
+      && (fflush (ed->exec->fp) == EOF
+          || FSEEK (ed->exec->fp, 0L, SEEK_SET) == -1))
     {
       fprintf (stderr, "%s\n", strerror(errno));
       ed->exec->err = _("File seek error");
@@ -484,8 +485,9 @@ append_script_file (fn, ed)
   size_t m = 0;
   int status;
 
-  /* Conditionally save filename `fn'. */
   filename = ((len = strlen (fn)) == 1 && *fn == '-' ? STDIN : fn);
+
+  /* Conditionally save filename of script. */
   if (len && !ed->exec->file_script)
       {
         if (!(ed->exec->file_script = (char *) malloc (len + 1)))
@@ -497,7 +499,7 @@ append_script_file (fn, ed)
         strcpy (ed->exec->file_script, filename);
       }
 
-  /* Open file `fn' and script file `ed->exec->pathname'. */
+  /* Open script and create internal script file `ed->exec->pathname'. */
   if (!(fp = fopen (filename, "r")))
     {
       fprintf (stderr, "%s: %s\n", filename, strerror (errno));
@@ -509,7 +511,7 @@ append_script_file (fn, ed)
                                        &ed->exec->pathname, ed)) < 0)
     return status;
 
-  /* Append contents of file `fn' to end of file `ed->exec->pathname'. */
+  /* Append contents of script to end of internal script. */
   if (FSEEK (ed->exec->fp, 0L, SEEK_END) == -1)
     {
       fprintf (stderr, "%s: %s\n", ed->exec->pathname, strerror (errno));
@@ -541,13 +543,7 @@ append_script_file (fn, ed)
       clearerr (ed->exec->fp);
       return ERR;
     }
-  if (FSEEK (ed->exec->fp, 0L, SEEK_SET) == -1)
-    {
-      fprintf (stderr, "%s: %s\n", ed->exec->pathname, strerror (errno));
-      ed->exec->err = _("File seek error");
-      clearerr (ed->exec->fp);
-      return ERR;
-    }
+
   return 0;
 }
 

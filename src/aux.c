@@ -462,25 +462,11 @@ push_stack_frame (ed)
       return ERR;
     }
 
-  /* Save current script return address and size. */
-  if (ed->core->sp)
+  /* Push script file pointer and file size. */
+  ed->core->stack_frame[ed->core->sp]->fp = stdin;
+  ed->core->stack_frame[ed->core->sp]->size = 0;
+  if (ed->core->sp || ed->exec->opt & FSCRIPT)
     {
-      ed->core->stack_frame[ed->core->sp]->fp = stdin;
-      if (FSEEK (stdin, 0, SEEK_END) == -1
-          || (ed->core->stack_frame[ed->core->sp]->size =
-              FTELL (stdin)) == -1)
-        {
-          fprintf (stderr, "%s\n", strerror (errno));
-          ed->exec->err = _("File seek error");
-          spl0 ();
-          return ERR;
-        }
-    }
-
-  /* Input from script file via ed(1) command-line option `-f FILE'. */
-  else if (ed->exec->opt & FSCRIPT)
-    {
-      ed->core->stack_frame[ed->core->sp]->fp = stdin;
       if (FSEEK (ed->exec->fp, 0, SEEK_END) == -1
           || (ed->core->stack_frame[ed->core->sp]->size =
               FTELL (ed->exec->fp)) == -1)
@@ -492,12 +478,6 @@ push_stack_frame (ed)
         }
     }
 
-  /* Other input, e.g., pipe, tty, redirection. */
-  else
-    {
-      ed->core->stack_frame[ed->core->sp]->fp = stdin;
-      ed->core->stack_frame[ed->core->sp]->size = 0;
-    }
   ++ed->core->sp;
   spl0 ();
   return 0;
@@ -513,7 +493,6 @@ pop_stack_frame (ed)
   --ed->core->sp;
   stdin = ed->core->stack_frame[ed->core->sp]->fp;
   if (FSEEK (ed->exec->fp, 0, SEEK_CUR) != -1
-
       && (ftruncate (fileno (ed->exec->fp),
                     ed->core->stack_frame[ed->core->sp]->size) == -1
           || fflush (ed->exec->fp) == EOF))
