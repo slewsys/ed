@@ -378,6 +378,7 @@ typedef struct ed_stack_frame
 {
   FILE *fp;                     /* Nominal standard input. */
   off_t size;                   /* Nominal script buffer size. */
+  off_t addr;                   /* Nominal script buffer address. */
 } ed_stack_frame_t;
 
 #define ED_STACK_FRAME_T_SIZE (sizeof (ed_stack_frame_t))

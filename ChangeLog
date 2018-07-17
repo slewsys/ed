@@ -1,8 +1,11 @@
 2018-07-17  Andrew L. Moore  <alm@slewsys.org>
 
+	* src/aux.c (push_stack_frame, pop_stack_frame, unwind_stack_frame):
+	* src/ed.h (struct ed_stack_frame):
+	* src/buf.c (init_stdio): Don't reopen internal script.
+
 	* src/main.c (append_script_file):
-	* src/buf.c (init_stdio):
-	* src/aux.c (push_stack_frame): Clean up.  Comment on code options.
+	* src/aux.c (push_stack_frame): Clean up.
 
 2018-07-15  Andrew L. Moore  <alm@slewsys.org>
 

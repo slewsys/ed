@@ -107,25 +107,9 @@ int
 init_stdio (ed)
      ed_buffer_t *ed;
 {
-  /* Redirect command script, if any, to stdin. */
-  /*
-   * if (ed->exec->pathname && !freopen (ed->exec->pathname, "r+", stdin))
-   */
-  /*
-   * if (ed->exec->fp && (stdin = fdopen (fileno (ed->exec->fp), "r+")) == NULL)
-   */
-  /*
-   * if (ed->exec->fp)
-   *   stdin = ed->exec->fp;
-   */
-
-  /* In case of option `-f' or `-e', can't assign: stdin = ed->exec->fp. */
-  if (ed->exec->pathname && (stdin = fopen (ed->exec->pathname, "r+")) == NULL)
-    {
-      fprintf (stderr, "%s: %s\n", ed->exec->pathname, strerror (errno));
-      ed->exec->err = _("Buffer open error");
-      return FATAL;
-    }
+  /* If scripting, redirect script to standard input. */
+  if (ed->exec->fp)
+    stdin = ed->exec->fp;
 
   /* Position stdin to beginning of script. */
   if (ed->core->sp
@@ -156,7 +140,8 @@ init_stdio (ed)
   SETVBUF (stdout, NULL, _IOLBF, 0);
 #endif   /* !HAVE_SETBUFFER */
 
-  /* Don't exit on errors if stdin is non-seekable, e.g., piped or tty. */
+  /* Don't exit on errors if (the original) standard input is
+     non-seekable, e.g., piped or tty. */
   if (lseek (0, 0, SEEK_CUR) != -1
       && (ed->exec->opt & SCRIPTED || !isatty (0)))
     ed->exec->opt |= EXIT_ON_ERROR;

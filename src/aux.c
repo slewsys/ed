@@ -462,12 +462,15 @@ push_stack_frame (ed)
       return ERR;
     }
 
-  /* Push script file pointer and file size. */
+  /* Push file pointer, input size and return address. */
   ed->core->stack_frame[ed->core->sp]->fp = stdin;
   ed->core->stack_frame[ed->core->sp]->size = 0;
+  ed->core->stack_frame[ed->core->sp]->addr = 0;
   if (ed->core->sp || ed->exec->opt & FSCRIPT)
     {
-      if (FSEEK (ed->exec->fp, 0, SEEK_END) == -1
+      if ((ed->core->stack_frame[ed->core->sp]->addr =
+              FTELL (ed->exec->fp)) == -1
+          || FSEEK (ed->exec->fp, 0, SEEK_END) == -1
           || (ed->core->stack_frame[ed->core->sp]->size =
               FTELL (ed->exec->fp)) == -1)
         {
@@ -491,13 +494,17 @@ pop_stack_frame (ed)
 {
   spl1 ();
   --ed->core->sp;
+
+  /* Restore file pointer, input size and return address. */
   stdin = ed->core->stack_frame[ed->core->sp]->fp;
   if (FSEEK (ed->exec->fp, 0, SEEK_CUR) != -1
       && (ftruncate (fileno (ed->exec->fp),
                     ed->core->stack_frame[ed->core->sp]->size) == -1
-          || fflush (ed->exec->fp) == EOF))
+          || fflush (ed->exec->fp) == EOF
+          || FSEEK (ed->exec->fp,
+                    ed->core->stack_frame[ed->core->sp]->addr, SEEK_SET) == -1))
     {
-      fprintf (stderr, "stdin: %s\n", strerror (errno));
+      fprintf (stderr, "%s\n", strerror (errno));
       ed->exec->err = _("File seek error");
       spl0 ();
       return ERR;
@@ -518,12 +525,15 @@ unwind_stack_frame (status, ed)
     {
       spl1 ();
       --ed->core->sp;
-      stdin = ed->core->stack_frame[ed->core->sp]->fp;
-      if (FSEEK (ed->exec->fp, 0, SEEK_CUR) != -1
 
+      /* Restore file pointer and input size. */
+      stdin = ed->core->stack_frame[0]->fp;
+      if (FSEEK (ed->exec->fp, 0, SEEK_CUR) != -1
           && (ftruncate (fileno (ed->exec->fp),
-                         ed->core->stack_frame[ed->core->sp]->size) == -1
-              || fflush (ed->exec->fp) == EOF))
+                         ed->core->stack_frame[0]->size) == -1
+              || fflush (ed->exec->fp) == EOF
+              || FSEEK (ed->exec->fp,
+                    ed->core->stack_frame[0]->addr, SEEK_SET) == -1))
         {
           fprintf (stderr, "stdin: %s\n", strerror (errno));
           ed->exec->err = _("File seek error");
