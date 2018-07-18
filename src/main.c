@@ -41,13 +41,12 @@ main (argc, argv)
      int argc;
      char **argv;
 {
-  struct option long_options[15] =
+  struct option long_options[13] =
     {
       {"ansi-color", no_argument, NULL, 'R'},
       {"expression", required_argument, NULL, 'e'},
       {"file", required_argument, NULL, 'f'},
       {"help", no_argument, NULL, 'h'},
-      {"info", no_argument, NULL, 'i'},
       {"prompt", required_argument, NULL, 'p'},
       {"quiet", no_argument, NULL, 's'},           /* Deprecated long option */
       {"regexp-extended", no_argument, NULL, 'E'}, /* BSD extended regexp */
@@ -85,7 +84,7 @@ main (argc, argv)
 #endif
 
 top:
-  while ((c = getopt_long (argc, argv, "Ee:f:Ghip:RrsVv",
+  while ((c = getopt_long (argc, argv, "Ee:f:Ghp:RrsVv",
                            long_options, NULL)) != -1)
     switch (c)
       {
@@ -111,10 +110,6 @@ top:
         break;
       case 'h':                 /* Display help, then exit. */
         ed->exec->opt |= PRINT_HELP;
-        ed_usage (0, ed);
-        break;
-      case 'i':                 /* Display configuration info, then exit. */
-        ed->exec->opt |= PRINT_CONFIG;
         ed_usage (0, ed);
         break;
       case 'p':                 /* Set ed command prompt. */
@@ -560,8 +555,7 @@ ed_usage (status, ed)
     printf (_("Usage: %s [-] [-EGhirsVv] [-f SCRIPT] [-p PROMPT] [FILE]\n"),
             ed->exec->opt & RESTRICTED ? "red" : "ed");
   else if (ed->exec->opt & (PRINT_VERSION | PRINT_CONFIG))
-    printf ("ed %s\n%s", version_string, ed->exec->opt & PRINT_CONFIG
-            ? CONFIGURE_ARGS : "");
+    printf ("ed %s\n%s", version_string, CONFIGURE_ARGS);
   else if (ed->exec->opt & PRINT_HELP)
     {
       printf (_("Usage: %s [OPTION...] [FILE]\n"), (ed->exec->opt & RESTRICTED
@@ -572,7 +566,6 @@ ed_usage (status, ed)
   -f, --file=SCRIPT         Read commands from file SCRIPT.\n\
   -G, --traditional         Enable backward compatibility.\n\
   -h, --help                Dispaly (this) help, then exit.\n\
-  -i, --info                Dispaly configuration info, then exit.\n\
   -p, --prompt=STRING       Prompt for commands with STRING.\n\
   -R, --ansi-color          Enable support for ANSI color codes.\n\
   -r, --regexp-extended     Enable extended regular expression syntax.\n\

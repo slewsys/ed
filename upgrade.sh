@@ -2,7 +2,7 @@
 #
 # @(#)upgrade-sh
 #
-# This script invokes `configure' with options listed by `ed --info'.
+# This script invokes `configure' with options listed by `ed --version'.
 #
 script_name=$(basename $0)
 
@@ -10,8 +10,8 @@ _exit_status=''
 _process_output=''
 verbose='true'
 
-if ! ed  --info >/dev/null 2>&1; then
-    echo "$script_name: ed: --info: Unrecognized option." >&2
+if ! ed  --version >/dev/null 2>&1; then
+    echo "$script_name: ed: --version: Unrecognized option." >&2
     exit 1
 fi
 
@@ -66,11 +66,11 @@ _exit_status=$?
 
 $verbose && cat >&2 <<EOF
 $script_name: Running:
-  $(eval echo "$srcdir/configure" $(ed --info | tail -n +3 | tr -d '\n'))
+  $(eval echo "$srcdir/configure" $(ed --version | tail -n +3 | tr -d '\n'))
 
 EOF
 
-_process_output=$(eval \"$srcdir/configure\" $(ed --info | tail -n +3 | tr -d '\n'))
+_process_output=$(eval \"$srcdir/configure\" $(ed --version | tail -n +3 | tr -d '\n'))
 _exit_status=$?
 check_exit_status
 
@@ -104,7 +104,7 @@ EOF
 wq po/ed.pot.in
 EOF
 
-    _process_output=$(eval \"${srcdir}/configure\" $(ed --info | tail -n +3 | tr -d '\n') 2>&1)
+    _process_output=$(eval \"${srcdir}/configure\" $(ed --version | tail -n +3 | tr -d '\n') 2>&1)
     _exit_status=$?
 fi
 check_exit_status

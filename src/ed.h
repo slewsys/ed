@@ -5,9 +5,7 @@
  *  This file is part of ed.
  */
 
-#ifdef HAVE_CONFIG_H
 # include "config.h"
-#endif
 
 /*
  * Work around conflicting off_t typedefs (e.g., if _LARGE_FILE
