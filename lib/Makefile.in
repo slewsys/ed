@@ -1328,8 +1328,8 @@ maintainer-clean-generic:
 	@echo "it deletes files that may require special tools to rebuild."
 	-test -z "$(BUILT_SOURCES)" || rm -f $(BUILT_SOURCES)
 	-test -z "$(MAINTAINERCLEANFILES)" || rm -f $(MAINTAINERCLEANFILES)
-@gl_GNULIB_ENABLED_localcharset_FALSE@install-exec-local:
 @gl_GNULIB_ENABLED_localcharset_FALSE@uninstall-local:
+@gl_GNULIB_ENABLED_localcharset_FALSE@install-exec-local:
 clean: clean-recursive
 
 clean-am: clean-generic clean-libtool clean-noinstLIBRARIES \

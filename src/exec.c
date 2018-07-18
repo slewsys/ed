@@ -1,6 +1,6 @@
 /* exec.c: Command switch for the ed line editor.
  *
- *  Copyright © 1993-2016 Andrew L. Moore, SlewSys Research
+ *  Copyright © 1993-2018 Andrew L. Moore, SlewSys Research
  *
  *  This file is part of ed.
  */
@@ -1348,13 +1348,13 @@ w_cmd (ed)
 # ifdef WANT_SAFE_WRITE
           (ed->file->is_glob || cy == 'n' || cy == 'p' || cx == 'q')
           && ed->state->is_modified && !(ed->exec->opt & SCRIPTED) ? EMOD
-          : ed->file->is_glob ? EOF_GLB
+          : ed->file->is_glob ? EOF_GLOB
 # else
           (cy == 'n' || cy == 'p' || cx == 'q')
           && ed->state->is_modified && !(ed->exec->opt & SCRIPTED) ? EMOD
 # endif  /* !WANT_SAFE_WRITE */
-          : cy == 'n' ? EOF_NXT
-          : cy == 'p' ? EOF_PRV
+          : cy == 'n' ? EOF_NEXT
+          : cy == 'p' ? EOF_PREV
           : cx == 'q' ? EOF
           : 0);
 #else

@@ -1,11 +1,11 @@
 # configure.ac: Configure autoconf template for the ed line editor.
 #
-# Copyright © 1993-2016 Andrew L. Moore, SlewSys Research
+# Copyright © 1993-2018 Andrew L. Moore, SlewSys Research
 #
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT([ed],[2.0.4],[https://github.com/slewsys/ed])
+AC_INIT([ed],[2.0.5],[bug-ed@gnu.org])
 AC_CONFIG_AUX_DIR([.])
 AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADERS([config.h])
@@ -14,7 +14,7 @@ AC_CONFIG_MACRO_DIR([m4])
 AC_USE_SYSTEM_EXTENSIONS
 AM_INIT_AUTOMAKE([foreign])
 
-# Preserve configured options for displaying in --info output.
+# Capture configured options for displaying in --version output.
 [ac_cv_configure_args=''
  while read line; do
     configure_args=`expr ."$line" : '^..*set X /bin/sh.*configure. \(.*\)$ac_configure_extra_args.*$'`

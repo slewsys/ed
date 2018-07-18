@@ -79,7 +79,7 @@ if $verbose; then
 
              $ gnumake check
 
-      Submit issues or pull requests to: <https://github.com/slewsys/ed>.
+      Submit issues or pull requests to: <bug-ed@gnu.org>.
 
 ------------------------------------------------------------------------
 EOF

@@ -1,6 +1,6 @@
 # Makefile.am: Doc subdirectory automake template for the ed line editor.
 #
-# Copyright © 1993-2016 Andrew L. Moore, SlewSys Research
+# Copyright © 1993-2018 Andrew L. Moore, SlewSys Research
 #
 # Process this file with automake to create Makefile.in
 
@@ -28,8 +28,8 @@ TEX_TOC		= $(PROG:=.toc)
 TEX_TP		= $(PROG:=.tp)
 TEX_VR		= $(PROG:=.vr)
 
-TEX_EXTRA 	= $(TEX_AUX) $(TEX_CP) $(TEX_FN) $(TEX_KY)		     \
-	          $(TEX_LOG) $(TEX_PG) $(TEX_TOC) $(TEX_TP) $(TEX_VR)
+TEX_EXTRA	= $(TEX_AUX) $(TEX_CP) $(TEX_FN) $(TEX_KY)		     \
+		  $(TEX_LOG) $(TEX_PG) $(TEX_TOC) $(TEX_TP) $(TEX_VR)
 
 
 # Munged versions ed-intro. and ed-adv.texi for inclusion in ed.info.
@@ -39,14 +39,14 @@ ADV_INCL_TEXI   = $(ADV_TEXI:.texi=-incl.texi)
 ADV_INFO_TEXI   = $(ADV_TEXI:.texi=-info.texi)
 
 # Automake doesn't like absolute paths in TEXINOFS decls.
-info_TEXINFOS = 							      \
-	$(TEXI)							      	      \
-	$(INTRO_TEXI)						      	      \
+info_TEXINFOS =								      \
+	$(TEXI)								      \
+	$(INTRO_TEXI)							      \
 	$(ADV_TEXI)
 
 ed_TEXINFOS =								      \
-	$(INTRO_INCL_TEXI)					      	      \
-	$(ADV_INCL_TEXI)	      				      	      \
+	$(INTRO_INCL_TEXI)						      \
+	$(ADV_INCL_TEXI)						      \
 	gpl.texi							      \
 	fdl.texi
 
@@ -64,12 +64,12 @@ SUBDIRS = bwk
 all-local: $(INFO)
 
 commented:
-	for f in  $(TEXI)				              	      \
-	          $(INTRO_TEXI)    		      		      	      \
-	          $(ADV_TEXI)			              		      \
-	          version.texi                  		      	      \
-	          gpl.texi				              	      \
-	          fdl.texi;					      	      \
+	for f in  $(TEXI)						      \
+		  $(INTRO_TEXI)						      \
+		  $(ADV_TEXI)						      \
+		  version.texi						      \
+		  gpl.texi						      \
+		  fdl.texi;						      \
 	do test -f "$$f" || cp "$(srcdir)/$$f" .; done
 	$(MAKEINFO) $(INFO)
 
@@ -120,9 +120,9 @@ $(ADV_PDF):
 	if cd "$$builddir"/bwk && $(MAKE) $(AM_MAKEFLAGS); then		      \
 	    cd "$$builddir" &&						      \
 	    ln -sf bwk/$(INTRO_PS)					      \
-	           bwk/$(INTRO_PDF)					      \
-	           bwk/$(ADV_PS)					      \
-	           bwk/$(ADV_PDF)					      \
+		   bwk/$(INTRO_PDF)					      \
+		   bwk/$(ADV_PS)					      \
+		   bwk/$(ADV_PDF)					      \
 		   .;							      \
 	else if test ."@TEXI2PDF@" != .''; then				      \
 	    $(TEXI2PDF) --build=tidy ed-intro.texi;			      \

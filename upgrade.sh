@@ -70,7 +70,7 @@ $script_name: Running:
 
 EOF
 
-_process_output=$(eval \"$srcdir/configure\" $(ed --version | tail -n +3 | tr -d '\n'))
+_process_output=$(eval \"$srcdir/configure\" $(ed --info | tail -n +3 | tr -d '\n'))
 _exit_status=$?
 check_exit_status
 

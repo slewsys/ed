@@ -1,6 +1,6 @@
 /* ed.h: Header for the ed line editor.
  *
- *  Copyright © 1993-2016 Andrew L. Moore, SlewSys Research
+ *  Copyright © 1993-2018 Andrew L. Moore, SlewSys Research
  *
  *  This file is part of ed.
  */
@@ -484,6 +484,7 @@ struct ed_file
   glob_t *list;                 /* List of files to edit (copy of glob). */
   char *name;                   /* Name of current file. */
   size_t name_size;             /* Size of name buffer. */
+  char *suffix;                 /* Filename suffix.  */
   int is_glob;                  /* Glob filename? */
   int is_writable;              /* If set, file open read-write. */
 };
@@ -493,18 +494,19 @@ enum ed_command_flags
 {
   ANSI_COLOR        = 0x0001,   /* If set, filter ANSI color codes. */
   EXIT_ON_ERROR     = 0x0002,   /* If set, exit on errors. */
-  POSIXLY_CORRECT   = 0x0004,   /* If set, adhere to SUSv4, 2013 standards. */
-  PRINT_CONFIG      = 0x0008,   /* If set, display configuration info. */
-  PRINT_FIRST_FILE  = 0x0010,   /* If set, print first filename in a list. */
-  PRINT_HELP        = 0x0020,   /* If set, display help. */
-  PRINT_VERSION     = 0x0040,   /* If set, print ed version. */
-  PROMPT            = 0x0080,   /* If set, print command prompt. */
-  REGEX_EXTENDED    = 0x0100,   /* If set, use extended regexps. */
-  RESTRICTED        = 0x0200,   /* If set, restricted mode enabled. */
-  FSCRIPT           = 0x0400,   /* If set, script via option `-f'.. */
-  SCRIPTED          = 0x0800,   /* If set, script mode enabled. */
-  TRADITIONAL       = 0x1000,   /* If set, be backwards compatible. */
-  VERBOSE           = 0x2000    /* If set, print error diagnostics. */
+  IN_PLACE          = 0x0004,   /* If set, write file on EOF. */
+  POSIXLY_CORRECT   = 0x0008,   /* If set, adhere to SUSv4, 2013 standards. */
+  PRINT_CONFIG      = 0x0010,   /* If set, display configuration info. */
+  PRINT_FIRST_FILE  = 0x0020,   /* If set, print first filename in a list. */
+  PRINT_HELP        = 0x0040,   /* If set, display help. */
+  PRINT_VERSION     = 0x0080,   /* If set, print ed version. */
+  PROMPT            = 0x0100,   /* If set, print command prompt. */
+  REGEX_EXTENDED    = 0x0200,   /* If set, use extended regexps. */
+  RESTRICTED        = 0x0400,   /* If set, restricted mode enabled. */
+  FSCRIPT           = 0x0800,   /* If set, script via option `-f'.. */
+  SCRIPTED          = 0x1000,   /* If set, script mode enabled. */
+  TRADITIONAL       = 0x2000,   /* If set, be backwards compatible. */
+  VERBOSE           = 0x4000    /* If set, print error diagnostics. */
 };
 
 /* Ed state parameters. */
@@ -568,15 +570,15 @@ enum ed_modifier_flags
 enum ed_command_error
   {
 #ifndef EOF
-    EOF =     -001,
+    EOF      = -001,
 #endif
-    ERR =     -002,
-    EMOD =    -003,
-    FATAL =   -004,
-    EOF_NXT = -005,
-    EOF_PRV = -006,
+    ERR      = -002,
+    EMOD     = -003,
+    FATAL    = -004,
+    EOF_NEXT = -005,
+    EOF_PREV = -006,
 #ifdef WANT_SAFE_WRITE
-    EOF_GLB = -007
+    EOF_GLOB = -007
 #endif
   };
 

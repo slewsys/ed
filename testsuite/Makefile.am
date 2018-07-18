@@ -57,7 +57,7 @@ SUFFIXES = .t .err .ok-at .err-at .fail-at
 # These rules should remain commented out unless generating a
 # distribution version of testsuite.
 #
-# Please update $(top_srcdir)/testsuite/ts-am-sw.ed to reflect any
+# Please update $(top_srcdir)/testsuite/ts-am-sw.in to reflect any
 # changes in the format of this file.
 #
 #.t.ok-at:
