@@ -371,6 +371,7 @@ struct ed_register
   int io_f;                     /* Register I/O flags. */
 };
 
+#ifdef WANT_ED_MACRO
 /* Script buffer stack frame. */
 typedef struct ed_stack_frame
 {
@@ -379,9 +380,11 @@ typedef struct ed_stack_frame
   off_t addr;                   /* Nominal script buffer address. */
 } ed_stack_frame_t;
 
-#define ED_STACK_FRAME_T_SIZE (sizeof (ed_stack_frame_t))
+# define ED_STACK_FRAME_T_SIZE (sizeof (ed_stack_frame_t))
 
-#define STACK_FRAMES_MAX 50     /* Max stack frames in script buffer. */
+# define STACK_FRAMES_MAX 50     /* Max stack frames in script buffer. */
+#endif /* WANT_ED_MACRO */
+
 #define MARK_MAX 26             /* Max line markers. */
 
 /* Ed buffer meta data and storage parameters. */
@@ -392,9 +395,11 @@ struct ed_core
   ed_line_node_t *mark[MARK_MAX];
   int marks;
 
+#ifdef WANT_ED_MACRO
   /* Script buffer stack frame. */
   struct ed_stack_frame *stack_frame[STACK_FRAMES_MAX];
   int sp;                       /* Script buffer stack pointer. */
+#endif
 
   /* Edit-processing buffers. */
   ed_line_node_t *line_head;     /* Head of line buffer. */
@@ -484,7 +489,7 @@ struct ed_file
   glob_t *list;                 /* List of files to edit (copy of glob). */
   char *name;                   /* Name of current file. */
   size_t name_size;             /* Size of name buffer. */
-  char *suffix;                 /* Filename suffix.  */
+  char *suffix;                 /* Filename suffix for option `-i'.  */
   int is_glob;                  /* Glob filename? */
   int is_writable;              /* If set, file open read-write. */
 };
@@ -907,10 +912,14 @@ int mark_line_node __P ((const ed_line_node_t *, int, ed_buffer_t *));
 int move_lines __P ((off_t, off_t, off_t, ed_buffer_t *));
 int next_address __P ((off_t *, ed_buffer_t *));
 int one_time_init __P ((int, char **, ed_buffer_t *));
+#ifdef WANT_ED_MACRO
 int pop_stack_frame __P ((ed_buffer_t *));
+#endif
 char *pop_text_node __P ((ed_text_node_t *, size_t *));
 char *put_buffer_line __P ((const char *, size_t, ed_buffer_t *));
+#ifdef WANT_ED_MACRO
 int push_stack_frame __P ((ed_buffer_t *));
+#endif
 void quit __P ((int, ed_buffer_t *));
 int read_file __P ((const char *, off_t, off_t *, off_t *, int,
                     ed_buffer_t *));
@@ -927,7 +936,9 @@ int resubstitute __P ((off_t *, off_t *, unsigned *, unsigned *,
                                 ed_buffer_t *));
 void save_substitute __P ((regex_t *, unsigned, off_t, off_t, unsigned,
                                   struct ed_substitute *));
+#ifdef WANT_ED_MACRO
 int script_from_register  __P ((ed_buffer_t *));
+#endif
 int scroll_forward __P ((off_t, off_t, unsigned int, ed_buffer_t *));
 
 #ifdef WANT_FILE_LOCK
@@ -945,7 +956,9 @@ int substitution_lhs __P ((regex_t **, unsigned *, ed_buffer_t *));
 int substitution_rhs __P ((off_t *, off_t *, unsigned *, unsigned *,
                            ed_buffer_t *));
 int undo_last_command __P ((ed_buffer_t *));
+#ifdef WANT_ED_MACRO
 int unwind_stack_frame __P ((int, ed_buffer_t *));
+#endif
 void unmark_line_node __P ((const ed_line_node_t *, ed_buffer_t *));
 int write_file __P ((const char *, int, off_t, off_t, off_t *, off_t *,
                      const char *, ed_buffer_t *));

@@ -1197,13 +1197,19 @@
 /* Define to 1 to enable support for ED environment variable. */
 #undef WANT_ED_ENVAR
 
-/* Define to 1 to enable modifying buffer via external filters. */
+/* Define to 1 to enable ED macro support. */
+#undef WANT_ED_MACRO
+
+/* Define to 1 to enable ED register support. */
+#undef WANT_ED_REGISTER
+
+/* Define to 1 to enable modifying ED buffer via external filters. */
 #undef WANT_EXTERNAL_FILTER
 
-/* Define to 1 to enable file glob and multi-file support. */
+/* Define to 1 to enable ED file glob and multi-file support. */
 #undef WANT_FILE_GLOB
 
-/* Define to 1 to enable file lock support. */
+/* Define to 1 to enable ED file lock support. */
 #undef WANT_FILE_LOCK
 
 /* Define to l, ll, u, ul, ull, etc., as suitable for constants of type

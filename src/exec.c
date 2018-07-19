@@ -130,7 +130,9 @@ static int j_cmd __P ((ed_buffer_t *));
 static int k_cmd __P ((ed_buffer_t *));
 static int l_cmd __P ((ed_buffer_t *));
 static int m_cmd __P ((ed_buffer_t *));
+#ifdef WANT_ED_MACRO
 static int exec_macro __P ((ed_buffer_t *));
+#endif
 static int n_cmd __P ((ed_buffer_t *));
 static int newline_cmd __P ((ed_buffer_t *));
 static int normalize_frame_buffer __P ((ed_buffer_t *));
@@ -158,7 +160,11 @@ static const ed_command_t ed_cmd[] =
    address_cmd,                 /* Bound to key `='. */
    invalid_cmd,
    invalid_cmd,
+#ifdef WANT_ED_MACRO
    exec_macro,                   /* Bound to key `@'. */
+#else
+   invalid_cmd,
+#endif
    invalid_cmd,
    invalid_cmd,
    invalid_cmd,
@@ -258,7 +264,9 @@ exec_command (ed)
     {
     case 'm':
     case 't':
+#ifdef WANT_ED_MACRO
     case '@':
+#endif
       if (ed->file->is_glob)
         {
           ed->exec->err = _("Command prefix unexpected");
@@ -493,6 +501,7 @@ E_cmd (ed)
   return 0;
 }
 
+#ifdef WANT_ED_MACRO
 static int
 exec_macro (ed)
      ed_buffer_t *ed;
@@ -545,7 +554,7 @@ exec_macro (ed)
   return (status < 0 && status != EOF ? unwind_stack_frame (status, ed)
           : pop_stack_frame (ed));
 }
-
+#endif  /* WANT_ED_MACRO */
 
 static int
 f_cmd (ed)

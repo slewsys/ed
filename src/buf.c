@@ -108,7 +108,11 @@ init_stdio (ed)
      ed_buffer_t *ed;
 {
   /* If scripting, redirect script to standard input. */
+#ifdef WANT_ED_MACRO
   if (ed->exec->fp && !(ed->exec->opt & FSCRIPT && !ed->core->sp))
+#else
+  if (ed->exec->fp && !(ed->exec->opt & FSCRIPT))
+#endif
     stdin = ed->exec->fp;
 
   /* In case of option `-f', reopen script to allow shell escape
@@ -121,6 +125,7 @@ init_stdio (ed)
     }
 
   /* If in a macro, position stdin to beginning of script. */
+#ifdef WANT_ED_MACRO
   if (ed->core->sp
       && FSEEK (stdin,
                 ed->core->stack_frame[ed->core->sp - 1]->size, SEEK_SET) < 0)
@@ -129,6 +134,7 @@ init_stdio (ed)
         ed->exec->err = _("Buffer seek error");
         return ERR;
       }
+#endif
   /*
    * Read stdin one character at a time to avoid I/O contention with
    * shell escapes invoked by nonterminal input, e.g.,

@@ -24,17 +24,16 @@ AM_INIT_AUTOMAKE([foreign])
    ac_cv_configure_args="$ac_cv_configure_args $ac_option\n"
  done
 ]
-if test ! ."$[ac_cv_configure_args]" = .''; then
+
+AS_IF([test ! ."$ac_cv_configure_args" = .''],
   AC_DEFINE_UNQUOTED([CONFIGURE_ARGS],
     ["Configured options:\n$ac_cv_configure_args"],
-    [Options with which "$top_srcdir"/configure was invoked.])
-else
-  AC_DEFINE_UNQUOTED([CONFIGURE_ARGS], [""],
-    [Options with which "$top_srcdir"/configure was invoked.])
-fi
+    [Options with which "$top_srcdir"/configure was invoked.]),
+    AC_DEFINE_UNQUOTED([CONFIGURE_ARGS], [""],
+      [Options with which "$top_srcdir"/configure was invoked.]))
 
 # Darwin disables nested functions which are used by some AC tests.
-if test .$[GCC] = .yes; then
+AS_IF([test ."$GCC" = .yes],
   AC_CACHE_CHECK([whether gcc needs -fnested-functions],
     [ac_cv_gcc_cflags_nested_functions],
     AC_RUN_IFELSE([AC_LANG_SOURCE([
@@ -51,11 +50,10 @@ main ()
       ])],
       [ac_cv_gcc_cflags_nested_functions=no],
       [ac_cv_gcc_cflags_nested_functions=yes],
-      [ac_cv_gcc_cflags_nested_functions=no]))
-  if test ."$[ac_cv_gcc_cflags_nested_functions]" = .'yes'; then
-    CFLAGS="$CFLAGS -fnested-functions"
-  fi
-fi
+      [ac_cv_gcc_cflags_nested_functions=no])))
+
+AS_IF([test ."$ac_cv_gcc_cflags_nested_functions" = .'yes'],
+    [CFLAGS="$CFLAGS -fnested-functions"])
 
 # Check function prototypes.
 CFLAGS="$CFLAGS -Wimplicit-function-declaration"
@@ -78,21 +76,20 @@ AC_PATH_PROGS([PS2PDF], [ps2pdf14 ps2pdf ps2pdfwr])
 
 # Checks for prior deployment of this package - used by `upgrade-sh'
 AC_CACHE_CHECK([for ed], [ac_cv_path_ED_COMMAND],
-    [AC_PATH_PROGS_FEATURE_CHECK([ED_COMMAND], ["$ED" ed],
-      [case `$ac_path_ED_COMMAND --info 2>&1` in
-           ed)
-               ac_cv_path_ED_COMMAND=$ac_path_ED_COMMAND
-               ac_path_ED_COMMAND_found=:
-               ;;
-       esac],
-      [ac_cv_path_ED_COMMAND=./src/ed])])
+  [AC_PATH_PROGS_FEATURE_CHECK([ED_COMMAND], ["$ED" ed],
+    [case `$ac_path_ED_COMMAND --info 2>&1` in
+       ed)
+         ac_cv_path_ED_COMMAND=$ac_path_ED_COMMAND
+         ac_path_ED_COMMAND_found=:
+         ;;
+     esac],
+    [ac_cv_path_ED_COMMAND=./src/ed])])
 AC_SUBST(ED_COMMAND, [$ac_cv_path_ED_COMMAND])
 
 # Checks availability of GNU make
 AX_CHECK_GNU_MAKE()
-if test ."$_cv_gnu_make_command" != .''; then
-   AC_SUBST(GNU_MAKE_COMMAND, [$_cv_gnu_make_command])
-fi
+AS_IF([test ."$_cv_gnu_make_command" != .''],
+   AC_SUBST(GNU_MAKE_COMMAND, [$_cv_gnu_make_command]))
 
 AC_SYS_LARGEFILE
 
@@ -104,55 +101,14 @@ AC_PROG_INSTALL
 AC_PROG_MKDIR_P
 AC_PROG_YACC
 
-#
-# Checks feature requests.
-#
-AC_MSG_CHECKING([whether ED environment variable support is requested])
-AC_ARG_ENABLE([ed-envar],
-  [AS_HELP_STRING([--enable-ed-envar],
-    [enable ED environment variable])],
-  [AC_DEFINE([WANT_ED_ENVAR], [1],
-    [Define to 1 to enable support for ED environment variable.])],[])
-AC_MSG_RESULT([${enable_ed_envar:-no}])
-
-AC_MSG_CHECKING([whether external filter support is requested])
-AC_ARG_ENABLE([external-filter],
-  [AS_HELP_STRING([--enable-external-filter],
-    [enable external filtering of buffer])],
-  [AC_DEFINE([WANT_EXTERNAL_FILTER], [1],
-    [Define to 1 to enable modifying buffer via external filters.])],[])
-AC_MSG_RESULT([${enable_external_filter:-no}])
-
-AC_MSG_CHECKING([whether file glob support is requested])
-AC_ARG_ENABLE([file-glob],
-  [AS_HELP_STRING([--enable-file-glob],
-    [enable file globbing and multi-file support])],
-  [AC_DEFINE([WANT_FILE_GLOB], [1],
-    [Define to 1 to enable file glob and multi-file support.])],[])
-AC_MSG_RESULT([${enable_file_glob:-no}])
-
-AC_MSG_CHECKING([whether file lock support is requested])
-AC_ARG_ENABLE([file-lock],
-  [AS_HELP_STRING([--enable-file-lock],
-    [enable file locking support])],[],[])
-AC_MSG_RESULT([${enable_file_lock:-no}])
-if test ."$[enable_file_lock]" = .'yes'; then
-  if test ."$[ac_cv_func_flock]" = .'no' &&
-    test ."$[ac_cv_have_decl_f_setlk]" = .'no'; then
-    AC_MSG_WARN([Don't know how to set file locks; disabling])
-  else
-    AC_DEFINE([WANT_FILE_LOCK], [1],
-     [Define to 1 to enable file lock support.])
-  fi
-fi
-
 AC_MSG_CHECKING([whether included regex is requested])
 AC_ARG_WITH([included-regex],
   [AS_HELP_STRING([--with-included-regex],
     [use GNU regex library included here])],[],
     [with_included_regex=check])
 AC_MSG_RESULT([$with_included_regex])
-AS_IF([test ."$with_included_regex" != .'yes'],
+
+AS_IF([test ! ."$with_included_regex" = .'yes'],
   [AC_CHECK_FUNCS([regcomp],[with_included_regex=no],
     [AC_MSG_WARN([System regex not found, falling back to included version])
      with_included_regex=yes])])
@@ -168,8 +124,8 @@ AM_COND_IF([LIBADD_REGEX],
 
 gl_INIT
 AM_CONDITIONAL([LDADD_LIBGNU],
- [test ."$with_included_regex" = .'yes' || \
-  test ."$ac_cv_func_getopt_long_only" = .'yes'])
+  [test ."$with_included_regex" = .'yes' \
+    || test ."$ac_cv_func_getopt_long_only" = .'yes'])
 
 #
 # Checks for libraries.
@@ -221,40 +177,35 @@ AX_COMPILE_CHECK_SIZEOF(long long)
 AX_COMPILE_CHECK_SIZEOF(size_t, $headers)
 AX_COMPILE_CHECK_SIZEOF(off_t, $headers)
 
-if test ."$ac_cv_sizeof_size_t" = ."$ac_cv_sizeof_long"; then
-   AC_DEFINE_UNQUOTED([SIZE_T_SIZE], [unsigned long],
+AS_IF([test ."$ac_cv_sizeof_size_t" = ."$ac_cv_sizeof_long"],
+  AC_DEFINE_UNQUOTED([SIZE_T_SIZE], [unsigned long],
+    [Define int with storage size of size_t.])
+  AC_DEFINE_UNQUOTED([SIZE_T_FORMAT_STRING], ["lu"],
+    [Define format string to print value of type size_t.]),
+  AS_IF([test ."$ac_cv_sizeof_size_t" = ."$ac_cv_sizeof_long_long"],
+    AC_DEFINE_UNQUOTED([SIZE_T_SIZE], [unsigned long long],
       [Define int with storage size of size_t.])
-   AC_DEFINE_UNQUOTED([SIZE_T_FORMAT_STRING], ["lu"],
-      [Define format string to print value of type size_t.])
-elif test ."$ac_cv_sizeof_size_t" = ."$ac_cv_sizeof_long_long"; then
-   AC_DEFINE_UNQUOTED([SIZE_T_SIZE], [unsigned long long],
-      [Define int with storage size of size_t.])
-   AC_DEFINE_UNQUOTED([SIZE_T_FORMAT_STRING], ["llu"],
-      [Define format string to print value of type size_t.])
-else
-   AC_DEFINE_UNQUOTED([SIZE_T_SIZE], [unsigned long long],
-      [Define int with storage size of size_t.])
-   AC_DEFINE_UNQUOTED([SIZE_T_FORMAT_STRING], ["lu"],
-      [Define format string to print value of type size_t.])
-fi
+    AC_DEFINE_UNQUOTED([SIZE_T_FORMAT_STRING], ["llu"],
+      [Define format string to print value of type size_t.]),
+      AC_DEFINE_UNQUOTED([SIZE_T_SIZE], [unsigned long long],
+       [Define int with storage size of size_t.])
+      AC_DEFINE_UNQUOTED([SIZE_T_FORMAT_STRING], ["llu"],
+       [Define format string to print value of type size_t.])))
 
-if test ."$ac_cv_sizeof_off_t" = ."$ac_cv_sizeof_long"; then
-   AC_DEFINE_UNQUOTED([OFF_T_SIZE], [long],
+AS_IF([test ."$ac_cv_sizeof_off_t" = ."$ac_cv_sizeof_long"],
+  AC_DEFINE_UNQUOTED([OFF_T_SIZE], [long],
+    [Define int with storage size of off_t.])
+  AC_DEFINE_UNQUOTED([OFF_T_FORMAT_STRING], ["ld"],
+    [Define format string to print value of type off_t.]),
+  AS_IF([test ."$ac_cv_sizeof_off_t" = ."$ac_cv_sizeof_long_long"],
+    AC_DEFINE_UNQUOTED([OFF_T_SIZE], [long long],
       [Define int with storage size of off_t.])
-   AC_DEFINE_UNQUOTED([OFF_T_FORMAT_STRING], ["ld"],
-      [Define format string to print value of type off_t.])
-
-elif test ."$ac_cv_sizeof_off_t" = ."$ac_cv_sizeof_long_long"; then
-   AC_DEFINE_UNQUOTED([OFF_T_SIZE], [long long],
-      [Define int with storage size of off_t.])
-   AC_DEFINE_UNQUOTED([OFF_T_FORMAT_STRING], ["lld"],
-      [Define format string to print value of type off_t.])
-else
-   AC_DEFINE_UNQUOTED([OFF_T_SIZE], [long long],
-      [Define int with storage size of size_t.])
-   AC_DEFINE_UNQUOTED([OFF_T_FORMAT_STRING], ["ld"],
-      [Define format string to print value of type off_t.])
-fi
+    AC_DEFINE_UNQUOTED([OFF_T_FORMAT_STRING], ["lld"],
+      [Define format string to print value of type off_t.]),
+      AC_DEFINE_UNQUOTED([OFF_T_SIZE], [long long],
+        [Define int with storage size of size_t.])
+      AC_DEFINE_UNQUOTED([OFF_T_FORMAT_STRING], ["lld"],
+        [Define format string to print value of type off_t.])))
 
 AC_PROG_LIBTOOL
 
@@ -282,6 +233,69 @@ AC_REPLACE_FUNCS([memset strspn strtok])
 AC_CHECK_FUNCS_ONCE([dup2 flock ftruncate memmove pathconf sigaction          \
   siglongjmp setbuffer setlocale stat64 strchr strerror strtol                \
   strtoul strtoll])
+
+#
+# Checks feature requests.
+#
+AC_MSG_CHECKING([whether ED environment variable support is requested])
+AC_ARG_ENABLE([ed-envar],
+  [AS_HELP_STRING([--enable-ed-envar],
+    [enable ED environment variable])],
+  [AC_DEFINE([WANT_ED_ENVAR], [1],
+    [Define to 1 to enable support for ED environment variable.])],[])
+AC_MSG_RESULT([${enable_ed_envar:-no}])
+
+AC_MSG_CHECKING([whether ED external filter support is requested])
+AC_ARG_ENABLE([external-filter],
+  [AS_HELP_STRING([--enable-external-filter],
+    [enable external filtering of ED buffer])],
+  [AC_DEFINE([WANT_EXTERNAL_FILTER], [1],
+    [Define to 1 to enable modifying ED buffer via external filters.])],[])
+AC_MSG_RESULT([${enable_external_filter:-no}])
+
+AC_MSG_CHECKING([whether ED file glob support is requested])
+AC_ARG_ENABLE([file-glob],
+  [AS_HELP_STRING([--enable-file-glob],
+    [enable ED file globbing and multi-file support])],
+  [AC_DEFINE([WANT_FILE_GLOB], [1],
+    [Define to 1 to enable ED file glob and multi-file support.])],[])
+AC_MSG_RESULT([${enable_file_glob:-no}])
+
+AC_MSG_CHECKING([whether ED file lock support is requested])
+AC_ARG_ENABLE([file-lock],
+  [AS_HELP_STRING([--enable-file-lock],
+    [enable ED file locking support])],[],[])
+AC_MSG_RESULT([${enable_file_lock:-no}])
+
+AS_IF([test ."$enable_file_lock" = .'yes' \
+  &&  { test ! ."$ac_cv_func_flock" = .'no' \
+    || test ! ."$ac_cv_have_decl_f_setlk" = .'no'; }],
+  AC_DEFINE([WANT_FILE_LOCK], [1],
+    [Define to 1 to enable ED file lock support.]), [])
+
+AS_IF([test ."$enable_file_lock" = .'yes' \
+  &&  { test ."$ac_cv_func_flock" = .'no' \
+    && test ."$ac_cv_have_decl_f_setlk" != .'no'; }],
+      [enable_file_lock=no]
+      AC_MSG_WARN([Don't know how to set file locks; disabling]), [])
+
+AC_MSG_CHECKING([whether ED macro support is requested])
+AC_ARG_ENABLE([ed-macro],
+  [AS_HELP_STRING([--enable-ed-macro],
+    [enable ED macro support])],
+  [AC_DEFINE([WANT_ED_MACRO], [1],
+    [Define to 1 to enable ED macro support.])],[])
+AC_MSG_RESULT([${enable_ed_macro:-no}])
+
+AS_IF([test ."$enable_ed_macro" = .'yes'], [enable_ed_register=yes])
+
+AC_MSG_CHECKING([whether ED register support is requested])
+AC_ARG_ENABLE([ed-register],
+  [AS_HELP_STRING([--enable-ed-register],
+    [enable ED register support])],
+  [AC_DEFINE([WANT_ED_REGISTER], [1],
+    [Define to 1 to enable ED register support.])],[])
+AC_MSG_RESULT([${enable_ed_register:-no}])
 
 # Generate autotest helpers.
 AC_CONFIG_TESTDIR([testsuite])

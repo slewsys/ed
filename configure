@@ -1311,10 +1311,6 @@ enable_dependency_tracking
 enable_silent_rules
 enable_largefile
 enable_threads
-enable_ed_envar
-enable_external_filter
-enable_file_glob
-enable_file_lock
 with_included_regex
 with_gnu_ld
 enable_rpath
@@ -1330,6 +1326,12 @@ enable_nls
 with_libiconv_prefix
 with_included_gettext
 with_libintl_prefix
+enable_ed_envar
+enable_external_filter
+enable_file_glob
+enable_file_lock
+enable_ed_macro
+enable_ed_register
 '
       ac_precious_vars='build_alias
 host_alias
@@ -1975,11 +1977,6 @@ Optional Features:
   --enable-threads={posix|solaris|pth|windows}
                           specify multithreading API
   --disable-threads       build without multithread safety
-  --enable-ed-envar       enable ED environment variable
-  --enable-external-filter
-                          enable external filtering of buffer
-  --enable-file-glob      enable file globbing and multi-file support
-  --enable-file-lock      enable file locking support
   --disable-rpath         do not hardcode runtime library paths
   --enable-shared[=PKGS]  build shared libraries [default=yes]
   --enable-static[=PKGS]  build static libraries [default=yes]
@@ -1987,6 +1984,13 @@ Optional Features:
                           optimize for fast installation [default=yes]
   --disable-libtool-lock  avoid locking (might break parallel builds)
   --disable-nls           do not use Native Language Support
+  --enable-ed-envar       enable ED environment variable
+  --enable-external-filter
+                          enable external filtering of ED buffer
+  --enable-file-glob      enable ED file globbing and multi-file support
+  --enable-file-lock      enable ED file locking support
+  --enable-ed-macro       enable ED macro support
+  --enable-ed-register    enable ED register support
 
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
@@ -5402,7 +5406,8 @@ ac_cv_configure_args=''
    ac_cv_configure_args="$ac_cv_configure_args $ac_option\n"
  done
 
-if test ! ."$ac_cv_configure_args" = .''; then
+
+if test ! ."$ac_cv_configure_args" = .''; then :
 
 cat >>confdefs.h <<_ACEOF
 #define CONFIGURE_ARGS "Configured options:\n$ac_cv_configure_args"
@@ -5417,7 +5422,7 @@ _ACEOF
 fi
 
 # Darwin disables nested functions which are used by some AC tests.
-if test .$GCC = .yes; then
+if test ."$GCC" = .yes; then :
   { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether gcc needs -fnested-functions" >&5
 $as_echo_n "checking whether gcc needs -fnested-functions... " >&6; }
 if ${ac_cv_gcc_cflags_nested_functions+:} false; then :
@@ -5453,9 +5458,10 @@ fi
 fi
 { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_gcc_cflags_nested_functions" >&5
 $as_echo "$ac_cv_gcc_cflags_nested_functions" >&6; }
-  if test ."$ac_cv_gcc_cflags_nested_functions" = .'yes'; then
-    CFLAGS="$CFLAGS -fnested-functions"
-  fi
+fi
+
+if test ."$ac_cv_gcc_cflags_nested_functions" = .'yes'; then :
+  CFLAGS="$CFLAGS -fnested-functions"
 fi
 
 # Check function prototypes.
@@ -5658,11 +5664,11 @@ do
       ac_path_ED_COMMAND="$as_dir/$ac_prog$ac_exec_ext"
       as_fn_executable_p "$ac_path_ED_COMMAND" || continue
 case `$ac_path_ED_COMMAND --info 2>&1` in
-           ed)
-               ac_cv_path_ED_COMMAND=$ac_path_ED_COMMAND
-               ac_path_ED_COMMAND_found=:
-               ;;
-       esac
+       ed)
+         ac_cv_path_ED_COMMAND=$ac_path_ED_COMMAND
+         ac_path_ED_COMMAND_found=:
+         ;;
+     esac
       $ac_path_ED_COMMAND_found && break 3
     done
   done
@@ -5708,8 +5714,8 @@ $as_echo "\"Not found\"" >&6; };
         fi
 
 
-if test ."$_cv_gnu_make_command" != .''; then
-   GNU_MAKE_COMMAND=$_cv_gnu_make_command
+if test ."$_cv_gnu_make_command" != .''; then :
+  GNU_MAKE_COMMAND=$_cv_gnu_make_command
 
 fi
 
@@ -6991,66 +6997,6 @@ done
 test -n "$YACC" || YACC="yacc"
 
 
-#
-# Checks feature requests.
-#
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether ED environment variable support is requested" >&5
-$as_echo_n "checking whether ED environment variable support is requested... " >&6; }
-# Check whether --enable-ed-envar was given.
-if test "${enable_ed_envar+set}" = set; then :
-  enableval=$enable_ed_envar;
-$as_echo "#define WANT_ED_ENVAR 1" >>confdefs.h
-
-fi
-
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: ${enable_ed_envar:-no}" >&5
-$as_echo "${enable_ed_envar:-no}" >&6; }
-
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether external filter support is requested" >&5
-$as_echo_n "checking whether external filter support is requested... " >&6; }
-# Check whether --enable-external-filter was given.
-if test "${enable_external_filter+set}" = set; then :
-  enableval=$enable_external_filter;
-$as_echo "#define WANT_EXTERNAL_FILTER 1" >>confdefs.h
-
-fi
-
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: ${enable_external_filter:-no}" >&5
-$as_echo "${enable_external_filter:-no}" >&6; }
-
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether file glob support is requested" >&5
-$as_echo_n "checking whether file glob support is requested... " >&6; }
-# Check whether --enable-file-glob was given.
-if test "${enable_file_glob+set}" = set; then :
-  enableval=$enable_file_glob;
-$as_echo "#define WANT_FILE_GLOB 1" >>confdefs.h
-
-fi
-
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: ${enable_file_glob:-no}" >&5
-$as_echo "${enable_file_glob:-no}" >&6; }
-
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether file lock support is requested" >&5
-$as_echo_n "checking whether file lock support is requested... " >&6; }
-# Check whether --enable-file-lock was given.
-if test "${enable_file_lock+set}" = set; then :
-  enableval=$enable_file_lock;
-fi
-
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: ${enable_file_lock:-no}" >&5
-$as_echo "${enable_file_lock:-no}" >&6; }
-if test ."$enable_file_lock" = .'yes'; then
-  if test ."$ac_cv_func_flock" = .'no' &&
-    test ."$ac_cv_have_decl_f_setlk" = .'no'; then
-    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Don't know how to set file locks; disabling" >&5
-$as_echo "$as_me: WARNING: Don't know how to set file locks; disabling" >&2;}
-  else
-
-$as_echo "#define WANT_FILE_LOCK 1" >>confdefs.h
-
-  fi
-fi
-
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether included regex is requested" >&5
 $as_echo_n "checking whether included regex is requested... " >&6; }
 
@@ -7063,7 +7009,8 @@ fi
 
 { $as_echo "$as_me:${as_lineno-$LINENO}: result: $with_included_regex" >&5
 $as_echo "$with_included_regex" >&6; }
-if test ."$with_included_regex" != .'yes'; then :
+
+if test ! ."$with_included_regex" = .'yes'; then :
   for ac_func in regcomp
 do :
   ac_fn_c_check_func "$LINENO" "regcomp" "ac_cv_func_regcomp"
@@ -16887,8 +16834,8 @@ fi
   LIBGNU_LTLIBDEPS="$gl_ltlibdeps"
 
 
- if test ."$with_included_regex" = .'yes' || \
-  test ."$ac_cv_func_getopt_long_only" = .'yes'; then
+ if test ."$with_included_regex" = .'yes' \
+    || test ."$ac_cv_func_getopt_long_only" = .'yes'; then
   LDADD_LIBGNU_TRUE=
   LDADD_LIBGNU_FALSE='#'
 else
@@ -17693,7 +17640,7 @@ _ACEOF
 
 
 
-if test ."$ac_cv_sizeof_size_t" = ."$ac_cv_sizeof_long"; then
+if test ."$ac_cv_sizeof_size_t" = ."$ac_cv_sizeof_long"; then :
 
 cat >>confdefs.h <<_ACEOF
 #define SIZE_T_SIZE unsigned long
@@ -17704,7 +17651,8 @@ cat >>confdefs.h <<_ACEOF
 #define SIZE_T_FORMAT_STRING "lu"
 _ACEOF
 
-elif test ."$ac_cv_sizeof_size_t" = ."$ac_cv_sizeof_long_long"; then
+else
+  if test ."$ac_cv_sizeof_size_t" = ."$ac_cv_sizeof_long_long"; then :
 
 cat >>confdefs.h <<_ACEOF
 #define SIZE_T_SIZE unsigned long long
@@ -17723,12 +17671,13 @@ _ACEOF
 
 
 cat >>confdefs.h <<_ACEOF
-#define SIZE_T_FORMAT_STRING "lu"
+#define SIZE_T_FORMAT_STRING "llu"
 _ACEOF
 
 fi
+fi
 
-if test ."$ac_cv_sizeof_off_t" = ."$ac_cv_sizeof_long"; then
+if test ."$ac_cv_sizeof_off_t" = ."$ac_cv_sizeof_long"; then :
 
 cat >>confdefs.h <<_ACEOF
 #define OFF_T_SIZE long
@@ -17739,8 +17688,8 @@ cat >>confdefs.h <<_ACEOF
 #define OFF_T_FORMAT_STRING "ld"
 _ACEOF
 
-
-elif test ."$ac_cv_sizeof_off_t" = ."$ac_cv_sizeof_long_long"; then
+else
+  if test ."$ac_cv_sizeof_off_t" = ."$ac_cv_sizeof_long_long"; then :
 
 cat >>confdefs.h <<_ACEOF
 #define OFF_T_SIZE long long
@@ -17759,9 +17708,10 @@ _ACEOF
 
 
 cat >>confdefs.h <<_ACEOF
-#define OFF_T_FORMAT_STRING "ld"
+#define OFF_T_FORMAT_STRING "lld"
 _ACEOF
 
+fi
 fi
 
 case `pwd` in
@@ -30308,6 +30258,99 @@ fi
 
 
 
+
+#
+# Checks feature requests.
+#
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether ED environment variable support is requested" >&5
+$as_echo_n "checking whether ED environment variable support is requested... " >&6; }
+# Check whether --enable-ed-envar was given.
+if test "${enable_ed_envar+set}" = set; then :
+  enableval=$enable_ed_envar;
+$as_echo "#define WANT_ED_ENVAR 1" >>confdefs.h
+
+fi
+
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: ${enable_ed_envar:-no}" >&5
+$as_echo "${enable_ed_envar:-no}" >&6; }
+
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether ED external filter support is requested" >&5
+$as_echo_n "checking whether ED external filter support is requested... " >&6; }
+# Check whether --enable-external-filter was given.
+if test "${enable_external_filter+set}" = set; then :
+  enableval=$enable_external_filter;
+$as_echo "#define WANT_EXTERNAL_FILTER 1" >>confdefs.h
+
+fi
+
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: ${enable_external_filter:-no}" >&5
+$as_echo "${enable_external_filter:-no}" >&6; }
+
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether ED file glob support is requested" >&5
+$as_echo_n "checking whether ED file glob support is requested... " >&6; }
+# Check whether --enable-file-glob was given.
+if test "${enable_file_glob+set}" = set; then :
+  enableval=$enable_file_glob;
+$as_echo "#define WANT_FILE_GLOB 1" >>confdefs.h
+
+fi
+
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: ${enable_file_glob:-no}" >&5
+$as_echo "${enable_file_glob:-no}" >&6; }
+
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether ED file lock support is requested" >&5
+$as_echo_n "checking whether ED file lock support is requested... " >&6; }
+# Check whether --enable-file-lock was given.
+if test "${enable_file_lock+set}" = set; then :
+  enableval=$enable_file_lock;
+fi
+
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: ${enable_file_lock:-no}" >&5
+$as_echo "${enable_file_lock:-no}" >&6; }
+
+if test ."$enable_file_lock" = .'yes' \
+  &&  { test ! ."$ac_cv_func_flock" = .'no' \
+    || test ! ."$ac_cv_have_decl_f_setlk" = .'no'; }; then :
+
+$as_echo "#define WANT_FILE_LOCK 1" >>confdefs.h
+
+fi
+
+if test ."$enable_file_lock" = .'yes' \
+  &&  { test ."$ac_cv_func_flock" = .'no' \
+    && test ."$ac_cv_have_decl_f_setlk" != .'no'; }; then :
+  enable_file_lock=no
+      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Don't know how to set file locks; disabling" >&5
+$as_echo "$as_me: WARNING: Don't know how to set file locks; disabling" >&2;}
+fi
+
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether ED macro support is requested" >&5
+$as_echo_n "checking whether ED macro support is requested... " >&6; }
+# Check whether --enable-ed-macro was given.
+if test "${enable_ed_macro+set}" = set; then :
+  enableval=$enable_ed_macro;
+$as_echo "#define WANT_ED_MACRO 1" >>confdefs.h
+
+fi
+
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: ${enable_ed_macro:-no}" >&5
+$as_echo "${enable_ed_macro:-no}" >&6; }
+
+if test ."$enable_ed_macro" = .'yes'; then :
+  enable_ed_register=yes
+fi
+
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether ED register support is requested" >&5
+$as_echo_n "checking whether ED register support is requested... " >&6; }
+# Check whether --enable-ed-register was given.
+if test "${enable_ed_register+set}" = set; then :
+  enableval=$enable_ed_register;
+$as_echo "#define WANT_ED_REGISTER 1" >>confdefs.h
+
+fi
+
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: ${enable_ed_register:-no}" >&5
+$as_echo "${enable_ed_register:-no}" >&6; }
 
 # Generate autotest helpers.
 ac_config_commands="$ac_config_commands testsuite/atconfig"

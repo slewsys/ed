@@ -4,8 +4,8 @@ licenses, the full text of which are listed below.
 
 The ed line editor is configured with and designed to link against
 FSF-copyrighted software. In particular, it is configured with GNU
-Autoconf/Automake/Libtool suite. Localization is via GNU Gettext.
-Regular expressions and wide character support are provided by GNUlib.
+Autoctools, localization is via GNU Gettext and regular expressions and
+wide character support are provided by GNUlib.
 
 Linking against alternative regular expression libraries is supported
 in order to build, e.g., an exclusively BSD-2-Clause implemenation of ed.

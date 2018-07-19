@@ -231,8 +231,10 @@ top:
   /* Destination of LONGJMP () on signal SIGINT. */
   if ((status = SETJMP (env)))
     {
+#ifdef WANT_ED_MACRO
       /* Unwind stack frame on interrupt. */
       status = unwind_stack_frame (ERR, ed);
+#endif
 
       ed->exec->err = _("Interrupted");
       goto error;

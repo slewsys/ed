@@ -1,3 +1,9 @@
+2018-07-19  Andrew L. Moore  <alm@slewsys.org>
+
+	* src/exec.c:
+	* src/ed.h:
+	* src/aux.c: Condition ed macros on configure feature request.
+
 2018-07-18  Andrew L. Moore  <alm@slewsys.org>
 
 	* src/main.c (main, ed_usage, save_edit): Remove command-line

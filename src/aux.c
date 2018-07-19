@@ -401,6 +401,7 @@ reset_register_queue (idx, ed)
 }
 
 
+#ifdef WANT_ED_MACRO
 /*
  * script_from_register: Append lines from register to script buffer and
  *   redirect buffer contents as standard input.
@@ -547,3 +548,4 @@ unwind_stack_frame (status, ed)
     }
   return status;
 }
+#endif /* WANT_ED_MACRO */
