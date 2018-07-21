@@ -1,6 +1,6 @@
 Q. Why is ed failing tests?
 
-A. This ed supports both GNU gnulib and BSD/Darwin regex(3)
-   libraries. To avoid a collision between these, before
-   switching to an alternative regex, run `make distclean'
-   followed by `configure'.
+A. Ed supports several regex(3) libraries. To avoid a collision
+   between these, before switching to an alternative regex, run `make
+   distclean' followed by `configure'. This relinks lib/regex.h as
+   appropriate per confiigure options.
