@@ -1332,6 +1332,7 @@ enable_file_glob
 enable_file_lock
 enable_ed_macro
 enable_ed_register
+enable_script_flags
 '
       ac_precious_vars='build_alias
 host_alias
@@ -1989,8 +1990,10 @@ Optional Features:
                           enable external filtering of ED buffer
   --enable-file-glob      enable ED file globbing and multi-file support
   --enable-file-lock      enable ED file locking support
-  --enable-ed-macro       enable ED macro support
+  --enable-ed-macro       enable ED macro support (implies registers and
+                          script flags)
   --enable-ed-register    enable ED register support
+  --enable-script-flags   enable ED command-line script flags
 
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
@@ -30286,8 +30289,8 @@ fi
 { $as_echo "$as_me:${as_lineno-$LINENO}: result: ${enable_external_filter:-no}" >&5
 $as_echo "${enable_external_filter:-no}" >&6; }
 
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether ED file glob support is requested" >&5
-$as_echo_n "checking whether ED file glob support is requested... " >&6; }
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether ED file globbing support is requested" >&5
+$as_echo_n "checking whether ED file globbing support is requested... " >&6; }
 # Check whether --enable-file-glob was given.
 if test "${enable_file_glob+set}" = set; then :
   enableval=$enable_file_glob;
@@ -30298,8 +30301,8 @@ fi
 { $as_echo "$as_me:${as_lineno-$LINENO}: result: ${enable_file_glob:-no}" >&5
 $as_echo "${enable_file_glob:-no}" >&6; }
 
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether ED file lock support is requested" >&5
-$as_echo_n "checking whether ED file lock support is requested... " >&6; }
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether ED file locking support is requested" >&5
+$as_echo_n "checking whether ED file locking support is requested... " >&6; }
 # Check whether --enable-file-lock was given.
 if test "${enable_file_lock+set}" = set; then :
   enableval=$enable_file_lock;
@@ -30308,6 +30311,7 @@ fi
 { $as_echo "$as_me:${as_lineno-$LINENO}: result: ${enable_file_lock:-no}" >&5
 $as_echo "${enable_file_lock:-no}" >&6; }
 
+# Enable file locking if requested, but only if available.
 if test ."$enable_file_lock" = .'yes' \
   &&  { test ! ."$ac_cv_func_flock" = .'no' \
     || test ! ."$ac_cv_have_decl_f_setlk" = .'no'; }; then :
@@ -30336,21 +30340,51 @@ fi
 { $as_echo "$as_me:${as_lineno-$LINENO}: result: ${enable_ed_macro:-no}" >&5
 $as_echo "${enable_ed_macro:-no}" >&6; }
 
+# Macro support implies register support and script flags.
 if test ."$enable_ed_macro" = .'yes'; then :
   enable_ed_register=yes
 fi
+if test ."$enable_ed_macro" = .'yes'; then :
+  enable_script_flags=yes
+fi
 
+# Override --disable-ed-register if macro support requested.
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether ED register support is requested" >&5
 $as_echo_n "checking whether ED register support is requested... " >&6; }
 # Check whether --enable-ed-register was given.
 if test "${enable_ed_register+set}" = set; then :
-  enableval=$enable_ed_register;
+  enableval=$enable_ed_register; if test ."$enable_ed_register" = .'no' \
+    && test ."$enable_ed_macro" = .'yes' ; then :
+  enable_ed_register=yes
+fi
+  if test ."$enable_ed_register" = .'yes'; then :
+
 $as_echo "#define WANT_ED_REGISTER 1" >>confdefs.h
 
+fi
 fi
 
 { $as_echo "$as_me:${as_lineno-$LINENO}: result: ${enable_ed_register:-no}" >&5
 $as_echo "${enable_ed_register:-no}" >&6; }
+
+# Override --disable-script-flags if macro support requested.
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether ED script flags are requested" >&5
+$as_echo_n "checking whether ED script flags are requested... " >&6; }
+# Check whether --enable-script-flags was given.
+if test "${enable_script_flags+set}" = set; then :
+  enableval=$enable_script_flags; if test ."$enable_script_flags" = .'no' \
+    && test ."$enable_ed_macro" = .'yes' ; then :
+  enable_script_flags=yes
+fi
+  if test ."$enable_script_flags" = .'yes'; then :
+
+$as_echo "#define WANT_SCRIPT_FLAGS 1" >>confdefs.h
+
+fi
+fi
+
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: ${enable_script_flags:-no}" >&5
+$as_echo "${enable_script_flags:-no}" >&6; }
 
 # Generate autotest helpers.
 ac_config_commands="$ac_config_commands testsuite/atconfig"

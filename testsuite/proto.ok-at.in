@@ -15,7 +15,7 @@ echo "w @SCRIPT_NAME@.o")
 wq @SCRIPT_NAME@.o
 _ATEOF_ED
 
-AT_CHECK([ed -f script-@SCRIPT_NAME@ &&
+AT_CHECK([ed <script-@SCRIPT_NAME@ &&
 cmp @SCRIPT_SRC@.r @SCRIPT_NAME@.o],
 0, [ignore], [ignore], [], [])
 

@@ -1212,6 +1212,9 @@
 /* Define to 1 to enable ED file lock support. */
 #undef WANT_FILE_LOCK
 
+/* Define to 1 to enable ED command-line script flags. */
+#undef WANT_SCRIPT_FLAGS
+
 /* Define to l, ll, u, ul, ull, etc., as suitable for constants of type
    'wchar_t'. */
 #undef WCHAR_T_SUFFIX

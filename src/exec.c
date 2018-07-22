@@ -65,9 +65,10 @@
     }                                                                         \
   while (0)
 
+#ifdef WANT_ED_REGISTER
 
 /* DESTINATION_ADDRESS: Get destination address from command buffer. */
-#define DESTINATION_ADDRESS(addr, ed)                                         \
+# define DESTINATION_ADDRESS(addr, ed)                                        \
   do                                                                          \
     {                                                                         \
       off_t _start = (ed)->exec->region->start;                               \
@@ -87,13 +88,13 @@
         {                                                                     \
           if ((_status = address_range (ed)) < 0)                             \
             return _status;                                                   \
-          if ((ed)->exec->opt & (POSIXLY_CORRECT | TRADITIONAL)               \
+          else if ((ed)->exec->opt & (POSIXLY_CORRECT | TRADITIONAL)          \
               && !(ed)->exec->region->addrs)                                  \
             {                                                                 \
               (ed)->exec->err = _("Destination address required");            \
               return ERR;                                                     \
             }                                                                 \
-          if ((ed)->state->lines < (ed)->exec->region->end)                   \
+          else if ((ed)->state->lines < (ed)->exec->region->end)              \
             {                                                                 \
               (ed)->exec->err = _("Address out of range");                    \
               return ERR;                                                     \
@@ -104,7 +105,35 @@
         }                                                                     \
     }                                                                         \
   while (0)
+#else
 
+/* DESTINATION_ADDRESS: Get destination address from command buffer. */
+# define DESTINATION_ADDRESS(addr, ed)                                        \
+  do                                                                          \
+    {                                                                         \
+      off_t _start = (ed)->exec->region->start;                               \
+      off_t _end = (ed)->exec->region->end;                                   \
+      int _status;                                                            \
+                                                                              \
+      if ((_status = address_range (ed)) < 0)                                 \
+        return _status;                                                       \
+      else if ((ed)->exec->opt & (POSIXLY_CORRECT | TRADITIONAL)              \
+          && !(ed)->exec->region->addrs)                                      \
+        {                                                                     \
+          (ed)->exec->err = _("Destination address required");                \
+          return ERR;                                                         \
+        }                                                                     \
+      else if ((ed)->state->lines < (ed)->exec->region->end)                  \
+        {                                                                     \
+          (ed)->exec->err = _("Address out of range");                        \
+          return ERR;                                                         \
+        }                                                                     \
+      (addr) = (ed)->exec->region->end;                                       \
+      (ed)->exec->region->end = _end;                                         \
+      (ed)->exec->region->start = _start;                                     \
+    }                                                                         \
+  while (0)
+#endif  /* !WANT_ED_REGISTER */
 
 /* Static function declarations. */
 static int address_cmd __P ((ed_buffer_t *)); /* ($)= */
@@ -236,12 +265,15 @@ exec_command (ed)
 {
   int c = 0;
 
+#ifdef WANT_ED_REGISTER
   ed->core->regbuf->io_f = 0;
+#endif
   ed->display->is_paging = ed->display->paging;
   ed->display->paging = 0;
 
   SKIP_WHITESPACE (ed);
 
+#if WANT_ED_REGISTER
   /* Register indirection. */
   if (*ed->input == '<')
     {
@@ -250,6 +282,7 @@ exec_command (ed)
       ed->core->regbuf->read_idx =
         isdigit (*ed->input) ? *ed->input++ - '0' : REGBUF_MAX - 1;
     }
+#endif  /* WANT_ED_REGISTER */
 
   SKIP_WHITESPACE (ed);
   c = *ed->input++;
@@ -273,6 +306,7 @@ exec_command (ed)
           return ERR;
         }
       break;
+#if WANT_ED_REGISTER
     case 'E':
     case 'e':
     case 'f':
@@ -285,8 +319,13 @@ exec_command (ed)
           return ERR;
         }
       break;
+#endif
     default:
+#ifdef WANT_ED_REGISTER
       if (ed->core->regbuf->io_f || ed->file->is_glob)
+#else
+      if (ed->file->is_glob)
+#endif  /* !WANT_ED_REGISTER */
         {
           ed->exec->err = _("Command prefix unexpected");
           return ERR;
@@ -303,9 +342,8 @@ exec_command (ed)
     case '#':
       return comment_cmd (ed);
     default:
-      return (c >= ED_KEY_FIRST ? ed_cmd[(c - ED_KEY_FIRST) & ED_KEY_MASK](ed) :
-              invalid_cmd(ed));
-
+      return (c >= ED_KEY_FIRST ? ed_cmd[(c - ED_KEY_FIRST) & ED_KEY_MASK](ed)
+              : invalid_cmd(ed));
     }
 }
 
@@ -371,15 +409,19 @@ d_cmd (ed)
   if ((status = is_valid_range (ed->state->dot, ed->state->dot, ed)) < 0)
     return status;
 
+#ifdef WANT_ED_REGISTER
   /* Save deleted lines in default register. */
   ed->core->regbuf->io_f |= REGISTER_WRITE;
   ed->core->regbuf->write_idx = REGBUF_MAX - 1;
+#endif
   COMMAND_SUFFIX (io_f, ed);
   if (!ed->exec->global)
     reset_undo_queue (ed);
+#ifdef WANT_ED_REGISTER
   if ((status = append_to_register (ed->exec->region->start,
                                    ed->exec->region->end, 0, ed)) < 0)
     return status;
+#endif
   spl1 ();
   if ((status = delete_lines (ed->exec->region->start,
                               ed->exec->region->end, ed)) < 0)
@@ -446,10 +488,12 @@ E_cmd (ed)
     }
   reset_undo_queue (ed);
   reset_global_queue (ed);
+#ifdef WANT_ED_REGISTER
   for (cz = 0; cz < REGBUF_MAX; ++cz)
     {
       reset_register_queue (cz, ed);
     }
+#endif
 
   if (reopen_ed_buffer (ed) < 0)
     {
@@ -803,12 +847,15 @@ m_cmd (ed)
   COMMAND_SUFFIX (io_f, ed);
   if (!ed->exec->global)
     reset_undo_queue (ed);
+#ifdef WANT_ED_REGISTER
   switch (ed->core->regbuf->io_f)
     {
     case 0:
+#endif
       if ((status = move_lines (ed->exec->region->start,
                                 ed->exec->region->end, addr, ed)) < 0)
         return status;
+#ifdef WANT_ED_REGISTER
       break;
     case REGISTER_READ:
       if ((status = append_from_register (addr, ed)) < 0
@@ -838,6 +885,7 @@ m_cmd (ed)
       ed->exec->err = _("Invalid register");
       return ERR;
     }
+#endif
   return io_f;
 }
 
@@ -1154,12 +1202,15 @@ t_cmd (ed)
   COMMAND_SUFFIX (io_f, ed);
   if (!ed->exec->global)
     reset_undo_queue (ed);
+#ifdef WANT_ED_REGISTER
   switch (ed->core->regbuf->io_f)
     {
     case 0:
+#endif
       if ((status = copy_lines (ed->exec->region->start,
                                 ed->exec->region->end, addr, ed)) < 0)
         return status;
+#ifdef WANT_ED_REGISTER
       break;
     case REGISTER_READ:
       if ((status = append_from_register (addr, ed)) < 0)
@@ -1178,6 +1229,7 @@ t_cmd (ed)
       ed->exec->err = _("Invalid register");
       return ERR;
     }
+#endif
   return io_f;
 }
 
@@ -1667,7 +1719,10 @@ is_valid_range (from, to, ed)
        || ed->state->lines < ed->exec->region->start
        || ed->exec->region->end < 1
        || ed->state->lines < ed->exec->region->end)
-      && !(ed->core->regbuf->io_f & REGISTER_READ))
+#ifdef WANT_ED_REGISTER
+      && !(ed->core->regbuf->io_f & REGISTER_READ)
+#endif
+      )
     {
       ed->exec->err = _("Address out of range");
       return ERR;

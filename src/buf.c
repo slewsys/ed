@@ -596,7 +596,7 @@ init_global_queue (aq, lq, ed)
   *lq = ed->core->line_head;
 }
 
-
+#ifdef WANT_ED_REGISTER
 /* init_register_queue: Initialize given ed_core register queue. */
 int
 init_register_queue (idx, ed)
@@ -619,7 +619,7 @@ init_register_queue (idx, ed)
   spl0 ();
   return 0;
 }
-
+#endif  /* WANT_ED_REGISTER */
 
 /* init_undo_queue: Initialize ed_core undo queue. */
 void
@@ -748,7 +748,9 @@ alloc_ed_buffer ()
   ALLOC_ED_TYPE (ed_buffer->core, 1, struct ed_core);
   ALLOC_ED_TYPE (ed_buffer->core->line_head, 1, ed_line_node_t);
   ALLOC_ED_TYPE (ed_buffer->core->global_head, 1, ed_global_node_t);
+#if WANT_ED_REGISTER
   ALLOC_ED_TYPE (ed_buffer->core->regbuf, 1, struct ed_register);
+#endif
   ALLOC_ED_TYPE (ed_buffer->core->undo_head, 1, ed_undo_node_t);
   ALLOC_ED_TYPE (ed_buffer->display, 1, struct ed_display);
   ALLOC_ED_TYPE (ed_buffer->exec, 1, struct ed_execute);

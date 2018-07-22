@@ -182,7 +182,7 @@ filter_lines (from, to, sc, ed)
 }
 #endif  /* defined (HAVE_FORK) && defined (WANT_EXTERNAL_FILTER) */
 
-
+#ifdef WANT_ED_REGISTER
 /*
  * append_from_register: Append lines from register to buffer after given
  *   address.
@@ -399,7 +399,7 @@ reset_register_queue (idx, ed)
     }
   return 0;
 }
-
+#endif  /* WANT_ED_REGISTER */
 
 #ifdef WANT_ED_MACRO
 /*

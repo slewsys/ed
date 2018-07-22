@@ -14,7 +14,7 @@ cat @SCRIPT_SRC@.err ||
 echo "w @SCRIPT_NAME@.ro")
 _ATEOF_ED
 
-AT_CHECK([ed -f script-@SCRIPT_NAME@] && exit 255 || exit 0,
+AT_CHECK([ed <script-@SCRIPT_NAME@] && exit 255 || exit 0,
 0, [ignore], [ignore], [], [])
 
 AT_CLEANUP()

@@ -253,7 +253,7 @@ AC_ARG_ENABLE([external-filter],
     [Define to 1 to enable modifying ED buffer via external filters.])],[])
 AC_MSG_RESULT([${enable_external_filter:-no}])
 
-AC_MSG_CHECKING([whether ED file glob support is requested])
+AC_MSG_CHECKING([whether ED file globbing support is requested])
 AC_ARG_ENABLE([file-glob],
   [AS_HELP_STRING([--enable-file-glob],
     [enable ED file globbing and multi-file support])],
@@ -261,12 +261,13 @@ AC_ARG_ENABLE([file-glob],
     [Define to 1 to enable ED file glob and multi-file support.])],[])
 AC_MSG_RESULT([${enable_file_glob:-no}])
 
-AC_MSG_CHECKING([whether ED file lock support is requested])
+AC_MSG_CHECKING([whether ED file locking support is requested])
 AC_ARG_ENABLE([file-lock],
   [AS_HELP_STRING([--enable-file-lock],
     [enable ED file locking support])],[],[])
 AC_MSG_RESULT([${enable_file_lock:-no}])
 
+# Enable file locking if requested, but only if available.
 AS_IF([test ."$enable_file_lock" = .'yes' \
   &&  { test ! ."$ac_cv_func_flock" = .'no' \
     || test ! ."$ac_cv_have_decl_f_setlk" = .'no'; }],
@@ -282,20 +283,40 @@ AS_IF([test ."$enable_file_lock" = .'yes' \
 AC_MSG_CHECKING([whether ED macro support is requested])
 AC_ARG_ENABLE([ed-macro],
   [AS_HELP_STRING([--enable-ed-macro],
-    [enable ED macro support])],
+    [enable ED macro support (implies registers and  script flags)])],
   [AC_DEFINE([WANT_ED_MACRO], [1],
     [Define to 1 to enable ED macro support.])],[])
 AC_MSG_RESULT([${enable_ed_macro:-no}])
 
+# Macro support implies register support and script flags.
 AS_IF([test ."$enable_ed_macro" = .'yes'], [enable_ed_register=yes])
+AS_IF([test ."$enable_ed_macro" = .'yes'], [enable_script_flags=yes])
 
+# Override --disable-ed-register if macro support requested.
 AC_MSG_CHECKING([whether ED register support is requested])
 AC_ARG_ENABLE([ed-register],
   [AS_HELP_STRING([--enable-ed-register],
     [enable ED register support])],
-  [AC_DEFINE([WANT_ED_REGISTER], [1],
-    [Define to 1 to enable ED register support.])],[])
+  [AS_IF([test ."$enable_ed_register" = .'no' \
+    && test ."$enable_ed_macro" = .'yes' ],
+    [enable_ed_register=yes])]
+  [AS_IF([test ."$enable_ed_register" = .'yes'],
+    [AC_DEFINE([WANT_ED_REGISTER], [1],
+      [Define to 1 to enable ED register support.])],[])])
 AC_MSG_RESULT([${enable_ed_register:-no}])
+
+# Override --disable-script-flags if macro support requested.
+AC_MSG_CHECKING([whether ED script flags are requested])
+AC_ARG_ENABLE([script-flags],
+  [AS_HELP_STRING([--enable-script-flags],
+    [enable ED command-line script flags])],
+  [AS_IF([test ."$enable_script_flags" = .'no' \
+    && test ."$enable_ed_macro" = .'yes' ],
+    [enable_script_flags=yes])]
+  [AS_IF([test ."$enable_script_flags" = .'yes'],
+    [AC_DEFINE([WANT_SCRIPT_FLAGS], [1],
+      [Define to 1 to enable ED command-line script flags.])],[])])
+AC_MSG_RESULT([${enable_script_flags:-no}])
 
 # Generate autotest helpers.
 AC_CONFIG_TESTDIR([testsuite])

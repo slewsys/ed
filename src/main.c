@@ -45,8 +45,10 @@ main (argc, argv)
   struct option long_options[14] =
     {
       {"ansi-color", no_argument, NULL, 'R'},
+#ifdef WANT_SCRIPT_FLAGS
       {"expression", required_argument, NULL, 'e'},
       {"file", required_argument, NULL, 'f'},
+#endif
       {"help", no_argument, NULL, 'h'},
       {"in-place", optional_argument, NULL, 'i'},
       {"prompt", required_argument, NULL, 'p'},
@@ -87,7 +89,11 @@ main (argc, argv)
 #endif
 
 top:
+#ifdef WANT_SCRIPT_FLAGS
   while ((c = getopt_long (argc, argv, "Ee:f:Ghi::p:RrsVv",
+#else
+  while ((c = getopt_long (argc, argv, "EGhi::p:RrsVv",
+#endif  /* !WANT_SCRIPT_FLAGS */
                            long_options, NULL)) != -1)
     switch (c)
       {
@@ -98,6 +104,7 @@ top:
       case 'E':                 /* Enable extended regular expressions. */
         ed->exec->opt |=  REGEX_EXTENDED;
         break;
+#ifdef WANT_SCRIPT_FLAGS
       case 'e':
         ed->exec->opt |= FSCRIPT | SCRIPTED;
         if (append_script_expression (optarg, ed) < 0)
@@ -108,6 +115,7 @@ top:
         if (append_script_file (optarg, ed) < 0)
           script_die (3, ed);
         break;
+#endif
       case 'G':                 /* Compatibility mode. */
         ed->exec->opt |= TRADITIONAL;
         break;
@@ -511,6 +519,7 @@ getenv_init_argv (s, argc, ed)
 #endif /* WANT_ED_ENVAR */
 
 
+#ifdef WANT_SCRIPT_FLAGS
 /* append_script_expression: Append expression to script. */
 int
 append_script_expression (s, ed)
@@ -621,6 +630,7 @@ append_script_file (fn, ed)
 
   return 0;
 }
+#endif  /* WANT_SCRIPT_FLAGS */
 
 
 /* ed_usage: Print ed usage. */
@@ -640,6 +650,7 @@ ed_usage (status, ed)
     {
       printf (_("Usage: %s [OPTION...] [FILE]\n"), (ed->exec->opt & RESTRICTED
                                                     ? "red" : "ed"));
+#ifdef WANT_SCRIPT_FLAGS
       printf (_("Options:\n\
   -E, --regexp-extended     Enable extended regular expression syntax.\n\
   -e, --expression=COMMAND  Add COMMAND to scripted input; implies `-s'.\n\
@@ -659,6 +670,25 @@ If FILE is given, read it for editing.  From within ed, run:\n\
 to see full documentation of these options.\n\
 \n\
 Submit issues to: <bug-ed@gnu.org>.\n"));
+#else
+      printf (_("Options:\n\
+  -E, --regexp-extended     Enable extended regular expression syntax.\n\
+  -G, --traditional         Enable backward compatibility.\n\
+  -h, --help                Dispaly (this) help, then exit.\n\
+  -i, --in-place[=SUFFIX]   Write file before closing, with optional backup.\n\
+  -p, --prompt=STRING       Prompt for commands with STRING.\n\
+  -R, --ansi-color          Enable support for ANSI color codes.\n\
+  -r, --regexp-extended     Enable extended regular expression syntax.\n\
+  -s, --script              Suppress interactive diagnostics.\n\
+  -v, --verbose             Enable verbose error diagnostics.\n\
+  -V, --version             Print version information, then exit.\n\
+\n\
+If FILE is given, read it for editing.  From within ed, run:\n\
+  !info ed RET m switches RET\n\
+to see full documentation of these options.\n\
+\n\
+Submit issues to: <bug-ed@gnu.org>.\n"));
+#endif  /* !WANT_SCRIPT_FLAGS */
     }
   exit (status);
 }

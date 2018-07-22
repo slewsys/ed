@@ -1,8 +1,25 @@
+2018-07-22  Andrew L. Moore  <alm@slewsys.org>
+
+	* src/ed.h:
+	* src/aux.c:
+	* src/buf.c:
+	* src/exec.c:
+	* src/main.c:
+	* configure.ac: Condition ed register and command-line scripting
+	flags `-f' and `-e' on configure feature requests
+	`--enable-ed-register' and `--enable-script-flags', respectively.
+
+	* testsuite/proto.ok-at.in:
+	* testsuite/proto.fail-at.in: Don't require option `-f' in tests.
+
 2018-07-19  Andrew L. Moore  <alm@slewsys.org>
 
-	* src/exec.c:
 	* src/ed.h:
-	* src/aux.c: Condition ed macros on configure feature request.
+	* src/aux.c:
+	* src/exec.c:
+	* src/main.c:
+	* configure.ac: Condition ed macros on configure feature request
+	`--enable-ed-macro'.
 
 2018-07-18  Andrew L. Moore  <alm@slewsys.org>
 
