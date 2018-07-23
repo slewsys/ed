@@ -1,3 +1,17 @@
+2018-07-23  Andrew L. Moore  <alm@slewsys.org>
+
+	(DESTINATION_ADDRESS):
+	(exec_command): Allow command-line flag `--traditional' or
+	environment variable `POSIXLY_CORRECT' to override ed register and
+	file glob extensions.
+	Clean up parsing of command prefixes `<' and `~'.
+
+	* src/buf.c (init_stdio):  Unconditionally exit on errors if
+	standard input is seekable and not a tty.
+
+	* src/io.c (write_file):
+	* src/cmds.c (mark_line_node): Silence compiler warnings.
+
 2018-07-22  Andrew L. Moore  <alm@slewsys.org>
 
 	* src/ed.h:

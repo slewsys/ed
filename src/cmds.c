@@ -261,7 +261,7 @@ mark_line_node (lp, n, ed)
     }
   if (!ed->core->mark[n - 'a'])
     ++ed->core->marks;
-  ed->core->mark[n - 'a'] = lp;
+  ed->core->mark[n - 'a'] = (ed_line_node_t *) lp;
   return 0;
 }
 

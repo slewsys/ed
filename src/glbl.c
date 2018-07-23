@@ -47,7 +47,7 @@ mark_global_nodes (want_match, ed)
 #ifdef REG_STARTEND
       rm->rm_so = 0;
       rm->rm_eo = lp->len;
-      if (!regexec (re, s, 0, rm, REG_STARTEND) == want_match
+      if ((!regexec (re, s, 0, rm, REG_STARTEND)) == want_match
           && !append_global_node (lp, ed))
 #else
       if (ed->state->is_binary)

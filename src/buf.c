@@ -155,10 +155,9 @@ init_stdio (ed)
   SETVBUF (stdout, NULL, _IOLBF, 0);
 #endif   /* !HAVE_SETBUFFER */
 
-  /* Don't exit on errors if (nominal) standard input is non-seekable,
-     e.g., piped or tty. */
-  if (lseek (0, 0, SEEK_CUR) != -1
-      && (ed->exec->opt & SCRIPTED || !isatty (0)))
+  /* If nominal standard input is seekable - i.e., from a file as
+     opposed a pipe - and not a tty, then exit on errors. */
+  if (lseek (0, 0, SEEK_CUR) != -1 && !isatty (0))
     ed->exec->opt |= EXIT_ON_ERROR;
 
   return 0;

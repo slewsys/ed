@@ -55,7 +55,7 @@ read_file (fn, after, addr, size, is_default, ed)
     return ERR;
 
   /* File already open. */
-  if (already_open = (inode && inode == ed->file->inode))
+  if ((already_open = (inode && inode == ed->file->inode)))
     {
       if (FSEEK (fp = ed->file->handle, 0L, SEEK_SET) == -1)
         {
@@ -571,8 +571,8 @@ write_file (fn, is_default, from, to, addr, size, mode, ed)
           ed->exec->err = _("File seek error");
           return ERR;
         }
-      if (*mode == 'w' && ftruncate (fileno (fp), 0) == -1
-        || fflush (fp) == EOF)
+      if (*mode == 'w' && (ftruncate (fileno (fp), 0) == -1
+                           || fflush (fp) == EOF))
         {
           fprintf (stderr, "%s: %s\n", ed->file->name, strerror (errno));
           ed->exec->err = _("File truncate error");

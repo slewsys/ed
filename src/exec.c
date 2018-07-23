@@ -76,7 +76,8 @@
       int _status;                                                            \
                                                                               \
       /* Parse "write register" command variation. */                         \
-      if (*ed->input == '>')                                                  \
+      if (!((ed)->exec->opt & (POSIXLY_CORRECT | TRADITIONAL))                \
+          && *ed->input == '>')                                               \
         {                                                                     \
           ed->core->regbuf->io_f |= REGISTER_WRITE;                           \
           if ((append = *++ed->input == '>'))                                 \
@@ -265,35 +266,44 @@ exec_command (ed)
 {
   int c = 0;
 
+  ed->file->is_glob = 0;
 #ifdef WANT_ED_REGISTER
   ed->core->regbuf->io_f = 0;
 #endif
   ed->display->is_paging = ed->display->paging;
   ed->display->paging = 0;
 
+  /* Get command prefix, if any. */
   SKIP_WHITESPACE (ed);
-
-#if WANT_ED_REGISTER
-  /* Register indirection. */
-  if (*ed->input == '<')
+  switch (*ed->input)
     {
-      ed->core->regbuf->io_f |= REGISTER_READ;
-      ++ed->input;
-      ed->core->regbuf->read_idx =
-        isdigit (*ed->input) ? *ed->input++ - '0' : REGBUF_MAX - 1;
-    }
+#ifdef WANT_ED_REGISTER
+    case '<':
+      if (!((ed)->exec->opt & (POSIXLY_CORRECT | TRADITIONAL)))
+        {
+          ed->core->regbuf->io_f |= REGISTER_READ;
+          ++ed->input;
+          ed->core->regbuf->read_idx =
+            isdigit (*ed->input) ? *ed->input++ - '0' : REGBUF_MAX - 1;
+          SKIP_WHITESPACE (ed);
+        }
+      break;
 #endif  /* WANT_ED_REGISTER */
-
-  SKIP_WHITESPACE (ed);
-  c = *ed->input++;
-
 #ifdef WANT_FILE_GLOB
-  if ((ed->file->is_glob = c == '~'))
-    c = *ed->input++;
-#endif
+    case '~':
+      if (!((ed)->exec->opt & (POSIXLY_CORRECT | TRADITIONAL)))
+        {
+          ++ed->file->is_glob;
+          ++ed->input;
+        }
+      break;
+#endif  /* WANT_FILE_GLOB */
+    default:
+      break;
+    }
 
-  /* Validate any command prefix. */
-  switch (c)
+  /* Validate command prefix, if any. */
+  switch (c = *ed->input++)
     {
     case 'm':
     case 't':
@@ -333,6 +343,7 @@ exec_command (ed)
       break;
     }
 
+  /* Execute command. */
   switch (c)
     {
     case '\n':
@@ -351,8 +362,8 @@ static int
 a_cmd (ed)
      ed_buffer_t *ed;
 {
-  unsigned io_f = 0;            /* Print I/O flags */
   int status = 0;               /* Return status */
+  unsigned io_f = 0;            /* Print I/O flags */
 
   /*
    * Buffer not empty or not `logically' empty - i.e., contains
@@ -374,8 +385,8 @@ static int
 c_cmd (ed)
      ed_buffer_t *ed;
 {
-  unsigned io_f = 0;            /* Print I/O flags */
   int status = 0;               /* Return status */
+  unsigned io_f = 0;            /* Print I/O flags */
 
   /* Per SUSv4, 2013, 0c => 1c, so 0,0c => 1,1c. */
   ed->exec->region->start += !ed->exec->region->start;
@@ -403,8 +414,8 @@ d_cmd (ed)
      ed_buffer_t *ed;
 {
   off_t addr = 0;
-  unsigned io_f = 0;            /* Print I/O flags */
   int status = 0;               /* Return status */
+  unsigned io_f = 0;            /* Print I/O flags */
 
   if ((status = is_valid_range (ed->state->dot, ed->state->dot, ed)) < 0)
     return status;
@@ -454,12 +465,11 @@ E_cmd (ed)
   off_t size = 0;
   size_t len = 0;
   char *fn = NULL;
-  unsigned io_f = 0;            /* Print I/O flags */
-  int status = 0;               /* Return status */
-  int is_default = 0;
   int cx = 0;
   int cy = 0;
   int cz = 0;
+  int is_default = 0;
+  int status = 0;               /* Return status */
 
   if (ed->exec->region->addrs)
     {
@@ -669,9 +679,9 @@ static int
 g_cmd (ed)
      ed_buffer_t *ed;
 {
-  unsigned io_f = 0;            /* Print I/O flags */
-  int status = 0;               /* Return status */
   int c = *(ed->input - 1);
+  int status = 0;               /* Return status */
+  unsigned io_f = 0;            /* Print I/O flags */
 
   if (ed->exec->global)
     {
@@ -737,8 +747,8 @@ static int
 i_cmd (ed)
      ed_buffer_t *ed;
 {
-  unsigned io_f = 0;            /* Print I/O flags */
   int status = 0;               /* Return status */
+  unsigned io_f = 0;            /* Print I/O flags */
 
   /* Per SUSv4, 2013, 0i => 1i. */
   ed->exec->region->end += !ed->exec->region->end;
@@ -758,8 +768,8 @@ static int
 j_cmd (ed)
      ed_buffer_t *ed;
 {
-  unsigned io_f = 0;            /* Print I/O flags */
   int status = 0;               /* Return status */
+  unsigned io_f = 0;            /* Print I/O flags */
 
   /*
    * Allow joining an empty buffer, provided no addresses are
@@ -787,9 +797,9 @@ static int
 k_cmd (ed)
      ed_buffer_t *ed;
 {
-  unsigned io_f = 0;            /* Print I/O flags */
-  int status = 0;               /* Return status */
   int cx = 0;
+  int status = 0;               /* Return status */
+  unsigned io_f = 0;            /* Print I/O flags */
 
   cx = *ed->input++;
   if (ed->exec->region->end == 0)
@@ -808,8 +818,8 @@ static int
 l_cmd (ed)
      ed_buffer_t *ed;
 {
-  unsigned io_f = 0;            /* Print I/O flags */
   int status = 0;               /* Return status */
+  unsigned io_f = 0;            /* Print I/O flags */
 
   /*
    * Allow printing an empty buffer, provided no addresses are
@@ -832,9 +842,9 @@ m_cmd (ed)
      ed_buffer_t *ed;
 {
   off_t addr = 0;
-  unsigned io_f = 0;            /* Print I/O flags */
-  int status = 0;               /* Return status */
   int append = 0;               /* Append to register? */
+  int status = 0;               /* Return status */
+  unsigned io_f = 0;            /* Print I/O flags */
 
   if ((status = is_valid_range (ed->state->dot, ed->state->dot, ed)) < 0)
     return status;
@@ -893,8 +903,8 @@ static int
 n_cmd (ed)
      ed_buffer_t *ed;
 {
-  unsigned io_f = 0;            /* Print I/O flags */
   int status = 0;               /* Return status */
+  unsigned io_f = 0;            /* Print I/O flags */
 
   /*
    * Allow printing an empty buffer, provided no addresses are
@@ -935,8 +945,8 @@ static int
 p_cmd (ed)
      ed_buffer_t *ed;
 {
-  unsigned io_f = 0;            /* Print I/O flags */
   int status = 0;               /* Return status */
+  unsigned io_f = 0;            /* Print I/O flags */
 
   /*
    * Allow printing an empty buffer, provided no addresses are
@@ -958,8 +968,8 @@ static int
 q_cmd (ed)
      ed_buffer_t *ed;
 {
-  unsigned io_f = 0;            /* Print I/O flags */
   int c = *(ed->input - 1);
+  unsigned io_f = 0;            /* Print I/O flags */
 
   if (ed->exec->region->addrs)
     {
@@ -979,9 +989,10 @@ r_cmd (ed)
   off_t size = 0;
   size_t len = 0;
   char *fn = NULL;
-  int status = 0;               /* Return status */
-  int is_default = 0;
   int cx = 0;
+  int cy = 0;
+  int is_default = 0;
+  int status = 0;               /* Return status */
 
   if (!isspace ((unsigned char) *ed->input))
     {
@@ -1076,11 +1087,11 @@ s_cmd (ed)
   regex_t *lhs    = NULL;       /* Left-hand substitution pattern buffer */
   off_t s_nth     = 0;          /* Substitution match offset */
   off_t s_mod     = 0;          /* Substitution match modulus */
+  int status = 0;               /* Return status */
   unsigned io_f   = 0;          /* Print I/O flags */
   unsigned s_f    = 0;          /* Saved substitution modifier flags */
   unsigned sgpr_f = 0;          /* Short-form substitution modifier flags */
   unsigned sio_f  = 0;          /* Saved substitution I/O flags */
-  int status = 0;               /* Return status */
 
   init_substitute (&lhs, &s_f, &s_nth, &s_mod, &sio_f, ed->exec->subst);
   if ((status = is_valid_range (ed->state->dot, ed->state->dot, ed)) < 0
@@ -1192,9 +1203,9 @@ t_cmd (ed)
      ed_buffer_t *ed;
 {
   off_t addr = 0;
-  unsigned io_f = 0;            /* Print I/O flags */
-  int status = 0;               /* Return status */
   int append = 0;               /* Append to register? */
+  int status = 0;               /* Return status */
+  unsigned io_f = 0;            /* Print I/O flags */
 
   if ((status = is_valid_range (ed->state->dot, ed->state->dot, ed)) < 0)
     return status;
@@ -1237,8 +1248,8 @@ static int
 u_cmd (ed)
      ed_buffer_t *ed;
 {
-  unsigned io_f = 0;            /* Print I/O flags */
   int status = 0;               /* Return status */
+  unsigned io_f = 0;            /* Print I/O flags */
 
   if (ed->exec->region->addrs)
     {
@@ -1430,10 +1441,10 @@ z_cmd (ed)
 {
   off_t addr = 0;
   size_t len = 0;
-  unsigned io_f = 0;            /* Print I/O flags */
+  int c = *(ed->input - 1);
   int status = 0;               /* Return status */
   int zhfw_off = 0;             /* Half-page-scroll-forward offset. */
-  int c = *(ed->input - 1);
+  unsigned io_f = 0;            /* Print I/O flags */
 
   /* scroll forward */
   if (ed->exec->opt & POSIXLY_CORRECT)
@@ -1524,8 +1535,8 @@ Z_cmd (ed)
 {
   off_t addr = 0;
   size_t len = 0;
-  unsigned io_f = 0;            /* Print I/O flags */
   int status = 0;               /* Return status */
+  unsigned io_f = 0;            /* Print I/O flags */
 
   /* scroll backward */
   if (ed->exec->opt & (TRADITIONAL | POSIXLY_CORRECT))
