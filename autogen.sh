@@ -50,7 +50,7 @@ EOF
 
 autoconf_output=$(cd "$abs_srcdir" && autoreconf --verbose --force --install -I ./m4 2>&1)
 exit_status=$?
-if (( exit_status != 0 )); then
+if test $exit_status -ne 0; then
     cat <<EOF
 $script_name:
 $autoconf_output
