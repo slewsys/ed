@@ -4,6 +4,8 @@
 #
 # Process this file with automake to create Makefile.in
 
+gnulib_srcdir ?= /opt/src/gnu/gnulib
+
 ACLOCAL_AMFLAGS = -I m4
 
 SUBDIRS =
@@ -21,7 +23,44 @@ EXTRA_DIST = m4/gnulib-cache.m4
 quick-check: all
 	cd $(top_builddir)/testsuite && $(MAKE) $(AM_MAKEFLAGS) $@
 
-maintainer-update-dist: update-testsuite-dist update-po
+maintainer-update-dist: update-gnulib update-testsuite-dist update-po
+
+update-gnulib:
+	@if test ! -x $(gnulib_srcdir)/gnulib-tool; then		      \
+	  echo "ghulib-tool: No such file or directory.";		      \
+	  exit;								      \
+	else								      \
+	  echo "*** Refreshing gnulib sources ***";			      \
+	fi;								      \
+	opwd=$$PWD;							      \
+	cd "$(gnulib_srcdir)" && git pull;				      \
+	cd $$opwd;							      \
+	echo "*** Importing gnulib modules ***";			      \
+	if test -f lib/regex.h; then					      \
+	  rm -f lib/regex.h;						      \
+	fi;								      \
+	"$(gnulib_srcdir)/gnulib-tool" --import				      \
+	  --lib=libgnu							      \
+	  --source-base=lib						      \
+	  --m4-base=m4							      \
+	  --doc-base=doc						      \
+	  --tests-base=tests						      \
+	  --aux-dir=.							      \
+	  --conditional-dependencies					      \
+	  --no-libtool							      \
+	  --macro-prefix=gl						      \
+	  getopt-gnu							      \
+	  regex
+	@if test -f lib/regex.h; then					      \
+	  echo "*** Moving lib/regex.h => lib/regex.h.in ***";		      \
+	  mv lib/regex.h lib/regex.h.in;				      \
+	fi;								      \
+	if test -f lib/patch-Makefile.am.diff; then			      \
+	  echo "*** Patching refreshed lib/Makefile.am ***";		      \
+	fi;								      \
+	patch lib/Makefile.am lib/patch-Makefile.am.diff;		      \
+	echo "*** Running autogen.sh ***";				      \
+	./autogen.sh --silent
 
 update-testsuite-dist:
 	@if test ."$(top_srcdir)" != ."$(top_builddir)"; then		      \

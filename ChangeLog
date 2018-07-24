@@ -1,5 +1,7 @@
 2018-07-24  Andrew L. Moore  <alm@slewsys.org>
 
+	* Makefile.am: Add rule `update-gnulib'.
+
 	* configure.ac:
 	* m4/ax_check_openssl.m4:
 	* src/Makefile.am (AM_CPPFLAGS):

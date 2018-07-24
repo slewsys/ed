@@ -1,0 +1,20 @@
+--- Makefile.am.new	2018-07-24 03:01:33.000000000 -0400
++++ Makefile.am	2018-07-24 03:51:36.000000000 -0400
+@@ -352,8 +352,16 @@
+ 
+ ## begin gnulib module regex
+ 
++if LIBADD_REGEX
++BUILT_SOURCES += regex.h
++DISTCLEANFILES += regex.h
++AM_CPPFLAGS += -DRE_ENABLE_I18N=1
++regex.h: regex.h.in
++	$(LN_S) $(top_srcdir)/lib/$@.in $@
+ 
+-EXTRA_DIST += regcomp.c regex.c regex.h regex_internal.c regex_internal.h regexec.c
++endif LIBADD_REGEX
++
++EXTRA_DIST += regcomp.c regex.c regex.h.in regex_internal.c regex_internal.h regexec.c
+ 
+ EXTRA_libgnu_a_SOURCES += regcomp.c regex.c regex_internal.c regexec.c
+ 

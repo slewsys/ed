@@ -1,4 +1,4 @@
-# Copyright (C) 2002-2017 Free Software Foundation, Inc.
+# Copyright (C) 2002-2018 Free Software Foundation, Inc.
 #
 # This file is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -27,12 +27,22 @@
 
 
 # Specification in the form of a command-line invocation:
-#   gnulib-tool --import --lib=libgnu --source-base=lib --m4-base=m4 --doc-base=doc --tests-base=tests --aux-dir=. --conditional-dependencies --no-libtool --macro-prefix=gl extensions getopt-gnu regex
+# gnulib-tool --import \
+#  --lib=libgnu \
+#  --source-base=lib \
+#  --m4-base=m4 \
+#  --doc-base=doc \
+#  --tests-base=tests \
+#  --aux-dir=. \
+#  --conditional-dependencies \
+#  --no-libtool \
+#  --macro-prefix=gl \
+#  getopt-gnu \
+#  regex
 
 # Specification in the form of a few gnulib-tool.m4 macro invocations:
 gl_LOCAL_DIR([])
 gl_MODULES([
-  extensions
   getopt-gnu
   regex
 ])

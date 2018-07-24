@@ -64,8 +64,8 @@ EOF
 _process_output="$( cd "$srcdir" && ./autogen.sh --silent )"
 _exit_status=$?
 
-$verbose && cat >&2 <<''EOF'
-$script_name: Running:
+echo "$script_name: Running:"
+$verbose && cat >&2 <<'EOF'
   $(eval "$srcdir/configure" $(ed --version | tail -n +3 | tr -d '\n'))
 
 EOF

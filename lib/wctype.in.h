@@ -1,6 +1,6 @@
 /* A substitute for ISO C99 <wctype.h>, for platforms that lack it.
 
-   Copyright (C) 2006-2017 Free Software Foundation, Inc.
+   Copyright (C) 2006-2018 Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -60,7 +60,7 @@
    isw* functions in <ctype.h>, <wchar.h> as well as in <wctype.h>.  Include
    <ctype.h>, <wchar.h> in advance to avoid rpl_ prefix being added to the
    declarations.  */
-#if (defined _WIN32 || defined __WIN32__) && ! defined __CYGWIN__
+#if defined _WIN32 && ! defined __CYGWIN__
 # include <ctype.h>
 # include <wchar.h>
 #endif

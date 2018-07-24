@@ -1,5 +1,5 @@
 /* Extended regular expression matching and search library.
-   Copyright (C) 2002-2017 Free Software Foundation, Inc.
+   Copyright (C) 2002-2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
    Contributed by Isamu Hasegawa <isamu@yamato.ibm.com>.
 
@@ -33,13 +33,29 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#include "intprops.h"
+/* Properties of integers.  Although Gnulib has intprops.h, glibc does
+   without for now.  */
+#ifndef _LIBC
+# include "intprops.h"
+#else
+/* True if the real type T is signed.  */
+# define TYPE_SIGNED(t) (! ((t) 0 < (t) -1))
+
+/* True if adding the nonnegative Idx values A and B would overflow.
+   If false, set *R to A + B.  A, B, and R may be evaluated more than
+   once, or zero times.  Although this is not a full implementation of
+   Gnulib INT_ADD_WRAPV, it is good enough for glibc regex code.
+   FIXME: This implementation is a fragile stopgap, and this file would
+   be simpler and more robust if intprops.h were migrated into glibc.  */
+# define INT_ADD_WRAPV(a, b, r) \
+   (IDX_MAX - (a) < (b) ? true : (*(r) = (a) + (b), false))
+#endif
 
 #ifdef _LIBC
 # include <libc-lock.h>
 # define lock_define(name) __libc_lock_define (, name)
 # define lock_init(lock) (__libc_lock_init (lock), 0)
-# define lock_fini(lock) 0
+# define lock_fini(lock) ((void) 0)
 # define lock_lock(lock) __libc_lock_lock (lock)
 # define lock_unlock(lock) __libc_lock_unlock (lock)
 #elif defined GNULIB_LOCK && !defined USE_UNLOCKED_IO
@@ -438,23 +454,8 @@ struct re_dfa_t;
 typedef struct re_dfa_t re_dfa_t;
 
 #ifndef _LIBC
-# define internal_function
 # define IS_IN(libc) false
 #endif
-
-static reg_errcode_t re_string_realloc_buffers (re_string_t *pstr,
-						Idx new_buf_len)
-     internal_function;
-#ifdef RE_ENABLE_I18N
-static void build_wcs_buffer (re_string_t *pstr) internal_function;
-static reg_errcode_t build_wcs_upper_buffer (re_string_t *pstr)
-  internal_function;
-#endif /* RE_ENABLE_I18N */
-static void build_upper_buffer (re_string_t *pstr) internal_function;
-static void re_string_translate_buffer (re_string_t *pstr) internal_function;
-static unsigned int re_string_context_at (const re_string_t *input, Idx idx,
-					  int eflags)
-     internal_function __attribute__ ((pure));
 
 #define re_string_peek_byte(pstr, offset) \
   ((pstr)->mbs[(pstr)->cur_idx + offset])
@@ -761,31 +762,31 @@ typedef struct
 
 /* Functions for bitset_t operation.  */
 
-static void
+static inline void
 bitset_set (bitset_t set, Idx i)
 {
   set[i / BITSET_WORD_BITS] |= (bitset_word_t) 1 << i % BITSET_WORD_BITS;
 }
 
-static void
+static inline void
 bitset_clear (bitset_t set, Idx i)
 {
   set[i / BITSET_WORD_BITS] &= ~ ((bitset_word_t) 1 << i % BITSET_WORD_BITS);
 }
 
-static bool
+static inline bool
 bitset_contain (const bitset_t set, Idx i)
 {
   return (set[i / BITSET_WORD_BITS] >> i % BITSET_WORD_BITS) & 1;
 }
 
-static void
+static inline void
 bitset_empty (bitset_t set)
 {
   memset (set, '\0', sizeof (bitset_t));
 }
 
-static void
+static inline void
 bitset_set_all (bitset_t set)
 {
   memset (set, -1, sizeof (bitset_word_t) * (SBC_MAX / BITSET_WORD_BITS));
@@ -794,13 +795,13 @@ bitset_set_all (bitset_t set)
       ((bitset_word_t) 1 << SBC_MAX % BITSET_WORD_BITS) - 1;
 }
 
-static void
+static inline void
 bitset_copy (bitset_t dest, const bitset_t src)
 {
   memcpy (dest, src, sizeof (bitset_t));
 }
 
-static void __attribute__ ((unused))
+static inline void
 bitset_not (bitset_t set)
 {
   int bitset_i;
@@ -812,7 +813,7 @@ bitset_not (bitset_t set)
        & ~set[BITSET_WORDS - 1]);
 }
 
-static void __attribute__ ((unused))
+static inline void
 bitset_merge (bitset_t dest, const bitset_t src)
 {
   int bitset_i;
@@ -820,7 +821,7 @@ bitset_merge (bitset_t dest, const bitset_t src)
     dest[bitset_i] |= src[bitset_i];
 }
 
-static void __attribute__ ((unused))
+static inline void
 bitset_mask (bitset_t dest, const bitset_t src)
 {
   int bitset_i;
@@ -831,7 +832,7 @@ bitset_mask (bitset_t dest, const bitset_t src)
 #ifdef RE_ENABLE_I18N
 /* Functions for re_string.  */
 static int
-internal_function __attribute__ ((pure, unused))
+__attribute__ ((pure, unused))
 re_string_char_size_at (const re_string_t *pstr, Idx idx)
 {
   int byte_idx;
@@ -844,7 +845,7 @@ re_string_char_size_at (const re_string_t *pstr, Idx idx)
 }
 
 static wint_t
-internal_function __attribute__ ((pure, unused))
+__attribute__ ((pure, unused))
 re_string_wchar_at (const re_string_t *pstr, Idx idx)
 {
   if (pstr->mb_cur_max == 1)
@@ -857,7 +858,7 @@ re_string_wchar_at (const re_string_t *pstr, Idx idx)
 # endif
 
 static int
-internal_function __attribute__ ((pure, unused))
+__attribute__ ((pure, unused))
 re_string_elem_size_at (const re_string_t *pstr, Idx idx)
 {
 # ifdef _LIBC

@@ -1,5 +1,5 @@
 /* Extended regular expression matching and search library.
-   Copyright (C) 2002-2017 Free Software Foundation, Inc.
+   Copyright (C) 2002-2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
    Contributed by Isamu Hasegawa <isamu@yamato.ibm.com>.
 
@@ -59,7 +59,7 @@ static reg_errcode_t calc_inveclosure (re_dfa_t *dfa);
 static Idx fetch_number (re_string_t *input, re_token_t *token,
 			 reg_syntax_t syntax);
 static int peek_token (re_token_t *token, re_string_t *input,
-			reg_syntax_t syntax) internal_function;
+			reg_syntax_t syntax);
 static bin_tree_t *parse (re_string_t *regexp, regex_t *preg,
 			  reg_syntax_t syntax, reg_errcode_t *err);
 static bin_tree_t *parse_reg_exp (re_string_t *regexp, regex_t *preg,
@@ -516,6 +516,7 @@ regcomp (regex_t *_Restrict_ preg, const char *_Restrict_ pattern, int cflags)
   return (int) ret;
 }
 #ifdef _LIBC
+libc_hidden_def (__regcomp)
 weak_alias (__regcomp, regcomp)
 #endif
 
@@ -658,6 +659,7 @@ regfree (regex_t *preg)
   preg->translate = NULL;
 }
 #ifdef _LIBC
+libc_hidden_def (__regfree)
 weak_alias (__regfree, regfree)
 #endif
 
@@ -699,7 +701,7 @@ re_comp (const char *s)
 
   if (re_comp_buf.fastmap == NULL)
     {
-      re_comp_buf.fastmap = (char *) malloc (SBC_MAX);
+      re_comp_buf.fastmap = re_malloc (char, SBC_MAX);
       if (re_comp_buf.fastmap == NULL)
 	return (char *) gettext (__re_error_msgid
 				 + __re_error_msgid_idx[(int) REG_ESPACE]);
@@ -935,7 +937,6 @@ init_dfa (re_dfa_t *dfa, size_t pat_len)
    character used by some operators like "\<", "\>", etc.  */
 
 static void
-internal_function
 init_word_char (re_dfa_t *dfa)
 {
   int i = 0;
@@ -944,12 +945,15 @@ init_word_char (re_dfa_t *dfa)
   dfa->word_ops_used = 1;
   if (BE (dfa->map_notascii == 0, 1))
     {
+      /* Avoid uint32_t and uint64_t as some non-GCC platforms lack
+	 them, an issue when this code is used in Gnulib.  */
       bitset_word_t bits0 = 0x00000000;
       bitset_word_t bits1 = 0x03ff0000;
       bitset_word_t bits2 = 0x87fffffe;
       bitset_word_t bits3 = 0x07fffffe;
       if (BITSET_WORD_BITS == 64)
 	{
+	  /* Pacify gcc -Woverflow on 32-bit platformns.  */
 	  dfa->word_char[0] = bits1 << 31 << 1 | bits0;
 	  dfa->word_char[1] = bits3 << 31 << 1 | bits2;
 	  i = 2;
@@ -1193,7 +1197,7 @@ analyze (regex_t *preg)
 	  break;
       if (i == preg->re_nsub)
 	{
-	  free (dfa->subexp_map);
+	  re_free (dfa->subexp_map);
 	  dfa->subexp_map = NULL;
 	}
     }
@@ -1490,7 +1494,6 @@ link_nfa_nodes (void *extra, bin_tree_t *node)
    to their own constraint.  */
 
 static reg_errcode_t
-internal_function
 duplicate_node_closure (re_dfa_t *dfa, Idx top_org_node, Idx top_clone_node,
 			Idx root_node, unsigned int init_constraint)
 {
@@ -1782,7 +1785,6 @@ calc_eclosure_iter (re_node_set *new_set, re_dfa_t *dfa, Idx node, bool root)
    We must not use this function inside bracket expressions.  */
 
 static void
-internal_function
 fetch_token (re_token_t *result, re_string_t *input, reg_syntax_t syntax)
 {
   re_string_skip_bytes (input, peek_token (result, input, syntax));
@@ -1792,7 +1794,6 @@ fetch_token (re_token_t *result, re_string_t *input, reg_syntax_t syntax)
    We must not use this function inside bracket expressions.  */
 
 static int
-internal_function
 peek_token (re_token_t *token, re_string_t *input, reg_syntax_t syntax)
 {
   unsigned char c;
@@ -2031,7 +2032,6 @@ peek_token (re_token_t *token, re_string_t *input, reg_syntax_t syntax)
    We must not use this function out of bracket expressions.  */
 
 static int
-internal_function
 peek_token_bracket (re_token_t *token, re_string_t *input, reg_syntax_t syntax)
 {
   unsigned char c;
@@ -2650,10 +2650,6 @@ parse_dup_op (bin_tree_t *elem, re_string_t *regexp, re_dfa_t *dfa,
   if (BE (tree == NULL, 0))
     goto parse_dup_op_espace;
 
-/* From gnulib's "intprops.h":
-   True if the arithmetic type T is signed.  */
-#define TYPE_SIGNED(t) (! ((t) 0 < (t) -1))
-
   /* This loop is actually executed only when end != -1,
      to rewrite <re>{0,n} as (<re>(<re>...<re>?)?)?...  We have
      already created the start+1-th copy.  */
@@ -2706,7 +2702,6 @@ parse_byte (unsigned char b, re_charset_t *mbcset)
      update it.  */
 
 static reg_errcode_t
-internal_function
 # ifdef RE_ENABLE_I18N
 build_range_exp (const reg_syntax_t syntax,
                  bitset_t sbcset,
@@ -2832,7 +2827,6 @@ build_range_exp (const reg_syntax_t syntax,
    pointer argument since we may update it.  */
 
 static reg_errcode_t
-internal_function
 # ifdef RE_ENABLE_I18N
 build_collating_symbol (bitset_t sbcset, re_charset_t *mbcset,
 			Idx *coll_sym_alloc, const unsigned char *name)

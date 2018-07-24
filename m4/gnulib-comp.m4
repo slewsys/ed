@@ -1,5 +1,5 @@
 # DO NOT EDIT! GENERATED AUTOMATICALLY!
-# Copyright (C) 2002-2017 Free Software Foundation, Inc.
+# Copyright (C) 2002-2018 Free Software Foundation, Inc.
 #
 # This file is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -47,7 +47,6 @@ AC_DEFUN([gl_EARLY],
   # Code from module alloca-opt:
   # Code from module btowc:
   # Code from module builtin-expect:
-  # Code from module configmake:
   # Code from module extensions:
   # Code from module extern-inline:
   # Code from module getopt-gnu:
@@ -137,7 +136,6 @@ AC_DEFUN([gl_INIT],
   gl_UNISTD_H
   gl_gnulib_enabled_btowc=false
   gl_gnulib_enabled_37f71b604aa9c54446783d80f42fe547=false
-  gl_gnulib_enabled_configmake=false
   gl_gnulib_enabled_be453cec5eecf5731a274f2de7f2db36=false
   gl_gnulib_enabled_30838f5439487421042f2225bed3af76=false
   gl_gnulib_enabled_havelib=false
@@ -183,13 +181,6 @@ AC_DEFUN([gl_INIT],
       gl_gnulib_enabled_37f71b604aa9c54446783d80f42fe547=true
     fi
   }
-  func_gl_gnulib_m4code_configmake ()
-  {
-    if ! $gl_gnulib_enabled_configmake; then
-      gl_CONFIGMAKE_PREP
-      gl_gnulib_enabled_configmake=true
-    fi
-  }
   func_gl_gnulib_m4code_be453cec5eecf5731a274f2de7f2db36 ()
   {
     if ! $gl_gnulib_enabled_be453cec5eecf5731a274f2de7f2db36; then
@@ -201,7 +192,6 @@ AC_DEFUN([gl_INIT],
   func_gl_gnulib_m4code_30838f5439487421042f2225bed3af76 ()
   {
     if ! $gl_gnulib_enabled_30838f5439487421042f2225bed3af76; then
-      gl_HARD_LOCALE
       gl_gnulib_enabled_30838f5439487421042f2225bed3af76=true
     fi
   }
@@ -236,10 +226,10 @@ AC_DEFUN([gl_INIT],
   {
     if ! $gl_gnulib_enabled_localcharset; then
       gl_LOCALCHARSET
-      LOCALCHARSET_TESTS_ENVIRONMENT="CHARSETALIASDIR=\"\$(abs_top_builddir)/$gl_source_base\""
+      dnl For backward compatibility. Some packages still use this.
+      LOCALCHARSET_TESTS_ENVIRONMENT=
       AC_SUBST([LOCALCHARSET_TESTS_ENVIRONMENT])
       gl_gnulib_enabled_localcharset=true
-      func_gl_gnulib_m4code_configmake
     fi
   }
   func_gl_gnulib_m4code_locale ()
@@ -426,10 +416,10 @@ AC_DEFUN([gl_INIT],
     func_gl_gnulib_m4code_37f71b604aa9c54446783d80f42fe547
   fi
   if test $ac_use_included_regex = yes; then
-    func_gl_gnulib_m4code_be453cec5eecf5731a274f2de7f2db36
+    func_gl_gnulib_m4code_intprops
   fi
   if test $ac_use_included_regex = yes; then
-    func_gl_gnulib_m4code_intprops
+    func_gl_gnulib_m4code_langinfo
   fi
   if test "$ac_cv_gnu_library_2_1:$ac_use_included_regex" = no:yes; then
     func_gl_gnulib_m4code_lock
@@ -455,7 +445,6 @@ AC_DEFUN([gl_INIT],
   m4_pattern_allow([^gl_GNULIB_ENABLED_])
   AM_CONDITIONAL([gl_GNULIB_ENABLED_btowc], [$gl_gnulib_enabled_btowc])
   AM_CONDITIONAL([gl_GNULIB_ENABLED_37f71b604aa9c54446783d80f42fe547], [$gl_gnulib_enabled_37f71b604aa9c54446783d80f42fe547])
-  AM_CONDITIONAL([gl_GNULIB_ENABLED_configmake], [$gl_gnulib_enabled_configmake])
   AM_CONDITIONAL([gl_GNULIB_ENABLED_be453cec5eecf5731a274f2de7f2db36], [$gl_gnulib_enabled_be453cec5eecf5731a274f2de7f2db36])
   AM_CONDITIONAL([gl_GNULIB_ENABLED_30838f5439487421042f2225bed3af76], [$gl_gnulib_enabled_30838f5439487421042f2225bed3af76])
   AM_CONDITIONAL([gl_GNULIB_ENABLED_havelib], [$gl_gnulib_enabled_havelib])
@@ -625,7 +614,6 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/arg-nonnull.h
   lib/btowc.c
   lib/c++defs.h
-  lib/config.charset
   lib/getopt-cdefs.in.h
   lib/getopt-core.h
   lib/getopt-ext.h
@@ -653,8 +641,6 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/mbtowc-impl.h
   lib/mbtowc.c
   lib/nl_langinfo.c
-  lib/ref-add.sin
-  lib/ref-del.sin
   lib/regcomp.c
   lib/regex.c
   lib/regex.h
@@ -682,15 +668,12 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/btowc.m4
   m4/builtin-expect.m4
   m4/codeset.m4
-  m4/configmake.m4
   m4/eealloc.m4
   m4/extensions.m4
   m4/extern-inline.m4
-  m4/fcntl-o.m4
   m4/getopt.m4
   m4/glibc21.m4
   m4/gnulib-common.m4
-  m4/hard-locale.m4
   m4/host-cpu-c-abi.m4
   m4/include_next.m4
   m4/langinfo_h.m4

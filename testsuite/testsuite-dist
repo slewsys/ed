@@ -2119,10 +2119,10 @@ wq a.o
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/a.ok-at:20: ed -f script-a &&
+$as_echo "$at_srcdir/a.ok-at:20: ed - <script-a &&
 cmp ../../a.r a.o"
 at_fn_check_prepare_notrace 'an embedded newline' "a.ok-at:20"
-( $at_check_trace; ed -f script-a &&
+( $at_check_trace; ed - <script-a &&
 cmp ../../a.r a.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
@@ -2158,10 +2158,10 @@ wq addr.o
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/addr.ok-at:20: ed -f script-addr &&
+$as_echo "$at_srcdir/addr.ok-at:20: ed - <script-addr &&
 cmp ../../addr.r addr.o"
 at_fn_check_prepare_notrace 'an embedded newline' "addr.ok-at:20"
-( $at_check_trace; ed -f script-addr &&
+( $at_check_trace; ed - <script-addr &&
 cmp ../../addr.r addr.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
@@ -2197,10 +2197,10 @@ wq ascii.o
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/ascii.ok-at:20: ed -f script-ascii &&
+$as_echo "$at_srcdir/ascii.ok-at:20: ed - <script-ascii &&
 cmp ../../ascii.r ascii.o"
 at_fn_check_prepare_notrace 'an embedded newline' "ascii.ok-at:20"
-( $at_check_trace; ed -f script-ascii &&
+( $at_check_trace; ed - <script-ascii &&
 cmp ../../ascii.r ascii.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
@@ -2236,10 +2236,10 @@ wq bang1.o
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/bang1.ok-at:20: ed -f script-bang1 &&
+$as_echo "$at_srcdir/bang1.ok-at:20: ed - <script-bang1 &&
 cmp ../../bang1.r bang1.o"
 at_fn_check_prepare_notrace 'an embedded newline' "bang1.ok-at:20"
-( $at_check_trace; ed -f script-bang1 &&
+( $at_check_trace; ed - <script-bang1 &&
 cmp ../../bang1.r bang1.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
@@ -2275,10 +2275,10 @@ wq c1.o
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/c1.ok-at:20: ed -f script-c1 &&
+$as_echo "$at_srcdir/c1.ok-at:20: ed - <script-c1 &&
 cmp ../../c1.r c1.o"
 at_fn_check_prepare_notrace 'an embedded newline' "c1.ok-at:20"
-( $at_check_trace; ed -f script-c1 &&
+( $at_check_trace; ed - <script-c1 &&
 cmp ../../c1.r c1.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
@@ -2314,10 +2314,10 @@ wq c2.o
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/c2.ok-at:20: ed -f script-c2 &&
+$as_echo "$at_srcdir/c2.ok-at:20: ed - <script-c2 &&
 cmp ../../c2.r c2.o"
 at_fn_check_prepare_notrace 'an embedded newline' "c2.ok-at:20"
-( $at_check_trace; ed -f script-c2 &&
+( $at_check_trace; ed - <script-c2 &&
 cmp ../../c2.r c2.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
@@ -2353,10 +2353,10 @@ wq comment.o
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/comment.ok-at:20: ed -f script-comment &&
+$as_echo "$at_srcdir/comment.ok-at:20: ed - <script-comment &&
 cmp ../../comment.r comment.o"
 at_fn_check_prepare_notrace 'an embedded newline' "comment.ok-at:20"
-( $at_check_trace; ed -f script-comment &&
+( $at_check_trace; ed - <script-comment &&
 cmp ../../comment.r comment.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
@@ -2392,10 +2392,10 @@ wq d.o
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/d.ok-at:20: ed -f script-d &&
+$as_echo "$at_srcdir/d.ok-at:20: ed - <script-d &&
 cmp ../../d.r d.o"
 at_fn_check_prepare_notrace 'an embedded newline' "d.ok-at:20"
-( $at_check_trace; ed -f script-d &&
+( $at_check_trace; ed - <script-d &&
 cmp ../../d.r d.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
@@ -2431,10 +2431,10 @@ wq e1.o
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/e1.ok-at:20: ed -f script-e1 &&
+$as_echo "$at_srcdir/e1.ok-at:20: ed - <script-e1 &&
 cmp ../../e1.r e1.o"
 at_fn_check_prepare_notrace 'an embedded newline' "e1.ok-at:20"
-( $at_check_trace; ed -f script-e1 &&
+( $at_check_trace; ed - <script-e1 &&
 cmp ../../e1.r e1.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
@@ -2470,10 +2470,10 @@ wq e2.o
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/e2.ok-at:20: ed -f script-e2 &&
+$as_echo "$at_srcdir/e2.ok-at:20: ed - <script-e2 &&
 cmp ../../e2.r e2.o"
 at_fn_check_prepare_notrace 'an embedded newline' "e2.ok-at:20"
-( $at_check_trace; ed -f script-e2 &&
+( $at_check_trace; ed - <script-e2 &&
 cmp ../../e2.r e2.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
@@ -2509,10 +2509,10 @@ wq e3.o
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/e3.ok-at:20: ed -f script-e3 &&
+$as_echo "$at_srcdir/e3.ok-at:20: ed - <script-e3 &&
 cmp ../../e3.r e3.o"
 at_fn_check_prepare_notrace 'an embedded newline' "e3.ok-at:20"
-( $at_check_trace; ed -f script-e3 &&
+( $at_check_trace; ed - <script-e3 &&
 cmp ../../e3.r e3.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
@@ -2548,10 +2548,10 @@ wq e4.o
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/e4.ok-at:20: ed -f script-e4 &&
+$as_echo "$at_srcdir/e4.ok-at:20: ed - <script-e4 &&
 cmp ../../e4.r e4.o"
 at_fn_check_prepare_notrace 'an embedded newline' "e4.ok-at:20"
-( $at_check_trace; ed -f script-e4 &&
+( $at_check_trace; ed - <script-e4 &&
 cmp ../../e4.r e4.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
@@ -2587,10 +2587,10 @@ wq e5.o
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/e5.ok-at:20: ed -f script-e5 &&
+$as_echo "$at_srcdir/e5.ok-at:20: ed - <script-e5 &&
 cmp ../../e5.r e5.o"
 at_fn_check_prepare_notrace 'an embedded newline' "e5.ok-at:20"
-( $at_check_trace; ed -f script-e5 &&
+( $at_check_trace; ed - <script-e5 &&
 cmp ../../e5.r e5.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
@@ -2626,10 +2626,10 @@ wq g1.o
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/g1.ok-at:20: ed -f script-g1 &&
+$as_echo "$at_srcdir/g1.ok-at:20: ed - <script-g1 &&
 cmp ../../g1.r g1.o"
 at_fn_check_prepare_notrace 'an embedded newline' "g1.ok-at:20"
-( $at_check_trace; ed -f script-g1 &&
+( $at_check_trace; ed - <script-g1 &&
 cmp ../../g1.r g1.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
@@ -2665,10 +2665,10 @@ wq g2.o
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/g2.ok-at:20: ed -f script-g2 &&
+$as_echo "$at_srcdir/g2.ok-at:20: ed - <script-g2 &&
 cmp ../../g2.r g2.o"
 at_fn_check_prepare_notrace 'an embedded newline' "g2.ok-at:20"
-( $at_check_trace; ed -f script-g2 &&
+( $at_check_trace; ed - <script-g2 &&
 cmp ../../g2.r g2.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
@@ -2704,10 +2704,10 @@ wq g3.o
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/g3.ok-at:20: ed -f script-g3 &&
+$as_echo "$at_srcdir/g3.ok-at:20: ed - <script-g3 &&
 cmp ../../g3.r g3.o"
 at_fn_check_prepare_notrace 'an embedded newline' "g3.ok-at:20"
-( $at_check_trace; ed -f script-g3 &&
+( $at_check_trace; ed - <script-g3 &&
 cmp ../../g3.r g3.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
@@ -2743,10 +2743,10 @@ wq g4.o
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/g4.ok-at:20: ed -f script-g4 &&
+$as_echo "$at_srcdir/g4.ok-at:20: ed - <script-g4 &&
 cmp ../../g4.r g4.o"
 at_fn_check_prepare_notrace 'an embedded newline' "g4.ok-at:20"
-( $at_check_trace; ed -f script-g4 &&
+( $at_check_trace; ed - <script-g4 &&
 cmp ../../g4.r g4.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
@@ -2782,10 +2782,10 @@ wq g5.o
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/g5.ok-at:20: ed -f script-g5 &&
+$as_echo "$at_srcdir/g5.ok-at:20: ed - <script-g5 &&
 cmp ../../g5.r g5.o"
 at_fn_check_prepare_notrace 'an embedded newline' "g5.ok-at:20"
-( $at_check_trace; ed -f script-g5 &&
+( $at_check_trace; ed - <script-g5 &&
 cmp ../../g5.r g5.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
@@ -2821,10 +2821,10 @@ wq i1.o
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/i1.ok-at:20: ed -f script-i1 &&
+$as_echo "$at_srcdir/i1.ok-at:20: ed - <script-i1 &&
 cmp ../../i1.r i1.o"
 at_fn_check_prepare_notrace 'an embedded newline' "i1.ok-at:20"
-( $at_check_trace; ed -f script-i1 &&
+( $at_check_trace; ed - <script-i1 &&
 cmp ../../i1.r i1.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
@@ -2860,10 +2860,10 @@ wq i2.o
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/i2.ok-at:20: ed -f script-i2 &&
+$as_echo "$at_srcdir/i2.ok-at:20: ed - <script-i2 &&
 cmp ../../i2.r i2.o"
 at_fn_check_prepare_notrace 'an embedded newline' "i2.ok-at:20"
-( $at_check_trace; ed -f script-i2 &&
+( $at_check_trace; ed - <script-i2 &&
 cmp ../../i2.r i2.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
@@ -2899,10 +2899,10 @@ wq j.o
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/j.ok-at:20: ed -f script-j &&
+$as_echo "$at_srcdir/j.ok-at:20: ed - <script-j &&
 cmp ../../j.r j.o"
 at_fn_check_prepare_notrace 'an embedded newline' "j.ok-at:20"
-( $at_check_trace; ed -f script-j &&
+( $at_check_trace; ed - <script-j &&
 cmp ../../j.r j.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
@@ -2938,10 +2938,10 @@ wq k.o
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/k.ok-at:20: ed -f script-k &&
+$as_echo "$at_srcdir/k.ok-at:20: ed - <script-k &&
 cmp ../../k.r k.o"
 at_fn_check_prepare_notrace 'an embedded newline' "k.ok-at:20"
-( $at_check_trace; ed -f script-k &&
+( $at_check_trace; ed - <script-k &&
 cmp ../../k.r k.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
@@ -2977,10 +2977,10 @@ wq l.o
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/l.ok-at:20: ed -f script-l &&
+$as_echo "$at_srcdir/l.ok-at:20: ed - <script-l &&
 cmp ../../l.r l.o"
 at_fn_check_prepare_notrace 'an embedded newline' "l.ok-at:20"
-( $at_check_trace; ed -f script-l &&
+( $at_check_trace; ed - <script-l &&
 cmp ../../l.r l.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
@@ -3016,10 +3016,10 @@ wq m.o
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/m.ok-at:20: ed -f script-m &&
+$as_echo "$at_srcdir/m.ok-at:20: ed - <script-m &&
 cmp ../../m.r m.o"
 at_fn_check_prepare_notrace 'an embedded newline' "m.ok-at:20"
-( $at_check_trace; ed -f script-m &&
+( $at_check_trace; ed - <script-m &&
 cmp ../../m.r m.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
@@ -3055,10 +3055,10 @@ wq n.o
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/n.ok-at:20: ed -f script-n &&
+$as_echo "$at_srcdir/n.ok-at:20: ed - <script-n &&
 cmp ../../n.r n.o"
 at_fn_check_prepare_notrace 'an embedded newline' "n.ok-at:20"
-( $at_check_trace; ed -f script-n &&
+( $at_check_trace; ed - <script-n &&
 cmp ../../n.r n.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
@@ -3094,10 +3094,10 @@ wq nl1.o
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/nl1.ok-at:20: ed -f script-nl1 &&
+$as_echo "$at_srcdir/nl1.ok-at:20: ed - <script-nl1 &&
 cmp ../../nl1.r nl1.o"
 at_fn_check_prepare_notrace 'an embedded newline' "nl1.ok-at:20"
-( $at_check_trace; ed -f script-nl1 &&
+( $at_check_trace; ed - <script-nl1 &&
 cmp ../../nl1.r nl1.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
@@ -3133,10 +3133,10 @@ wq nl2.o
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/nl2.ok-at:20: ed -f script-nl2 &&
+$as_echo "$at_srcdir/nl2.ok-at:20: ed - <script-nl2 &&
 cmp ../../nl2.r nl2.o"
 at_fn_check_prepare_notrace 'an embedded newline' "nl2.ok-at:20"
-( $at_check_trace; ed -f script-nl2 &&
+( $at_check_trace; ed - <script-nl2 &&
 cmp ../../nl2.r nl2.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
@@ -3172,10 +3172,10 @@ wq nl3.o
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/nl3.ok-at:20: ed -f script-nl3 &&
+$as_echo "$at_srcdir/nl3.ok-at:20: ed - <script-nl3 &&
 cmp ../../nl3.r nl3.o"
 at_fn_check_prepare_notrace 'an embedded newline' "nl3.ok-at:20"
-( $at_check_trace; ed -f script-nl3 &&
+( $at_check_trace; ed - <script-nl3 &&
 cmp ../../nl3.r nl3.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
@@ -3211,10 +3211,10 @@ wq nl4.o
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/nl4.ok-at:20: ed -f script-nl4 &&
+$as_echo "$at_srcdir/nl4.ok-at:20: ed - <script-nl4 &&
 cmp ../../nl4.r nl4.o"
 at_fn_check_prepare_notrace 'an embedded newline' "nl4.ok-at:20"
-( $at_check_trace; ed -f script-nl4 &&
+( $at_check_trace; ed - <script-nl4 &&
 cmp ../../nl4.r nl4.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
@@ -3250,10 +3250,10 @@ wq p.o
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/p.ok-at:20: ed -f script-p &&
+$as_echo "$at_srcdir/p.ok-at:20: ed - <script-p &&
 cmp ../../p.r p.o"
 at_fn_check_prepare_notrace 'an embedded newline' "p.ok-at:20"
-( $at_check_trace; ed -f script-p &&
+( $at_check_trace; ed - <script-p &&
 cmp ../../p.r p.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
@@ -3289,10 +3289,10 @@ wq q2.o
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/q2.ok-at:20: ed -f script-q2 &&
+$as_echo "$at_srcdir/q2.ok-at:20: ed - <script-q2 &&
 cmp ../../q2.r q2.o"
 at_fn_check_prepare_notrace 'an embedded newline' "q2.ok-at:20"
-( $at_check_trace; ed -f script-q2 &&
+( $at_check_trace; ed - <script-q2 &&
 cmp ../../q2.r q2.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
@@ -3328,10 +3328,10 @@ wq r1.o
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/r1.ok-at:20: ed -f script-r1 &&
+$as_echo "$at_srcdir/r1.ok-at:20: ed - <script-r1 &&
 cmp ../../r1.r r1.o"
 at_fn_check_prepare_notrace 'an embedded newline' "r1.ok-at:20"
-( $at_check_trace; ed -f script-r1 &&
+( $at_check_trace; ed - <script-r1 &&
 cmp ../../r1.r r1.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
@@ -3367,10 +3367,10 @@ wq r2.o
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/r2.ok-at:20: ed -f script-r2 &&
+$as_echo "$at_srcdir/r2.ok-at:20: ed - <script-r2 &&
 cmp ../../r2.r r2.o"
 at_fn_check_prepare_notrace 'an embedded newline' "r2.ok-at:20"
-( $at_check_trace; ed -f script-r2 &&
+( $at_check_trace; ed - <script-r2 &&
 cmp ../../r2.r r2.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
@@ -3406,10 +3406,10 @@ wq r3.o
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/r3.ok-at:20: ed -f script-r3 &&
+$as_echo "$at_srcdir/r3.ok-at:20: ed - <script-r3 &&
 cmp ../../r3.r r3.o"
 at_fn_check_prepare_notrace 'an embedded newline' "r3.ok-at:20"
-( $at_check_trace; ed -f script-r3 &&
+( $at_check_trace; ed - <script-r3 &&
 cmp ../../r3.r r3.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
@@ -3445,10 +3445,10 @@ wq s1.o
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/s1.ok-at:20: ed -f script-s1 &&
+$as_echo "$at_srcdir/s1.ok-at:20: ed - <script-s1 &&
 cmp ../../s1.r s1.o"
 at_fn_check_prepare_notrace 'an embedded newline' "s1.ok-at:20"
-( $at_check_trace; ed -f script-s1 &&
+( $at_check_trace; ed - <script-s1 &&
 cmp ../../s1.r s1.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
@@ -3484,10 +3484,10 @@ wq s2.o
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/s2.ok-at:20: ed -f script-s2 &&
+$as_echo "$at_srcdir/s2.ok-at:20: ed - <script-s2 &&
 cmp ../../s2.r s2.o"
 at_fn_check_prepare_notrace 'an embedded newline' "s2.ok-at:20"
-( $at_check_trace; ed -f script-s2 &&
+( $at_check_trace; ed - <script-s2 &&
 cmp ../../s2.r s2.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
@@ -3523,10 +3523,10 @@ wq s3.o
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/s3.ok-at:20: ed -f script-s3 &&
+$as_echo "$at_srcdir/s3.ok-at:20: ed - <script-s3 &&
 cmp ../../s3.r s3.o"
 at_fn_check_prepare_notrace 'an embedded newline' "s3.ok-at:20"
-( $at_check_trace; ed -f script-s3 &&
+( $at_check_trace; ed - <script-s3 &&
 cmp ../../s3.r s3.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
@@ -3562,10 +3562,10 @@ wq s4.o
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/s4.ok-at:20: ed -f script-s4 &&
+$as_echo "$at_srcdir/s4.ok-at:20: ed - <script-s4 &&
 cmp ../../s4.r s4.o"
 at_fn_check_prepare_notrace 'an embedded newline' "s4.ok-at:20"
-( $at_check_trace; ed -f script-s4 &&
+( $at_check_trace; ed - <script-s4 &&
 cmp ../../s4.r s4.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
@@ -3601,10 +3601,10 @@ wq s5.o
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/s5.ok-at:20: ed -f script-s5 &&
+$as_echo "$at_srcdir/s5.ok-at:20: ed - <script-s5 &&
 cmp ../../s5.r s5.o"
 at_fn_check_prepare_notrace 'an embedded newline' "s5.ok-at:20"
-( $at_check_trace; ed -f script-s5 &&
+( $at_check_trace; ed - <script-s5 &&
 cmp ../../s5.r s5.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
@@ -3640,10 +3640,10 @@ wq s6.o
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/s6.ok-at:20: ed -f script-s6 &&
+$as_echo "$at_srcdir/s6.ok-at:20: ed - <script-s6 &&
 cmp ../../s6.r s6.o"
 at_fn_check_prepare_notrace 'an embedded newline' "s6.ok-at:20"
-( $at_check_trace; ed -f script-s6 &&
+( $at_check_trace; ed - <script-s6 &&
 cmp ../../s6.r s6.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
@@ -3679,10 +3679,10 @@ wq t1.o
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/t1.ok-at:20: ed -f script-t1 &&
+$as_echo "$at_srcdir/t1.ok-at:20: ed - <script-t1 &&
 cmp ../../t1.r t1.o"
 at_fn_check_prepare_notrace 'an embedded newline' "t1.ok-at:20"
-( $at_check_trace; ed -f script-t1 &&
+( $at_check_trace; ed - <script-t1 &&
 cmp ../../t1.r t1.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
@@ -3718,10 +3718,10 @@ wq t2.o
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/t2.ok-at:20: ed -f script-t2 &&
+$as_echo "$at_srcdir/t2.ok-at:20: ed - <script-t2 &&
 cmp ../../t2.r t2.o"
 at_fn_check_prepare_notrace 'an embedded newline' "t2.ok-at:20"
-( $at_check_trace; ed -f script-t2 &&
+( $at_check_trace; ed - <script-t2 &&
 cmp ../../t2.r t2.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
@@ -3757,10 +3757,10 @@ wq u.o
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/u.ok-at:20: ed -f script-u &&
+$as_echo "$at_srcdir/u.ok-at:20: ed - <script-u &&
 cmp ../../u.r u.o"
 at_fn_check_prepare_notrace 'an embedded newline' "u.ok-at:20"
-( $at_check_trace; ed -f script-u &&
+( $at_check_trace; ed - <script-u &&
 cmp ../../u.r u.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
@@ -3796,10 +3796,10 @@ wq v.o
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/v.ok-at:20: ed -f script-v &&
+$as_echo "$at_srcdir/v.ok-at:20: ed - <script-v &&
 cmp ../../v.r v.o"
 at_fn_check_prepare_notrace 'an embedded newline' "v.ok-at:20"
-( $at_check_trace; ed -f script-v &&
+( $at_check_trace; ed - <script-v &&
 cmp ../../v.r v.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
@@ -3835,10 +3835,10 @@ wq w.o
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/w.ok-at:20: ed -f script-w &&
+$as_echo "$at_srcdir/w.ok-at:20: ed - <script-w &&
 cmp ../../w.r w.o"
 at_fn_check_prepare_notrace 'an embedded newline' "w.ok-at:20"
-( $at_check_trace; ed -f script-w &&
+( $at_check_trace; ed - <script-w &&
 cmp ../../w.r w.o
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
@@ -5316,9 +5316,9 @@ echo "w a2.ro")
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/a2.fail-at:18: ed -f script-a2 && exit 255 || exit 0"
+$as_echo "$at_srcdir/a2.fail-at:18: ed <script-a2 && exit 255 || exit 0"
 at_fn_check_prepare_trace "a2.fail-at:18"
-( $at_check_trace; ed -f script-a2 && exit 255 || exit 0
+( $at_check_trace; ed <script-a2 && exit 255 || exit 0
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -5352,9 +5352,9 @@ echo "w addr1.ro")
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/addr1.fail-at:18: ed -f script-addr1 && exit 255 || exit 0"
+$as_echo "$at_srcdir/addr1.fail-at:18: ed <script-addr1 && exit 255 || exit 0"
 at_fn_check_prepare_trace "addr1.fail-at:18"
-( $at_check_trace; ed -f script-addr1 && exit 255 || exit 0
+( $at_check_trace; ed <script-addr1 && exit 255 || exit 0
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -5388,9 +5388,9 @@ echo "w addr2.ro")
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/addr2.fail-at:18: ed -f script-addr2 && exit 255 || exit 0"
+$as_echo "$at_srcdir/addr2.fail-at:18: ed <script-addr2 && exit 255 || exit 0"
 at_fn_check_prepare_trace "addr2.fail-at:18"
-( $at_check_trace; ed -f script-addr2 && exit 255 || exit 0
+( $at_check_trace; ed <script-addr2 && exit 255 || exit 0
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -5424,9 +5424,9 @@ echo "w bang1.ro")
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/bang1.fail-at:18: ed -f script-bang1 && exit 255 || exit 0"
+$as_echo "$at_srcdir/bang1.fail-at:18: ed <script-bang1 && exit 255 || exit 0"
 at_fn_check_prepare_trace "bang1.fail-at:18"
-( $at_check_trace; ed -f script-bang1 && exit 255 || exit 0
+( $at_check_trace; ed <script-bang1 && exit 255 || exit 0
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -5460,9 +5460,9 @@ echo "w c1.ro")
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/c1.fail-at:18: ed -f script-c1 && exit 255 || exit 0"
+$as_echo "$at_srcdir/c1.fail-at:18: ed <script-c1 && exit 255 || exit 0"
 at_fn_check_prepare_trace "c1.fail-at:18"
-( $at_check_trace; ed -f script-c1 && exit 255 || exit 0
+( $at_check_trace; ed <script-c1 && exit 255 || exit 0
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -5496,9 +5496,9 @@ echo "w d.ro")
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/d.fail-at:18: ed -f script-d && exit 255 || exit 0"
+$as_echo "$at_srcdir/d.fail-at:18: ed <script-d && exit 255 || exit 0"
 at_fn_check_prepare_trace "d.fail-at:18"
-( $at_check_trace; ed -f script-d && exit 255 || exit 0
+( $at_check_trace; ed <script-d && exit 255 || exit 0
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -5532,9 +5532,9 @@ echo "w e1.ro")
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/e1.fail-at:18: ed -f script-e1 && exit 255 || exit 0"
+$as_echo "$at_srcdir/e1.fail-at:18: ed <script-e1 && exit 255 || exit 0"
 at_fn_check_prepare_trace "e1.fail-at:18"
-( $at_check_trace; ed -f script-e1 && exit 255 || exit 0
+( $at_check_trace; ed <script-e1 && exit 255 || exit 0
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -5568,9 +5568,9 @@ echo "w e2.ro")
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/e2.fail-at:18: ed -f script-e2 && exit 255 || exit 0"
+$as_echo "$at_srcdir/e2.fail-at:18: ed <script-e2 && exit 255 || exit 0"
 at_fn_check_prepare_trace "e2.fail-at:18"
-( $at_check_trace; ed -f script-e2 && exit 255 || exit 0
+( $at_check_trace; ed <script-e2 && exit 255 || exit 0
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -5604,9 +5604,9 @@ echo "w e3.ro")
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/e3.fail-at:18: ed -f script-e3 && exit 255 || exit 0"
+$as_echo "$at_srcdir/e3.fail-at:18: ed <script-e3 && exit 255 || exit 0"
 at_fn_check_prepare_trace "e3.fail-at:18"
-( $at_check_trace; ed -f script-e3 && exit 255 || exit 0
+( $at_check_trace; ed <script-e3 && exit 255 || exit 0
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -5640,9 +5640,9 @@ echo "w f1.ro")
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/f1.fail-at:18: ed -f script-f1 && exit 255 || exit 0"
+$as_echo "$at_srcdir/f1.fail-at:18: ed <script-f1 && exit 255 || exit 0"
 at_fn_check_prepare_trace "f1.fail-at:18"
-( $at_check_trace; ed -f script-f1 && exit 255 || exit 0
+( $at_check_trace; ed <script-f1 && exit 255 || exit 0
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -5676,9 +5676,9 @@ echo "w f2.ro")
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/f2.fail-at:18: ed -f script-f2 && exit 255 || exit 0"
+$as_echo "$at_srcdir/f2.fail-at:18: ed <script-f2 && exit 255 || exit 0"
 at_fn_check_prepare_trace "f2.fail-at:18"
-( $at_check_trace; ed -f script-f2 && exit 255 || exit 0
+( $at_check_trace; ed <script-f2 && exit 255 || exit 0
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -5712,9 +5712,9 @@ echo "w g1.ro")
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/g1.fail-at:18: ed -f script-g1 && exit 255 || exit 0"
+$as_echo "$at_srcdir/g1.fail-at:18: ed <script-g1 && exit 255 || exit 0"
 at_fn_check_prepare_trace "g1.fail-at:18"
-( $at_check_trace; ed -f script-g1 && exit 255 || exit 0
+( $at_check_trace; ed <script-g1 && exit 255 || exit 0
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -5748,9 +5748,9 @@ echo "w g2.ro")
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/g2.fail-at:18: ed -f script-g2 && exit 255 || exit 0"
+$as_echo "$at_srcdir/g2.fail-at:18: ed <script-g2 && exit 255 || exit 0"
 at_fn_check_prepare_trace "g2.fail-at:18"
-( $at_check_trace; ed -f script-g2 && exit 255 || exit 0
+( $at_check_trace; ed <script-g2 && exit 255 || exit 0
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -5784,9 +5784,9 @@ echo "w g3.ro")
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/g3.fail-at:18: ed -f script-g3 && exit 255 || exit 0"
+$as_echo "$at_srcdir/g3.fail-at:18: ed <script-g3 && exit 255 || exit 0"
 at_fn_check_prepare_trace "g3.fail-at:18"
-( $at_check_trace; ed -f script-g3 && exit 255 || exit 0
+( $at_check_trace; ed <script-g3 && exit 255 || exit 0
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -5820,9 +5820,9 @@ echo "w h.ro")
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/h.fail-at:18: ed -f script-h && exit 255 || exit 0"
+$as_echo "$at_srcdir/h.fail-at:18: ed <script-h && exit 255 || exit 0"
 at_fn_check_prepare_trace "h.fail-at:18"
-( $at_check_trace; ed -f script-h && exit 255 || exit 0
+( $at_check_trace; ed <script-h && exit 255 || exit 0
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -5856,9 +5856,9 @@ echo "w i2.ro")
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/i2.fail-at:18: ed -f script-i2 && exit 255 || exit 0"
+$as_echo "$at_srcdir/i2.fail-at:18: ed <script-i2 && exit 255 || exit 0"
 at_fn_check_prepare_trace "i2.fail-at:18"
-( $at_check_trace; ed -f script-i2 && exit 255 || exit 0
+( $at_check_trace; ed <script-i2 && exit 255 || exit 0
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -5892,9 +5892,9 @@ echo "w k2.ro")
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/k2.fail-at:18: ed -f script-k2 && exit 255 || exit 0"
+$as_echo "$at_srcdir/k2.fail-at:18: ed <script-k2 && exit 255 || exit 0"
 at_fn_check_prepare_trace "k2.fail-at:18"
-( $at_check_trace; ed -f script-k2 && exit 255 || exit 0
+( $at_check_trace; ed <script-k2 && exit 255 || exit 0
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -5928,9 +5928,9 @@ echo "w k3.ro")
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/k3.fail-at:18: ed -f script-k3 && exit 255 || exit 0"
+$as_echo "$at_srcdir/k3.fail-at:18: ed <script-k3 && exit 255 || exit 0"
 at_fn_check_prepare_trace "k3.fail-at:18"
-( $at_check_trace; ed -f script-k3 && exit 255 || exit 0
+( $at_check_trace; ed <script-k3 && exit 255 || exit 0
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -5964,9 +5964,9 @@ echo "w k4.ro")
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/k4.fail-at:18: ed -f script-k4 && exit 255 || exit 0"
+$as_echo "$at_srcdir/k4.fail-at:18: ed <script-k4 && exit 255 || exit 0"
 at_fn_check_prepare_trace "k4.fail-at:18"
-( $at_check_trace; ed -f script-k4 && exit 255 || exit 0
+( $at_check_trace; ed <script-k4 && exit 255 || exit 0
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -6000,9 +6000,9 @@ echo "w m.ro")
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/m.fail-at:18: ed -f script-m && exit 255 || exit 0"
+$as_echo "$at_srcdir/m.fail-at:18: ed <script-m && exit 255 || exit 0"
 at_fn_check_prepare_trace "m.fail-at:18"
-( $at_check_trace; ed -f script-m && exit 255 || exit 0
+( $at_check_trace; ed <script-m && exit 255 || exit 0
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -6036,9 +6036,9 @@ echo "w q1.ro")
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/q1.fail-at:18: ed -f script-q1 && exit 255 || exit 0"
+$as_echo "$at_srcdir/q1.fail-at:18: ed <script-q1 && exit 255 || exit 0"
 at_fn_check_prepare_trace "q1.fail-at:18"
-( $at_check_trace; ed -f script-q1 && exit 255 || exit 0
+( $at_check_trace; ed <script-q1 && exit 255 || exit 0
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -6072,9 +6072,9 @@ echo "w r2.ro")
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/r2.fail-at:18: ed -f script-r2 && exit 255 || exit 0"
+$as_echo "$at_srcdir/r2.fail-at:18: ed <script-r2 && exit 255 || exit 0"
 at_fn_check_prepare_trace "r2.fail-at:18"
-( $at_check_trace; ed -f script-r2 && exit 255 || exit 0
+( $at_check_trace; ed <script-r2 && exit 255 || exit 0
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -6108,9 +6108,9 @@ echo "w s1.ro")
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/s1.fail-at:18: ed -f script-s1 && exit 255 || exit 0"
+$as_echo "$at_srcdir/s1.fail-at:18: ed <script-s1 && exit 255 || exit 0"
 at_fn_check_prepare_trace "s1.fail-at:18"
-( $at_check_trace; ed -f script-s1 && exit 255 || exit 0
+( $at_check_trace; ed <script-s1 && exit 255 || exit 0
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -6144,9 +6144,9 @@ echo "w s10.ro")
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/s10.fail-at:18: ed -f script-s10 && exit 255 || exit 0"
+$as_echo "$at_srcdir/s10.fail-at:18: ed <script-s10 && exit 255 || exit 0"
 at_fn_check_prepare_trace "s10.fail-at:18"
-( $at_check_trace; ed -f script-s10 && exit 255 || exit 0
+( $at_check_trace; ed <script-s10 && exit 255 || exit 0
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -6180,9 +6180,9 @@ echo "w s3.ro")
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/s3.fail-at:18: ed -f script-s3 && exit 255 || exit 0"
+$as_echo "$at_srcdir/s3.fail-at:18: ed <script-s3 && exit 255 || exit 0"
 at_fn_check_prepare_trace "s3.fail-at:18"
-( $at_check_trace; ed -f script-s3 && exit 255 || exit 0
+( $at_check_trace; ed <script-s3 && exit 255 || exit 0
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -6216,9 +6216,9 @@ echo "w s4.ro")
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/s4.fail-at:18: ed -f script-s4 && exit 255 || exit 0"
+$as_echo "$at_srcdir/s4.fail-at:18: ed <script-s4 && exit 255 || exit 0"
 at_fn_check_prepare_trace "s4.fail-at:18"
-( $at_check_trace; ed -f script-s4 && exit 255 || exit 0
+( $at_check_trace; ed <script-s4 && exit 255 || exit 0
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -6252,9 +6252,9 @@ echo "w s5.ro")
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/s5.fail-at:18: ed -f script-s5 && exit 255 || exit 0"
+$as_echo "$at_srcdir/s5.fail-at:18: ed <script-s5 && exit 255 || exit 0"
 at_fn_check_prepare_trace "s5.fail-at:18"
-( $at_check_trace; ed -f script-s5 && exit 255 || exit 0
+( $at_check_trace; ed <script-s5 && exit 255 || exit 0
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -6288,9 +6288,9 @@ echo "w s6.ro")
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/s6.fail-at:18: ed -f script-s6 && exit 255 || exit 0"
+$as_echo "$at_srcdir/s6.fail-at:18: ed <script-s6 && exit 255 || exit 0"
 at_fn_check_prepare_trace "s6.fail-at:18"
-( $at_check_trace; ed -f script-s6 && exit 255 || exit 0
+( $at_check_trace; ed <script-s6 && exit 255 || exit 0
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -6324,9 +6324,9 @@ echo "w s7.ro")
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/s7.fail-at:18: ed -f script-s7 && exit 255 || exit 0"
+$as_echo "$at_srcdir/s7.fail-at:18: ed <script-s7 && exit 255 || exit 0"
 at_fn_check_prepare_trace "s7.fail-at:18"
-( $at_check_trace; ed -f script-s7 && exit 255 || exit 0
+( $at_check_trace; ed <script-s7 && exit 255 || exit 0
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -6360,9 +6360,9 @@ echo "w s8.ro")
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/s8.fail-at:18: ed -f script-s8 && exit 255 || exit 0"
+$as_echo "$at_srcdir/s8.fail-at:18: ed <script-s8 && exit 255 || exit 0"
 at_fn_check_prepare_trace "s8.fail-at:18"
-( $at_check_trace; ed -f script-s8 && exit 255 || exit 0
+( $at_check_trace; ed <script-s8 && exit 255 || exit 0
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -6396,9 +6396,9 @@ echo "w t1.ro")
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/t1.fail-at:18: ed -f script-t1 && exit 255 || exit 0"
+$as_echo "$at_srcdir/t1.fail-at:18: ed <script-t1 && exit 255 || exit 0"
 at_fn_check_prepare_trace "t1.fail-at:18"
-( $at_check_trace; ed -f script-t1 && exit 255 || exit 0
+( $at_check_trace; ed <script-t1 && exit 255 || exit 0
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -6432,9 +6432,9 @@ echo "w t2.ro")
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/t2.fail-at:18: ed -f script-t2 && exit 255 || exit 0"
+$as_echo "$at_srcdir/t2.fail-at:18: ed <script-t2 && exit 255 || exit 0"
 at_fn_check_prepare_trace "t2.fail-at:18"
-( $at_check_trace; ed -f script-t2 && exit 255 || exit 0
+( $at_check_trace; ed <script-t2 && exit 255 || exit 0
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -6468,9 +6468,9 @@ echo "w u.ro")
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/u.fail-at:18: ed -f script-u && exit 255 || exit 0"
+$as_echo "$at_srcdir/u.fail-at:18: ed <script-u && exit 255 || exit 0"
 at_fn_check_prepare_trace "u.fail-at:18"
-( $at_check_trace; ed -f script-u && exit 255 || exit 0
+( $at_check_trace; ed <script-u && exit 255 || exit 0
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -6504,9 +6504,9 @@ echo "w w1.ro")
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/w1.fail-at:18: ed -f script-w1 && exit 255 || exit 0"
+$as_echo "$at_srcdir/w1.fail-at:18: ed <script-w1 && exit 255 || exit 0"
 at_fn_check_prepare_trace "w1.fail-at:18"
-( $at_check_trace; ed -f script-w1 && exit 255 || exit 0
+( $at_check_trace; ed <script-w1 && exit 255 || exit 0
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -6540,9 +6540,9 @@ echo "w w2.ro")
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/w2.fail-at:18: ed -f script-w2 && exit 255 || exit 0"
+$as_echo "$at_srcdir/w2.fail-at:18: ed <script-w2 && exit 255 || exit 0"
 at_fn_check_prepare_trace "w2.fail-at:18"
-( $at_check_trace; ed -f script-w2 && exit 255 || exit 0
+( $at_check_trace; ed <script-w2 && exit 255 || exit 0
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -6576,9 +6576,9 @@ echo "w w3.ro")
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/w3.fail-at:18: ed -f script-w3 && exit 255 || exit 0"
+$as_echo "$at_srcdir/w3.fail-at:18: ed <script-w3 && exit 255 || exit 0"
 at_fn_check_prepare_trace "w3.fail-at:18"
-( $at_check_trace; ed -f script-w3 && exit 255 || exit 0
+( $at_check_trace; ed <script-w3 && exit 255 || exit 0
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
@@ -6612,9 +6612,9 @@ echo "w z.ro")
 _ATEOF_ED
 
 { set +x
-$as_echo "$at_srcdir/z.fail-at:18: ed -f script-z && exit 255 || exit 0"
+$as_echo "$at_srcdir/z.fail-at:18: ed <script-z && exit 255 || exit 0"
 at_fn_check_prepare_trace "z.fail-at:18"
-( $at_check_trace; ed -f script-z && exit 255 || exit 0
+( $at_check_trace; ed <script-z && exit 255 || exit 0
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
