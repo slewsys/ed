@@ -42,7 +42,7 @@ main (argc, argv)
      int argc;
      char **argv;
 {
-  struct option long_options[14] =
+  struct option long_options[15] =
     {
       {"ansi-color", no_argument, NULL, 'R'},
 #ifdef WANT_SCRIPT_FLAGS
@@ -50,6 +50,9 @@ main (argc, argv)
       {"file", required_argument, NULL, 'f'},
 #endif
       {"help", no_argument, NULL, 'h'},
+#ifdef WANT_DES_ENCRYPTION
+      {"crypt", no_argument, NULL, 'x'},
+#endif
       {"in-place", optional_argument, NULL, 'i'},
       {"prompt", required_argument, NULL, 'p'},
       {"quiet", no_argument, NULL, 's'},           /* Deprecated long option */
@@ -89,12 +92,15 @@ main (argc, argv)
 #endif
 
 top:
+  while ((c = getopt_long (argc, argv, "E"
 #ifdef WANT_SCRIPT_FLAGS
-  while ((c = getopt_long (argc, argv, "Ee:f:Ghi::p:RrsVv",
-#else
-  while ((c = getopt_long (argc, argv, "EGhi::p:RrsVv",
-#endif  /* !WANT_SCRIPT_FLAGS */
-                           long_options, NULL)) != -1)
+                           "e:f:"
+#endif
+                           "Ghi::p:RrsVv"
+#ifdef WANT_DES_ENCRYPTION
+                           "x"
+#endif
+                           , long_options, NULL)) != -1)
     switch (c)
       {
       default:
@@ -127,8 +133,8 @@ top:
         ed->exec->opt |= IN_PLACE;
         if (optarg != NULL)
           {
-            if ((len = strlen (optarg)) < SIZE_T_MAX
-                && !(ed->file->suffix = realloc (ed->file->suffix, len + 1)))
+            if ((len = strlen (optarg)) >= SIZE_T_MAX
+                || !(ed->file->suffix = realloc (ed->file->suffix, len + 1)))
               script_die (3, ed);
             strcpy (ed->file->suffix, optarg);
           }
@@ -137,8 +143,8 @@ top:
         ed->exec->opt |= PROMPT;
 
         /* Save prompt from longjmp(3). */
-        if ((len = strlen (optarg)) < SIZE_T_MAX
-            && !(ed->exec->prompt = realloc (ed->exec->prompt, len + 1)))
+        if ((len = strlen (optarg)) >= SIZE_T_MAX
+            || !(ed->exec->prompt = realloc (ed->exec->prompt, len + 1)))
           script_die (3, ed);
         strcpy (ed->exec->prompt, optarg);
         break;
@@ -158,6 +164,11 @@ top:
       case 'v':                 /* Verbose mode. */
         ed->exec->opt |= VERBOSE;
         break;
+#ifdef WANT_DES_ENCRYPTION
+      case 'x':
+        ed->exec->keyword = get_des_keyword (ed);
+        break;
+#endif
       }
   argv += optind;
   argc -= optind;
@@ -650,7 +661,6 @@ ed_usage (status, ed)
     {
       printf (_("Usage: %s [OPTION...] [FILE]\n"), (ed->exec->opt & RESTRICTED
                                                     ? "red" : "ed"));
-#ifdef WANT_SCRIPT_FLAGS
       printf (_("Options:\n\
   -E, --regexp-extended     Enable extended regular expression syntax.\n\
   -e, --expression=COMMAND  Add COMMAND to scripted input; implies `-s'.\n\
@@ -664,31 +674,13 @@ ed_usage (status, ed)
   -s, --script              Suppress interactive diagnostics.\n\
   -v, --verbose             Enable verbose error diagnostics.\n\
   -V, --version             Print version information, then exit.\n\
+  -x, --crypt               Prompt for encryption key used for subsequent I/O.\n\
 \n\
 If FILE is given, read it for editing.  From within ed, run:\n\
   !info ed RET m switches RET\n\
 to see full documentation of these options.\n\
 \n\
 Submit issues to: <bug-ed@gnu.org>.\n"));
-#else
-      printf (_("Options:\n\
-  -E, --regexp-extended     Enable extended regular expression syntax.\n\
-  -G, --traditional         Enable backward compatibility.\n\
-  -h, --help                Dispaly (this) help, then exit.\n\
-  -i, --in-place[=SUFFIX]   Write file before closing, with optional backup.\n\
-  -p, --prompt=STRING       Prompt for commands with STRING.\n\
-  -R, --ansi-color          Enable support for ANSI color codes.\n\
-  -r, --regexp-extended     Enable extended regular expression syntax.\n\
-  -s, --script              Suppress interactive diagnostics.\n\
-  -v, --verbose             Enable verbose error diagnostics.\n\
-  -V, --version             Print version information, then exit.\n\
-\n\
-If FILE is given, read it for editing.  From within ed, run:\n\
-  !info ed RET m switches RET\n\
-to see full documentation of these options.\n\
-\n\
-Submit issues to: <bug-ed@gnu.org>.\n"));
-#endif  /* !WANT_SCRIPT_FLAGS */
     }
   exit (status);
 }

@@ -646,7 +646,13 @@ am__EXEEXT_FALSE
 am__EXEEXT_TRUE
 LTLIBOBJS
 AUTOM4TE
+LDADD_LIBCRYPT_FALSE
+LDADD_LIBCRYPT_TRUE
 LIBOBJS
+OPENSSL_LDFLAGS
+OPENSSL_LIBS
+OPENSSL_INCLUDES
+PKG_CONFIG
 LDADD_LIBINTL_FALSE
 LDADD_LIBINTL_TRUE
 POSUB
@@ -1326,6 +1332,7 @@ enable_nls
 with_libiconv_prefix
 with_included_gettext
 with_libintl_prefix
+with_openssl
 enable_ed_envar
 enable_external_filter
 enable_file_glob
@@ -1333,6 +1340,7 @@ enable_file_lock
 enable_ed_macro
 enable_ed_register
 enable_script_flags
+enable_des_encryption
 '
       ac_precious_vars='build_alias
 host_alias
@@ -1994,6 +2002,7 @@ Optional Features:
                           script flags)
   --enable-ed-register    enable ED register support
   --enable-script-flags   enable ED command-line script flags
+  --enable-des-encryption enable DES encryption/decryption of files.
 
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
@@ -2019,6 +2028,7 @@ Optional Packages:
   --with-included-gettext use the GNU gettext library included here
   --with-libintl-prefix[=DIR]  search for libintl in DIR/include and DIR/lib
   --without-libintl-prefix     don't search for libintl in includedir and libdir
+  --with-openssl=DIR      root of the OpenSSL directory
 
 Some influential environment variables:
   CC          C compiler command
@@ -16896,6 +16906,7 @@ _ACEOF
 fi
 
 
+
 #
 # Checks for headers.
 #
@@ -17237,6 +17248,19 @@ fi
 
 
 
+
+for ac_header in des.h
+do :
+  ac_fn_c_check_header_compile "$LINENO" "des.h" "ac_cv_header_des_h" "$prefix/openssl
+"
+if test "x$ac_cv_header_des_h" = xyes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_DES_H 1
+_ACEOF
+
+fi
+
+done
 
 
 #
@@ -29673,6 +29697,210 @@ $as_echo "#define HAVE_DCGETTEXT 1" >>confdefs.h
     :
 fi
 
+
+    found=false
+
+# Check whether --with-openssl was given.
+if test "${with_openssl+set}" = set; then :
+  withval=$with_openssl;
+            case "$withval" in
+            "" | y | ye | yes | n | no)
+            as_fn_error $? "Invalid --with-openssl value" "$LINENO" 5
+              ;;
+            *) ssldirs="$withval"
+              ;;
+            esac
+
+else
+
+            # if pkg-config is installed and openssl has installed a .pc file,
+            # then use that information and don't search ssldirs
+            if test -n "$ac_tool_prefix"; then
+  # Extract the first word of "${ac_tool_prefix}pkg-config", so it can be a program name with args.
+set dummy ${ac_tool_prefix}pkg-config; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if ${ac_cv_prog_PKG_CONFIG+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  if test -n "$PKG_CONFIG"; then
+  ac_cv_prog_PKG_CONFIG="$PKG_CONFIG" # Let the user override the test.
+else
+as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if as_fn_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
+    ac_cv_prog_PKG_CONFIG="${ac_tool_prefix}pkg-config"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+fi
+fi
+PKG_CONFIG=$ac_cv_prog_PKG_CONFIG
+if test -n "$PKG_CONFIG"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PKG_CONFIG" >&5
+$as_echo "$PKG_CONFIG" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+fi
+if test -z "$ac_cv_prog_PKG_CONFIG"; then
+  ac_ct_PKG_CONFIG=$PKG_CONFIG
+  # Extract the first word of "pkg-config", so it can be a program name with args.
+set dummy pkg-config; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if ${ac_cv_prog_ac_ct_PKG_CONFIG+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  if test -n "$ac_ct_PKG_CONFIG"; then
+  ac_cv_prog_ac_ct_PKG_CONFIG="$ac_ct_PKG_CONFIG" # Let the user override the test.
+else
+as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if as_fn_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
+    ac_cv_prog_ac_ct_PKG_CONFIG="pkg-config"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+fi
+fi
+ac_ct_PKG_CONFIG=$ac_cv_prog_ac_ct_PKG_CONFIG
+if test -n "$ac_ct_PKG_CONFIG"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_ct_PKG_CONFIG" >&5
+$as_echo "$ac_ct_PKG_CONFIG" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+  if test "x$ac_ct_PKG_CONFIG" = x; then
+    PKG_CONFIG=""
+  else
+    case $cross_compiling:$ac_tool_warned in
+yes:)
+{ $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: using cross tools not prefixed with host triplet" >&5
+$as_echo "$as_me: WARNING: using cross tools not prefixed with host triplet" >&2;}
+ac_tool_warned=yes ;;
+esac
+    PKG_CONFIG=$ac_ct_PKG_CONFIG
+  fi
+else
+  PKG_CONFIG="$ac_cv_prog_PKG_CONFIG"
+fi
+
+            if test x"$PKG_CONFIG" != x""; then
+                OPENSSL_LDFLAGS=`$PKG_CONFIG openssl --libs-only-L 2>/dev/null`
+                if test $? = 0; then
+                    OPENSSL_LIBS=`$PKG_CONFIG openssl --libs-only-l 2>/dev/null`
+                    OPENSSL_INCLUDES=`$PKG_CONFIG openssl --cflags-only-I 2>/dev/null`
+                    found=true
+                fi
+            fi
+
+            # no such luck; use some default ssldirs
+            if ! $found; then
+                ssldirs="/usr/local/ssl /usr/lib/ssl /usr/ssl /usr/pkg /usr/local /usr"
+            fi
+
+
+fi
+
+
+
+    # note that we #include <openssl/foo.h>, so the OpenSSL headers have to be in
+    # an 'openssl' subdirectory
+
+    if ! $found; then
+        OPENSSL_INCLUDES=
+        for ssldir in $ssldirs; do
+            { $as_echo "$as_me:${as_lineno-$LINENO}: checking for openssl/ssl.h in $ssldir" >&5
+$as_echo_n "checking for openssl/ssl.h in $ssldir... " >&6; }
+            if test -f "$ssldir/include/openssl/ssl.h"; then
+                OPENSSL_INCLUDES="-I$ssldir/include"
+                OPENSSL_LDFLAGS="-L$ssldir/lib"
+                OPENSSL_LIBS="-lssl -lcrypto"
+                found=true
+                { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
+                break
+            else
+                { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+            fi
+        done
+
+        # if the file wasn't found, well, go ahead and try the link anyway -- maybe
+        # it will just work!
+    fi
+
+    # try the preprocessor and linker with our new flags,
+    # being careful not to pollute the global LIBS, LDFLAGS, and CPPFLAGS
+
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether compiling and linking against OpenSSL works" >&5
+$as_echo_n "checking whether compiling and linking against OpenSSL works... " >&6; }
+    echo "Trying link with OPENSSL_LDFLAGS=$OPENSSL_LDFLAGS;" \
+        "OPENSSL_LIBS=$OPENSSL_LIBS; OPENSSL_INCLUDES=$OPENSSL_INCLUDES" >&5
+
+    save_LIBS="$LIBS"
+    save_LDFLAGS="$LDFLAGS"
+    save_CPPFLAGS="$CPPFLAGS"
+    LDFLAGS="$LDFLAGS $OPENSSL_LDFLAGS"
+    LIBS="$OPENSSL_LIBS $LIBS"
+    CPPFLAGS="$OPENSSL_INCLUDES $CPPFLAGS"
+    cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+#include <openssl/ssl.h>
+int
+main ()
+{
+SSL_new(NULL)
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"; then :
+
+            { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
+            ac_cv_have_openssl='yes'
+
+else
+
+            { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+
+
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+    CPPFLAGS="$save_CPPFLAGS"
+    LDFLAGS="$save_LDFLAGS"
+    LIBS="$save_LIBS"
+
+
+
+
+
+
 for ac_header in vfork.h
 do :
   ac_fn_c_check_header_mongrel "$LINENO" "vfork.h" "ac_cv_header_vfork_h" "$ac_includes_default"
@@ -30386,6 +30614,32 @@ fi
 { $as_echo "$as_me:${as_lineno-$LINENO}: result: ${enable_script_flags:-no}" >&5
 $as_echo "${enable_script_flags:-no}" >&6; }
 
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether DES encryption support is requested" >&5
+$as_echo_n "checking whether DES encryption support is requested... " >&6; }
+# Check whether --enable-des-encryption was given.
+if test "${enable_des_encryption+set}" = set; then :
+  enableval=$enable_des_encryption;
+fi
+
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: ${enable_des_encryption:-no}" >&5
+$as_echo "${enable_des_encryption:-no}" >&6; }
+
+ if test ."$enable_des_encryption" = .'yes' \
+    && test ."$ac_cv_have_openssl" = .'yes'; then
+  LDADD_LIBCRYPT_TRUE=
+  LDADD_LIBCRYPT_FALSE='#'
+else
+  LDADD_LIBCRYPT_TRUE='#'
+  LDADD_LIBCRYPT_FALSE=
+fi
+
+if test -z "$LDADD_LIBCRYPT_TRUE"; then :
+
+$as_echo "#define WANT_DES_ENCRYPTION 1" >>confdefs.h
+
+fi
+
+
 # Generate autotest helpers.
 ac_config_commands="$ac_config_commands testsuite/atconfig"
 
@@ -30706,6 +30960,10 @@ Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 if test -z "${LDADD_LIBINTL_TRUE}" && test -z "${LDADD_LIBINTL_FALSE}"; then
   as_fn_error $? "conditional \"LDADD_LIBINTL\" was never defined.
+Usually this means the macro was only invoked conditionally." "$LINENO" 5
+fi
+if test -z "${LDADD_LIBCRYPT_TRUE}" && test -z "${LDADD_LIBCRYPT_FALSE}"; then
+  as_fn_error $? "conditional \"LDADD_LIBCRYPT\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 

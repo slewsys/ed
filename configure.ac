@@ -132,6 +132,7 @@ AM_CONDITIONAL([LDADD_LIBGNU],
 #
 AC_CHECK_LIB([c], [fopen])
 
+
 #
 # Checks for headers.
 #
@@ -142,6 +143,7 @@ AC_HEADER_TIOCGWINSZ
 AC_CHECK_HEADERS_ONCE([fcntl.h glob.h libintl.h limits.h locale.h \
   stddef.h stdlib.h string.h strings.h sys/file.h sys/ioctl.h sys/param.h \
   termios.h unistd.h wchar.h wctype.h])
+AC_CHECK_HEADERS([des.h], [], [], [$prefix/openssl])
 
 #
 # Checks for typedefs, structures, and compiler characteristics.
@@ -215,6 +217,8 @@ AM_CONDITIONAL([LDADD_LIBINTL], [test ."$LTLIBINTL" != .''])
 AM_COND_IF([LDADD_LIBINTL], [],
     [AM_GNU_GETTEXT([external])]
     :)
+
+AX_CHECK_OPENSSL([ac_cv_have_openssl='yes'])
 
 AC_FUNC_FORK
 AC_FUNC_FSEEKO
@@ -317,6 +321,20 @@ AC_ARG_ENABLE([script-flags],
     [AC_DEFINE([WANT_SCRIPT_FLAGS], [1],
       [Define to 1 to enable ED command-line script flags.])],[])])
 AC_MSG_RESULT([${enable_script_flags:-no}])
+
+AC_MSG_CHECKING([whether DES encryption support is requested])
+AC_ARG_ENABLE([des-encryption],
+  [AS_HELP_STRING([--enable-des-encryption],
+    [enable DES encryption/decryption of files.])],[],[])
+AC_MSG_RESULT([${enable_des_encryption:-no}])
+
+AM_CONDITIONAL([LDADD_LIBCRYPT],
+  [test ."$enable_des_encryption" = .'yes' \
+    && test ."$ac_cv_have_openssl" = .'yes'])
+AM_COND_IF([LDADD_LIBCRYPT],
+  [AC_DEFINE([WANT_DES_ENCRYPTION], [1],
+    [Define to 1 to enable DES encryption/decryption of files.])])
+
 
 # Generate autotest helpers.
 AC_CONFIG_TESTDIR([testsuite])

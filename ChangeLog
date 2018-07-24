@@ -1,3 +1,15 @@
+2018-07-24  Andrew L. Moore  <alm@slewsys.org>
+
+	* configure.ac:
+	* m4/ax_check_openssl.m4:
+	* src/Makefile.am (AM_CPPFLAGS):
+	* src/ed.h (struct ed_execute):
+	* src/cbc.c: Add preliminary DES encryption support for backward
+	compatibility. Condition DES encryption on configure feature
+	request `--enable-des-encryption' and OpenSSL library
+	availability.
+
+
 2018-07-23  Andrew L. Moore  <alm@slewsys.org>
 
 	(DESTINATION_ADDRESS):

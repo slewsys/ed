@@ -7,6 +7,7 @@
 bin_PROGRAMS = ed
 ed_SOURCES = aux.c							      \
 	     buf.c							      \
+	     cbc.c							      \
 	     cmds.c							      \
 	     ed.h							      \
 	     exec.c							      \
@@ -48,6 +49,11 @@ ed_LDADD += @LIBINTL@
 else !LDADD_LIBINTL
 ed_LDADD += @LTLIBINTL@
 endif !LDADD_LIBINTL
+
+if LDADD_LIBCRYPT
+AM_CPPFLAGS += @OPENSSL_INCLUDES@
+ed_LDADD += @OPENSSL_LDFLAGS@ @OPENSSL_LIBS@
+endif LDADD_LIBCRYPT
 
 maintainer-clean-local:
 	rm -f .gdb_history

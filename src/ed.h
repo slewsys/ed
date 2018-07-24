@@ -475,6 +475,7 @@ struct ed_execute
   const char *err;              /* Error message. */
 
   char *prompt;                 /* Interactive command prompt. */
+  char *keyword;                /* Encryption keyword. */
   off_t line_no;                /* Script line number. */
   int first_pass;               /* If set, first global command iteration. */
   int global;                   /* If set, global command (GLBL [| GLBI]). */

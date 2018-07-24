@@ -99,12 +99,15 @@ bin_PROGRAMS = ed$(EXEEXT)
 @LDADD_LIBINTL_TRUE@am__append_3 = -I$(top_srcdir)/intl -I$(top_builddir)/intl
 @LDADD_LIBINTL_TRUE@am__append_4 = @LIBINTL@
 @LDADD_LIBINTL_FALSE@am__append_5 = @LTLIBINTL@
+@LDADD_LIBCRYPT_TRUE@am__append_6 = @OPENSSL_INCLUDES@
+@LDADD_LIBCRYPT_TRUE@am__append_7 = @OPENSSL_LDFLAGS@ @OPENSSL_LIBS@
 subdir = src
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/00gnulib.m4 \
 	$(top_srcdir)/m4/absolute-header.m4 $(top_srcdir)/m4/alloca.m4 \
 	$(top_srcdir)/m4/asm-underscore.m4 \
 	$(top_srcdir)/m4/ax_check_gnu_make.m4 \
+	$(top_srcdir)/m4/ax_check_openssl.m4 \
 	$(top_srcdir)/m4/ax_compile_check_sizeof.m4 \
 	$(top_srcdir)/m4/btowc.m4 $(top_srcdir)/m4/builtin-expect.m4 \
 	$(top_srcdir)/m4/codeset.m4 $(top_srcdir)/m4/configmake.m4 \
@@ -156,14 +159,15 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_ed_OBJECTS = aux.$(OBJEXT) buf.$(OBJEXT) cmds.$(OBJEXT) \
-	exec.$(OBJEXT) glbl.$(OBJEXT) io.$(OBJEXT) main.$(OBJEXT) \
-	page.$(OBJEXT) parse.$(OBJEXT) re.$(OBJEXT) signal.$(OBJEXT) \
-	sub.$(OBJEXT) undo.$(OBJEXT) version.$(OBJEXT)
+am_ed_OBJECTS = aux.$(OBJEXT) buf.$(OBJEXT) cbc.$(OBJEXT) \
+	cmds.$(OBJEXT) exec.$(OBJEXT) glbl.$(OBJEXT) io.$(OBJEXT) \
+	main.$(OBJEXT) page.$(OBJEXT) parse.$(OBJEXT) re.$(OBJEXT) \
+	signal.$(OBJEXT) sub.$(OBJEXT) undo.$(OBJEXT) \
+	version.$(OBJEXT)
 ed_OBJECTS = $(am_ed_OBJECTS)
 am__DEPENDENCIES_1 =
 ed_DEPENDENCIES = $(am__append_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
@@ -184,10 +188,11 @@ DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__maybe_remake_depfiles = depfiles
 am__depfiles_remade = ./$(DEPDIR)/aux.Po ./$(DEPDIR)/buf.Po \
-	./$(DEPDIR)/cmds.Po ./$(DEPDIR)/exec.Po ./$(DEPDIR)/glbl.Po \
-	./$(DEPDIR)/io.Po ./$(DEPDIR)/main.Po ./$(DEPDIR)/page.Po \
-	./$(DEPDIR)/parse.Po ./$(DEPDIR)/re.Po ./$(DEPDIR)/signal.Po \
-	./$(DEPDIR)/sub.Po ./$(DEPDIR)/undo.Po ./$(DEPDIR)/version.Po
+	./$(DEPDIR)/cbc.Po ./$(DEPDIR)/cmds.Po ./$(DEPDIR)/exec.Po \
+	./$(DEPDIR)/glbl.Po ./$(DEPDIR)/io.Po ./$(DEPDIR)/main.Po \
+	./$(DEPDIR)/page.Po ./$(DEPDIR)/parse.Po ./$(DEPDIR)/re.Po \
+	./$(DEPDIR)/signal.Po ./$(DEPDIR)/sub.Po ./$(DEPDIR)/undo.Po \
+	./$(DEPDIR)/version.Po
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -657,6 +662,9 @@ NM = @NM@
 NMEDIT = @NMEDIT@
 OBJDUMP = @OBJDUMP@
 OBJEXT = @OBJEXT@
+OPENSSL_INCLUDES = @OPENSSL_INCLUDES@
+OPENSSL_LDFLAGS = @OPENSSL_LDFLAGS@
+OPENSSL_LIBS = @OPENSSL_LIBS@
 OTOOL = @OTOOL@
 OTOOL64 = @OTOOL64@
 PACKAGE = @PACKAGE@
@@ -667,6 +675,7 @@ PACKAGE_TARNAME = @PACKAGE_TARNAME@
 PACKAGE_URL = @PACKAGE_URL@
 PACKAGE_VERSION = @PACKAGE_VERSION@
 PATH_SEPARATOR = @PATH_SEPARATOR@
+PKG_CONFIG = @PKG_CONFIG@
 POSUB = @POSUB@
 PRAGMA_COLUMNS = @PRAGMA_COLUMNS@
 PRAGMA_SYSTEM_HEADER = @PRAGMA_SYSTEM_HEADER@
@@ -836,6 +845,7 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 ed_SOURCES = aux.c							      \
 	     buf.c							      \
+	     cbc.c							      \
 	     cmds.c							      \
 	     ed.h							      \
 	     exec.c							      \
@@ -850,11 +860,12 @@ ed_SOURCES = aux.c							      \
 	     undo.c							      \
 	     version.c
 
-ed_LDADD = $(am__append_1) $(am__append_4) $(am__append_5)
+ed_LDADD = $(am__append_1) $(am__append_4) $(am__append_5) \
+	$(am__append_7)
 AM_CPPFLAGS = -I$(top_srcdir) -I$(top_builddir) -I$(top_srcdir)/lib \
 	-I$(top_builddir)/lib -I$(top_srcdir)/include \
 	-I$(top_builddir)/include -DLOCALEDIR=\"$(localedir)\" \
-	$(am__append_2) $(am__append_3)
+	$(am__append_2) $(am__append_3) $(am__append_6)
 all: all-am
 
 .SUFFIXES:
@@ -950,6 +961,7 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/aux.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/buf.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cbc.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cmds.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/exec.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/glbl.Po@am__quote@ # am--include-marker
@@ -1125,6 +1137,7 @@ clean-am: clean-binPROGRAMS clean-generic clean-libtool mostlyclean-am
 distclean: distclean-am
 		-rm -f ./$(DEPDIR)/aux.Po
 	-rm -f ./$(DEPDIR)/buf.Po
+	-rm -f ./$(DEPDIR)/cbc.Po
 	-rm -f ./$(DEPDIR)/cmds.Po
 	-rm -f ./$(DEPDIR)/exec.Po
 	-rm -f ./$(DEPDIR)/glbl.Po
@@ -1184,6 +1197,7 @@ installcheck-am:
 maintainer-clean: maintainer-clean-am
 		-rm -f ./$(DEPDIR)/aux.Po
 	-rm -f ./$(DEPDIR)/buf.Po
+	-rm -f ./$(DEPDIR)/cbc.Po
 	-rm -f ./$(DEPDIR)/cmds.Po
 	-rm -f ./$(DEPDIR)/exec.Po
 	-rm -f ./$(DEPDIR)/glbl.Po
