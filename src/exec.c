@@ -178,6 +178,9 @@ static int t_cmd __P ((ed_buffer_t *));
 static int u_cmd __P ((ed_buffer_t *));
 static int w_cmd __P ((ed_buffer_t *));
 static int w_cmd __P ((ed_buffer_t *));
+#ifdef WANT_DES_ENCRYPTION
+static int x_cmd __P ((ed_buffer_t *));
+#endif
 static int z_cmd __P ((ed_buffer_t *));
 
 #define ED_KEY_FIRST 0x3c
@@ -250,7 +253,11 @@ static const ed_command_t ed_cmd[] =
    u_cmd,
    g_cmd,                       /* v_cmd */
    w_cmd,
+#ifdef WANT_DES_ENCRYPTION
+   x_cmd,
+#else
    invalid_cmd,
+#endif
    invalid_cmd,
    z_cmd,
    invalid_cmd,
@@ -1433,6 +1440,26 @@ w_cmd (ed)
   return (cx == 'q' ? (ed->state->is_modified && !(ed->exec->opt & SCRIPTED)
                        ? EMOD : EOF) : 0);
 #endif  /* !WANT_FILE_GLOB */
+}
+
+static int
+x_cmd (ed)
+     ed_buffer_t *ed;
+{
+  int status = 0;
+  unsigned io_f = 0;            /* Print I/O flags */
+
+  /*
+   * Of all commands, at least `h' should be forgiving, but SUSv4,
+   * 2013 says otherwise...
+   */
+  if (ed->exec->region->addrs)
+    {
+      ed->exec->err = _("Address unexpected");
+      return ERR;
+    }
+  COMMAND_SUFFIX (io_f, ed);
+  return (status = get_des_keyword (ed)) < 0 ? status : io_f;
 }
 
 static int

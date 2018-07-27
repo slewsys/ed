@@ -1,3 +1,15 @@
+2018-07-27  Andrew L. Moore  <alm@slewsys.org>
+
+	* src/io.c (read_stream, read_stream_r): Print "Newline appended"
+	to stderr per POSIX compliance test.
+
+	* configure.ac: Support shells other than /bin/sh.
+
+2018-07-25  Andrew L. Moore  <alm@slewsys.org>
+
+	* src/exec.c (x_cmd): Add `x' command to enter encryption keyword.
+	DES encryption not working yet.
+
 2018-07-24  Andrew L. Moore  <alm@slewsys.org>
 
 	* Makefile.am: Add rule `update-gnulib'.

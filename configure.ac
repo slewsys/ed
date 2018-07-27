@@ -17,7 +17,7 @@ AM_INIT_AUTOMAKE([foreign])
 # Capture configured options for displaying in --version output.
 [ac_cv_configure_args=''
  while read line; do
-    configure_args=`expr ."$line" : '^..*set X /bin/sh.*configure. \(.*\)$ac_configure_extra_args.*$'`
+    configure_args=`expr ."$line" : '^..*set X /bin/.*sh.*configure. \(.*\)$ac_configure_extra_args.*$'`
     test ."$configure_args" != .'' && break
  done <config.status
  for ac_option in $configure_args; do

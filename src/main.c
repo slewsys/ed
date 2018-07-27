@@ -166,7 +166,8 @@ top:
         break;
 #ifdef WANT_DES_ENCRYPTION
       case 'x':
-        ed->exec->keyword = get_des_keyword (ed);
+        if (get_des_keyword (ed) < 0)
+          script_die (3, ed);
         break;
 #endif
       }
@@ -653,7 +654,7 @@ ed_usage (status, ed)
   extern char version_string[]; /* From version.c */
 
   if (status)
-    printf (_("Usage: %s [-] [-EGhirsVv] [-f SCRIPT] [-p PROMPT] [FILE]\n"),
+    printf (_("Usage: %s [-] [-EGhirsVv] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE]\n"),
             ed->exec->opt & RESTRICTED ? "red" : "ed");
   else if (ed->exec->opt & PRINT_VERSION)
     printf ("ed %s\n%s", version_string, CONFIGURE_ARGS);
@@ -663,8 +664,8 @@ ed_usage (status, ed)
                                                     ? "red" : "ed"));
       printf (_("Options:\n\
   -E, --regexp-extended     Enable extended regular expression syntax.\n\
-  -e, --expression=COMMAND  Add COMMAND to scripted input; implies `-s'.\n\
-  -f, --file=SCRIPT         Read commands from file SCRIPT.\n\
+  -e, --expression=COMMAND  Add COMMAND to scripted input - implies `-s'.\n\
+  -f, --file=SCRIPT         Read commands from file SCRIPT - implies `-s'.\n\
   -G, --traditional         Enable backward compatibility.\n\
   -h, --help                Dispaly (this) help, then exit.\n\
   -i, --in-place[=SUFFIX]   Write file before closing, with optional backup.\n\

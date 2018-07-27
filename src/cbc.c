@@ -41,10 +41,10 @@
 
 # define _(String) gettext (String)
 
-static void expand_des_key __P ((unsigned char *, char *, struct ed_buffer *));
+static void expand_des_key __P ((unsigned char *, char *, ed_buffer_t *));
 static void set_des_key __P ((DES_cblock *));
 static int cbc_encode __P ((unsigned char *, int, FILE *));
-static int cbc_decode __P ((unsigned char *, FILE *, struct ed_buffer *));
+static int cbc_decode __P ((unsigned char *, FILE *, ed_buffer_t *));
 static int hex_to_binary __P ((int, int));
 
 /*
@@ -115,7 +115,7 @@ init_des_cipher (void)
 
 /* get_des_char: return next char in an encrypted file */
 int
-get_des_char (FILE * fp, struct ed_buffer *ed)
+get_des_char (FILE * fp, ed_buffer_t *ed)
 {
 #ifdef WANT_DES_ENCRYPTION
   if (des_n >= des_ct)
@@ -168,7 +168,7 @@ flush_des_file (FILE * fp)
  * get des_keyword from tty or stdin
  */
 int
-get_des_keyword (struct ed_buffer *ed)
+get_des_keyword (ed_buffer_t *ed)
 {
   char *p;			/* used to obtain the key */
   DES_cblock msgbuf;		/* I/O buffer */
@@ -186,9 +186,10 @@ get_des_keyword (struct ed_buffer *ed)
       MEMZERO (p, _PASSWORD_LEN);
       set_des_key (&msgbuf);
       MEMZERO (msgbuf, sizeof msgbuf);
-      return 1;
+      ++ed->exec->keyword;
+      return 0;
     }
-  return 0;
+  return ERR;
 }
 
 
@@ -251,7 +252,7 @@ hex_to_binary (int c, int radix)
  *	kbuf		the key itself
  */
 static void
-expand_des_key (unsigned char *obuf, char *kbuf, struct ed_buffer *ed)
+expand_des_key (unsigned char *obuf, char *kbuf, ed_buffer_t *ed)
 {
   int i, j;			/* counter in a for loop */
   int nbuf[64];			/* used for hex/key translation */
@@ -389,7 +390,7 @@ cbc_encode (unsigned char *msgbuf, int n, FILE * fp)
  *	fp	input file descriptor
  */
 static int
-cbc_decode (unsigned char *msgbuf, FILE * fp, struct ed_buffer *ed)
+cbc_decode (unsigned char *msgbuf, FILE * fp, ed_buffer_t *ed)
 {
   DES_cblock tbuf;		/* temp buffer for initialization vector */
   int n;			/* number of bytes actually read */

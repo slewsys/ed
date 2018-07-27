@@ -212,6 +212,8 @@ read_stream (fp, after, size, ed)
   ed->state->dot = after;
   ed->state->input_is_binary = 0;
   ed->state->input_wants_newline = 0;
+  if (ed->exec->keyword)
+    init_des_cipher ();
   for (*size = 0; (tb = get_stream_line (fp, &len, ed)); *size += len)
     PUT_BUFFER_LINE (lp, tb, len, up, ed->state->dot);
   if (feof (fp))
@@ -276,11 +278,12 @@ read_stream (fp, after, size, ed)
    * leave joining the lines up to the user.
    */
   if (newline_inserted && *size > 0)
-    puts (_("Newline inserted"));
+    fprintf (stderr, _("Newline inserted"));
   else if (!ed->state->is_binary && ed->state->newline_appended
            && (*size || (ed->state->is_empty && !newline_appended_already)))
-    puts (_("Newline appended"));
-
+    fprintf (stderr, _("Newline appended\n"));
+  if (ed->exec->keyword)
+    *size += 8 - *size % 8;     /* Adjust for DES padding. */
   return 0;
 }
 
@@ -379,10 +382,11 @@ read_stream_r (fp, after, size, ed)
                                  ? ed->state->input_wants_newline
                                  : ed->state->newline_appended);
 
-  /* Assume that user knows what they're doing ...
-  if (ed->state->is_binary)
-    puts (_("Binary data"));
-  */
+  /* Assume that user knows what they're doing ... */
+  /*
+   * if (ed->state->is_binary)
+   *   fprintf (stderr, _("Binary data\n"));
+   */
 
   /* If binary, adjust size since appended newlines are not written. */
   if ((ed->state->is_binary |= ed->state->input_is_binary)
@@ -400,10 +404,10 @@ read_stream_r (fp, after, size, ed)
    * has been inserted and leave joining the lines up to the user.
    */
   if (newline_inserted && *size > 0)
-    puts (_("Newline inserted"));
+    fprintf (stderr, _("Newline inserted\n"));
   else if (!ed->state->is_binary && ed->state->newline_appended
            && (*size || ed->state->is_empty))
-    puts (_("Newline appended"));
+    fprintf (stderr, _("Newline appended\n"));
 
   return 0;
 }
@@ -486,7 +490,8 @@ get_stream_line (fp, len, ed)
   *len = 0;
 
  top:
-  for (; (c = getc (fp)) != EOF && c != '\n'; ++*len)
+  for (; (c = ed->exec->keyword ? get_des_char (fp, ed)
+          : getc (fp)) != EOF && c != '\n'; ++*len)
     {
       REALLOC_THROW (tb, tb_size, *len + 1, NULL, ed);
       ed->state->input_is_binary |= !(*(tb + *len) = c);
@@ -682,6 +687,9 @@ write_stream (fp, lp, n, size, ed)
   int append_newline = 0;
   int status = 0;
 
+  if (ed->exec->keyword)
+    init_des_cipher ();
+
   /* Per SUSv4, permit writing an empty buffer. */
   for (*size = 0; n; --n, lp = lp->q_forw)
     {
@@ -704,7 +712,15 @@ write_stream (fp, lp, n, size, ed)
         }
       *size += len;
     }
-  fflush (fp);
+
+  if (ed->exec->keyword)
+    {
+      flush_des_file (fp, ed);
+      *size += 8 - *size % 8;
+    }
+  else
+    fflush (fp);
+
   return 0;
 }
 
@@ -718,7 +734,8 @@ put_stream_line (fp, s, len, ed)
      ed_buffer_t *ed;
 {
  top:
-  for (; len && putc ((unsigned) *s, fp) != EOF; --len, ++s)
+  for (; len && (ed->exec->keyword ? put_des_char ((unsigned) *s, fp)
+                 : putc ((unsigned) *s, fp)) != EOF; --len, ++s)
     ;
   if (ferror (fp))
     switch (errno)
