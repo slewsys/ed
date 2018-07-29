@@ -219,7 +219,7 @@ init_ed_state (addr, state)
   state->is_empty = 1;
   state->is_modified = 0;
   state->newline_appended = 0;
-  state->input_wants_newline = 0;
+  state->newline_missing = 0;
   state->input_is_binary = 0;
 }
 

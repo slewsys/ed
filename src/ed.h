@@ -349,7 +349,7 @@ struct ed_state
   int is_empty;                 /* If set, buffer is "logically" empty. */
   int is_modified;              /* If set, buffer contains unsaved data. */
   int newline_appended;         /* if set, newline appended to buffer. */
-  int input_wants_newline;      /* If set, newline needed on input.  */
+  int newline_missing;      /* If set, newline needed on input.  */
   int input_is_binary;          /* If set, binary data on input. */
 };
 
@@ -515,7 +515,7 @@ enum ed_command_flags
   RESTRICTED        = 0x0400,   /* If set, restricted mode enabled. */
   FSCRIPT           = 0x0800,   /* If set, script via option `-f'.. */
   SCRIPTED          = 0x1000,   /* If set, script mode enabled. */
-  TRADITIONAL       = 0x2000,   /* If set, be backwards compatible. */
+  TRADITIONAL       = 0x2000,   /* If set, be backward compatible. */
   VERBOSE           = 0x4000    /* If set, print error diagnostics. */
 };
 

@@ -211,7 +211,7 @@ read_stream (fp, after, size, ed)
 
   ed->state->dot = after;
   ed->state->input_is_binary = 0;
-  ed->state->input_wants_newline = 0;
+  ed->state->newline_missing = 0;
   if (ed->exec->keyword)
     init_des_cipher ();
   for (*size = 0; (tb = get_stream_line (fp, &len, ed)); *size += len)
@@ -222,17 +222,19 @@ read_stream (fp, after, size, ed)
       clearerr (fp);
 
       /* Empty file into empty buffer. */
-      if (!*size && !ed->state->lines)
-        {
-          PUT_BUFFER_LINE (lp, "\n", 1, up, ed->state->dot);
-
-          /* First time only! */
-          if (!newline_appended_already)
-            {
-              *size = 1;
-              ed->state->input_wants_newline = 1;
-            }
-        }
+      /*
+       * if (!*size && !ed->state->lines)
+       *   {
+       *     PUT_BUFFER_LINE (lp, "\n", 1, up, ed->state->dot);
+       *
+       *     /\* First time only! *\/
+       *     if (!newline_appended_already)
+       *       {
+       *         *size = 1;
+       *         ed->state->newline_missing = 1;
+       *       }
+       *   }
+       */
     }
   else if (ferror (fp))
     {
@@ -243,8 +245,11 @@ read_stream (fp, after, size, ed)
   else if (!tb)
     return ERR;
 
-  ed->state->is_empty = (ed->state->is_empty
-                         ? *size == ed->state->input_wants_newline : 0);
+  /*
+   * ed->state->is_empty = (ed->state->is_empty
+   *                        ? *size == ed->state->newline_missing : 0);
+   */
+  ed->state->is_empty = ed->state->is_empty && !*size;
 
   /*
    * A newline is appended to an empty file read into an empty buffer,
@@ -254,9 +259,9 @@ read_stream (fp, after, size, ed)
    */
   newline_inserted = (stream_appended
                       ? ed->state->newline_appended && ed->state->is_binary
-                      : ed->state->input_wants_newline);
+                      : ed->state->newline_missing);
   ed->state->newline_appended = (stream_appended
-                                 ? ed->state->input_wants_newline
+                                 ? ed->state->newline_missing
                                  : ed->state->newline_appended);
 
   /* Assume that user knows what they're doing ...
@@ -279,8 +284,10 @@ read_stream (fp, after, size, ed)
    */
   if (newline_inserted && *size > 0)
     fprintf (stderr, _("Newline inserted"));
-  else if (!ed->state->is_binary && ed->state->newline_appended
-           && (*size || (ed->state->is_empty && !newline_appended_already)))
+  else if (!ed->state->is_binary && ed->state->newline_appended && *size > 0)
+           /*
+            * && (*size || (ed->state->is_empty && !newline_appended_already)))
+            */
     fprintf (stderr, _("Newline appended\n"));
   if (ed->exec->keyword)
     *size += 8 - *size % 8;     /* Adjust for DES padding. */
@@ -324,7 +331,7 @@ read_stream_r (fp, after, size, ed)
   int stream_appended = after == ed->state->lines;
 
   ed->state->input_is_binary = 0;
-  ed->state->input_wants_newline = 0;
+  ed->state->newline_missing = 0;
 
   init_text_deque (&th);
 
@@ -337,17 +344,19 @@ read_stream_r (fp, after, size, ed)
       clearerr (fp);
 
       /* Empty file into empty buffer. */
-      if (!*size && !ed->state->lines)
-        {
-          APPEND_TEXT_NODE (&th, "\n", 1, ed);
-
-          /* First time only! */
-          if (!newline_appended_already)
-            {
-              *size = 1;
-              ed->state->input_wants_newline = 1;
-            }
-        }
+      /*
+       * if (!*size && !ed->state->lines)
+       *   {
+       *     APPEND_TEXT_NODE (&th, "\n", 1, ed);
+       *
+       *     /\* First time only! *\/
+       *     if (!newline_appended_already)
+       *       {
+       *         *size = 1;
+       *         ed->state->newline_missing = 1;
+       *       }
+       *   }
+       */
     }
   else if (ferror (fp) || !s)
     {
@@ -371,15 +380,18 @@ read_stream_r (fp, after, size, ed)
    * subsequent read or append will overwrite the newline. This is
    * what is expected when concatenating files.
    */
-  ed->state->is_empty = (ed->state->is_empty
-                         ? *size == ed->state->input_wants_newline : 0);
+  /*
+   * ed->state->is_empty = (ed->state->is_empty
+   *                        ? *size == ed->state->newline_missing : 0);
+   */
+  ed->state->is_empty = ed->state->is_empty && *size > 0;
 
   /* If stream_appended, then nl_prev == 0  ==> nl_prev && binary_prev == 0. */
   newline_inserted = (stream_appended
                       ? ed->state->newline_appended && ed->state->is_binary
-                      : ed->state->input_wants_newline);
+                      : ed->state->newline_missing);
   ed->state->newline_appended = (stream_appended
-                                 ? ed->state->input_wants_newline
+                                 ? ed->state->newline_missing
                                  : ed->state->newline_appended);
 
   /* Assume that user knows what they're doing ... */
@@ -405,8 +417,10 @@ read_stream_r (fp, after, size, ed)
    */
   if (newline_inserted && *size > 0)
     fprintf (stderr, _("Newline inserted\n"));
-  else if (!ed->state->is_binary && ed->state->newline_appended
-           && (*size || ed->state->is_empty))
+  else if (!ed->state->is_binary && ed->state->newline_appended && *size > 0)
+           /*
+            * && (*size || ed->state->is_empty))
+            */
     fprintf (stderr, _("Newline appended\n"));
 
   return 0;
@@ -534,7 +548,7 @@ get_stream_line (fp, len, ed)
     }
   else
     {
-      ed->state->input_wants_newline = c != '\n';
+      ed->state->newline_missing = c != '\n';
       *(tb + *len) = '\n';
       *(tb + ++*len) = '\0';
     }
