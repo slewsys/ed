@@ -173,7 +173,7 @@ top:
       }
   argv += optind;
   argc -= optind;
-  if (argc && **argv == '-')
+  if (argc && !strcmp (*argv, "-"))
     {
       ed->exec->opt |= SCRIPTED;
       if (argc > 1)
