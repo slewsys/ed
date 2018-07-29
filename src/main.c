@@ -288,7 +288,7 @@ top:
   /*  Main command loop. */
   for (;;)
     {
-      if (ed->exec->opt & PROMPT && !(ed->exec->opt & SCRIPTED))
+      if (ed->exec->opt & PROMPT /* && !(ed->exec->opt & SCRIPTED) */)
         {
           fputs (ed->exec->prompt, stdout);
           fflush (stdout);
