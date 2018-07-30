@@ -1,5 +1,8 @@
 2018-07-30  Andrew L. Moore  <alm@slewsys.org>
 
+	* src/page.c (display_lines): Handle printing of line that exceeds
+	page size like scrolling. Avoid spurious newlines.
+
 	* src/exec.c (FILE_NAME): Print shell command expansion even when
 	scripting.
 
@@ -14,11 +17,6 @@
 
 	* src/io.c (read_stream, read_stream_r): Don't append newline to
 	empty file. This is both traditional and POSIX behavior.
-
-2018-07-28  Andrew L. Moore  <slewsys@gmail.com>
-
-	* src/page.c (display_lines): Handle printing of line that exceeds
-	page size like scrolling. Avoid spurious newlines.
 
 2018-07-27  Andrew L. Moore  <slewsys@gmail.com>
 
