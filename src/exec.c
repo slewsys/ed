@@ -44,13 +44,13 @@
       int _subs;                                                              \
       if (*(ed)->input == '!')                                                \
         {                                                                     \
-          if (!((fn) = shell_command (&(len), &_subs, (ed))))                 \
+          if (!((fn) = expand_shell_command (&(len), &_subs, (ed))))          \
             {                                                                 \
               /* EOF should always flag an error here. */                     \
               clearerr (stdin);                                               \
               return ERR;                                                     \
             }                                                                 \
-          if (_subs && !((ed)->exec->opt & SCRIPTED))                         \
+          if (_subs /* && !((ed)->exec->opt & SCRIPTED) */)                   \
             puts ((fn) + 1);                                                  \
         }                                                                     \
       else if (!((fn) =                                                       \

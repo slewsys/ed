@@ -864,20 +864,26 @@ void activate_signals __P ((void));
 int address_offset __P ((off_t *, ed_buffer_t *));
 int address_range __P ((ed_buffer_t *));
 ed_buffer_t *alloc_ed_buffer __P ((void));
+
 #ifdef WANT_ED_REGISTER
 int append_from_register __P ((off_t, ed_buffer_t *));
 #endif
+
 int append_lines __P ((off_t, ed_buffer_t *));
+
 #ifdef WANT_SCRIPT_FLAGS
 int append_script_expression __P ((const char *, ed_buffer_t *));
 int append_script_file __P ((char *, ed_buffer_t *));
 #endif
+
 ed_line_node_t *append_line_node __P ((size_t, off_t, off_t,
                                        ed_buffer_t *));
 ed_text_node_t *append_text_node __P ((ed_text_node_t *, const char *, size_t));
+
 #ifdef WANT_ED_REGISTER
 int append_to_register __P ((off_t, off_t, int, ed_buffer_t *));
 #endif
+
 ed_undo_node_t *append_undo_node __P ((int, off_t, off_t, ed_buffer_t *));
 int close_ed_buffer __P ((ed_buffer_t *));
 int copy_lines __P ((off_t, off_t, off_t, ed_buffer_t *));
@@ -888,11 +894,14 @@ int delete_lines __P ((off_t, off_t, ed_buffer_t *));
 int display_lines __P ((off_t, off_t, unsigned int, ed_buffer_t *));
 int exec_command __P ((ed_buffer_t *));
 int exec_global __P ((unsigned, ed_buffer_t *));
+char *expand_shell_command __P ((size_t *, int *, ed_buffer_t *));
 char *file_glob __P ((size_t *, int, int, ed_buffer_t *));
 char *file_name __P ((size_t *, ed_buffer_t *));
+
 #ifdef WANT_EXTERNAL_FILTER
 int filter_lines __P ((off_t, off_t, const char *, ed_buffer_t *));
 #endif
+
 char *get_buffer_line __P ((const ed_line_node_t *, ed_buffer_t *));
 regex_t *get_compiled_regex __P ((unsigned, int, ed_buffer_t *));
 char *get_extended_line __P ((size_t *, int, ed_buffer_t *));
@@ -913,30 +922,37 @@ void init_global_queue __P ((ed_global_node_t **, ed_line_node_t **,
 #ifdef WANT_ED_REGISTER
 int init_register_queue __P ((int, ed_buffer_t *));
 #endif
+
 int init_signal_handler __P ((ed_buffer_t *));
 int init_stdio __P ((ed_buffer_t *));
 void init_substitute __P ((regex_t **, unsigned *, off_t *, off_t *,
                            unsigned *, struct ed_substitute *));
 void init_text_deque __P ((ed_text_node_t *));
 void init_undo_queue __P ((ed_undo_node_t **, ed_buffer_t *));
+
 #ifdef WANT_ED_REGISTER
 int inter_register_copy __P ((int, ed_buffer_t *));
 int inter_register_move __P ((int, ed_buffer_t *));
 #endif
+
 int join_lines __P ((off_t, off_t, ed_buffer_t *));
 int mark_global_nodes __P ((int, ed_buffer_t *));
 int mark_line_node __P ((const ed_line_node_t *, int, ed_buffer_t *));
 int move_lines __P ((off_t, off_t, off_t, ed_buffer_t *));
 int next_address __P ((off_t *, ed_buffer_t *));
 int one_time_init __P ((int, char **, ed_buffer_t *));
+
 #ifdef WANT_ED_MACRO
 int pop_stack_frame __P ((ed_buffer_t *));
 #endif
+
 char *pop_text_node __P ((ed_text_node_t *, size_t *));
 char *put_buffer_line __P ((const char *, size_t, ed_buffer_t *));
+
 #ifdef WANT_ED_MACRO
 int push_stack_frame __P ((ed_buffer_t *));
 #endif
+
 void quit __P ((int, ed_buffer_t *));
 int read_file __P ((const char *, off_t, off_t *, off_t *, int,
                     ed_buffer_t *));
@@ -947,9 +963,11 @@ void *realloc_buffer __P ((void **, size_t *, size_t, ed_buffer_t *));
 char *regular_expression __P ((unsigned, size_t *, ed_buffer_t *));
 int reopen_ed_buffer __P ((ed_buffer_t *));
 void reset_global_queue __P ((ed_buffer_t *));
+
 #ifdef WANT_ED_REGISTER
 int reset_register_queue __P ((int, ed_buffer_t *));
 #endif
+
 void reset_undo_queue __P ((ed_buffer_t *));
 int resubstitute __P ((off_t *, off_t *, unsigned *, unsigned *,
                                 ed_buffer_t *));
@@ -958,13 +976,13 @@ void save_substitute __P ((regex_t *, unsigned, off_t, off_t, unsigned,
 #ifdef WANT_ED_MACRO
 int script_from_register  __P ((ed_buffer_t *));
 #endif
+
 int scroll_forward __P ((off_t, off_t, unsigned int, ed_buffer_t *));
 
 #ifdef WANT_FILE_LOCK
 int set_file_lock __P ((FILE *, int));
 #endif
 
-char *shell_command __P ((size_t *, int *, ed_buffer_t *));
 char *shift_text_node __P ((ed_text_node_t *, size_t *));
 void signal_handler __P ((int));
 void spl0 __P ((void));
@@ -975,9 +993,11 @@ int substitution_lhs __P ((regex_t **, unsigned *, ed_buffer_t *));
 int substitution_rhs __P ((off_t *, off_t *, unsigned *, unsigned *,
                            ed_buffer_t *));
 int undo_last_command __P ((ed_buffer_t *));
+
 #ifdef WANT_ED_MACRO
 int unwind_stack_frame __P ((int, ed_buffer_t *));
 #endif
+
 void unmark_line_node __P ((const ed_line_node_t *, ed_buffer_t *));
 int write_file __P ((const char *, int, off_t, off_t, off_t *, off_t *,
                      const char *, ed_buffer_t *));

@@ -680,10 +680,10 @@ character_class (s, ed)
 }
 
 
-/* shell_command: Get shell command from command buffer; return
+/* expand_shell_command: Get shell command from command buffer; return
    substitution status. */
 char *
-shell_command (len, subs, ed)
+expand_shell_command (len, subs, ed)
      size_t *len;               /* Shell command length */
      int *subs;                 /* Substitution count */
      ed_buffer_t *ed;
@@ -725,12 +725,13 @@ shell_command (len, subs, ed)
         break;
       case '%':
 
-        /*  Substitute '%%' with ed->exec->file_script. */
-        if (*(xl + 1) == '%')
+        /*  Substitute '%-' with ed->exec->file_script. */
+        if (*(xl + 1) == '-')
           {
             fn = ed->exec->file_script ? ed->exec->file_script : "stdin";
             ++xl;
           }
+
         /*  Substitute '%' with ed->file_name. */
         else
           fn = ed->file->name ? ed->file->name : "";

@@ -1,3 +1,8 @@
+2018-07-30  Andrew L. Moore  <alm@slewsys.org>
+
+	* src/exec.c (FILE_NAME): Print shell command expansion even when
+	scripting.
+
 2018-07-29  Andrew L. Moore  <alm@slewsys.org>
 
 	* src/main.c (main): Check for option `-' with strcmp(3).
