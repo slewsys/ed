@@ -1,5 +1,7 @@
 2018-07-31  Andrew L. Moore  <alm@slewsys.org>
 
+	* src/glbl.c: Empty command list equivalent to `p' command.
+
 	* src/exec.c (newline_cmd): Newline in global command does not
 	print in POSIX mode.
 

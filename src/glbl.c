@@ -91,6 +91,11 @@ exec_global (io_f, ed)
       clearerr (stdin);
       return status;
     }
+
+  /* Empty command list equivalent to `p' command per SUSv4. */
+  if (strlen (ed->input) == 1 && *ed->input == '\n')
+    ed->input = "p\n";
+
   for (ed->exec->first_pass = 1; (lp = next_global_node (ed));
        ed->input = gcb, ed->exec->first_pass = 0)
     {
