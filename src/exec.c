@@ -413,6 +413,10 @@ c_cmd (ed)
   spl0 ();
   if ((status = append_lines (ed->state->dot, ed)) < 0)
     return status;
+
+  /* Per SUSv4, 2013, empty change sets dot to address after deleted lines. */
+  if (ed->state->dot < ed->exec->region->start)
+    ed->state->dot = min (ed->state->lines, ed->exec->region->start);
   return io_f;
 }
 
