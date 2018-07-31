@@ -2,6 +2,7 @@
 
 	* src/page.c (display_lines): Handle printing of line that exceeds
 	page size like scrolling. Avoid spurious newlines.
+	(scroll_lines): Split of print and scroll functions.
 
 	* src/exec.c (FILE_NAME): Print shell command expansion even when
 	scripting.

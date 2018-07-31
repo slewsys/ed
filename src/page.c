@@ -382,6 +382,7 @@ put_tty_line (lp, addr, io_f, ed)
   char *cp, *s;
   size_t col = 0;
   size_t i = 0;
+  int len = 0;
   unsigned int sgr_len = 0;     /* length of ANSI sgr sequence */
   int form_feed = 0;
 
@@ -503,20 +504,26 @@ put_tty_line (lp, addr, io_f, ed)
                       && strlen (s) > 1))))
 
         {
-          if ((io_f & LIST))
-            puts ("\\\n");
+          if ((io_f & LIST) && putchar ('\\') < 0 || putchar ('\n') < 0)
+            return ERR;
           col = 0;
         }
     }
 
-  if (!(io_f & LIST) && col < ed->display->ws_col
-      && s[strlen (s) - 1] != '\n' && putchar ('\n') < 0)
-    return ERR;
-  else if ((io_f & LIST))
+  switch (io_f & LIST)
     {
-        puts ("$\n");
+    case LIST:
+      if (putchar ('$') < 0 || putchar ('\n') < 0)
+        return ERR;
+      break;
+    default:
+      len = strlen (s);
+      if (col < ed->display->ws_col && (!len || *(s + len - 1) != '\n'))
+        if (putchar ('\n') < 0)
+          return ERR;
+      break;
     }
-  return 0;
+   return 0;
 }
 
 
