@@ -379,7 +379,7 @@ put_tty_line (lp, addr, io_f, ed)
   off_t n;
   ed_frame_node_t *rp;
   char line_no[OFF_T_LEN + TAB_WIDTH + 1];
-  char *cp, *s;
+  char *cp, *es, *s;
   size_t col = 0;
   size_t i = 0;
   int len = 0;
@@ -475,7 +475,8 @@ put_tty_line (lp, addr, io_f, ed)
            */
           if (*s && (cp = strchr (control_char, (unsigned) *s)))
             {
-              if (puts (escape_sequence[cp - control_char]) < 0)
+              es = escape_sequence[cp - control_char];
+              if (putchar (es[0]) < 0 || putchar (es[1]) < 0)
                 return ERR;
               col += 2;
             }
@@ -687,8 +688,8 @@ put_frame_buffer_line (lp, addr, io_f, fb, ed)
        * otherwise, split lines at the right margin, which starts one
        * tab stop from the right edge of the window.
        */
-      if ((col >= fb->columns && fb->rem_chars > 1)
-          || ((io_f & LIST)
+      if (/* (col >= fb->columns && fb->rem_chars > 1)
+           * || */ ((io_f & LIST)
               && ((!isalnum ((unsigned) *s)
                    && col >= fb->columns - (RIGHT_MARGIN << 1)
                    && fb->rem_chars > 2)

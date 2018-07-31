@@ -841,7 +841,7 @@ l_cmd (ed)
     return status;
   COMMAND_SUFFIX (io_f, ed);
   return display_lines (ed->exec->region->start,
-                        ed->exec->region->end, io_f | LIST, ed);
+                        ed->exec->region->end, LIST, ed);
 }
 
 static int
@@ -927,7 +927,7 @@ n_cmd (ed)
     return status;
   COMMAND_SUFFIX (io_f, ed);
   return display_lines (ed->exec->region->start,
-                        ed->exec->region->end, io_f | NMBR, ed);
+                        ed->exec->region->end, NMBR, ed);
 }
 
 static int
@@ -968,7 +968,7 @@ p_cmd (ed)
     return status;
   COMMAND_SUFFIX (io_f, ed);
   return display_lines (ed->exec->region->start,
-                        ed->exec->region->end, io_f | PRNT, ed);
+                        ed->exec->region->end, PRNT, ed);
 }
 
 static int
