@@ -409,6 +409,7 @@ substitute_lines (from, to, re, s_nth, s_mod, s_f, ed)
      ed_buffer_t *ed;
 {
   ed_line_node_t *lp;
+  ed_line_node_t *mp;
   ed_undo_node_t *up;
   char *s;
   char *txt;
@@ -448,8 +449,9 @@ substitute_lines (from, to, re, s_nth, s_mod, s_f, ed)
                   spl0 ();
                   return ERR;
                 }
-              lp = get_line_node (ed->state->dot, ed);
-              APPEND_UNDO_NODE (lp, up, ed->state->dot, ed);
+              mp = get_line_node (ed->state->dot, ed);
+              transfer_marks (mp, lp, ed);
+              APPEND_UNDO_NODE (mp, up, ed->state->dot, ed);
             }
           while (txt != eot);
           ++nsubs;

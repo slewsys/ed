@@ -266,9 +266,7 @@ mark_line_node (lp, n, ed)
 }
 
 
-/*
- * get_marked_node_address: Get address of a marked line. Return status.
- */
+/* get_marked_node_address: Get address of a marked line. Return status. */
 int
 get_marked_node_address (n, addr, ed)
      int n;
@@ -281,6 +279,24 @@ get_marked_node_address (n, addr, ed)
       return ERR;
     }
   return get_line_node_address (ed->core->mark[n - 'a'], addr, ed);
+}
+
+
+/* transfer_marks: Transfer marks from line node lp to mp. */
+void
+transfer_marks (mp, lp, ed)
+     const ed_line_node_t *mp;
+     const ed_line_node_t *lp;
+     ed_buffer_t *ed;
+{
+  int n = 25;
+
+  do
+    {
+      if (ed->core->mark[n] == lp)
+        ed->core->mark[n] = (ed_line_node_t *) mp;
+    }
+  while (n--);
 }
 
 

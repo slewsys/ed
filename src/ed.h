@@ -992,6 +992,8 @@ int substitute_lines __P ((off_t, off_t, regex_t *, off_t, off_t, unsigned,
 int substitution_lhs __P ((regex_t **, unsigned *, ed_buffer_t *));
 int substitution_rhs __P ((off_t *, off_t *, unsigned *, unsigned *,
                            ed_buffer_t *));
+void transfer_marks __P ((const ed_line_node_t *, const ed_line_node_t *,
+                          ed_buffer_t *));
 int undo_last_command __P ((ed_buffer_t *));
 
 #ifdef WANT_ED_MACRO
