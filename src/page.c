@@ -497,13 +497,13 @@ put_tty_line (lp, addr, io_f, ed)
        * otherwise, split lines at the right margin, which starts one
        * tab stop from the right edge of the window.
        */
-      if (/* col >= ed->display->ws_col
-           * || */ ((io_f & LIST)
+      if (!(ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL))
+            && (io_f & LIST)
               && ((!isalnum ((unsigned) *s)
                    && col >= ed->display->ws_col - (RIGHT_MARGIN << 1)
                    && strlen (s) > 2)
                   || (col >= ed->display->ws_col - RIGHT_MARGIN
-                      && strlen (s) > 1))))
+                      && strlen (s) > 1)))
 
         {
           if ((io_f & LIST) && ((putchar ('\\') < 0 || putchar ('\n') < 0)))
