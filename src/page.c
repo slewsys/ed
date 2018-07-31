@@ -443,6 +443,7 @@ put_tty_line (lp, addr, io_f, ed)
 
   if (!(s = get_buffer_line (lp, ed)))
     return ERR;
+  len = strlen (s);
 
   for (; *s; ++s)
     {
@@ -495,8 +496,8 @@ put_tty_line (lp, addr, io_f, ed)
        * otherwise, split lines at the right margin, which starts one
        * tab stop from the right edge of the window.
        */
-      if (col >= ed->display->ws_col
-          || ((io_f & LIST)
+      if (/* col >= ed->display->ws_col
+           * || */ ((io_f & LIST)
               && ((!isalnum ((unsigned) *s)
                    && col >= ed->display->ws_col - (RIGHT_MARGIN << 1)
                    && strlen (s) > 2)
@@ -504,26 +505,17 @@ put_tty_line (lp, addr, io_f, ed)
                       && strlen (s) > 1))))
 
         {
-          if ((io_f & LIST) && putchar ('\\') < 0 || putchar ('\n') < 0)
+          if ((io_f & LIST) && ((putchar ('\\') < 0 || putchar ('\n') < 0)))
             return ERR;
           col = 0;
         }
     }
 
-  switch (io_f & LIST)
-    {
-    case LIST:
-      if (putchar ('$') < 0 || putchar ('\n') < 0)
-        return ERR;
-      break;
-    default:
-      len = strlen (s);
-      if (col < ed->display->ws_col && (!len || *(s + len - 1) != '\n'))
-        if (putchar ('\n') < 0)
-          return ERR;
-      break;
-    }
-   return 0;
+  if ((io_f & LIST) && putchar ('$') < 0)
+    return ERR;
+  else if (putchar ('\n') < 0)
+    return ERR;
+  return 0;
 }
 
 
