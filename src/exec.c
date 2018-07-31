@@ -1677,11 +1677,16 @@ newline_cmd (ed)
   int status = 0;               /* Return status */
 
   /* case '\n': */
-  addr = (ed->state->dot + (ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL) ? 1
-                            : !ed->exec->global));
+  addr = ed->state->dot + !ed->exec->global;
   if ((status = is_valid_range (ed->exec->region->start = 1, addr, ed)) < 0)
     return status;
-  return display_lines (ed->exec->region->end, ed->exec->region->end, 0, ed);
+
+  /* Per SUSv4, newline in global command is null command.  */
+  if (!ed->exec->global
+      && (status = display_lines (ed->exec->region->end,
+                                  ed->exec->region->end, 0, ed)) < 0)
+    return status;
+  return 0;
 }
 
 static int

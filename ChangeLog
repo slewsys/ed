@@ -1,5 +1,8 @@
 2018-07-31  Andrew L. Moore  <alm@slewsys.org>
 
+	* src/exec.c (newline_cmd): Newline in global command does not
+	print in POSIX mode.
+
 	* src/cmds.c (transfer_marks): Preserve line node marks across
 	substitutions.
 
