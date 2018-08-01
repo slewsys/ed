@@ -750,7 +750,13 @@ h_cmd (ed)
       return ERR;
     }
   COMMAND_SUFFIX (io_f, ed);
-  puts (ed->exec->err ? ed->exec->err : _("No previous error"));
+  if (ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL))
+    {
+      if (ed->exec->err)
+        puts (ed->exec->err);
+    }
+  else
+    puts (ed->exec->err ? ed->exec->err : _("No previous error"));
   return io_f;
 }
 
