@@ -38,7 +38,8 @@ resubstitute (s_nth, s_mod, s_f, sgpr_f, ed)
   int g_f = 0;                  /* Set if global toggled - e.g. `sg' */
 
   /* Return unless ed->input contains short-form substitution. */
-  if (!strchr (SGPR_CHARS, (unsigned) *ed->input))
+  if ((ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL))
+      || !strchr (SGPR_CHARS, (unsigned) *ed->input))
     return 0;
 
   *sgpr_f = SGPR;               /* Flag short-form substitution. */

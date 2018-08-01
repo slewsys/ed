@@ -1,3 +1,8 @@
+2018-08-01  Andrew L. Moore  <alm@slewsys.org>
+
+	* src/sub.c (resubstitute): Condition extended short-form
+	substitution characters on POSIXLY_CORRECT and TRADITIONAL flags.
+
 2018-07-31  Andrew L. Moore  <alm@slewsys.org>
 
 	* src/glbl.c: Empty command list equivalent to `p' command.
