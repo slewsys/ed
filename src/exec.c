@@ -1688,7 +1688,7 @@ newline_cmd (ed)
     return status;
 
   /* Per SUSv4, newline in global command is null command.  */
-  if (!ed->exec->global
+  if ((!ed->exec->global || ed->exec->region->addrs)
       && (status = display_lines (ed->exec->region->end,
                                   ed->exec->region->end, 0, ed)) < 0)
     return status;
