@@ -1,5 +1,7 @@
 2018-08-02  Andrew L. Moore  <alm@slewsys.org>
 
+	* src/cmds.c (append_lines): Gobble newline away from global command.
+
 	* src/exec.c (newline_cmd): Newline in global command can
 	print if given an address per SUSv4.
 

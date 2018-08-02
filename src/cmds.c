@@ -47,7 +47,10 @@ append_lines (after, ed)
       else if (*ed->input == '\0')
         return 0;
       if (*ed->input == '.' && *(ed->input + 1) == '\n')
-        return 0;
+        {
+          ed->input++;
+          return 0;
+        }
       if (ed->exec->global)
         {
           for (s = ed->input; *s++ != '\n';)
