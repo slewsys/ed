@@ -76,6 +76,7 @@ exec_global (ed)
   size_t len;
   int first_time = 1;
   int interactive = ed->exec->global & GLBI;
+  int saved_io_f = ed->display->io_f;
   int status;
 
   reset_undo_queue (ed);
@@ -98,21 +99,23 @@ exec_global (ed)
   for (ed->exec->first_pass = 1; (lp = next_global_node (ed));
        ed->input = gcb, ed->exec->first_pass = 0)
     {
-      if ((status = get_line_node_address (lp, &ed->state->dot, ed)) < 0
-          || (interactive
-              && (status = display_lines (ed->state->dot,
-                                          ed->state->dot, ed)) < 0))
+      if ((status = get_line_node_address (lp, &ed->state->dot, ed)) < 0)
         return status;
 
-      /* If `G/V' command, then read from stdin. */
-      if (interactive
-          && (!(ed->input = get_stdin_line (&len, ed))
-              || !(ed->input = get_extended_line (&len, 0, ed))))
+      else if (interactive)
         {
-          /* For an interactive global command, permit EOF to cancel. */
-          status = feof (stdin) ? 0 : ERR;
-          clearerr (stdin);
-          return status;
+          ed->display->io_f = PRNT;
+          if ((status = display_lines (ed->state->dot,
+                                       ed->state->dot, ed)) < 0)
+            return status;
+          else if (!(ed->input = get_stdin_line (&len, ed))
+              || !(ed->input = get_extended_line (&len, 0, ed)))
+            {
+              /* For an interactive global command, permit EOF to cancel. */
+              status = feof (stdin) ? 0 : ERR;
+              clearerr (stdin);
+              return status;
+            }
         }
 
       /* Global non-interactive command already set. */
@@ -149,7 +152,7 @@ exec_global (ed)
                                             ed->state->dot, ed)) < 0))
           return status;
     }
-  return 0;
+  return saved_io_f;
 }
 
 
