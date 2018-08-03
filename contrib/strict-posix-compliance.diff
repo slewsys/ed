@@ -1,8 +1,8 @@
 diff --git a/src/exec.c b/src/exec.c
-index c0a0b4a..3c8cce2 100644
+index b5d3894..788b69e 100644
 --- a/src/exec.c
 +++ b/src/exec.c
-@@ -742,13 +742,17 @@ h_cmd (ed)
+@@ -741,13 +741,17 @@ h_cmd (ed)
        return ERR;
      }
    COMMAND_SUFFIX (ed->display->io_f, ed);
@@ -25,7 +25,7 @@ index c0a0b4a..3c8cce2 100644
    return ed->display->io_f;
  }
  
-@@ -838,10 +842,12 @@ l_cmd (ed)
+@@ -837,10 +841,12 @@ l_cmd (ed)
    else if ((status = is_valid_range (ed->state->dot, ed->state->dot, ed)) < 0)
      return status;
    COMMAND_SUFFIX (ed->display->io_f, ed);
@@ -41,7 +41,7 @@ index c0a0b4a..3c8cce2 100644
    return display_lines (ed->exec->region->start,
                          ed->exec->region->end, ed);
  }
-@@ -926,10 +932,12 @@ n_cmd (ed)
+@@ -925,10 +931,12 @@ n_cmd (ed)
             < 0)
      return status;
    COMMAND_SUFFIX (ed->display->io_f, ed);
@@ -57,7 +57,7 @@ index c0a0b4a..3c8cce2 100644
    return display_lines (ed->exec->region->start,
                          ed->exec->region->end, ed);
  }
-@@ -968,10 +976,12 @@ p_cmd (ed)
+@@ -967,10 +975,12 @@ p_cmd (ed)
    else if ((status = is_valid_range (ed->state->dot, ed->state->dot, ed)) < 0)
      return status;
    COMMAND_SUFFIX (ed->display->io_f, ed);
@@ -73,7 +73,7 @@ index c0a0b4a..3c8cce2 100644
    return display_lines (ed->exec->region->start,
                          ed->exec->region->end, ed);
  }
-@@ -1387,9 +1397,11 @@ w_cmd (ed)
+@@ -1386,9 +1396,11 @@ w_cmd (ed)
             * Per SUSv4, exit_status cannot be reset. We'll do it
             * anyhow ...
             */
@@ -88,6 +88,47 @@ index c0a0b4a..3c8cce2 100644
          }
        if (ed->file->is_glob || cy == 'n' || cy == 'p')
          printf (ed->exec->opt & SCRIPTED ? "" : "%s\n",
+diff --git a/src/page.c b/src/page.c
+index 9bc401b..a7edcae 100644
+--- a/src/page.c
++++ b/src/page.c
+@@ -494,20 +494,22 @@ put_tty_line (lp, addr, ed)
+        * for legibility; otherwise, split lines at the right margin,
+        * which starts one tab stop from the right edge of the window.
+        */
+-      if (!(ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL))
+-            && (ed->display->io_f & LIST)
+-              && ((!isalnum ((unsigned) *s)
+-                   && col >= ed->display->ws_col - (RIGHT_MARGIN << 1)
+-                   && strlen (s) > 2)
+-                  || (col >= ed->display->ws_col - RIGHT_MARGIN
+-                      && strlen (s) > 1)))
+-
+-        {
+-          if ((ed->display->io_f & LIST)
+-              && ((putchar ('\\') < 0 || putchar ('\n') < 0)))
+-            return ERR;
+-          col = 0;
+-        }
++      /*
++       * if (!(ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL))
++       *       && (ed->display->io_f & LIST)
++       *         && ((!isalnum ((unsigned) *s)
++       *              && col >= ed->display->ws_col - (RIGHT_MARGIN << 1)
++       *              && strlen (s) > 2)
++       *             || (col >= ed->display->ws_col - RIGHT_MARGIN
++       *                 && strlen (s) > 1)))
++       *
++       *   {
++       *     if ((ed->display->io_f & LIST)
++       *         && ((putchar ('\\') < 0 || putchar ('\n') < 0)))
++       *       return ERR;
++       *     col = 0;
++       *   }
++       */
+     }
+ 
+   if ((ed->display->io_f & LIST) && putchar ('$') < 0)
 diff --git a/src/sub.c b/src/sub.c
 index 3ad60ac..09cd896 100644
 --- a/src/sub.c
