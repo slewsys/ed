@@ -705,7 +705,7 @@ global_cmd (ed)
 
   if ((status = exec_global (ed)) < 0)
     return status;
-  return ed->display->io_f;
+  return 0;
 }
 
 static int
