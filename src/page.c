@@ -13,13 +13,12 @@ static int display_frame_buffer __P ((const ed_frame_buffer_t *));
 static ed_frame_node_t *dup_frame_node __P ((const ed_frame_node_t *,
                                              ed_buffer_t *));
 static int fb_putc __P ((int, ed_frame_buffer_t *, ed_buffer_t *));
-static int init_frame_buffer __P ((ed_frame_buffer_t *, int, ed_buffer_t *));
+static int init_frame_buffer __P ((ed_frame_buffer_t *, ed_buffer_t *));
 static void init_frame_node __P ((ed_frame_node_t *));
-static int put_frame_buffer_line __P ((ed_line_node_t *, off_t, unsigned,
+static int put_frame_buffer_line __P ((ed_line_node_t *, off_t,
                                        ed_frame_buffer_t *, ed_buffer_t *));
-static int put_tty_line __P ((ed_line_node_t *, off_t, unsigned,
-                              ed_buffer_t *));
-static int scroll_lines __P ((off_t, off_t, unsigned, ed_buffer_t *));
+static int put_tty_line __P ((ed_line_node_t *, off_t, ed_buffer_t *));
+static int scroll_lines __P ((off_t, off_t, ed_buffer_t *));
 static unsigned int sgr_span __P ((const char *));
 
 
@@ -41,7 +40,7 @@ static unsigned int sgr_span __P ((const char *));
       (fb)->row_i = ((fb)->row_i + 1) % ((fb)->rows - 1);                     \
       (fb)->wraps |= !(fb)->row_i;                                            \
       (fb)->is_full =                                                         \
-        (io_f & ZHFW                                                          \
+        (ed->display->io_f & ZHFW                                             \
          ? (fb)->row_i == ((fb)->fill_i + 1) % ((fb)->rows - 1)               \
          :  ((fb)->wraps && !(ok_to_wrap)));                                  \
     }                                                                         \
@@ -65,10 +64,9 @@ static unsigned int sgr_span __P ((const char *));
 
 /* display_lines: Print a range of lines. Return status (<= 0). */
 int
-display_lines (from, to, io_f, ed)
+display_lines (from, to, ed)
      off_t from;
      off_t to;
-     unsigned int io_f;         /* I/O flags */
      ed_buffer_t *ed;
 {
   static ed_frame_buffer_t frame_buffer = { 0 };
@@ -85,14 +83,14 @@ display_lines (from, to, io_f, ed)
     return 0;
 
   /* If scrolling... */
-  else if ((io_f & (ZFWD | ZBWD)))
-    return scroll_lines (from, to, io_f, ed);
+  else if ((ed->display->io_f & (ZFWD | ZBWD)))
+    return scroll_lines (from, to, ed);
 
   ep = get_line_node (INC_MOD (to, ed->state->lines), ed);
   bp = get_line_node (from, ed);
 
   for (; bp != ep; bp = bp->q_forw, ++lc)
-    if ((status = put_tty_line (bp, from + lc, io_f, ed)) < 0)
+    if ((status = put_tty_line (bp, from + lc, ed)) < 0)
       return status;
 
   /* Don't update current address until printing completed -- per bwk. */
@@ -103,10 +101,9 @@ display_lines (from, to, io_f, ed)
 
 /* display_lines: Print a range of lines. Return status (<= 0). */
 static int
-scroll_lines (from, to, io_f, ed)
+scroll_lines (from, to, ed)
      off_t from;
      off_t to;
-     unsigned int io_f;         /* I/O flags */
      ed_buffer_t *ed;
 {
   static ed_frame_buffer_t frame_buffer = { 0 };
@@ -115,7 +112,6 @@ scroll_lines (from, to, io_f, ed)
   ed_line_node_t *bp, *ep;
   off_t lc = 0;                 /* Line counter */
   size_t rem_chars = 0;         /* Remaining chars of line across pages. */
-  int flags = 0;
   int status;
 
   /* Trivially allow printing empty buffer. */
@@ -123,7 +119,7 @@ scroll_lines (from, to, io_f, ed)
     return 0;
 
   /* If not scrolling, ignore frame buffer status. */
-  if (!(io_f & (ZFWD | ZBWD)))
+  if (!(ed->display->io_f & (ZFWD | ZBWD)))
     {
       ed->display->underflow = 0;
       ed->display->overflow = 0;
@@ -133,7 +129,7 @@ scroll_lines (from, to, io_f, ed)
   bp = get_line_node (from, ed);
 
  top:
-  if ((status = init_frame_buffer (fb, io_f, ed)) < 0)
+  if ((status = init_frame_buffer (fb, ed)) < 0)
     return status;
 
   for (fb->is_full = 0; bp != ep && !fb->is_full; bp = bp->q_forw, ++lc)
@@ -144,18 +140,19 @@ scroll_lines (from, to, io_f, ed)
        * If last line of previous page was truncated while scrolling
        * forward, then resume with truncated part at top of page.
        */
-      if (/* (io_f & ZFWD) &&  */ed->display->underflow
+      if (/* (ed->display->io_f & ZFWD) &&  */ed->display->underflow
           && fb->prev_last && bp == fb->prev_last->lp)
         {
           fb->row->offset = bp->len - fb->rem_chars;
-          flags = (io_f | OFFB) & ~NMBR;
+          ed->display->io_f |= OFFB;
+          ed->display->io_f &= ~NMBR;
         }
 
       /*
        * If first line of previous page was truncated while scrolling
        * backward, then resume with truncated part at bottom of page.
        */
-      else if ((io_f & ZBWD) && ed->display->overflow
+      else if ((ed->display->io_f & ZBWD) && ed->display->overflow
                && fb->prev_first && bp == fb->prev_first->lp)
         {
           fb->rem_chars = fb->prev_first->offset;
@@ -163,43 +160,44 @@ scroll_lines (from, to, io_f, ed)
           /* Preserve length of last (source) line overflow. */
           rem_chars = bp->len - fb->rem_chars;
           fb->ff_offset = 0;
-          flags = io_f;
         }
       else
         {
           fb->rem_chars = bp->len;
           fb->ff_offset = 0;
-          flags = io_f;
         }
       if ((status =
-           put_frame_buffer_line (bp, from + lc, flags, fb, ed)) < 0)
+           put_frame_buffer_line (bp, from + lc, fb, ed)) < 0)
         return status;
       if (!fb->is_full)
-        INC_FB_ROW (io_f & ZBWD, fb);
+        INC_FB_ROW (ed->display->io_f & ZBWD, fb);
     }
 
   /* If final forward page not full, then scroll back from last line. */
-  if ((io_f & ZFWD) && to == ed->state->lines && !fb->wraps
+  if ((ed->display->io_f & ZFWD) && to == ed->state->lines && !fb->wraps
       && (ed->display->underflow || from != 1))
     {
       /* Ignore frame buffer status. */
       RESET_FB_PREV (fb, ed);
+      ed->display->io_f |= ZBWD;
+      ed->display->io_f &= ~(ZFWD | ZHFW);
       return display_lines (max (1, ed->state->lines - fb->rows + 2),
-                            ed->state->lines, (io_f | ZBWD) & ~(ZFWD | ZHFW),
-                            ed);
+                            ed->state->lines, ed);
     }
 
   /*
    * If final backward page not full, then scroll forward from first
    * line.
    */
-  if ((io_f & ZBWD) && from == 1 && !fb->wraps
+  if ((ed->display->io_f & ZBWD) && from == 1 && !fb->wraps
       && (ed->display->overflow || to != ed->state->lines))
     {
       /* Ignore frame buffer status. */
       RESET_FB_PREV (fb, ed);
-      return display_lines (1, min (ed->state->lines, fb->rows - 1),
-                            (io_f | ZFWD) & ~(ZBWD | ZHBW), ed);
+      ed->display->io_f |= ZFWD;
+      ed->display->io_f &= ~(ZBWD | ZHBW);
+      return display_lines (1, min (ed->state->lines, fb->rows - 1), ed);
+
     }
 
   spl1 ();
@@ -218,7 +216,7 @@ scroll_lines (from, to, io_f, ed)
        * of buffer as necessary, until the end point in the source
        * text is reached.
        */
-      if (io_f & ZHFW)
+      if (ed->display->io_f & ZHFW)
         {
           fb->first_i = fb->row_i;
           fb->last_i = fb->row_i ? fb->row_i - 1 : fb->rows - 2;
@@ -244,7 +242,7 @@ scroll_lines (from, to, io_f, ed)
        * Assign old prev_first `len - offset' as rem_chars to last
        * line of current page.
        */
-      if ((io_f & ZBWD))
+      if ((ed->display->io_f & ZBWD))
         fb->rem_chars = rem_chars;
 
       /*
@@ -269,7 +267,7 @@ scroll_lines (from, to, io_f, ed)
     }
   spl0 ();
 
-  if (!(io_f & (ZBWD | ZFWD)))
+  if (!(ed->display->io_f & (ZBWD | ZFWD)))
     {
       /* More lines to print. */
       if (from + lc - 1 != to && !ed->display->underflow)
@@ -292,9 +290,8 @@ scroll_lines (from, to, io_f, ed)
 
 /* Init_frame_buffer: Initialize ed_frame_buffer. */
 static int
-init_frame_buffer (fb, io_f, ed)
+init_frame_buffer (fb, ed)
      ed_frame_buffer_t *fb;
-     int io_f;
      ed_buffer_t *ed;
 {
   static char *fp = NULL;
@@ -329,7 +326,7 @@ init_frame_buffer (fb, io_f, ed)
    * Don't reset row_i if scrolling forward in half-pages. Append to
    * end of frame buffer instead.
    */
-  if (!(io_f & ZHFW))
+  if (!(ed->display->io_f & ZHFW))
     fb->row_i = 0;
   fb->fill_i = (fb->row_i + (fb->rows >> 1)) % (fb->rows - 1);
   fb->wraps = !!fb->row_i;
@@ -366,10 +363,9 @@ init_frame_node (rp)
 
 /* put_frame_buffer_line: Print text to frame buffer. */
 static int
-put_tty_line (lp, addr, io_f, ed)
+put_tty_line (lp, addr, ed)
      ed_line_node_t *lp;        /* Line node pointer */
      off_t addr;                /* Line no. */
-     unsigned io_f;             /* I/O flags */
      ed_buffer_t *ed;
 {
   static off_t lines = 0;
@@ -418,7 +414,7 @@ put_tty_line (lp, addr, io_f, ed)
     };
 
   /* Numbered output. */
-  if ((io_f & NMBR))
+  if ((ed->display->io_f & NMBR))
     {
       /* If lines has changed, update format string. */
       if (lines != ed->state->lines)
@@ -447,7 +443,8 @@ put_tty_line (lp, addr, io_f, ed)
 
   for (; *s; ++s)
     {
-      if (!(io_f & LIST) || (31 < *s && *s < 127 && *s != '\\' && *s != '$'))
+      if (!(ed->display->io_f & LIST)
+          || (31 < *s && *s < 127 && *s != '\\' && *s != '$'))
         {
 
           /*
@@ -492,13 +489,13 @@ put_tty_line (lp, addr, io_f, ed)
         }
 
       /*
-       * When listing text -- i.e., (io_f & LIST) -- first try simple
-       * heuristic to split lines on word boundaries for legibility;
-       * otherwise, split lines at the right margin, which starts one
-       * tab stop from the right edge of the window.
+       * When listing text -- i.e., (ed->display->io_f & LIST) --
+       * first try simple heuristic to split lines on word boundaries
+       * for legibility; otherwise, split lines at the right margin,
+       * which starts one tab stop from the right edge of the window.
        */
       if (!(ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL))
-            && (io_f & LIST)
+            && (ed->display->io_f & LIST)
               && ((!isalnum ((unsigned) *s)
                    && col >= ed->display->ws_col - (RIGHT_MARGIN << 1)
                    && strlen (s) > 2)
@@ -506,13 +503,14 @@ put_tty_line (lp, addr, io_f, ed)
                       && strlen (s) > 1)))
 
         {
-          if ((io_f & LIST) && ((putchar ('\\') < 0 || putchar ('\n') < 0)))
+          if ((ed->display->io_f & LIST)
+              && ((putchar ('\\') < 0 || putchar ('\n') < 0)))
             return ERR;
           col = 0;
         }
     }
 
-  if ((io_f & LIST) && putchar ('$') < 0)
+  if ((ed->display->io_f & LIST) && putchar ('$') < 0)
     return ERR;
   else if (putchar ('\n') < 0)
     return ERR;
@@ -549,10 +547,9 @@ put_tty_line (lp, addr, io_f, ed)
 
 /* put_frame_buffer_line: Print text to frame buffer. */
 static int
-put_frame_buffer_line (lp, addr, io_f, fb, ed)
+put_frame_buffer_line (lp, addr, fb, ed)
      ed_line_node_t *lp;        /* Line node pointer */
      off_t addr;                /* Line no. */
-     unsigned io_f;             /* I/O flags */
      ed_frame_buffer_t *fb;
      ed_buffer_t *ed;
 {
@@ -600,7 +597,7 @@ put_frame_buffer_line (lp, addr, io_f, fb, ed)
     };
 
   /* Numbered output. */
-  if ((io_f & NMBR))
+  if ((ed->display->io_f & NMBR))
     {
       /* If lines has changed, update format string. */
       if (lines != ed->state->lines)
@@ -623,7 +620,7 @@ put_frame_buffer_line (lp, addr, io_f, fb, ed)
 
   if (!(s = get_buffer_line (lp, ed)))
     return ERR;
-  if ((io_f & OFFB))
+  if ((ed->display->io_f & OFFB))
     s += fb->row->offset;
 
   /* Offset of paged line if form feed (\f) is split across pages. */
@@ -633,7 +630,8 @@ put_frame_buffer_line (lp, addr, io_f, fb, ed)
 
   for (; fb->rem_chars && !fb->is_full; --fb->rem_chars, ++s)
     {
-      if (!(io_f & LIST) || (31 < *s && *s < 127 && *s != '\\' && *s != '$'))
+      if (!(ed->display->io_f & LIST)
+          || (31 < *s && *s < 127 && *s != '\\' && *s != '$'))
         {
 
           /*
@@ -658,7 +656,7 @@ put_frame_buffer_line (lp, addr, io_f, fb, ed)
            * line -- indented to the current column.
            */
           if ((form_feed = (*s == '\f')))
-            INC_MOD_FB_ROW (lp, addr, io_f & ZBWD, fb);
+            INC_MOD_FB_ROW (lp, addr, ed->display->io_f & ZBWD, fb);
         }
       else
         {
@@ -683,13 +681,13 @@ put_frame_buffer_line (lp, addr, io_f, fb, ed)
         }
 
       /*
-       * When listing text -- i.e., (io_f & LIST) -- first try simple
-       * heuristic to split lines on word boundaries for legibility;
-       * otherwise, split lines at the right margin, which starts one
-       * tab stop from the right edge of the window.
+       * When listing text -- i.e., (ed->display->io_f & LIST) --
+       * first try simple heuristic to split lines on word boundaries
+       * for legibility; otherwise, split lines at the right margin,
+       * which starts one tab stop from the right edge of the window.
        */
       if ((col >= fb->columns && fb->rem_chars > 1)
-          || ((io_f & LIST)
+          || ((ed->display->io_f & LIST)
               && ((!isalnum ((unsigned) *s)
                    && col >= fb->columns - (RIGHT_MARGIN << 1)
                    && fb->rem_chars > 2)
@@ -697,25 +695,27 @@ put_frame_buffer_line (lp, addr, io_f, fb, ed)
                       && fb->rem_chars > 1))))
 
         {
-          if ((io_f & LIST))
+          if ((ed->display->io_f & LIST))
             FB_PUTS ("\\\n", fb, ed);
-          INC_MOD_FB_ROW (lp, addr, io_f & ZBWD, fb);
+          INC_MOD_FB_ROW (lp, addr, ed->display->io_f & ZBWD, fb);
           col = 0;
         }
     }
 
   if (!(rp = fb->row + fb->row_i)->text)
     FB_PUTS ("\n", fb, ed);
-  if (!(io_f & LIST) && col < fb->columns && rp->text[rp->text_i - 1] != '\n')
+  if (!(ed->display->io_f & LIST)
+      && col < fb->columns && rp->text[rp->text_i - 1] != '\n')
     FB_PUTS ("\n", fb, ed);
-  else if ((io_f & LIST) && !fb->rem_chars)
+  else if ((ed->display->io_f & LIST) && !fb->rem_chars)
     {
-      if ((io_f & (ZBWD | ZHBW)) && fb->prev_first && fb->prev_first->offset)
+      if ((ed->display->io_f & (ZBWD | ZHBW))
+          && fb->prev_first && fb->prev_first->offset)
         FB_PUTS ("\\\n", fb, ed);
       else
         FB_PUTS ("$\n", fb, ed);
     }
-  fb->ff_offset = form_feed && (io_f & ZBWD) ? col : 0;
+  fb->ff_offset = form_feed && (ed->display->io_f & ZBWD) ? col : 0;
   return 0;
 }
 

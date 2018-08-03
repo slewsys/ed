@@ -604,9 +604,9 @@ exec_macro (ed)
 
       if ((status = address_range (ed)) < 0
           || (status = exec_command (ed)) < 0
-          || (status > 0
+          || ((ed->display->io_f = status) > 0
               && (status = display_lines (ed->state->dot,
-                                          ed->state->dot, status, ed)) < 0))
+                                          ed->state->dot, ed)) < 0))
         break;
     }
 
@@ -705,7 +705,7 @@ global_cmd (ed)
 
   if ((status = exec_global (ed)) < 0)
     return status;
-  return 0;
+  return (ed->display->io_f = 0);
 }
 
 static int
@@ -842,7 +842,7 @@ l_cmd (ed)
   else
     ed->display->io_f |= LIST;
   return display_lines (ed->exec->region->start,
-                        ed->exec->region->end, ed->display->io_f, ed);
+                        ed->exec->region->end, ed);
 }
 
 static int
@@ -930,7 +930,7 @@ n_cmd (ed)
   else
     ed->display->io_f |= NMBR;
   return display_lines (ed->exec->region->start,
-                        ed->exec->region->end, ed->display->io_f, ed);
+                        ed->exec->region->end, ed);
 }
 
 static int
@@ -972,7 +972,7 @@ p_cmd (ed)
   else
     ed->display->io_f |= PRNT;
   return display_lines (ed->exec->region->start,
-                        ed->exec->region->end, ed->display->io_f, ed);
+                        ed->exec->region->end, ed);
 }
 
 static int
@@ -1141,8 +1141,8 @@ s_cmd (ed)
                                   ed->exec->region->end,
                                   lhs, s_nth, s_mod, s_f, ed)) < 0)
     return status;
-  return (sio_f && !(s_f & PRSW) ?
-          display_lines (ed->state->dot, ed->state->dot, sio_f, ed) : 0);
+  return ((ed->display->io_f = sio_f) && !(s_f & PRSW) ?
+          display_lines (ed->state->dot, ed->state->dot, ed) : 0);
 }
 
 static int
@@ -1550,7 +1550,7 @@ z_cmd (ed)
       ed->display->io_f |= ZFWD | ZHFW;
       break;
     }
-  return display_lines (ed->exec->region->end, addr, ed->display->io_f, ed);
+  return display_lines (ed->exec->region->end, addr, ed);
 }
 
 static int
@@ -1597,9 +1597,10 @@ Z_cmd (ed)
    * Display page preceding either given line or already displayed
    * page. Otherwise, display page preceding current address.
    */
+  ed->display->io_f |= ZBWD;
   return display_lines (max (1, (off_t) ed->exec->region->end -
                              ed->display->ws_row + 2),
-                        ed->exec->region->end, ed->display->io_f | ZBWD, ed);
+                        ed->exec->region->end, ed);
 }
 
 static int
@@ -1675,7 +1676,7 @@ newline_cmd (ed)
   /* Per SUSv4, newline in global command is null command.  */
   if ((!ed->exec->global || ed->exec->region->addrs)
       && (status = display_lines (ed->exec->region->end,
-                                  ed->exec->region->end, 0, ed)) < 0)
+                                  ed->exec->region->end, ed)) < 0)
     return status;
   return 0;
 }

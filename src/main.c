@@ -321,9 +321,9 @@ top:
           && (status = exec_command (ed)) >= 0)
 
         /* ... */
-        if (!status
+        if (!(ed->display->io_f = status)
             || (status = display_lines (ed->state->dot,
-                                        ed->state->dot, status, ed)) >= 0)
+                                        ed->state->dot, ed)) >= 0)
           continue;
 
     error:

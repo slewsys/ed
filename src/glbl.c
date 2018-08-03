@@ -101,7 +101,7 @@ exec_global (ed)
       if ((status = get_line_node_address (lp, &ed->state->dot, ed)) < 0
           || (interactive
               && (status = display_lines (ed->state->dot,
-                                          ed->state->dot, ed->display->io_f, ed)) < 0))
+                                          ed->state->dot, ed)) < 0))
         return status;
 
       /* If `G/V' command, then read from stdin. */
@@ -144,9 +144,9 @@ exec_global (ed)
       for (ed->input = gcb; *ed->input;)
         if ((status = address_range (ed)) < 0
             || (status = exec_command (ed)) < 0
-            || (status > 0
+            || ((ed->display->io_f = status) > 0
                 && (status = display_lines (ed->state->dot,
-                                            ed->state->dot, status, ed)) < 0))
+                                            ed->state->dot, ed)) < 0))
           return status;
     }
   return 0;

@@ -892,7 +892,7 @@ int create_disk_buffer __P ((FILE **, char **, ed_buffer_t *));
 void delete_global_nodes __P ((const ed_line_node_t *, const ed_line_node_t *,
                                ed_buffer_t *));
 int delete_lines __P ((off_t, off_t, ed_buffer_t *));
-int display_lines __P ((off_t, off_t, unsigned int, ed_buffer_t *));
+int display_lines __P ((off_t, off_t, ed_buffer_t *));
 int exec_command __P ((ed_buffer_t *));
 int exec_global __P ((ed_buffer_t *));
 char *expand_shell_command __P ((size_t *, int *, ed_buffer_t *));
