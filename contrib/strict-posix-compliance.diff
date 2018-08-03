@@ -1,17 +1,8 @@
 diff --git a/src/exec.c b/src/exec.c
-index 40393ef..d8ecf56 100644
+index c0a0b4a..3c8cce2 100644
 --- a/src/exec.c
 +++ b/src/exec.c
-@@ -705,7 +705,7 @@ global_cmd (ed)
- 
-   if ((status = exec_global (ed)) < 0)
-     return status;
--  return (ed->diplay->io_f = 0);
-+  return (ed->display->io_f = 0);
- }
- 
- static int
-@@ -741,13 +741,17 @@ h_cmd (ed)
+@@ -742,13 +742,17 @@ h_cmd (ed)
        return ERR;
      }
    COMMAND_SUFFIX (ed->display->io_f, ed);
@@ -34,7 +25,7 @@ index 40393ef..d8ecf56 100644
    return ed->display->io_f;
  }
  
-@@ -837,10 +841,12 @@ l_cmd (ed)
+@@ -838,10 +842,12 @@ l_cmd (ed)
    else if ((status = is_valid_range (ed->state->dot, ed->state->dot, ed)) < 0)
      return status;
    COMMAND_SUFFIX (ed->display->io_f, ed);
@@ -50,7 +41,7 @@ index 40393ef..d8ecf56 100644
    return display_lines (ed->exec->region->start,
                          ed->exec->region->end, ed);
  }
-@@ -925,10 +931,12 @@ n_cmd (ed)
+@@ -926,10 +932,12 @@ n_cmd (ed)
             < 0)
      return status;
    COMMAND_SUFFIX (ed->display->io_f, ed);
@@ -66,7 +57,7 @@ index 40393ef..d8ecf56 100644
    return display_lines (ed->exec->region->start,
                          ed->exec->region->end, ed);
  }
-@@ -967,10 +975,12 @@ p_cmd (ed)
+@@ -968,10 +976,12 @@ p_cmd (ed)
    else if ((status = is_valid_range (ed->state->dot, ed->state->dot, ed)) < 0)
      return status;
    COMMAND_SUFFIX (ed->display->io_f, ed);
@@ -82,7 +73,7 @@ index 40393ef..d8ecf56 100644
    return display_lines (ed->exec->region->start,
                          ed->exec->region->end, ed);
  }
-@@ -1386,9 +1396,11 @@ w_cmd (ed)
+@@ -1387,9 +1397,11 @@ w_cmd (ed)
             * Per SUSv4, exit_status cannot be reset. We'll do it
             * anyhow ...
             */
@@ -97,115 +88,6 @@ index 40393ef..d8ecf56 100644
          }
        if (ed->file->is_glob || cy == 'n' || cy == 'p')
          printf (ed->exec->opt & SCRIPTED ? "" : "%s\n",
-diff --git a/src/page.c b/src/page.c
-index 5b04519..a7edcae 100644
---- a/src/page.c
-+++ b/src/page.c
-@@ -40,7 +40,7 @@ static unsigned int sgr_span __P ((const char *));
-       (fb)->row_i = ((fb)->row_i + 1) % ((fb)->rows - 1);                     \
-       (fb)->wraps |= !(fb)->row_i;                                            \
-       (fb)->is_full =                                                         \
--        (ed->display->io_f & ZHFW                                                          \
-+        (ed->display->io_f & ZHFW                                             \
-          ? (fb)->row_i == ((fb)->fill_i + 1) % ((fb)->rows - 1)               \
-          :  ((fb)->wraps && !(ok_to_wrap)));                                  \
-     }                                                                         \
-@@ -443,7 +443,8 @@ put_tty_line (lp, addr, ed)
- 
-   for (; *s; ++s)
-     {
--      if (!(ed->display->io_f & LIST) || (31 < *s && *s < 127 && *s != '\\' && *s != '$'))
-+      if (!(ed->display->io_f & LIST)
-+          || (31 < *s && *s < 127 && *s != '\\' && *s != '$'))
-         {
- 
-           /*
-@@ -488,24 +489,27 @@ put_tty_line (lp, addr, ed)
-         }
- 
-       /*
--       * When listing text -- i.e., (ed->display->io_f & LIST) -- first try simple
--       * heuristic to split lines on word boundaries for legibility;
--       * otherwise, split lines at the right margin, which starts one
--       * tab stop from the right edge of the window.
-+       * When listing text -- i.e., (ed->display->io_f & LIST) --
-+       * first try simple heuristic to split lines on word boundaries
-+       * for legibility; otherwise, split lines at the right margin,
-+       * which starts one tab stop from the right edge of the window.
-+       */
-+      /*
-+       * if (!(ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL))
-+       *       && (ed->display->io_f & LIST)
-+       *         && ((!isalnum ((unsigned) *s)
-+       *              && col >= ed->display->ws_col - (RIGHT_MARGIN << 1)
-+       *              && strlen (s) > 2)
-+       *             || (col >= ed->display->ws_col - RIGHT_MARGIN
-+       *                 && strlen (s) > 1)))
-+       *
-+       *   {
-+       *     if ((ed->display->io_f & LIST)
-+       *         && ((putchar ('\\') < 0 || putchar ('\n') < 0)))
-+       *       return ERR;
-+       *     col = 0;
-+       *   }
-        */
--      if (!(ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL))
--            && (ed->display->io_f & LIST)
--              && ((!isalnum ((unsigned) *s)
--                   && col >= ed->display->ws_col - (RIGHT_MARGIN << 1)
--                   && strlen (s) > 2)
--                  || (col >= ed->display->ws_col - RIGHT_MARGIN
--                      && strlen (s) > 1)))
--
--        {
--          if ((ed->display->io_f & LIST) && ((putchar ('\\') < 0 || putchar ('\n') < 0)))
--            return ERR;
--          col = 0;
--        }
-     }
- 
-   if ((ed->display->io_f & LIST) && putchar ('$') < 0)
-@@ -628,7 +632,8 @@ put_frame_buffer_line (lp, addr, fb, ed)
- 
-   for (; fb->rem_chars && !fb->is_full; --fb->rem_chars, ++s)
-     {
--      if (!(ed->display->io_f & LIST) || (31 < *s && *s < 127 && *s != '\\' && *s != '$'))
-+      if (!(ed->display->io_f & LIST)
-+          || (31 < *s && *s < 127 && *s != '\\' && *s != '$'))
-         {
- 
-           /*
-@@ -678,10 +683,10 @@ put_frame_buffer_line (lp, addr, fb, ed)
-         }
- 
-       /*
--       * When listing text -- i.e., (ed->display->io_f & LIST) -- first try simple
--       * heuristic to split lines on word boundaries for legibility;
--       * otherwise, split lines at the right margin, which starts one
--       * tab stop from the right edge of the window.
-+       * When listing text -- i.e., (ed->display->io_f & LIST) --
-+       * first try simple heuristic to split lines on word boundaries
-+       * for legibility; otherwise, split lines at the right margin,
-+       * which starts one tab stop from the right edge of the window.
-        */
-       if ((col >= fb->columns && fb->rem_chars > 1)
-           || ((ed->display->io_f & LIST)
-@@ -701,11 +706,13 @@ put_frame_buffer_line (lp, addr, fb, ed)
- 
-   if (!(rp = fb->row + fb->row_i)->text)
-     FB_PUTS ("\n", fb, ed);
--  if (!(ed->display->io_f & LIST) && col < fb->columns && rp->text[rp->text_i - 1] != '\n')
-+  if (!(ed->display->io_f & LIST)
-+      && col < fb->columns && rp->text[rp->text_i - 1] != '\n')
-     FB_PUTS ("\n", fb, ed);
-   else if ((ed->display->io_f & LIST) && !fb->rem_chars)
-     {
--      if ((ed->display->io_f & (ZBWD | ZHBW)) && fb->prev_first && fb->prev_first->offset)
-+      if ((ed->display->io_f & (ZBWD | ZHBW))
-+          && fb->prev_first && fb->prev_first->offset)
-         FB_PUTS ("\\\n", fb, ed);
-       else
-         FB_PUTS ("$\n", fb, ed);
 diff --git a/src/sub.c b/src/sub.c
 index 3ad60ac..09cd896 100644
 --- a/src/sub.c
