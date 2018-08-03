@@ -705,7 +705,8 @@ global_cmd (ed)
 
   if ((status = exec_global (ed)) < 0)
     return status;
-  return (ed->display->io_f = 0);
+  ed->display->io_f = c == 'G' || c == 'V' ? PRNT : 0;
+  return ed->display->io_f;
 }
 
 static int

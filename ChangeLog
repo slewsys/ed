@@ -1,7 +1,9 @@
 2018-08-03  Andrew L. Moore  <alm@slewsys.org>
 
-	* src/exec.c (global_cmd): Reset flag `io_f' before return to
-	avoid printing spurious line.  Move flag `io_f' to struct `ed_display'.
+	* src/exec.c (global_cmd): Reset flag `io_f' before return in case
+	of non-interactive global commands (i.e., `g' and `v'). Set to
+	PRNT in case of interactive commands (`G' and `V') to indicate
+	command completion. Move flag `io_f' to struct `ed_display'.
 
 2018-08-02  Andrew L. Moore  <alm@slewsys.org>
 
