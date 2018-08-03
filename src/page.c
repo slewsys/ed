@@ -688,8 +688,8 @@ put_frame_buffer_line (lp, addr, io_f, fb, ed)
        * otherwise, split lines at the right margin, which starts one
        * tab stop from the right edge of the window.
        */
-      if (/* (col >= fb->columns && fb->rem_chars > 1)
-           * || */ ((io_f & LIST)
+      if ((col >= fb->columns && fb->rem_chars > 1)
+          || ((io_f & LIST)
               && ((!isalnum ((unsigned) *s)
                    && col >= fb->columns - (RIGHT_MARGIN << 1)
                    && fb->rem_chars > 2)

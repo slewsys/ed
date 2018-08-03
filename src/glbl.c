@@ -66,8 +66,7 @@ mark_global_nodes (want_match, ed)
  *   queue. Return command status.
  */
 int
-exec_global (io_f, ed)
-     unsigned io_f;             /* I/O flags */
+exec_global (ed)
      ed_buffer_t *ed;
 {
   static char *gcb = NULL;      /* global command buffer */
@@ -102,7 +101,7 @@ exec_global (io_f, ed)
       if ((status = get_line_node_address (lp, &ed->state->dot, ed)) < 0
           || (interactive
               && (status = display_lines (ed->state->dot,
-                                          ed->state->dot, io_f, ed)) < 0))
+                                          ed->state->dot, ed->display->io_f, ed)) < 0))
         return status;
 
       /* If `G/V' command, then read from stdin. */

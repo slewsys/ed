@@ -148,10 +148,7 @@ static int c_cmd __P ((ed_buffer_t *));
 static int d_cmd __P ((ed_buffer_t *));
 static int e_cmd __P ((ed_buffer_t *));
 static int f_cmd __P ((ed_buffer_t *));
-static int g_cmd __P ((ed_buffer_t *));
-static int g_cmd __P ((ed_buffer_t *));
-static int g_cmd __P ((ed_buffer_t *));
-static int g_cmd __P ((ed_buffer_t *));
+static int global_cmd __P ((ed_buffer_t *));
 static int h_cmd __P ((ed_buffer_t *));
 static int i_cmd __P ((ed_buffer_t *));
 static int invalid_cmd __P ((ed_buffer_t *));
@@ -194,7 +191,7 @@ static const ed_command_t ed_cmd[] =
    invalid_cmd,
    invalid_cmd,
 #ifdef WANT_ED_MACRO
-   exec_macro,                   /* Bound to key `@'. */
+   exec_macro,                  /* Bound to key `@'. */
 #else
    invalid_cmd,
 #endif
@@ -204,7 +201,7 @@ static const ed_command_t ed_cmd[] =
    invalid_cmd,
    E_cmd,
    invalid_cmd,
-   g_cmd,                       /* G_cmd */
+   global_cmd,                  /* G_cmd */
    H_cmd,
    invalid_cmd,
    invalid_cmd,
@@ -219,12 +216,12 @@ static const ed_command_t ed_cmd[] =
    invalid_cmd,
    invalid_cmd,
    invalid_cmd,
-   g_cmd,                       /* V_cmd */
+   global_cmd,                  /* V_cmd */
    w_cmd,                       /* W_cmd */
    invalid_cmd,
    invalid_cmd,
    Z_cmd,
-   scroll_backward_half,            /* Bound to key `['. */
+   scroll_backward_half,        /* Bound to key `['. */
    invalid_cmd,
    scroll_forward_half,          /* Bound to key `]'. */
    invalid_cmd,
@@ -236,7 +233,7 @@ static const ed_command_t ed_cmd[] =
    d_cmd,
    e_cmd,
    f_cmd,
-   g_cmd,
+   global_cmd,                  /* g_cmd */
    h_cmd,
    i_cmd,
    j_cmd,
@@ -251,7 +248,7 @@ static const ed_command_t ed_cmd[] =
    s_cmd,
    t_cmd,
    u_cmd,
-   g_cmd,                       /* v_cmd */
+   global_cmd,                  /* v_cmd */
    w_cmd,
 #ifdef WANT_DES_ENCRYPTION
    x_cmd,
@@ -279,6 +276,7 @@ exec_command (ed)
 #endif
   ed->display->is_paging = ed->display->paging;
   ed->display->paging = 0;
+  ed->display->io_f = 0;
 
   /* Get command prefix, if any. */
   SKIP_WHITESPACE (ed);
@@ -370,7 +368,6 @@ a_cmd (ed)
      ed_buffer_t *ed;
 {
   int status = 0;               /* Return status */
-  unsigned io_f = 0;            /* Print I/O flags */
 
   /*
    * Buffer not empty or not `logically' empty - i.e., contains
@@ -378,12 +375,12 @@ a_cmd (ed)
    */
   if (!ed->state->is_empty || !ed->state->lines)
     {
-      COMMAND_SUFFIX (io_f, ed);
+      COMMAND_SUFFIX (ed->display->io_f, ed);
       if (!ed->exec->global)
         reset_undo_queue (ed);
       if ((status = append_lines (ed->exec->region->end, ed)) < 0)
         return status;
-      return io_f;
+      return ed->display->io_f;
     }
   return c_cmd (ed);
 }
@@ -393,14 +390,13 @@ c_cmd (ed)
      ed_buffer_t *ed;
 {
   int status = 0;               /* Return status */
-  unsigned io_f = 0;            /* Print I/O flags */
 
   /* Per SUSv4, 2013, 0c => 1c, so 0,0c => 1,1c. */
   ed->exec->region->start += !ed->exec->region->start;
   ed->exec->region->end += !ed->exec->region->end;
   if ((status = is_valid_range (ed->state->dot, ed->state->dot, ed)) < 0)
     return status;
-  COMMAND_SUFFIX (io_f, ed);
+  COMMAND_SUFFIX (ed->display->io_f, ed);
   if (!ed->exec->global)
     reset_undo_queue (ed);
   spl1 ();
@@ -417,7 +413,7 @@ c_cmd (ed)
   /* Per SUSv4, 2013, empty change sets dot to address after deleted lines. */
   if (ed->state->dot < ed->exec->region->start)
     ed->state->dot = min (ed->state->lines, ed->exec->region->start);
-  return io_f;
+  return ed->display->io_f;
 }
 
 static int
@@ -426,7 +422,6 @@ d_cmd (ed)
 {
   off_t addr = 0;
   int status = 0;               /* Return status */
-  unsigned io_f = 0;            /* Print I/O flags */
 
   if ((status = is_valid_range (ed->state->dot, ed->state->dot, ed)) < 0)
     return status;
@@ -436,7 +431,7 @@ d_cmd (ed)
   ed->core->regbuf->io_f |= REGISTER_WRITE;
   ed->core->regbuf->write_idx = REGBUF_MAX - 1;
 #endif
-  COMMAND_SUFFIX (io_f, ed);
+  COMMAND_SUFFIX (ed->display->io_f, ed);
   if (!ed->exec->global)
     reset_undo_queue (ed);
 #ifdef WANT_ED_REGISTER
@@ -456,7 +451,7 @@ d_cmd (ed)
   if ((ed->state->is_empty = !ed->state->lines))
     ed->state->is_binary = 0;
   spl0 ();
-  return io_f;
+  return ed->display->io_f;
 }
 
 static int
@@ -687,12 +682,11 @@ f_cmd (ed)
 }
 
 static int
-g_cmd (ed)
+global_cmd (ed)
      ed_buffer_t *ed;
 {
   int c = *(ed->input - 1);
   int status = 0;               /* Return status */
-  unsigned io_f = 0;            /* Print I/O flags */
 
   if (ed->exec->global)
     {
@@ -705,41 +699,38 @@ g_cmd (ed)
   if (c == 'G' || c == 'V')
     {
       ed->exec->global = GLBI;
-      COMMAND_SUFFIX (io_f, ed);
+      COMMAND_SUFFIX (ed->display->io_f, ed);
     }
   ed->exec->global |= GLBL;
 
-  if ((status = exec_global (io_f, ed)) < 0)
+  if ((status = exec_global (ed)) < 0)
     return status;
-  return io_f;
+  return ed->display->io_f;
 }
 
 static int
 H_cmd (ed)
      ed_buffer_t *ed;
 {
-  unsigned io_f = 0;            /* Print I/O flags */
 
   if (ed->exec->region->addrs)
     {
       ed->exec->err = _("Address unexpected");
       return ERR;
     }
-  COMMAND_SUFFIX (io_f, ed);
+  COMMAND_SUFFIX (ed->display->io_f, ed);
 
   /* Toggle VERBOSE setting. */
   ed->exec->opt ^= VERBOSE;
   if (ed->exec->opt & VERBOSE && ed->exec->err)
     puts (ed->exec->err);
-  return io_f;
+  return ed->display->io_f;
 }
 
 static int
 h_cmd (ed)
      ed_buffer_t *ed;
 {
-  unsigned io_f = 0;            /* Print I/O flags */
-
   /*
    * Of all commands, at least `h' should be forgiving, but SUSv4,
    * 2013 says otherwise...
@@ -749,7 +740,7 @@ h_cmd (ed)
       ed->exec->err = _("Address unexpected");
       return ERR;
     }
-  COMMAND_SUFFIX (io_f, ed);
+  COMMAND_SUFFIX (ed->display->io_f, ed);
   if (ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL))
     {
       if (ed->exec->err)
@@ -757,7 +748,7 @@ h_cmd (ed)
     }
   else
     puts (ed->exec->err ? ed->exec->err : _("No previous error"));
-  return io_f;
+  return ed->display->io_f;
 }
 
 static int
@@ -765,11 +756,10 @@ i_cmd (ed)
      ed_buffer_t *ed;
 {
   int status = 0;               /* Return status */
-  unsigned io_f = 0;            /* Print I/O flags */
 
   /* Per SUSv4, 2013, 0i => 1i. */
   ed->exec->region->end += !ed->exec->region->end;
-  COMMAND_SUFFIX (io_f, ed);
+  COMMAND_SUFFIX (ed->display->io_f, ed);
   if (!ed->exec->global)
     reset_undo_queue (ed);
   if ((status = append_lines (ed->exec->region->end - 1, ed)) < 0)
@@ -778,7 +768,7 @@ i_cmd (ed)
   /* Per SUSv4, 2013, empty insert sets dot to addressed line. */
   if (ed->state->dot == ed->exec->region->end - 1)
     ed->state->dot = ed->exec->region->end;
-  return io_f;
+  return ed->display->io_f;
 }
 
 static int
@@ -786,7 +776,6 @@ j_cmd (ed)
      ed_buffer_t *ed;
 {
   int status = 0;               /* Return status */
-  unsigned io_f = 0;            /* Print I/O flags */
 
   /*
    * Allow joining an empty buffer, provided no addresses are
@@ -800,14 +789,14 @@ j_cmd (ed)
   else
     if ((status = is_valid_range (ed->state->dot, ed->state->dot + 1, ed)) < 0)
       return status;
-  COMMAND_SUFFIX (io_f, ed);
+  COMMAND_SUFFIX (ed->display->io_f, ed);
   if (!ed->exec->global)
     reset_undo_queue (ed);
   if (ed->exec->region->start != ed->exec->region->end
       && (status = join_lines (ed->exec->region->start,
                                ed->exec->region->end, ed)) < 0)
     return status;
-  return io_f;
+  return ed->display->io_f;
 }
 
 static int
@@ -816,7 +805,6 @@ k_cmd (ed)
 {
   int cx = 0;
   int status = 0;               /* Return status */
-  unsigned io_f = 0;            /* Print I/O flags */
 
   cx = *ed->input++;
   if (ed->exec->region->end == 0)
@@ -824,11 +812,11 @@ k_cmd (ed)
       ed->exec->err = _("Address out of range");
       return ERR;
     }
-  COMMAND_SUFFIX (io_f, ed);
+  COMMAND_SUFFIX (ed->display->io_f, ed);
   if ((status =
        mark_line_node (get_line_node (ed->exec->region->end, ed), cx, ed)) < 0)
     return status;
-  return io_f;
+  return ed->display->io_f;
 }
 
 static int
@@ -836,7 +824,6 @@ l_cmd (ed)
      ed_buffer_t *ed;
 {
   int status = 0;               /* Return status */
-  unsigned io_f = 0;            /* Print I/O flags */
 
   /*
    * Allow printing an empty buffer, provided no addresses are
@@ -849,9 +836,13 @@ l_cmd (ed)
     }
   else if ((status = is_valid_range (ed->state->dot, ed->state->dot, ed)) < 0)
     return status;
-  COMMAND_SUFFIX (io_f, ed);
+  COMMAND_SUFFIX (ed->display->io_f, ed);
+  if (ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL))
+    ed->display->io_f = LIST;
+  else
+    ed->display->io_f |= LIST;
   return display_lines (ed->exec->region->start,
-                        ed->exec->region->end, LIST, ed);
+                        ed->exec->region->end, ed->display->io_f, ed);
 }
 
 static int
@@ -861,7 +852,6 @@ m_cmd (ed)
   off_t addr = 0;
   int append = 0;               /* Append to register? */
   int status = 0;               /* Return status */
-  unsigned io_f = 0;            /* Print I/O flags */
 
   if ((status = is_valid_range (ed->state->dot, ed->state->dot, ed)) < 0)
     return status;
@@ -871,7 +861,7 @@ m_cmd (ed)
       ed->exec->err = _("Invalid destination address");
       return ERR;
     }
-  COMMAND_SUFFIX (io_f, ed);
+  COMMAND_SUFFIX (ed->display->io_f, ed);
   if (!ed->exec->global)
     reset_undo_queue (ed);
 #ifdef WANT_ED_REGISTER
@@ -913,7 +903,7 @@ m_cmd (ed)
       return ERR;
     }
 #endif
-  return io_f;
+  return ed->display->io_f;
 }
 
 static int
@@ -921,7 +911,6 @@ n_cmd (ed)
      ed_buffer_t *ed;
 {
   int status = 0;               /* Return status */
-  unsigned io_f = 0;            /* Print I/O flags */
 
   /*
    * Allow printing an empty buffer, provided no addresses are
@@ -935,27 +924,29 @@ n_cmd (ed)
   else if ((status = is_valid_range (ed->state->dot, ed->state->dot, ed))
            < 0)
     return status;
-  COMMAND_SUFFIX (io_f, ed);
+  COMMAND_SUFFIX (ed->display->io_f, ed);
+  if (ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL))
+    ed->display->io_f = NMBR;
+  else
+    ed->display->io_f |= NMBR;
   return display_lines (ed->exec->region->start,
-                        ed->exec->region->end, NMBR, ed);
+                        ed->exec->region->end, ed->display->io_f, ed);
 }
 
 static int
 P_cmd (ed)
      ed_buffer_t *ed;
 {
-  unsigned io_f = 0;            /* Print I/O flags */
-
   if (ed->exec->region->addrs)
     {
       ed->exec->err = _("Address unexpected");
       return ERR;
     }
-  COMMAND_SUFFIX (io_f, ed);
+  COMMAND_SUFFIX (ed->display->io_f, ed);
 
   /* Toggle PROMPT settings. */
   ed->exec->opt ^= PROMPT;
-  return io_f;
+  return ed->display->io_f;
 }
 
 static int
@@ -963,7 +954,6 @@ p_cmd (ed)
      ed_buffer_t *ed;
 {
   int status = 0;               /* Return status */
-  unsigned io_f = 0;            /* Print I/O flags */
 
   /*
    * Allow printing an empty buffer, provided no addresses are
@@ -976,9 +966,13 @@ p_cmd (ed)
     }
   else if ((status = is_valid_range (ed->state->dot, ed->state->dot, ed)) < 0)
     return status;
-  COMMAND_SUFFIX (io_f, ed);
+  COMMAND_SUFFIX (ed->display->io_f, ed);
+  if (ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL))
+    ed->display->io_f = PRNT;
+  else
+    ed->display->io_f |= PRNT;
   return display_lines (ed->exec->region->start,
-                        ed->exec->region->end, PRNT, ed);
+                        ed->exec->region->end, ed->display->io_f, ed);
 }
 
 static int
@@ -986,14 +980,13 @@ q_cmd (ed)
      ed_buffer_t *ed;
 {
   int c = *(ed->input - 1);
-  unsigned io_f = 0;            /* Print I/O flags */
 
   if (ed->exec->region->addrs)
     {
       ed->exec->err = _("Address unexpected");
       return ERR;
     }
-  COMMAND_SUFFIX (io_f, ed);
+  COMMAND_SUFFIX (ed->display->io_f, ed);
   return (c == 'q' && ed->state->is_modified &&
           !(ed->exec->opt & SCRIPTED) ? EMOD : EOF);
 }
@@ -1105,7 +1098,6 @@ s_cmd (ed)
   off_t s_nth     = 0;          /* Substitution match offset */
   off_t s_mod     = 0;          /* Substitution match modulus */
   int status = 0;               /* Return status */
-  unsigned io_f   = 0;          /* Print I/O flags */
   unsigned s_f    = 0;          /* Saved substitution modifier flags */
   unsigned sgpr_f = 0;          /* Short-form substitution modifier flags */
   unsigned sio_f  = 0;          /* Saved substitution I/O flags */
@@ -1149,9 +1141,8 @@ s_cmd (ed)
                                   ed->exec->region->end,
                                   lhs, s_nth, s_mod, s_f, ed)) < 0)
     return status;
-  if (sio_f && !(s_f & PRSW))
-    return display_lines (ed->state->dot, ed->state->dot, sio_f, ed);
-  return io_f;
+  return (sio_f && !(s_f & PRSW) ?
+          display_lines (ed->state->dot, ed->state->dot, sio_f, ed) : 0);
 }
 
 static int
@@ -1222,12 +1213,11 @@ t_cmd (ed)
   off_t addr = 0;
   int append = 0;               /* Append to register? */
   int status = 0;               /* Return status */
-  unsigned io_f = 0;            /* Print I/O flags */
 
   if ((status = is_valid_range (ed->state->dot, ed->state->dot, ed)) < 0)
     return status;
   DESTINATION_ADDRESS (addr, ed);
-  COMMAND_SUFFIX (io_f, ed);
+  COMMAND_SUFFIX (ed->display->io_f, ed);
   if (!ed->exec->global)
     reset_undo_queue (ed);
 #ifdef WANT_ED_REGISTER
@@ -1258,7 +1248,7 @@ t_cmd (ed)
       return ERR;
     }
 #endif
-  return io_f;
+  return ed->display->io_f;
 }
 
 static int
@@ -1266,17 +1256,16 @@ u_cmd (ed)
      ed_buffer_t *ed;
 {
   int status = 0;               /* Return status */
-  unsigned io_f = 0;            /* Print I/O flags */
 
   if (ed->exec->region->addrs)
     {
       ed->exec->err = _("Address unexpected");
       return ERR;
     }
-  COMMAND_SUFFIX (io_f, ed);
+  COMMAND_SUFFIX (ed->display->io_f, ed);
   if ((status = undo_last_command (ed)) < 0)
     return status;
-  return io_f;
+  return ed->display->io_f;
 }
 
 static int
@@ -1457,7 +1446,6 @@ x_cmd (ed)
      ed_buffer_t *ed;
 {
   int status = 0;
-  unsigned io_f = 0;            /* Print I/O flags */
 
   /*
    * Of all commands, at least `h' should be forgiving, but SUSv4,
@@ -1468,8 +1456,8 @@ x_cmd (ed)
       ed->exec->err = _("Address unexpected");
       return ERR;
     }
-  COMMAND_SUFFIX (io_f, ed);
-  return (status = get_des_keyword (ed)) < 0 ? status : io_f;
+  COMMAND_SUFFIX (ed->display->io_f, ed);
+  return (status = get_des_keyword (ed)) < 0 ? status : ed->display->io_f;
 }
 
 static int
@@ -1481,7 +1469,6 @@ z_cmd (ed)
   int c = *(ed->input - 1);
   int status = 0;               /* Return status */
   int zhfw_off = 0;             /* Half-page-scroll-forward offset. */
-  unsigned io_f = 0;            /* Print I/O flags */
 
   /* scroll forward */
   if (ed->exec->opt & POSIXLY_CORRECT)
@@ -1514,7 +1501,7 @@ z_cmd (ed)
       if (1 < len && len < ROWS_MAX)
         ed->display->ws_row = len;
     }
-  COMMAND_SUFFIX (io_f, ed);
+  COMMAND_SUFFIX (ed->display->io_f, ed);
   ++ed->display->paging;
 
   switch (c)
@@ -1534,7 +1521,7 @@ z_cmd (ed)
        */
       addr = min (ed->state->lines, (ed->exec->region->end +
                                      ed->display->ws_row - 2));
-      io_f |= ZFWD;
+      ed->display->io_f |= ZFWD;
       break;
     case '[':
     case ']':
@@ -1560,10 +1547,10 @@ z_cmd (ed)
       if ((zhfw_off = ed->display->ws_row - ed->exec->region->end + 1) > 0 &&
           zhfw_off <= addr - ed->exec->region->end)
           ed->exec->region->end += zhfw_off;
-      io_f |= ZFWD | ZHFW;
+      ed->display->io_f |= ZFWD | ZHFW;
       break;
     }
-  return display_lines (ed->exec->region->end, addr, io_f, ed);
+  return display_lines (ed->exec->region->end, addr, ed->display->io_f, ed);
 }
 
 static int
@@ -1573,7 +1560,6 @@ Z_cmd (ed)
   off_t addr = 0;
   size_t len = 0;
   int status = 0;               /* Return status */
-  unsigned io_f = 0;            /* Print I/O flags */
 
   /* scroll backward */
   if (ed->exec->opt & (TRADITIONAL | POSIXLY_CORRECT))
@@ -1604,7 +1590,7 @@ Z_cmd (ed)
       if (1 < len && len < ROWS_MAX)
         ed->display->ws_row = len;
     }
-  COMMAND_SUFFIX (io_f, ed);
+  COMMAND_SUFFIX (ed->display->io_f, ed);
   ++ed->display->paging;
 
   /*
@@ -1613,20 +1599,19 @@ Z_cmd (ed)
    */
   return display_lines (max (1, (off_t) ed->exec->region->end -
                              ed->display->ws_row + 2),
-                        ed->exec->region->end, io_f | ZBWD, ed);
+                        ed->exec->region->end, ed->display->io_f | ZBWD, ed);
 }
 
 static int
 address_cmd (ed)
      ed_buffer_t *ed;
 {
-  unsigned io_f = 0;            /* Print I/O flags */
 
   /* case '=': */
-  COMMAND_SUFFIX (io_f, ed);
+  COMMAND_SUFFIX (ed->display->io_f, ed);
   printf ("%" OFF_T_FORMAT_STRING "\n",
           (ed->exec->region->addrs ? ed->exec->region->end : ed->state->lines));
-  return io_f;
+  return ed->display->io_f;
 }
 
 static int
