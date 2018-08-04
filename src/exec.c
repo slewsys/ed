@@ -703,9 +703,9 @@ global_cmd (ed)
     }
   ed->exec->global |= GLBL;
 
-  if ((ed->display->io_f = exec_global (ed)) < 0)
+  if ((status = exec_global (ed)) < 0)
     return status;
-  return c == 'G' || c == 'V' ? ed->display->io_f : 0;
+  return c == 'G' || c == 'V' ? (ed->display->io_f = status) : 0;
 }
 
 static int
