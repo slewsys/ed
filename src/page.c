@@ -10,6 +10,8 @@
 
 /* Static function declarations. */
 static int display_frame_buffer __P ((const ed_frame_buffer_t *));
+
+#ifdef WANT_ED_SCROLLING
 static ed_frame_node_t *dup_frame_node __P ((const ed_frame_node_t *,
                                              ed_buffer_t *));
 static int fb_putc __P ((int, ed_frame_buffer_t *, ed_buffer_t *));
@@ -17,49 +19,15 @@ static int init_frame_buffer __P ((ed_frame_buffer_t *, ed_buffer_t *));
 static void init_frame_node __P ((ed_frame_node_t *));
 static int put_frame_buffer_line __P ((ed_line_node_t *, off_t,
                                        ed_frame_buffer_t *, ed_buffer_t *));
+#endif
+
 static int put_tty_line __P ((ed_line_node_t *, off_t, ed_buffer_t *));
+
+#ifdef WANT_ED_SCROLLING
 static int scroll_lines __P ((off_t, off_t, ed_buffer_t *));
+#endif
+
 static unsigned int sgr_span __P ((const char *));
-
-
-/* INIT_FB_ROW: Initialize frame buffer row. */
-#define INIT_FB_ROW(bp, caddr, off, fb)                                       \
-  do                                                                          \
-    {                                                                         \
-      (fb->row + fb->row_i)->lp = (bp);                                       \
-      (fb->row + fb->row_i)->addr = (caddr);                                  \
-      (fb->row + fb->row_i)->offset = (off);                                  \
-      (fb->row + fb->row_i)->text_i = 0;                                      \
-    }                                                                         \
-  while (0)
-
-/* INC_FB_ROW: Increment frame buffer row. */
-#define INC_FB_ROW(ok_to_wrap, fb)                                            \
-  do                                                                          \
-    {                                                                         \
-      (fb)->row_i = ((fb)->row_i + 1) % ((fb)->rows - 1);                     \
-      (fb)->wraps |= !(fb)->row_i;                                            \
-      (fb)->is_full =                                                         \
-        (ed->display->io_f & ZHFW                                             \
-         ? (fb)->row_i == ((fb)->fill_i + 1) % ((fb)->rows - 1)               \
-         :  ((fb)->wraps && !(ok_to_wrap)));                                  \
-    }                                                                         \
-  while (0)
-
-#define RESET_FB_PREV(fb, ed)                                                 \
-  do                                                                          \
-    {                                                                         \
-      if ((fb)->prev_first)                                                   \
-        {                                                                     \
-          free ((fb)->prev_first);                                            \
-          free ((fb)->prev_last);                                             \
-          (fb)->prev_first = NULL;                                            \
-          (fb)->prev_last = NULL;                                             \
-        }                                                                     \
-      (ed)->display->underflow = 0;                                           \
-      (ed)->display->overflow = 0;                                            \
-    }                                                                         \
-  while (0)
 
 
 /* display_lines: Print a range of lines. Return status (<= 0). */
@@ -82,9 +50,11 @@ display_lines (from, to, ed)
   if (!ed->state->lines)
     return 0;
 
+#ifdef WANT_ED_SCROLLING
   /* If scrolling... */
   else if ((ed->display->io_f & (ZFWD | ZBWD)))
     return scroll_lines (from, to, ed);
+#endif
 
   ep = get_line_node (INC_MOD (to, ed->state->lines), ed);
   bp = get_line_node (from, ed);
@@ -97,6 +67,216 @@ display_lines (from, to, ed)
   ed->state->dot = from + lc - 1;
   return 0;
 }
+
+/* GET_CHAR_WIDTH: Assert: Tabstops are of fixed length. */
+#define GET_CHAR_WIDTH(i, c)                                                  \
+  ((i) == '\b' ? -1                                                           \
+   : (i) == '\f' ? 0                                                          \
+   : (i) == '\r' ? -(c)                                                       \
+   : (i) == '\t' ? TAB_WIDTH - ((c) - ((c) / TAB_WIDTH) * TAB_WIDTH)          \
+   : (i) < '\040' ? 0                                                         \
+   : 1)
+
+#define RIGHT_MARGIN TAB_WIDTH
+
+/* put_frame_buffer_line: Print text to frame buffer. */
+static int
+put_tty_line (lp, addr, ed)
+     ed_line_node_t *lp;        /* Line node pointer */
+     off_t addr;                /* Line no. */
+     ed_buffer_t *ed;
+{
+  static off_t lines = 0;
+  static int lines_len = 0;      /* strlen (lines) */
+  static char fmt[27] = { '\0' }; /* Line no. format, e.g., "% 3lld\t" */
+
+  off_t n;
+  ed_frame_node_t *rp;
+  char line_no[OFF_T_LEN + TAB_WIDTH + 1];
+  char *cp, *es, *s;
+  size_t col = 0;
+  size_t i = 0;
+  int len = 0;
+  unsigned int sgr_len = 0;     /* length of ANSI sgr sequence */
+  int form_feed = 0;
+
+  /*
+   * Per SUSv4, 2013, the `$' (dollar sign) character is output by the
+   * `l' (literal) command as the escape sequence `\$'
+   */
+  char control_char[10] =
+    {
+      BELL,
+      BACKSPACE,
+      CHARACTER_TABULATION,
+      LINE_FEED,
+      LINE_TABULATION,
+      FORM_FEED,
+      CARRIAGE_RETURN,
+      DOLLAR_SIGN,
+      REVERSE_SOLIDUS,
+      '\0'
+    };
+
+  char *escape_sequence[] =
+    {
+      "\\a",                    /* BELL */
+      "\\b",                    /* BACKSPACE */
+      "\\t",                    /* CHARACTER_TABULATION */
+      "\\n",                    /* LINE_FEED */
+      "\\v",                    /* LINE_TABULATION */
+      "\\f",                    /* FORM_FEED */
+      "\\r",                    /* CARRIAGE_RETURN */
+      "\\$",                    /* DOLLAR_SIGN */
+      "\\\\"                    /* REVERSE_SOLIDUS */
+    };
+
+  /* Numbered output. */
+  if ((ed->display->io_f & NMBR))
+    {
+      /* If lines has changed, update format string. */
+      if (lines != ed->state->lines)
+        {
+          n = lines = ed->state->lines;
+          for (lines_len = 0; n /= 10; ++lines_len)
+            ;
+          ++lines_len;
+
+          /* Set line numbering format string. */
+          sprintf (fmt, "%%%d" OFF_T_FORMAT_STRING "\t", lines_len);
+        }
+
+      /* Evaluate format string, fmt, with address, addr, of dot. */
+      snprintf (line_no, OFF_T_LEN + TAB_WIDTH + 1, fmt, addr);
+      while (line_no[i])
+        if (putchar (line_no[i++]) < 0)
+          return ERR;
+      col = lines_len;
+      col += GET_CHAR_WIDTH ('\t', lines_len);
+    }
+
+  if (!(s = get_buffer_line (lp, ed)))
+    return ERR;
+  len = strlen (s);
+
+  for (; *s; ++s)
+    {
+      if (!(ed->display->io_f & LIST)
+          || (31 < *s && *s < 127 && *s != '\\' && *s != '$'))
+        {
+
+          /*
+           * If ANSI color support is enabled, exclude SGR sequences
+           * from column bookkeeping.
+           */
+          if (ed->exec->opt & ANSI_COLOR && (sgr_len = sgr_span (s)) > 0)
+            {
+              for (; sgr_len--; ++s)
+                if (putchar ((unsigned) *s) < 0)
+                  return ERR;
+              continue;
+            }
+
+          if (putchar ((unsigned) *s) < 0)
+            return ERR;
+          col += GET_CHAR_WIDTH ((unsigned) *s, col);
+
+        }
+      else
+        {
+          /*
+           * If control char has C escape sequence, print literal
+           * escape sequence - e.g., ASCII bel as `\a'.
+           */
+          if (*s && (cp = strchr (control_char, (unsigned) *s)))
+            {
+              es = escape_sequence[cp - control_char];
+              if (putchar (es[0]) < 0 || putchar (es[1]) < 0)
+                return ERR;
+              col += 2;
+            }
+
+          /* Print other chars as octal escapes - i.e., \ooo. */
+          else if (putchar ('\\') < 0
+                   || putchar ((((unsigned) *s & 0300) >> 6) + '0') < 0
+                   || putchar ((((unsigned) *s & 070) >> 3) + '0') < 0
+                   || putchar (((unsigned) *s & 07) + '0') < 0)
+            return ERR;
+          else
+            col += 4;
+        }
+
+      /*
+       * When listing text -- i.e., (ed->display->io_f & LIST) --
+       * first try simple heuristic to split lines on word boundaries
+       * for legibility; otherwise, split lines at the right margin,
+       * which starts one tab stop from the right edge of the window.
+       */
+      if (!(ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL))
+            && (ed->display->io_f & LIST)
+              && ((!isalnum ((unsigned) *s)
+                   && col >= ed->display->ws_col - (RIGHT_MARGIN << 1)
+                   && strlen (s) > 2)
+                  || (col >= ed->display->ws_col - RIGHT_MARGIN
+                      && strlen (s) > 1)))
+
+        {
+          if ((ed->display->io_f & LIST)
+              && ((putchar ('\\') < 0 || putchar ('\n') < 0)))
+            return ERR;
+          col = 0;
+        }
+    }
+
+  if ((ed->display->io_f & LIST) && putchar ('$') < 0)
+    return ERR;
+  else if (putchar ('\n') < 0)
+    return ERR;
+  return 0;
+}
+
+
+#ifdef WANT_ED_SCROLLING
+
+/* INIT_FB_ROW: Initialize frame buffer row. */
+# define INIT_FB_ROW(bp, caddr, off, fb)                                       \
+  do                                                                          \
+    {                                                                         \
+      (fb->row + fb->row_i)->lp = (bp);                                       \
+      (fb->row + fb->row_i)->addr = (caddr);                                  \
+      (fb->row + fb->row_i)->offset = (off);                                  \
+      (fb->row + fb->row_i)->text_i = 0;                                      \
+    }                                                                         \
+  while (0)
+
+/* INC_FB_ROW: Increment frame buffer row. */
+# define INC_FB_ROW(ok_to_wrap, fb)                                            \
+  do                                                                          \
+    {                                                                         \
+      (fb)->row_i = ((fb)->row_i + 1) % ((fb)->rows - 1);                     \
+      (fb)->wraps |= !(fb)->row_i;                                            \
+      (fb)->is_full =                                                         \
+        (ed->display->io_f & ZHFW                                             \
+         ? (fb)->row_i == ((fb)->fill_i + 1) % ((fb)->rows - 1)               \
+         :  ((fb)->wraps && !(ok_to_wrap)));                                  \
+    }                                                                         \
+  while (0)
+
+# define RESET_FB_PREV(fb, ed)                                                 \
+  do                                                                          \
+    {                                                                         \
+      if ((fb)->prev_first)                                                   \
+        {                                                                     \
+          free ((fb)->prev_first);                                            \
+          free ((fb)->prev_last);                                             \
+          (fb)->prev_first = NULL;                                            \
+          (fb)->prev_last = NULL;                                             \
+        }                                                                     \
+      (ed)->display->underflow = 0;                                           \
+      (ed)->display->overflow = 0;                                            \
+    }                                                                         \
+  while (0)
+
 
 
 /* display_lines: Print a range of lines. Return status (<= 0). */
@@ -346,175 +526,6 @@ init_frame_node (rp)
   rp->text = NULL;
   rp->text_size = 0;
   rp->text_i = 0;
-}
-
-
-#define RIGHT_MARGIN TAB_WIDTH
-
-/* GET_CHAR_WIDTH: Assert: Tabstops are of fixed length. */
-#define GET_CHAR_WIDTH(i, c)                                                  \
-  ((i) == '\b' ? -1                                                           \
-   : (i) == '\f' ? 0                                                          \
-   : (i) == '\r' ? -(c)                                                       \
-   : (i) == '\t' ? TAB_WIDTH - ((c) - ((c) / TAB_WIDTH) * TAB_WIDTH)          \
-   : (i) < '\040' ? 0                                                         \
-   : 1)
-
-
-/* put_frame_buffer_line: Print text to frame buffer. */
-static int
-put_tty_line (lp, addr, ed)
-     ed_line_node_t *lp;        /* Line node pointer */
-     off_t addr;                /* Line no. */
-     ed_buffer_t *ed;
-{
-  static off_t lines = 0;
-  static int lines_len = 0;      /* strlen (lines) */
-  static char fmt[27] = { '\0' }; /* Line no. format, e.g., "% 3lld\t" */
-
-  off_t n;
-  ed_frame_node_t *rp;
-  char line_no[OFF_T_LEN + TAB_WIDTH + 1];
-  char *cp, *es, *s;
-  size_t col = 0;
-  size_t i = 0;
-  int len = 0;
-  unsigned int sgr_len = 0;     /* length of ANSI sgr sequence */
-  int form_feed = 0;
-
-  /*
-   * Per SUSv4, 2013, the `$' (dollar sign) character is output by the
-   * `l' (literal) command as the escape sequence `\$'
-   */
-  char control_char[10] =
-    {
-      BELL,
-      BACKSPACE,
-      CHARACTER_TABULATION,
-      LINE_FEED,
-      LINE_TABULATION,
-      FORM_FEED,
-      CARRIAGE_RETURN,
-      DOLLAR_SIGN,
-      REVERSE_SOLIDUS,
-      '\0'
-    };
-
-  char *escape_sequence[] =
-    {
-      "\\a",                    /* BELL */
-      "\\b",                    /* BACKSPACE */
-      "\\t",                    /* CHARACTER_TABULATION */
-      "\\n",                    /* LINE_FEED */
-      "\\v",                    /* LINE_TABULATION */
-      "\\f",                    /* FORM_FEED */
-      "\\r",                    /* CARRIAGE_RETURN */
-      "\\$",                    /* DOLLAR_SIGN */
-      "\\\\"                    /* REVERSE_SOLIDUS */
-    };
-
-  /* Numbered output. */
-  if ((ed->display->io_f & NMBR))
-    {
-      /* If lines has changed, update format string. */
-      if (lines != ed->state->lines)
-        {
-          n = lines = ed->state->lines;
-          for (lines_len = 0; n /= 10; ++lines_len)
-            ;
-          ++lines_len;
-
-          /* Set line numbering format string. */
-          sprintf (fmt, "%%%d" OFF_T_FORMAT_STRING "\t", lines_len);
-        }
-
-      /* Evaluate format string, fmt, with address, addr, of dot. */
-      snprintf (line_no, OFF_T_LEN + TAB_WIDTH + 1, fmt, addr);
-      while (line_no[i])
-        if (putchar (line_no[i++]) < 0)
-          return ERR;
-      col = lines_len;
-      col += GET_CHAR_WIDTH ('\t', lines_len);
-    }
-
-  if (!(s = get_buffer_line (lp, ed)))
-    return ERR;
-  len = strlen (s);
-
-  for (; *s; ++s)
-    {
-      if (!(ed->display->io_f & LIST)
-          || (31 < *s && *s < 127 && *s != '\\' && *s != '$'))
-        {
-
-          /*
-           * If ANSI color support is enabled, exclude SGR sequences
-           * from column bookkeeping.
-           */
-          if (ed->exec->opt & ANSI_COLOR && (sgr_len = sgr_span (s)) > 0)
-            {
-              for (; sgr_len--; ++s)
-                if (putchar ((unsigned) *s) < 0)
-                  return ERR;
-              continue;
-            }
-
-          if (putchar ((unsigned) *s) < 0)
-            return ERR;
-          col += GET_CHAR_WIDTH ((unsigned) *s, col);
-
-        }
-      else
-        {
-          /*
-           * If control char has C escape sequence, print literal
-           * escape sequence - e.g., ASCII bel as `\a'.
-           */
-          if (*s && (cp = strchr (control_char, (unsigned) *s)))
-            {
-              es = escape_sequence[cp - control_char];
-              if (putchar (es[0]) < 0 || putchar (es[1]) < 0)
-                return ERR;
-              col += 2;
-            }
-
-          /* Print other chars as octal escapes - i.e., \ooo. */
-          else if (putchar ('\\') < 0
-                   || putchar ((((unsigned) *s & 0300) >> 6) + '0') < 0
-                   || putchar ((((unsigned) *s & 070) >> 3) + '0') < 0
-                   || putchar (((unsigned) *s & 07) + '0') < 0)
-            return ERR;
-          else
-            col += 4;
-        }
-
-      /*
-       * When listing text -- i.e., (ed->display->io_f & LIST) --
-       * first try simple heuristic to split lines on word boundaries
-       * for legibility; otherwise, split lines at the right margin,
-       * which starts one tab stop from the right edge of the window.
-       */
-      if (!(ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL))
-            && (ed->display->io_f & LIST)
-              && ((!isalnum ((unsigned) *s)
-                   && col >= ed->display->ws_col - (RIGHT_MARGIN << 1)
-                   && strlen (s) > 2)
-                  || (col >= ed->display->ws_col - RIGHT_MARGIN
-                      && strlen (s) > 1)))
-
-        {
-          if ((ed->display->io_f & LIST)
-              && ((putchar ('\\') < 0 || putchar ('\n') < 0)))
-            return ERR;
-          col = 0;
-        }
-    }
-
-  if ((ed->display->io_f & LIST) && putchar ('$') < 0)
-    return ERR;
-  else if (putchar ('\n') < 0)
-    return ERR;
-  return 0;
 }
 
 
@@ -785,7 +796,7 @@ dup_frame_node (rp, ed)
   np->text_i = rp->text_i;
   return np;
 }
-
+#endif  /* WANT_ED_SCROLLING */
 
 /* sgr_span: Return length of ANSI sgr sequence, otherwise 0. */
 static unsigned int

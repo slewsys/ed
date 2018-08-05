@@ -322,6 +322,12 @@ AC_ARG_ENABLE([script-flags],
       [Define to 1 to enable ED command-line script flags.])],[])])
 AC_MSG_RESULT([${enable_script_flags:-no}])
 
+AC_MSG_CHECKING([whether ED scrolling support is requested])
+AC_ARG_ENABLE([ed-scrolling],
+  [AS_HELP_STRING([--enable-ed-scrolling],
+    [enable ED scrolling.])],[],[])
+AC_MSG_RESULT([${enable_ed_scrolling:-no}])
+
 AC_MSG_CHECKING([whether DES encryption support is requested])
 AC_ARG_ENABLE([des-encryption],
   [AS_HELP_STRING([--enable-des-encryption],
