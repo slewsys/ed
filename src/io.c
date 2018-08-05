@@ -212,8 +212,12 @@ read_stream (fp, after, size, ed)
   ed->state->dot = after;
   ed->state->input_is_binary = 0;
   ed->state->newline_missing = 0;
+
+#ifdef WANT_DES_ENCRYPTION
   if (ed->exec->keyword)
     init_des_cipher ();
+#endif
+
   for (*size = 0; (tb = get_stream_line (fp, &len, ed)); *size += len)
     PUT_BUFFER_LINE (lp, tb, len, up, ed->state->dot);
   if (feof (fp))
@@ -289,8 +293,12 @@ read_stream (fp, after, size, ed)
             * && (*size || (ed->state->is_empty && !newline_appended_already)))
             */
     fprintf (stderr, _("Newline appended\n"));
+
+#ifdef WANT_DES_ENCRYPTION
   if (ed->exec->keyword)
     *size += 8 - *size % 8;     /* Adjust for DES padding. */
+#endif
+
   return 0;
 }
 
@@ -504,8 +512,12 @@ get_stream_line (fp, len, ed)
   *len = 0;
 
  top:
+#ifdef WANT_DES_ENCRYPTION
   for (; (c = ed->exec->keyword ? get_des_char (fp, ed)
           : getc (fp)) != EOF && c != '\n'; ++*len)
+#else
+  for (; (c = getc (fp)) != EOF && c != '\n'; ++*len)
+#endif  /* !WANT_DES_ENCRYPTION */
     {
       REALLOC_THROW (tb, tb_size, *len + 1, NULL, ed);
       ed->state->input_is_binary |= !(*(tb + *len) = c);
@@ -701,8 +713,10 @@ write_stream (fp, lp, n, size, ed)
   int append_newline = 0;
   int status = 0;
 
+#ifdef WANT_DES_ENCRYPTION
   if (ed->exec->keyword)
     init_des_cipher ();
+#endif
 
   /* Per SUSv4, permit writing an empty buffer. */
   for (*size = 0; n; --n, lp = lp->q_forw)
@@ -727,12 +741,14 @@ write_stream (fp, lp, n, size, ed)
       *size += len;
     }
 
+#ifdef WANT_DES_ENCRYPTION
   if (ed->exec->keyword)
     {
       flush_des_file (fp, ed);
       *size += 8 - *size % 8;
     }
   else
+#endif
     fflush (fp);
 
   return 0;
@@ -748,8 +764,12 @@ put_stream_line (fp, s, len, ed)
      ed_buffer_t *ed;
 {
  top:
+#ifdef WANT_DES_ENCRYPTION
   for (; len && (ed->exec->keyword ? put_des_char ((unsigned) *s, fp)
                  : putc ((unsigned) *s, fp)) != EOF; --len, ++s)
+#else
+  for (; len && putc ((unsigned) *s, fp) != EOF; --len, ++s)
+#endif  /* !WANT_DES_ENCRYPTION */
     ;
   if (ferror (fp))
     switch (errno)

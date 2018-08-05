@@ -95,13 +95,11 @@ static DES_key_schedule schedule;	/* expanded DES key */
 static unsigned char des_buf[8];	/* shared buffer for get_des_char/put_des_char */
 static int des_ct = 0;		/* count for get_des_char/put_des_char */
 static int des_n = 0;		/* index for put_des_char/get_des_char */
-#endif  /* WANT_DES_ENCRYPTION */
 
 /* init_des_cipher: initialize DES */
 void
 init_des_cipher (void)
 {
-#ifdef WANT_DES_ENCRYPTION
   des_ct = des_n = 0;
 
   /* initialize the initialization vector */
@@ -109,7 +107,6 @@ init_des_cipher (void)
 
   /* initialize the padding vector */
   arc4random_buf (pvec, sizeof (pvec));
-#endif  /* WANT_DES_ENCRYPTION */
 }
 
 
@@ -117,16 +114,12 @@ init_des_cipher (void)
 int
 get_des_char (FILE * fp, ed_buffer_t *ed)
 {
-#ifdef WANT_DES_ENCRYPTION
   if (des_n >= des_ct)
     {
       des_n = 0;
       des_ct = cbc_decode (des_buf, fp, ed);
     }
   return (des_ct > 0) ? des_buf[des_n++] : EOF;
-#else
-  return (getc (fp));
-#endif  /* !WANT_DES_ENCRYPTION */
 }
 
 
@@ -134,16 +127,12 @@ get_des_char (FILE * fp, ed_buffer_t *ed)
 int
 put_des_char (int c, FILE * fp)
 {
-#ifdef WANT_DES_ENCRYPTION
   if (des_n == sizeof des_buf)
     {
       des_ct = cbc_encode (des_buf, des_n, fp);
       des_n = 0;
     }
   return (des_ct >= 0) ? (des_buf[des_n++] = c) : EOF;
-#else
-  return (fputc (c, fp));
-#endif  /* !WANT_DES_ENCRYPTION */
 }
 
 
@@ -151,19 +140,14 @@ put_des_char (int c, FILE * fp)
 int
 flush_des_file (FILE * fp)
 {
-#ifdef WANT_DES_ENCRYPTION
   if (des_n == sizeof des_buf)
     {
       des_ct = cbc_encode (des_buf, des_n, fp);
       des_n = 0;
     }
   return (des_ct >= 0 && cbc_encode (des_buf, des_n, fp) >= 0) ? 0 : EOF;
-#else
-  return (fflush (fp));
-#endif  /* !WANT_DES_ENCRYPTION */
 }
 
-#ifdef WANT_DES_ENCRYPTION
 /*
  * get des_keyword from tty or stdin
  */
