@@ -437,7 +437,7 @@ struct ed_display
   int underflow;                /* If set, line truncated at top page. */
   int overflow;                 /* If set, line truncated at bottom of page. */
   int hidden;                   /* If set, do not print frame buffer. */
-  int io_f                      /* Print and scroll flags. */
+  int io_f;                     /* Print and scroll flags. */
 };
 
 /* Address range parameters. */

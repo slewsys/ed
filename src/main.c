@@ -47,14 +47,18 @@ main (argc, argv)
   struct option long_options[15] =
     {
       {"ansi-color", no_argument, NULL, 'R'},
+
 #ifdef WANT_SCRIPT_FLAGS
       {"expression", required_argument, NULL, 'e'},
       {"file", required_argument, NULL, 'f'},
 #endif
+
       {"help", no_argument, NULL, 'h'},
+
 #ifdef WANT_DES_ENCRYPTION
       {"crypt", no_argument, NULL, 'x'},
 #endif
+
       {"in-place", optional_argument, NULL, 'i'},
       {"prompt", required_argument, NULL, 'p'},
       {"quiet", no_argument, NULL, 's'},           /* Deprecated long option */

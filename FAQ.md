@@ -3,16 +3,14 @@
 ## Q. Why is `ed(1)` failing tests?
 
 A. `ed(1)` supports several `regex(3)` libraries. To avoid a collision
-between these, run:
+between these, before switching to an alternative `regex(3)` library, run:
 
 ```bash
-make distclean
-./autogen.sh
+rm -f lib/regex.h
 configure
 ```
 
-before switching to an alternative `regex(3)` library, . This relinks
-lib/regex.h as appropriate per confiigure options.
+This relinks lib/regex.h as appropriate per confiigure options.
 
 ## Q. Why do `make` and/or `./configure` fail?
 
