@@ -1,8 +1,8 @@
 diff --git a/src/exec.c b/src/exec.c
-index b5d3894..788b69e 100644
+index e7a31e7..7ce6922 100644
 --- a/src/exec.c
 +++ b/src/exec.c
-@@ -741,13 +741,17 @@ h_cmd (ed)
+@@ -749,13 +749,17 @@ h_cmd (ed)
        return ERR;
      }
    COMMAND_SUFFIX (ed->display->io_f, ed);
@@ -25,7 +25,7 @@ index b5d3894..788b69e 100644
    return ed->display->io_f;
  }
  
-@@ -837,10 +841,12 @@ l_cmd (ed)
+@@ -845,10 +849,12 @@ l_cmd (ed)
    else if ((status = is_valid_range (ed->state->dot, ed->state->dot, ed)) < 0)
      return status;
    COMMAND_SUFFIX (ed->display->io_f, ed);
@@ -41,7 +41,7 @@ index b5d3894..788b69e 100644
    return display_lines (ed->exec->region->start,
                          ed->exec->region->end, ed);
  }
-@@ -925,10 +931,12 @@ n_cmd (ed)
+@@ -933,10 +939,12 @@ n_cmd (ed)
             < 0)
      return status;
    COMMAND_SUFFIX (ed->display->io_f, ed);
@@ -57,7 +57,7 @@ index b5d3894..788b69e 100644
    return display_lines (ed->exec->region->start,
                          ed->exec->region->end, ed);
  }
-@@ -967,10 +975,12 @@ p_cmd (ed)
+@@ -975,10 +983,12 @@ p_cmd (ed)
    else if ((status = is_valid_range (ed->state->dot, ed->state->dot, ed)) < 0)
      return status;
    COMMAND_SUFFIX (ed->display->io_f, ed);
@@ -73,7 +73,7 @@ index b5d3894..788b69e 100644
    return display_lines (ed->exec->region->start,
                          ed->exec->region->end, ed);
  }
-@@ -1386,9 +1396,11 @@ w_cmd (ed)
+@@ -1394,9 +1404,11 @@ w_cmd (ed)
             * Per SUSv4, exit_status cannot be reset. We'll do it
             * anyhow ...
             */
@@ -89,10 +89,10 @@ index b5d3894..788b69e 100644
        if (ed->file->is_glob || cy == 'n' || cy == 'p')
          printf (ed->exec->opt & SCRIPTED ? "" : "%s\n",
 diff --git a/src/page.c b/src/page.c
-index 9bc401b..a7edcae 100644
+index b81852c..a023fcb 100644
 --- a/src/page.c
 +++ b/src/page.c
-@@ -494,20 +494,22 @@ put_tty_line (lp, addr, ed)
+@@ -212,20 +212,22 @@ put_tty_line (lp, addr, ed)
         * for legibility; otherwise, split lines at the right margin,
         * which starts one tab stop from the right edge of the window.
         */
