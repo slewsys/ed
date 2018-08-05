@@ -76,7 +76,7 @@ SUFFIXES = .t .tso .err .ok-at .ok-so-at .err-at .fail-at
 #
 # .tso.ok-so-at:
 #	sed -e "s^@SCRIPT_NAME@^$*^g"                                         \
-#	    -e "s^@SCRIPT_SRC@^../../$(abs_srcdir)/$*^g" "$(AT_PROTO_OK_SO)"  \
+#	    -e "s^@SCRIPT_SRC@^../../$*^g" "$(AT_PROTO_OK_SO)"                \
 #	    >"$@".tmp
 #	mv "$@".tmp "$@"
 #
