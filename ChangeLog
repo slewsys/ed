@@ -1,3 +1,7 @@
+2018-08-04  Andrew L. Moore  <alm@slewsys.org>
+
+	* src/exec.c (global_cmd): Setting io_f too early masked errors.
+
 2018-08-03  Andrew L. Moore  <alm@slewsys.org>
 
 	* src/exec.c (global_cmd): Reset flag `io_f' before return in case

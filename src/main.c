@@ -29,9 +29,11 @@ ed_buffer_t *ed;
 
 /* Static function declarations. */
 static void ed_usage __P ((int, ed_buffer_t *));
+
 #ifdef WANT_ED_ENVAR
 static char **getenv_init_argv __P ((const char *, int *, ed_buffer_t *));
 #endif
+
 static int next_edit __P ((int, ed_buffer_t *));
 static int save_edit __P ((int, ed_buffer_t *));
 static void script_die __P ((int, ed_buffer_t *));
@@ -251,11 +253,19 @@ top:
   /* Destination of LONGJMP () on signal SIGINT. */
   if ((status = SETJMP (env)))
     {
-#ifdef WANT_ED_MACRO
+/*
+ *  XXX: #ifdef here disables ed signal handlers. In particular,
+ *       SIGINT causes ed to exit. Workaround by defining dummy
+ *       unwind_stack_frame ().
+ */
+/*
+ * #ifdef WANT_ED_MACRO
+ */
       /* Unwind stack frame on interrupt. */
       status = unwind_stack_frame (ERR, ed);
-#endif
-
+/*
+ * #endif
+ */
       ed->exec->err = _("Interrupted");
       goto error;
     }
@@ -653,6 +663,7 @@ ed_usage (status, ed)
 {
   extern char version_string[]; /* From version.c */
 
+
   if (status)
     printf (_("Usage: %s [-] [-EGhirsVv] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE]\n"),
             ed->exec->opt & RESTRICTED ? "red" : "ed");
@@ -662,6 +673,9 @@ ed_usage (status, ed)
     {
       printf (_("Usage: %s [OPTION...] [FILE]\n"), (ed->exec->opt & RESTRICTED
                                                     ? "red" : "ed"));
+  /* TODO: Implement configured-feature-based help. Take all-or-none
+     approach for now. */
+#ifdef WANT_SCRIPT_FLAGS
       printf (_("Options:\n\
   -E, --regexp-extended     Enable extended regular expression syntax.\n\
   -e, --expression=COMMAND  Add COMMAND to scripted input - implies `-s'.\n\
@@ -682,6 +696,25 @@ If FILE is given, read it for editing.  From within ed, run:\n\
 to see full documentation of these options.\n\
 \n\
 Submit issues to: <bug-ed@gnu.org>.\n"));
+#else
+      printf (_("Options:\n\
+  -E, --regexp-extended     Enable extended regular expression syntax.\n\
+  -G, --traditional         Enable backward compatibility.\n\
+  -h, --help                Dispaly (this) help, then exit.\n\
+  -i, --in-place[=SUFFIX]   Write file before closing, with optional backup.\n\
+  -p, --prompt=STRING       Prompt for commands with STRING.\n\
+  -R, --ansi-color          Enable support for ANSI color codes.\n\
+  -r, --regexp-extended     Enable extended regular expression syntax.\n\
+  -s, --script              Suppress interactive diagnostics.\n\
+  -v, --verbose             Enable verbose error diagnostics.\n\
+  -V, --version             Print version information, then exit.\n\
+\n\
+If FILE is given, read it for editing.  From within ed, run:\n\
+  !info ed RET m switches RET\n\
+to see full documentation of these options.\n\
+\n\
+Submit issues to: <bug-ed@gnu.org>.\n"));
+#endif  /* !WANT_SCRIPT_FLAGS */
     }
   exit (status);
 }

@@ -392,6 +392,7 @@ typedef struct ed_stack_frame
 /* Ed buffer meta data and storage parameters. */
 struct ed_core
 {
+
 #ifdef WANT_ED_REGISTER
   /* Register buffers and line markers. */
   struct ed_register *regbuf;
@@ -996,11 +997,7 @@ int substitution_rhs __P ((off_t *, off_t *, unsigned *, unsigned *,
 void transfer_marks __P ((const ed_line_node_t *, const ed_line_node_t *,
                           ed_buffer_t *));
 int undo_last_command __P ((ed_buffer_t *));
-
-#ifdef WANT_ED_MACRO
 int unwind_stack_frame __P ((int, ed_buffer_t *));
-#endif
-
 void unmark_line_node __P ((const ed_line_node_t *, ed_buffer_t *));
 int write_file __P ((const char *, int, off_t, off_t, off_t *, off_t *,
                      const char *, ed_buffer_t *));

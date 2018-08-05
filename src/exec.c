@@ -157,9 +157,11 @@ static int j_cmd __P ((ed_buffer_t *));
 static int k_cmd __P ((ed_buffer_t *));
 static int l_cmd __P ((ed_buffer_t *));
 static int m_cmd __P ((ed_buffer_t *));
+
 #ifdef WANT_ED_MACRO
 static int exec_macro __P ((ed_buffer_t *));
 #endif
+
 static int n_cmd __P ((ed_buffer_t *));
 static int newline_cmd __P ((ed_buffer_t *));
 static int normalize_frame_buffer __P ((ed_buffer_t *));
@@ -175,9 +177,11 @@ static int t_cmd __P ((ed_buffer_t *));
 static int u_cmd __P ((ed_buffer_t *));
 static int w_cmd __P ((ed_buffer_t *));
 static int w_cmd __P ((ed_buffer_t *));
+
 #ifdef WANT_DES_ENCRYPTION
 static int x_cmd __P ((ed_buffer_t *));
 #endif
+
 static int z_cmd __P ((ed_buffer_t *));
 
 #define ED_KEY_FIRST 0x3c
@@ -190,11 +194,13 @@ static const ed_command_t ed_cmd[] =
    address_cmd,                 /* Bound to key `='. */
    invalid_cmd,
    invalid_cmd,
+
 #ifdef WANT_ED_MACRO
    exec_macro,                  /* Bound to key `@'. */
 #else
    invalid_cmd,
 #endif
+
    invalid_cmd,
    invalid_cmd,
    invalid_cmd,
@@ -250,11 +256,13 @@ static const ed_command_t ed_cmd[] =
    u_cmd,
    global_cmd,                  /* v_cmd */
    w_cmd,
+
 #ifdef WANT_DES_ENCRYPTION
    x_cmd,
 #else
    invalid_cmd,
 #endif
+
    invalid_cmd,
    z_cmd,
    invalid_cmd,
@@ -1441,6 +1449,7 @@ w_cmd (ed)
 #endif  /* !WANT_FILE_GLOB */
 }
 
+#ifdef WANT_DES_ENCRYPTION
 static int
 x_cmd (ed)
      ed_buffer_t *ed;
@@ -1459,6 +1468,7 @@ x_cmd (ed)
   COMMAND_SUFFIX (ed->display->io_f, ed);
   return (status = get_des_keyword (ed)) < 0 ? status : ed->display->io_f;
 }
+#endif  /* WANT_DES_ENCRYPTION */
 
 static int
 z_cmd (ed)

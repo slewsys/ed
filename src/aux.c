@@ -548,4 +548,13 @@ unwind_stack_frame (status, ed)
     }
   return status;
 }
-#endif /* WANT_ED_MACRO */
+
+#else
+int
+unwind_stack_frame (status, ed)
+     int status;
+     ed_buffer_t *ed;
+{
+  return 0;
+}
+#endif /* !WANT_ED_MACRO */
