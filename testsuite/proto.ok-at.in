@@ -16,7 +16,7 @@ wq @SCRIPT_NAME@.o
 _ATEOF_ED
 
 AT_CHECK([ed - <script-@SCRIPT_NAME@ &&
-cmp @SCRIPT_SRC@.r @SCRIPT_NAME@.o],
+diff -u @SCRIPT_SRC@.r @SCRIPT_NAME@.o],
 0, [ignore], [ignore], [], [])
 
 AT_CLEANUP()

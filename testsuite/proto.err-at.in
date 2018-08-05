@@ -16,7 +16,7 @@ w @SCRIPT_NAME@.ro
 _ATEOF_ED
 
 AT_CHECK([cat script-@SCRIPT_NAME@ | ed - && exit 255 ||
-cmp @SCRIPT_SRC@.rr @SCRIPT_NAME@.ro],
+diff -u @SCRIPT_SRC@.rr @SCRIPT_NAME@.ro],
 0, [ignore], [ignore], [], [])
 
 AT_CLEANUP()
