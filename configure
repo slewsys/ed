@@ -1330,6 +1330,7 @@ with_libiconv_prefix
 with_included_gettext
 with_libintl_prefix
 with_openssl
+enable_all_extensions
 enable_ed_envar
 enable_external_filter
 enable_file_glob
@@ -1991,6 +1992,7 @@ Optional Features:
                           optimize for fast installation [default=yes]
   --disable-libtool-lock  avoid locking (might break parallel builds)
   --disable-nls           do not use Native Language Support
+  --enable-all-extensions enable all ED extensions.
   --enable-ed-envar       enable ED environment variable
   --enable-external-filter
                           enable external filtering of ED buffer
@@ -30693,6 +30695,27 @@ fi
 #
 # Checks feature requests.
 #
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether all ED extensions are requested" >&5
+$as_echo_n "checking whether all ED extensions are requested... " >&6; }
+# Check whether --enable-all-extensions was given.
+if test "${enable_all_extensions+set}" = set; then :
+  enableval=$enable_all_extensions;
+fi
+
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: ${enable_all_extensions:-no}" >&5
+$as_echo "${enable_all_extensions:-no}" >&6; }
+
+# Want all ED extensions...
+if test ."$enable_all_extensions" = .'yes'; then :
+  enable_ed_envar=yes
+  enable_external_filter=yes
+  enable_file_glob=yes
+  enable_file_lock=yes
+  enable_ed_macro=yes
+  enable_ed_scrolling=yes
+  enable_des_encryption=yes
+fi
+
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether ED environment variable support is requested" >&5
 $as_echo_n "checking whether ED environment variable support is requested... " >&6; }
 # Check whether --enable-ed-envar was given.
@@ -30819,6 +30842,8 @@ $as_echo_n "checking whether ED scrolling support is requested... " >&6; }
 # Check whether --enable-ed-scrolling was given.
 if test "${enable_ed_scrolling+set}" = set; then :
   enableval=$enable_ed_scrolling;
+$as_echo "#define WANT_ED_SCROLLING 1" >>confdefs.h
+
 fi
 
 { $as_echo "$as_me:${as_lineno-$LINENO}: result: ${enable_ed_scrolling:-no}" >&5

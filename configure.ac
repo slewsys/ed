@@ -241,6 +241,22 @@ AC_CHECK_FUNCS_ONCE([dup2 flock ftruncate memmove pathconf sigaction          \
 #
 # Checks feature requests.
 #
+AC_MSG_CHECKING([whether all ED extensions are requested])
+AC_ARG_ENABLE([all-extensions],
+  [AS_HELP_STRING([--enable-all-extensions],
+    [enable all ED extensions.])], [], [])
+AC_MSG_RESULT([${enable_all_extensions:-no}])
+
+# Want all ED extensions...
+AS_IF([test ."$enable_all_extensions" = .'yes'],
+  [enable_ed_envar=yes]
+  [enable_external_filter=yes]
+  [enable_file_glob=yes]
+  [enable_file_lock=yes]
+  [enable_ed_macro=yes]
+  [enable_ed_scrolling=yes]
+  [enable_des_encryption=yes])
+
 AC_MSG_CHECKING([whether ED environment variable support is requested])
 AC_ARG_ENABLE([ed-envar],
   [AS_HELP_STRING([--enable-ed-envar],
@@ -325,7 +341,9 @@ AC_MSG_RESULT([${enable_script_flags:-no}])
 AC_MSG_CHECKING([whether ED scrolling support is requested])
 AC_ARG_ENABLE([ed-scrolling],
   [AS_HELP_STRING([--enable-ed-scrolling],
-    [enable ED scrolling.])],[],[])
+    [enable ED scrolling.])],
+  [AC_DEFINE([WANT_ED_SCROLLING], [1],
+    [Define to 1 to enable ED scrolling support.])],[])
 AC_MSG_RESULT([${enable_ed_scrolling:-no}])
 
 AC_MSG_CHECKING([whether DES encryption support is requested])
