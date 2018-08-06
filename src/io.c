@@ -513,8 +513,8 @@ get_stream_line (fp, len, ed)
 
  top:
 #ifdef WANT_DES_ENCRYPTION
-  for (; (c = ed->exec->keyword ? get_des_char (fp, ed)
-          : getc (fp)) != EOF && c != '\n'; ++*len)
+  for (; (c = (ed->exec->keyword && fp != stdin ? get_des_char (fp, ed)
+               : getc (fp))) != EOF && c != '\n'; ++*len)
 #else
   for (; (c = getc (fp)) != EOF && c != '\n'; ++*len)
 #endif  /* !WANT_DES_ENCRYPTION */

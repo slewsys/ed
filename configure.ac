@@ -143,7 +143,6 @@ AC_HEADER_TIOCGWINSZ
 AC_CHECK_HEADERS_ONCE([fcntl.h glob.h libintl.h limits.h locale.h \
   stddef.h stdlib.h string.h strings.h sys/file.h sys/ioctl.h sys/param.h \
   termios.h unistd.h wchar.h wctype.h])
-AC_CHECK_HEADERS([des.h], [], [], [$prefix/openssl])
 
 #
 # Checks for typedefs, structures, and compiler characteristics.

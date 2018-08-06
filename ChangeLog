@@ -1,3 +1,17 @@
+2018-08-06  Andrew L. Moore  <alm@slewsys.org>
+
+	* src/cbc.c (get_des_keyword): Given empty password, disable
+	encryption/decryption.
+
+	* src/io.c: Condition encrypted input on fp != stdin.
+
+2018-08-05  Andrew L. Moore  <alm@slewsys.org>
+
+	* src/io.c (read_stream): Don't use stubs for optional encrypted I/O.
+
+	* src/main.c (main): Work around strange regression: #ifdef within
+	setjmp disables ed signal handlers.
+
 2018-08-04  Andrew L. Moore  <alm@slewsys.org>
 
 	* src/exec.c (global_cmd): Setting io_f too early masked errors.

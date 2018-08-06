@@ -29,19 +29,17 @@
  */
 
 #include <pwd.h>
+#include <signal.h>
+#include <termios.h>
 
 #include "ed.h"
 
 #ifdef WANT_DES_ENCRYPTION
 # include <openssl/des.h>
-# define ED_DES_INCLUDES
-/*
- * #endif  /\* WANT_DES_ENCRYPTION *\/
- */
 
 # define _(String) gettext (String)
 
-static void expand_des_key __P ((unsigned char *, char *, ed_buffer_t *));
+static int expand_des_key __P ((unsigned char *, char *, ed_buffer_t *));
 static void set_des_key __P ((DES_cblock *));
 static int cbc_encode __P ((unsigned char *, int, FILE *));
 static int cbc_decode __P ((unsigned char *, FILE *, ed_buffer_t *));
@@ -69,9 +67,6 @@ static int hex_to_binary __P ((int, int));
  * global variables and related macros
  */
 
-/*
- * #ifdef WANT_DES_ENCRYPTION
- */
 static DES_cblock ivec;		/* initialization vector */
 static DES_cblock pvec;		/* padding vector */
 
@@ -90,11 +85,11 @@ static char bits[] =
 
 static int pflag;		/* 1 to preserve parity bits */
 
-static DES_key_schedule schedule;	/* expanded DES key */
+static DES_key_schedule schedule; /* expanded DES key */
 
-static unsigned char des_buf[8];	/* shared buffer for get_des_char/put_des_char */
-static int des_ct = 0;		/* count for get_des_char/put_des_char */
-static int des_n = 0;		/* index for put_des_char/get_des_char */
+static unsigned char des_buf[8];  /* shared buffer for get_des_char/put_des_char */
+static int des_ct = 0;          /* count for get_des_char/put_des_char */
+static int des_n = 0;           /* index for put_des_char/get_des_char */
 
 /* init_des_cipher: initialize DES */
 void
@@ -112,7 +107,9 @@ init_des_cipher (void)
 
 /* get_des_char: return next char in an encrypted file */
 int
-get_des_char (FILE * fp, ed_buffer_t *ed)
+get_des_char (fp, ed)
+     FILE * fp;
+     ed_buffer_t *ed;
 {
   if (des_n >= des_ct)
     {
@@ -125,7 +122,9 @@ get_des_char (FILE * fp, ed_buffer_t *ed)
 
 /* put_des_char: write a char to an encrypted file; return char written */
 int
-put_des_char (int c, FILE * fp)
+put_des_char (c, fp)
+     int c;
+     FILE * fp;
 {
   if (des_n == sizeof des_buf)
     {
@@ -138,7 +137,8 @@ put_des_char (int c, FILE * fp)
 
 /* flush_des_file: flush an encrypted file's output; return status */
 int
-flush_des_file (FILE * fp)
+flush_des_file (fp)
+     FILE * fp;
 {
   if (des_n == sizeof des_buf)
     {
@@ -152,28 +152,35 @@ flush_des_file (FILE * fp)
  * get des_keyword from tty or stdin
  */
 int
-get_des_keyword (ed_buffer_t *ed)
+get_des_keyword (ed)
+     ed_buffer_t *ed;
 {
-  char *p;			/* used to obtain the key */
   DES_cblock msgbuf;		/* I/O buffer */
+  char *p;			/* used to obtain the key */
+  int status = 0;
 
-  /*
-   * get the key
-   */
-  if ((p = getpass ("Enter key: ")) != NULL && *p != '\0')
+  /* Get password. */
+  if ((p = getpass ("Enter key: ")) == NULL)
     {
+      ed->exec->err = _("Invalid password.");
+      return ERR;
+    }
 
-      /*
-       * copy it, nul-padded, into the key area
-       */
-      expand_des_key (msgbuf, p, ed);
-      MEMZERO (p, _PASSWORD_LEN);
-      set_des_key (&msgbuf);
-      MEMZERO (msgbuf, sizeof msgbuf);
-      ++ed->exec->keyword;
+  /* If empty password, disable encryption/decryption. */
+  else if (*p == '\0')
+    {
+      ed->exec->keyword = 0;
       return 0;
     }
-  return ERR;
+
+  /* Copy it, nul-padded, into the key area */
+  if ((status = expand_des_key (msgbuf, p, ed)) < 0)
+    return status;
+  MEMZERO (p, strlen (p));
+  set_des_key (&msgbuf);
+  MEMZERO (msgbuf, sizeof msgbuf);
+  ++ed->exec->keyword;
+  return 0;
 }
 
 
@@ -181,7 +188,9 @@ get_des_keyword (ed_buffer_t *ed)
  * map a hex character to an integer
  */
 static int
-hex_to_binary (int c, int radix)
+hex_to_binary (c, radix)
+     int c;
+     int radix;
 {
   switch (c)
     {
@@ -235,57 +244,63 @@ hex_to_binary (int c, int radix)
  *	obuf		bit pattern
  *	kbuf		the key itself
  */
-static void
-expand_des_key (unsigned char *obuf, char *kbuf, ed_buffer_t *ed)
+static int
+expand_des_key (obuf, kbuf, ed)
+     unsigned char *obuf;
+     char *kbuf;
+     ed_buffer_t *ed;
 {
   int i, j;			/* counter in a for loop */
   int nbuf[64];			/* used for hex/key translation */
 
-  /*
-   * leading '0x' or '0X' == hex key
-   */
+  /* hexidecimal key */
   if (kbuf[0] == '0' && (kbuf[1] == 'x' || kbuf[1] == 'X'))
     {
       kbuf = &kbuf[2];
-      /*
-       * now translate it, bombing on any illegal hex digit
-       */
+
+      /* now translate it, bombing on any illegal hex digit */
       for (i = 0; i < 16 && kbuf[i]; i++)
         if ((nbuf[i] = hex_to_binary ((int) kbuf[i], 16)) == -1)
-          ed->exec->err = _("bad hex digit in key");
+          {
+            ed->exec->err = _("Bad hex digit in key.");
+            return ERR;
+          }
       while (i < 16)
         nbuf[i++] = 0;
       for (i = 0; i < 8; i++)
         obuf[i] = ((nbuf[2 * i] & 0xf) << 4) | (nbuf[2 * i + 1] & 0xf);
+
       /* preserve parity bits */
       pflag = 1;
-      return;
+      return 0;
     }
-  /*
-   * leading '0b' or '0B' == binary key
-   */
+
+  /* binary key */
   if (kbuf[0] == '0' && (kbuf[1] == 'b' || kbuf[1] == 'B'))
     {
       kbuf = &kbuf[2];
-      /*
-       * now translate it, bombing on any illegal binary digit
-       */
+
+      /* now translate it, bombing on any illegal binary digit */
       for (i = 0; i < 16 && kbuf[i]; i++)
         if ((nbuf[i] = hex_to_binary ((int) kbuf[i], 2)) == -1)
-          ed->exec->err = _("bad binary digit in key");
+          {
+            ed->exec->err = _("Bad binary digit in key.");
+            return ERR;
+          }
       while (i < 64)
         nbuf[i++] = 0;
       for (i = 0; i < 8; i++)
         for (j = 0; j < 8; j++)
           obuf[i] = (obuf[i] << 1) | nbuf[8 * i + j];
+
       /* preserve parity bits */
       pflag = 1;
-      return;
+      return 0;
     }
-  /*
-   * no special leader -- ASCII
-   */
+
+  /* ASCII */
   (void) strncpy ((char *) obuf, kbuf, 8);
+  return 0;
 }
 
 /*****************
@@ -303,7 +318,8 @@ expand_des_key (unsigned char *obuf, char *kbuf, ed_buffer_t *ed)
  * DES ignores the low order bit of each character.
  */
 static void
-set_des_key (DES_cblock * buf)	/* key block */
+set_des_key (buf)
+     DES_cblock * buf;          /* key block */
 {
   int i, j;			/* counter in a for loop */
   int par;			/* parity counter */
@@ -311,6 +327,7 @@ set_des_key (DES_cblock * buf)	/* key block */
   /*
    * if the parity is not preserved, flip it
    */
+  return;
   if (!pflag)
     {
       for (i = 0; i < 8; i++)
@@ -335,7 +352,10 @@ set_des_key (DES_cblock * buf)	/* key block */
  * This encrypts using the Cipher Block Chaining mode of DES
  */
 static int
-cbc_encode (unsigned char *msgbuf, int n, FILE * fp)
+cbc_encode (msgbuf, n, fp)
+     unsigned char *msgbuf;
+     int n;
+     FILE * fp;
 {
   int inverse = 0;		/* 0 to encrypt, 1 to decrypt */
 
@@ -357,9 +377,7 @@ cbc_encode (unsigned char *msgbuf, int n, FILE * fp)
   /*
     MEMZERO(msgbuf +  n, 8 - n);
   */
-  /*
-   *  Pad the last block randomly
-   */
+  /* Pad the last block randomly */
   (void) MEMCPY (msgbuf + n, pvec, 8 - n);
   msgbuf[7] = n;
   for (n = 0; n < 8; n++)
@@ -374,7 +392,10 @@ cbc_encode (unsigned char *msgbuf, int n, FILE * fp)
  *	fp	input file descriptor
  */
 static int
-cbc_decode (unsigned char *msgbuf, FILE * fp, ed_buffer_t *ed)
+cbc_decode (msgbuf, fp, ed)
+     unsigned char *msgbuf;
+     FILE * fp;
+     ed_buffer_t *ed;
 {
   DES_cblock tbuf;		/* temp buffer for initialization vector */
   int n;			/* number of bytes actually read */
@@ -399,7 +420,7 @@ cbc_decode (unsigned char *msgbuf, FILE * fp, ed_buffer_t *ed)
           n = msgbuf[7];
           if (n < 0 || n > 7)
             {
-              ed->exec->err = _("decryption failed (block corrupted)");
+              ed->exec->err = _("Decryption failed (block corrupted).");
               return EOF;
             }
         }
@@ -408,9 +429,9 @@ cbc_decode (unsigned char *msgbuf, FILE * fp, ed_buffer_t *ed)
       return n;
     }
   if (n > 0)
-    ed->exec->err = _("decryption failed (incomplete block)");
+    ed->exec->err = _("Decryption failed (incomplete block).");
   else if (n < 0)
-    ed->exec->err = _("cannot read file");
+    ed->exec->err = _("File read error");
   return EOF;
 }
 #endif /* WANT_DES_ENCRYPTION */
