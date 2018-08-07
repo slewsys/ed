@@ -17303,19 +17303,6 @@ fi
 
 
 
-for ac_header in des.h
-do :
-  ac_fn_c_check_header_compile "$LINENO" "des.h" "ac_cv_header_des_h" "$prefix/openssl
-"
-if test "x$ac_cv_header_des_h" = xyes; then :
-  cat >>confdefs.h <<_ACEOF
-#define HAVE_DES_H 1
-_ACEOF
-
-fi
-
-done
-
 
 #
 # Checks for typedefs, structures, and compiler characteristics.

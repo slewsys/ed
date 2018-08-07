@@ -897,7 +897,7 @@ int display_lines __P ((off_t, off_t, ed_buffer_t *));
 int exec_command __P ((ed_buffer_t *));
 int exec_global __P ((ed_buffer_t *));
 char *expand_shell_command __P ((size_t *, int *, ed_buffer_t *));
-char *file_glob __P ((size_t *, int, int, ed_buffer_t *));
+char *file_glob __P ((size_t *, int, int, int, ed_buffer_t *));
 char *file_name __P ((size_t *, ed_buffer_t *));
 
 #ifdef WANT_EXTERNAL_FILTER

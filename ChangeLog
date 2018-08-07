@@ -1,3 +1,11 @@
+2018-08-07  Andrew L. Moore  <alm@slewsys.org>
+
+	* src/exec.c (w_cmd):
+	(r_cmd): Only read from and write to file glob if expansion unique.
+
+	* src/parse.c (file_glob): Add parameter `uniquely' if expansion
+	should be unique.
+
 2018-08-06  Andrew L. Moore  <alm@slewsys.org>
 
 	* src/cbc.c (get_des_keyword): Given empty password, disable

@@ -38,7 +38,7 @@
  * FILE_NAME: Get shell command or file name or file glob from the
  *    command buffer.
  */
-#define FILE_NAME(fn, len, cm, replace, ed)                                   \
+#define FILE_NAME(fn, len, cm, replace, uniquely, ed)                         \
   do                                                                          \
     {                                                                         \
       int _subs;                                                              \
@@ -55,7 +55,7 @@
         }                                                                     \
       else if (!((fn) =                                                       \
                  ((ed)->file->is_glob || (cm) == 'n' || (cm) == 'p'           \
-                  ? file_glob (&(len), (cm), (replace), (ed))                 \
+                  ? file_glob (&(len), (cm), (replace), (uniquely), (ed))     \
                   : file_name (&(len), (ed)))))                               \
         {                                                                     \
           /* EOF should always flag an error here. */                         \
@@ -501,7 +501,7 @@ E_cmd (ed)
     }
   SKIP_WHITESPACE (ed);
   cx = *ed->input;
-  FILE_NAME (fn, len, cy, 1, ed);
+  FILE_NAME (fn, len, cy, 1, 0, ed);
 
   spl1 ();
   if (ed->state->lines > 0
@@ -558,7 +558,7 @@ E_cmd (ed)
                                0, &addr, &size, is_default, ed)) < 0)
         return status;
       if (ed->file->is_glob || cx == '\n')
-        printf (ed->exec->opt & SCRIPTED ? "" : "%s\n", fn);
+        printf (ed->exec->opt & SCRIPTED ? "" : "%s\n", ed->file->name);
     }
   printf (ed->exec->opt & SCRIPTED ? "" : "%" OFF_T_FORMAT_STRING "\n", size);
 
@@ -672,7 +672,7 @@ f_cmd (ed)
     ++ed->input;
   else
     {
-      FILE_NAME (fn, len, cy, 1, ed);
+      FILE_NAME (fn, len, cy, 1, 0, ed);
       REALLOC_THROW (ed->file->name, ed->file->name_size, len+1, ERR, ed);
       strcpy (ed->file->name, fn);
     }
@@ -1019,7 +1019,7 @@ r_cmd (ed)
     }
   SKIP_WHITESPACE (ed);
 
-  FILE_NAME (fn, len, 0, !ed->file->name, ed);
+  FILE_NAME (fn, len, 0, !ed->file->name, 1, ed);
 
   spl1 ();
   if (!ed->exec->global)
@@ -1333,9 +1333,9 @@ w_cmd (ed)
   cz = *ed->input == '!';
 #ifdef WANT_SAFE_WRITE
   FILE_NAME (fn, len, ed->file->is_glob,
-             ed->file->is_glob ? *ed->input != '\n' : !ed->file->name, ed);
+             ed->file->is_glob ? *ed->input != '\n' : !ed->file->name, 1, ed);
 #else
-  FILE_NAME (fn, len, ed->file->is_glob, !ed->file->name, ed);
+  FILE_NAME (fn, len, ed->file->is_glob, !ed->file->name, 1, ed);
 #endif  /* !WANT_SAFE_WRITE */
 
   if (*fn == '!' || (*fn == '\0' && ed->file->name && *ed->file->name == '!'))
@@ -1640,7 +1640,7 @@ shell_cmd (ed)
           is_valid_range (ed->state->dot, ed->state->dot, ed)) < 0)
     return status;
   --ed->input;
-  FILE_NAME (fn, len, 0, 0, ed);
+  FILE_NAME (fn, len, 0, 0, 0, ed);
   if (!ed->exec->region->addrs)
     {
       /* system(3) blocks SIGCHLD. */

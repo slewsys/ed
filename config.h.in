@@ -260,9 +260,6 @@
    don't. */
 #undef HAVE_DECL__SNWPRINTF
 
-/* Define to 1 if you have the <des.h> header file. */
-#undef HAVE_DES_H
-
 /* Define to 1 if you have the <dlfcn.h> header file. */
 #undef HAVE_DLFCN_H
 

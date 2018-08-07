@@ -230,10 +230,11 @@ check_address_bounds (addr, ed)
    pattern is empty, the next name of previous expansion (may be
    NULL). */
 char *
-file_glob (len, cm, replace, ed)
+file_glob (len, cm, replace, uniquely, ed)
      size_t *len;
      int cm;
      int replace;
+     int uniquely;              /* If set, expand to single file only. */
      ed_buffer_t *ed;
 {
   static glob_t *one_time_glob = NULL;  /* one-time file glob */
@@ -315,6 +316,11 @@ file_glob (len, cm, replace, ed)
                   gp->gl_pathv = NULL;
                   *ed->file->glob = *ed->file->list = *gp;
                 }
+              return NULL;
+            }
+          if (uniquely && gp->gl_pathc > 1)
+            {
+              ed->exec->err = _("Too many file names");
               return NULL;
             }
         }

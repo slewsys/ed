@@ -53,7 +53,7 @@ static int hex_to_binary __P ((int, int));
 # define MEMZERO(dest,len)	memset((dest), 0, (len))
 
 /* Hide the calls to the primitive encryption routines. */
-# define DES_XFORM(buf)                                                        \
+# define DES_XFORM(buf)                                                       \
   DES_ecb_encrypt(buf, buf, &schedule,                                        \
                   inverse ? DES_DECRYPT : DES_ENCRYPT);
 
