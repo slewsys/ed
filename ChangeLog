@@ -1,4 +1,4 @@
-2018-08-07  Andrew L. Moore  <alm@slewsys.org>
+2018-08-07  Andrew L. Moore  <slewsys@gmail.com>
 
 	* src/exec.c (w_cmd):
 	(r_cmd): Only read from and write to file glob if expansion unique.
@@ -6,39 +6,39 @@
 	* src/parse.c (file_glob): Add parameter `uniquely' if expansion
 	should be unique.
 
-2018-08-06  Andrew L. Moore  <alm@slewsys.org>
+2018-08-06  Andrew L. Moore  <slewsys@gmail.com>
 
 	* src/cbc.c (get_des_keyword): Given empty password, disable
 	encryption/decryption.
 
 	* src/io.c: Condition encrypted input on fp != stdin.
 
-2018-08-05  Andrew L. Moore  <alm@slewsys.org>
+2018-08-05  Andrew L. Moore  <slewsys@gmail.com>
 
 	* src/io.c (read_stream): Don't use stubs for optional encrypted I/O.
 
 	* src/main.c (main): Work around strange regression: #ifdef within
 	setjmp disables ed signal handlers.
 
-2018-08-04  Andrew L. Moore  <alm@slewsys.org>
+2018-08-04  Andrew L. Moore  <slewsys@gmail.com>
 
 	* src/exec.c (global_cmd): Setting io_f too early masked errors.
 
-2018-08-03  Andrew L. Moore  <alm@slewsys.org>
+2018-08-03  Andrew L. Moore  <slewsys@gmail.com>
 
 	* src/exec.c (global_cmd): Reset flag `io_f' before return in case
 	of non-interactive global commands (i.e., `g' and `v'). Set to
 	PRNT in case of interactive commands (`G' and `V') to indicate
 	command completion. Move flag `io_f' to struct `ed_display'.
 
-2018-08-02  Andrew L. Moore  <alm@slewsys.org>
+2018-08-02  Andrew L. Moore  <slewsys@gmail.com>
 
 	* src/cmds.c (append_lines): Gobble newline away from global command.
 
 	* src/exec.c (newline_cmd): Newline in global command can
 	print if given an address per SUSv4.
 
-2018-08-01  Andrew L. Moore  <alm@slewsys.org>
+2018-08-01  Andrew L. Moore  <slewsys@gmail.com>
 
 	* src/exec.c (h_cmd): Condition printing "No previous error" on
 	POSIXLY_CORRECT and TRADITIONAL flags.
@@ -46,7 +46,7 @@
 	* src/sub.c (resubstitute): Condition extended short-form
 	substitution characters on POSIXLY_CORRECT and TRADITIONAL flags.
 
-2018-07-31  Andrew L. Moore  <alm@slewsys.org>
+2018-07-31  Andrew L. Moore  <slewsys@gmail.com>
 
 	* src/glbl.c: Empty command list equivalent to `p' command per SUSv4.
 
@@ -56,7 +56,7 @@
 	* src/cmds.c (transfer_marks): Preserve line node marks across
 	substitutions per SUSv4.
 
-2018-07-30  Andrew L. Moore  <alm@slewsys.org>
+2018-07-30  Andrew L. Moore  <slewsys@gmail.com>
 
 	* src/page.c (display_lines): Handle printing of line that exceeds
 	page size like scrolling. Avoid spurious newlines.
@@ -65,7 +65,7 @@
 	* src/exec.c (FILE_NAME): Print shell command expansion even when
 	scripting per SUSv4.
 
-2018-07-29  Andrew L. Moore  <alm@slewsys.org>
+2018-07-29  Andrew L. Moore  <slewsys@gmail.com>
 
 	* src/main.c (main): Check for option `-' with strcmp(3).
 	(main): Print prompt even when scripting per SUSv4.
@@ -84,12 +84,12 @@
 
 	* configure.ac: Support shells other than /bin/sh.
 
-2018-07-25  Andrew L. Moore  <alm@slewsys.org>
+2018-07-25  Andrew L. Moore  <slewsys@gmail.com>
 
 	* src/exec.c (x_cmd): Add `x' command to enter encryption keyword.
 	DES encryption not working yet.
 
-2018-07-24  Andrew L. Moore  <alm@slewsys.org>
+2018-07-24  Andrew L. Moore  <slewsys@gmail.com>
 
 	* Makefile.am: Add rule `update-gnulib'.
 
@@ -103,7 +103,7 @@
 	availability.
 
 
-2018-07-23  Andrew L. Moore  <alm@slewsys.org>
+2018-07-23  Andrew L. Moore  <slewsys@gmail.com>
 
 	(DESTINATION_ADDRESS):
 	(exec_command): Allow command-line flag `--traditional' or
@@ -117,7 +117,7 @@
 	* src/io.c (write_file):
 	* src/cmds.c (mark_line_node): Silence compiler warnings.
 
-2018-07-22  Andrew L. Moore  <alm@slewsys.org>
+2018-07-22  Andrew L. Moore  <slewsys@gmail.com>
 
 	* src/ed.h:
 	* src/aux.c:
@@ -131,7 +131,7 @@
 	* testsuite/proto.ok-at.in:
 	* testsuite/proto.fail-at.in: Don't require option `-f' in tests.
 
-2018-07-19  Andrew L. Moore  <alm@slewsys.org>
+2018-07-19  Andrew L. Moore  <slewsys@gmail.com>
 
 	* src/ed.h:
 	* src/aux.c:
@@ -140,14 +140,14 @@
 	* configure.ac: Condition ed macros on configure feature request
 	`--enable-ed-macro'.
 
-2018-07-18  Andrew L. Moore  <alm@slewsys.org>
+2018-07-18  Andrew L. Moore  <slewsys@gmail.com>
 
 	* src/main.c (main, ed_usage, save_edit): Remove command-line
 	option `--info'. Move functionality to option `--version'. Initial
 	implementation of option --in-place=SUFFIX to write file before
 	closing, with optional backup.
 
-2018-07-17  Andrew L. Moore  <alm@slewsys.org>
+2018-07-17  Andrew L. Moore  <slewsys@gmail.com>
 
 	* src/aux.c (push_stack_frame, pop_stack_frame, unwind_stack_frame):
 	* src/ed.h (struct ed_stack_frame):
@@ -158,7 +158,7 @@
 	* src/main.c (append_script_file):
 	* src/aux.c (push_stack_frame): Clean up.
 
-2018-07-15  Andrew L. Moore  <alm@slewsys.org>
+2018-07-15  Andrew L. Moore  <slewsys@gmail.com>
 
 	* src/aux.c (unwind_stack_frame): Decrement stack frame index
 	before using it.
@@ -171,7 +171,7 @@
 	(pop_stack_frame): Enter ftruncate block conditionally on FSEEK.
 	Fixes macros for remaining cases.
 
-2018-07-14  Andrew L. Moore  <alm@slewsys.org>
+2018-07-14  Andrew L. Moore  <slewsys@gmail.com>
 
 	* ed.h:
 	* src/buf.c (init_stdio):
@@ -183,7 +183,7 @@
 
 	TODO: Redirecting script from file still seqfaults.
 
-2018-07-13  Andrew L. Moore  <alm@slewsys.org>
+2018-07-13  Andrew L. Moore  <slewsys@gmail.com>
 
 	* src/aux.c (push_stack_frame): Add FSCRIPT flag.
 
