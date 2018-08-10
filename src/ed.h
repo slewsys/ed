@@ -979,7 +979,9 @@ void save_substitute __P ((regex_t *, unsigned, off_t, off_t, unsigned,
 int script_from_register  __P ((ed_buffer_t *));
 #endif
 
-int scroll_forward __P ((off_t, off_t, unsigned int, ed_buffer_t *));
+#ifdef WANT_ED_SCROLLING
+int scroll_lines __P ((off_t, off_t, ed_buffer_t *));
+#endif
 
 #ifdef WANT_FILE_LOCK
 int set_file_lock __P ((FILE *, int));

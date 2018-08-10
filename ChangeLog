@@ -1,3 +1,8 @@
+2018-08-10  Andrew L. Moore  <slewsys@gmail.com>
+
+	* src/exec.c (Z_cmd): Compensate for loss of addressed line if
+	scrolling half page.
+
 2018-08-07  Andrew L. Moore  <slewsys@gmail.com>
 
 	* src/exec.c (w_cmd):

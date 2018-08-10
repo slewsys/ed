@@ -1557,10 +1557,11 @@ z_cmd (ed)
       if ((zhfw_off = ed->display->ws_row - ed->exec->region->end + 1) > 0 &&
           zhfw_off <= addr - ed->exec->region->end)
           ed->exec->region->end += zhfw_off;
+
       ed->display->io_f |= ZFWD | ZHFW;
       break;
     }
-  return display_lines (ed->exec->region->end, addr, ed);
+  return scroll_lines (ed->exec->region->end, addr, ed);
 }
 
 static int
@@ -1588,7 +1589,10 @@ Z_cmd (ed)
   else
     {
       addr = (ed->display->is_paging ? ed->display->page_addr : ed->state->dot);
-      addr -= !(ed->exec->global || ed->display->overflow);
+
+      /* Compensate for loss of addressed line if scrolling half page. */
+      addr -= !(ed->exec->global || ed->display->overflow
+                || ed->state->dot == ed->state->lines);
     }
   if ((status = is_valid_range (ed->exec->region->start = 1, addr, ed)) < 0)
     return status;
@@ -1608,7 +1612,7 @@ Z_cmd (ed)
    * page. Otherwise, display page preceding current address.
    */
   ed->display->io_f |= ZBWD;
-  return display_lines (max (1, (off_t) ed->exec->region->end -
+  return scroll_lines (max (1, (off_t) ed->exec->region->end -
                              ed->display->ws_row + 2),
                         ed->exec->region->end, ed);
 }

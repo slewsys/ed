@@ -22,11 +22,6 @@ static int put_frame_buffer_line __P ((ed_line_node_t *, off_t,
 #endif
 
 static int put_tty_line __P ((ed_line_node_t *, off_t, ed_buffer_t *));
-
-#ifdef WANT_ED_SCROLLING
-static int scroll_lines __P ((off_t, off_t, ed_buffer_t *));
-#endif
-
 static unsigned int sgr_span __P ((const char *));
 
 
@@ -49,12 +44,6 @@ display_lines (from, to, ed)
   /* Trivially allow printing empty buffer. */
   if (!ed->state->lines)
     return 0;
-
-#ifdef WANT_ED_SCROLLING
-  /* If scrolling... */
-  else if ((ed->display->io_f & (ZFWD | ZBWD)))
-    return scroll_lines (from, to, ed);
-#endif
 
   ep = get_line_node (INC_MOD (to, ed->state->lines), ed);
   bp = get_line_node (from, ed);
@@ -221,8 +210,7 @@ put_tty_line (lp, addr, ed)
                       && strlen (s) > 1)))
 
         {
-          if ((ed->display->io_f & LIST)
-              && ((putchar ('\\') < 0 || putchar ('\n') < 0)))
+          if (putchar ('\\') < 0 || putchar ('\n') < 0)
             return ERR;
           col = 0;
         }
@@ -239,7 +227,7 @@ put_tty_line (lp, addr, ed)
 #ifdef WANT_ED_SCROLLING
 
 /* INIT_FB_ROW: Initialize frame buffer row. */
-# define INIT_FB_ROW(bp, caddr, off, fb)                                       \
+# define INIT_FB_ROW(bp, caddr, off, fb)                                      \
   do                                                                          \
     {                                                                         \
       (fb->row + fb->row_i)->lp = (bp);                                       \
@@ -250,7 +238,7 @@ put_tty_line (lp, addr, ed)
   while (0)
 
 /* INC_FB_ROW: Increment frame buffer row. */
-# define INC_FB_ROW(ok_to_wrap, fb)                                            \
+# define INC_FB_ROW(ok_to_wrap, fb)                                           \
   do                                                                          \
     {                                                                         \
       (fb)->row_i = ((fb)->row_i + 1) % ((fb)->rows - 1);                     \
@@ -262,7 +250,7 @@ put_tty_line (lp, addr, ed)
     }                                                                         \
   while (0)
 
-# define RESET_FB_PREV(fb, ed)                                                 \
+# define RESET_FB_PREV(fb, ed)                                                \
   do                                                                          \
     {                                                                         \
       if ((fb)->prev_first)                                                   \
@@ -279,8 +267,8 @@ put_tty_line (lp, addr, ed)
 
 
 
-/* display_lines: Print a range of lines. Return status (<= 0). */
-static int
+/* scroll_lines: Print a range of lines. Return status (<= 0). */
+int
 scroll_lines (from, to, ed)
      off_t from;
      off_t to;
@@ -361,7 +349,7 @@ scroll_lines (from, to, ed)
       RESET_FB_PREV (fb, ed);
       ed->display->io_f |= ZBWD;
       ed->display->io_f &= ~(ZFWD | ZHFW);
-      return display_lines (max (1, ed->state->lines - fb->rows + 2),
+      return scroll_lines (max (1, ed->state->lines - fb->rows + 2),
                             ed->state->lines, ed);
     }
 
@@ -376,7 +364,7 @@ scroll_lines (from, to, ed)
       RESET_FB_PREV (fb, ed);
       ed->display->io_f |= ZFWD;
       ed->display->io_f &= ~(ZBWD | ZHBW);
-      return display_lines (1, min (ed->state->lines, fb->rows - 1), ed);
+      return scroll_lines (1, min (ed->state->lines, fb->rows - 1), ed);
 
     }
 
