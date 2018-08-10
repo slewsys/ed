@@ -4,6 +4,12 @@ KNOWN BUGS
 
 * Paging algorithm should use UTF-8 character width instead of ASCII.
 
-* Half-page scrolling assumes that width of a printed line does not
-  exceed terminal width (i.e., value of shell environment variable
-  $COLUMNS).
+* Half-page scrolling assumes that the width of a printed line does
+  not exceed terminal width. Scrolling by half pages through a file
+  with long lines displays seemingly corrupt content, but does not
+  affect the integrity of the internal editor buffer. Use full page
+  scrolling if in doubt.
+
+* Similarly, half-page scrolling of enumerations (i.e., `[n' and ']n'
+  commands) and listings (i.e., `[l' and ']l' commands) is currently
+  broken.

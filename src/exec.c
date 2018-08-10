@@ -1556,7 +1556,7 @@ z_cmd (ed)
          half of first page. */
       if ((zhfw_off = ed->display->ws_row - ed->exec->region->end + 1) > 0 &&
           zhfw_off <= addr - ed->exec->region->end)
-          ed->exec->region->end += zhfw_off;
+          ed->exec->region->end += zhfw_off - 1;
 
       ed->display->io_f |= ZFWD | ZHFW;
       break;
