@@ -1,5 +1,8 @@
 2018-08-11  Andrew L. Moore  <slewsys@gmail.com>
 
+	* src/exec.c (Z_cmd, z_cmd): Adjust address only if scrolling half
+	a page.
+
 	* src/main.c (append_script_expression): Preserve empty expressions.
 
 2018-08-10  Andrew L. Moore  <slewsys@gmail.com>

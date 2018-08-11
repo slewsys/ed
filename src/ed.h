@@ -571,9 +571,9 @@ enum ed_modifier_flags
                                    `z'. */
     ZBWD = 0x10000,             /* Scroll backward one screen, i.e.,
                                    `Z'. */
-    ZHFW = 0x20000,             /* Scroll forward one half screen, i.e.,
+    ZFWH = 0x20000,             /* Scroll forward one half screen, i.e.,
                                    `]'. */
-    ZHBW = 0x40000,             /* Scroll backward one half screen, i.e.,
+    ZBWH = 0x40000,             /* Scroll backward one half screen, i.e.,
                                    `['. */
     OFFB = 0x80000              /* Frame buffer text offset. */
   };

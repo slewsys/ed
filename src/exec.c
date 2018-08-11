@@ -1189,7 +1189,10 @@ scroll_backward_half (ed)
   if ((!ed->display->is_paging &&
        ed->exec->region->end <= ed->display->ws_row / 2 + 1)
       || ed->state->dot == ed->state->lines)
-    return Z_cmd (ed);
+    {
+      ed->display->io_f |= ZBWH;
+      return Z_cmd (ed);
+    }
 
   return z_cmd (ed);
 }
@@ -1210,7 +1213,10 @@ scroll_forward_half (ed)
       return ERR;
     }
   if (ed->exec->region->addrs || !ed->display->is_paging)
-    return scroll_backward_half (ed);
+    {
+      ed->display->io_f |= ZFWH;
+      return scroll_backward_half (ed);
+    }
   return z_cmd (ed);
 }
 
@@ -1535,6 +1541,7 @@ z_cmd (ed)
       break;
     case '[':
     case ']':
+
       /*
        * When scrolling half a page, calculate last line to display,
        * addr, relative to  region->end >= 1 by adding half the total
@@ -1558,7 +1565,7 @@ z_cmd (ed)
           zhfw_off <= addr - ed->exec->region->end)
           ed->exec->region->end += zhfw_off - 1;
 
-      ed->display->io_f |= ZFWD | ZHFW;
+      ed->display->io_f |= ZFWD | ZFWH;
       break;
     }
   return scroll_lines (ed->exec->region->end, addr, ed);
@@ -1592,7 +1599,8 @@ Z_cmd (ed)
 
       /* Compensate for loss of addressed line if scrolling half page. */
       addr -= !(ed->exec->global || ed->display->overflow
-                || ed->state->dot == ed->state->lines);
+                || ((ed->display->io_f & (ZBWH | ZFWH))
+                    && (ed->state->dot == ed->state->lines)));
     }
   if ((status = is_valid_range (ed->exec->region->start = 1, addr, ed)) < 0)
     return status;

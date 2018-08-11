@@ -455,6 +455,10 @@ msgstr "Ninguna expresión regular previa"
 #~ msgstr "Dirección fuera del intervalo"
 
 #, fuzzy
+#~ msgid "Unsupported command suffix"
+#~ msgstr "Sufijo desconocido del comando"
+
+#, fuzzy
 #~ msgid "Newline inserted\n"
 #~ msgstr "Nueva línea insertado"
 
@@ -500,3 +504,7 @@ msgstr "Ninguna expresión regular previa"
 
 #~ msgid "script, line %"
 #~ msgstr "escritura, línea %"
+
+#, fuzzy
+#~ msgid "Too many file names"
+#~ msgstr "Nombe de archivo inválido"

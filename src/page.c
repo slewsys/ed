@@ -244,7 +244,7 @@ put_tty_line (lp, addr, ed)
       (fb)->row_i = ((fb)->row_i + 1) % ((fb)->rows - 1);                     \
       (fb)->wraps |= !(fb)->row_i;                                            \
       (fb)->is_full =                                                         \
-        (ed->display->io_f & ZHFW                                             \
+        (ed->display->io_f & ZFWH                                             \
          ? (fb)->row_i == ((fb)->fill_i + 1) % ((fb)->rows - 1)               \
          :  ((fb)->wraps && !(ok_to_wrap)));                                  \
     }                                                                         \
@@ -348,7 +348,7 @@ scroll_lines (from, to, ed)
       /* Ignore frame buffer status. */
       RESET_FB_PREV (fb, ed);
       ed->display->io_f |= ZBWD;
-      ed->display->io_f &= ~(ZFWD | ZHFW);
+      ed->display->io_f &= ~(ZFWD | ZFWH);
       return scroll_lines (max (1, ed->state->lines - fb->rows + 2),
                             ed->state->lines, ed);
     }
@@ -363,7 +363,7 @@ scroll_lines (from, to, ed)
       /* Ignore frame buffer status. */
       RESET_FB_PREV (fb, ed);
       ed->display->io_f |= ZFWD;
-      ed->display->io_f &= ~(ZBWD | ZHBW);
+      ed->display->io_f &= ~(ZBWD | ZBWH);
       return scroll_lines (1, min (ed->state->lines, fb->rows - 1), ed);
 
     }
@@ -384,7 +384,7 @@ scroll_lines (from, to, ed)
        * of buffer as necessary, until the end point in the source
        * text is reached.
        */
-      if (ed->display->io_f & ZHFW)
+      if (ed->display->io_f & ZFWH)
         {
           fb->first_i = fb->row_i;
           fb->last_i = fb->row_i ? fb->row_i - 1 : fb->rows - 2;
@@ -494,7 +494,7 @@ init_frame_buffer (fb, ed)
    * Don't reset row_i if scrolling forward in half-pages. Append to
    * end of frame buffer instead.
    */
-  if (!(ed->display->io_f & ZHFW))
+  if (!(ed->display->io_f & ZFWH))
     fb->row_i = 0;
   fb->fill_i = (fb->row_i + (fb->rows >> 1)) % (fb->rows - 1);
   fb->wraps = !!fb->row_i;
@@ -708,7 +708,7 @@ put_frame_buffer_line (lp, addr, fb, ed)
     FB_PUTS ("\n", fb, ed);
   else if ((ed->display->io_f & LIST) && !fb->rem_chars)
     {
-      if ((ed->display->io_f & (ZBWD | ZHBW))
+      if ((ed->display->io_f & (ZBWD | ZBWH))
           && fb->prev_first && fb->prev_first->offset)
         FB_PUTS ("\\\n", fb, ed);
       else
