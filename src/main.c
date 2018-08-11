@@ -568,9 +568,10 @@ append_script_expression (s, ed)
       clearerr (ed->exec->fp);
       return ERR;
     }
-  if ((n = strlen (s)) > 0
+  if (((n = strlen (s)) > 0
       && (fwrite (s, 1, n, ed->exec->fp) != n
           || (s[n - 1] != '\n' && fwrite ("\n", 1, 1, ed->exec->fp) != 1)))
+      || (n == 0 && fwrite ("\n", 1, 1, ed->exec->fp) != 1))
     {
           fprintf (stderr, "%s: %s\n", ed->exec->pathname, strerror (errno));
           ed->exec->err = _("File write error");

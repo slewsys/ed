@@ -607,8 +607,8 @@ exec_macro (ed)
 
       /*
        * ++ed->exec->line_no;
-       * ed->exec->global = 0;
        */
+       ed->exec->global = 0;
 
       if ((status = address_range (ed)) < 0
           || (status = exec_command (ed)) < 0

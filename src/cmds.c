@@ -48,7 +48,7 @@ append_lines (after, ed)
         return 0;
       if (*ed->input == '.' && *(ed->input + 1) == '\n')
         {
-          ed->input++;
+          ++ed->input;
           return 0;
         }
       if (ed->exec->global)
