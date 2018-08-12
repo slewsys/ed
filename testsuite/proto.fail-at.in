@@ -1,6 +1,6 @@
-# proto-fail.at.in: Autotest template for the ed testsuite.
+# proto.fail-at.in: Autotest template for the ed testsuite.
 #
-# Copyright © 2005-2016 Andrew L. Moore, SlewSys Research
+# Copyright © 2005-2018 Andrew L. Moore, SlewSys Research
 #
 # Process this file with autotest to create testsuite (see also Makefile.am).
 

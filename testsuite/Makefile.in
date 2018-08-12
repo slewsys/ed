@@ -146,7 +146,7 @@ am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 DIST_COMMON = $(srcdir)/Makefile.am $(am__DIST_COMMON)
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/config.h
-CONFIG_CLEAN_FILES = ed ts-am-sw.ed
+CONFIG_CLEAN_FILES = ed ts-am-sw.ed proto.ok-so-at.in
 CONFIG_CLEAN_VPATH_FILES =
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -169,8 +169,8 @@ am__can_run_installinfo = \
   esac
 am__tagged_files = $(HEADERS) $(SOURCES) $(TAGS_FILES) $(LISP)
 am__DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/ed.in \
-	$(srcdir)/ts-am-sw.ed.in $(top_srcdir)/mkinstalldirs README \
-	TODO
+	$(srcdir)/proto.ok-so-at.in.in $(srcdir)/ts-am-sw.ed.in \
+	$(top_srcdir)/mkinstalldirs README TODO
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
 ALLOCA = @ALLOCA@
@@ -713,6 +713,7 @@ XGETTEXT_015 = @XGETTEXT_015@
 XGETTEXT_EXTRA_OPTIONS = @XGETTEXT_EXTRA_OPTIONS@
 YACC = @YACC@
 YFLAGS = @YFLAGS@
+ZCAT = @ZCAT@
 abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@
@@ -888,6 +889,8 @@ $(am__aclocal_m4_deps):
 ed: $(top_builddir)/config.status $(srcdir)/ed.in
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
 ts-am-sw.ed: $(top_builddir)/config.status $(srcdir)/ts-am-sw.ed.in
+	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
+proto.ok-so-at.in: $(top_builddir)/config.status $(srcdir)/proto.ok-so-at.in.in
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
 
 mostlyclean-libtool:

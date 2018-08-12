@@ -62,6 +62,8 @@ export CFLAGS
 #
 # Checks for various programs.
 #
+AC_PATH_PROGS([ZCAT], [zcat gzcat])
+
 AC_ARG_VAR([TROFF], [typesetting processor])
 AC_PATH_PROG([TROFF], [troff])
 
@@ -377,6 +379,7 @@ AC_CONFIG_FILES([Makefile                                                     \
   po/Makefile.in                                                              \
   po/ed.pot                                                                   \
   src/Makefile                                                                \
-  testsuite/Makefile])
+  testsuite/Makefile
+  testsuite/proto.ok-so-at.in])
 
 AC_OUTPUT

@@ -1,6 +1,6 @@
-# proto-ok.at.in: Autotest template for the ed testsuite.
+# proto.ok-so-at.in: Autotest template for the ed testsuite.
 #
-# Copyright © 2005-2016 Andrew L. Moore, SlewSys Research
+# Copyright © 2005-2018 Andrew L. Moore, SlewSys Research
 #
 # Process this file with autotest to create testsuite (see also Makefile.am).
 
@@ -8,7 +8,7 @@ AT_SETUP([Script: @SCRIPT_NAME@.tso])
 
 cat >script-@SCRIPT_NAME@ <<_ATEOF_ED
 H
-r !gzcat @SCRIPT_SRC@.d.gz
+r !@ZCAT@ @SCRIPT_SRC@.d.gz
 $(test -s @SCRIPT_SRC@.tso &&
 cat @SCRIPT_SRC@.tso ||
 echo "w @SCRIPT_NAME@.o")
