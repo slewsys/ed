@@ -230,10 +230,10 @@ put_tty_line (lp, addr, ed)
 # define INIT_FB_ROW(bp, caddr, off, fb)                                      \
   do                                                                          \
     {                                                                         \
-      (fb->row + fb->row_i)->lp = (bp);                                       \
-      (fb->row + fb->row_i)->addr = (caddr);                                  \
-      (fb->row + fb->row_i)->offset = (off);                                  \
-      (fb->row + fb->row_i)->text_i = 0;                                      \
+      (fb)->row[(fb)->row_i]->lp = (bp);                                      \
+      (fb)->row[(fb)->row_i]->addr = (caddr);                                 \
+      (fb)->row[(fb)->row_i]->offset = (off);                                 \
+      (fb)->row[(fb)->row_i]->text_i = 0;                                     \
     }                                                                         \
   while (0)
 
@@ -311,7 +311,7 @@ scroll_lines (from, to, ed)
       if (/* (ed->display->io_f & ZFWD) &&  */ed->display->underflow
           && fb->prev_last && bp == fb->prev_last->lp)
         {
-          fb->row->offset = bp->len - fb->rem_chars;
+          fb->row[fb->row_i]->offset = bp->len - fb->rem_chars;
           ed->display->io_f |= OFFB;
           ed->display->io_f &= ~NMBR;
         }
@@ -396,8 +396,8 @@ scroll_lines (from, to, ed)
                         ? (fb->first_i ? fb->first_i - 1 : fb->rows - 2)
                         : fb->row_i - 1);
         }
-      if (!(fb->prev_first = dup_frame_node (fb->row + fb->first_i, ed))
-          || !(fb->prev_last = dup_frame_node (fb->row + fb->last_i, ed)))
+      if (!(fb->prev_first = dup_frame_node (fb->row[fb->first_i], ed))
+          || !(fb->prev_last = dup_frame_node (fb->row[fb->last_i], ed)))
         {
           spl0 ();
           return ERR;
@@ -465,6 +465,7 @@ init_frame_buffer (fb, ed)
   static char *fp = NULL;
   static size_t fp_size = 0;
 
+  size_t size;
   int n;
 
   spl1 ();
@@ -474,17 +475,22 @@ init_frame_buffer (fb, ed)
     {
       fb->row_i = 0;
       for (n = 0; n < fb->rows - 1; ++n)
-        if ((fb->row + n)->text)
+        if (fb->row[n]->text)
           {
-            free ((fb->row + n)->text);
-            init_frame_node (fb->row + n);
+            free (fb->row[n]->text);
+            init_frame_node (fb->row[n]);
           }
       REALLOC_THROW (fp, fp_size,
-                     (ed->display->ws_row - 1) * sizeof (ed_frame_node_t),
+                     (ed->display->ws_row - 1) * sizeof (ed_frame_node_t *),
                      ERR, ed);
-      fb->row = (ed_frame_node_t *) fp;
+      fb->row = (ed_frame_node_t **) fp;
       for (n = max (0, fb->rows - 1); n < ed->display->ws_row - 1; ++n)
-        init_frame_node (fb->row + n);
+        {
+          size = 0;
+          fb->row[n] = NULL;
+          REALLOC_THROW (fb->row[n], size, sizeof (ed_frame_node_t), ERR, ed);
+          init_frame_node (fb->row[n]);
+        }
 
       fb->rows = ed->display->ws_row;
       fb->columns = ed->display->ws_col;
@@ -620,7 +626,7 @@ put_frame_buffer_line (lp, addr, fb, ed)
   if (!(s = get_buffer_line (lp, ed)))
     return ERR;
   if ((ed->display->io_f & OFFB))
-    s += fb->row->offset;
+    s += fb->row[fb->row_i]->offset;
 
   /* Offset of paged line if form feed (\f) is split across pages. */
   for (; fb->ff_offset; --fb->ff_offset)
@@ -701,7 +707,7 @@ put_frame_buffer_line (lp, addr, fb, ed)
         }
     }
 
-  if (!(rp = fb->row + fb->row_i)->text)
+  if (!(rp = fb->row[fb->row_i])->text)
     FB_PUTS ("\n", fb, ed);
   if (!(ed->display->io_f & LIST)
       && col < fb->columns && rp->text[rp->text_i - 1] != '\n')
@@ -726,7 +732,7 @@ fb_putc (c, fb, ed)
      ed_frame_buffer_t *fb;
      ed_buffer_t *ed;
 {
-  ed_frame_node_t *rp = fb->row + fb->row_i;
+  ed_frame_node_t *rp = fb->row[fb->row_i];
 
   REALLOC_THROW (rp->text, rp->text_size, rp->text_i + 1, ERR, ed);
   return *((unsigned char *) rp->text + rp->text_i++) = c;
@@ -750,7 +756,7 @@ display_frame_buffer (fb)
   for (n = 0; n < row_count; ++n)
     {
       row_i = (fb->first_i + n) % (fb->rows - 1);
-      rp = fb->row + row_i;
+      rp = fb->row[row_i];
       for (m = 0; m < rp->text_i; ++m)
         putchar (*(rp->text + m));
     }

@@ -283,7 +283,7 @@ typedef struct ed_frame_buffer
 {
   ed_frame_node_t *prev_first;  /* Pointer to first row in previous frame. */
   ed_frame_node_t *prev_last;   /* Pointer to last row of previous frame. */
-  ed_frame_node_t *row;         /* Pointer to a row in frame buffer. */
+  ed_frame_node_t **row;        /* Array of pointers to frame buffers. */
   int row_i;                    /* Index of current row in frame buffer. */
   int first_i;                  /* Index of first frame buffer row to print. */
   int last_i;                   /* Index of first frame buffer row to print. */
