@@ -62,6 +62,7 @@ export CFLAGS
 #
 # Checks for various programs.
 #
+AC_ARG_VAR([ZCAT], [decompression filter])
 AC_PATH_PROGS([ZCAT], [zcat gzcat])
 
 AC_ARG_VAR([TROFF], [typesetting processor])
@@ -79,7 +80,7 @@ AC_PATH_PROGS([PS2PDF], [ps2pdf14 ps2pdf ps2pdfwr])
 # Checks for prior deployment of this package - used by `upgrade-sh'
 AC_CACHE_CHECK([for ed], [ac_cv_path_ED_COMMAND],
   [AC_PATH_PROGS_FEATURE_CHECK([ED_COMMAND], ["$ED" ed],
-    [case `$ac_path_ED_COMMAND --info 2>&1` in
+    [case `$ac_path_ED_COMMAND --version 2>&1` in
        ed)
          ac_cv_path_ED_COMMAND=$ac_path_ED_COMMAND
          ac_path_ED_COMMAND_found=:
