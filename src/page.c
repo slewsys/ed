@@ -308,7 +308,7 @@ scroll_lines (from, to, ed)
        * If last line of previous page was truncated while scrolling
        * forward, then resume with truncated part at top of page.
        */
-      if (/* (ed->display->io_f & ZFWD) &&  */ed->display->underflow
+      if (!(ed->display->io_f & ZBWD) &&  ed->display->underflow
           && fb->prev_last && bp == fb->prev_last->lp)
         {
           fb->row[fb->row_i]->offset = bp->len - fb->rem_chars;
@@ -320,7 +320,7 @@ scroll_lines (from, to, ed)
        * If first line of previous page was truncated while scrolling
        * backward, then resume with truncated part at bottom of page.
        */
-      else if ((ed->display->io_f & ZBWD) && ed->display->overflow
+      else if (!(ed->display->io_f & ZFWD) && ed->display->overflow
                && fb->prev_first && bp == fb->prev_first->lp)
         {
           fb->rem_chars = fb->prev_first->offset;
