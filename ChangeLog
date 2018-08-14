@@ -1,8 +1,13 @@
-2018-08-14  Andrew L. Moore  <alm@slewsys.org>
+2018-08-14  Andrew L. Moore  <slewsys@gmail.com>
+
+	* src/exec.c (z_cmd): Disable hack for half-page scrolling from
+	bottom half of first page.
 
 	* src/page.c (put_frame_buffer_line): Print newline at end of line!
+	(scroll_lines): First step in handling backward scrolling for
+	lines that span multiple pages.
 
-2018-08-13  Andrew L. Moore  <alm@slewsys.org>
+2018-08-13  Andrew L. Moore  <slewsys@gmail.com>
 
 	* src/ed.h (struct ed_frame_buffer):
 	* src/page.c (init_frame_buffer): Define frame buffer row as array

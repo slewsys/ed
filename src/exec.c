@@ -1561,9 +1561,18 @@ z_cmd (ed)
 
       /* Adjustment for half-page scroll when given address in bottom
          half of first page. */
-      if ((zhfw_off = ed->display->ws_row - ed->exec->region->end + 1) > 0 &&
-          zhfw_off <= addr - ed->exec->region->end)
-          ed->exec->region->end += zhfw_off - 1;
+      /*
+       * if ((zhfw_off = ed->display->ws_row - ed->exec->region->end + 1) > 0 &&
+       *     zhfw_off <= addr - ed->exec->region->end)
+       *   ed->exec->region->end += zhfw_off;
+       */
+      /*
+       * if (ed->exec->region->end < ed->display->ws_row + 1 &&
+       *     ed->display->ws_row + 1 <= addr)
+       *   {
+       *
+       *   }
+       */
 
       ed->display->io_f |= ZFWD | ZFWH;
       break;
