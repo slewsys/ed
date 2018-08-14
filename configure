@@ -1351,6 +1351,7 @@ LDFLAGS
 LIBS
 CPPFLAGS
 CPP
+ZCAT
 TROFF
 DPOST
 GROFF
@@ -2041,6 +2042,7 @@ Some influential environment variables:
   CPPFLAGS    (Objective) C/C++ preprocessor flags, e.g. -I<include dir> if
               you have headers in a nonstandard directory <include dir>
   CPP         C preprocessor
+  ZCAT        decompression filter
   TROFF       typesetting processor
   DPOST       troff PostScript postprocessor
   GROFF       GNU typesetting processor
@@ -5488,6 +5490,7 @@ export CFLAGS
 #
 # Checks for various programs.
 #
+
 for ac_prog in zcat gzcat
 do
   # Extract the first word of "$ac_prog", so it can be a program name with args.
@@ -5726,7 +5729,7 @@ do
     for ac_exec_ext in '' $ac_executable_extensions; do
       ac_path_ED_COMMAND="$as_dir/$ac_prog$ac_exec_ext"
       as_fn_executable_p "$ac_path_ED_COMMAND" || continue
-case `$ac_path_ED_COMMAND --info 2>&1` in
+case `$ac_path_ED_COMMAND --version 2>&1` in
        ed)
          ac_cv_path_ED_COMMAND=$ac_path_ED_COMMAND
          ac_path_ED_COMMAND_found=:

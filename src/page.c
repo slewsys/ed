@@ -334,8 +334,7 @@ scroll_lines (from, to, ed)
           fb->rem_chars = bp->len;
           fb->ff_offset = 0;
         }
-      if ((status =
-           put_frame_buffer_line (bp, from + lc, fb, ed)) < 0)
+      if ((status = put_frame_buffer_line (bp, from + lc, fb, ed)) < 0)
         return status;
       if (!fb->is_full)
         INC_FB_ROW (ed->display->io_f & ZBWD, fb);
@@ -707,10 +706,7 @@ put_frame_buffer_line (lp, addr, fb, ed)
         }
     }
 
-  if (!(rp = fb->row[fb->row_i])->text)
-    FB_PUTS ("\n", fb, ed);
-  if (!(ed->display->io_f & LIST)
-      && col < fb->columns && rp->text[rp->text_i - 1] != '\n')
+  if (!(ed->display->io_f & LIST) && !fb->rem_chars)
     FB_PUTS ("\n", fb, ed);
   else if ((ed->display->io_f & LIST) && !fb->rem_chars)
     {
@@ -735,7 +731,7 @@ fb_putc (c, fb, ed)
   ed_frame_node_t *rp = fb->row[fb->row_i];
 
   REALLOC_THROW (rp->text, rp->text_size, rp->text_i + 1, ERR, ed);
-  return *((unsigned char *) rp->text + rp->text_i++) = c;
+  return rp->text[rp->text_i++] = c;
 }
 
 
@@ -758,9 +754,9 @@ display_frame_buffer (fb)
       row_i = (fb->first_i + n) % (fb->rows - 1);
       rp = fb->row[row_i];
       for (m = 0; m < rp->text_i; ++m)
-        putchar (*(rp->text + m));
+        putchar (rp->text[m]);
     }
-  if (isatty (1) && n && *(rp->text + rp->text_i - 1) != '\n')
+  if (isatty (1) && n && rp->text[rp->text_i - 1] != '\n')
     putchar ('\n');
   return 0;
 }
