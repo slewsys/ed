@@ -1179,11 +1179,12 @@ scroll_backward_half (ed)
       && ed->display->ws_row / 2 - 1 < ed->display->page_addr
       && ed->display->page_addr < ed->display->ws_row)
     {
-      /* Page backward from half page forward. */
+      /* Calculation assumes one buffer line per terminal line. */
       ed->display->page_addr += ed->display->ws_row / 2 - 1;
       ed->display->page_addr = min (ed->state->lines, ed->display->page_addr);
       ed->exec->region->start = ed->display->page_addr;
       ed->exec->region->end = ed->display->page_addr;
+
       ed->display->io_f |= ZBWH;
       return Z_cmd (ed);
     }
@@ -1240,10 +1241,12 @@ scroll_forward_half (ed)
           && ed->display->ws_row / 2 - 1 < ed->exec->region->end
           && ed->exec->region->end < ed->display->ws_row)
         {
+          /* Calculation assumes one buffer line per terminal line. */
           ed->state->dot = ed->exec->region->end + ed->display->ws_row / 2 - 1;
           ed->state->dot = min (ed->state->lines, ed->state->dot);
           ed->exec->region->start = ed->state->dot;
           ed->exec->region->end = ed->state->dot;
+
           ed->display->io_f |= ZBWH;
           return Z_cmd (ed);
         }

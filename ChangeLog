@@ -1,5 +1,9 @@
 2018-08-15  Andrew L. Moore  <slewsys@gmail.com>
 
+	* src/main.c (getenv_init_argv): Correct typo.
+
+2018-08-15  Andrew L. Moore  <slewsys@gmail.com>
+
 	* src/exec.c (scroll_backward_half, scroll_forward_half): Map
 	half-page scroll in bottom half of first page to offset full-page
 	scroll.

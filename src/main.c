@@ -514,21 +514,12 @@ getenv_init_argv (s, argc, ed)
   *argc = 0;
   if ((u = getenv (s)) && (len = strlen (u)) > 0)
     {
-      /* ARG_MAX is POSIX limit on execve(2). */
-      if (len >= ARG_MAX - 2048)
-        {
-          ed->exec->err = _("Argument list too long");
-          return NULL;
-        }
       REALLOC_THROW (env, env_size, len + 1, NULL, ed);
       strcpy (env, u);
       for (v = strtok (env, sep); v; v = strtok (NULL, sep))
         {
-          /*
-           * In addition to max length (ARG_MAX), check max number of
-           *   arguments, approximated as (ARG_MAX / 4).
-           */
-          if (*argc >= len >> 2)
+          /* ARG_MAX is POSIX limit on execve(2). */
+          if (*argc >= ARG_MAX)
             {
               ed->exec->err = _("Argument list full");
               return NULL;
