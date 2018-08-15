@@ -1174,6 +1174,20 @@ scroll_backward_half (ed)
        is_valid_range (ed->display->page_addr, ed->display->page_addr, ed)) < 0)
     return status;
 
+  /* Scrolling into bottom half of first page...   */
+  if (ed->display->is_paging
+      && ed->display->ws_row / 2 - 1 < ed->display->page_addr
+      && ed->display->page_addr < ed->display->ws_row)
+    {
+      /* Page backward from half page forward. */
+      ed->display->page_addr += ed->display->ws_row / 2 - 1;
+      ed->display->page_addr = min (ed->state->lines, ed->display->page_addr);
+      ed->exec->region->start = ed->display->page_addr;
+      ed->exec->region->end = ed->display->page_addr;
+      ed->display->io_f |= ZBWH;
+      return Z_cmd (ed);
+    }
+
   /*
    * Half-page scrolling implemenation requires "normalized" frame
    * buffer, so load page preceding current address in background
@@ -1201,6 +1215,8 @@ static int
 scroll_forward_half (ed)
      ed_buffer_t *ed;
 {
+  int status;
+
   /*
    * (.)]n - Displays page of `n' lines centered around addressed
    * line, where `n' defaults to current window size. The current
@@ -1212,11 +1228,48 @@ scroll_forward_half (ed)
       ed->exec->err = _("Unknown command");
       return ERR;
     }
-  if (ed->exec->region->addrs || !ed->display->is_paging)
+
+  if (!ed->display->is_paging || ed->exec->region->addrs)
     {
-      ed->display->io_f |= ZFWH;
-      return scroll_backward_half (ed);
+      if ((status = is_valid_range (ed->display->page_addr,
+                                    ed->display->page_addr, ed)) < 0)
+        return status;
+
+      /* Targeting region in bottom half of first page...   */
+      if (ed->exec->region->addrs
+          && ed->display->ws_row / 2 - 1 < ed->exec->region->end
+          && ed->exec->region->end < ed->display->ws_row)
+        {
+          ed->state->dot = ed->exec->region->end + ed->display->ws_row / 2 - 1;
+          ed->state->dot = min (ed->state->lines, ed->state->dot);
+          ed->exec->region->start = ed->state->dot;
+          ed->exec->region->end = ed->state->dot;
+          ed->display->io_f |= ZBWH;
+          return Z_cmd (ed);
+        }
+
+      /*
+       * Half-page scrolling implemenation requires "normalized" frame
+       * buffer, so load page preceding current address in background
+       * (display->hidden = 1), then scroll from there.
+       */
+      if ((status = normalize_frame_buffer (ed)) < 0)
+        return status;
+
+      if ((!ed->display->is_paging &&
+           ed->exec->region->end <= ed->display->ws_row / 2 + 1)
+          || ed->state->dot == ed->state->lines)
+        {
+          ed->display->io_f |= ZBWH;
+          return Z_cmd (ed);
+        }
+
+      /*
+       * ed->display->io_f |= ZFWH;
+       * return scroll_backward_half (ed);
+       */
     }
+
   return z_cmd (ed);
 }
 
@@ -1477,6 +1530,61 @@ x_cmd (ed)
 #endif  /* WANT_DES_ENCRYPTION */
 
 static int
+Z_cmd (ed)
+     ed_buffer_t *ed;
+{
+  off_t addr = 0;
+  size_t len = 0;
+  int status = 0;               /* Return status */
+
+  /* scroll backward */
+  if (ed->exec->opt & (TRADITIONAL | POSIXLY_CORRECT))
+    {
+      ed->exec->err = _("Unknown command");
+      return ERR;
+    }
+
+  /* Determine address of last line to print. */
+  if (ed->exec->region->addrs)
+    {
+      addr = max (ed->state->lines ? 1 : 0, ed->state->dot - !ed->exec->global);
+      ed->display->underflow = 0;
+      ed->display->overflow = 0;
+    }
+  else
+    {
+      addr = (ed->display->is_paging ? ed->display->page_addr : ed->state->dot);
+
+      /* Compensate for loss of addressed line if scrolling half page. */
+      addr -= !(ed->exec->global || ed->display->overflow
+                || ((ed->display->io_f & (ZBWH | ZFWH))
+                    && (ed->state->dot == ed->state->lines)));
+      addr = max (ed->state->lines ? 1 : 0, addr);
+    }
+  if ((status = is_valid_range (ed->exec->region->start = 1, addr, ed)) < 0)
+    return status;
+  if (isdigit ((unsigned char) *ed->input))
+    {
+      STRTOUL_THROW (len, ed->input, &ed->input, ERR);
+
+      /* Sanity check window size. */
+      if (1 < len && len < ROWS_MAX)
+        ed->display->ws_row = len;
+    }
+  COMMAND_SUFFIX (ed->display->io_f, ed);
+  ++ed->display->paging;
+
+  /*
+   * Display page preceding either given line or already displayed
+   * page. Otherwise, display page preceding current address.
+   */
+  ed->display->io_f |= ZBWD;
+  return scroll_lines (max (1, (off_t) ed->exec->region->end -
+                             ed->display->ws_row + 2),
+                        ed->exec->region->end, ed);
+}
+
+static int
 z_cmd (ed)
      ed_buffer_t *ed;
 {
@@ -1558,80 +1666,10 @@ z_cmd (ed)
        */
       addr = min (ed->state->lines, (ed->exec->region->end +
                                      ((ed->display->ws_row - 1) >> 1) - 1));
-
-      /* Adjustment for half-page scroll when given address in bottom
-         half of first page. */
-      /*
-       * if ((zhfw_off = ed->display->ws_row - ed->exec->region->end + 1) > 0 &&
-       *     zhfw_off <= addr - ed->exec->region->end)
-       *   ed->exec->region->end += zhfw_off;
-       */
-      /*
-       * if (ed->exec->region->end < ed->display->ws_row + 1 &&
-       *     ed->display->ws_row + 1 <= addr)
-       *   {
-       *
-       *   }
-       */
-
       ed->display->io_f |= ZFWD | ZFWH;
       break;
     }
   return scroll_lines (ed->exec->region->end, addr, ed);
-}
-
-static int
-Z_cmd (ed)
-     ed_buffer_t *ed;
-{
-  off_t addr = 0;
-  size_t len = 0;
-  int status = 0;               /* Return status */
-
-  /* scroll backward */
-  if (ed->exec->opt & (TRADITIONAL | POSIXLY_CORRECT))
-    {
-      ed->exec->err = _("Unknown command");
-      return ERR;
-    }
-
-  /* Determine address of last line to print. */
-  if (ed->exec->region->addrs)
-    {
-      addr = ed->state->dot - !ed->exec->global;
-      ed->display->underflow = 0;
-      ed->display->overflow = 0;
-    }
-  else
-    {
-      addr = (ed->display->is_paging ? ed->display->page_addr : ed->state->dot);
-
-      /* Compensate for loss of addressed line if scrolling half page. */
-      addr -= !(ed->exec->global || ed->display->overflow
-                || ((ed->display->io_f & (ZBWH | ZFWH))
-                    && (ed->state->dot == ed->state->lines)));
-    }
-  if ((status = is_valid_range (ed->exec->region->start = 1, addr, ed)) < 0)
-    return status;
-  if (isdigit ((unsigned char) *ed->input))
-    {
-      STRTOUL_THROW (len, ed->input, &ed->input, ERR);
-
-      /* Sanity check window size. */
-      if (1 < len && len < ROWS_MAX)
-        ed->display->ws_row = len;
-    }
-  COMMAND_SUFFIX (ed->display->io_f, ed);
-  ++ed->display->paging;
-
-  /*
-   * Display page preceding either given line or already displayed
-   * page. Otherwise, display page preceding current address.
-   */
-  ed->display->io_f |= ZBWD;
-  return scroll_lines (max (1, (off_t) ed->exec->region->end -
-                             ed->display->ws_row + 2),
-                        ed->exec->region->end, ed);
 }
 
 static int
