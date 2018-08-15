@@ -1579,7 +1579,7 @@ Z_cmd (ed)
    * page. Otherwise, display page preceding current address.
    */
   ed->display->io_f |= ZBWD;
-  return scroll_lines (max (1, (off_t) ed->exec->region->end -
+  return display_lines (max (1, (off_t) ed->exec->region->end -
                              ed->display->ws_row + 2),
                         ed->exec->region->end, ed);
 }
@@ -1669,7 +1669,7 @@ z_cmd (ed)
       ed->display->io_f |= ZFWD | ZFWH;
       break;
     }
-  return scroll_lines (ed->exec->region->end, addr, ed);
+  return display_lines (ed->exec->region->end, addr, ed);
 }
 
 static int

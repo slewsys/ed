@@ -9,9 +9,10 @@
 
 
 /* Static function declarations. */
-static int display_frame_buffer __P ((const ed_frame_buffer_t *));
 
 #ifdef WANT_ED_SCROLLING
+static int display_frame_buffer __P ((const ed_frame_buffer_t *,
+                                      ed_buffer_t *));
 static ed_frame_node_t *dup_frame_node __P ((const ed_frame_node_t *,
                                              ed_buffer_t *));
 static int fb_putc __P ((int, ed_frame_buffer_t *, ed_buffer_t *));
@@ -21,9 +22,21 @@ static int put_frame_buffer_line __P ((ed_line_node_t *, off_t,
                                        ed_frame_buffer_t *, ed_buffer_t *));
 #endif
 
-static int put_tty_line __P ((ed_line_node_t *, off_t, ed_buffer_t *));
 static unsigned int sgr_span __P ((const char *));
 
+/* GET_CHAR_WIDTH: Assert: Tabstops are of fixed length. */
+#define GET_CHAR_WIDTH(i, c)                                                  \
+  ((i) == '\b' ? -1                                                           \
+   : (i) == '\f' ? 0                                                          \
+   : (i) == '\r' ? -(c)                                                       \
+   : (i) == '\t' ? TAB_WIDTH - ((c) - ((c) / TAB_WIDTH) * TAB_WIDTH)          \
+   : (i) < '\040' ? 0                                                         \
+   : 1)
+
+#define RIGHT_MARGIN TAB_WIDTH
+
+#ifndef WANT_ED_SCROLLING
+static int put_tty_line __P ((ed_line_node_t *, off_t, ed_buffer_t *));
 
 /* display_lines: Print a range of lines. Return status (<= 0). */
 int
@@ -56,17 +69,6 @@ display_lines (from, to, ed)
   ed->state->dot = from + lc - 1;
   return 0;
 }
-
-/* GET_CHAR_WIDTH: Assert: Tabstops are of fixed length. */
-#define GET_CHAR_WIDTH(i, c)                                                  \
-  ((i) == '\b' ? -1                                                           \
-   : (i) == '\f' ? 0                                                          \
-   : (i) == '\r' ? -(c)                                                       \
-   : (i) == '\t' ? TAB_WIDTH - ((c) - ((c) / TAB_WIDTH) * TAB_WIDTH)          \
-   : (i) < '\040' ? 0                                                         \
-   : 1)
-
-#define RIGHT_MARGIN TAB_WIDTH
 
 /* put_frame_buffer_line: Print text to frame buffer. */
 static int
@@ -224,7 +226,7 @@ put_tty_line (lp, addr, ed)
 }
 
 
-#ifdef WANT_ED_SCROLLING
+#else /* WANT_ED_SCROLLING */
 
 /* INIT_FB_ROW: Initialize frame buffer row. */
 # define INIT_FB_ROW(bp, caddr, off, fb)                                      \
@@ -267,9 +269,9 @@ put_tty_line (lp, addr, ed)
 
 
 
-/* scroll_lines: Print a range of lines. Return status (<= 0). */
+/* display_lines: Print a range of lines. Return status (<= 0). */
 int
-scroll_lines (from, to, ed)
+display_lines (from, to, ed)
      off_t from;
      off_t to;
      ed_buffer_t *ed;
@@ -348,7 +350,7 @@ scroll_lines (from, to, ed)
       RESET_FB_PREV (fb, ed);
       ed->display->io_f |= ZBWD;
       ed->display->io_f &= ~(ZFWD | ZFWH);
-      return scroll_lines (max (1, ed->state->lines - fb->rows + 2),
+      return display_lines (max (1, ed->state->lines - fb->rows + 2),
                             ed->state->lines, ed);
     }
 
@@ -363,7 +365,7 @@ scroll_lines (from, to, ed)
       RESET_FB_PREV (fb, ed);
       ed->display->io_f |= ZFWD;
       ed->display->io_f &= ~(ZBWD | ZBWH);
-      return scroll_lines (1, min (ed->state->lines, fb->rows - 1), ed);
+      return display_lines (1, min (ed->state->lines, fb->rows - 1), ed);
 
     }
 
@@ -426,7 +428,7 @@ scroll_lines (from, to, ed)
        */
       ed->display->overflow = !!fb->prev_first->offset;
 
-      if (!ed->display->hidden  && (status = display_frame_buffer (fb)) < 0)
+      if (!ed->display->hidden  && (status = display_frame_buffer (fb, ed)) < 0)
         {
           spl0 ();
           return status;
@@ -737,8 +739,9 @@ fb_putc (c, fb, ed)
 
 /* display_frame_buffer: Write frame buffer to standard output. */
 static int
-display_frame_buffer (fb)
+display_frame_buffer (fb, ed)
      const ed_frame_buffer_t *fb;
+     ed_buffer_t *ed;
 {
   ed_frame_node_t *rp;
   size_t m;
@@ -756,7 +759,8 @@ display_frame_buffer (fb)
       for (m = 0; m < rp->text_i; ++m)
         putchar (rp->text[m]);
     }
-  if (isatty (1) && n && rp->text[rp->text_i - 1] != '\n')
+  if ((ed->display->io_f & (ZBWD | ZFWD))
+      && n && rp->text[rp->text_i - 1] != '\n')
     putchar ('\n');
   return 0;
 }
