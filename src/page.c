@@ -123,7 +123,7 @@ put_tty_line (lp, addr, ed)
     };
 
   /* Numbered output. */
-  if ((ed->display->io_f & NMBR))
+  if (ed->display->io_f & NMBR)
     {
       /* If lines has changed, update format string. */
       if (lines != ed->state->lines)
@@ -343,7 +343,7 @@ display_lines (from, to, ed)
     }
 
   /* If final forward page not full, then scroll back from last line. */
-  if ((ed->display->io_f & ZFWD) && to == ed->state->lines && !fb->wraps
+  if (ed->display->io_f & ZFWD && to == ed->state->lines && !fb->wraps
       && (ed->display->underflow || from != 1))
     {
       /* Ignore frame buffer status. */
@@ -358,7 +358,7 @@ display_lines (from, to, ed)
    * If final backward page not full, then scroll forward from first
    * line.
    */
-  if ((ed->display->io_f & ZBWD) && from == 1 && !fb->wraps
+  if (ed->display->io_f & ZBWD && from == 1 && !fb->wraps
       && (ed->display->overflow || to != ed->state->lines))
     {
       /* Ignore frame buffer status. */
@@ -411,7 +411,7 @@ display_lines (from, to, ed)
        * Assign old prev_first `len - offset' as rem_chars to last
        * line of current page.
        */
-      if ((ed->display->io_f & ZBWD))
+      if (ed->display->io_f & ZBWD)
         fb->rem_chars = rem_chars;
 
       /*
@@ -603,7 +603,7 @@ put_frame_buffer_line (lp, addr, fb, ed)
     };
 
   /* Numbered output. */
-  if ((ed->display->io_f & NMBR))
+  if (ed->display->io_f & NMBR)
     {
       /* If lines has changed, update format string. */
       if (lines != ed->state->lines)
@@ -626,7 +626,7 @@ put_frame_buffer_line (lp, addr, fb, ed)
 
   if (!(s = get_buffer_line (lp, ed)))
     return ERR;
-  if ((ed->display->io_f & OFFB))
+  if (ed->display->io_f & OFFB)
     s += fb->row[fb->row_i]->offset;
 
   /* Offset of paged line if form feed (\f) is split across pages. */
@@ -693,7 +693,7 @@ put_frame_buffer_line (lp, addr, fb, ed)
        * which starts one tab stop from the right edge of the window.
        */
       if ((col >= fb->columns && fb->rem_chars > 1)
-          || ((ed->display->io_f & LIST)
+          || (ed->display->io_f & LIST
               && ((!isalnum ((unsigned) *s)
                    && col >= fb->columns - (RIGHT_MARGIN << 1)
                    && fb->rem_chars > 2)
@@ -701,8 +701,8 @@ put_frame_buffer_line (lp, addr, fb, ed)
                       && fb->rem_chars > 1))))
 
         {
-          if ((ed->display->io_f & LIST))
-            FB_PUTS ((ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL))
+          if (ed->display->io_f & LIST)
+            FB_PUTS (ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL)
                      ? "" : "\\\n", fb, ed);
           INC_MOD_FB_ROW (lp, addr, ed->display->io_f & ZBWD, fb);
           col = 0;
@@ -711,16 +711,16 @@ put_frame_buffer_line (lp, addr, fb, ed)
 
   if (!(ed->display->io_f & LIST) && !fb->rem_chars)
     FB_PUTS ("\n", fb, ed);
-  else if ((ed->display->io_f & LIST) && !fb->rem_chars)
+  else if (ed->display->io_f & LIST && !fb->rem_chars)
     {
-      if ((ed->display->io_f & (ZBWD | ZBWH))
+      if (ed->display->io_f & (ZBWD | ZBWH)
           && fb->prev_first && fb->prev_first->offset)
-        FB_PUTS ((ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL))
+        FB_PUTS (ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL)
                  ? "\n" : "\\\n", fb, ed);
       else
         FB_PUTS ("$\n", fb, ed);
     }
-  fb->ff_offset = form_feed && (ed->display->io_f & ZBWD) ? col : 0;
+  fb->ff_offset = form_feed && ed->display->io_f & ZBWD ? col : 0;
   return 0;
 }
 
@@ -735,7 +735,10 @@ fb_putc (c, fb, ed)
   ed_frame_node_t *rp = fb->row[fb->row_i];
 
   REALLOC_THROW (rp->text, rp->text_size, rp->text_i + 1, ERR, ed);
-  return rp->text[rp->text_i++] = c;
+
+  /* Don't return c, which might be signed. */
+  rp->text[rp->text_i++] = c;
+  return 0;
 }
 
 

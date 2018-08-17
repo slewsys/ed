@@ -2,6 +2,7 @@
 
 	* src/page.c (put_frame_buffer_line): Conditionally split lines
 	while listing on flags POSIXLY_CORRECT and TRADITIONAL.
+	(fb_putc): Don't return signed chars if testing for < 0.
 
 2018-08-15  Andrew L. Moore  <slewsys@gmail.com>
 

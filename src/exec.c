@@ -1560,7 +1560,7 @@ Z_cmd (ed)
 
       /* Compensate for loss of addressed line if scrolling half page. */
       addr -= !(ed->exec->global || ed->display->overflow
-                || ((ed->display->io_f & (ZBWH | ZFWH))
+                || (ed->display->io_f & (ZBWH | ZFWH)
                     && (ed->state->dot == ed->state->lines)));
       addr = max (ed->state->lines ? 1 : 0, addr);
     }
