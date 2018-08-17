@@ -702,7 +702,8 @@ put_frame_buffer_line (lp, addr, fb, ed)
 
         {
           if ((ed->display->io_f & LIST))
-            FB_PUTS ("\\\n", fb, ed);
+            FB_PUTS ((ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL))
+                     ? "" : "\\\n", fb, ed);
           INC_MOD_FB_ROW (lp, addr, ed->display->io_f & ZBWD, fb);
           col = 0;
         }
@@ -714,7 +715,8 @@ put_frame_buffer_line (lp, addr, fb, ed)
     {
       if ((ed->display->io_f & (ZBWD | ZBWH))
           && fb->prev_first && fb->prev_first->offset)
-        FB_PUTS ("\\\n", fb, ed);
+        FB_PUTS ((ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL))
+                 ? "\n" : "\\\n", fb, ed);
       else
         FB_PUTS ("$\n", fb, ed);
     }
