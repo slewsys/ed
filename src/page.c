@@ -20,6 +20,9 @@ static int init_frame_buffer __P ((ed_frame_buffer_t *, ed_buffer_t *));
 static void init_frame_node __P ((ed_frame_node_t *));
 static int put_frame_buffer_line __P ((ed_line_node_t *, off_t,
                                        ed_frame_buffer_t *, ed_buffer_t *));
+static void inc_mod_fb_row __P ((ed_line_node_t *, off_t, int,
+                                 ed_frame_buffer_t *, ed_buffer_t *));
+
 #endif
 
 static unsigned int sgr_span __P ((const char *));
@@ -88,7 +91,7 @@ put_tty_line (lp, addr, ed)
   size_t col = 0;
   size_t i = 0;
   int len = 0;
-  unsigned int sgr_len = 0;     /* length of ANSI sgr sequence */
+  unsigned int sgr_len = 0;     /* Length of ANSI SGR sequence. */
   int form_feed = 0;
 
   /*
@@ -246,7 +249,7 @@ put_tty_line (lp, addr, ed)
       (fb)->row_i = ((fb)->row_i + 1) % ((fb)->rows - 1);                     \
       (fb)->wraps |= !(fb)->row_i;                                            \
       (fb)->is_full =                                                         \
-        (ed->display->io_f & ZFWH                                             \
+        (ed->display->io_f & ZHFW                                             \
          ? (fb)->row_i == ((fb)->fill_i + 1) % ((fb)->rows - 1)               \
          :  ((fb)->wraps && !(ok_to_wrap)));                                  \
     }                                                                         \
@@ -258,8 +261,11 @@ put_tty_line (lp, addr, ed)
       if ((fb)->prev_first)                                                   \
         {                                                                     \
           free ((fb)->prev_first);                                            \
-          free ((fb)->prev_last);                                             \
           (fb)->prev_first = NULL;                                            \
+        }                                                                     \
+      if ((fb)->prev_last)                                                    \
+        {                                                                     \
+          free ((fb)->prev_last);                                             \
           (fb)->prev_last = NULL;                                             \
         }                                                                     \
       (ed)->display->underflow = 0;                                           \
@@ -287,6 +293,23 @@ display_lines (from, to, ed)
   /* Trivially allow printing empty buffer. */
   if (!ed->state->lines)
     return 0;
+
+  /* XXX: Half-page scolling addresses are lost but need to be
+     retained for this condition. */
+  if (ed->exec->region->addrs)
+    RESET_FB_PREV (fb, ed);
+
+  /*
+   * Prevent scrolling beyond limits of editor buffer.
+   * XXX: Shouldn't be exceptions for half-page scolling.
+   */
+  if (ed->display->io_f & ZBWD && !(ed->display->io_f & (ZHBW | ZHFW))
+      && !ed->exec->region->addrs && fb->prev_first
+           && fb->prev_first->addr == 1 && fb->prev_first->offset == 0)
+    {
+      ed->exec->err = _("Address out of range");
+      return ERR;
+    }
 
   /* If not scrolling, ignore frame buffer status. */
   if (!(ed->display->io_f & (ZFWD | ZBWD)))
@@ -349,7 +372,7 @@ display_lines (from, to, ed)
       /* Ignore frame buffer status. */
       RESET_FB_PREV (fb, ed);
       ed->display->io_f |= ZBWD;
-      ed->display->io_f &= ~(ZFWD | ZFWH);
+      ed->display->io_f &= ~(ZFWD | ZHFW);
       return display_lines (max (1, ed->state->lines - fb->rows + 2),
                             ed->state->lines, ed);
     }
@@ -364,7 +387,7 @@ display_lines (from, to, ed)
       /* Ignore frame buffer status. */
       RESET_FB_PREV (fb, ed);
       ed->display->io_f |= ZFWD;
-      ed->display->io_f &= ~(ZBWD | ZBWH);
+      ed->display->io_f &= ~(ZBWD | ZHBW);
       return display_lines (1, min (ed->state->lines, fb->rows - 1), ed);
 
     }
@@ -385,7 +408,7 @@ display_lines (from, to, ed)
        * of buffer as necessary, until the end point in the source
        * text is reached.
        */
-      if (ed->display->io_f & ZFWH)
+      if (ed->display->io_f & ZHFW)
         {
           fb->first_i = fb->row_i;
           fb->last_i = fb->row_i ? fb->row_i - 1 : fb->rows - 2;
@@ -501,7 +524,7 @@ init_frame_buffer (fb, ed)
    * Don't reset row_i if scrolling forward in half-pages. Append to
    * end of frame buffer instead.
    */
-  if (!(ed->display->io_f & ZFWH))
+  if (!(ed->display->io_f & ZHFW))
     fb->row_i = 0;
   fb->fill_i = (fb->row_i + (fb->rows >> 1)) % (fb->rows - 1);
   fb->wraps = !!fb->row_i;
@@ -543,13 +566,35 @@ init_frame_node (rp)
       INC_FB_ROW ((ok_to_wrap), (fb));                                        \
       if (!(fb)->is_full)                                                     \
         {                                                                     \
-          size_t _offset = ((lp)->len - ((fb)->rem_chars - 1)                 \
-                            - ((ok_to_wrap) && (fb)->prev_first               \
-                               ? (fb)->prev_first->offset : 0));              \
+          size_t _offset;                                                     \
+          _offset = (ok_to_wrap && fb->prev_first ? fb->prev_first->offset    \
+                     : lp->len) - fb->rem_chars + 1;                          \
           INIT_FB_ROW ((lp), (addr), _offset, (fb));                          \
         }                                                                     \
     }                                                                         \
   while (0)
+
+static void
+inc_mod_fb_row (lp, addr,  ok_to_wrap, fb, ed)
+     ed_line_node_t *lp;        /* Line node pointer */
+     off_t addr;
+     int ok_to_wrap;
+     ed_frame_buffer_t *fb;
+     ed_buffer_t *ed;
+{
+  static size_t offset = 0;
+
+  INC_FB_ROW (ok_to_wrap, fb);
+  if (!fb->is_full)
+    {
+      offset = (ok_to_wrap && fb->prev_first ? fb->prev_first->offset
+                : lp->len);
+      if (offset >= fb->rem_chars - 1)
+        offset -= fb->rem_chars - 1;
+
+      INIT_FB_ROW (lp, addr, offset, fb);
+    }
+}
 
 /* put_frame_buffer_line: Print text to frame buffer. */
 static int
@@ -568,7 +613,7 @@ put_frame_buffer_line (lp, addr, fb, ed)
   char line_no[OFF_T_LEN + TAB_WIDTH + 1];
   char *cp, *s;
   size_t col = 0;
-  unsigned int sgr_len = 0;     /* length of ANSI sgr sequence */
+  unsigned int sgr_len = 0;     /* Length of ANSI SGR sequence. */
   int form_feed = 0;
 
   /*
@@ -704,7 +749,10 @@ put_frame_buffer_line (lp, addr, fb, ed)
           if (ed->display->io_f & LIST)
             FB_PUTS (ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL)
                      ? "" : "\\\n", fb, ed);
-          INC_MOD_FB_ROW (lp, addr, ed->display->io_f & ZBWD, fb);
+          /*
+           * INC_MOD_FB_ROW (lp, addr, ed->display->io_f & ZBWD, fb);
+           */
+          inc_mod_fb_row (lp, addr, ed->display->io_f & ZBWD, fb, ed);
           col = 0;
         }
     }
@@ -713,7 +761,7 @@ put_frame_buffer_line (lp, addr, fb, ed)
     FB_PUTS ("\n", fb, ed);
   else if (ed->display->io_f & LIST && !fb->rem_chars)
     {
-      if (ed->display->io_f & (ZBWD | ZBWH)
+      if (ed->display->io_f & (ZBWD | ZHBW)
           && fb->prev_first && fb->prev_first->offset)
         FB_PUTS (ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL)
                  ? "\n" : "\\\n", fb, ed);
@@ -797,7 +845,7 @@ dup_frame_node (rp, ed)
 }
 #endif  /* WANT_ED_SCROLLING */
 
-/* sgr_span: Return length of ANSI sgr sequence, otherwise 0. */
+/* sgr_span: Return length of ANSI SGR sequence, otherwise 0. */
 static unsigned int
 sgr_span (s)
      const char *s;

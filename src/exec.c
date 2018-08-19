@@ -1185,7 +1185,7 @@ scroll_backward_half (ed)
       ed->exec->region->start = ed->display->page_addr;
       ed->exec->region->end = ed->display->page_addr;
 
-      ed->display->io_f |= ZBWH;
+      ed->display->io_f |= ZHBW;
       return Z_cmd (ed);
     }
 
@@ -1205,7 +1205,7 @@ scroll_backward_half (ed)
        ed->exec->region->end <= ed->display->ws_row / 2 + 1)
       || ed->state->dot == ed->state->lines)
     {
-      ed->display->io_f |= ZBWH;
+      ed->display->io_f |= ZHBW;
       return Z_cmd (ed);
     }
 
@@ -1247,7 +1247,7 @@ scroll_forward_half (ed)
           ed->exec->region->start = ed->state->dot;
           ed->exec->region->end = ed->state->dot;
 
-          ed->display->io_f |= ZBWH;
+          ed->display->io_f |= ZHBW;
           return Z_cmd (ed);
         }
 
@@ -1263,12 +1263,12 @@ scroll_forward_half (ed)
            ed->exec->region->end <= ed->display->ws_row / 2 + 1)
           || ed->state->dot == ed->state->lines)
         {
-          ed->display->io_f |= ZBWH;
+          ed->display->io_f |= ZHBW;
           return Z_cmd (ed);
         }
 
       /*
-       * ed->display->io_f |= ZFWH;
+       * ed->display->io_f |= ZHFW;
        * return scroll_backward_half (ed);
        */
     }
@@ -1536,8 +1536,8 @@ static int
 Z_cmd (ed)
      ed_buffer_t *ed;
 {
-  off_t addr = 0;
   size_t len = 0;
+  off_t addr = 0;
   int status = 0;               /* Return status */
 
   /* scroll backward */
@@ -1558,10 +1558,11 @@ Z_cmd (ed)
     {
       addr = (ed->display->is_paging ? ed->display->page_addr : ed->state->dot);
 
-      /* Compensate for loss of addressed line if scrolling half page. */
+      /* XXX: Compensate for half-page scroll addressed line loss. */
       addr -= !(ed->exec->global || ed->display->overflow
-                || (ed->display->io_f & (ZBWH | ZFWH)
+                || (ed->display->io_f & (ZHBW | ZHFW)
                     && (ed->state->dot == ed->state->lines)));
+
       addr = max (ed->state->lines ? 1 : 0, addr);
     }
   if ((status = is_valid_range (ed->exec->region->start = 1, addr, ed)) < 0)
@@ -1669,7 +1670,7 @@ z_cmd (ed)
        */
       addr = min (ed->state->lines, (ed->exec->region->end +
                                      ((ed->display->ws_row - 1) >> 1) - 1));
-      ed->display->io_f |= ZFWD | ZFWH;
+      ed->display->io_f |= ZFWD | ZHFW;
       break;
     }
   return display_lines (ed->exec->region->end, addr, ed);
