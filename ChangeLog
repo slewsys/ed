@@ -1,3 +1,7 @@
+2018-08-20  Andrew L. Moore  <slewsys@gmail.com>
+
+	* src/exec.c (Z_cmd): Remove redundant checks.
+
 2018-08-19  Andrew L. Moore  <slewsys@gmail.com>
 
 	* src/io.c (get_extended_line): Escape trailing backslashes in

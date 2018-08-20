@@ -1550,7 +1550,7 @@ Z_cmd (ed)
   /* Determine address of last line to print. */
   if (ed->exec->region->addrs)
     {
-      addr = max (ed->state->lines ? 1 : 0, ed->state->dot - !ed->exec->global);
+      addr = ed->state->dot - !ed->exec->global;
       ed->display->underflow = 0;
       ed->display->overflow = 0;
     }
@@ -1562,8 +1562,6 @@ Z_cmd (ed)
       addr -= !(ed->exec->global || ed->display->overflow
                 || (ed->display->io_f & (ZHBW | ZHFW)
                     && (ed->state->dot == ed->state->lines)));
-
-      addr = max (ed->state->lines ? 1 : 0, addr);
     }
   if ((status = is_valid_range (ed->exec->region->start = 1, addr, ed)) < 0)
     return status;

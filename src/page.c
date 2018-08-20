@@ -589,6 +589,11 @@ inc_mod_fb_row (lp, addr,  ok_to_wrap, fb, ed)
     {
       offset = (ok_to_wrap && fb->prev_first ? fb->prev_first->offset
                 : lp->len);
+
+      /*
+       * XXX: offset and fb->rem_chars may be independent except for
+       * very long lines (???)
+       */
       if (offset >= fb->rem_chars - 1)
         offset -= fb->rem_chars - 1;
 
