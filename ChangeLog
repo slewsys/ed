@@ -1,10 +1,15 @@
-2018-08-19  Andrew L. Moore  <alm@slewsys.org>
+2018-08-19  Andrew L. Moore  <slewsys@gmail.com>
+
+	* src/io.c (get_extended_line): Escape trailing backslashes in
+	the context of a global command.
+
+2018-08-19  Andrew L. Moore  <slewsys@gmail.com>
 
 	* src/page.c (display_lines): Prevent scrolling beyond limits of
 	editor buffer.
 	(inc_mod_fb_row): Correct offset calculation.
 
-2018-08-17  Andrew L. Moore  <alm@slewsys.org>
+2018-08-17  Andrew L. Moore  <slewsys@gmail.com>
 
 	* src/page.c (put_frame_buffer_line): Conditionally split lines
 	while listing on flags POSIXLY_CORRECT and TRADITIONAL.

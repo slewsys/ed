@@ -245,7 +245,7 @@ file_glob (len, cm, replace, uniquely, ed)
   char *s;
   off_t offs = 0;
 
-  if (!(xl = get_extended_line (len, 1, ed)))
+  if (!(xl = get_extended_line (len, 1, 0, ed)))
 
     /* Propagate stream status. */
     return NULL;
@@ -600,7 +600,7 @@ file_name (len, ed)
 
   char *xl;
 
-  if (!(xl = get_extended_line (len, 1, ed)))
+  if (!(xl = get_extended_line (len, 1, 0, ed)))
 
     /* Propagate stream status. */
     return NULL;
@@ -709,7 +709,7 @@ expand_shell_command (len, subs, ed)
       ed->exec->err = _("Shell access restricted");
       return NULL;
     }
-  if (!(xl = get_extended_line (&n, 1, ed)))
+  if (!(xl = get_extended_line (&n, 1, 0, ed)))
 
     /* Propagate stream status */
     return NULL;
@@ -789,12 +789,12 @@ expand_shell_command (len, subs, ed)
 }
 
 
-/* has_trailing_escape: Return the parity of escapes preceding a
+/* trailing_escapes: Return the parity of escapes preceding a
    character *t, in a string, s. */
 int
-has_trailing_escape (s, t)
+trailing_escapes (s, t)
      const char *s;
      const char *t;
 {
-  return (s == t || *(t - 1) != '\\' ? 0 : !has_trailing_escape (s, t - 1));
+  return (s == t || *(t - 1) != '\\' ? 0 : trailing_escapes (s, t - 1) + 1);
 }

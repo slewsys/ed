@@ -204,7 +204,7 @@ substitution_rhs (s_nth, s_mod, s_f, sio_f, ed)
 
 
   /* Don't clobber command buffer if any ed->exec->global set. */
-  if (!ed->exec->global && !(ed->input = get_extended_line (&len, 0, ed)))
+  if (!ed->exec->global && !(ed->input = get_extended_line (&len, 0, 0, ed)))
     {
       /* EOF here always flags error. */
       status = ERR;

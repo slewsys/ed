@@ -906,7 +906,7 @@ int filter_lines __P ((off_t, off_t, const char *, ed_buffer_t *));
 
 char *get_buffer_line __P ((const ed_line_node_t *, ed_buffer_t *));
 regex_t *get_compiled_regex __P ((unsigned, int, ed_buffer_t *));
-char *get_extended_line __P ((size_t *, int, ed_buffer_t *));
+char *get_extended_line __P ((size_t *, int, int, ed_buffer_t *));
 ed_line_node_t *get_line_node __P ((off_t, ed_buffer_t *));
 int get_line_node_address __P ((const ed_line_node_t *, off_t *,
                                 ed_buffer_t *));
@@ -916,7 +916,6 @@ int get_matching_node_address __P ((const regex_t *, int, off_t *,
 size_t get_path_max __P ((const char *));
 #define get_stdin_line(len, ed) get_stream_line (stdin, len, ed)
 char *get_stream_line __P ((FILE *, size_t *, ed_buffer_t *));
-int has_trailing_escape __P ((const char *, const char *));
 void init_ed_command __P ((int, ed_buffer_t *));
 void init_ed_state __P ((off_t, struct ed_state *));
 void init_global_queue __P ((ed_global_node_t **, ed_line_node_t **,
@@ -996,6 +995,7 @@ int substitute_lines __P ((off_t, off_t, regex_t *, off_t, off_t, unsigned,
 int substitution_lhs __P ((regex_t **, unsigned *, ed_buffer_t *));
 int substitution_rhs __P ((off_t *, off_t *, unsigned *, unsigned *,
                            ed_buffer_t *));
+int trailing_escapes __P ((const char *, const char *));
 void transfer_marks __P ((const ed_line_node_t *, const ed_line_node_t *,
                           ed_buffer_t *));
 int undo_last_command __P ((ed_buffer_t *));

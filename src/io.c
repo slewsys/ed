@@ -442,15 +442,16 @@ read_stream_r (fp, after, size, ed)
  *   to static buffer.
  */
 char *
-get_extended_line (len, nonl, ed)
+get_extended_line (len, nonl, escape, ed)
      size_t *len;               /* extended line length */
      int nonl;                  /* If set, remove trailing newline. */
+     int escape;                /* If set, expand sequences of escapes. */
      ed_buffer_t *ed;
 {
   static char *xl = NULL;       /* extended line buffer */
   static size_t xl_size = 0;    /* buffer size */
 
-  size_t n;
+  size_t n, p;
 
   for (*len = 0; *(ed->input + (*len)++) != '\n';)
     ;
@@ -461,12 +462,18 @@ get_extended_line (len, nonl, ed)
 
   /*
    * Shell escapes set nonl, so we are only interested in a trailing
-   * escape in this case.
+   * escapes in this case.
    */
-  while (nonl ? *len > 1 && *(xl + *len - 2) == '\\'
-         : has_trailing_escape (xl, xl + *len - 1))
+  p = trailing_escapes (xl, xl + *len - 1);
+  while (nonl ? *len > 1 && *(xl + *len - 2) == '\\' : p % 2)
     {
-      *(xl + --*len - 1) = '\n'; /* strip trailing backslash */
+      /*
+       * Escape trailing backslashes (i.e., replace `\\' pairs with `\'),
+       * and strip trailing backslash.
+       */
+      *len -= escape ? (p + 1) / 2 : 1;
+      *(xl + *len - 1) = '\n';
+
       if (!(ed->input = get_stdin_line (&n, ed)))
 
         /* Propagate stream status - don't call clearerr(3). */
@@ -480,6 +487,7 @@ get_extended_line (len, nonl, ed)
       memcpy (xl + *len, ed->input, n);
       *len += n;
       ++ed->exec->line_no;
+      p = trailing_escapes (xl, xl + *len - 1);
     }
   *len -= nonl;                 /* strip newline, if nonl */
   *(xl + *len) = '\0';
