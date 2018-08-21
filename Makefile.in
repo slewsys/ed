@@ -332,6 +332,7 @@ GNULIB_GETLOADAVG = @GNULIB_GETLOADAVG@
 GNULIB_GETLOGIN = @GNULIB_GETLOGIN@
 GNULIB_GETLOGIN_R = @GNULIB_GETLOGIN_R@
 GNULIB_GETPAGESIZE = @GNULIB_GETPAGESIZE@
+GNULIB_GETPASS = @GNULIB_GETPASS@
 GNULIB_GETSUBOPT = @GNULIB_GETSUBOPT@
 GNULIB_GETUSERSHELL = @GNULIB_GETUSERSHELL@
 GNULIB_GL_UNISTD_H_GETOPT = @GNULIB_GL_UNISTD_H_GETOPT@
@@ -483,6 +484,7 @@ HAVE_GETHOSTNAME = @HAVE_GETHOSTNAME@
 HAVE_GETLOGIN = @HAVE_GETLOGIN@
 HAVE_GETOPT_H = @HAVE_GETOPT_H@
 HAVE_GETPAGESIZE = @HAVE_GETPAGESIZE@
+HAVE_GETPASS = @HAVE_GETPASS@
 HAVE_GETSUBOPT = @HAVE_GETSUBOPT@
 HAVE_GRANTPT = @HAVE_GRANTPT@
 HAVE_GROUP_MEMBER = @HAVE_GROUP_MEMBER@
@@ -714,6 +716,7 @@ REPLACE_GETDTABLESIZE = @REPLACE_GETDTABLESIZE@
 REPLACE_GETGROUPS = @REPLACE_GETGROUPS@
 REPLACE_GETLOGIN_R = @REPLACE_GETLOGIN_R@
 REPLACE_GETPAGESIZE = @REPLACE_GETPAGESIZE@
+REPLACE_GETPASS = @REPLACE_GETPASS@
 REPLACE_ISATTY = @REPLACE_ISATTY@
 REPLACE_ISWBLANK = @REPLACE_ISWBLANK@
 REPLACE_ISWCNTRL = @REPLACE_ISWCNTRL@
@@ -1402,7 +1405,7 @@ update-testsuite-dist:
 	chmod +x $(top_srcdir)/upgrade.sh;				      \
 	chmod +x $(top_srcdir)/testsuite/ts-am-sw.ed;			      \
 	if test -f $(top_srcdir)/testsuite/.ts-am-sw; then		      \
-	  (cd $(top_srcdir)/testsuite && ./ts-am-sw.ed && rm -f ./ts-am-sw);  \
+	  (cd $(top_srcdir)/testsuite && ./ts-am-sw.ed && rm -f ./.ts-am-sw); \
 	fi;								      \
 	if test ! -f $(top_srcdir)/testsuite/.ts-am-sw; then		      \
 	  (cd $(top_srcdir)/testsuite && ./ts-am-sw.ed && touch ./.ts-am-sw); \
@@ -1417,10 +1420,10 @@ update-testsuite-dist:
 update-po:
 	-(cd $(top_srcdir)/po && $(MAKE) $(AM_MAKEFLAGS) update-po);	      \
 	if test -f $(top_srcdir)/testsuite/.ts-am-sw; then		      \
-	  (cd $(top_srcdir)/testsuite && ./ts-am-sw.ed && rm -f ./ts-am-sw);  \
+	  (cd $(top_srcdir)/testsuite && ./ts-am-sw.ed && rm -f ./.ts-am-sw); \
 	fi;								      \
 	(cd $(top_srcdir)/ && ./upgrade.sh);				      \
-	$(MAKE) $(AM_MAKEFLAGS) distclean
+	$(MAKE) $(AM_MAKEFLAGS) clean
 
 distclean-local:
 	rm -f configure.orig

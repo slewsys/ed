@@ -74,7 +74,7 @@ update-testsuite-dist:
 	chmod +x $(top_srcdir)/upgrade.sh;				      \
 	chmod +x $(top_srcdir)/testsuite/ts-am-sw.ed;			      \
 	if test -f $(top_srcdir)/testsuite/.ts-am-sw; then		      \
-	  (cd $(top_srcdir)/testsuite && ./ts-am-sw.ed && rm -f ./ts-am-sw);  \
+	  (cd $(top_srcdir)/testsuite && ./ts-am-sw.ed && rm -f ./.ts-am-sw); \
 	fi;								      \
 	if test ! -f $(top_srcdir)/testsuite/.ts-am-sw; then		      \
 	  (cd $(top_srcdir)/testsuite && ./ts-am-sw.ed && touch ./.ts-am-sw); \
@@ -89,10 +89,10 @@ update-testsuite-dist:
 update-po:
 	-(cd $(top_srcdir)/po && $(MAKE) $(AM_MAKEFLAGS) update-po);	      \
 	if test -f $(top_srcdir)/testsuite/.ts-am-sw; then		      \
-	  (cd $(top_srcdir)/testsuite && ./ts-am-sw.ed && rm -f ./ts-am-sw);  \
+	  (cd $(top_srcdir)/testsuite && ./ts-am-sw.ed && rm -f ./.ts-am-sw); \
 	fi;								      \
 	(cd $(top_srcdir)/ && ./upgrade.sh);				      \
-	$(MAKE) $(AM_MAKEFLAGS) distclean
+	$(MAKE) $(AM_MAKEFLAGS) clean
 
 distclean-local:
 	rm -f configure.orig

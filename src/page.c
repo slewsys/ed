@@ -480,73 +480,6 @@ display_lines (from, to, ed)
 }
 
 
-/* Init_frame_buffer: Initialize ed_frame_buffer. */
-static int
-init_frame_buffer (fb, ed)
-     ed_frame_buffer_t *fb;
-     ed_buffer_t *ed;
-{
-  static char *fp = NULL;
-  static size_t fp_size = 0;
-
-  size_t size;
-  int n;
-
-  spl1 ();
-
-  if (fb->rows != ed->display->ws_row
-      || fb->columns != ed->display->ws_col)
-    {
-      fb->row_i = 0;
-      for (n = 0; n < fb->rows - 1; ++n)
-        if (fb->row[n]->text)
-          {
-            free (fb->row[n]->text);
-            init_frame_node (fb->row[n]);
-          }
-      REALLOC_THROW (fp, fp_size,
-                     (ed->display->ws_row - 1) * sizeof (ed_frame_node_t *),
-                     ERR, ed);
-      fb->row = (ed_frame_node_t **) fp;
-      for (n = max (0, fb->rows - 1); n < ed->display->ws_row - 1; ++n)
-        {
-          size = 0;
-          fb->row[n] = NULL;
-          REALLOC_THROW (fb->row[n], size, sizeof (ed_frame_node_t), ERR, ed);
-          init_frame_node (fb->row[n]);
-        }
-
-      fb->rows = ed->display->ws_row;
-      fb->columns = ed->display->ws_col;
-    }
-
-  /*
-   * Don't reset row_i if scrolling forward in half-pages. Append to
-   * end of frame buffer instead.
-   */
-  if (!(ed->display->io_f & ZHFW))
-    fb->row_i = 0;
-  fb->fill_i = (fb->row_i + (fb->rows >> 1)) % (fb->rows - 1);
-  fb->wraps = !!fb->row_i;
-  spl0 ();
-  return 0;
-}
-
-
-/* init_frame_node: Initialize ed_frame_node_t structure. */
-static void
-init_frame_node (rp)
-     ed_frame_node_t *rp;
-{
-  rp->addr = 0;
-  rp->lp = NULL;
-  rp->offset = 0;
-  rp->text = NULL;
-  rp->text_size = 0;
-  rp->text_i = 0;
-}
-
-
 /* FB_PUTS: Add string, s, to frame buffer. */
 #define FB_PUTS(s, fb, ed)                                                    \
   do                                                                          \
@@ -557,44 +490,6 @@ init_frame_node (rp)
           return ERR;                                                         \
     }                                                                         \
   while (0)
-
-
-/* inc_mod_fb_row: Increment fb->row_i and calculate text offset. */
-static void
-inc_mod_fb_row (lp, addr,  ok_to_wrap, fb, ed)
-     ed_line_node_t *lp;        /* Line node pointer */
-     off_t addr;
-     int ok_to_wrap;
-     ed_frame_buffer_t *fb;
-     ed_buffer_t *ed;
-{
-  size_t offset = 0;
-
-  INC_FB_ROW (ok_to_wrap, fb);
-
-  if (!fb->is_full)
-    {
-      if (fb->prev_first && fb->prev_first->lp == lp)
-        {
-          /* See tests zb[12].tso. */
-          offset = (ok_to_wrap ? fb->prev_first->offset : lp->len);
-          if (offset < fb->rem_chars - 1)
-            offset = lp->len - fb->rem_chars + 1;
-          else
-            offset -= fb->rem_chars - 1;
-        }
-      else
-        {
-          /* See tests zb[34].tso. */
-          offset = (ok_to_wrap && fb->prev_first ? fb->prev_first->offset
-                    : lp->len - fb->rem_chars + 1);
-          if (offset < fb->rem_chars - 1)
-            offset = lp->len - fb->rem_chars + 1;
-        }
-
-      INIT_FB_ROW (lp, addr, offset, fb);
-    }
-}
 
 
 /* put_frame_buffer_line: Print text to frame buffer. */
@@ -814,6 +709,111 @@ display_frame_buffer (fb, ed)
       && n && rp->text[rp->text_i - 1] != '\n')
     putchar ('\n');
   return 0;
+}
+
+
+/* inc_mod_fb_row: Increment fb->row_i and calculate text offset. */
+static void
+inc_mod_fb_row (lp, addr,  ok_to_wrap, fb, ed)
+     ed_line_node_t *lp;        /* Line node pointer */
+     off_t addr;
+     int ok_to_wrap;
+     ed_frame_buffer_t *fb;
+     ed_buffer_t *ed;
+{
+  size_t offset = 0;
+
+  INC_FB_ROW (ok_to_wrap, fb);
+
+  if (!fb->is_full)
+    {
+      if (fb->prev_first && fb->prev_first->lp == lp)
+        {
+          /* See tests zb[12].tso. */
+          offset = (ok_to_wrap ? fb->prev_first->offset : lp->len);
+          if (offset < fb->rem_chars - 1)
+            offset = lp->len - fb->rem_chars + 1;
+          else
+            offset -= fb->rem_chars - 1;
+        }
+      else
+        {
+          /* See tests zb[34].tso. */
+          offset = (ok_to_wrap && fb->prev_first ? fb->prev_first->offset
+                    : lp->len - fb->rem_chars + 1);
+          if (offset < fb->rem_chars - 1)
+            offset = lp->len - fb->rem_chars + 1;
+        }
+
+      INIT_FB_ROW (lp, addr, offset, fb);
+    }
+}
+
+
+/* Init_frame_buffer: Initialize ed_frame_buffer. */
+static int
+init_frame_buffer (fb, ed)
+     ed_frame_buffer_t *fb;
+     ed_buffer_t *ed;
+{
+  static char *fp = NULL;
+  static size_t fp_size = 0;
+
+  size_t size;
+  int n;
+
+  spl1 ();
+
+  if (fb->rows != ed->display->ws_row
+      || fb->columns != ed->display->ws_col)
+    {
+      fb->row_i = 0;
+      for (n = 0; n < fb->rows - 1; ++n)
+        if (fb->row[n]->text)
+          {
+            free (fb->row[n]->text);
+            init_frame_node (fb->row[n]);
+          }
+      REALLOC_THROW (fp, fp_size,
+                     (ed->display->ws_row - 1) * sizeof (ed_frame_node_t *),
+                     ERR, ed);
+      fb->row = (ed_frame_node_t **) fp;
+      for (n = max (0, fb->rows - 1); n < ed->display->ws_row - 1; ++n)
+        {
+          size = 0;
+          fb->row[n] = NULL;
+          REALLOC_THROW (fb->row[n], size, sizeof (ed_frame_node_t), ERR, ed);
+          init_frame_node (fb->row[n]);
+        }
+
+      fb->rows = ed->display->ws_row;
+      fb->columns = ed->display->ws_col;
+    }
+
+  /*
+   * Don't reset row_i if scrolling forward in half-pages. Append to
+   * end of frame buffer instead.
+   */
+  if (!(ed->display->io_f & ZHFW))
+    fb->row_i = 0;
+  fb->fill_i = (fb->row_i + (fb->rows >> 1)) % (fb->rows - 1);
+  fb->wraps = !!fb->row_i;
+  spl0 ();
+  return 0;
+}
+
+
+/* init_frame_node: Initialize ed_frame_node_t structure. */
+static void
+init_frame_node (rp)
+     ed_frame_node_t *rp;
+{
+  rp->addr = 0;
+  rp->lp = NULL;
+  rp->offset = 0;
+  rp->text = NULL;
+  rp->text_size = 0;
+  rp->text_i = 0;
 }
 
 
