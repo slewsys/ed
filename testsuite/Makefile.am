@@ -101,8 +101,10 @@ ED_SCRIPTS_OK =                                                               \
 
 # Ed scripts tested for expected standard output.
 ED_SCRIPTS_OK_SO =							      \
-	p1.tso l1.tso n1.tso zf1.tso zb1.tso zfh1.tso zfh2.tso zbh1.tso       \
-	zbh2.tso
+	p1.tso l1.tso n1.tso						      \
+	zf1.tso zf2.tso zf3.tso zf4.tso					      \
+	zb1.tso zb2.tso zb3.tso zb4.tso					      \
+	zfh1.tso zfh2.tso zbh1.tso zbh2.tso
 
 # Ed scripts which should complete, but with non-zero exit status.
 ED_SCRIPTS_ERR =                                                              \
@@ -177,8 +179,9 @@ quick-check:
 	fi
 
 distclean-local:
-	rm atconfig
+	rm atconfig proto.ok-so-at.in
 
 clean-local:
-	rm -rf *.ok-at *.ok-so-at *.fail-at *.err-at *.dir *.log
+	rm -f *.ok-at *.ok-so-at *.fail-at *.err-at *.log
+	rm -rf  *.dir
 	rm -f $(PACKAGE_M4) $(TESTSUITE_AT) $(TESTSUITE)

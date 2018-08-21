@@ -1,3 +1,10 @@
+2018-08-21  Andrew L. Moore  <slewsys@gmail.com>
+
+	* src/page.c (inc_mod_fb_row): Adjust text offset calculation for
+	backward scrolling through lines longer than display width,
+	including lines spanning multiple pages. Add scrolling tests to
+	testsuite.
+
 2018-08-20  Andrew L. Moore  <slewsys@gmail.com>
 
 	* src/exec.c (Z_cmd): Remove redundant checks.

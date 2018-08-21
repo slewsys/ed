@@ -559,21 +559,7 @@ init_frame_node (rp)
   while (0)
 
 
-/* INC_MOD_FB_ROW: Increment fb->row_i modulus (fb->rows - 1). */
-#define INC_MOD_FB_ROW(lp, addr,  ok_to_wrap, fb)                             \
-  do                                                                          \
-    {                                                                         \
-      INC_FB_ROW ((ok_to_wrap), (fb));                                        \
-      if (!(fb)->is_full)                                                     \
-        {                                                                     \
-          size_t _offset;                                                     \
-          _offset = (ok_to_wrap && fb->prev_first ? fb->prev_first->offset    \
-                     : lp->len) - fb->rem_chars + 1;                          \
-          INIT_FB_ROW ((lp), (addr), _offset, (fb));                          \
-        }                                                                     \
-    }                                                                         \
-  while (0)
-
+/* inc_mod_fb_row: Increment fb->row_i and calculate text offset. */
 static void
 inc_mod_fb_row (lp, addr,  ok_to_wrap, fb, ed)
      ed_line_node_t *lp;        /* Line node pointer */
@@ -582,24 +568,34 @@ inc_mod_fb_row (lp, addr,  ok_to_wrap, fb, ed)
      ed_frame_buffer_t *fb;
      ed_buffer_t *ed;
 {
-  static size_t offset = 0;
+  size_t offset = 0;
 
   INC_FB_ROW (ok_to_wrap, fb);
+
   if (!fb->is_full)
     {
-      offset = (ok_to_wrap && fb->prev_first ? fb->prev_first->offset
-                : lp->len);
-
-      /*
-       * XXX: offset and fb->rem_chars may be independent except for
-       * very long lines (???)
-       */
-      if (offset >= fb->rem_chars - 1)
-        offset -= fb->rem_chars - 1;
+      if (fb->prev_first && fb->prev_first->lp == lp)
+        {
+          /* See tests zb[12].tso. */
+          offset = (ok_to_wrap ? fb->prev_first->offset : lp->len);
+          if (offset < fb->rem_chars - 1)
+            offset = lp->len - fb->rem_chars + 1;
+          else
+            offset -= fb->rem_chars - 1;
+        }
+      else
+        {
+          /* See tests zb[34].tso. */
+          offset = (ok_to_wrap && fb->prev_first ? fb->prev_first->offset
+                    : lp->len - fb->rem_chars + 1);
+          if (offset < fb->rem_chars - 1)
+            offset = lp->len - fb->rem_chars + 1;
+        }
 
       INIT_FB_ROW (lp, addr, offset, fb);
     }
 }
+
 
 /* put_frame_buffer_line: Print text to frame buffer. */
 static int
@@ -712,7 +708,7 @@ put_frame_buffer_line (lp, addr, fb, ed)
            * line -- indented to the current column.
            */
           if ((form_feed = (*s == '\f')))
-            INC_MOD_FB_ROW (lp, addr, ed->display->io_f & ZBWD, fb);
+            inc_mod_fb_row (lp, addr, ed->display->io_f & ZBWD, fb, ed);
         }
       else
         {
@@ -754,9 +750,6 @@ put_frame_buffer_line (lp, addr, fb, ed)
           if (ed->display->io_f & LIST)
             FB_PUTS (ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL)
                      ? "" : "\\\n", fb, ed);
-          /*
-           * INC_MOD_FB_ROW (lp, addr, ed->display->io_f & ZBWD, fb);
-           */
           inc_mod_fb_row (lp, addr, ed->display->io_f & ZBWD, fb, ed);
           col = 0;
         }
