@@ -8,9 +8,9 @@
 #include "ed.h"
 
 typedef struct utf8_ea_width {
-  int codepoint;
+  int code_point;
   int width;
-} utf_ea_width_t;
+} utf8_ea_width_t;
 
 /* Encoded UTF-8 byte masks. */
 unsigned char utf8_byte_mask[5] =
@@ -22,7 +22,7 @@ unsigned char utf8_byte_mask[5] =
     0xF8,                       /* 11111000 */
   };
 
-/* Offsets into (decoded) UTF-8 codepoint. */
+/* Offsets into (decoded) UTF-8 code point. */
 int utf8_cp_offset[4] =
   {
     0,
@@ -79,7 +79,7 @@ decode_utf8_char (s, len)
   /* 4-byte char sequence. */
   else if ((*t & utf8_byte_mask[4]) == utf8_byte_mask[3])
     {
-      /* UTF-8 codepoint exceeds 0x10FFFF. */
+      /* UTF-8 code point exceeds 0x10FFFF. */
       if ((*t & ~utf8_byte_mask[4]) > 5)
         return ERR;
 
@@ -107,7 +107,7 @@ decode_utf8_char (s, len)
       cp |= (*t++ & ~utf8_byte_mask[1]) << utf8_cp_offset[bytes - 1];
     }
 
-  /*  Not a UTF-8 codepoint. */
+  /*  Not a UTF-8 code point. */
   if (cp == 0xFFFE || cp == 0xFFFF || (0xDC80 <= cp && cp <= 0xDCFF))
     return ERR;
 
@@ -117,11 +117,11 @@ decode_utf8_char (s, len)
 
 
 /*
- * encode_utf8_char: Encode UTF-8 codepoint, code, per RFC 3629 (up to
- * U+10FFFF) to character buffer s. Return 0 if successful, otherwise ERR.
+ * encode_utf8_char: Encode UTF-8 code point, CODE, per RFC 3629 (up to
+ * U+10FFFF) to character buffer S. Return 0 if successful, otherwise ERR.
  *
- * NB: The buffer s must be long enough to contain the UTF-8 encoding,
- * can be up to 4 bytes in length per RFC 3629.
+ * NB: The buffer S must be long enough to contain the UTF-8 encoding -
+ * up to 4 bytes in length per RFC 3629.
  */
 int
 encode_utf8_char (s, len, code)
@@ -142,13 +142,13 @@ encode_utf8_char (s, len, code)
   else if (cp <= 0x7FF)
     {
       /*
-       * Map lower 11 bits of codepoint to UTF-8 encoding.
-       * Upper 5 codepoint bits to UTF-8 leading byte.
-       * Lower 6 codepoint bits to UTF-8 continuation byte.
+       * Map lower 11 bits of code point to UTF-8 encoding.
+       * Upper 5 code-point bits to UTF-8 leading byte.
+       * Lower 6 code-point bits to UTF-8 continuation byte.
        *
-       * Visual representation of codepoint bit mapping:
+       * Visual representation of code point bit mapping:
        *
-       *   Codepoint:  LLLLLXXXXXX
+       *   Code point: LLLLLXXXXXX
        *               |     \
        *               |      \
        *   Encoded: 110LLLLL 10XXXXXX
@@ -160,19 +160,19 @@ encode_utf8_char (s, len, code)
   /* 3-byte UTF-8 encoding. */
   else if (cp <= 0xFFFF)
     {
-      /* Illegal UTF-8 codepoints per RFC 3629. */
+      /* Illegal UTF-8 code points per RFC 3629. */
       if ((0xDC80 <= cp && cp <= 0xDCFF) || cp == 0xFFFE || cp == 0xFFFF)
         return ERR;
 
       /*
-       * Map lower 16 bits of codepoint to UTF-8 encoding.
-       * Upper 4 codepoint bits to UTF-8 leading byte.
-       * Middle 6 codepoint bits to first UTF-8 continuation byte.
-       * Lower 6 codepoint bits to second UTF-8 continuation byte.
+       * Map lower 16 bits of code point to UTF-8 encoding.
+       * Upper 4 code-point bits to UTF-8 leading byte.
+       * Middle 6 code-point bits to first UTF-8 continuation byte.
+       * Lower 6 code-point bits to second UTF-8 continuation byte.
        *
-       * Visual representation of codepoint bit mapping:
+       * Visual representation of code point bit mapping:
        *
-       *   Codepoint:      LLLLXXXXXXYYYYYY
+       *   Code point:     LLLLXXXXXXYYYYYY
        *                  /    |      \
        *                 /     |       \
        *   Encoded: 1110LLLL 10XXXXXX 10YYYYYY
@@ -186,15 +186,15 @@ encode_utf8_char (s, len, code)
   else if (cp <= 0x10FFFF)
     {
       /*
-       * Map lower 21 bits of codepoint to UTF-8 encoding.
-       * Upper 3 codepoint bits to UTF-8 leading byte.
-       * Upper middle 6 codepoint bits to first UTF-8 continuation byte.
-       * Lower middle 6 codepoint bits to second UTF-8 continuation byte.
-       * Lower 6 codepoint bits to third UTF-8 continuation byte.
+       * Map lower 21 bits of code point to UTF-8 encoding.
+       * Upper 3 code-point bits to UTF-8 leading byte.
+       * Upper middle 6 code-point bits to first UTF-8 continuation byte.
+       * Lower middle 6 code-point bits to second UTF-8 continuation byte.
+       * Lower 6 code-point bits to third UTF-8 continuation byte.
        *
-       * Visual representation of codepoint bit mapping:
+       * Visual representation of code point bit mapping:
        *
-       *   Codepoint:       LLLXXXXXXYYYYYYZZZZZZ
+       *   Code point:      LLLXXXXXXYYYYYYZZZZZZ
        *                   /   |      \     `
        *                  /    |       \        `
        *   Encoded: 11110LLL 10XXXXXX 10YYYYYY 10ZZZZZZ
@@ -205,7 +205,7 @@ encode_utf8_char (s, len, code)
       *t++ = utf8_byte_mask[0] | (cp & ~utf8_byte_mask[1]);
     }
 
-  /* Not a UTF-8 codepoint per RFC 3629. */
+  /* Not a UTF-8 code point per RFC 3629. */
   else
     return ERR;
 
