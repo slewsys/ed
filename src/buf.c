@@ -216,6 +216,7 @@ init_ed_state (addr, state)
   state->lines = addr;          /* -1 disables undo */
   state->dot = addr;            /* -1 disables undo */
   state->is_binary = 0;
+  state->is_utf8 = 1;
   state->is_empty = 1;
   state->is_modified = 0;
   state->newline_appended = 0;

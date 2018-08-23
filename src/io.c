@@ -572,6 +572,8 @@ get_stream_line (fp, len, ed)
       *(tb + *len) = '\n';
       *(tb + ++*len) = '\0';
     }
+  if (ed->state->is_utf8)
+    ed->state->is_utf8 = is_utf8 (tb, *len);
   return tb;
 }
 

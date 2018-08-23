@@ -20,6 +20,7 @@ ed_SOURCES = aux.c							      \
 	     signal.c							      \
 	     sub.c							      \
 	     undo.c							      \
+	     utf8.c							      \
 	     version.c
 
 ed_LDADD =
@@ -59,4 +60,4 @@ maintainer-clean-local:
 	rm -f .gdb_history
 
 check-syntax:
-	gcc -o /dev/null -S $(ed_SOURCES)
+	$(CC) -o /dev/null -S $(ed_SOURCES)

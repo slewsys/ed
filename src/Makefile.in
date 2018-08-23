@@ -162,7 +162,7 @@ PROGRAMS = $(bin_PROGRAMS)
 am_ed_OBJECTS = aux.$(OBJEXT) buf.$(OBJEXT) cbc.$(OBJEXT) \
 	cmds.$(OBJEXT) exec.$(OBJEXT) glbl.$(OBJEXT) io.$(OBJEXT) \
 	main.$(OBJEXT) page.$(OBJEXT) parse.$(OBJEXT) re.$(OBJEXT) \
-	signal.$(OBJEXT) sub.$(OBJEXT) undo.$(OBJEXT) \
+	signal.$(OBJEXT) sub.$(OBJEXT) undo.$(OBJEXT) utf8.$(OBJEXT) \
 	version.$(OBJEXT)
 ed_OBJECTS = $(am_ed_OBJECTS)
 am__DEPENDENCIES_1 =
@@ -192,7 +192,7 @@ am__depfiles_remade = ./$(DEPDIR)/aux.Po ./$(DEPDIR)/buf.Po \
 	./$(DEPDIR)/glbl.Po ./$(DEPDIR)/io.Po ./$(DEPDIR)/main.Po \
 	./$(DEPDIR)/page.Po ./$(DEPDIR)/parse.Po ./$(DEPDIR)/re.Po \
 	./$(DEPDIR)/signal.Po ./$(DEPDIR)/sub.Po ./$(DEPDIR)/undo.Po \
-	./$(DEPDIR)/version.Po
+	./$(DEPDIR)/utf8.Po ./$(DEPDIR)/version.Po
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -861,6 +861,7 @@ ed_SOURCES = aux.c							      \
 	     signal.c							      \
 	     sub.c							      \
 	     undo.c							      \
+	     utf8.c							      \
 	     version.c
 
 ed_LDADD = $(am__append_1) $(am__append_4) $(am__append_5) \
@@ -976,6 +977,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/signal.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sub.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/undo.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/utf8.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/version.Po@am__quote@ # am--include-marker
 
 $(am__depfiles_remade):
@@ -1152,6 +1154,7 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/signal.Po
 	-rm -f ./$(DEPDIR)/sub.Po
 	-rm -f ./$(DEPDIR)/undo.Po
+	-rm -f ./$(DEPDIR)/utf8.Po
 	-rm -f ./$(DEPDIR)/version.Po
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
@@ -1212,6 +1215,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/signal.Po
 	-rm -f ./$(DEPDIR)/sub.Po
 	-rm -f ./$(DEPDIR)/undo.Po
+	-rm -f ./$(DEPDIR)/utf8.Po
 	-rm -f ./$(DEPDIR)/version.Po
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic \
@@ -1256,7 +1260,7 @@ maintainer-clean-local:
 	rm -f .gdb_history
 
 check-syntax:
-	gcc -o /dev/null -S $(ed_SOURCES)
+	$(CC) -o /dev/null -S $(ed_SOURCES)
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

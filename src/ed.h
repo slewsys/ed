@@ -346,6 +346,7 @@ struct ed_state
   off_t lines;                  /* Number of lines. */
 
   int is_binary;                /* If set, buffer contains binary data.  */
+  int is_utf8;                  /* If set, buffer contains UTF-8 data.  */
   int is_empty;                 /* If set, buffer is "logically" empty. */
   int is_modified;              /* If set, buffer contains unsaved data. */
   int newline_appended;         /* if set, newline appended to buffer. */
@@ -890,10 +891,12 @@ ed_undo_node_t *append_undo_node __P ((int, off_t, off_t, ed_buffer_t *));
 int close_ed_buffer __P ((ed_buffer_t *));
 int copy_lines __P ((off_t, off_t, off_t, ed_buffer_t *));
 int create_disk_buffer __P ((FILE **, char **, ed_buffer_t *));
+int decode_utf8_char __P ((unsigned char **, int));
 void delete_global_nodes __P ((const ed_line_node_t *, const ed_line_node_t *,
                                ed_buffer_t *));
 int delete_lines __P ((off_t, off_t, ed_buffer_t *));
 int display_lines __P ((off_t, off_t, ed_buffer_t *));
+int encode_utf8_char __P ((char *, int *, unsigned int));
 int exec_command __P ((ed_buffer_t *));
 int exec_global __P ((ed_buffer_t *));
 char *expand_shell_command __P ((size_t *, int *, ed_buffer_t *));
@@ -906,6 +909,12 @@ int filter_lines __P ((off_t, off_t, const char *, ed_buffer_t *));
 
 char *get_buffer_line __P ((const ed_line_node_t *, ed_buffer_t *));
 regex_t *get_compiled_regex __P ((unsigned, int, ed_buffer_t *));
+
+#ifdef WANT_DES_ENCRYPTION
+int get_des_char __P ((FILE *, ed_buffer_t *));
+int get_des_keyword __P ((ed_buffer_t *));
+#endif
+
 char *get_extended_line __P ((size_t *, int, int, ed_buffer_t *));
 ed_line_node_t *get_line_node __P ((off_t, ed_buffer_t *));
 int get_line_node_address __P ((const ed_line_node_t *, off_t *,
@@ -916,6 +925,11 @@ int get_matching_node_address __P ((const regex_t *, int, off_t *,
 size_t get_path_max __P ((const char *));
 #define get_stdin_line(len, ed) get_stream_line (stdin, len, ed)
 char *get_stream_line __P ((FILE *, size_t *, ed_buffer_t *));
+
+#ifdef WANT_DES_ENCRYPTION
+void init_des_cipher __P ((void));
+#endif
+
 void init_ed_command __P ((int, ed_buffer_t *));
 void init_ed_state __P ((off_t, struct ed_state *));
 void init_global_queue __P ((ed_global_node_t **, ed_line_node_t **,
@@ -936,6 +950,7 @@ int inter_register_copy __P ((int, ed_buffer_t *));
 int inter_register_move __P ((int, ed_buffer_t *));
 #endif
 
+int is_utf8 __P ((const char *, size_t));
 int join_lines __P ((off_t, off_t, ed_buffer_t *));
 int mark_global_nodes __P ((int, ed_buffer_t *));
 int mark_line_node __P ((const ed_line_node_t *, int, ed_buffer_t *));
@@ -952,6 +967,10 @@ char *put_buffer_line __P ((const char *, size_t, ed_buffer_t *));
 
 #ifdef WANT_ED_MACRO
 int push_stack_frame __P ((ed_buffer_t *));
+#endif
+
+#ifdef WANT_DES_ENCRYPTION
+int put_des_char __P ((int, FILE *));
 #endif
 
 void quit __P ((int, ed_buffer_t *));
@@ -1001,6 +1020,7 @@ void transfer_marks __P ((const ed_line_node_t *, const ed_line_node_t *,
 int undo_last_command __P ((ed_buffer_t *));
 int unwind_stack_frame __P ((int, ed_buffer_t *));
 void unmark_line_node __P ((const ed_line_node_t *, ed_buffer_t *));
+int utf8_char_size __P ((const char *, size_t));
 int write_file __P ((const char *, int, off_t, off_t, off_t *, off_t *,
                      const char *, ed_buffer_t *));
 int write_pipe __P ((const char *, off_t, off_t, off_t *, off_t *,

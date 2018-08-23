@@ -19,7 +19,7 @@ unsigned char utf8_byte_mask[5] =
     0xC0,                       /* 11000000 */
     0xE0,                       /* 11100000 */
     0xF0,                       /* 11110000 */
-    0xF8                        /* 11111000 */
+    0xF8,                       /* 11111000 */
   };
 
 /* Offsets into (decoded) UTF-8 codepoint. */
@@ -31,15 +31,15 @@ int utf8_cp_offset[4] =
     24
   };
 
+
 /*
  * decode_utf8_char: Decode UTF-8 character sequence, s, per RFC 3629
- * to code, (up to U+10FFFF) increment s to following char. Return 0
- * if successful, otherwise ERR.
+ * to code, (up to U+10FFFF) increment s to following char. Return
+ * code point if successful, otherwise ERR.
  */
 int
-decode_utf8_char (code, s, len)
-     int *code;
-     char **s;
+decode_utf8_char (s, len)
+     unsigned char **s;
      int len;
 {
   int cp;
@@ -52,36 +52,35 @@ decode_utf8_char (code, s, len)
   /* 7-bit ASCII. */
   if (*(t = *s) <= 0x7F)
     {
-      *code = *t;
       *s = t + 1;
-      return 0;
+      return *t;
     }
 
   /* UTF-8 continuation byte unexpected. */
-  if (*t & utf8_byte_mask[1] == utf8_byte_mask[0])
+  if ((*t & utf8_byte_mask[1]) == utf8_byte_mask[0])
     return ERR;
 
   /* 2-byte char sequence. */
-  if (*t & utf8_byte_mask[2] == utf8_byte_mask[1])
+  if ((*t & utf8_byte_mask[2]) == utf8_byte_mask[1])
     {
       /* UTF-8 encoding over-long. */
-      if (*t & ~utf8_byte_mask[2] <= 1)
+      if ((*t & ~utf8_byte_mask[2]) <= 1)
         return ERR;
 
       bytes = 2;
     }
 
   /* 3-byte char sequence. */
-  else if (*t & utf8_byte_mask[3] == utf8_byte_mask[2])
+  else if ((*t & utf8_byte_mask[3]) == utf8_byte_mask[2])
     {
       bytes = 3;
     }
 
   /* 4-byte char sequence. */
-  else if (*t & utf8_byte_mask[4] == utf8_byte_mask[3])
+  else if ((*t & utf8_byte_mask[4]) == utf8_byte_mask[3])
     {
       /* UTF-8 codepoint exceeds 0x10FFFF. */
-      if (*t & ~utf8_byte_mask[4] > 5)
+      if ((*t & ~utf8_byte_mask[4]) > 5)
         return ERR;
 
       bytes = 4;
@@ -101,7 +100,7 @@ decode_utf8_char (code, s, len)
   while (--bytes > 0)
     {
       /* UTF-8 continuation byte encoding invalid. */
-      if (*t & utf8_byte_mask[1] != utf8_byte_mask[0])
+      if ((*t & utf8_byte_mask[1]) != utf8_byte_mask[0])
         return ERR;
 
       /*  Extract data from continuation byte of UTF-8 encoding. */
@@ -112,9 +111,8 @@ decode_utf8_char (code, s, len)
   if (cp == 0xFFFE || cp == 0xFFFF || (0xDC80 <= cp && cp <= 0xDCFF))
     return ERR;
 
-  *code = cp;
   *s = t;
-  return 0;
+  return cp;
 }
 
 
@@ -129,7 +127,7 @@ int
 encode_utf8_char (s, len, code)
      char *s;
      int *len;
-     int code;
+     unsigned int code;
 {
   unsigned int cp = code;
   char *t = s;
@@ -156,7 +154,7 @@ encode_utf8_char (s, len, code)
        *   Encoded: 110LLLLL 10XXXXXX
        */
       *t++ = utf8_byte_mask[1] | (cp & utf8_byte_mask[4] << 3) >> 6;
-      *t++ = utf8_byte_mask[0] | cp & ~utf8_byte_mask[1];
+      *t++ = utf8_byte_mask[0] | (cp & ~utf8_byte_mask[1]);
     }
 
   /* 3-byte UTF-8 encoding. */
@@ -181,7 +179,7 @@ encode_utf8_char (s, len, code)
        */
       *t++ = utf8_byte_mask[1] | (cp & utf8_byte_mask[3] << 8) >> 12;
       *t++ = utf8_byte_mask[0] | (cp & ~utf8_byte_mask[1] << 6) >> 6;
-      *t++ = utf8_byte_mask[0] | cp & ~utf8_byte_mask[1];
+      *t++ = utf8_byte_mask[0] | (cp & ~utf8_byte_mask[1]);
     }
 
   /* 4-byte UTF-8 encoding */
@@ -204,7 +202,7 @@ encode_utf8_char (s, len, code)
       *t++ = utf8_byte_mask[1] | (cp & utf8_byte_mask[2] << 13) >> 18;
       *t++ = utf8_byte_mask[0] | (cp & ~utf8_byte_mask[1] << 12) >> 12;
       *t++ = utf8_byte_mask[0] | (cp & ~utf8_byte_mask[1] << 6) >> 6;
-      *t++ = utf8_byte_mask[0] | cp & ~utf8_byte_mask[1];
+      *t++ = utf8_byte_mask[0] | (cp & ~utf8_byte_mask[1]);
     }
 
   /* Not a UTF-8 codepoint per RFC 3629. */
@@ -215,10 +213,35 @@ encode_utf8_char (s, len, code)
   return 0;
 }
 
+/*
+ * int
+ * utf8_char_width (s, len)
+ *      char *s;
+ *      int *len;
+ * {
+ *   utf8_ea_width_t *ea_width;
+ * }
+ */
+
 int
-utf8_char_width (s, len)
-     char *s;
-     int *len;
+is_utf8 (s, len)
+     const char *s;
+     size_t len;
 {
-  utf8_ea_width_t *ea_width;
+  unsigned char *t = (unsigned char *) s;
+  int code = 0;
+
+  while (*t != '\n' && (code = decode_utf8_char (&t, len)) >= 0)
+    ;
+  return code >= 0;
+}
+
+int
+utf8_char_size (s, len)
+     const char *s;
+     size_t len;
+{
+  unsigned char *t = (unsigned char *) s;
+
+  return decode_utf8_char (&t, len) >= 0 ? (char *) t - s : 0;
 }

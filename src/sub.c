@@ -540,13 +540,15 @@ substitute_matching (re, lp, len, s_nth, s_mod,  s_f, ed)
         {
           if (!*txt)
             break;
-          j = 1;
+          if (!ed->state->is_utf8 || (j = utf8_char_size (txt, eot - txt)) == 0)
+            j = 1;
           REALLOC_THROW (rb, rb_size, *len + j, ERR, ed);
 #ifndef REG_STARTEND
           if (ed->state->is_binary)
             NEWLINE_TO_NUL (txt, j);
 #endif
-          memcpy (rb + (*len)++, txt, j);
+          memcpy (rb + *len, txt, j);
+          *len += j;
           matched_prev = 0;
         }
 
@@ -574,8 +576,9 @@ substitute_matching (re, lp, len, s_nth, s_mod,  s_f, ed)
         {
           if (nil_next && !*txt)
             break;
-          if (!j)
-            ++j;
+          if (!j && (!ed->state->is_utf8
+                     || (j = utf8_char_size (txt, eot - txt)) == 0))
+            j = 1;
           REALLOC_THROW (rb, rb_size, *len + j, ERR, ed);
 #ifndef REG_STARTEND
           if (ed->state->is_binary)
