@@ -1,0 +1,25 @@
+#!/usr/local/bin/ed -f
+#
+# @(#) cats.ed
+#
+# This script replaces sequences of blank lines with a single blank
+# line. Running it against a file should produce standard output
+# identical to that of filteriing with `cat -s'.
+#
+# Enable diagnostics. Emacs compilation mode can parse ed(1) errors.
+H
+# Append token (∴@∴) to end of each line.
+,s/$/∴@∴/
+# Join all lines
+,j
+# Substitue two newlines for sequences of multiple tokens not at EOF.
+s;\(∴@∴\)\{2,\}\([^∴]\);\
+\
+\2;g
+# Substitue one newline for sequences of one or more tokens.
+,s;\(∴@∴\)\{1,\};\
+;g
+# Print the result to standard output.
+,p
+# Avoid warning that buffer modified by quitting unconditionally.
+Q
