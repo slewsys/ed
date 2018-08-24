@@ -92,7 +92,8 @@ filter_lines (from, to, sc, ed)
        * write end of pipe ip, ip[1], so that EOF is seen. Execute
        * shell command.
        */
-      if (dup2 (ip[0], 0) < 0 || dup2 (op[1], 1) < 0 || dup2 (op[1], 2) < 0
+      if (dup2 (ip[0], 0) < 0 || dup2 (op[1], 1) < 0
+          /* || dup2 (op[1], 2)  < 0 */
           || close (ip[0]) < 0 || close (ip[1]) < 0
           || close (op[0]) < 0 || close (op[1]) < 0
           || execl ("/bin/sh", "sh", "-c", sc, NULL))

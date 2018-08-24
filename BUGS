@@ -2,7 +2,5 @@ Submit issues to: <bug-ed@gnu.org>.
 
 KNOWN BUGS
 
-* Paging algorithm should use UTF-8 character width instead of ASCII.
-
-* In files with very long lines spanning multiple pages, only
-  scrolling forward is presently supported.
+* Scrolling by half pages is not supported when line length exceeds
+  width of the display.

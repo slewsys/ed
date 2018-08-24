@@ -102,8 +102,8 @@ ED_SCRIPTS_OK =                                                               \
 # Ed scripts tested for expected standard output.
 ED_SCRIPTS_OK_SO =							      \
 	p1.tso l1.tso n1.tso						      \
-	zf1.tso zf2.tso zf3.tso zf4.tso					      \
-	zb1.tso zb2.tso zb3.tso zb4.tso					      \
+	zf1.tso zf2.tso zf3.tso zf4.tso zf5.tso zf6.tso zf7.tso		      \
+	zb1.tso zb2.tso zb3.tso zb4.tso	zb5.tso zb6.tso	zb7.tso		      \
 	zfh1.tso zfh2.tso zbh1.tso zbh2.tso
 
 # Ed scripts which should complete, but with non-zero exit status.

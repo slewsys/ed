@@ -1,3 +1,8 @@
+2018-08-24  Andrew L. Moore  <slewsys@gmail.com>
+
+	* src/utf8.c (utf8_char_display_width): Initial support for paging
+	UTF-8-encoded text.
+
 2018-08-21  Andrew L. Moore  <slewsys@gmail.com>
 
 	* src/page.c (inc_mod_fb_row): Adjust text offset calculation for

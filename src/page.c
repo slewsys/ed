@@ -16,6 +16,7 @@ static int display_frame_buffer __P ((const ed_frame_buffer_t *,
 static ed_frame_node_t *dup_frame_node __P ((const ed_frame_node_t *,
                                              ed_buffer_t *));
 static int fb_putc __P ((int, ed_frame_buffer_t *, ed_buffer_t *));
+static int fb_putwc __P ((char *, size_t, ed_frame_buffer_t *, ed_buffer_t *));
 static int init_frame_buffer __P ((ed_frame_buffer_t *, ed_buffer_t *));
 static void init_frame_node __P ((ed_frame_node_t *));
 static int put_frame_buffer_line __P ((ed_line_node_t *, off_t,
@@ -289,6 +290,7 @@ display_lines (from, to, ed)
   off_t lc = 0;                 /* Line counter */
   size_t rem_chars = 0;         /* Remaining chars of line across pages. */
   int status;
+  int saved_iof = ed->display->io_f;
 
   /* Trivially allow printing empty buffer. */
   if (!ed->state->lines)
@@ -363,6 +365,7 @@ display_lines (from, to, ed)
         return status;
       if (!fb->is_full)
         INC_FB_ROW (ed->display->io_f & ZBWD, fb);
+      ed->display->io_f = saved_iof;
     }
 
   /* If final forward page not full, then scroll back from last line. */
@@ -480,6 +483,16 @@ display_lines (from, to, ed)
 }
 
 
+/* GET_CHAR_WIDTH: Assert: Tabstops are of fixed length. */
+#define GET_WCHAR_WIDTH(s, len, c)                                            \
+  ((*s) == '\b' ? -1                                                          \
+   : (*s) == '\f' ? 0                                                         \
+   : (*s) == '\r' ? -(c)                                                      \
+   : (*s) == '\t' ? TAB_WIDTH - ((c) - ((c) / TAB_WIDTH) * TAB_WIDTH)         \
+   : ((unsigned char) *s) < '\040' ? 0                                        \
+   : ed->state->is_utf8 ? utf8_char_display_width (s, len)                    \
+   : 1)
+
 /* FB_PUTS: Add string, s, to frame buffer. */
 #define FB_PUTS(s, fb, ed)                                                    \
   do                                                                          \
@@ -509,8 +522,10 @@ put_frame_buffer_line (lp, addr, fb, ed)
   char line_no[OFF_T_LEN + TAB_WIDTH + 1];
   char *cp, *s;
   size_t col = 0;
+  size_t len;
   unsigned int sgr_len = 0;     /* Length of ANSI SGR sequence. */
   int form_feed = 0;
+  int csize;
 
   /*
    * Per SUSv4, 2013, the `$' (dollar sign) character is output by the
@@ -567,15 +582,26 @@ put_frame_buffer_line (lp, addr, fb, ed)
 
   if (!(s = get_buffer_line (lp, ed)))
     return ERR;
+
   if (ed->display->io_f & OFFB)
     s += fb->row[fb->row_i]->offset;
+
+  if (ed->display->overflow && fb->prev_first
+      && fb->prev_first->lp == lp && ed->state->is_utf8)
+
+    /*
+     * XXX: For multibyte streams, adjust fb->rem_chars upward.
+     * See test zb7.tso.
+     */
+    while (utf8_strlen (s, fb->rem_chars) == ERR)
+      ++fb->rem_chars;
 
   /* Offset of paged line if form feed (\f) is split across pages. */
   for (; fb->ff_offset; --fb->ff_offset)
     if (fb_putc (' ', fb, ed) < 0)
       return ERR;
 
-  for (; fb->rem_chars && !fb->is_full; --fb->rem_chars, ++s)
+  for (; fb->rem_chars && !fb->is_full; fb->rem_chars -= csize, s += csize)
     {
       if (!(ed->display->io_f & LIST)
           || (31 < *s && *s < 127 && *s != '\\' && *s != '$'))
@@ -593,9 +619,12 @@ put_frame_buffer_line (lp, addr, fb, ed)
               continue;
             }
 
-          if (fb_putc ((unsigned) *s, fb, ed) < 0)
+          if (!ed->state->is_utf8) {
+            if (fb_putc (*s, fb, ed) < 0)
+              return ERR;
+          } else if (fb_putwc (s, fb->rem_chars, fb, ed) < 0)
             return ERR;
-          col += GET_CHAR_WIDTH ((unsigned) *s, col);
+          col += GET_WCHAR_WIDTH (s, fb->rem_chars, col);
 
           /*
            * As with cat(1), form feed (\f) does not force a new page,
@@ -627,19 +656,22 @@ put_frame_buffer_line (lp, addr, fb, ed)
             col += 4;
         }
 
+      /* Convert fb->rem_chars to units of wide chars. */
+      len = ed->state->is_utf8 ? utf8_strlen (s, fb->rem_chars) : fb->rem_chars;
+
       /*
-       * When listing text -- i.e., (ed->display->io_f & LIST) --
+       * When listing text -- i.e., ed->display->io_f & LIST --
        * first try simple heuristic to split lines on word boundaries
        * for legibility; otherwise, split lines at the right margin,
        * which starts one tab stop from the right edge of the window.
        */
-      if ((col >= fb->columns && fb->rem_chars > 1)
+      if ((col >= fb->columns && len > 1)
           || (ed->display->io_f & LIST
               && ((!isalnum ((unsigned) *s)
                    && col >= fb->columns - (RIGHT_MARGIN << 1)
-                   && fb->rem_chars > 2)
+                   && len > 2)
                   || (col >= fb->columns - RIGHT_MARGIN
-                      && fb->rem_chars > 1))))
+                      && len > 1))))
 
         {
           if (ed->display->io_f & LIST)
@@ -648,6 +680,8 @@ put_frame_buffer_line (lp, addr, fb, ed)
           inc_mod_fb_row (lp, addr, ed->display->io_f & ZBWD, fb, ed);
           col = 0;
         }
+
+      csize = ed->state->is_utf8 ? utf8_char_size (s, fb->rem_chars) : 1;
     }
 
   if (!(ed->display->io_f & LIST) && !fb->rem_chars)
@@ -679,6 +713,29 @@ fb_putc (c, fb, ed)
 
   /* Don't return c, which might be signed. */
   rp->text[rp->text_i++] = c;
+  return 0;
+}
+
+
+/* fb_putwc: Add a wide character to the frame buffer. */
+static int
+fb_putwc (s, len, fb, ed)
+     char *s;
+     size_t len;
+     ed_frame_buffer_t *fb;
+     ed_buffer_t *ed;
+{
+  ed_frame_node_t *rp = fb->row[fb->row_i];
+  size_t i;
+
+  if ((i = utf8_char_size (s, len)) == 0)
+    return ERR;
+
+  REALLOC_THROW (rp->text, rp->text_size, rp->text_i + i, ERR, ed);
+
+  /* Don't return char, which might be signed. */
+  while (i--)
+    rp->text[rp->text_i++] = *s++;
   return 0;
 }
 
@@ -729,7 +786,7 @@ inc_mod_fb_row (lp, addr,  ok_to_wrap, fb, ed)
     {
       if (fb->prev_first && fb->prev_first->lp == lp)
         {
-          /* See tests zb[12].tso. */
+          /* XXX: See tests zb[12].tso. */
           offset = (ok_to_wrap ? fb->prev_first->offset : lp->len);
           if (offset < fb->rem_chars - 1)
             offset = lp->len - fb->rem_chars + 1;
@@ -738,7 +795,7 @@ inc_mod_fb_row (lp, addr,  ok_to_wrap, fb, ed)
         }
       else
         {
-          /* See tests zb[34].tso. */
+          /* XXX: See tests zb[34].tso. */
           offset = (ok_to_wrap && fb->prev_first ? fb->prev_first->offset
                     : lp->len - fb->rem_chars + 1);
           if (offset < fb->rem_chars - 1)

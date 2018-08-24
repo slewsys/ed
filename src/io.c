@@ -573,7 +573,7 @@ get_stream_line (fp, len, ed)
       *(tb + ++*len) = '\0';
     }
   if (ed->state->is_utf8)
-    ed->state->is_utf8 = is_utf8 (tb, *len);
+    ed->state->is_utf8 = is_utf8_str (tb, *len);
   return tb;
 }
 
@@ -754,7 +754,7 @@ write_stream (fp, lp, n, size, ed)
 #ifdef WANT_DES_ENCRYPTION
   if (ed->exec->keyword)
     {
-      flush_des_file (fp, ed);
+      flush_des_file (fp);
       *size += 8 - *size % 8;
     }
   else

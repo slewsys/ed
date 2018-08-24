@@ -907,6 +907,10 @@ char *file_name __P ((size_t *, ed_buffer_t *));
 int filter_lines __P ((off_t, off_t, const char *, ed_buffer_t *));
 #endif
 
+#ifdef WANT_DES_ENCRYPTION
+int flush_des_file __P ((FILE *));
+#endif
+
 char *get_buffer_line __P ((const ed_line_node_t *, ed_buffer_t *));
 regex_t *get_compiled_regex __P ((unsigned, int, ed_buffer_t *));
 
@@ -950,7 +954,7 @@ int inter_register_copy __P ((int, ed_buffer_t *));
 int inter_register_move __P ((int, ed_buffer_t *));
 #endif
 
-int is_utf8 __P ((const char *, size_t));
+int is_utf8_str __P ((const char *, size_t));
 int join_lines __P ((off_t, off_t, ed_buffer_t *));
 int mark_global_nodes __P ((int, ed_buffer_t *));
 int mark_line_node __P ((const ed_line_node_t *, int, ed_buffer_t *));
@@ -1021,6 +1025,8 @@ int undo_last_command __P ((ed_buffer_t *));
 int unwind_stack_frame __P ((int, ed_buffer_t *));
 void unmark_line_node __P ((const ed_line_node_t *, ed_buffer_t *));
 int utf8_char_size __P ((const char *, size_t));
+int utf8_char_display_width __P ((const char *, int));
+int utf8_strlen __P ((const char *, size_t));
 int write_file __P ((const char *, int, off_t, off_t, off_t *, off_t *,
                      const char *, ed_buffer_t *));
 int write_pipe __P ((const char *, off_t, off_t, off_t *, off_t *,
