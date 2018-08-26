@@ -113,7 +113,16 @@ init_stdio (ed)
 #else
   if (ed->exec->fp && !(ed->exec->opt & FSCRIPT))
 #endif
+#ifdef __sun
+    if (dup2 (fileno (ed->exec->fp), fileno (stdin)) < 0)
+      {
+        fprintf (stderr, "%s\n", strerror (errno));
+        ed->exec->err = _("dup2 error");
+        return ERR;
+      }
+#else
     stdin = ed->exec->fp;
+#endif
 
   /* In case of option `-f', reopen script to allow shell escape
      access to I/O as described below. */

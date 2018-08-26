@@ -5494,7 +5494,7 @@ export CFLAGS
 # Checks for various programs.
 #
 
-for ac_prog in zcat gzcat
+for ac_prog in gzcat zcat
 do
   # Extract the first word of "$ac_prog", so it can be a program name with args.
 set dummy $ac_prog; ac_word=$2

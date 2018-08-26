@@ -11,7 +11,9 @@
  * Work around conflicting off_t typedefs (e.g., if _LARGE_FILE
  * support enabled). Defined per configure, below.
  */
-#define off_t INTERNAL_OFF_T
+#ifndef __sun
+# define off_t INTERNAL_OFF_T
+#endif
 
 #include <ctype.h>
 #include <errno.h>
@@ -53,6 +55,16 @@ extern jmp_buf env;
 # define LONGJMP(x, y) longjmp ((x), (y))
 #endif  /* !HAVE_SIGLONGJMP */
 
+#include <stdio.h>
+
+#ifndef __P
+#ifndef __STDC__
+# define __P(proto) ()
+#else
+# define __P(proto) proto
+#endif  /* __STDC__ */
+#endif  /* __P */
+
 #include <signal.h>
 
 typedef void (*signal_t) __P ((int));
@@ -78,8 +90,6 @@ void *realloc ();
 long strtol ();
 long labs ();
 #endif  /* !STDC_HEADERS */
-
-#include <stdio.h>
 
 #ifdef SETVBUF_REVERSED
 # define SETVBUF(fp, buf, type, sz) setvbuf ((stdin), (type), (buf), (sz))
@@ -124,14 +134,6 @@ int dup2 ();
 
 #include <sys/types.h>
 
-#ifndef __P
-#ifndef __STDC__
-# define __P(proto) ()
-#else
-# define __P(proto) proto
-#endif  /* __STDC__ */
-#endif  /* __P */
-
 #ifdef HAVE_SYS_STAT_H
 # include <sys/stat.h>
 #else
@@ -159,12 +161,14 @@ int fstat ();
 #include <regex.h>
 
 /* Define off_t per storage size determined by configure. */
-#undef off_t
+#ifndef __sun
+# undef off_t
 typedef OFF_T_SIZE off_t;
 
 /* Define size_t per storage size determined by configure. */
-#undef size_t
+# undef size_t
 typedef SIZE_T_SIZE size_t;
+#endif  /* !defined (__sun) */
 
 #ifndef INT_MAX
 # define INT_MAX ((int) (~(unsigned int) 0 >> (unsigned int) 1))
@@ -398,14 +402,15 @@ struct ed_core
   /* Register buffers and line markers. */
   struct ed_register *regbuf;
 #endif
-  ed_line_node_t *mark[MARK_MAX];
-  int marks;
 
 #ifdef WANT_ED_MACRO
   /* Script buffer stack frame. */
   struct ed_stack_frame *stack_frame[STACK_FRAMES_MAX];
   int sp;                       /* Script buffer stack pointer. */
 #endif
+
+  ed_line_node_t *mark[MARK_MAX];
+  int marks;
 
   /* Edit-processing buffers. */
   ed_line_node_t *line_head;     /* Head of line buffer. */
@@ -468,15 +473,13 @@ struct ed_substitute
 /* Ed command parameters. */
 struct ed_execute
 {
-  FILE *fp;                     /* Command script file pointer. */
-  char *file_script;            /* File argument of `-f script' option. */
-  char *pathname;               /* Concatenation of scripts. */
-
   struct ed_substitute *subst;  /* Substitution parameters. */
   struct ed_region *region;     /* Address range parameters. */
 
+  FILE *fp;                     /* Command script file pointer. */
+  char *file_script;            /* File argument of `-f script' option. */
+  char *pathname;               /* Concatenation of scripts. */
   const char *err;              /* Error message. */
-
   char *prompt;                 /* Interactive command prompt. */
   char *keyword;                /* Encryption keyword. */
   off_t line_no;                /* Script line number. */
@@ -525,13 +528,13 @@ enum ed_command_flags
 /* Ed state parameters. */
 typedef struct ed_buffer
 {
-  char *input;                  /* Standard input pointer. */
-
   struct ed_state *state;       /* Array of buffer states. */
   struct ed_core *core;         /* Meta data and storage parameters. */
   struct ed_display *display;   /* Display parameters. */
   struct ed_execute *exec;      /* Command execution parameters. */
   struct ed_file *file;         /* File parameters. */
+
+  char *input;                  /* Standard input pointer. */
 } ed_buffer_t;
 
 typedef int (*ed_command_t) (ed_buffer_t *);

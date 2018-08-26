@@ -465,7 +465,18 @@ push_stack_frame (ed)
     }
 
   /* Push file pointer, input size and return address. */
+#ifdef __sun
+  if (dup2 (fileno (stdin),
+            fileno (ed->core->stack_frame[ed->core->sp]->fp)) < 0)
+    {
+      fprintf (stderr, "%s\n", strerror (errno));
+      ed->exec->err = _("dup2 error");
+      spl0 ();
+      return ERR;
+    }
+#else
   ed->core->stack_frame[ed->core->sp]->fp = stdin;
+#endif
   ed->core->stack_frame[ed->core->sp]->size = 0;
   ed->core->stack_frame[ed->core->sp]->addr = 0;
   if (ed->core->sp || ed->exec->opt & FSCRIPT)
@@ -498,7 +509,18 @@ pop_stack_frame (ed)
   --ed->core->sp;
 
   /* Restore file pointer, input size and return address. */
+#ifdef __sun
+  if (dup2 (fileno (ed->core->stack_frame[ed->core->sp]->fp),
+            fileno (stdin)) < 0)
+    {
+      fprintf (stderr, "%s\n", strerror (errno));
+      ed->exec->err = _("dup2 error");
+      spl0 ();
+      return ERR;
+    }
+#else
   stdin = ed->core->stack_frame[ed->core->sp]->fp;
+#endif
   if (FSEEK (ed->exec->fp, 0, SEEK_CUR) != -1
       && (ftruncate (fileno (ed->exec->fp),
                     ed->core->stack_frame[ed->core->sp]->size) == -1
@@ -529,7 +551,17 @@ unwind_stack_frame (status, ed)
       --ed->core->sp;
 
       /* Restore file pointer and input size. */
+#ifdef __sun
+      if (dup2 (fileno (ed->core->stack_frame[0]->fp), fileno (stdin)) < 0)
+        {
+          fprintf (stderr, "%s\n", strerror (errno));
+          ed->exec->err = _("dup2 error");
+          spl0 ();
+          return ERR;
+        }
+#else
       stdin = ed->core->stack_frame[0]->fp;
+#endif
       if (FSEEK (ed->exec->fp, 0, SEEK_CUR) != -1
           && (ftruncate (fileno (ed->exec->fp),
                          ed->core->stack_frame[0]->size) == -1

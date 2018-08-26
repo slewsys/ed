@@ -1,0 +1,20 @@
+--- config.h-dist	Tue Aug 28 17:15:31 2018
++++ config.h	Tue Aug 28 17:29:54 2018
+@@ -669,7 +669,7 @@
+ /* #undef MBRTOWC_RETVAL_BUG */
+ 
+ /* Define format string to print value of type off_t. */
+-#define OFF_T_FORMAT_STRING "lld"
++#define OFF_T_FORMAT_STRING "ld"
+ 
+ /* Define int with storage size of size_t. */
+ #define OFF_T_SIZE long long
+@@ -895,7 +895,7 @@
+ #endif
+ 
+ /* Number of bits in a file offset, on hosts where this is settable. */
+-#define _FILE_OFFSET_BITS 64
++/* #undef _FILE_OFFSET_BITS */
+ 
+ /* Define to 1 to make fseeko visible on some hosts (e.g. glibc 2.2). */
+ /* #undef _LARGEFILE_SOURCE */

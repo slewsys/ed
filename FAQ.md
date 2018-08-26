@@ -2,15 +2,20 @@
 
 ## Q. Why is `ed(1)` failing tests?
 
-A. `ed(1)` supports several `regex(3)` libraries. To avoid a collision
-between these, before switching to an alternative `regex(3)` library, run:
+A. On OpenIndiana, after running `./configure`, try applying patch
+_contrib/oi-hipster_config.h.diff_ to correct some settings that
+`configure` gets wrong.
+
+In general, `ed(1)` supports several `regex(3)` libraries. To avoid a
+collision between these, before switching to an alternative `regex(3)`
+library, run:
 
 ```bash
 rm -f lib/regex.h
 configure
 ```
 
-This relinks lib/regex.h as appropriate per confiigure options.
+This relinks _lib/regex.h_ as appropriate per confiigure options.
 
 ## Q. Why do `make` and/or `./configure` fail?
 
@@ -31,8 +36,8 @@ touch configure.ac aclocal.m4 configure Makefile.am Makefile.in
 make && sudo make install
 ```
 
-If `autotools(1)` is still falling over and trying the above commands,
-try reconstructing the build system with `./autogen.sh`.
+If `autotools(1)` is still falling over after running the above commands,
+it may be necessary to reconstruct the build system with `./autogen.sh`.
 
 For details on why preserving timestamps with `git(1)` would be
 problematic, see

@@ -7,10 +7,8 @@
 
 #include "ed.h"
 
-typedef struct utf8_ea_width {
-  int code_point;
-  int width;
-} utf8_ea_width_t;
+/* Static function declarations. */
+static int is_utf8_ea_wide __P ((int));
 
 /* Encoded UTF-8 byte masks. */
 unsigned char utf8_byte_mask[5] =
@@ -257,7 +255,6 @@ utf8_char_display_width (s, len)
      int len;
 {
   unsigned char *t = (unsigned char *) s;
-  utf8_ea_width_t *ea_width;
   int code;
 
   switch (code = decode_utf8_char (&t, len))
@@ -275,6 +272,7 @@ utf8_char_display_width (s, len)
  * Return 1 if Unicode code point, CODE, is East Asian wide as per Unicode
  * Standard Annex #11 (UAX #11).
  */
+static int
 is_utf8_ea_wide (code)
      int code;
 {
