@@ -815,11 +815,15 @@ k_cmd (ed)
   int status = 0;               /* Return status */
 
   cx = *ed->input++;
-  if (ed->exec->region->end == 0)
-    {
-      ed->exec->err = _("Address out of range");
-      return ERR;
-    }
+
+  /*
+   * if (ed->exec->region->end == 0)
+   *   {
+   *     ed->exec->err = _("Address out of range");
+   *     return ERR;
+   *   }
+   */
+
   COMMAND_SUFFIX (ed->display->io_f, ed);
   if ((status =
        mark_line_node (get_line_node (ed->exec->region->end, ed), cx, ed)) < 0)

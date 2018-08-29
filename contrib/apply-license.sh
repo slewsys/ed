@@ -49,7 +49,7 @@ for src in src/*.[ch]; do
     ed - $src <<EOF
 /Copyright.*SlewSys/-ka
 /This file is part of ed/+kb
-/Copyright.*SlewSys/,/This file is part of ed/c
+'a+,'b-c
 $license_text
 .
 'a+,'b-s/^/ * /
