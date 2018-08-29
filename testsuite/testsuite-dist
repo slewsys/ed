@@ -639,88 +639,94 @@ at_help_all="1;a.ok-at:7;Script: a.t;;
 47;zf2.ok-so-at:7;Script: zf2.tso;;
 48;zf3.ok-so-at:7;Script: zf3.tso;;
 49;zf4.ok-so-at:7;Script: zf4.tso;;
-50;zb1.ok-so-at:7;Script: zb1.tso;;
-51;zb2.ok-so-at:7;Script: zb2.tso;;
-52;zb3.ok-so-at:7;Script: zb3.tso;;
-53;zb4.ok-so-at:7;Script: zb4.tso;;
-54;zfh1.ok-so-at:7;Script: zfh1.tso;;
-55;zfh2.ok-so-at:7;Script: zfh2.tso;;
-56;zbh1.ok-so-at:7;Script: zbh1.tso;;
-57;zbh2.ok-so-at:7;Script: zbh2.tso;;
-58;a2.err-at:7;Pipe: a2.err;;
-59;addr1.err-at:7;Pipe: addr1.err;;
-60;addr2.err-at:7;Pipe: addr2.err;;
-61;bang1.err-at:7;Pipe: bang1.err;;
-62;c1.err-at:7;Pipe: c1.err;;
-63;d.err-at:7;Pipe: d.err;;
-64;e1.err-at:7;Pipe: e1.err;;
-65;e2.err-at:7;Pipe: e2.err;;
-66;e3.err-at:7;Pipe: e3.err;;
-67;f1.err-at:7;Pipe: f1.err;;
-68;f2.err-at:7;Pipe: f2.err;;
-69;g1.err-at:7;Pipe: g1.err;;
-70;g2.err-at:7;Pipe: g2.err;;
-71;g3.err-at:7;Pipe: g3.err;;
-72;h.err-at:7;Pipe: h.err;;
-73;i2.err-at:7;Pipe: i2.err;;
-74;k2.err-at:7;Pipe: k2.err;;
-75;k3.err-at:7;Pipe: k3.err;;
-76;k4.err-at:7;Pipe: k4.err;;
-77;m.err-at:7;Pipe: m.err;;
-78;q1.err-at:7;Pipe: q1.err;;
-79;r2.err-at:7;Pipe: r2.err;;
-80;s1.err-at:7;Pipe: s1.err;;
-81;s10.err-at:7;Pipe: s10.err;;
-82;s3.err-at:7;Pipe: s3.err;;
-83;s4.err-at:7;Pipe: s4.err;;
-84;s5.err-at:7;Pipe: s5.err;;
-85;s6.err-at:7;Pipe: s6.err;;
-86;s7.err-at:7;Pipe: s7.err;;
-87;s8.err-at:7;Pipe: s8.err;;
-88;t1.err-at:7;Pipe: t1.err;;
-89;t2.err-at:7;Pipe: t2.err;;
-90;u.err-at:7;Pipe: u.err;;
-91;w1.err-at:7;Pipe: w1.err;;
-92;w2.err-at:7;Pipe: w2.err;;
-93;w3.err-at:7;Pipe: w3.err;;
-94;z.err-at:7;Pipe: z.err;;
-95;a2.fail-at:7;Fail: a2.err;;
-96;addr1.fail-at:7;Fail: addr1.err;;
-97;addr2.fail-at:7;Fail: addr2.err;;
-98;bang1.fail-at:7;Fail: bang1.err;;
-99;c1.fail-at:7;Fail: c1.err;;
-100;d.fail-at:7;Fail: d.err;;
-101;e1.fail-at:7;Fail: e1.err;;
-102;e2.fail-at:7;Fail: e2.err;;
-103;e3.fail-at:7;Fail: e3.err;;
-104;f1.fail-at:7;Fail: f1.err;;
-105;f2.fail-at:7;Fail: f2.err;;
-106;g1.fail-at:7;Fail: g1.err;;
-107;g2.fail-at:7;Fail: g2.err;;
-108;g3.fail-at:7;Fail: g3.err;;
-109;h.fail-at:7;Fail: h.err;;
-110;i2.fail-at:7;Fail: i2.err;;
-111;k2.fail-at:7;Fail: k2.err;;
-112;k3.fail-at:7;Fail: k3.err;;
-113;k4.fail-at:7;Fail: k4.err;;
-114;m.fail-at:7;Fail: m.err;;
-115;q1.fail-at:7;Fail: q1.err;;
-116;r2.fail-at:7;Fail: r2.err;;
-117;s1.fail-at:7;Fail: s1.err;;
-118;s10.fail-at:7;Fail: s10.err;;
-119;s3.fail-at:7;Fail: s3.err;;
-120;s4.fail-at:7;Fail: s4.err;;
-121;s5.fail-at:7;Fail: s5.err;;
-122;s6.fail-at:7;Fail: s6.err;;
-123;s7.fail-at:7;Fail: s7.err;;
-124;s8.fail-at:7;Fail: s8.err;;
-125;t1.fail-at:7;Fail: t1.err;;
-126;t2.fail-at:7;Fail: t2.err;;
-127;u.fail-at:7;Fail: u.err;;
-128;w1.fail-at:7;Fail: w1.err;;
-129;w2.fail-at:7;Fail: w2.err;;
-130;w3.fail-at:7;Fail: w3.err;;
-131;z.fail-at:7;Fail: z.err;;
+50;zf5.ok-so-at:7;Script: zf5.tso;;
+51;zf6.ok-so-at:7;Script: zf6.tso;;
+52;zf7.ok-so-at:7;Script: zf7.tso;;
+53;zb1.ok-so-at:7;Script: zb1.tso;;
+54;zb2.ok-so-at:7;Script: zb2.tso;;
+55;zb3.ok-so-at:7;Script: zb3.tso;;
+56;zb4.ok-so-at:7;Script: zb4.tso;;
+57;zb5.ok-so-at:7;Script: zb5.tso;;
+58;zb6.ok-so-at:7;Script: zb6.tso;;
+59;zb7.ok-so-at:7;Script: zb7.tso;;
+60;zfh1.ok-so-at:7;Script: zfh1.tso;;
+61;zfh2.ok-so-at:7;Script: zfh2.tso;;
+62;zbh1.ok-so-at:7;Script: zbh1.tso;;
+63;zbh2.ok-so-at:7;Script: zbh2.tso;;
+64;a2.err-at:7;Pipe: a2.err;;
+65;addr1.err-at:7;Pipe: addr1.err;;
+66;addr2.err-at:7;Pipe: addr2.err;;
+67;bang1.err-at:7;Pipe: bang1.err;;
+68;c1.err-at:7;Pipe: c1.err;;
+69;d.err-at:7;Pipe: d.err;;
+70;e1.err-at:7;Pipe: e1.err;;
+71;e2.err-at:7;Pipe: e2.err;;
+72;e3.err-at:7;Pipe: e3.err;;
+73;f1.err-at:7;Pipe: f1.err;;
+74;f2.err-at:7;Pipe: f2.err;;
+75;g1.err-at:7;Pipe: g1.err;;
+76;g2.err-at:7;Pipe: g2.err;;
+77;g3.err-at:7;Pipe: g3.err;;
+78;h.err-at:7;Pipe: h.err;;
+79;i2.err-at:7;Pipe: i2.err;;
+80;k2.err-at:7;Pipe: k2.err;;
+81;k3.err-at:7;Pipe: k3.err;;
+82;k4.err-at:7;Pipe: k4.err;;
+83;m.err-at:7;Pipe: m.err;;
+84;q1.err-at:7;Pipe: q1.err;;
+85;r2.err-at:7;Pipe: r2.err;;
+86;s1.err-at:7;Pipe: s1.err;;
+87;s10.err-at:7;Pipe: s10.err;;
+88;s3.err-at:7;Pipe: s3.err;;
+89;s4.err-at:7;Pipe: s4.err;;
+90;s5.err-at:7;Pipe: s5.err;;
+91;s6.err-at:7;Pipe: s6.err;;
+92;s7.err-at:7;Pipe: s7.err;;
+93;s8.err-at:7;Pipe: s8.err;;
+94;t1.err-at:7;Pipe: t1.err;;
+95;t2.err-at:7;Pipe: t2.err;;
+96;u.err-at:7;Pipe: u.err;;
+97;w1.err-at:7;Pipe: w1.err;;
+98;w2.err-at:7;Pipe: w2.err;;
+99;w3.err-at:7;Pipe: w3.err;;
+100;z.err-at:7;Pipe: z.err;;
+101;a2.fail-at:7;Fail: a2.err;;
+102;addr1.fail-at:7;Fail: addr1.err;;
+103;addr2.fail-at:7;Fail: addr2.err;;
+104;bang1.fail-at:7;Fail: bang1.err;;
+105;c1.fail-at:7;Fail: c1.err;;
+106;d.fail-at:7;Fail: d.err;;
+107;e1.fail-at:7;Fail: e1.err;;
+108;e2.fail-at:7;Fail: e2.err;;
+109;e3.fail-at:7;Fail: e3.err;;
+110;f1.fail-at:7;Fail: f1.err;;
+111;f2.fail-at:7;Fail: f2.err;;
+112;g1.fail-at:7;Fail: g1.err;;
+113;g2.fail-at:7;Fail: g2.err;;
+114;g3.fail-at:7;Fail: g3.err;;
+115;h.fail-at:7;Fail: h.err;;
+116;i2.fail-at:7;Fail: i2.err;;
+117;k2.fail-at:7;Fail: k2.err;;
+118;k3.fail-at:7;Fail: k3.err;;
+119;k4.fail-at:7;Fail: k4.err;;
+120;m.fail-at:7;Fail: m.err;;
+121;q1.fail-at:7;Fail: q1.err;;
+122;r2.fail-at:7;Fail: r2.err;;
+123;s1.fail-at:7;Fail: s1.err;;
+124;s10.fail-at:7;Fail: s10.err;;
+125;s3.fail-at:7;Fail: s3.err;;
+126;s4.fail-at:7;Fail: s4.err;;
+127;s5.fail-at:7;Fail: s5.err;;
+128;s6.fail-at:7;Fail: s6.err;;
+129;s7.fail-at:7;Fail: s7.err;;
+130;s8.fail-at:7;Fail: s8.err;;
+131;t1.fail-at:7;Fail: t1.err;;
+132;t2.fail-at:7;Fail: t2.err;;
+133;u.fail-at:7;Fail: u.err;;
+134;w1.fail-at:7;Fail: w1.err;;
+135;w2.fail-at:7;Fail: w2.err;;
+136;w3.fail-at:7;Fail: w3.err;;
+137;z.fail-at:7;Fail: z.err;;
 "
 # List of the all the test groups.
 at_groups_all=`$as_echo "$at_help_all" | sed 's/;.*//'`
@@ -734,7 +740,7 @@ at_fn_validate_ranges ()
   for at_grp
   do
     eval at_value=\$$at_grp
-    if test $at_value -lt 1 || test $at_value -gt 131; then
+    if test $at_value -lt 1 || test $at_value -gt 137; then
       $as_echo "invalid test group: $at_value" >&2
       exit 1
     fi
@@ -1032,7 +1038,7 @@ fi
 # List of tests.
 if $at_list_p; then
   cat <<_ATEOF || at_write_fail=1
-ed 2.0.8 test suite test groups:
+ed 2.0.9 test suite test groups:
 
  NUM: FILE-NAME:LINE     TEST-GROUP-NAME
       KEYWORDS
@@ -1073,7 +1079,7 @@ _ATEOF
   exit $at_write_fail
 fi
 if $at_version_p; then
-  $as_echo "$as_me (ed 2.0.8)" &&
+  $as_echo "$as_me (ed 2.0.9)" &&
   cat <<\_ATEOF || at_write_fail=1
 
 Copyright (C) 2012 Free Software Foundation, Inc.
@@ -1250,11 +1256,11 @@ exec 5>>"$at_suite_log"
 
 # Banners and logs.
 $as_echo "## -------------------- ##
-## ed 2.0.8 test suite. ##
+## ed 2.0.9 test suite. ##
 ## -------------------- ##"
 {
   $as_echo "## -------------------- ##
-## ed 2.0.8 test suite. ##
+## ed 2.0.9 test suite. ##
 ## -------------------- ##"
   echo
 
@@ -2098,7 +2104,7 @@ _ASBOX
   $as_echo "Please send $at_msg and all information you think might help:
 
    To: <bug-ed@gnu.org>
-   Subject: [ed 2.0.8] $as_me: $at_fail_list${at_fail_list:+ failed${at_xpass_list:+, }}$at_xpass_list${at_xpass_list:+ passed unexpectedly}
+   Subject: [ed 2.0.9] $as_me: $at_fail_list${at_fail_list:+ failed${at_xpass_list:+, }}$at_xpass_list${at_xpass_list:+ passed unexpectedly}
 
 You may investigate any problem if you feel able to do so, in which
 case the test suite provides a good starting point.  Its output may
@@ -3761,36 +3767,39 @@ at_xfail=no
 
 cat >script-p1 <<_ATEOF_ED
 H
-r !/opt/bin/zcat ../../p1.d.gz
+r !/usr/bin/gzcat ../../p1.d.gz
 $(test -s ../../p1.tso &&
 cat ../../p1.tso ||
 echo "w p1.o")
 wq p1.o
 _ATEOF_ED
 
+$as_echo "p1.ok-so-at:18" >"$at_check_line_file"
+(! ed --version | egrep -q 'all-extensions|ed-scrolling') \
+  && at_fn_check_skip 77 "$at_srcdir/p1.ok-so-at:18"
 { set +x
-$as_echo "$at_srcdir/p1.ok-so-at:19: ed - <script-p1"
-at_fn_check_prepare_trace "p1.ok-so-at:19"
+$as_echo "$at_srcdir/p1.ok-so-at:20: ed - <script-p1"
+at_fn_check_prepare_trace "p1.ok-so-at:20"
 ( $at_check_trace; ed - <script-p1
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
 echo stderr:; cat "$at_stderr"
 echo stdout:; tee stdout <"$at_stdout"
-at_fn_check_status 0 $at_status "$at_srcdir/p1.ok-so-at:19"
+at_fn_check_status 0 $at_status "$at_srcdir/p1.ok-so-at:20"
 $at_failed && at_fn_log_failure
 $at_traceon; }
 
 { set +x
-$as_echo "$at_srcdir/p1.ok-so-at:21: diff -u ../../p1.r stdout"
-at_fn_check_prepare_trace "p1.ok-so-at:21"
+$as_echo "$at_srcdir/p1.ok-so-at:22: diff -u ../../p1.r stdout"
+at_fn_check_prepare_trace "p1.ok-so-at:22"
 ( $at_check_trace; diff -u ../../p1.r stdout
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
 echo stderr:; cat "$at_stderr"
 echo stdout:; cat "$at_stdout"
-at_fn_check_status 0 $at_status "$at_srcdir/p1.ok-so-at:21"
+at_fn_check_status 0 $at_status "$at_srcdir/p1.ok-so-at:22"
 $at_failed && at_fn_log_failure
 $at_traceon; }
 
@@ -3810,36 +3819,39 @@ at_xfail=no
 
 cat >script-l1 <<_ATEOF_ED
 H
-r !/opt/bin/zcat ../../l1.d.gz
+r !/usr/bin/gzcat ../../l1.d.gz
 $(test -s ../../l1.tso &&
 cat ../../l1.tso ||
 echo "w l1.o")
 wq l1.o
 _ATEOF_ED
 
+$as_echo "l1.ok-so-at:18" >"$at_check_line_file"
+(! ed --version | egrep -q 'all-extensions|ed-scrolling') \
+  && at_fn_check_skip 77 "$at_srcdir/l1.ok-so-at:18"
 { set +x
-$as_echo "$at_srcdir/l1.ok-so-at:19: ed - <script-l1"
-at_fn_check_prepare_trace "l1.ok-so-at:19"
+$as_echo "$at_srcdir/l1.ok-so-at:20: ed - <script-l1"
+at_fn_check_prepare_trace "l1.ok-so-at:20"
 ( $at_check_trace; ed - <script-l1
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
 echo stderr:; cat "$at_stderr"
 echo stdout:; tee stdout <"$at_stdout"
-at_fn_check_status 0 $at_status "$at_srcdir/l1.ok-so-at:19"
+at_fn_check_status 0 $at_status "$at_srcdir/l1.ok-so-at:20"
 $at_failed && at_fn_log_failure
 $at_traceon; }
 
 { set +x
-$as_echo "$at_srcdir/l1.ok-so-at:21: diff -u ../../l1.r stdout"
-at_fn_check_prepare_trace "l1.ok-so-at:21"
+$as_echo "$at_srcdir/l1.ok-so-at:22: diff -u ../../l1.r stdout"
+at_fn_check_prepare_trace "l1.ok-so-at:22"
 ( $at_check_trace; diff -u ../../l1.r stdout
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
 echo stderr:; cat "$at_stderr"
 echo stdout:; cat "$at_stdout"
-at_fn_check_status 0 $at_status "$at_srcdir/l1.ok-so-at:21"
+at_fn_check_status 0 $at_status "$at_srcdir/l1.ok-so-at:22"
 $at_failed && at_fn_log_failure
 $at_traceon; }
 
@@ -3859,36 +3871,39 @@ at_xfail=no
 
 cat >script-n1 <<_ATEOF_ED
 H
-r !/opt/bin/zcat ../../n1.d.gz
+r !/usr/bin/gzcat ../../n1.d.gz
 $(test -s ../../n1.tso &&
 cat ../../n1.tso ||
 echo "w n1.o")
 wq n1.o
 _ATEOF_ED
 
+$as_echo "n1.ok-so-at:18" >"$at_check_line_file"
+(! ed --version | egrep -q 'all-extensions|ed-scrolling') \
+  && at_fn_check_skip 77 "$at_srcdir/n1.ok-so-at:18"
 { set +x
-$as_echo "$at_srcdir/n1.ok-so-at:19: ed - <script-n1"
-at_fn_check_prepare_trace "n1.ok-so-at:19"
+$as_echo "$at_srcdir/n1.ok-so-at:20: ed - <script-n1"
+at_fn_check_prepare_trace "n1.ok-so-at:20"
 ( $at_check_trace; ed - <script-n1
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
 echo stderr:; cat "$at_stderr"
 echo stdout:; tee stdout <"$at_stdout"
-at_fn_check_status 0 $at_status "$at_srcdir/n1.ok-so-at:19"
+at_fn_check_status 0 $at_status "$at_srcdir/n1.ok-so-at:20"
 $at_failed && at_fn_log_failure
 $at_traceon; }
 
 { set +x
-$as_echo "$at_srcdir/n1.ok-so-at:21: diff -u ../../n1.r stdout"
-at_fn_check_prepare_trace "n1.ok-so-at:21"
+$as_echo "$at_srcdir/n1.ok-so-at:22: diff -u ../../n1.r stdout"
+at_fn_check_prepare_trace "n1.ok-so-at:22"
 ( $at_check_trace; diff -u ../../n1.r stdout
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
 echo stderr:; cat "$at_stderr"
 echo stdout:; cat "$at_stdout"
-at_fn_check_status 0 $at_status "$at_srcdir/n1.ok-so-at:21"
+at_fn_check_status 0 $at_status "$at_srcdir/n1.ok-so-at:22"
 $at_failed && at_fn_log_failure
 $at_traceon; }
 
@@ -3908,36 +3923,39 @@ at_xfail=no
 
 cat >script-zf1 <<_ATEOF_ED
 H
-r !/opt/bin/zcat ../../zf1.d.gz
+r !/usr/bin/gzcat ../../zf1.d.gz
 $(test -s ../../zf1.tso &&
 cat ../../zf1.tso ||
 echo "w zf1.o")
 wq zf1.o
 _ATEOF_ED
 
+$as_echo "zf1.ok-so-at:18" >"$at_check_line_file"
+(! ed --version | egrep -q 'all-extensions|ed-scrolling') \
+  && at_fn_check_skip 77 "$at_srcdir/zf1.ok-so-at:18"
 { set +x
-$as_echo "$at_srcdir/zf1.ok-so-at:19: ed - <script-zf1"
-at_fn_check_prepare_trace "zf1.ok-so-at:19"
+$as_echo "$at_srcdir/zf1.ok-so-at:20: ed - <script-zf1"
+at_fn_check_prepare_trace "zf1.ok-so-at:20"
 ( $at_check_trace; ed - <script-zf1
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
 echo stderr:; cat "$at_stderr"
 echo stdout:; tee stdout <"$at_stdout"
-at_fn_check_status 0 $at_status "$at_srcdir/zf1.ok-so-at:19"
+at_fn_check_status 0 $at_status "$at_srcdir/zf1.ok-so-at:20"
 $at_failed && at_fn_log_failure
 $at_traceon; }
 
 { set +x
-$as_echo "$at_srcdir/zf1.ok-so-at:21: diff -u ../../zf1.r stdout"
-at_fn_check_prepare_trace "zf1.ok-so-at:21"
+$as_echo "$at_srcdir/zf1.ok-so-at:22: diff -u ../../zf1.r stdout"
+at_fn_check_prepare_trace "zf1.ok-so-at:22"
 ( $at_check_trace; diff -u ../../zf1.r stdout
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
 echo stderr:; cat "$at_stderr"
 echo stdout:; cat "$at_stdout"
-at_fn_check_status 0 $at_status "$at_srcdir/zf1.ok-so-at:21"
+at_fn_check_status 0 $at_status "$at_srcdir/zf1.ok-so-at:22"
 $at_failed && at_fn_log_failure
 $at_traceon; }
 
@@ -3957,36 +3975,39 @@ at_xfail=no
 
 cat >script-zf2 <<_ATEOF_ED
 H
-r !/opt/bin/zcat ../../zf2.d.gz
+r !/usr/bin/gzcat ../../zf2.d.gz
 $(test -s ../../zf2.tso &&
 cat ../../zf2.tso ||
 echo "w zf2.o")
 wq zf2.o
 _ATEOF_ED
 
+$as_echo "zf2.ok-so-at:18" >"$at_check_line_file"
+(! ed --version | egrep -q 'all-extensions|ed-scrolling') \
+  && at_fn_check_skip 77 "$at_srcdir/zf2.ok-so-at:18"
 { set +x
-$as_echo "$at_srcdir/zf2.ok-so-at:19: ed - <script-zf2"
-at_fn_check_prepare_trace "zf2.ok-so-at:19"
+$as_echo "$at_srcdir/zf2.ok-so-at:20: ed - <script-zf2"
+at_fn_check_prepare_trace "zf2.ok-so-at:20"
 ( $at_check_trace; ed - <script-zf2
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
 echo stderr:; cat "$at_stderr"
 echo stdout:; tee stdout <"$at_stdout"
-at_fn_check_status 0 $at_status "$at_srcdir/zf2.ok-so-at:19"
+at_fn_check_status 0 $at_status "$at_srcdir/zf2.ok-so-at:20"
 $at_failed && at_fn_log_failure
 $at_traceon; }
 
 { set +x
-$as_echo "$at_srcdir/zf2.ok-so-at:21: diff -u ../../zf2.r stdout"
-at_fn_check_prepare_trace "zf2.ok-so-at:21"
+$as_echo "$at_srcdir/zf2.ok-so-at:22: diff -u ../../zf2.r stdout"
+at_fn_check_prepare_trace "zf2.ok-so-at:22"
 ( $at_check_trace; diff -u ../../zf2.r stdout
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
 echo stderr:; cat "$at_stderr"
 echo stdout:; cat "$at_stdout"
-at_fn_check_status 0 $at_status "$at_srcdir/zf2.ok-so-at:21"
+at_fn_check_status 0 $at_status "$at_srcdir/zf2.ok-so-at:22"
 $at_failed && at_fn_log_failure
 $at_traceon; }
 
@@ -4006,36 +4027,39 @@ at_xfail=no
 
 cat >script-zf3 <<_ATEOF_ED
 H
-r !/opt/bin/zcat ../../zf3.d.gz
+r !/usr/bin/gzcat ../../zf3.d.gz
 $(test -s ../../zf3.tso &&
 cat ../../zf3.tso ||
 echo "w zf3.o")
 wq zf3.o
 _ATEOF_ED
 
+$as_echo "zf3.ok-so-at:18" >"$at_check_line_file"
+(! ed --version | egrep -q 'all-extensions|ed-scrolling') \
+  && at_fn_check_skip 77 "$at_srcdir/zf3.ok-so-at:18"
 { set +x
-$as_echo "$at_srcdir/zf3.ok-so-at:19: ed - <script-zf3"
-at_fn_check_prepare_trace "zf3.ok-so-at:19"
+$as_echo "$at_srcdir/zf3.ok-so-at:20: ed - <script-zf3"
+at_fn_check_prepare_trace "zf3.ok-so-at:20"
 ( $at_check_trace; ed - <script-zf3
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
 echo stderr:; cat "$at_stderr"
 echo stdout:; tee stdout <"$at_stdout"
-at_fn_check_status 0 $at_status "$at_srcdir/zf3.ok-so-at:19"
+at_fn_check_status 0 $at_status "$at_srcdir/zf3.ok-so-at:20"
 $at_failed && at_fn_log_failure
 $at_traceon; }
 
 { set +x
-$as_echo "$at_srcdir/zf3.ok-so-at:21: diff -u ../../zf3.r stdout"
-at_fn_check_prepare_trace "zf3.ok-so-at:21"
+$as_echo "$at_srcdir/zf3.ok-so-at:22: diff -u ../../zf3.r stdout"
+at_fn_check_prepare_trace "zf3.ok-so-at:22"
 ( $at_check_trace; diff -u ../../zf3.r stdout
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
 echo stderr:; cat "$at_stderr"
 echo stdout:; cat "$at_stdout"
-at_fn_check_status 0 $at_status "$at_srcdir/zf3.ok-so-at:21"
+at_fn_check_status 0 $at_status "$at_srcdir/zf3.ok-so-at:22"
 $at_failed && at_fn_log_failure
 $at_traceon; }
 
@@ -4055,36 +4079,39 @@ at_xfail=no
 
 cat >script-zf4 <<_ATEOF_ED
 H
-r !/opt/bin/zcat ../../zf4.d.gz
+r !/usr/bin/gzcat ../../zf4.d.gz
 $(test -s ../../zf4.tso &&
 cat ../../zf4.tso ||
 echo "w zf4.o")
 wq zf4.o
 _ATEOF_ED
 
+$as_echo "zf4.ok-so-at:18" >"$at_check_line_file"
+(! ed --version | egrep -q 'all-extensions|ed-scrolling') \
+  && at_fn_check_skip 77 "$at_srcdir/zf4.ok-so-at:18"
 { set +x
-$as_echo "$at_srcdir/zf4.ok-so-at:19: ed - <script-zf4"
-at_fn_check_prepare_trace "zf4.ok-so-at:19"
+$as_echo "$at_srcdir/zf4.ok-so-at:20: ed - <script-zf4"
+at_fn_check_prepare_trace "zf4.ok-so-at:20"
 ( $at_check_trace; ed - <script-zf4
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
 echo stderr:; cat "$at_stderr"
 echo stdout:; tee stdout <"$at_stdout"
-at_fn_check_status 0 $at_status "$at_srcdir/zf4.ok-so-at:19"
+at_fn_check_status 0 $at_status "$at_srcdir/zf4.ok-so-at:20"
 $at_failed && at_fn_log_failure
 $at_traceon; }
 
 { set +x
-$as_echo "$at_srcdir/zf4.ok-so-at:21: diff -u ../../zf4.r stdout"
-at_fn_check_prepare_trace "zf4.ok-so-at:21"
+$as_echo "$at_srcdir/zf4.ok-so-at:22: diff -u ../../zf4.r stdout"
+at_fn_check_prepare_trace "zf4.ok-so-at:22"
 ( $at_check_trace; diff -u ../../zf4.r stdout
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
 echo stderr:; cat "$at_stderr"
 echo stdout:; cat "$at_stdout"
-at_fn_check_status 0 $at_status "$at_srcdir/zf4.ok-so-at:21"
+at_fn_check_status 0 $at_status "$at_srcdir/zf4.ok-so-at:22"
 $at_failed && at_fn_log_failure
 $at_traceon; }
 
@@ -4094,46 +4121,49 @@ $at_traceon; }
 read at_status <"$at_status_file"
 #AT_STOP_49
 #AT_START_50
-at_fn_group_banner 50 'zb1.ok-so-at:7' \
-  "Script: zb1.tso" "                                "
+at_fn_group_banner 50 'zf5.ok-so-at:7' \
+  "Script: zf5.tso" "                                "
 at_xfail=no
 (
   $as_echo "50. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
-cat >script-zb1 <<_ATEOF_ED
+cat >script-zf5 <<_ATEOF_ED
 H
-r !/opt/bin/zcat ../../zb1.d.gz
-$(test -s ../../zb1.tso &&
-cat ../../zb1.tso ||
-echo "w zb1.o")
-wq zb1.o
+r !/usr/bin/gzcat ../../zf5.d.gz
+$(test -s ../../zf5.tso &&
+cat ../../zf5.tso ||
+echo "w zf5.o")
+wq zf5.o
 _ATEOF_ED
 
+$as_echo "zf5.ok-so-at:18" >"$at_check_line_file"
+(! ed --version | egrep -q 'all-extensions|ed-scrolling') \
+  && at_fn_check_skip 77 "$at_srcdir/zf5.ok-so-at:18"
 { set +x
-$as_echo "$at_srcdir/zb1.ok-so-at:19: ed - <script-zb1"
-at_fn_check_prepare_trace "zb1.ok-so-at:19"
-( $at_check_trace; ed - <script-zb1
+$as_echo "$at_srcdir/zf5.ok-so-at:20: ed - <script-zf5"
+at_fn_check_prepare_trace "zf5.ok-so-at:20"
+( $at_check_trace; ed - <script-zf5
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
 echo stderr:; cat "$at_stderr"
 echo stdout:; tee stdout <"$at_stdout"
-at_fn_check_status 0 $at_status "$at_srcdir/zb1.ok-so-at:19"
+at_fn_check_status 0 $at_status "$at_srcdir/zf5.ok-so-at:20"
 $at_failed && at_fn_log_failure
 $at_traceon; }
 
 { set +x
-$as_echo "$at_srcdir/zb1.ok-so-at:21: diff -u ../../zb1.r stdout"
-at_fn_check_prepare_trace "zb1.ok-so-at:21"
-( $at_check_trace; diff -u ../../zb1.r stdout
+$as_echo "$at_srcdir/zf5.ok-so-at:22: diff -u ../../zf5.r stdout"
+at_fn_check_prepare_trace "zf5.ok-so-at:22"
+( $at_check_trace; diff -u ../../zf5.r stdout
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
 echo stderr:; cat "$at_stderr"
 echo stdout:; cat "$at_stdout"
-at_fn_check_status 0 $at_status "$at_srcdir/zb1.ok-so-at:21"
+at_fn_check_status 0 $at_status "$at_srcdir/zf5.ok-so-at:22"
 $at_failed && at_fn_log_failure
 $at_traceon; }
 
@@ -4143,46 +4173,49 @@ $at_traceon; }
 read at_status <"$at_status_file"
 #AT_STOP_50
 #AT_START_51
-at_fn_group_banner 51 'zb2.ok-so-at:7' \
-  "Script: zb2.tso" "                                "
+at_fn_group_banner 51 'zf6.ok-so-at:7' \
+  "Script: zf6.tso" "                                "
 at_xfail=no
 (
   $as_echo "51. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
-cat >script-zb2 <<_ATEOF_ED
+cat >script-zf6 <<_ATEOF_ED
 H
-r !/opt/bin/zcat ../../zb2.d.gz
-$(test -s ../../zb2.tso &&
-cat ../../zb2.tso ||
-echo "w zb2.o")
-wq zb2.o
+r !/usr/bin/gzcat ../../zf6.d.gz
+$(test -s ../../zf6.tso &&
+cat ../../zf6.tso ||
+echo "w zf6.o")
+wq zf6.o
 _ATEOF_ED
 
+$as_echo "zf6.ok-so-at:18" >"$at_check_line_file"
+(! ed --version | egrep -q 'all-extensions|ed-scrolling') \
+  && at_fn_check_skip 77 "$at_srcdir/zf6.ok-so-at:18"
 { set +x
-$as_echo "$at_srcdir/zb2.ok-so-at:19: ed - <script-zb2"
-at_fn_check_prepare_trace "zb2.ok-so-at:19"
-( $at_check_trace; ed - <script-zb2
+$as_echo "$at_srcdir/zf6.ok-so-at:20: ed - <script-zf6"
+at_fn_check_prepare_trace "zf6.ok-so-at:20"
+( $at_check_trace; ed - <script-zf6
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
 echo stderr:; cat "$at_stderr"
 echo stdout:; tee stdout <"$at_stdout"
-at_fn_check_status 0 $at_status "$at_srcdir/zb2.ok-so-at:19"
+at_fn_check_status 0 $at_status "$at_srcdir/zf6.ok-so-at:20"
 $at_failed && at_fn_log_failure
 $at_traceon; }
 
 { set +x
-$as_echo "$at_srcdir/zb2.ok-so-at:21: diff -u ../../zb2.r stdout"
-at_fn_check_prepare_trace "zb2.ok-so-at:21"
-( $at_check_trace; diff -u ../../zb2.r stdout
+$as_echo "$at_srcdir/zf6.ok-so-at:22: diff -u ../../zf6.r stdout"
+at_fn_check_prepare_trace "zf6.ok-so-at:22"
+( $at_check_trace; diff -u ../../zf6.r stdout
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
 echo stderr:; cat "$at_stderr"
 echo stdout:; cat "$at_stdout"
-at_fn_check_status 0 $at_status "$at_srcdir/zb2.ok-so-at:21"
+at_fn_check_status 0 $at_status "$at_srcdir/zf6.ok-so-at:22"
 $at_failed && at_fn_log_failure
 $at_traceon; }
 
@@ -4192,46 +4225,49 @@ $at_traceon; }
 read at_status <"$at_status_file"
 #AT_STOP_51
 #AT_START_52
-at_fn_group_banner 52 'zb3.ok-so-at:7' \
-  "Script: zb3.tso" "                                "
+at_fn_group_banner 52 'zf7.ok-so-at:7' \
+  "Script: zf7.tso" "                                "
 at_xfail=no
 (
   $as_echo "52. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
-cat >script-zb3 <<_ATEOF_ED
+cat >script-zf7 <<_ATEOF_ED
 H
-r !/opt/bin/zcat ../../zb3.d.gz
-$(test -s ../../zb3.tso &&
-cat ../../zb3.tso ||
-echo "w zb3.o")
-wq zb3.o
+r !/usr/bin/gzcat ../../zf7.d.gz
+$(test -s ../../zf7.tso &&
+cat ../../zf7.tso ||
+echo "w zf7.o")
+wq zf7.o
 _ATEOF_ED
 
+$as_echo "zf7.ok-so-at:18" >"$at_check_line_file"
+(! ed --version | egrep -q 'all-extensions|ed-scrolling') \
+  && at_fn_check_skip 77 "$at_srcdir/zf7.ok-so-at:18"
 { set +x
-$as_echo "$at_srcdir/zb3.ok-so-at:19: ed - <script-zb3"
-at_fn_check_prepare_trace "zb3.ok-so-at:19"
-( $at_check_trace; ed - <script-zb3
+$as_echo "$at_srcdir/zf7.ok-so-at:20: ed - <script-zf7"
+at_fn_check_prepare_trace "zf7.ok-so-at:20"
+( $at_check_trace; ed - <script-zf7
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
 echo stderr:; cat "$at_stderr"
 echo stdout:; tee stdout <"$at_stdout"
-at_fn_check_status 0 $at_status "$at_srcdir/zb3.ok-so-at:19"
+at_fn_check_status 0 $at_status "$at_srcdir/zf7.ok-so-at:20"
 $at_failed && at_fn_log_failure
 $at_traceon; }
 
 { set +x
-$as_echo "$at_srcdir/zb3.ok-so-at:21: diff -u ../../zb3.r stdout"
-at_fn_check_prepare_trace "zb3.ok-so-at:21"
-( $at_check_trace; diff -u ../../zb3.r stdout
+$as_echo "$at_srcdir/zf7.ok-so-at:22: diff -u ../../zf7.r stdout"
+at_fn_check_prepare_trace "zf7.ok-so-at:22"
+( $at_check_trace; diff -u ../../zf7.r stdout
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
 echo stderr:; cat "$at_stderr"
 echo stdout:; cat "$at_stdout"
-at_fn_check_status 0 $at_status "$at_srcdir/zb3.ok-so-at:21"
+at_fn_check_status 0 $at_status "$at_srcdir/zf7.ok-so-at:22"
 $at_failed && at_fn_log_failure
 $at_traceon; }
 
@@ -4241,46 +4277,49 @@ $at_traceon; }
 read at_status <"$at_status_file"
 #AT_STOP_52
 #AT_START_53
-at_fn_group_banner 53 'zb4.ok-so-at:7' \
-  "Script: zb4.tso" "                                "
+at_fn_group_banner 53 'zb1.ok-so-at:7' \
+  "Script: zb1.tso" "                                "
 at_xfail=no
 (
   $as_echo "53. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
-cat >script-zb4 <<_ATEOF_ED
+cat >script-zb1 <<_ATEOF_ED
 H
-r !/opt/bin/zcat ../../zb4.d.gz
-$(test -s ../../zb4.tso &&
-cat ../../zb4.tso ||
-echo "w zb4.o")
-wq zb4.o
+r !/usr/bin/gzcat ../../zb1.d.gz
+$(test -s ../../zb1.tso &&
+cat ../../zb1.tso ||
+echo "w zb1.o")
+wq zb1.o
 _ATEOF_ED
 
+$as_echo "zb1.ok-so-at:18" >"$at_check_line_file"
+(! ed --version | egrep -q 'all-extensions|ed-scrolling') \
+  && at_fn_check_skip 77 "$at_srcdir/zb1.ok-so-at:18"
 { set +x
-$as_echo "$at_srcdir/zb4.ok-so-at:19: ed - <script-zb4"
-at_fn_check_prepare_trace "zb4.ok-so-at:19"
-( $at_check_trace; ed - <script-zb4
+$as_echo "$at_srcdir/zb1.ok-so-at:20: ed - <script-zb1"
+at_fn_check_prepare_trace "zb1.ok-so-at:20"
+( $at_check_trace; ed - <script-zb1
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
 echo stderr:; cat "$at_stderr"
 echo stdout:; tee stdout <"$at_stdout"
-at_fn_check_status 0 $at_status "$at_srcdir/zb4.ok-so-at:19"
+at_fn_check_status 0 $at_status "$at_srcdir/zb1.ok-so-at:20"
 $at_failed && at_fn_log_failure
 $at_traceon; }
 
 { set +x
-$as_echo "$at_srcdir/zb4.ok-so-at:21: diff -u ../../zb4.r stdout"
-at_fn_check_prepare_trace "zb4.ok-so-at:21"
-( $at_check_trace; diff -u ../../zb4.r stdout
+$as_echo "$at_srcdir/zb1.ok-so-at:22: diff -u ../../zb1.r stdout"
+at_fn_check_prepare_trace "zb1.ok-so-at:22"
+( $at_check_trace; diff -u ../../zb1.r stdout
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
 echo stderr:; cat "$at_stderr"
 echo stdout:; cat "$at_stdout"
-at_fn_check_status 0 $at_status "$at_srcdir/zb4.ok-so-at:21"
+at_fn_check_status 0 $at_status "$at_srcdir/zb1.ok-so-at:22"
 $at_failed && at_fn_log_failure
 $at_traceon; }
 
@@ -4290,46 +4329,49 @@ $at_traceon; }
 read at_status <"$at_status_file"
 #AT_STOP_53
 #AT_START_54
-at_fn_group_banner 54 'zfh1.ok-so-at:7' \
-  "Script: zfh1.tso" "                               "
+at_fn_group_banner 54 'zb2.ok-so-at:7' \
+  "Script: zb2.tso" "                                "
 at_xfail=no
 (
   $as_echo "54. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
-cat >script-zfh1 <<_ATEOF_ED
+cat >script-zb2 <<_ATEOF_ED
 H
-r !/opt/bin/zcat ../../zfh1.d.gz
-$(test -s ../../zfh1.tso &&
-cat ../../zfh1.tso ||
-echo "w zfh1.o")
-wq zfh1.o
+r !/usr/bin/gzcat ../../zb2.d.gz
+$(test -s ../../zb2.tso &&
+cat ../../zb2.tso ||
+echo "w zb2.o")
+wq zb2.o
 _ATEOF_ED
 
+$as_echo "zb2.ok-so-at:18" >"$at_check_line_file"
+(! ed --version | egrep -q 'all-extensions|ed-scrolling') \
+  && at_fn_check_skip 77 "$at_srcdir/zb2.ok-so-at:18"
 { set +x
-$as_echo "$at_srcdir/zfh1.ok-so-at:19: ed - <script-zfh1"
-at_fn_check_prepare_trace "zfh1.ok-so-at:19"
-( $at_check_trace; ed - <script-zfh1
+$as_echo "$at_srcdir/zb2.ok-so-at:20: ed - <script-zb2"
+at_fn_check_prepare_trace "zb2.ok-so-at:20"
+( $at_check_trace; ed - <script-zb2
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
 echo stderr:; cat "$at_stderr"
 echo stdout:; tee stdout <"$at_stdout"
-at_fn_check_status 0 $at_status "$at_srcdir/zfh1.ok-so-at:19"
+at_fn_check_status 0 $at_status "$at_srcdir/zb2.ok-so-at:20"
 $at_failed && at_fn_log_failure
 $at_traceon; }
 
 { set +x
-$as_echo "$at_srcdir/zfh1.ok-so-at:21: diff -u ../../zfh1.r stdout"
-at_fn_check_prepare_trace "zfh1.ok-so-at:21"
-( $at_check_trace; diff -u ../../zfh1.r stdout
+$as_echo "$at_srcdir/zb2.ok-so-at:22: diff -u ../../zb2.r stdout"
+at_fn_check_prepare_trace "zb2.ok-so-at:22"
+( $at_check_trace; diff -u ../../zb2.r stdout
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
 echo stderr:; cat "$at_stderr"
 echo stdout:; cat "$at_stdout"
-at_fn_check_status 0 $at_status "$at_srcdir/zfh1.ok-so-at:21"
+at_fn_check_status 0 $at_status "$at_srcdir/zb2.ok-so-at:22"
 $at_failed && at_fn_log_failure
 $at_traceon; }
 
@@ -4339,46 +4381,49 @@ $at_traceon; }
 read at_status <"$at_status_file"
 #AT_STOP_54
 #AT_START_55
-at_fn_group_banner 55 'zfh2.ok-so-at:7' \
-  "Script: zfh2.tso" "                               "
+at_fn_group_banner 55 'zb3.ok-so-at:7' \
+  "Script: zb3.tso" "                                "
 at_xfail=no
 (
   $as_echo "55. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
-cat >script-zfh2 <<_ATEOF_ED
+cat >script-zb3 <<_ATEOF_ED
 H
-r !/opt/bin/zcat ../../zfh2.d.gz
-$(test -s ../../zfh2.tso &&
-cat ../../zfh2.tso ||
-echo "w zfh2.o")
-wq zfh2.o
+r !/usr/bin/gzcat ../../zb3.d.gz
+$(test -s ../../zb3.tso &&
+cat ../../zb3.tso ||
+echo "w zb3.o")
+wq zb3.o
 _ATEOF_ED
 
+$as_echo "zb3.ok-so-at:18" >"$at_check_line_file"
+(! ed --version | egrep -q 'all-extensions|ed-scrolling') \
+  && at_fn_check_skip 77 "$at_srcdir/zb3.ok-so-at:18"
 { set +x
-$as_echo "$at_srcdir/zfh2.ok-so-at:19: ed - <script-zfh2"
-at_fn_check_prepare_trace "zfh2.ok-so-at:19"
-( $at_check_trace; ed - <script-zfh2
+$as_echo "$at_srcdir/zb3.ok-so-at:20: ed - <script-zb3"
+at_fn_check_prepare_trace "zb3.ok-so-at:20"
+( $at_check_trace; ed - <script-zb3
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
 echo stderr:; cat "$at_stderr"
 echo stdout:; tee stdout <"$at_stdout"
-at_fn_check_status 0 $at_status "$at_srcdir/zfh2.ok-so-at:19"
+at_fn_check_status 0 $at_status "$at_srcdir/zb3.ok-so-at:20"
 $at_failed && at_fn_log_failure
 $at_traceon; }
 
 { set +x
-$as_echo "$at_srcdir/zfh2.ok-so-at:21: diff -u ../../zfh2.r stdout"
-at_fn_check_prepare_trace "zfh2.ok-so-at:21"
-( $at_check_trace; diff -u ../../zfh2.r stdout
+$as_echo "$at_srcdir/zb3.ok-so-at:22: diff -u ../../zb3.r stdout"
+at_fn_check_prepare_trace "zb3.ok-so-at:22"
+( $at_check_trace; diff -u ../../zb3.r stdout
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
 echo stderr:; cat "$at_stderr"
 echo stdout:; cat "$at_stdout"
-at_fn_check_status 0 $at_status "$at_srcdir/zfh2.ok-so-at:21"
+at_fn_check_status 0 $at_status "$at_srcdir/zb3.ok-so-at:22"
 $at_failed && at_fn_log_failure
 $at_traceon; }
 
@@ -4388,46 +4433,49 @@ $at_traceon; }
 read at_status <"$at_status_file"
 #AT_STOP_55
 #AT_START_56
-at_fn_group_banner 56 'zbh1.ok-so-at:7' \
-  "Script: zbh1.tso" "                               "
+at_fn_group_banner 56 'zb4.ok-so-at:7' \
+  "Script: zb4.tso" "                                "
 at_xfail=no
 (
   $as_echo "56. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
-cat >script-zbh1 <<_ATEOF_ED
+cat >script-zb4 <<_ATEOF_ED
 H
-r !/opt/bin/zcat ../../zbh1.d.gz
-$(test -s ../../zbh1.tso &&
-cat ../../zbh1.tso ||
-echo "w zbh1.o")
-wq zbh1.o
+r !/usr/bin/gzcat ../../zb4.d.gz
+$(test -s ../../zb4.tso &&
+cat ../../zb4.tso ||
+echo "w zb4.o")
+wq zb4.o
 _ATEOF_ED
 
+$as_echo "zb4.ok-so-at:18" >"$at_check_line_file"
+(! ed --version | egrep -q 'all-extensions|ed-scrolling') \
+  && at_fn_check_skip 77 "$at_srcdir/zb4.ok-so-at:18"
 { set +x
-$as_echo "$at_srcdir/zbh1.ok-so-at:19: ed - <script-zbh1"
-at_fn_check_prepare_trace "zbh1.ok-so-at:19"
-( $at_check_trace; ed - <script-zbh1
+$as_echo "$at_srcdir/zb4.ok-so-at:20: ed - <script-zb4"
+at_fn_check_prepare_trace "zb4.ok-so-at:20"
+( $at_check_trace; ed - <script-zb4
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
 echo stderr:; cat "$at_stderr"
 echo stdout:; tee stdout <"$at_stdout"
-at_fn_check_status 0 $at_status "$at_srcdir/zbh1.ok-so-at:19"
+at_fn_check_status 0 $at_status "$at_srcdir/zb4.ok-so-at:20"
 $at_failed && at_fn_log_failure
 $at_traceon; }
 
 { set +x
-$as_echo "$at_srcdir/zbh1.ok-so-at:21: diff -u ../../zbh1.r stdout"
-at_fn_check_prepare_trace "zbh1.ok-so-at:21"
-( $at_check_trace; diff -u ../../zbh1.r stdout
+$as_echo "$at_srcdir/zb4.ok-so-at:22: diff -u ../../zb4.r stdout"
+at_fn_check_prepare_trace "zb4.ok-so-at:22"
+( $at_check_trace; diff -u ../../zb4.r stdout
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
 echo stderr:; cat "$at_stderr"
 echo stdout:; cat "$at_stdout"
-at_fn_check_status 0 $at_status "$at_srcdir/zbh1.ok-so-at:21"
+at_fn_check_status 0 $at_status "$at_srcdir/zb4.ok-so-at:22"
 $at_failed && at_fn_log_failure
 $at_traceon; }
 
@@ -4437,46 +4485,49 @@ $at_traceon; }
 read at_status <"$at_status_file"
 #AT_STOP_56
 #AT_START_57
-at_fn_group_banner 57 'zbh2.ok-so-at:7' \
-  "Script: zbh2.tso" "                               "
+at_fn_group_banner 57 'zb5.ok-so-at:7' \
+  "Script: zb5.tso" "                                "
 at_xfail=no
 (
   $as_echo "57. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
-cat >script-zbh2 <<_ATEOF_ED
+cat >script-zb5 <<_ATEOF_ED
 H
-r !/opt/bin/zcat ../../zbh2.d.gz
-$(test -s ../../zbh2.tso &&
-cat ../../zbh2.tso ||
-echo "w zbh2.o")
-wq zbh2.o
+r !/usr/bin/gzcat ../../zb5.d.gz
+$(test -s ../../zb5.tso &&
+cat ../../zb5.tso ||
+echo "w zb5.o")
+wq zb5.o
 _ATEOF_ED
 
+$as_echo "zb5.ok-so-at:18" >"$at_check_line_file"
+(! ed --version | egrep -q 'all-extensions|ed-scrolling') \
+  && at_fn_check_skip 77 "$at_srcdir/zb5.ok-so-at:18"
 { set +x
-$as_echo "$at_srcdir/zbh2.ok-so-at:19: ed - <script-zbh2"
-at_fn_check_prepare_trace "zbh2.ok-so-at:19"
-( $at_check_trace; ed - <script-zbh2
+$as_echo "$at_srcdir/zb5.ok-so-at:20: ed - <script-zb5"
+at_fn_check_prepare_trace "zb5.ok-so-at:20"
+( $at_check_trace; ed - <script-zb5
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
 echo stderr:; cat "$at_stderr"
 echo stdout:; tee stdout <"$at_stdout"
-at_fn_check_status 0 $at_status "$at_srcdir/zbh2.ok-so-at:19"
+at_fn_check_status 0 $at_status "$at_srcdir/zb5.ok-so-at:20"
 $at_failed && at_fn_log_failure
 $at_traceon; }
 
 { set +x
-$as_echo "$at_srcdir/zbh2.ok-so-at:21: diff -u ../../zbh2.r stdout"
-at_fn_check_prepare_trace "zbh2.ok-so-at:21"
-( $at_check_trace; diff -u ../../zbh2.r stdout
+$as_echo "$at_srcdir/zb5.ok-so-at:22: diff -u ../../zb5.r stdout"
+at_fn_check_prepare_trace "zb5.ok-so-at:22"
+( $at_check_trace; diff -u ../../zb5.r stdout
 ) >>"$at_stdout" 2>>"$at_stderr" 5>&-
 at_status=$? at_failed=false
 $at_check_filter
 echo stderr:; cat "$at_stderr"
 echo stdout:; cat "$at_stdout"
-at_fn_check_status 0 $at_status "$at_srcdir/zbh2.ok-so-at:21"
+at_fn_check_status 0 $at_status "$at_srcdir/zb5.ok-so-at:22"
 $at_failed && at_fn_log_failure
 $at_traceon; }
 
@@ -4486,11 +4537,323 @@ $at_traceon; }
 read at_status <"$at_status_file"
 #AT_STOP_57
 #AT_START_58
-at_fn_group_banner 58 'a2.err-at:7' \
-  "Pipe: a2.err" "                                   "
+at_fn_group_banner 58 'zb6.ok-so-at:7' \
+  "Script: zb6.tso" "                                "
 at_xfail=no
 (
   $as_echo "58. $at_setup_line: testing $at_desc ..."
+  $at_traceon
+
+
+cat >script-zb6 <<_ATEOF_ED
+H
+r !/usr/bin/gzcat ../../zb6.d.gz
+$(test -s ../../zb6.tso &&
+cat ../../zb6.tso ||
+echo "w zb6.o")
+wq zb6.o
+_ATEOF_ED
+
+$as_echo "zb6.ok-so-at:18" >"$at_check_line_file"
+(! ed --version | egrep -q 'all-extensions|ed-scrolling') \
+  && at_fn_check_skip 77 "$at_srcdir/zb6.ok-so-at:18"
+{ set +x
+$as_echo "$at_srcdir/zb6.ok-so-at:20: ed - <script-zb6"
+at_fn_check_prepare_trace "zb6.ok-so-at:20"
+( $at_check_trace; ed - <script-zb6
+) >>"$at_stdout" 2>>"$at_stderr" 5>&-
+at_status=$? at_failed=false
+$at_check_filter
+echo stderr:; cat "$at_stderr"
+echo stdout:; tee stdout <"$at_stdout"
+at_fn_check_status 0 $at_status "$at_srcdir/zb6.ok-so-at:20"
+$at_failed && at_fn_log_failure
+$at_traceon; }
+
+{ set +x
+$as_echo "$at_srcdir/zb6.ok-so-at:22: diff -u ../../zb6.r stdout"
+at_fn_check_prepare_trace "zb6.ok-so-at:22"
+( $at_check_trace; diff -u ../../zb6.r stdout
+) >>"$at_stdout" 2>>"$at_stderr" 5>&-
+at_status=$? at_failed=false
+$at_check_filter
+echo stderr:; cat "$at_stderr"
+echo stdout:; cat "$at_stdout"
+at_fn_check_status 0 $at_status "$at_srcdir/zb6.ok-so-at:22"
+$at_failed && at_fn_log_failure
+$at_traceon; }
+
+  set +x
+  $at_times_p && times >"$at_times_file"
+) 5>&1 2>&1 7>&- | eval $at_tee_pipe
+read at_status <"$at_status_file"
+#AT_STOP_58
+#AT_START_59
+at_fn_group_banner 59 'zb7.ok-so-at:7' \
+  "Script: zb7.tso" "                                "
+at_xfail=no
+(
+  $as_echo "59. $at_setup_line: testing $at_desc ..."
+  $at_traceon
+
+
+cat >script-zb7 <<_ATEOF_ED
+H
+r !/usr/bin/gzcat ../../zb7.d.gz
+$(test -s ../../zb7.tso &&
+cat ../../zb7.tso ||
+echo "w zb7.o")
+wq zb7.o
+_ATEOF_ED
+
+$as_echo "zb7.ok-so-at:18" >"$at_check_line_file"
+(! ed --version | egrep -q 'all-extensions|ed-scrolling') \
+  && at_fn_check_skip 77 "$at_srcdir/zb7.ok-so-at:18"
+{ set +x
+$as_echo "$at_srcdir/zb7.ok-so-at:20: ed - <script-zb7"
+at_fn_check_prepare_trace "zb7.ok-so-at:20"
+( $at_check_trace; ed - <script-zb7
+) >>"$at_stdout" 2>>"$at_stderr" 5>&-
+at_status=$? at_failed=false
+$at_check_filter
+echo stderr:; cat "$at_stderr"
+echo stdout:; tee stdout <"$at_stdout"
+at_fn_check_status 0 $at_status "$at_srcdir/zb7.ok-so-at:20"
+$at_failed && at_fn_log_failure
+$at_traceon; }
+
+{ set +x
+$as_echo "$at_srcdir/zb7.ok-so-at:22: diff -u ../../zb7.r stdout"
+at_fn_check_prepare_trace "zb7.ok-so-at:22"
+( $at_check_trace; diff -u ../../zb7.r stdout
+) >>"$at_stdout" 2>>"$at_stderr" 5>&-
+at_status=$? at_failed=false
+$at_check_filter
+echo stderr:; cat "$at_stderr"
+echo stdout:; cat "$at_stdout"
+at_fn_check_status 0 $at_status "$at_srcdir/zb7.ok-so-at:22"
+$at_failed && at_fn_log_failure
+$at_traceon; }
+
+  set +x
+  $at_times_p && times >"$at_times_file"
+) 5>&1 2>&1 7>&- | eval $at_tee_pipe
+read at_status <"$at_status_file"
+#AT_STOP_59
+#AT_START_60
+at_fn_group_banner 60 'zfh1.ok-so-at:7' \
+  "Script: zfh1.tso" "                               "
+at_xfail=no
+(
+  $as_echo "60. $at_setup_line: testing $at_desc ..."
+  $at_traceon
+
+
+cat >script-zfh1 <<_ATEOF_ED
+H
+r !/usr/bin/gzcat ../../zfh1.d.gz
+$(test -s ../../zfh1.tso &&
+cat ../../zfh1.tso ||
+echo "w zfh1.o")
+wq zfh1.o
+_ATEOF_ED
+
+$as_echo "zfh1.ok-so-at:18" >"$at_check_line_file"
+(! ed --version | egrep -q 'all-extensions|ed-scrolling') \
+  && at_fn_check_skip 77 "$at_srcdir/zfh1.ok-so-at:18"
+{ set +x
+$as_echo "$at_srcdir/zfh1.ok-so-at:20: ed - <script-zfh1"
+at_fn_check_prepare_trace "zfh1.ok-so-at:20"
+( $at_check_trace; ed - <script-zfh1
+) >>"$at_stdout" 2>>"$at_stderr" 5>&-
+at_status=$? at_failed=false
+$at_check_filter
+echo stderr:; cat "$at_stderr"
+echo stdout:; tee stdout <"$at_stdout"
+at_fn_check_status 0 $at_status "$at_srcdir/zfh1.ok-so-at:20"
+$at_failed && at_fn_log_failure
+$at_traceon; }
+
+{ set +x
+$as_echo "$at_srcdir/zfh1.ok-so-at:22: diff -u ../../zfh1.r stdout"
+at_fn_check_prepare_trace "zfh1.ok-so-at:22"
+( $at_check_trace; diff -u ../../zfh1.r stdout
+) >>"$at_stdout" 2>>"$at_stderr" 5>&-
+at_status=$? at_failed=false
+$at_check_filter
+echo stderr:; cat "$at_stderr"
+echo stdout:; cat "$at_stdout"
+at_fn_check_status 0 $at_status "$at_srcdir/zfh1.ok-so-at:22"
+$at_failed && at_fn_log_failure
+$at_traceon; }
+
+  set +x
+  $at_times_p && times >"$at_times_file"
+) 5>&1 2>&1 7>&- | eval $at_tee_pipe
+read at_status <"$at_status_file"
+#AT_STOP_60
+#AT_START_61
+at_fn_group_banner 61 'zfh2.ok-so-at:7' \
+  "Script: zfh2.tso" "                               "
+at_xfail=no
+(
+  $as_echo "61. $at_setup_line: testing $at_desc ..."
+  $at_traceon
+
+
+cat >script-zfh2 <<_ATEOF_ED
+H
+r !/usr/bin/gzcat ../../zfh2.d.gz
+$(test -s ../../zfh2.tso &&
+cat ../../zfh2.tso ||
+echo "w zfh2.o")
+wq zfh2.o
+_ATEOF_ED
+
+$as_echo "zfh2.ok-so-at:18" >"$at_check_line_file"
+(! ed --version | egrep -q 'all-extensions|ed-scrolling') \
+  && at_fn_check_skip 77 "$at_srcdir/zfh2.ok-so-at:18"
+{ set +x
+$as_echo "$at_srcdir/zfh2.ok-so-at:20: ed - <script-zfh2"
+at_fn_check_prepare_trace "zfh2.ok-so-at:20"
+( $at_check_trace; ed - <script-zfh2
+) >>"$at_stdout" 2>>"$at_stderr" 5>&-
+at_status=$? at_failed=false
+$at_check_filter
+echo stderr:; cat "$at_stderr"
+echo stdout:; tee stdout <"$at_stdout"
+at_fn_check_status 0 $at_status "$at_srcdir/zfh2.ok-so-at:20"
+$at_failed && at_fn_log_failure
+$at_traceon; }
+
+{ set +x
+$as_echo "$at_srcdir/zfh2.ok-so-at:22: diff -u ../../zfh2.r stdout"
+at_fn_check_prepare_trace "zfh2.ok-so-at:22"
+( $at_check_trace; diff -u ../../zfh2.r stdout
+) >>"$at_stdout" 2>>"$at_stderr" 5>&-
+at_status=$? at_failed=false
+$at_check_filter
+echo stderr:; cat "$at_stderr"
+echo stdout:; cat "$at_stdout"
+at_fn_check_status 0 $at_status "$at_srcdir/zfh2.ok-so-at:22"
+$at_failed && at_fn_log_failure
+$at_traceon; }
+
+  set +x
+  $at_times_p && times >"$at_times_file"
+) 5>&1 2>&1 7>&- | eval $at_tee_pipe
+read at_status <"$at_status_file"
+#AT_STOP_61
+#AT_START_62
+at_fn_group_banner 62 'zbh1.ok-so-at:7' \
+  "Script: zbh1.tso" "                               "
+at_xfail=no
+(
+  $as_echo "62. $at_setup_line: testing $at_desc ..."
+  $at_traceon
+
+
+cat >script-zbh1 <<_ATEOF_ED
+H
+r !/usr/bin/gzcat ../../zbh1.d.gz
+$(test -s ../../zbh1.tso &&
+cat ../../zbh1.tso ||
+echo "w zbh1.o")
+wq zbh1.o
+_ATEOF_ED
+
+$as_echo "zbh1.ok-so-at:18" >"$at_check_line_file"
+(! ed --version | egrep -q 'all-extensions|ed-scrolling') \
+  && at_fn_check_skip 77 "$at_srcdir/zbh1.ok-so-at:18"
+{ set +x
+$as_echo "$at_srcdir/zbh1.ok-so-at:20: ed - <script-zbh1"
+at_fn_check_prepare_trace "zbh1.ok-so-at:20"
+( $at_check_trace; ed - <script-zbh1
+) >>"$at_stdout" 2>>"$at_stderr" 5>&-
+at_status=$? at_failed=false
+$at_check_filter
+echo stderr:; cat "$at_stderr"
+echo stdout:; tee stdout <"$at_stdout"
+at_fn_check_status 0 $at_status "$at_srcdir/zbh1.ok-so-at:20"
+$at_failed && at_fn_log_failure
+$at_traceon; }
+
+{ set +x
+$as_echo "$at_srcdir/zbh1.ok-so-at:22: diff -u ../../zbh1.r stdout"
+at_fn_check_prepare_trace "zbh1.ok-so-at:22"
+( $at_check_trace; diff -u ../../zbh1.r stdout
+) >>"$at_stdout" 2>>"$at_stderr" 5>&-
+at_status=$? at_failed=false
+$at_check_filter
+echo stderr:; cat "$at_stderr"
+echo stdout:; cat "$at_stdout"
+at_fn_check_status 0 $at_status "$at_srcdir/zbh1.ok-so-at:22"
+$at_failed && at_fn_log_failure
+$at_traceon; }
+
+  set +x
+  $at_times_p && times >"$at_times_file"
+) 5>&1 2>&1 7>&- | eval $at_tee_pipe
+read at_status <"$at_status_file"
+#AT_STOP_62
+#AT_START_63
+at_fn_group_banner 63 'zbh2.ok-so-at:7' \
+  "Script: zbh2.tso" "                               "
+at_xfail=no
+(
+  $as_echo "63. $at_setup_line: testing $at_desc ..."
+  $at_traceon
+
+
+cat >script-zbh2 <<_ATEOF_ED
+H
+r !/usr/bin/gzcat ../../zbh2.d.gz
+$(test -s ../../zbh2.tso &&
+cat ../../zbh2.tso ||
+echo "w zbh2.o")
+wq zbh2.o
+_ATEOF_ED
+
+$as_echo "zbh2.ok-so-at:18" >"$at_check_line_file"
+(! ed --version | egrep -q 'all-extensions|ed-scrolling') \
+  && at_fn_check_skip 77 "$at_srcdir/zbh2.ok-so-at:18"
+{ set +x
+$as_echo "$at_srcdir/zbh2.ok-so-at:20: ed - <script-zbh2"
+at_fn_check_prepare_trace "zbh2.ok-so-at:20"
+( $at_check_trace; ed - <script-zbh2
+) >>"$at_stdout" 2>>"$at_stderr" 5>&-
+at_status=$? at_failed=false
+$at_check_filter
+echo stderr:; cat "$at_stderr"
+echo stdout:; tee stdout <"$at_stdout"
+at_fn_check_status 0 $at_status "$at_srcdir/zbh2.ok-so-at:20"
+$at_failed && at_fn_log_failure
+$at_traceon; }
+
+{ set +x
+$as_echo "$at_srcdir/zbh2.ok-so-at:22: diff -u ../../zbh2.r stdout"
+at_fn_check_prepare_trace "zbh2.ok-so-at:22"
+( $at_check_trace; diff -u ../../zbh2.r stdout
+) >>"$at_stdout" 2>>"$at_stderr" 5>&-
+at_status=$? at_failed=false
+$at_check_filter
+echo stderr:; cat "$at_stderr"
+echo stdout:; cat "$at_stdout"
+at_fn_check_status 0 $at_status "$at_srcdir/zbh2.ok-so-at:22"
+$at_failed && at_fn_log_failure
+$at_traceon; }
+
+  set +x
+  $at_times_p && times >"$at_times_file"
+) 5>&1 2>&1 7>&- | eval $at_tee_pipe
+read at_status <"$at_status_file"
+#AT_STOP_63
+#AT_START_64
+at_fn_group_banner 64 'a2.err-at:7' \
+  "Pipe: a2.err" "                                   "
+at_xfail=no
+(
+  $as_echo "64. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -4523,13 +4886,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_58
-#AT_START_59
-at_fn_group_banner 59 'addr1.err-at:7' \
+#AT_STOP_64
+#AT_START_65
+at_fn_group_banner 65 'addr1.err-at:7' \
   "Pipe: addr1.err" "                                "
 at_xfail=no
 (
-  $as_echo "59. $at_setup_line: testing $at_desc ..."
+  $as_echo "65. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -4562,13 +4925,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_59
-#AT_START_60
-at_fn_group_banner 60 'addr2.err-at:7' \
+#AT_STOP_65
+#AT_START_66
+at_fn_group_banner 66 'addr2.err-at:7' \
   "Pipe: addr2.err" "                                "
 at_xfail=no
 (
-  $as_echo "60. $at_setup_line: testing $at_desc ..."
+  $as_echo "66. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -4601,13 +4964,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_60
-#AT_START_61
-at_fn_group_banner 61 'bang1.err-at:7' \
+#AT_STOP_66
+#AT_START_67
+at_fn_group_banner 67 'bang1.err-at:7' \
   "Pipe: bang1.err" "                                "
 at_xfail=no
 (
-  $as_echo "61. $at_setup_line: testing $at_desc ..."
+  $as_echo "67. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -4640,13 +5003,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_61
-#AT_START_62
-at_fn_group_banner 62 'c1.err-at:7' \
+#AT_STOP_67
+#AT_START_68
+at_fn_group_banner 68 'c1.err-at:7' \
   "Pipe: c1.err" "                                   "
 at_xfail=no
 (
-  $as_echo "62. $at_setup_line: testing $at_desc ..."
+  $as_echo "68. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -4679,13 +5042,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_62
-#AT_START_63
-at_fn_group_banner 63 'd.err-at:7' \
+#AT_STOP_68
+#AT_START_69
+at_fn_group_banner 69 'd.err-at:7' \
   "Pipe: d.err" "                                    "
 at_xfail=no
 (
-  $as_echo "63. $at_setup_line: testing $at_desc ..."
+  $as_echo "69. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -4718,13 +5081,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_63
-#AT_START_64
-at_fn_group_banner 64 'e1.err-at:7' \
+#AT_STOP_69
+#AT_START_70
+at_fn_group_banner 70 'e1.err-at:7' \
   "Pipe: e1.err" "                                   "
 at_xfail=no
 (
-  $as_echo "64. $at_setup_line: testing $at_desc ..."
+  $as_echo "70. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -4757,13 +5120,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_64
-#AT_START_65
-at_fn_group_banner 65 'e2.err-at:7' \
+#AT_STOP_70
+#AT_START_71
+at_fn_group_banner 71 'e2.err-at:7' \
   "Pipe: e2.err" "                                   "
 at_xfail=no
 (
-  $as_echo "65. $at_setup_line: testing $at_desc ..."
+  $as_echo "71. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -4796,13 +5159,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_65
-#AT_START_66
-at_fn_group_banner 66 'e3.err-at:7' \
+#AT_STOP_71
+#AT_START_72
+at_fn_group_banner 72 'e3.err-at:7' \
   "Pipe: e3.err" "                                   "
 at_xfail=no
 (
-  $as_echo "66. $at_setup_line: testing $at_desc ..."
+  $as_echo "72. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -4835,13 +5198,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_66
-#AT_START_67
-at_fn_group_banner 67 'f1.err-at:7' \
+#AT_STOP_72
+#AT_START_73
+at_fn_group_banner 73 'f1.err-at:7' \
   "Pipe: f1.err" "                                   "
 at_xfail=no
 (
-  $as_echo "67. $at_setup_line: testing $at_desc ..."
+  $as_echo "73. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -4874,13 +5237,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_67
-#AT_START_68
-at_fn_group_banner 68 'f2.err-at:7' \
+#AT_STOP_73
+#AT_START_74
+at_fn_group_banner 74 'f2.err-at:7' \
   "Pipe: f2.err" "                                   "
 at_xfail=no
 (
-  $as_echo "68. $at_setup_line: testing $at_desc ..."
+  $as_echo "74. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -4913,13 +5276,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_68
-#AT_START_69
-at_fn_group_banner 69 'g1.err-at:7' \
+#AT_STOP_74
+#AT_START_75
+at_fn_group_banner 75 'g1.err-at:7' \
   "Pipe: g1.err" "                                   "
 at_xfail=no
 (
-  $as_echo "69. $at_setup_line: testing $at_desc ..."
+  $as_echo "75. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -4952,13 +5315,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_69
-#AT_START_70
-at_fn_group_banner 70 'g2.err-at:7' \
+#AT_STOP_75
+#AT_START_76
+at_fn_group_banner 76 'g2.err-at:7' \
   "Pipe: g2.err" "                                   "
 at_xfail=no
 (
-  $as_echo "70. $at_setup_line: testing $at_desc ..."
+  $as_echo "76. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -4991,13 +5354,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_70
-#AT_START_71
-at_fn_group_banner 71 'g3.err-at:7' \
+#AT_STOP_76
+#AT_START_77
+at_fn_group_banner 77 'g3.err-at:7' \
   "Pipe: g3.err" "                                   "
 at_xfail=no
 (
-  $as_echo "71. $at_setup_line: testing $at_desc ..."
+  $as_echo "77. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -5030,13 +5393,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_71
-#AT_START_72
-at_fn_group_banner 72 'h.err-at:7' \
+#AT_STOP_77
+#AT_START_78
+at_fn_group_banner 78 'h.err-at:7' \
   "Pipe: h.err" "                                    "
 at_xfail=no
 (
-  $as_echo "72. $at_setup_line: testing $at_desc ..."
+  $as_echo "78. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -5069,13 +5432,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_72
-#AT_START_73
-at_fn_group_banner 73 'i2.err-at:7' \
+#AT_STOP_78
+#AT_START_79
+at_fn_group_banner 79 'i2.err-at:7' \
   "Pipe: i2.err" "                                   "
 at_xfail=no
 (
-  $as_echo "73. $at_setup_line: testing $at_desc ..."
+  $as_echo "79. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -5108,13 +5471,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_73
-#AT_START_74
-at_fn_group_banner 74 'k2.err-at:7' \
+#AT_STOP_79
+#AT_START_80
+at_fn_group_banner 80 'k2.err-at:7' \
   "Pipe: k2.err" "                                   "
 at_xfail=no
 (
-  $as_echo "74. $at_setup_line: testing $at_desc ..."
+  $as_echo "80. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -5147,13 +5510,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_74
-#AT_START_75
-at_fn_group_banner 75 'k3.err-at:7' \
+#AT_STOP_80
+#AT_START_81
+at_fn_group_banner 81 'k3.err-at:7' \
   "Pipe: k3.err" "                                   "
 at_xfail=no
 (
-  $as_echo "75. $at_setup_line: testing $at_desc ..."
+  $as_echo "81. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -5186,13 +5549,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_75
-#AT_START_76
-at_fn_group_banner 76 'k4.err-at:7' \
+#AT_STOP_81
+#AT_START_82
+at_fn_group_banner 82 'k4.err-at:7' \
   "Pipe: k4.err" "                                   "
 at_xfail=no
 (
-  $as_echo "76. $at_setup_line: testing $at_desc ..."
+  $as_echo "82. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -5225,13 +5588,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_76
-#AT_START_77
-at_fn_group_banner 77 'm.err-at:7' \
+#AT_STOP_82
+#AT_START_83
+at_fn_group_banner 83 'm.err-at:7' \
   "Pipe: m.err" "                                    "
 at_xfail=no
 (
-  $as_echo "77. $at_setup_line: testing $at_desc ..."
+  $as_echo "83. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -5264,13 +5627,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_77
-#AT_START_78
-at_fn_group_banner 78 'q1.err-at:7' \
+#AT_STOP_83
+#AT_START_84
+at_fn_group_banner 84 'q1.err-at:7' \
   "Pipe: q1.err" "                                   "
 at_xfail=no
 (
-  $as_echo "78. $at_setup_line: testing $at_desc ..."
+  $as_echo "84. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -5303,13 +5666,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_78
-#AT_START_79
-at_fn_group_banner 79 'r2.err-at:7' \
+#AT_STOP_84
+#AT_START_85
+at_fn_group_banner 85 'r2.err-at:7' \
   "Pipe: r2.err" "                                   "
 at_xfail=no
 (
-  $as_echo "79. $at_setup_line: testing $at_desc ..."
+  $as_echo "85. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -5342,13 +5705,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_79
-#AT_START_80
-at_fn_group_banner 80 's1.err-at:7' \
+#AT_STOP_85
+#AT_START_86
+at_fn_group_banner 86 's1.err-at:7' \
   "Pipe: s1.err" "                                   "
 at_xfail=no
 (
-  $as_echo "80. $at_setup_line: testing $at_desc ..."
+  $as_echo "86. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -5381,13 +5744,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_80
-#AT_START_81
-at_fn_group_banner 81 's10.err-at:7' \
+#AT_STOP_86
+#AT_START_87
+at_fn_group_banner 87 's10.err-at:7' \
   "Pipe: s10.err" "                                  "
 at_xfail=no
 (
-  $as_echo "81. $at_setup_line: testing $at_desc ..."
+  $as_echo "87. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -5420,13 +5783,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_81
-#AT_START_82
-at_fn_group_banner 82 's3.err-at:7' \
+#AT_STOP_87
+#AT_START_88
+at_fn_group_banner 88 's3.err-at:7' \
   "Pipe: s3.err" "                                   "
 at_xfail=no
 (
-  $as_echo "82. $at_setup_line: testing $at_desc ..."
+  $as_echo "88. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -5459,13 +5822,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_82
-#AT_START_83
-at_fn_group_banner 83 's4.err-at:7' \
+#AT_STOP_88
+#AT_START_89
+at_fn_group_banner 89 's4.err-at:7' \
   "Pipe: s4.err" "                                   "
 at_xfail=no
 (
-  $as_echo "83. $at_setup_line: testing $at_desc ..."
+  $as_echo "89. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -5498,13 +5861,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_83
-#AT_START_84
-at_fn_group_banner 84 's5.err-at:7' \
+#AT_STOP_89
+#AT_START_90
+at_fn_group_banner 90 's5.err-at:7' \
   "Pipe: s5.err" "                                   "
 at_xfail=no
 (
-  $as_echo "84. $at_setup_line: testing $at_desc ..."
+  $as_echo "90. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -5537,13 +5900,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_84
-#AT_START_85
-at_fn_group_banner 85 's6.err-at:7' \
+#AT_STOP_90
+#AT_START_91
+at_fn_group_banner 91 's6.err-at:7' \
   "Pipe: s6.err" "                                   "
 at_xfail=no
 (
-  $as_echo "85. $at_setup_line: testing $at_desc ..."
+  $as_echo "91. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -5576,13 +5939,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_85
-#AT_START_86
-at_fn_group_banner 86 's7.err-at:7' \
+#AT_STOP_91
+#AT_START_92
+at_fn_group_banner 92 's7.err-at:7' \
   "Pipe: s7.err" "                                   "
 at_xfail=no
 (
-  $as_echo "86. $at_setup_line: testing $at_desc ..."
+  $as_echo "92. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -5615,13 +5978,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_86
-#AT_START_87
-at_fn_group_banner 87 's8.err-at:7' \
+#AT_STOP_92
+#AT_START_93
+at_fn_group_banner 93 's8.err-at:7' \
   "Pipe: s8.err" "                                   "
 at_xfail=no
 (
-  $as_echo "87. $at_setup_line: testing $at_desc ..."
+  $as_echo "93. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -5654,13 +6017,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_87
-#AT_START_88
-at_fn_group_banner 88 't1.err-at:7' \
+#AT_STOP_93
+#AT_START_94
+at_fn_group_banner 94 't1.err-at:7' \
   "Pipe: t1.err" "                                   "
 at_xfail=no
 (
-  $as_echo "88. $at_setup_line: testing $at_desc ..."
+  $as_echo "94. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -5693,13 +6056,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_88
-#AT_START_89
-at_fn_group_banner 89 't2.err-at:7' \
+#AT_STOP_94
+#AT_START_95
+at_fn_group_banner 95 't2.err-at:7' \
   "Pipe: t2.err" "                                   "
 at_xfail=no
 (
-  $as_echo "89. $at_setup_line: testing $at_desc ..."
+  $as_echo "95. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -5732,13 +6095,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_89
-#AT_START_90
-at_fn_group_banner 90 'u.err-at:7' \
+#AT_STOP_95
+#AT_START_96
+at_fn_group_banner 96 'u.err-at:7' \
   "Pipe: u.err" "                                    "
 at_xfail=no
 (
-  $as_echo "90. $at_setup_line: testing $at_desc ..."
+  $as_echo "96. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -5771,13 +6134,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_90
-#AT_START_91
-at_fn_group_banner 91 'w1.err-at:7' \
+#AT_STOP_96
+#AT_START_97
+at_fn_group_banner 97 'w1.err-at:7' \
   "Pipe: w1.err" "                                   "
 at_xfail=no
 (
-  $as_echo "91. $at_setup_line: testing $at_desc ..."
+  $as_echo "97. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -5810,13 +6173,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_91
-#AT_START_92
-at_fn_group_banner 92 'w2.err-at:7' \
+#AT_STOP_97
+#AT_START_98
+at_fn_group_banner 98 'w2.err-at:7' \
   "Pipe: w2.err" "                                   "
 at_xfail=no
 (
-  $as_echo "92. $at_setup_line: testing $at_desc ..."
+  $as_echo "98. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -5849,13 +6212,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_92
-#AT_START_93
-at_fn_group_banner 93 'w3.err-at:7' \
+#AT_STOP_98
+#AT_START_99
+at_fn_group_banner 99 'w3.err-at:7' \
   "Pipe: w3.err" "                                   "
 at_xfail=no
 (
-  $as_echo "93. $at_setup_line: testing $at_desc ..."
+  $as_echo "99. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -5888,13 +6251,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_93
-#AT_START_94
-at_fn_group_banner 94 'z.err-at:7' \
+#AT_STOP_99
+#AT_START_100
+at_fn_group_banner 100 'z.err-at:7' \
   "Pipe: z.err" "                                    "
 at_xfail=no
 (
-  $as_echo "94. $at_setup_line: testing $at_desc ..."
+  $as_echo "100. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -5927,13 +6290,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_94
-#AT_START_95
-at_fn_group_banner 95 'a2.fail-at:7' \
+#AT_STOP_100
+#AT_START_101
+at_fn_group_banner 101 'a2.fail-at:7' \
   "Fail: a2.err" "                                   "
 at_xfail=no
 (
-  $as_echo "95. $at_setup_line: testing $at_desc ..."
+  $as_echo "101. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -5963,13 +6326,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_95
-#AT_START_96
-at_fn_group_banner 96 'addr1.fail-at:7' \
+#AT_STOP_101
+#AT_START_102
+at_fn_group_banner 102 'addr1.fail-at:7' \
   "Fail: addr1.err" "                                "
 at_xfail=no
 (
-  $as_echo "96. $at_setup_line: testing $at_desc ..."
+  $as_echo "102. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -5999,13 +6362,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_96
-#AT_START_97
-at_fn_group_banner 97 'addr2.fail-at:7' \
+#AT_STOP_102
+#AT_START_103
+at_fn_group_banner 103 'addr2.fail-at:7' \
   "Fail: addr2.err" "                                "
 at_xfail=no
 (
-  $as_echo "97. $at_setup_line: testing $at_desc ..."
+  $as_echo "103. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -6035,13 +6398,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_97
-#AT_START_98
-at_fn_group_banner 98 'bang1.fail-at:7' \
+#AT_STOP_103
+#AT_START_104
+at_fn_group_banner 104 'bang1.fail-at:7' \
   "Fail: bang1.err" "                                "
 at_xfail=no
 (
-  $as_echo "98. $at_setup_line: testing $at_desc ..."
+  $as_echo "104. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -6071,13 +6434,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_98
-#AT_START_99
-at_fn_group_banner 99 'c1.fail-at:7' \
+#AT_STOP_104
+#AT_START_105
+at_fn_group_banner 105 'c1.fail-at:7' \
   "Fail: c1.err" "                                   "
 at_xfail=no
 (
-  $as_echo "99. $at_setup_line: testing $at_desc ..."
+  $as_echo "105. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -6107,13 +6470,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_99
-#AT_START_100
-at_fn_group_banner 100 'd.fail-at:7' \
+#AT_STOP_105
+#AT_START_106
+at_fn_group_banner 106 'd.fail-at:7' \
   "Fail: d.err" "                                    "
 at_xfail=no
 (
-  $as_echo "100. $at_setup_line: testing $at_desc ..."
+  $as_echo "106. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -6143,13 +6506,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_100
-#AT_START_101
-at_fn_group_banner 101 'e1.fail-at:7' \
+#AT_STOP_106
+#AT_START_107
+at_fn_group_banner 107 'e1.fail-at:7' \
   "Fail: e1.err" "                                   "
 at_xfail=no
 (
-  $as_echo "101. $at_setup_line: testing $at_desc ..."
+  $as_echo "107. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -6179,13 +6542,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_101
-#AT_START_102
-at_fn_group_banner 102 'e2.fail-at:7' \
+#AT_STOP_107
+#AT_START_108
+at_fn_group_banner 108 'e2.fail-at:7' \
   "Fail: e2.err" "                                   "
 at_xfail=no
 (
-  $as_echo "102. $at_setup_line: testing $at_desc ..."
+  $as_echo "108. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -6215,13 +6578,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_102
-#AT_START_103
-at_fn_group_banner 103 'e3.fail-at:7' \
+#AT_STOP_108
+#AT_START_109
+at_fn_group_banner 109 'e3.fail-at:7' \
   "Fail: e3.err" "                                   "
 at_xfail=no
 (
-  $as_echo "103. $at_setup_line: testing $at_desc ..."
+  $as_echo "109. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -6251,13 +6614,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_103
-#AT_START_104
-at_fn_group_banner 104 'f1.fail-at:7' \
+#AT_STOP_109
+#AT_START_110
+at_fn_group_banner 110 'f1.fail-at:7' \
   "Fail: f1.err" "                                   "
 at_xfail=no
 (
-  $as_echo "104. $at_setup_line: testing $at_desc ..."
+  $as_echo "110. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -6287,13 +6650,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_104
-#AT_START_105
-at_fn_group_banner 105 'f2.fail-at:7' \
+#AT_STOP_110
+#AT_START_111
+at_fn_group_banner 111 'f2.fail-at:7' \
   "Fail: f2.err" "                                   "
 at_xfail=no
 (
-  $as_echo "105. $at_setup_line: testing $at_desc ..."
+  $as_echo "111. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -6323,13 +6686,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_105
-#AT_START_106
-at_fn_group_banner 106 'g1.fail-at:7' \
+#AT_STOP_111
+#AT_START_112
+at_fn_group_banner 112 'g1.fail-at:7' \
   "Fail: g1.err" "                                   "
 at_xfail=no
 (
-  $as_echo "106. $at_setup_line: testing $at_desc ..."
+  $as_echo "112. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -6359,13 +6722,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_106
-#AT_START_107
-at_fn_group_banner 107 'g2.fail-at:7' \
+#AT_STOP_112
+#AT_START_113
+at_fn_group_banner 113 'g2.fail-at:7' \
   "Fail: g2.err" "                                   "
 at_xfail=no
 (
-  $as_echo "107. $at_setup_line: testing $at_desc ..."
+  $as_echo "113. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -6395,13 +6758,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_107
-#AT_START_108
-at_fn_group_banner 108 'g3.fail-at:7' \
+#AT_STOP_113
+#AT_START_114
+at_fn_group_banner 114 'g3.fail-at:7' \
   "Fail: g3.err" "                                   "
 at_xfail=no
 (
-  $as_echo "108. $at_setup_line: testing $at_desc ..."
+  $as_echo "114. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -6431,13 +6794,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_108
-#AT_START_109
-at_fn_group_banner 109 'h.fail-at:7' \
+#AT_STOP_114
+#AT_START_115
+at_fn_group_banner 115 'h.fail-at:7' \
   "Fail: h.err" "                                    "
 at_xfail=no
 (
-  $as_echo "109. $at_setup_line: testing $at_desc ..."
+  $as_echo "115. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -6467,13 +6830,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_109
-#AT_START_110
-at_fn_group_banner 110 'i2.fail-at:7' \
+#AT_STOP_115
+#AT_START_116
+at_fn_group_banner 116 'i2.fail-at:7' \
   "Fail: i2.err" "                                   "
 at_xfail=no
 (
-  $as_echo "110. $at_setup_line: testing $at_desc ..."
+  $as_echo "116. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -6503,13 +6866,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_110
-#AT_START_111
-at_fn_group_banner 111 'k2.fail-at:7' \
+#AT_STOP_116
+#AT_START_117
+at_fn_group_banner 117 'k2.fail-at:7' \
   "Fail: k2.err" "                                   "
 at_xfail=no
 (
-  $as_echo "111. $at_setup_line: testing $at_desc ..."
+  $as_echo "117. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -6539,13 +6902,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_111
-#AT_START_112
-at_fn_group_banner 112 'k3.fail-at:7' \
+#AT_STOP_117
+#AT_START_118
+at_fn_group_banner 118 'k3.fail-at:7' \
   "Fail: k3.err" "                                   "
 at_xfail=no
 (
-  $as_echo "112. $at_setup_line: testing $at_desc ..."
+  $as_echo "118. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -6575,13 +6938,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_112
-#AT_START_113
-at_fn_group_banner 113 'k4.fail-at:7' \
+#AT_STOP_118
+#AT_START_119
+at_fn_group_banner 119 'k4.fail-at:7' \
   "Fail: k4.err" "                                   "
 at_xfail=no
 (
-  $as_echo "113. $at_setup_line: testing $at_desc ..."
+  $as_echo "119. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -6611,13 +6974,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_113
-#AT_START_114
-at_fn_group_banner 114 'm.fail-at:7' \
+#AT_STOP_119
+#AT_START_120
+at_fn_group_banner 120 'm.fail-at:7' \
   "Fail: m.err" "                                    "
 at_xfail=no
 (
-  $as_echo "114. $at_setup_line: testing $at_desc ..."
+  $as_echo "120. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -6647,13 +7010,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_114
-#AT_START_115
-at_fn_group_banner 115 'q1.fail-at:7' \
+#AT_STOP_120
+#AT_START_121
+at_fn_group_banner 121 'q1.fail-at:7' \
   "Fail: q1.err" "                                   "
 at_xfail=no
 (
-  $as_echo "115. $at_setup_line: testing $at_desc ..."
+  $as_echo "121. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -6683,13 +7046,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_115
-#AT_START_116
-at_fn_group_banner 116 'r2.fail-at:7' \
+#AT_STOP_121
+#AT_START_122
+at_fn_group_banner 122 'r2.fail-at:7' \
   "Fail: r2.err" "                                   "
 at_xfail=no
 (
-  $as_echo "116. $at_setup_line: testing $at_desc ..."
+  $as_echo "122. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -6719,13 +7082,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_116
-#AT_START_117
-at_fn_group_banner 117 's1.fail-at:7' \
+#AT_STOP_122
+#AT_START_123
+at_fn_group_banner 123 's1.fail-at:7' \
   "Fail: s1.err" "                                   "
 at_xfail=no
 (
-  $as_echo "117. $at_setup_line: testing $at_desc ..."
+  $as_echo "123. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -6755,13 +7118,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_117
-#AT_START_118
-at_fn_group_banner 118 's10.fail-at:7' \
+#AT_STOP_123
+#AT_START_124
+at_fn_group_banner 124 's10.fail-at:7' \
   "Fail: s10.err" "                                  "
 at_xfail=no
 (
-  $as_echo "118. $at_setup_line: testing $at_desc ..."
+  $as_echo "124. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -6791,13 +7154,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_118
-#AT_START_119
-at_fn_group_banner 119 's3.fail-at:7' \
+#AT_STOP_124
+#AT_START_125
+at_fn_group_banner 125 's3.fail-at:7' \
   "Fail: s3.err" "                                   "
 at_xfail=no
 (
-  $as_echo "119. $at_setup_line: testing $at_desc ..."
+  $as_echo "125. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -6827,13 +7190,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_119
-#AT_START_120
-at_fn_group_banner 120 's4.fail-at:7' \
+#AT_STOP_125
+#AT_START_126
+at_fn_group_banner 126 's4.fail-at:7' \
   "Fail: s4.err" "                                   "
 at_xfail=no
 (
-  $as_echo "120. $at_setup_line: testing $at_desc ..."
+  $as_echo "126. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -6863,13 +7226,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_120
-#AT_START_121
-at_fn_group_banner 121 's5.fail-at:7' \
+#AT_STOP_126
+#AT_START_127
+at_fn_group_banner 127 's5.fail-at:7' \
   "Fail: s5.err" "                                   "
 at_xfail=no
 (
-  $as_echo "121. $at_setup_line: testing $at_desc ..."
+  $as_echo "127. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -6899,13 +7262,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_121
-#AT_START_122
-at_fn_group_banner 122 's6.fail-at:7' \
+#AT_STOP_127
+#AT_START_128
+at_fn_group_banner 128 's6.fail-at:7' \
   "Fail: s6.err" "                                   "
 at_xfail=no
 (
-  $as_echo "122. $at_setup_line: testing $at_desc ..."
+  $as_echo "128. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -6935,13 +7298,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_122
-#AT_START_123
-at_fn_group_banner 123 's7.fail-at:7' \
+#AT_STOP_128
+#AT_START_129
+at_fn_group_banner 129 's7.fail-at:7' \
   "Fail: s7.err" "                                   "
 at_xfail=no
 (
-  $as_echo "123. $at_setup_line: testing $at_desc ..."
+  $as_echo "129. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -6971,13 +7334,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_123
-#AT_START_124
-at_fn_group_banner 124 's8.fail-at:7' \
+#AT_STOP_129
+#AT_START_130
+at_fn_group_banner 130 's8.fail-at:7' \
   "Fail: s8.err" "                                   "
 at_xfail=no
 (
-  $as_echo "124. $at_setup_line: testing $at_desc ..."
+  $as_echo "130. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -7007,13 +7370,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_124
-#AT_START_125
-at_fn_group_banner 125 't1.fail-at:7' \
+#AT_STOP_130
+#AT_START_131
+at_fn_group_banner 131 't1.fail-at:7' \
   "Fail: t1.err" "                                   "
 at_xfail=no
 (
-  $as_echo "125. $at_setup_line: testing $at_desc ..."
+  $as_echo "131. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -7043,13 +7406,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_125
-#AT_START_126
-at_fn_group_banner 126 't2.fail-at:7' \
+#AT_STOP_131
+#AT_START_132
+at_fn_group_banner 132 't2.fail-at:7' \
   "Fail: t2.err" "                                   "
 at_xfail=no
 (
-  $as_echo "126. $at_setup_line: testing $at_desc ..."
+  $as_echo "132. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -7079,13 +7442,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_126
-#AT_START_127
-at_fn_group_banner 127 'u.fail-at:7' \
+#AT_STOP_132
+#AT_START_133
+at_fn_group_banner 133 'u.fail-at:7' \
   "Fail: u.err" "                                    "
 at_xfail=no
 (
-  $as_echo "127. $at_setup_line: testing $at_desc ..."
+  $as_echo "133. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -7115,13 +7478,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_127
-#AT_START_128
-at_fn_group_banner 128 'w1.fail-at:7' \
+#AT_STOP_133
+#AT_START_134
+at_fn_group_banner 134 'w1.fail-at:7' \
   "Fail: w1.err" "                                   "
 at_xfail=no
 (
-  $as_echo "128. $at_setup_line: testing $at_desc ..."
+  $as_echo "134. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -7151,13 +7514,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_128
-#AT_START_129
-at_fn_group_banner 129 'w2.fail-at:7' \
+#AT_STOP_134
+#AT_START_135
+at_fn_group_banner 135 'w2.fail-at:7' \
   "Fail: w2.err" "                                   "
 at_xfail=no
 (
-  $as_echo "129. $at_setup_line: testing $at_desc ..."
+  $as_echo "135. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -7187,13 +7550,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_129
-#AT_START_130
-at_fn_group_banner 130 'w3.fail-at:7' \
+#AT_STOP_135
+#AT_START_136
+at_fn_group_banner 136 'w3.fail-at:7' \
   "Fail: w3.err" "                                   "
 at_xfail=no
 (
-  $as_echo "130. $at_setup_line: testing $at_desc ..."
+  $as_echo "136. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -7223,13 +7586,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_130
-#AT_START_131
-at_fn_group_banner 131 'z.fail-at:7' \
+#AT_STOP_136
+#AT_START_137
+at_fn_group_banner 137 'z.fail-at:7' \
   "Fail: z.err" "                                    "
 at_xfail=no
 (
-  $as_echo "131. $at_setup_line: testing $at_desc ..."
+  $as_echo "137. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -7259,4 +7622,4 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_131
+#AT_STOP_137

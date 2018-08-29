@@ -447,6 +447,10 @@ msgstr "Ninguna expresión regular previa"
 #~ msgstr "Excedido profunidad máxima del marco de pila."
 
 #, fuzzy
+#~ msgid "dup2 error"
+#~ msgstr "Error bifurcación"
+
+#, fuzzy
 #~ msgid "Unknown error"
 #~ msgstr "Comando desconocido"
 

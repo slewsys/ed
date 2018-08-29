@@ -57,8 +57,8 @@ update-gnulib:
 	fi;								      \
 	if test -f lib/patch-Makefile.am.diff; then			      \
 	  echo "*** Patching refreshed lib/Makefile.am ***";		      \
+	  patch lib/Makefile.am lib/patch-Makefile.am.diff;		      \
 	fi;								      \
-	patch lib/Makefile.am lib/patch-Makefile.am.diff;		      \
 	echo "*** Running autogen.sh ***";				      \
 	./autogen.sh --silent
 
@@ -71,32 +71,31 @@ update-testsuite-dist:
 	    echo "$@: $(top_srcdir): Permission denied.";		      \
 	    exit 1;							      \
 	fi;								      \
-	chmod +x $(top_srcdir)/upgrade.sh;				      \
 	chmod +x $(top_srcdir)/testsuite/ts-am-sw.ed;			      \
-	if test -f $(top_srcdir)/testsuite/.ts-am-sw; then		      \
-	  (cd $(top_srcdir)/testsuite && ./ts-am-sw.ed && rm -f ./.ts-am-sw); \
-	fi;								      \
 	if test ! -f $(top_srcdir)/testsuite/.ts-am-sw; then		      \
 	  (cd $(top_srcdir)/testsuite && ./ts-am-sw.ed && touch ./.ts-am-sw); \
 	fi;								      \
-	(cd $(top_srcdir)/ && ./upgrade.sh);				      \
 	$(MAKE) $(AM_MAKEFLAGS) all
 	-rm -f $(top_srcdir)/testsuite/testsuite;			      \
 	$(MAKE) $(AM_MAKEFLAGS) check;					      \
-	cp $(top_srcdir)/testsuite/testsuite				      \
-	  $(top_srcdir)/testsuite/testsuite-dist
+	@cp $(top_srcdir)/testsuite/testsuite				      \
+	  $(top_srcdir)/testsuite/testsuite-dist;			      \
+	if test -f $(top_srcdir)/testsuite/.ts-am-sw; then		      \
+	  (cd $(top_srcdir)/testsuite && ./ts-am-sw.ed && rm -f ./.ts-am-sw); \
+	fi
 
 update-po:
 	-(cd $(top_srcdir)/po && $(MAKE) $(AM_MAKEFLAGS) update-po);	      \
 	if test -f $(top_srcdir)/testsuite/.ts-am-sw; then		      \
 	  (cd $(top_srcdir)/testsuite && ./ts-am-sw.ed && rm -f ./.ts-am-sw); \
 	fi;								      \
-	(cd $(top_srcdir)/ && ./upgrade.sh);				      \
 	$(MAKE) $(AM_MAKEFLAGS) clean
 
 distclean-local:
+	if test -f $(top_srcdir)/testsuite/.ts-am-sw; then		      \
+	  (cd $(top_srcdir)/testsuite && ./ts-am-sw.ed && rm -f ./.ts-am-sw); \
+	fi
 	rm -f configure.orig
-	rm -rf  testsuite/.ts-am-sw autom4te.cache
 	rm -rf GPATH GRTAGS GSYMS GTAGS
 	find . -name '[Tt][Aa][Gg][Ss]' -type f -delete
 	find . \( -name '*~' -or -name '#*#' \) -type f -delete
