@@ -66,6 +66,20 @@ address_range (ed)
     first = second;
   else
     ed->exec->region->addrs = 2;
+
+  if (!(ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL)))
+    {
+      /* Allow one-line rollover of addresses. */
+      if (first == -1)
+        first = ed->state->lines;
+      else if (first == ed->state->lines + 1)
+        first = 0;
+      if (second == -1)
+        second = ed->state->lines;
+      else if (second == ed->state->lines + 1)
+        second = 0;
+    }
+
   if ((status = check_address_bounds (first, ed)) < 0
       || (status = check_address_bounds (second, ed)) < 0
       || (status = check_address_bounds (dot, ed)) < 0)

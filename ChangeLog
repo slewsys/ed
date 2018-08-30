@@ -1,3 +1,18 @@
+2018-08-30  Andrew L. Moore  <slewsys@gmail.com>
+
+	* src/parse.c (address_range): Enable pseudo-modulus addressing:
+	Address 0 - 1 == last address, and last address + 1 == address 0.
+	This allows constructs such as:
+	ed <<EOF
+	a
+	hello
+	.
+	-ka
+	+kb
+	'a+,'b-p
+	EOF
+
+
 2018-08-24  Andrew L. Moore  <slewsys@gmail.com>
 
 	* src/utf8.c (utf8_char_display_width): Initial support for paging

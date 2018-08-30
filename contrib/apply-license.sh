@@ -1,7 +1,9 @@
 #!/bin/sh
 #
 # @(#) apply-license
-
+#
+# This script inserts a requested license in ed source files.
+#
 declare script_name=${0##*/}
 declare usage="Usage: apply-license bsd|mit|gpl2|gpl3"
 
@@ -45,7 +47,8 @@ Q
 EOF
             )
 
-for src in src/*.[ch]; do
+#for src in src/*.[ch]; do
+for src in src/o.c; do
     ed - $src <<EOF
 /Copyright.*SlewSys/-ka
 /This file is part of ed/+kb
