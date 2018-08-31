@@ -47,8 +47,7 @@ Q
 EOF
             )
 
-#for src in src/*.[ch]; do
-for src in src/o.c; do
+for src in src/*.[ch]; do
     ed - $src <<EOF
 /Copyright.*SlewSys/-ka
 /This file is part of ed/+kb

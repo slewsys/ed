@@ -1023,6 +1023,10 @@ r_cmd (ed)
     }
   SKIP_WHITESPACE (ed);
 
+  /* If file glob empty, use current file, not first in list!. */
+  if (ed->file->is_glob && *ed->input == '\n')
+    ed->file->is_glob = 0;
+
   FILE_NAME (fn, len, 0, !ed->file->name, 1, ed);
 
   spl1 ();
@@ -1407,6 +1411,11 @@ w_cmd (ed)
   SKIP_WHITESPACE (ed);
 
   cz = *ed->input == '!';
+
+  /* If file glob empty, use current file, not first in list!. */
+  if (ed->file->is_glob && *ed->input == '\n')
+    ed->file->is_glob = 0;
+
 #ifdef WANT_SAFE_WRITE
   FILE_NAME (fn, len, ed->file->is_glob,
              ed->file->is_glob ? *ed->input != '\n' : !ed->file->name, 1, ed);

@@ -1,5 +1,8 @@
 2018-08-31  Andrew L. Moore  <slewsys@gmail.com>
 
+	* src/exec.c (r_cmd, w_cmd): If file glob empty, use current file
+	name.
+
 	* src/exec.c (z_cmd, Z_cmd, scroll_backward_half)
 	(scroll_forward_half): An address followed by a scroll command
 	should be equivalent to an addressed scroll command - e.g., the
