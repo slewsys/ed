@@ -10,7 +10,7 @@
 
 /* Static function declarations. */
 
-#ifdef WANT_ED_SCROLLING
+#ifdef WANT_ED_SCROLL
 static int display_frame_buffer __P ((const ed_frame_buffer_t *,
                                       ed_buffer_t *));
 static ed_frame_node_t *dup_frame_node __P ((const ed_frame_node_t *,
@@ -39,7 +39,7 @@ static unsigned int sgr_span __P ((const char *));
 
 #define RIGHT_MARGIN TAB_WIDTH
 
-#ifndef WANT_ED_SCROLLING
+#ifndef WANT_ED_SCROLL
 static int put_tty_line __P ((ed_line_node_t *, off_t, ed_buffer_t *));
 
 /* display_lines: Print a range of lines. Return status (<= 0). */
@@ -230,7 +230,7 @@ put_tty_line (lp, addr, ed)
 }
 
 
-#else /* WANT_ED_SCROLLING */
+#else /* WANT_ED_SCROLL */
 
 /* INIT_FB_ROW: Initialize frame buffer row. */
 # define INIT_FB_ROW(bp, caddr, off, fb)                                      \
@@ -898,7 +898,7 @@ dup_frame_node (rp, ed)
   np->text_i = rp->text_i;
   return np;
 }
-#endif  /* WANT_ED_SCROLLING */
+#endif  /* WANT_ED_SCROLL */
 
 /* sgr_span: Return length of ANSI SGR sequence, otherwise 0. */
 static unsigned int

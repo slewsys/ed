@@ -1174,6 +1174,11 @@ scroll_backward_half (ed)
       ed->exec->err = _("Unknown command");
       return ERR;
     }
+
+  /* Allow `[' command to succeed immediately after opening file. */
+  if (!ed->display->is_paging && ed->display->page_addr == 0)
+    ed->display->page_addr = ed->state->dot;
+
   if ((status =
        is_valid_range (ed->display->page_addr, ed->display->page_addr, ed)) < 0)
     return status;
@@ -1236,6 +1241,11 @@ scroll_forward_half (ed)
 
   if (!ed->display->is_paging || ed->exec->region->addrs)
     {
+
+      /* Allow `]' command to succeed immediately after opening file. */
+      if (!ed->display->is_paging && ed->display->page_addr == 0)
+        ed->display->page_addr = ed->state->dot;
+
       if ((status = is_valid_range (ed->display->page_addr,
                                     ed->display->page_addr, ed)) < 0)
         return status;
@@ -1542,6 +1552,7 @@ Z_cmd (ed)
 {
   size_t len = 0;
   off_t addr = 0;
+  int c = *(ed->input - 1);
   int status = 0;               /* Return status */
 
   /* scroll backward */
@@ -1566,6 +1577,11 @@ Z_cmd (ed)
       addr -= !(ed->exec->global || ed->display->overflow
                 || (ed->display->io_f & (ZHBW | ZHFW)
                     && (ed->state->dot == ed->state->lines)));
+
+      /* Allow `Z' command to succeed immediately after opening file. */
+      if (!ed->display->is_paging && c == 'Z' && addr < ed->state->lines)
+        ++addr;
+
     }
   if ((status = is_valid_range (ed->exec->region->start = 1, addr, ed)) < 0)
     return status;
@@ -1616,6 +1632,10 @@ z_cmd (ed)
 
   addr = c == 'z' ? ed->state->dot : ed->exec->region->end;
   addr += !(ed->exec->global || ed->display->underflow);
+
+  /* Allow `z' command to succeed immediately after opening file. */
+  if (!ed->display->is_paging && c == 'z' && addr > 1)
+    --addr;
 
   /*
    * If no address specified (i.e., ed->exec->region->addrs == 0),

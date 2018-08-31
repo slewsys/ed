@@ -256,7 +256,7 @@ AS_IF([test ."$enable_all_extensions" = .'yes'],
   [enable_file_glob=yes]
   [enable_file_lock=yes]
   [enable_ed_macro=yes]
-  [enable_ed_scrolling=yes]
+  [enable_ed_scroll=yes]
   [enable_des_encryption=yes])
 
 AC_MSG_CHECKING([whether ED environment variable support is requested])
@@ -341,12 +341,12 @@ AC_ARG_ENABLE([script-flags],
 AC_MSG_RESULT([${enable_script_flags:-no}])
 
 AC_MSG_CHECKING([whether ED scrolling support is requested])
-AC_ARG_ENABLE([ed-scrolling],
-  [AS_HELP_STRING([--enable-ed-scrolling],
+AC_ARG_ENABLE([ed-scroll],
+  [AS_HELP_STRING([--enable-ed-scroll],
     [enable ED scrolling.])],
-  [AC_DEFINE([WANT_ED_SCROLLING], [1],
+  [AC_DEFINE([WANT_ED_SCROLL], [1],
     [Define to 1 to enable ED scrolling support.])],[])
-AC_MSG_RESULT([${enable_ed_scrolling:-no}])
+AC_MSG_RESULT([${enable_ed_scroll:-no}])
 
 AC_MSG_CHECKING([whether DES encryption support is requested])
 AC_ARG_ENABLE([des-encryption],

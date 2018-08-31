@@ -1,17 +1,32 @@
+2018-08-31  Andrew L. Moore  <slewsys@gmail.com>
+
+	* src/exec.c (z_cmd, Z_cmd, scroll_backward_half)
+	(scroll_forward_half): An address followed by a scroll command
+	should be equivalent to an addressed scroll command - e.g., the
+	sequence of commands:
+
+	  50
+	  Z
+
+	should be equivalent to:
+
+	  50Z
+
 2018-08-30  Andrew L. Moore  <slewsys@gmail.com>
 
 	* src/parse.c (address_range): Enable pseudo-modulus addressing:
 	Address 0 - 1 == last address, and last address + 1 == address 0.
 	This allows constructs such as:
-	ed <<EOF
-	a
-	hello
-	.
-	-ka
-	+kb
-	'a+,'b-p
-	EOF
 
+	  $ ed <<EOF
+	  a
+	  hello
+	  .
+	  -ka
+	  +kb
+	  'a+,'b-p
+	  Q
+	  EOF
 
 2018-08-24  Andrew L. Moore  <slewsys@gmail.com>
 
@@ -293,29 +308,29 @@
 	in registers 1 and 2, with macro 1 calling macro 2. The
 	second-to-last command, `<1@', invokes macro 1 with output:
 
-	    hello
-	    world
+	  hello
+	  world
 
 	Here is the (tab-indented) script:
 
-	ed -s <<EOF
-	    a
-	    a
-	    world
-	    y
-	    p
-	    a
-	    hello
-	    y
-	    p
-	    <2@
-	    .
-	    g/^y/s;;.;
-	    1;/^p/m>2
-	    ,m>1
-	    <1@
-	    wq o.tmp
-	EOF
+	  $ ed -s <<-EOF
+		  a
+		  a
+		  world
+		  y
+		  p
+		  a
+		  hello
+		  y
+		  p
+		  <2@
+		  .
+		  g/^y/s;;.;
+		  1;/^p/m>2
+		  ,m>1
+		  <1@
+		  wq o.tmp
+		  EOF
 
 2018-07-07  Andrew L. Moore  <slewsys@gmail.com>
 

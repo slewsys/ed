@@ -1004,7 +1004,7 @@ void save_substitute __P ((regex_t *, unsigned, off_t, off_t, unsigned,
 int script_from_register  __P ((ed_buffer_t *));
 #endif
 
-#ifdef WANT_ED_SCROLLING
+#ifdef WANT_ED_SCROLL
 int scroll_lines __P ((off_t, off_t, ed_buffer_t *));
 #endif
 

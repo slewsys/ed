@@ -1342,7 +1342,7 @@ enable_file_lock
 enable_ed_macro
 enable_ed_register
 enable_script_flags
-enable_ed_scrolling
+enable_ed_scroll
 enable_des_encryption
 '
       ac_precious_vars='build_alias
@@ -2007,7 +2007,7 @@ Optional Features:
                           script flags)
   --enable-ed-register    enable ED register support
   --enable-script-flags   enable ED command-line script flags
-  --enable-ed-scrolling   enable ED scrolling.
+  --enable-ed-scroll      enable ED scrolling.
   --enable-des-encryption enable DES encryption/decryption of files.
 
 Optional Packages:
@@ -30490,7 +30490,7 @@ if test ."$enable_all_extensions" = .'yes'; then :
   enable_file_glob=yes
   enable_file_lock=yes
   enable_ed_macro=yes
-  enable_ed_scrolling=yes
+  enable_ed_scroll=yes
   enable_des_encryption=yes
 fi
 
@@ -30617,15 +30617,15 @@ $as_echo "${enable_script_flags:-no}" >&6; }
 
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether ED scrolling support is requested" >&5
 $as_echo_n "checking whether ED scrolling support is requested... " >&6; }
-# Check whether --enable-ed-scrolling was given.
-if test "${enable_ed_scrolling+set}" = set; then :
-  enableval=$enable_ed_scrolling;
-$as_echo "#define WANT_ED_SCROLLING 1" >>confdefs.h
+# Check whether --enable-ed-scroll was given.
+if test "${enable_ed_scroll+set}" = set; then :
+  enableval=$enable_ed_scroll;
+$as_echo "#define WANT_ED_SCROLL 1" >>confdefs.h
 
 fi
 
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: ${enable_ed_scrolling:-no}" >&5
-$as_echo "${enable_ed_scrolling:-no}" >&6; }
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: ${enable_ed_scroll:-no}" >&5
+$as_echo "${enable_ed_scroll:-no}" >&6; }
 
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether DES encryption support is requested" >&5
 $as_echo_n "checking whether DES encryption support is requested... " >&6; }

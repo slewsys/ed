@@ -866,7 +866,7 @@
 #undef WANT_ED_REGISTER
 
 /* Define to 1 to enable ED scrolling support. */
-#undef WANT_ED_SCROLLING
+#undef WANT_ED_SCROLL
 
 /* Define to 1 to enable modifying ED buffer via external filters. */
 #undef WANT_EXTERNAL_FILTER
