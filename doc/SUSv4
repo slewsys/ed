@@ -15,6 +15,147 @@ option `-G'.
 * EXTENSIONS
 ------------
 
+** Scrolling
+   If ed is compiled with configure option `--enable-ed-scroll', then
+   several commands for backward and forward scrolling are available
+   as follows:
+
+     (.)zn - Display next n lines from given address
+     (.)Zn - Display previous n lines from given address
+     (.)]n - Display next n / 2 lines
+     (.)[n - Display previous n / 2 lines
+
+   where n is a number which, if not specified, defaults to the
+   current display height.
+
+   Note that the half-page scrolling commands are presently only
+   supported for line-oriented documents - i.e., those whose lines are
+   shorter than the width of the display.
+
+   UTF-8 multibyte characters with East Asian Ambiguous width
+   attribute are displayed as narrow (i.e., occupying a single column)
+   per recommendation of Unicode technical report UAX #11.
+
+** Cut and Paste
+   Cut and paste is enabled by `configure` option `--enable-ed-register`.
+
+   It is implemented by means of `ed`'s move (`m`), copy (`t`) and
+   delete (`d`) commands:
+
+     (.,.)m>  - Move address range to unnamed register.
+     (.,.)t>  - Copy address range to unnamed register.
+     <m(.)    - Move unnamed register contents to after given address.
+     <t(.)    - Copy unnamed register contents to after given address.
+
+   Comparing the syntax of cut-and-paste commands with `ed`'s move and
+   copy commands:
+
+     (.,.)m(.) - Move address range to after given address.
+     (.,.)t(.) - Copy address range to after given address.
+
+   evidently the redirection operator `<` reads from the unnamed
+   register and `>` writes to the unnamed register.
+
+   Deleted lines are automatically moved to the unnamed register, so
+   to cut-and-paste lines 1 through 10 to the end of buffer, one could
+   use the command sequence:
+
+     1,10d
+     <m$
+
+   Named registers are also supported: `<n' reads from register `n',
+   and `>n' writes to register `n' where n is in the range 0 ... 9.
+   Finally, registers can be appended to using the syntax `>>n`.
+
+** File globbing
+   If ed is compiled with the configure option `--enable-file-globbing',
+   then new file commands are defined by prefixing a `~' (tilde) to
+   existing ones. The new commands accept glob(3) file patterns. For
+   instance, to edit files whose names begin with the letter `a', the
+   command `~e a*' creates a list of matching files and opens the
+   first file in the list for editing. Subsequent files in the list
+   can be opened with either the edit next command: `en' or write
+   current file and edit next command: `wn'. The command `~e' without
+   arguments reopens the first file in the list (similar to vi(1)'s
+   `:rewind'). The command `~f' prints the complete list to standard
+   output.
+
+   In order for globbing read (`~r') and write (`~w') to succeed, the
+   file glob must expand uniquely to a single file. Otherwise, these
+   commands fail with diagnostic "Too many file names". Furthermore,
+   if no arguments are provided, both of these behave the same as
+   traditional read and write commands - i.e., the current default
+   file is used.
+
+   The file commands `~E', `~e', `~f' `~r', `~W' and `~w' process file
+   arguments for backslash escapes prior to expansion, i.e., any
+   character preceded by `\' (backslash) is interpreted literally. If
+   the first unescaped character of the file argument is exclamation
+   mark (`!'), then the rest of the line is interpreted as a shell
+   command. In this case, escape processing is limited to protecting
+   `%' (percent sign) from being expanded into the default file name.
+
+** External filtering
+   If ed is configured with option `--enable-external-filtering', then
+   it accepts commands of the form:
+
+     (n, m)!shell-command
+
+   where lines `n' through `m' are written to the standard input of
+   `shell-command', whose standard output replaces the given lines in
+   the editor buffer. For example,
+
+     $ ed -p '*'
+     *a
+     hello, world
+     .
+     *.! tr a-z A-Z
+     13
+     *p
+     HELLO, WORLD
+
+** File locking
+   File locking is enabled by `configure` option `--enable-file-lock`.
+   Advisory locking is provided by flock (2) if available, otherwise
+   fcntl (2). If help mode is enabled (command-line option `-v' or ed
+   command `H'), then reading or writing a locked file prints a
+   diagnostic to standard error. For historical compatibility, no
+   errors are flagged.
+
+** Macros
+
+   Macros are enabled by `configure' option `--enable-ed-macro'. The
+   command `<n@' executes the contents of register `n' as an ed script
+   against the editor buffer. If `n' is not specified, then the
+   temporary register is used.
+
+   Here's an example session that loads and executes an ed script:
+
+     $ ed -p '*'          <-- Prompt for commands with '*'.
+     *r contrib/cats.ed   <-- Read in a script.
+     683
+     *,m>1                <-- Move it to register 1.
+     *r COPYING           <-- Read in another file with lots of blank lines.
+     55384
+     *<1@                 <-- Run the script in register 1.
+     ...
+     *wq COPYING          <-- A `wq' command alone would overwrite cats.ed!
+     55380                <-- Saved file is smaller by four newlines.
+     $
+
+** ED environment variable
+
+   If ed is compiled with the configure option `--enable-ed-envar',
+   then the environment variable `ED' can be used to set default
+   command-line options. For example, adding to one's profile
+
+     export ED="-vp *"
+
+   would be helpful while learning ed.
+
+   The environment variables COLUMNS and LINES are used, if available, to
+   set the default window dimensions.
+
 ** Binary files
    When a file containing at least one ASCII NUL character is written,
    a newline is not appended if it did not already contain one upon
@@ -60,25 +201,6 @@ option `-G'.
      * BSD line-addressing syntax - i.e., `^' as synonym for `+' and
      `%' as synonym for `1,$'.
 
-** Command-line switches
-   With all extensions enabled, ed accepts the following command-line
-   options:
-
-     -E, --regexp-extended     Enable extended regular expression syntax.
-     -e, --expression=COMMAND  Add COMMAND to scripted input - implies `-s'.
-     -f, --file=SCRIPT         Read commands from file SCRIPT - implies `-s'.
-     -G, --traditional         Enable backward compatibility.
-     -h, --help                Dispaly (this) help, then exit.
-     -i, --in-place[=SUFFIX]   Write file before closing, with optional backup.
-     -p, --prompt=STRING       Prompt for commands with STRING.
-     -R, --ansi-color          Enable support for ANSI color codes.
-     -r, --regexp-extended     Enable extended regular expression syntax.
-     -s, --script              Suppress interactive diagnostics.
-     -v, --verbose             Enable verbose error diagnostics.
-     -V, --version             Print version information, then exit.
-     -x, --crypt               Read encryption key from tty for use in
-                               subsequent I/O.
-
 ** Global search
    The SUSv4 interactive global commands `G' and `V' are extended to
    support multiple commands, including `a', `i' and `c'. The command
@@ -86,96 +208,10 @@ option `-G'.
    command per line with each line, except for the last, ending in `\'
    (backslash).
 
-** File globbing
-   If ed is compiled with the configure option `--enable-file-globbing',
-   then new file commands are defined by prefixing a `~' (tilde) to
-   existing ones. The new commands accept glob(3) file patterns. For
-   instance, to edit files whose names begin with the letter `a', the
-   command `~e a*' creates a list of matching files and opens the
-   first file in the list for editing. Subsequent files in the list
-   can be opened with either the edit next command: `en' or write
-   current file and edit next command: `wn'. The command `~e' without
-   arguments reopens the first file in the list (similar to vi(1)'s
-   `:rewind'). The command `~f' prints the complete list to standard
-   output.
-
-   In order for globbing read (`~r') and write (`~w') to succeed, the
-   file glob must expand uniquely to a single file. Otherwise, these
-   commands fail with diagnostic "Too many file names". Furthermore,
-   if no arguments are provided, both of these behave the same as
-   traditional read and write commands - i.e., the current default
-   file is used.
-
-** File operations
-   The file commands `~E', `~e', `~f' `~r', `~W' and `~w' process a
-   FILE arguments for backslash escapes prior to expansion via glob(3);
-   i.e., any character preceded by `\' (backslash) is interpreted
-   literally. If the first unescaped character of FILE is `!'
-   (exclamation mark), then the rest of the line is interpreted as a
-   shell command. In this case, escape processing is limited to
-   protecting `%' (percent sign) from being expanded into the default
-   file name.
-
-** File locking
-   This version of ed supports advisory locking via flock (2) if
-   available, otherwise fcntl (2). If ed is compiled with the
-   configure option `--enable-file-lock', then reading or writing a
-   locked file interactively and in verbose mode (`-v' option) prints
-   a diagnostic to standard error. For historical compatibility, no
-   errors are flagged.
-
-** External filtering
-   If ed is configured with option `--enable-external-filtering', then
-   it accepts commands of the form:
-
-     (n, m)!shell-command
-
-   where lines `n' through `m' are written to the standard input of
-   `shell-command', whose standard output replaces the given lines in
-   the editor buffer. For example,
-
-     $ ed -p '*'
-     *a
-     hello, world
-     .
-     *.! tr a-z A-Z
-     13
-     *p
-     HELLO, WORLD
-
-** Environment variables
-   If ed is compiled with the configure option `--enable-ed-envar',
-   then the environment variable `ED' can be used to set default
-   command-line options.
-
-   The environment variables COLUMNS and LINES are used, if available, to
-   set the default window dimensions.
-
 ** Piped input
    For backwards compatibility, errors in piped scripts do not force ed
    to exit. SUSv4 only specifies ed's response for input via regular
    files (including here documents) or standard input.
-
-** Scrolling
-   If ed is compiled with configure option `--enable-ed-scroll', then
-   several commands for backward and forward scrolling are available
-   as follows:
-
-     (.)zn - Display next n lines from given address
-     (.)Zn - Display previous n lines from given address
-     (.)]n - Display next n / 2 lines
-     (.)[n - Display previous n / 2 lines
-
-   where n is a number which, if not specified, defaults to the
-   current display height.
-
-   Note that the half-page scrolling commands are presently only
-   supported for line-oriented documents - i.e., those whose lines are
-   shorter than the width of the display.
-
-   UTF-8 multibyte characters with East Asian Ambiguous width
-   attribute are displayed as narrow (i.e., occupying a single column)
-   per recommendation of Unicode technical report UAX #11.
 
 ** SunOS dialect
    For SunOS ed(1) compatibility, ed runs in restricted mode if
@@ -222,9 +258,6 @@ option `-G'.
 
      *f
      *
-
-
-
 
 * EXAMPLES
 ----------
