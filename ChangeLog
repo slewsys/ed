@@ -1,3 +1,11 @@
+2018-09-03  Andrew L. Moore  <slewsys@gmail.com>
+
+	* src/exec.c (FILE_NAME): Condition printing expanded shell
+	command on POSIXLY_CORRECT.
+
+	* src/parse.c (expand_shell_command): If ed->exec->global, use
+	ed->input up to first newline.
+
 2018-08-31  Andrew L. Moore  <slewsys@gmail.com>
 
 	* src/exec.c (r_cmd, w_cmd): If file glob empty, use current file

@@ -50,7 +50,8 @@
               clearerr (stdin);                                               \
               return ERR;                                                     \
             }                                                                 \
-          if (_subs /* && !((ed)->exec->opt & SCRIPTED) */)                   \
+          if (_subs && (!((ed)->exec->opt & SCRIPTED)                         \
+                        || (ed)->exec->opt & (POSIXLY_CORRECT | TRADITIONAL)))\
             puts ((fn) + 1);                                                  \
         }                                                                     \
       else if (!((fn) =                                                       \

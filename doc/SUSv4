@@ -36,8 +36,8 @@ option `-G'.
    attribute are displayed as narrow (i.e., occupying a single column)
    per recommendation of Unicode technical report UAX #11.
 
-** Cut and Paste
-   Cut and paste is enabled by `configure` option `--enable-ed-register`.
+** Cut-and-Paste
+   Cut-and-paste is enabled by `configure` option `--enable-ed-register`.
 
    It is implemented by means of `ed`'s move (`m`), copy (`t`) and
    delete (`d`) commands:

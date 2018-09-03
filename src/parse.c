@@ -708,14 +708,16 @@ expand_shell_command (len, subs, ed)
      int *subs;                 /* Substitution count */
      ed_buffer_t *ed;
 {
+  static char *gl = NULL;
   static char *sc = NULL;         /* Shell command buffer */
   static char *sc_curr = NULL;    /* Current command buffer */
   static char *sc_prev = NULL;    /* Previous command buffer */
+  static size_t gl_size = 0;
   static size_t sc_size = 0;      /* Buffer size */
   static size_t sc_prev_size = 0; /* Buffer size */
   static size_t sc_curr_size = 0; /* Buffer size */
 
-  char *xl, *fn = NULL;
+  char *xl, *s, *fn = NULL;
   size_t m, n;
 
   if (ed->exec->opt & RESTRICTED)
@@ -723,7 +725,19 @@ expand_shell_command (len, subs, ed)
       ed->exec->err = _("Shell access restricted");
       return NULL;
     }
-  if (!(xl = get_extended_line (&n, 1, 0, ed)))
+
+  if (ed->exec->global)
+    {
+      /* Copy ed->input up to first newline. */
+      if ((s = strchr (ed->input, '\n')) == NULL)
+        return NULL;
+      n = s - ed->input;
+      REALLOC_THROW (gl, gl_size, n + 1, NULL, ed);
+      strncpy (gl, ed->input, n);
+      *(gl + n) = '\0';
+      xl = gl;
+    }
+  else if (!(xl = get_extended_line (&n, 1, 0, ed)))
 
     /* Propagate stream status */
     return NULL;
