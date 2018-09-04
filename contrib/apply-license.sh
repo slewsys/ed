@@ -5,7 +5,7 @@
 # This script inserts a requested license in ed source files.
 #
 declare script_name=${0##*/}
-declare usage="Usage: apply-license bsd|mit|gpl2|gpl3"
+declare usage="Usage: apply-license bsd|gpl2|gpl3|mit"
 
 if (( $# != 1 )); then
     echo "$usage"
@@ -25,14 +25,14 @@ case "$1" in
     bsd)
         license_requested='BSD-2-Clause'
         ;;
-    mit)
-        license_requested='MIT'
-        ;;
     gpl2)
         license_requested='GPL-2.0'
         ;;
     gpl3)
         license_requested='GPL-3.0'
+        ;;
+    mit)
+        license_requested='MIT'
         ;;
     *)
         echo "$1: Unrecognized license"
