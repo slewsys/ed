@@ -75,6 +75,8 @@ update-testsuite-dist:
 	if test ! -f $(top_srcdir)/testsuite/.ts-am-sw; then		      \
 	  (cd $(top_srcdir)/testsuite && ./ts-am-sw.ed && touch ./.ts-am-sw); \
 	fi;								      \
+	echo "*** Running autogen.sh ***";				      \
+	./autogen.sh --silent
 	$(MAKE) $(AM_MAKEFLAGS) all
 	-rm -f $(top_srcdir)/testsuite/testsuite;			      \
 	$(MAKE) $(AM_MAKEFLAGS) check;					      \
@@ -82,13 +84,12 @@ update-testsuite-dist:
 	  $(top_srcdir)/testsuite/testsuite-dist;			      \
 	if test -f $(top_srcdir)/testsuite/.ts-am-sw; then		      \
 	  (cd $(top_srcdir)/testsuite && ./ts-am-sw.ed && rm -f ./.ts-am-sw); \
-	fi
+	fi;                                                                   \
+	echo "*** Running autogen.sh ***";				      \
+	./autogen.sh --silent
 
 update-po:
 	-(cd $(top_srcdir)/po && $(MAKE) $(AM_MAKEFLAGS) update-po);	      \
-	if test -f $(top_srcdir)/testsuite/.ts-am-sw; then		      \
-	  (cd $(top_srcdir)/testsuite && ./ts-am-sw.ed && rm -f ./.ts-am-sw); \
-	fi;								      \
 	$(MAKE) $(AM_MAKEFLAGS) clean
 
 distclean-local:

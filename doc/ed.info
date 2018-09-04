@@ -21,7 +21,7 @@ The 'Ed' Text Editor
 ********************
 
 This manual is intended to serve as both tutorial and reference for
-'ed', the "standard Unix text editor", version 2.0.9.  Of historical
+'ed', the "standard Unix text editor", version 2.0.10.  Of historical
 interest is that 'ed' was the original Unix text editor and introduced
 the "regular expression" method of representing text patterns.
 
@@ -4097,88 +4097,88 @@ succeeds, but any changes to the buffer are lost.
 
 Tag Table:
 Node: Top435
-Node: Overview1426
-Node: Tutorial3687
-Node: A Tutorial Introduction to the UNIX Text Editor4473
-Node: Introduction6396
-Node: Disclaimer7291
-Node: Getting Started8188
-Node: Creating Text8636
-Node: Error Messages11599
-Node: Writing to a file11991
-Node: Leaving ed13456
-Ref: Leaving ed-Footnote-114053
-Node: Exercise 114210
-Node: Reading text from a file14680
-Node: Inserting text from a file16184
-Node: Exercise 217179
-Node: Printing the buffer17835
-Node: Exercise 319840
-Node: The current line20280
-Node: Deleting lines23066
-Node: Exercise 423913
-Node: Modifying text24908
-Node: Exercise 527797
-Node: Context searching28713
-Node: Exercise 632254
-Node: Change and Insert33773
-Node: Exercise 735401
-Node: Moving text around36248
-Node: The global commands37373
-Node: Special Characters38659
-Node: Summary42680
-Node: Advanced Editing on UNIX45740
-Node: INTRODUCTION46840
-Node: SPECIAL CHARACTERS48336
-Node: The List Command49354
-Node: The Substitute Command51030
-Node: The Undo Command52791
-Node: The Metacharacter53238
-Node: The Backslash55777
-Node: The Dollar Sign58489
-Node: The Circumflex59773
-Node: The Star60620
-Node: The Brackets64282
-Node: The Ampersand66301
-Node: Substituting Newlines67772
-Node: Joining Lines69135
-Node: Rearranging a Line69896
-Node: LINE ADDRESSING71827
-Node: Address Arithmetic73024
-Node: Repeated Searches74614
-Node: Default Addresses75822
-Node: Semicolon79867
-Node: Interrupting the Editor82525
-Node: GLOBAL COMMANDS83482
-Node: The Global Command List83894
-Node: Multi-line Global Commands86488
-Node: CUT AND PASTE WITH UNIX COMMANDS88066
-Node: Changing the Name of a File89118
-Node: Making a Copy of a File89914
-Node: Removing a File91342
-Node: Putting Two or More Files Together91701
-Node: Adding Something to the End of a File94081
-Node: CUT AND PASTE WITH THE EDITOR95159
-Node: Filenames95707
-Node: Inserting One File into Another97618
-Node: Writing Out Part of a File98576
-Node: Moving Lines Around100139
-Node: Marks102953
-Node: Copying Lines103922
-Node: The Temporary Escape105006
-Node: SUPPORTING TOOLS105797
-Node: Grep106390
-Node: Editing Scripts108463
-Node: Sed109383
-Node: Acknowledgement110629
-Node: References110858
-Node: Switches111273
-Node: Line Addressing112584
-Node: Regular Expressions116025
-Node: Extended Expressions121364
-Node: Command Reference122945
-Node: Environment133242
-Node: Limitations133884
-Node: Error Handling134520
+Node: Overview1427
+Node: Tutorial3688
+Node: A Tutorial Introduction to the UNIX Text Editor4474
+Node: Introduction6397
+Node: Disclaimer7292
+Node: Getting Started8189
+Node: Creating Text8637
+Node: Error Messages11600
+Node: Writing to a file11992
+Node: Leaving ed13457
+Ref: Leaving ed-Footnote-114054
+Node: Exercise 114211
+Node: Reading text from a file14681
+Node: Inserting text from a file16185
+Node: Exercise 217180
+Node: Printing the buffer17836
+Node: Exercise 319841
+Node: The current line20281
+Node: Deleting lines23067
+Node: Exercise 423914
+Node: Modifying text24909
+Node: Exercise 527798
+Node: Context searching28714
+Node: Exercise 632255
+Node: Change and Insert33774
+Node: Exercise 735402
+Node: Moving text around36249
+Node: The global commands37374
+Node: Special Characters38660
+Node: Summary42681
+Node: Advanced Editing on UNIX45741
+Node: INTRODUCTION46841
+Node: SPECIAL CHARACTERS48337
+Node: The List Command49355
+Node: The Substitute Command51031
+Node: The Undo Command52792
+Node: The Metacharacter53239
+Node: The Backslash55778
+Node: The Dollar Sign58490
+Node: The Circumflex59774
+Node: The Star60621
+Node: The Brackets64283
+Node: The Ampersand66302
+Node: Substituting Newlines67773
+Node: Joining Lines69136
+Node: Rearranging a Line69897
+Node: LINE ADDRESSING71828
+Node: Address Arithmetic73025
+Node: Repeated Searches74615
+Node: Default Addresses75823
+Node: Semicolon79868
+Node: Interrupting the Editor82526
+Node: GLOBAL COMMANDS83483
+Node: The Global Command List83895
+Node: Multi-line Global Commands86489
+Node: CUT AND PASTE WITH UNIX COMMANDS88067
+Node: Changing the Name of a File89119
+Node: Making a Copy of a File89915
+Node: Removing a File91343
+Node: Putting Two or More Files Together91702
+Node: Adding Something to the End of a File94082
+Node: CUT AND PASTE WITH THE EDITOR95160
+Node: Filenames95708
+Node: Inserting One File into Another97619
+Node: Writing Out Part of a File98577
+Node: Moving Lines Around100140
+Node: Marks102954
+Node: Copying Lines103923
+Node: The Temporary Escape105007
+Node: SUPPORTING TOOLS105798
+Node: Grep106391
+Node: Editing Scripts108464
+Node: Sed109384
+Node: Acknowledgement110630
+Node: References110859
+Node: Switches111274
+Node: Line Addressing112585
+Node: Regular Expressions116026
+Node: Extended Expressions121365
+Node: Command Reference122946
+Node: Environment133243
+Node: Limitations133885
+Node: Error Handling134521
 
 End Tag Table

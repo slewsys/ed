@@ -1407,6 +1407,7 @@ update-testsuite-dist:
 	if test ! -f $(top_srcdir)/testsuite/.ts-am-sw; then		      \
 	  (cd $(top_srcdir)/testsuite && ./ts-am-sw.ed && touch ./.ts-am-sw); \
 	fi;								      \
+	./autogen.sh
 	$(MAKE) $(AM_MAKEFLAGS) all
 	-rm -f $(top_srcdir)/testsuite/testsuite;			      \
 	$(MAKE) $(AM_MAKEFLAGS) check;					      \
