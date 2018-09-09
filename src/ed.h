@@ -481,8 +481,8 @@ struct ed_execute
   char *pathname;               /* Concatenation of scripts. */
   const char *err;              /* Error message. */
   char *prompt;                 /* Interactive command prompt. */
-  char *keyword;                /* Encryption keyword. */
   off_t line_no;                /* Script line number. */
+  int have_key;                 /* If set, encrypt I/O. */
   int first_pass;               /* If set, first global command iteration. */
   int global;                   /* If set, global command (GLBL [| GLBI]). */
   int opt;                      /* Command-line options. */

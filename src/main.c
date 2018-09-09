@@ -139,7 +139,7 @@ top:
         ed->exec->opt |= IN_PLACE;
         if (optarg != NULL)
           {
-            if ((len = strlen (optarg)) >= SIZE_T_MAX
+            if ((len = strlen (optarg)) >= INT_MAX
                 || !(ed->file->suffix = realloc (ed->file->suffix, len + 1)))
               script_die (3, ed);
             strcpy (ed->file->suffix, optarg);
@@ -149,7 +149,7 @@ top:
         ed->exec->opt |= PROMPT;
 
         /* Save prompt from longjmp(3). */
-        if ((len = strlen (optarg)) >= SIZE_T_MAX
+        if ((len = strlen (optarg)) >= INT_MAX
             || !(ed->exec->prompt = realloc (ed->exec->prompt, len + 1)))
           script_die (3, ed);
         strcpy (ed->exec->prompt, optarg);

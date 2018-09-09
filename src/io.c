@@ -26,7 +26,7 @@
 #endif  /* HAVE_FCNTL_H */
 
 /* Static function declarations. */
-static int put_stream_line __P ((FILE *, const char *, int,
+static int put_stream_line __P ((FILE *, const char *, size_t,
                                  ed_buffer_t *));
 static int read_stream __P ((FILE *, off_t, off_t *, ed_buffer_t *));
 static int get_inode __P ((const char *, INO_T *, ed_buffer_t *));
@@ -214,7 +214,7 @@ read_stream (fp, after, size, ed)
   ed->state->newline_missing = 0;
 
 #ifdef WANT_DES_ENCRYPTION
-  if (ed->exec->keyword)
+  if (ed->exec->have_key)
     init_des_cipher ();
 #endif
 
@@ -295,8 +295,9 @@ read_stream (fp, after, size, ed)
     fprintf (stderr, _("Newline appended\n"));
 
 #ifdef WANT_DES_ENCRYPTION
-  if (ed->exec->keyword)
-    *size += 8 - *size % 8;     /* Adjust for DES padding. */
+  if (ed->exec->have_key)
+    if (*size)
+      *size += 8 - *size % 8;     /* Adjust for DES padding. */
 #endif
 
   return 0;
@@ -521,7 +522,7 @@ get_stream_line (fp, len, ed)
 
  top:
 #ifdef WANT_DES_ENCRYPTION
-  for (; (c = (ed->exec->keyword && fp != stdin ? get_des_char (fp, ed)
+  for (; (c = (ed->exec->have_key && fp != stdin ? get_des_char (fp, ed)
                : getc (fp))) != EOF && c != '\n'; ++*len)
 #else
   for (; (c = getc (fp)) != EOF && c != '\n'; ++*len)
@@ -724,7 +725,7 @@ write_stream (fp, lp, n, size, ed)
   int status = 0;
 
 #ifdef WANT_DES_ENCRYPTION
-  if (ed->exec->keyword)
+  if (ed->exec->have_key)
     init_des_cipher ();
 #endif
 
@@ -752,14 +753,14 @@ write_stream (fp, lp, n, size, ed)
     }
 
 #ifdef WANT_DES_ENCRYPTION
-  if (ed->exec->keyword)
+  if (ed->exec->have_key)
     {
       flush_des_file (fp);
-      *size += 8 - *size % 8;
+      if (*size)
+        *size += 8 - *size % 8;
     }
-  else
 #endif
-    fflush (fp);
+  fflush (fp);
 
   return 0;
 }
@@ -770,12 +771,12 @@ static int
 put_stream_line (fp, s, len, ed)
      FILE *fp;
      const char *s;
-     int len;
+     size_t len;
      ed_buffer_t *ed;
 {
  top:
 #ifdef WANT_DES_ENCRYPTION
-  for (; len && (ed->exec->keyword ? put_des_char ((unsigned) *s, fp)
+  for (; len && (ed->exec->have_key ? put_des_char ((unsigned) *s, fp)
                  : putc ((unsigned) *s, fp)) != EOF; --len, ++s)
 #else
   for (; len && putc ((unsigned) *s, fp) != EOF; --len, ++s)

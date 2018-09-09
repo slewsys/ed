@@ -1,3 +1,12 @@
+2018-09-09  Andrew L. Moore  <slewsys@gmail.com>
+
+	* src/cbc.c (expand_des_key): Require 64-digit binary key,
+	16-digit hexadecimal key or (up to) 8-byte ASCII key.
+	(cbc_encode): Don't encrypt empty file.
+
+	* src/io.c (write_stream): Call fflush(3) on encoded files too.
+	(put_stream_line): Use size_t, not int for stream size.
+
 2018-09-03  Andrew L. Moore  <slewsys@gmail.com>
 
 	* src/exec.c (FILE_NAME): Condition printing expanded shell
