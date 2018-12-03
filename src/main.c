@@ -73,6 +73,8 @@ main (argc, argv)
   char **argv_new;
   char **argv_prev = NULL;
   char wbuf[3];
+  char *cs;
+  long l;
   size_t len;
   int argc_new;
   int argc_prev = 0;
@@ -139,7 +141,7 @@ top:
         ed->exec->opt |= IN_PLACE;
         if (optarg != NULL)
           {
-            if ((len = strlen (optarg)) >= INT_MAX
+            if ((len = strlen (optarg)) >= PATH_MAX - 1
                 || !(ed->file->suffix = realloc (ed->file->suffix, len + 1)))
               script_die (3, ed);
             strcpy (ed->file->suffix, optarg);
@@ -148,10 +150,15 @@ top:
       case 'p':                 /* Set ed command prompt. */
         ed->exec->opt |= PROMPT;
 
-        /* Save prompt from longjmp(3). */
-        if ((len = strlen (optarg)) >= INT_MAX
+        if ((cs = getenv ("COLUMNS")) == NULL || strcmp (cs, "") == 0
+            || (l = strtol (cs, NULL, 10)) == 0)
+          l = WS_COL;
+
+        if ((len = strlen (optarg)) >= l - 1
             || !(ed->exec->prompt = realloc (ed->exec->prompt, len + 1)))
           script_die (3, ed);
+
+        /* Save prompt from longjmp(3). */
         strcpy (ed->exec->prompt, optarg);
         break;
       case 'R':                 /* Filter ANSI SGR (color) codes. */
@@ -288,7 +295,8 @@ top:
         goto error;
       ed->exec->opt &= ~PRINT_FIRST_FILE;
 
-      if (ed->exec->opt & IN_PLACE && (status = save_edit (0, ed)) < 0)
+      if (ed->exec->opt & IN_PLACE && ed->file->suffix
+          && (status = save_edit (0, ed)) < 0)
         goto error;
 
       if (signal_status < 0)
@@ -411,7 +419,8 @@ next_edit (status, ed)
 
   size_t len;
 
-  if ((len = strlen (*ed->file->list->gl_pathv)) > SIZE_T_MAX - 4)
+  if ((len = strlen (*ed->file->list->gl_pathv))
+      >= get_path_max (*ed->file->list->gl_pathv))
     {
       ed->exec->err = _("File name too long");
       return ERR;
@@ -455,15 +464,6 @@ save_edit (status, ed)
   char *suffix;
   size_t len;
 
-  if ((len = strlen (*ed->file->list->gl_pathv)) > SIZE_T_MAX - 4)
-    {
-      ed->exec->err = _("File name too long");
-      return ERR;
-    }
-
-  /* Allocate for string `r <filename>\n\0' */
-  REALLOC_THROW (buf, buf_size, len + 4, ERR, ed);
-
   switch (status)
     {
     case EOF:
@@ -478,14 +478,27 @@ save_edit (status, ed)
       suffix = ed->file->suffix;
       break;
     }
+
+  if ((len = strlen (*ed->file->list->gl_pathv) + strlen (suffix))
+      >= get_path_max (*ed->file->list->gl_pathv))
+    {
+      ed->exec->err = _("File name too long");
+      return ERR;
+    }
+
+  /* Allocate for string `w <filename>\n\0' */
+  REALLOC_THROW (buf, buf_size, len + 4, ERR, ed);
+
   sprintf (ed->input = buf, "w %s%s\n", *ed->file->list->gl_pathv, suffix);
 
   ed->exec->region->addrs = 0;
   ed->exec->region->start = 0;
   ed->exec->region->end = 0;
 
-  if (status == EOF)
-    ed->exec->opt &= ~IN_PLACE;
+  /*
+   * if (status == EOF)
+   *   ed->exec->opt &= ~IN_PLACE;
+   */
 
   return exec_command (ed);
  }

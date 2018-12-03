@@ -1821,7 +1821,7 @@ normalize_frame_buffer (ed)
   int status;
 
   /* Allocate for `start,end' + `Z' + modifier. */
-  if ((len = 2 * OFF_T_LEN + strlen (modifier) + 3) > SIZE_T_MAX)
+  if ((len = 2 * OFF_T_LEN + strlen (modifier) + 3) >= INT_MAX)
     {
       ed->exec->err = _("Command too long");
       return ERR;
