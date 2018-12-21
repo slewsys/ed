@@ -214,7 +214,9 @@ AS_IF([test ."$ac_cv_sizeof_off_t" = ."$ac_cv_sizeof_long"],
 AC_PROG_LIBTOOL
 
 AM_GNU_GETTEXT([no-libtool], [need-formatstring-macros], [../intl])
-AM_GNU_GETTEXT_VERSION([0.19.8])
+
+# Ubuntu Xenial (16.04.5) ships with Gettext 0.19.7.
+AM_GNU_GETTEXT_VERSION([0.19.7])
 AM_CONDITIONAL([LDADD_LIBINTL], [test ."$LTLIBINTL" != .''])
 AM_COND_IF([LDADD_LIBINTL], [],
     [AM_GNU_GETTEXT([external])]
