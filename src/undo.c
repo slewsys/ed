@@ -8,16 +8,12 @@
 #include "ed.h"
 
 
-/* 
+/*
  * append_undo_node: Append node to end of undo queue. Return node
  *   pointer.
  */
 ed_undo_node_t *
-append_undo_node (type, from, to, ed)
-     int type;
-     off_t from;
-     off_t to;
-     ed_buffer_t *ed;
+append_undo_node (int type, off_t from, off_t to, ed_buffer_t *ed)
 {
   ed_undo_node_t *up;
 
@@ -44,8 +40,7 @@ append_undo_node (type, from, to, ed)
 
 /* undo_last_command: Undo last change to the editor buffer. */
 int
-undo_last_command (ed)
-     ed_buffer_t *ed;
+undo_last_command (ed_buffer_t *ed)
 {
   struct ed_state saved_buf = *ed->state;
   ed_undo_node_t *up = ed->core->undo_head;
@@ -104,8 +99,7 @@ undo_last_command (ed)
 
 /* reset_undo_queue: Clear the undo queue. */
 void
-reset_undo_queue (ed)
-     ed_buffer_t *ed;
+reset_undo_queue (ed_buffer_t *ed)
 {
   ed_undo_node_t *up, *up_next;
   ed_line_node_t *lp, *ep, *lp_next;

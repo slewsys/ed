@@ -9,12 +9,12 @@
 #include <sys/stat.h>
 
 /* Static function declarations. */
-static char *character_class __P ((const char *, ed_buffer_t *));
-static int check_address_bounds __P ((off_t, ed_buffer_t *));
-static glob_t *expand_glob __P ((char *, int, glob_t *, ed_buffer_t *));
-static char *is_valid_name __P ((const char *, ed_buffer_t *));
-static int line_address __P ((off_t *, ed_buffer_t *));
-static char *strtok_with_delimiters __P ((char *, const char *));
+static char *character_class (const char *, ed_buffer_t *);
+static int check_address_bounds (off_t, ed_buffer_t *);
+static glob_t *expand_glob (char *, int, glob_t *, ed_buffer_t *);
+static char *is_valid_name (const char *, ed_buffer_t *);
+static int line_address (off_t *, ed_buffer_t *);
+static char *strtok_with_delimiters (char *, const char *);
 
 
 #define IS_DELIMITER(c) ((c) == '%' || (c) == ',' || (c) == ';')
@@ -23,8 +23,7 @@ static char *strtok_with_delimiters __P ((char *, const char *));
 /* address_range: Get line addresses from the command buffer until an
    illegal address is seen; return address count. */
 int
-address_range (ed)
-     ed_buffer_t *ed;
+address_range (ed_buffer_t *ed)
 {
   /* Per SUSv4, 2013, intermediate addresses may exceed
      ed->state->lines or be negative, so use signed types. */
@@ -95,9 +94,7 @@ address_range (ed)
    buffer. Return status == 1 if found, status == 0 if not found, and
    status < 0 if non-address character or error. */
 int
-next_address (addr, ed)
-     off_t *addr;
-     ed_buffer_t *ed;
+next_address (off_t *addr, ed_buffer_t *ed)
 {
   char *input_prev;
   int status;
@@ -113,9 +110,7 @@ next_address (addr, ed)
 /*  line_address: Get line address from command buffer; return
     status. */
 static int
-line_address (addr, ed)
-     off_t *addr;
-     ed_buffer_t *ed;
+line_address (off_t *addr, ed_buffer_t *ed)
 {
   int c;
   int status = 0;
@@ -171,9 +166,7 @@ line_address (addr, ed)
 
 /*  address_offset: Apply offset from command buffer to address. */
 int
-address_offset (addr, ed)
-     off_t *addr;
-     ed_buffer_t *ed;
+address_offset (off_t *addr, ed_buffer_t *ed)
 {
   off_t n = 1;
 
@@ -223,9 +216,7 @@ address_offset (addr, ed)
 /* check_address_bounds: Verify that line address is legal with
    respect to current bounds. */
 static int
-check_address_bounds (addr, ed)
-     off_t addr;
-     ed_buffer_t *ed;
+check_address_bounds (off_t addr, ed_buffer_t *ed)
 {
   if (addr < 0 || ed->state->lines < addr)
     {
@@ -244,12 +235,7 @@ check_address_bounds (addr, ed)
    pattern is empty, the next name of previous expansion (may be
    NULL). */
 char *
-file_glob (len, cm, replace, uniquely, ed)
-     size_t *len;
-     int cm;
-     int replace;
-     int uniquely;              /* If set, expand to single file only. */
-     ed_buffer_t *ed;
+file_glob (size_t *len, int cm, int replace, int uniquely, ed_buffer_t *ed)
 {
   static glob_t *one_time_glob = NULL;  /* one-time file glob */
 
@@ -404,9 +390,7 @@ file_glob (len, cm, replace, uniquely, ed)
    removed from the returned token.
    NB: Only ASCII `delims' are supported. */
 static char *
-strtok_with_delimiters (s, delims)
-     char *s;
-     const char *delims;
+strtok_with_delimiters (char *s, const char *delims)
 {
   static char *t = NULL;
 
@@ -444,11 +428,7 @@ strtok_with_delimiters (s, delims)
    just the directory name, if any. If that succeeds, then append the
    filename to each directory in expansion. */
 glob_t *
-expand_glob (pattern, append, gp, ed)
-     char *pattern;
-     int append;
-     glob_t *gp;
-     ed_buffer_t *ed;
+expand_glob (char *pattern, int append, glob_t *gp, ed_buffer_t *ed)
 {
   struct stat sb;
   char **pathv = NULL;
@@ -575,9 +555,7 @@ expand_glob (pattern, append, gp, ed)
 
 /* is_valid_name: Return status of file name check. */
 static char *
-is_valid_name (name, ed)
-     const char *name;
-     ed_buffer_t *ed;
+is_valid_name (const char *name, ed_buffer_t *ed)
 {
   static char *fn;
   static size_t fn_size;
@@ -605,9 +583,7 @@ is_valid_name (name, ed)
 /* file_name: Get file name from command buffer; return pointer to
    copy, which may be empty ("") or have embedded newlines ('\n'). */
 char *
-file_name (len, ed)
-     size_t *len;
-     ed_buffer_t *ed;
+file_name (size_t *len, ed_buffer_t *ed)
 {
   static char *fn = NULL;       /* File name buffer */
   static size_t fn_size = 0;    /* Buffer size */
@@ -635,10 +611,7 @@ file_name (len, ed)
 /* regular_expression: Get delimited regular expression pattern from the
    command buffer; return pointer to copy. */
 char *
-regular_expression (dc, len, ed)
-     unsigned dc;               /* pattern delimiting char */
-     size_t *len;
-     ed_buffer_t *ed;
+regular_expression (unsigned dc, size_t *len, ed_buffer_t *ed)
 {
   static char *lhs = NULL;      /* substitution template buffer */
   static size_t lhs_size = 0;   /* buffer size */
@@ -680,9 +653,7 @@ regular_expression (dc, len, ed)
 
 /* character_class: Expand a POSIX character class. */
 static char *
-character_class (s, ed)
-     const char *s;
-     ed_buffer_t *ed;
+character_class (const char *s, ed_buffer_t *ed)
 {
   unsigned c, d;
 
@@ -703,10 +674,7 @@ character_class (s, ed)
 /* expand_shell_command: Get shell command from command buffer; return
    substitution status. */
 char *
-expand_shell_command (len, subs, ed)
-     size_t *len;               /* Shell command length */
-     int *subs;                 /* Substitution count */
-     ed_buffer_t *ed;
+expand_shell_command (size_t *len, int *subs, ed_buffer_t *ed)
 {
   static char *gl = NULL;
   static char *sc = NULL;         /* Shell command buffer */
@@ -820,9 +788,7 @@ expand_shell_command (len, subs, ed)
 /* trailing_escapes: Return the parity of escapes preceding a
    character *t, in a string, s. */
 int
-trailing_escapes (s, t)
-     const char *s;
-     const char *t;
+trailing_escapes (const char *s, const char *t)
 {
   return (s == t || *(t - 1) != '\\' ? 0 : trailing_escapes (s, t - 1) + 1);
 }

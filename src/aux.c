@@ -44,11 +44,7 @@ static ed_line_node_t *append_node_to_register __P ((size_t, off_t, int,
  *    return status.
  */
 int
-filter_lines (from, to, sc, ed)
-     off_t from;
-     off_t to;
-     const char *sc;
-     ed_buffer_t *ed;
+filter_lines (off_t from, off_t to, const char *sc, ed_buffer_t *ed)
 {
   FILE *ipp, *opp;
   ed_line_node_t *lp = get_line_node (from, ed);
@@ -189,9 +185,7 @@ filter_lines (from, to, sc, ed)
  *   address.
  */
 int
-append_from_register (addr, ed)
-     off_t addr;                /* destination address */
-     ed_buffer_t *ed;
+append_from_register (off_t addr, ed_buffer_t *ed)
 {
   int read_idx = ed->core->regbuf->read_idx;
   ed_line_node_t *read_head = ed->core->regbuf->lp[read_idx];
@@ -221,11 +215,7 @@ append_from_register (addr, ed)
  *   Return node pointer.
  */
 static ed_line_node_t *
-append_node_to_register (len, offset, idx, ed)
-     size_t len;
-     off_t offset;
-     int idx;
-     ed_buffer_t *ed;
+append_node_to_register (size_t len, off_t offset, int idx, ed_buffer_t *ed)
 {
   ed_line_node_t *lp;
   ed_line_node_t *tq = ed->core->regbuf->lp[idx]->q_back;
@@ -253,11 +243,7 @@ append_node_to_register (len, offset, idx, ed)
  *   `append' is zero, any previous register contents are lost.
  */
 int
-append_to_register (from, to, append, ed)
-     off_t from;                /* from address */
-     off_t to;                  /* to address */
-     int append;
-     ed_buffer_t *ed;
+append_to_register (off_t from, off_t to, int append, ed_buffer_t *ed)
 {
   int write_idx = ed->core->regbuf->write_idx;
   ed_line_node_t *write_head = ed->core->regbuf->lp[write_idx];
@@ -288,9 +274,7 @@ append_to_register (from, to, append, ed)
  *   lost.
  */
 int
-inter_register_copy (append, ed)
-     int append;
-     ed_buffer_t *ed;
+inter_register_copy (int append, ed_buffer_t *ed)
 {
   int read_idx = ed->core->regbuf->read_idx;
   int write_idx = ed->core->regbuf->write_idx;
@@ -333,9 +317,7 @@ inter_register_copy (append, ed)
  *   is zero, any previous contents of target register are lost.
  */
 int
-inter_register_move (append, ed)
-     int append;
-     ed_buffer_t *ed;
+inter_register_move (int append, ed_buffer_t *ed)
 {
   int read_idx = ed->core->regbuf->read_idx;
   int write_idx = ed->core->regbuf->write_idx;
@@ -380,9 +362,7 @@ inter_register_move (append, ed)
 
 /* reset_register_queue: Release nodes of given register. */
 int
-reset_register_queue (idx, ed)
-     int idx;
-     ed_buffer_t *ed;
+reset_register_queue (int idx, ed_buffer_t *ed)
 {
   ed_line_node_t *head = ed->core->regbuf->lp[idx];
   ed_line_node_t *rp, *rn;
@@ -408,8 +388,7 @@ reset_register_queue (idx, ed)
  *   redirect buffer contents as standard input.
  */
 int
-script_from_register (ed)
-     ed_buffer_t *ed;
+script_from_register (ed_buffer_t *ed)
 {
   int read_idx = ed->core->regbuf->read_idx;
   ed_line_node_t *read_head = ed->core->regbuf->lp[read_idx];
@@ -449,8 +428,7 @@ script_from_register (ed)
 
 /* push_stack_frame: Push macro frame on script buffer. */
 int
-push_stack_frame (ed)
-     ed_buffer_t *ed;
+push_stack_frame (ed_buffer_t *ed)
 {
   spl1 ();
 
@@ -502,8 +480,7 @@ push_stack_frame (ed)
 
 /* pop_stack_frame: Pop macro frame from script buffer. */
 int
-pop_stack_frame (ed)
-     ed_buffer_t *ed;
+pop_stack_frame (ed_buffer_t *ed)
 {
   spl1 ();
   --ed->core->sp;
@@ -541,9 +518,7 @@ pop_stack_frame (ed)
 
 
 int
-unwind_stack_frame (status, ed)
-     int status;
-     ed_buffer_t *ed;
+unwind_stack_frame (int status, ed_buffer_t *ed)
 {
   if (ed->core->sp)
     {
@@ -584,9 +559,7 @@ unwind_stack_frame (status, ed)
 
 #else
 int
-unwind_stack_frame (status, ed)
-     int status;
-     ed_buffer_t *ed;
+unwind_stack_frame (int status, ed_buffer_t *ed)
 {
   return 0;
 }

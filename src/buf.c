@@ -23,10 +23,7 @@
  *   and translation table; read environment variables.
  */
 int
-one_time_init (argc, argv, ed)
-     int argc;
-     char *argv[];
-     ed_buffer_t *ed;
+one_time_init (int argc, char *argv[], ed_buffer_t *ed)
 {
   char *cs, *ls;
   long l;
@@ -104,8 +101,7 @@ one_time_init (argc, argv, ed)
 
 /* init_stdio: Initialize standard I/O. */
 int
-init_stdio (ed)
-     ed_buffer_t *ed;
+init_stdio (ed_buffer_t *ed)
 {
   /* If scripting, redirect script to standard input. */
 #ifdef WANT_ED_MACRO
@@ -175,9 +171,7 @@ init_stdio (ed)
 
 /* init_ed_command: Initialize ed_command parameters. */
 void
-init_ed_command (init_glob, ed)
-     int init_glob;             /* If set, initialize file list. */
-     ed_buffer_t *ed;
+init_ed_command (int init_glob, ed_buffer_t *ed)
 {
   /* Assert: spl1 () */
 
@@ -217,9 +211,7 @@ init_ed_command (init_glob, ed)
 
 /* init_ed_state: Initialize ed_state structure. */
 void
-init_ed_state (addr, state)
-     off_t addr;
-     struct ed_state *state;
+init_ed_state (off_t addr, struct ed_state *state)
 {
   /* Editor buffer state */
   state->lines = addr;          /* -1 disables undo */
@@ -236,8 +228,7 @@ init_ed_state (addr, state)
 
 /* reopen_ed_buffer: Close on-disk buffer and create new one. */
 int
-reopen_ed_buffer (ed)
-     ed_buffer_t *ed;
+reopen_ed_buffer (ed_buffer_t *ed)
 {
   int status;
 
@@ -251,10 +242,7 @@ reopen_ed_buffer (ed)
 
 /* create_disk_buffer: Open an on-disk buffer. */
 int
-create_disk_buffer (fp, buf, ed)
-     FILE **fp;                 /* buffer file pointer */
-     char **buf;                /* buffer pathname */
-     ed_buffer_t *ed;
+create_disk_buffer (FILE **fp, char **buf, ed_buffer_t *ed)
 {
   STAT_T sb;
   char template[] = "ed.XXXXXXXXXX";
@@ -314,8 +302,7 @@ create_disk_buffer (fp, buf, ed)
 
 /* close_ed_buffer: Close on-disk buffer file. */
 int
-close_ed_buffer (ed)
-     ed_buffer_t *ed;
+close_ed_buffer (ed_buffer_t *ed)
 {
   int status = 0;
 
@@ -336,9 +323,7 @@ close_ed_buffer (ed)
 
 /* get_buffer_line: Return pointer to copy of line from buffer file. */
 char *
-get_buffer_line (lp, ed)
-     const ed_line_node_t *lp;
-     ed_buffer_t *ed;
+get_buffer_line (const ed_line_node_t *lp, ed_buffer_t *ed)
 {
   static char *tb = NULL;       /* Buffer for line from ed buffer file. */
   static size_t tb_size = 0;    /* Buffer size. */
@@ -383,10 +368,7 @@ get_buffer_line (lp, ed)
  *   reference it from in-core buffer. Return pointer to end of text.
  */
 char *
-put_buffer_line (t, len, ed)
-     const char *t;
-     size_t len;
-     ed_buffer_t *ed;
+put_buffer_line (const char *t, size_t len, ed_buffer_t *ed)
 {
   /*
    * If ed buffer file was read since last write, seek to end of file
@@ -436,11 +418,7 @@ put_buffer_line (t, len, ed)
  *   node pointer.
  */
 ed_line_node_t *
-append_line_node (len, offset, addr, ed)
-     size_t len;
-     off_t offset;
-     off_t addr;
-     ed_buffer_t *ed;
+append_line_node (size_t len, off_t offset, off_t addr, ed_buffer_t *ed)
 {
   ed_line_node_t *lp, *np;
 
@@ -472,9 +450,7 @@ append_line_node (len, offset, addr, ed)
 
 /* get_line_node: Return pointer to line node in the ed buffer. */
 ed_line_node_t *
-get_line_node (n, ed)
-     off_t n;
-     ed_buffer_t *ed;
+get_line_node (off_t n, ed_buffer_t *ed)
 {
   static ed_line_node_t *lp = NULL;
   static off_t n_prev = 0;
@@ -512,10 +488,7 @@ get_line_node (n, ed)
 
 /* get_line_node_address: Get line number of pointer; return status. */
 int
-get_line_node_address (lp, addr, ed)
-     const ed_line_node_t *lp;
-     off_t *addr;
-     ed_buffer_t *ed;
+get_line_node_address (const ed_line_node_t *lp, off_t *addr, ed_buffer_t *ed)
 {
   ed_line_node_t *cp = ed->core->line_head;
 
@@ -533,9 +506,7 @@ get_line_node_address (lp, addr, ed)
 
 /* quit: Unlink buffer file and exit. */
 void
-quit (n, ed)
-     int n;
-     ed_buffer_t *ed;
+quit (int n, ed_buffer_t *ed)
 {
   if (ed->core->fp)
     {
@@ -553,11 +524,7 @@ quit (n, ed)
 
 /* realloc_buffer: Increase size, *n, of buffer, *b, to at least i. */
 void *
-realloc_buffer (b, n, i, ed)
-     void **b;
-     size_t *n;
-     size_t i;
-     ed_buffer_t *ed;
+realloc_buffer (void **b, size_t *n, size_t i, ed_buffer_t *ed)
 {
   char *_ts;
   size_t _ti;
@@ -596,10 +563,7 @@ realloc_buffer (b, n, i, ed)
 
 /* init_global_queue: Initialize ed_core global queue. */
 void
-init_global_queue (aq, lq, ed)
-     ed_global_node_t **aq;
-     ed_line_node_t **lq;
-     ed_buffer_t *ed;
+init_global_queue (ed_global_node_t **aq, ed_line_node_t **lq, ed_buffer_t *ed)
 {
   *aq = ed->core->global_head;
   *lq = ed->core->line_head;
@@ -608,9 +572,7 @@ init_global_queue (aq, lq, ed)
 #ifdef WANT_ED_REGISTER
 /* init_register_queue: Initialize given ed_core register queue. */
 int
-init_register_queue (idx, ed)
-     int idx;                   /* register queue number */
-     ed_buffer_t *ed;
+init_register_queue (int idx, ed_buffer_t *ed)
 {
   ed_line_node_t *rq;
 
@@ -632,17 +594,14 @@ init_register_queue (idx, ed)
 
 /* init_undo_queue: Initialize ed_core undo queue. */
 void
-init_undo_queue (uq, ed)
-     ed_undo_node_t **uq;
-     ed_buffer_t *ed;
+init_undo_queue (ed_undo_node_t **uq, ed_buffer_t *ed)
 {
   *uq = ed->core->undo_head;
 }
 
 
 /* init_text_deque: Initialize text deque and free any prior elements. */
-void init_text_deque (th)
-     ed_text_node_t *th;
+void init_text_deque (ed_text_node_t *th)
 {
   char *t;
   size_t len;
@@ -658,10 +617,7 @@ void init_text_deque (th)
  *   to new node, or NULL is out of memory.
  */
 ed_text_node_t *
-append_text_node (th, tb, len)
-     ed_text_node_t *th;        /* head of text deque */
-     const char *tb;
-     const size_t len;
+append_text_node (ed_text_node_t *th, const char *tb, const size_t len)
 {
   ed_text_node_t *tp;
   ed_text_node_t *tq = th->q_back;
@@ -687,9 +643,7 @@ append_text_node (th, tb, len)
  *   copy of its text, otherwise NULL.
  */
 char *
-pop_text_node (th, len)
-     ed_text_node_t *th;        /* head of text deque */
-     size_t *len;
+pop_text_node (ed_text_node_t *th, size_t *len)
 {
   static char *s;
 
@@ -714,9 +668,7 @@ pop_text_node (th, len)
  *   to copy of its text, otherwise NULL.
  */
 char *
-shift_text_node (th, len)
-     ed_text_node_t *th;        /* head of text deque */
-     size_t *len;
+shift_text_node (ed_text_node_t *th, size_t *len)
 {
   static char *s;
 
@@ -748,7 +700,7 @@ shift_text_node (th, len)
 
 /* alloc_ed_buffer: Allocate memory for ed_buffer_t struct. */
 ed_buffer_t *
-alloc_ed_buffer ()
+alloc_ed_buffer (void)
 {
   ed_buffer_t *ed_buffer;
 

@@ -8,7 +8,7 @@
 #include "ed.h"
 
 /* Static function declarations. */
-static int is_utf8_ea_wide __P ((int));
+static int is_utf8_ea_wide (int);
 
 /* Encoded UTF-8 byte masks. */
 unsigned char utf8_byte_mask[5] =
@@ -36,9 +36,7 @@ int utf8_cp_offset[4] =
  * code point if successful, otherwise ERR.
  */
 int
-decode_utf8_char (s, len)
-     unsigned char **s;
-     int len;
+decode_utf8_char (unsigned char **s, int len)
 {
   int cp;
   int bytes = 0;
@@ -122,10 +120,7 @@ decode_utf8_char (s, len)
  * up to 4 bytes in length per RFC 3629.
  */
 int
-encode_utf8_char (s, len, code)
-     char *s;
-     int *len;
-     unsigned int code;
+encode_utf8_char (char *s, int *len, unsigned int code)
 {
   unsigned int cp = code;
   char *t = s;
@@ -212,9 +207,7 @@ encode_utf8_char (s, len, code)
 }
 
 int
-is_utf8_str (s, len)
-     const char *s;
-     size_t len;
+is_utf8_str (const char *s, size_t len)
 {
   unsigned char *t = (unsigned char *) s;
   int status;
@@ -225,9 +218,7 @@ is_utf8_str (s, len)
 }
 
 int
-utf8_char_size (s, len)
-     const char *s;
-     size_t len;
+utf8_char_size (const char *s, size_t len)
 {
   unsigned char *t = (unsigned char *) s;
   int status;
@@ -236,9 +227,7 @@ utf8_char_size (s, len)
 }
 
 int
-utf8_strlen (s, len)
-     const char *s;
-     size_t len;
+utf8_strlen (const char *s, size_t len)
 {
   unsigned char *t = (unsigned char *) s;
   int status;
@@ -250,9 +239,7 @@ utf8_strlen (s, len)
 }
 
 int
-utf8_char_display_width (s, len)
-     const char *s;
-     int len;
+utf8_char_display_width (const char *s, int len)
 {
   unsigned char *t = (unsigned char *) s;
   int code;
@@ -273,8 +260,7 @@ utf8_char_display_width (s, len)
  * Standard Annex #11 (UAX #11).
  */
 static int
-is_utf8_ea_wide (code)
-     int code;
+is_utf8_ea_wide (int code)
 {
   if (code < 0x1100)
     return 0;

@@ -11,22 +11,20 @@
 /* Static function declarations. */
 
 #ifdef WANT_ED_SCROLL
-static int display_frame_buffer __P ((const ed_frame_buffer_t *,
-                                      ed_buffer_t *));
-static ed_frame_node_t *dup_frame_node __P ((const ed_frame_node_t *,
-                                             ed_buffer_t *));
-static int fb_putc __P ((int, ed_frame_buffer_t *, ed_buffer_t *));
-static int fb_putwc __P ((char *, size_t, ed_frame_buffer_t *, ed_buffer_t *));
-static int init_frame_buffer __P ((ed_frame_buffer_t *, ed_buffer_t *));
-static void init_frame_node __P ((ed_frame_node_t *));
-static int put_frame_buffer_line __P ((ed_line_node_t *, off_t,
-                                       ed_frame_buffer_t *, ed_buffer_t *));
-static void inc_mod_fb_row __P ((ed_line_node_t *, off_t, int,
-                                 ed_frame_buffer_t *, ed_buffer_t *));
+static int display_frame_buffer (const ed_frame_buffer_t *, ed_buffer_t *);
+static ed_frame_node_t *dup_frame_node (const ed_frame_node_t *, ed_buffer_t *);
+static int fb_putc (int, ed_frame_buffer_t *, ed_buffer_t *);
+static int fb_putwc (char *, size_t, ed_frame_buffer_t *, ed_buffer_t *);
+static int init_frame_buffer (ed_frame_buffer_t *, ed_buffer_t *);
+static void init_frame_node (ed_frame_node_t *);
+static int put_frame_buffer_line (ed_line_node_t *, off_t,
+                                  ed_frame_buffer_t *, ed_buffer_t *);
+static void inc_mod_fb_row (ed_line_node_t *, off_t, int,
+                            ed_frame_buffer_t *, ed_buffer_t *);
 
 #endif
 
-static unsigned int sgr_span __P ((const char *));
+static unsigned int sgr_span (const char *);
 
 /* GET_CHAR_WIDTH: Assert: Tabstops are of fixed length. */
 #define GET_CHAR_WIDTH(i, c)                                                  \
@@ -40,14 +38,11 @@ static unsigned int sgr_span __P ((const char *));
 #define RIGHT_MARGIN TAB_WIDTH
 
 #ifndef WANT_ED_SCROLL
-static int put_tty_line __P ((ed_line_node_t *, off_t, ed_buffer_t *));
+static int put_tty_line (ed_line_node_t *, off_t, ed_buffer_t *);
 
 /* display_lines: Print a range of lines. Return status (<= 0). */
 int
-display_lines (from, to, ed)
-     off_t from;
-     off_t to;
-     ed_buffer_t *ed;
+display_lines (off_t from, off_t to, ed_buffer_t *ed)
 {
   static ed_frame_buffer_t frame_buffer = { 0 };
 
@@ -76,10 +71,7 @@ display_lines (from, to, ed)
 
 /* put_frame_buffer_line: Print text to frame buffer. */
 static int
-put_tty_line (lp, addr, ed)
-     ed_line_node_t *lp;        /* Line node pointer */
-     off_t addr;                /* Line no. */
-     ed_buffer_t *ed;
+put_tty_line (ed_line_node_t *lp, off_t addr, ed_buffer_t *ed)
 {
   static off_t lines = 0;
   static int lines_len = 0;      /* strlen (lines) */
@@ -278,10 +270,7 @@ put_tty_line (lp, addr, ed)
 
 /* display_lines: Print a range of lines. Return status (<= 0). */
 int
-display_lines (from, to, ed)
-     off_t from;
-     off_t to;
-     ed_buffer_t *ed;
+display_lines (off_t from, off_t to, ed_buffer_t *ed)
 {
   static ed_frame_buffer_t frame_buffer = { 0 };
 
@@ -507,11 +496,8 @@ display_lines (from, to, ed)
 
 /* put_frame_buffer_line: Print text to frame buffer. */
 static int
-put_frame_buffer_line (lp, addr, fb, ed)
-     ed_line_node_t *lp;        /* Line node pointer */
-     off_t addr;                /* Line no. */
-     ed_frame_buffer_t *fb;
-     ed_buffer_t *ed;
+put_frame_buffer_line (ed_line_node_t *lp, off_t addr,
+                       ed_frame_buffer_t *fb, ed_buffer_t *ed)
 {
   static off_t lines = 0;
   static int lines_len = 0;      /* strlen (lines) */
@@ -702,10 +688,7 @@ put_frame_buffer_line (lp, addr, fb, ed)
 
 /* fb_putc: Add a character to the frame buffer. */
 static int
-fb_putc (c, fb, ed)
-     int c;
-     ed_frame_buffer_t *fb;
-     ed_buffer_t *ed;
+fb_putc (int c, ed_frame_buffer_t *fb, ed_buffer_t *ed)
 {
   ed_frame_node_t *rp = fb->row[fb->row_i];
 
@@ -719,11 +702,7 @@ fb_putc (c, fb, ed)
 
 /* fb_putwc: Add a wide character to the frame buffer. */
 static int
-fb_putwc (s, len, fb, ed)
-     char *s;
-     size_t len;
-     ed_frame_buffer_t *fb;
-     ed_buffer_t *ed;
+fb_putwc (char *s, size_t len, ed_frame_buffer_t *fb, ed_buffer_t *ed)
 {
   ed_frame_node_t *rp = fb->row[fb->row_i];
   size_t i;
@@ -742,9 +721,7 @@ fb_putwc (s, len, fb, ed)
 
 /* display_frame_buffer: Write frame buffer to standard output. */
 static int
-display_frame_buffer (fb, ed)
-     const ed_frame_buffer_t *fb;
-     ed_buffer_t *ed;
+display_frame_buffer (const ed_frame_buffer_t *fb, ed_buffer_t *ed)
 {
   ed_frame_node_t *rp;
   size_t m;
@@ -771,12 +748,8 @@ display_frame_buffer (fb, ed)
 
 /* inc_mod_fb_row: Increment fb->row_i and calculate text offset. */
 static void
-inc_mod_fb_row (lp, addr,  ok_to_wrap, fb, ed)
-     ed_line_node_t *lp;        /* Line node pointer */
-     off_t addr;
-     int ok_to_wrap;
-     ed_frame_buffer_t *fb;
-     ed_buffer_t *ed;
+inc_mod_fb_row (ed_line_node_t *lp, off_t addr, int ok_to_wrap,
+                ed_frame_buffer_t *fb, ed_buffer_t *ed)
 {
   size_t offset = 0;
 
@@ -809,9 +782,7 @@ inc_mod_fb_row (lp, addr,  ok_to_wrap, fb, ed)
 
 /* Init_frame_buffer: Initialize ed_frame_buffer. */
 static int
-init_frame_buffer (fb, ed)
-     ed_frame_buffer_t *fb;
-     ed_buffer_t *ed;
+init_frame_buffer (ed_frame_buffer_t *fb, ed_buffer_t *ed)
 {
   static char *fp = NULL;
   static size_t fp_size = 0;
@@ -862,8 +833,7 @@ init_frame_buffer (fb, ed)
 
 /* init_frame_node: Initialize ed_frame_node_t structure. */
 static void
-init_frame_node (rp)
-     ed_frame_node_t *rp;
+init_frame_node (ed_frame_node_t *rp)
 {
   rp->addr = 0;
   rp->lp = NULL;
@@ -876,9 +846,7 @@ init_frame_node (rp)
 
 /* dup_frame_node: Return a pointer to a copy of a row node. */
 static ed_frame_node_t *
-dup_frame_node (rp, ed)
-     const ed_frame_node_t *rp;
-     ed_buffer_t *ed;
+dup_frame_node (const ed_frame_node_t *rp, ed_buffer_t *ed)
 {
   ed_frame_node_t *np;
 
@@ -902,8 +870,7 @@ dup_frame_node (rp, ed)
 
 /* sgr_span: Return length of ANSI SGR sequence, otherwise 0. */
 static unsigned int
-sgr_span (s)
-     const char *s;
+sgr_span (const char *s)
 {
   const char *t = s;
 

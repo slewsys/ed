@@ -34,13 +34,8 @@ static int get_inode __P ((const char *, INO_T *, ed_buffer_t *));
 
 /* read_file: Read file to buffer; return line count. */
 int
-read_file (fn, after, addr, size, is_default, ed)
-     const char *fn;
-     off_t after;
-     off_t *addr;
-     off_t *size;
-     int is_default;            /* If set, fn is default file name. */
-     ed_buffer_t *ed;
+read_file (const char *fn, off_t after, off_t *addr,
+           off_t *size, int is_default, ed_buffer_t *ed)
 {
   FILE *fp = NULL;
   INO_T inode;
@@ -145,12 +140,8 @@ read_file (fn, after, addr, size, is_default, ed)
  * read_pipe: Read output of shell command to buffer. Return line count.
  */
 int
-read_pipe (fn, after, addr, size, ed)
-     const char *fn;
-     off_t after;
-     off_t *addr;
-     off_t *size;
-     ed_buffer_t *ed;
+read_pipe (const char *fn, off_t after, off_t *addr,
+           off_t *size, ed_buffer_t *ed)
 {
   FILE *fp;
   int status;
@@ -195,11 +186,7 @@ read_pipe (fn, after, addr, size, ed)
  *   address. Return bytes read.
  */
 static int
-read_stream (fp, after, size, ed)
-     FILE *fp;
-     off_t after;
-     off_t *size;
-     ed_buffer_t *ed;
+read_stream (FILE *fp, off_t after, off_t *size, ed_buffer_t *ed)
 {
   ed_line_node_t *lp = get_line_node (after, ed);
   ed_undo_node_t *up = NULL;
@@ -322,11 +309,7 @@ read_stream (fp, after, size, ed)
 /* read_stream_r: Read a stream into memory and then into editor
    buffer after the given address; return bytes read. */
 int
-read_stream_r (fp, after, size, ed)
-     FILE *fp;
-     off_t after;
-     off_t *size;
-     ed_buffer_t *ed;
+read_stream_r (FILE *fp, off_t after, off_t *size, ed_buffer_t *ed)
 {
   static ed_text_node_t th;     /* text deque head */
 
@@ -443,11 +426,7 @@ read_stream_r (fp, after, size, ed)
  *   to static buffer.
  */
 char *
-get_extended_line (len, nonl, escape, ed)
-     size_t *len;               /* extended line length */
-     int nonl;                  /* If set, remove trailing newline. */
-     int escape;                /* If set, expand sequences of escapes. */
-     ed_buffer_t *ed;
+get_extended_line (size_t *len, int nonl, int escape, ed_buffer_t *ed)
 {
   static char *xl = NULL;       /* extended line buffer */
   static size_t xl_size = 0;    /* buffer size */
@@ -501,10 +480,7 @@ get_extended_line (len, nonl, escape, ed)
  *   length.
  */
 char *
-get_stream_line (fp, len, ed)
-     FILE *fp;
-     size_t *len;               /* line length */
-     ed_buffer_t *ed;
+get_stream_line (FILE *fp, size_t *len, ed_buffer_t *ed)
 {
   static char *tb = NULL;       /* text buffer */
   static size_t tb_size = 0;    /* buffer size */
@@ -581,15 +557,8 @@ get_stream_line (fp, len, ed)
 
 /* write_file: Write buffer range to file. Return line count. */
 int
-write_file (fn, is_default, from, to, addr, size, mode, ed)
-     const char *fn;
-     int is_default;
-     off_t from;
-     off_t to;
-     off_t *addr;
-     off_t *size;
-     const char *mode;
-     ed_buffer_t *ed;
+write_file (const char *fn, int is_default, off_t from, off_t to,
+            off_t *addr, off_t *size, const char *mode, ed_buffer_t *ed)
 {
   FILE *fp;
   ed_line_node_t *lp = get_line_node (from, ed);
@@ -678,13 +647,8 @@ write_file (fn, is_default, from, to, addr, size, mode, ed)
 
 /* write_pipe: Write buffer range to pipe; return status. */
 int
-write_pipe (fn, from, to, addr, size, ed)
-     const char *fn;
-     off_t from;
-     off_t to;
-     off_t *addr;
-     off_t *size;
-     ed_buffer_t *ed;
+write_pipe (const char *fn, off_t from, off_t to, off_t *addr,
+            off_t *size, ed_buffer_t *ed)
 {
   FILE *fp;
   ed_line_node_t *lp = get_line_node (from, ed);
@@ -712,12 +676,8 @@ write_pipe (fn, from, to, addr, size, ed)
 
 /* write_stream: Write a range of lines to a stream; return status. */
 int
-write_stream (fp, lp, n, size, ed)
-     FILE *fp;
-     ed_line_node_t *lp;
-     off_t n;
-     off_t *size;
-     ed_buffer_t *ed;
+write_stream (FILE *fp, ed_line_node_t *lp, off_t n,
+              off_t *size, ed_buffer_t *ed)
 {
   size_t len;
   char *s;
@@ -768,11 +728,7 @@ write_stream (fp, lp, n, size, ed)
 
 /* put_stream_line: Write a line of text to a stream; return status. */
 static int
-put_stream_line (fp, s, len, ed)
-     FILE *fp;
-     const char *s;
-     size_t len;
-     ed_buffer_t *ed;
+put_stream_line (FILE *fp, const char *s, size_t len, ed_buffer_t *ed)
 {
  top:
 #ifdef WANT_DES_ENCRYPTION
@@ -801,10 +757,7 @@ put_stream_line (fp, s, len, ed)
 
 /* get_inode: Get file inode, return status. */
 static int
-get_inode (fn, inode, ed)
-     const char *fn;
-     INO_T *inode;
-     ed_buffer_t *ed;
+get_inode (const char *fn, INO_T *inode, ed_buffer_t *ed)
 {
   STAT_T sb;
 
@@ -837,9 +790,7 @@ get_inode (fn, inode, ed)
 
 /* set_file_lock: Set (advisory) file lock, return status. */
 int
-set_file_lock (fp, exclusive)
-     FILE *fp;
-     int exclusive;             /* If set, get exclusive lock. */
+set_file_lock (FILE *fp, int exclusive)
 {
   int flock_status = 0;
   int fcntl_status = 0;

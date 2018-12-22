@@ -2,7 +2,6 @@ TODO: Possible improvements for the ed line editor.
 
 * Pre-release
 ** Sync man and info pages
-** Submit ed.pot to translation group
 ** Update/expand testsuite
 ** In scripting context, apply script to each file provided on command line.
 

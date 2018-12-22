@@ -10,10 +10,7 @@
 /* get_compiled_regex: Return pointer to compiled regex from command
    buffer. */
 regex_t *
-get_compiled_regex (dc, re_type, ed)
-     unsigned dc;
-     int re_type;               /* search type */
-     ed_buffer_t *ed;
+get_compiled_regex (unsigned dc, int re_type, ed_buffer_t *ed)
 {
   static const char *compile_err = NULL;
   static regex_t *re_search = NULL; /* search regex */
@@ -237,11 +234,8 @@ get_compiled_regex (dc, re_type, ed)
    matching a pattern in a given direction. Wrap around begin/end of
    editor buffer if necessary. */
 int
-get_matching_node_address (re, dir, addr, ed)
-     const regex_t *re;
-     int dir;
-     off_t *addr;
-     ed_buffer_t *ed;
+get_matching_node_address (const regex_t *re, int dir, off_t *addr,
+                           ed_buffer_t *ed)
 {
   regmatch_t rm[1];
   ed_line_node_t *lp;

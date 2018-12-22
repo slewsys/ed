@@ -56,18 +56,9 @@ extern jmp_buf env;
 #endif  /* !HAVE_SIGLONGJMP */
 
 #include <stdio.h>
-
-#ifndef __P
-#ifndef __STDC__
-# define __P(proto) ()
-#else
-# define __P(proto) proto
-#endif  /* __STDC__ */
-#endif  /* __P */
-
 #include <signal.h>
 
-typedef void (*signal_t) __P ((int));
+typedef void (*signal_t) (int);
 
 #ifndef HAVE_SIG_ATOMIC_T
 typedef int sig_atomic_t;
@@ -866,173 +857,163 @@ enum search_type
 #endif  /* !HAVE_STRTOUL */
 
 /* Global function declarations. */
-void activate_signals __P ((void));
-int address_offset __P ((off_t *, ed_buffer_t *));
-int address_range __P ((ed_buffer_t *));
-ed_buffer_t *alloc_ed_buffer __P ((void));
+void activate_signals (void);
+int address_offset (off_t *, ed_buffer_t *);
+int address_range (ed_buffer_t *);
+ed_buffer_t *alloc_ed_buffer (void);
 
 #ifdef WANT_ED_REGISTER
-int append_from_register __P ((off_t, ed_buffer_t *));
+int append_from_register (off_t, ed_buffer_t *);
 #endif
 
-int append_lines __P ((off_t, ed_buffer_t *));
+int append_lines (off_t, ed_buffer_t *);
 
 #ifdef WANT_SCRIPT_FLAGS
-int append_script_expression __P ((const char *, ed_buffer_t *));
-int append_script_file __P ((char *, ed_buffer_t *));
+int append_script_expression (const char *, ed_buffer_t *);
+int append_script_file (char *, ed_buffer_t *);
 #endif
 
-ed_line_node_t *append_line_node __P ((size_t, off_t, off_t,
-                                       ed_buffer_t *));
-ed_text_node_t *append_text_node __P ((ed_text_node_t *, const char *, size_t));
+ed_line_node_t *append_line_node (size_t, off_t, off_t, ed_buffer_t *);
+ed_text_node_t *append_text_node (ed_text_node_t *, const char *, size_t);
 
 #ifdef WANT_ED_REGISTER
-int append_to_register __P ((off_t, off_t, int, ed_buffer_t *));
+int append_to_register (off_t, off_t, int, ed_buffer_t *);
 #endif
 
-ed_undo_node_t *append_undo_node __P ((int, off_t, off_t, ed_buffer_t *));
-int close_ed_buffer __P ((ed_buffer_t *));
-int copy_lines __P ((off_t, off_t, off_t, ed_buffer_t *));
-int create_disk_buffer __P ((FILE **, char **, ed_buffer_t *));
-int decode_utf8_char __P ((unsigned char **, int));
-void delete_global_nodes __P ((const ed_line_node_t *, const ed_line_node_t *,
-                               ed_buffer_t *));
-int delete_lines __P ((off_t, off_t, ed_buffer_t *));
-int display_lines __P ((off_t, off_t, ed_buffer_t *));
-int encode_utf8_char __P ((char *, int *, unsigned int));
-int exec_command __P ((ed_buffer_t *));
-int exec_global __P ((ed_buffer_t *));
-char *expand_shell_command __P ((size_t *, int *, ed_buffer_t *));
-char *file_glob __P ((size_t *, int, int, int, ed_buffer_t *));
-char *file_name __P ((size_t *, ed_buffer_t *));
+ed_undo_node_t *append_undo_node (int, off_t, off_t, ed_buffer_t *);
+int close_ed_buffer (ed_buffer_t *);
+int copy_lines (off_t, off_t, off_t, ed_buffer_t *);
+int create_disk_buffer (FILE **, char **, ed_buffer_t *);
+int decode_utf8_char (unsigned char **, int);
+void delete_global_nodes  (const ed_line_node_t *, const ed_line_node_t *,
+                           ed_buffer_t *);
+int delete_lines (off_t, off_t, ed_buffer_t *);
+int display_lines (off_t, off_t, ed_buffer_t *);
+int encode_utf8_char (char *, int *, unsigned int);
+int exec_command (ed_buffer_t *);
+int exec_global (ed_buffer_t *);
+char *expand_shell_command (size_t *, int *, ed_buffer_t *);
+char *file_glob (size_t *, int, int, int, ed_buffer_t *);
+char *file_name (size_t *, ed_buffer_t *);
 
 #ifdef WANT_EXTERNAL_FILTER
-int filter_lines __P ((off_t, off_t, const char *, ed_buffer_t *));
+int filter_lines (off_t, off_t, const char *, ed_buffer_t *);
 #endif
 
 #ifdef WANT_DES_ENCRYPTION
-int flush_des_file __P ((FILE *));
+int flush_des_file (FILE *);
 #endif
 
-char *get_buffer_line __P ((const ed_line_node_t *, ed_buffer_t *));
-regex_t *get_compiled_regex __P ((unsigned, int, ed_buffer_t *));
+char *get_buffer_line (const ed_line_node_t *, ed_buffer_t *);
+regex_t *get_compiled_regex (unsigned, int, ed_buffer_t *);
 
 #ifdef WANT_DES_ENCRYPTION
-int get_des_char __P ((FILE *, ed_buffer_t *));
-int get_des_keyword __P ((ed_buffer_t *));
+int get_des_char (FILE *, ed_buffer_t *);
+int get_des_keyword (ed_buffer_t *);
 #endif
 
-char *get_extended_line __P ((size_t *, int, int, ed_buffer_t *));
-ed_line_node_t *get_line_node __P ((off_t, ed_buffer_t *));
-int get_line_node_address __P ((const ed_line_node_t *, off_t *,
-                                ed_buffer_t *));
-int get_marked_node_address __P ((int, off_t *, ed_buffer_t *));
-int get_matching_node_address __P ((const regex_t *, int, off_t *,
-                                    ed_buffer_t *));
-size_t get_path_max __P ((const char *));
+char *get_extended_line (size_t *, int, int, ed_buffer_t *);
+ed_line_node_t *get_line_node (off_t, ed_buffer_t *);
+int get_line_node_address (const ed_line_node_t *, off_t *, ed_buffer_t *);
+int get_marked_node_address (int, off_t *, ed_buffer_t *);
+int get_matching_node_address (const regex_t *, int, off_t *, ed_buffer_t *);
+size_t get_path_max (const char *);
 #define get_stdin_line(len, ed) get_stream_line (stdin, len, ed)
-char *get_stream_line __P ((FILE *, size_t *, ed_buffer_t *));
+char *get_stream_line (FILE *, size_t *, ed_buffer_t *);
 
 #ifdef WANT_DES_ENCRYPTION
-void init_des_cipher __P ((void));
+void init_des_cipher (void);
 #endif
 
-void init_ed_command __P ((int, ed_buffer_t *));
-void init_ed_state __P ((off_t, struct ed_state *));
-void init_global_queue __P ((ed_global_node_t **, ed_line_node_t **,
-                             ed_buffer_t *));
+void init_ed_command (int, ed_buffer_t *);
+void init_ed_state (off_t, struct ed_state *);
+void init_global_queue (ed_global_node_t **, ed_line_node_t **, ed_buffer_t *);
 #ifdef WANT_ED_REGISTER
-int init_register_queue __P ((int, ed_buffer_t *));
+int init_register_queue (int, ed_buffer_t *);
 #endif
 
-int init_signal_handler __P ((ed_buffer_t *));
-int init_stdio __P ((ed_buffer_t *));
-void init_substitute __P ((regex_t **, unsigned *, off_t *, off_t *,
-                           unsigned *, struct ed_substitute *));
-void init_text_deque __P ((ed_text_node_t *));
-void init_undo_queue __P ((ed_undo_node_t **, ed_buffer_t *));
+int init_signal_handler (ed_buffer_t *);
+int init_stdio (ed_buffer_t *);
+void init_substitute (regex_t **, unsigned *, off_t *, off_t *,
+                      unsigned *, struct ed_substitute *);
+void init_text_deque (ed_text_node_t *);
+void init_undo_queue (ed_undo_node_t **, ed_buffer_t *);
 
 #ifdef WANT_ED_REGISTER
-int inter_register_copy __P ((int, ed_buffer_t *));
-int inter_register_move __P ((int, ed_buffer_t *));
+int inter_register_copy (int, ed_buffer_t *);
+int inter_register_move (int, ed_buffer_t *);
 #endif
 
-int is_utf8_str __P ((const char *, size_t));
-int join_lines __P ((off_t, off_t, ed_buffer_t *));
-int mark_global_nodes __P ((int, ed_buffer_t *));
-int mark_line_node __P ((const ed_line_node_t *, int, ed_buffer_t *));
-int move_lines __P ((off_t, off_t, off_t, ed_buffer_t *));
-int next_address __P ((off_t *, ed_buffer_t *));
-int one_time_init __P ((int, char **, ed_buffer_t *));
+int is_utf8_str (const char *, size_t);
+int join_lines (off_t, off_t, ed_buffer_t *);
+int mark_global_nodes (int, ed_buffer_t *);
+int mark_line_node (const ed_line_node_t *, int, ed_buffer_t *);
+int move_lines (off_t, off_t, off_t, ed_buffer_t *);
+int next_address (off_t *, ed_buffer_t *);
+int one_time_init (int, char **, ed_buffer_t *);
 
 #ifdef WANT_ED_MACRO
-int pop_stack_frame __P ((ed_buffer_t *));
+int pop_stack_frame (ed_buffer_t *);
 #endif
 
-char *pop_text_node __P ((ed_text_node_t *, size_t *));
-char *put_buffer_line __P ((const char *, size_t, ed_buffer_t *));
+char *pop_text_node (ed_text_node_t *, size_t *);
+char *put_buffer_line (const char *, size_t, ed_buffer_t *);
 
 #ifdef WANT_ED_MACRO
-int push_stack_frame __P ((ed_buffer_t *));
+int push_stack_frame (ed_buffer_t *);
 #endif
 
 #ifdef WANT_DES_ENCRYPTION
-int put_des_char __P ((int, FILE *));
+int put_des_char (int, FILE *);
 #endif
 
-void quit __P ((int, ed_buffer_t *));
-int read_file __P ((const char *, off_t, off_t *, off_t *, int,
-                    ed_buffer_t *));
-int read_pipe __P ((const char *, off_t, off_t *, off_t *,
-                    ed_buffer_t *));
-int read_stream_r __P ((FILE *, off_t, off_t *, ed_buffer_t *));
-void *realloc_buffer __P ((void **, size_t *, size_t, ed_buffer_t *));
-char *regular_expression __P ((unsigned, size_t *, ed_buffer_t *));
-int reopen_ed_buffer __P ((ed_buffer_t *));
-void reset_global_queue __P ((ed_buffer_t *));
+void quit (int, ed_buffer_t *);
+int read_file (const char *, off_t, off_t *, off_t *, int, ed_buffer_t *);
+int read_pipe (const char *, off_t, off_t *, off_t *, ed_buffer_t *);
+int read_stream_r (FILE *, off_t, off_t *, ed_buffer_t *);
+void *realloc_buffer (void **, size_t *, size_t, ed_buffer_t *);
+char *regular_expression (unsigned, size_t *, ed_buffer_t *);
+int reopen_ed_buffer (ed_buffer_t *);
+void reset_global_queue (ed_buffer_t *);
 
 #ifdef WANT_ED_REGISTER
-int reset_register_queue __P ((int, ed_buffer_t *));
+int reset_register_queue (int, ed_buffer_t *);
 #endif
 
-void reset_undo_queue __P ((ed_buffer_t *));
-int resubstitute __P ((off_t *, off_t *, unsigned *, unsigned *,
-                                ed_buffer_t *));
-void save_substitute __P ((regex_t *, unsigned, off_t, off_t, unsigned,
-                                  struct ed_substitute *));
+void reset_undo_queue (ed_buffer_t *);
+int resubstitute (off_t *, off_t *, unsigned *, unsigned *, ed_buffer_t *);
+void save_substitute (regex_t *, unsigned, off_t, off_t, unsigned,
+                      struct ed_substitute *);
 #ifdef WANT_ED_MACRO
-int script_from_register  __P ((ed_buffer_t *));
+int script_from_register  (ed_buffer_t *);
 #endif
 
 #ifdef WANT_ED_SCROLL
-int scroll_lines __P ((off_t, off_t, ed_buffer_t *));
+int scroll_lines (off_t, off_t, ed_buffer_t *);
 #endif
 
 #ifdef WANT_FILE_LOCK
-int set_file_lock __P ((FILE *, int));
+int set_file_lock (FILE *, int);
 #endif
 
-char *shift_text_node __P ((ed_text_node_t *, size_t *));
-void signal_handler __P ((int));
-void spl0 __P ((void));
-void spl1 __P ((void));
-int substitute_lines __P ((off_t, off_t, regex_t *, off_t, off_t, unsigned,
-                             ed_buffer_t *));
-int substitution_lhs __P ((regex_t **, unsigned *, ed_buffer_t *));
-int substitution_rhs __P ((off_t *, off_t *, unsigned *, unsigned *,
-                           ed_buffer_t *));
-int trailing_escapes __P ((const char *, const char *));
-void transfer_marks __P ((const ed_line_node_t *, const ed_line_node_t *,
-                          ed_buffer_t *));
-int undo_last_command __P ((ed_buffer_t *));
-int unwind_stack_frame __P ((int, ed_buffer_t *));
-void unmark_line_node __P ((const ed_line_node_t *, ed_buffer_t *));
-int utf8_char_size __P ((const char *, size_t));
-int utf8_char_display_width __P ((const char *, int));
-int utf8_strlen __P ((const char *, size_t));
-int write_file __P ((const char *, int, off_t, off_t, off_t *, off_t *,
-                     const char *, ed_buffer_t *));
-int write_pipe __P ((const char *, off_t, off_t, off_t *, off_t *,
-                     ed_buffer_t *));
-int write_stream __P ((FILE *, ed_line_node_t *, off_t, off_t *,
-                       ed_buffer_t *));
+char *shift_text_node (ed_text_node_t *, size_t *);
+void signal_handler (int);
+void spl0 (void);
+void spl1 (void);
+int substitute_lines (off_t, off_t, regex_t *, off_t, off_t, unsigned,
+                      ed_buffer_t *);
+int substitution_lhs (regex_t **, unsigned *, ed_buffer_t *);
+int substitution_rhs (off_t *, off_t *, unsigned *, unsigned *, ed_buffer_t *);
+int trailing_escapes (const char *, const char *);
+void transfer_marks (const ed_line_node_t *, const ed_line_node_t *,
+                     ed_buffer_t *);
+int undo_last_command (ed_buffer_t *);
+int unwind_stack_frame (int, ed_buffer_t *);
+void unmark_line_node (const ed_line_node_t *, ed_buffer_t *);
+int utf8_char_size (const char *, size_t);
+int utf8_char_display_width (const char *, int);
+int utf8_strlen (const char *, size_t);
+int write_file (const char *, int, off_t, off_t, off_t *, off_t *,
+                const char *, ed_buffer_t *);
+int write_pipe (const char *, off_t, off_t, off_t *, off_t *, ed_buffer_t *);
+int write_stream (FILE *, ed_line_node_t *, off_t, off_t *, ed_buffer_t *);

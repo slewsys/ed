@@ -138,52 +138,52 @@
 #endif  /* !WANT_ED_REGISTER */
 
 /* Static function declarations. */
-static int address_cmd __P ((ed_buffer_t *)); /* ($)= */
-static int comment_cmd __P ((ed_buffer_t *));
-static int E_cmd __P ((ed_buffer_t *));
-static int H_cmd __P ((ed_buffer_t *));
-static int P_cmd __P ((ed_buffer_t *));
-static int Z_cmd __P ((ed_buffer_t *));
-static int a_cmd __P ((ed_buffer_t *));
-static int c_cmd __P ((ed_buffer_t *));
-static int d_cmd __P ((ed_buffer_t *));
-static int e_cmd __P ((ed_buffer_t *));
-static int f_cmd __P ((ed_buffer_t *));
-static int global_cmd __P ((ed_buffer_t *));
-static int h_cmd __P ((ed_buffer_t *));
-static int i_cmd __P ((ed_buffer_t *));
-static int invalid_cmd __P ((ed_buffer_t *));
-static int is_valid_range __P ((off_t, off_t, ed_buffer_t *));
-static int j_cmd __P ((ed_buffer_t *));
-static int k_cmd __P ((ed_buffer_t *));
-static int l_cmd __P ((ed_buffer_t *));
-static int m_cmd __P ((ed_buffer_t *));
+static int address_cmd (ed_buffer_t *);
+static int comment_cmd (ed_buffer_t *);
+static int E_cmd (ed_buffer_t *);
+static int H_cmd (ed_buffer_t *);
+static int P_cmd (ed_buffer_t *);
+static int Z_cmd (ed_buffer_t *);
+static int a_cmd (ed_buffer_t *);
+static int c_cmd (ed_buffer_t *);
+static int d_cmd (ed_buffer_t *);
+static int e_cmd (ed_buffer_t *);
+static int f_cmd (ed_buffer_t *);
+static int global_cmd (ed_buffer_t *);
+static int h_cmd (ed_buffer_t *);
+static int i_cmd (ed_buffer_t *);
+static int invalid_cmd (ed_buffer_t *);
+static int is_valid_range (off_t, off_t, ed_buffer_t *);
+static int j_cmd (ed_buffer_t *);
+static int k_cmd (ed_buffer_t *);
+static int l_cmd (ed_buffer_t *);
+static int m_cmd (ed_buffer_t *);
 
 #ifdef WANT_ED_MACRO
-static int exec_macro __P ((ed_buffer_t *));
+static int exec_macro (ed_buffer_t *);
 #endif
 
-static int n_cmd __P ((ed_buffer_t *));
-static int newline_cmd __P ((ed_buffer_t *));
-static int normalize_frame_buffer __P ((ed_buffer_t *));
-static int p_cmd __P ((ed_buffer_t *));
-static int q_cmd __P ((ed_buffer_t *));
-static int q_cmd __P ((ed_buffer_t *));
-static int r_cmd __P ((ed_buffer_t *));
-static int s_cmd __P ((ed_buffer_t *));
-static int scroll_forward_half __P ((ed_buffer_t *));
-static int scroll_backward_half __P ((ed_buffer_t *));
-static int shell_cmd __P ((ed_buffer_t *));
-static int t_cmd __P ((ed_buffer_t *));
-static int u_cmd __P ((ed_buffer_t *));
-static int w_cmd __P ((ed_buffer_t *));
-static int w_cmd __P ((ed_buffer_t *));
+static int n_cmd (ed_buffer_t *);
+static int newline_cmd (ed_buffer_t *);
+static int normalize_frame_buffer (ed_buffer_t *);
+static int p_cmd (ed_buffer_t *);
+static int q_cmd (ed_buffer_t *);
+static int q_cmd (ed_buffer_t *);
+static int r_cmd (ed_buffer_t *);
+static int s_cmd (ed_buffer_t *);
+static int scroll_forward_half (ed_buffer_t *);
+static int scroll_backward_half (ed_buffer_t *);
+static int shell_cmd (ed_buffer_t *);
+static int t_cmd (ed_buffer_t *);
+static int u_cmd (ed_buffer_t *);
+static int w_cmd (ed_buffer_t *);
+static int w_cmd (ed_buffer_t *);
 
 #ifdef WANT_DES_ENCRYPTION
-static int x_cmd __P ((ed_buffer_t *));
+static int x_cmd (ed_buffer_t *);
 #endif
 
-static int z_cmd __P ((ed_buffer_t *));
+static int z_cmd (ed_buffer_t *);
 
 #define ED_KEY_FIRST 0x3c
 #define ED_KEY_MASK  0x3f
@@ -208,7 +208,7 @@ static const ed_command_t ed_cmd[] =
    invalid_cmd,
    E_cmd,
    invalid_cmd,
-   global_cmd,                  /* G_cmd */
+   global_cmd,                  /* Bound to key `G'. */
    H_cmd,
    invalid_cmd,
    invalid_cmd,
@@ -218,13 +218,13 @@ static const ed_command_t ed_cmd[] =
    invalid_cmd,
    invalid_cmd,
    P_cmd,
-   q_cmd,                       /* Q_cmd */
+   q_cmd,                       /* Bound to key `Q'. */
    invalid_cmd,
    invalid_cmd,
    invalid_cmd,
    invalid_cmd,
-   global_cmd,                  /* V_cmd */
-   w_cmd,                       /* W_cmd */
+   global_cmd,                  /* Bound to key `V'. */
+   w_cmd,                       /* Bound to key `W'. */
    invalid_cmd,
    invalid_cmd,
    Z_cmd,
@@ -240,7 +240,7 @@ static const ed_command_t ed_cmd[] =
    d_cmd,
    e_cmd,
    f_cmd,
-   global_cmd,                  /* g_cmd */
+   global_cmd,                  /* Bound to key `g'. */
    h_cmd,
    i_cmd,
    j_cmd,
@@ -255,7 +255,7 @@ static const ed_command_t ed_cmd[] =
    s_cmd,
    t_cmd,
    u_cmd,
-   global_cmd,                  /* v_cmd */
+   global_cmd,                  /* Bound to key `v'. */
    w_cmd,
 
 #ifdef WANT_DES_ENCRYPTION
@@ -274,8 +274,7 @@ static const ed_command_t ed_cmd[] =
  *    print request, if any.
  */
 int
-exec_command (ed)
-     ed_buffer_t *ed;
+exec_command (ed_buffer_t *ed)
 {
   int c = 0;
 
@@ -373,8 +372,7 @@ exec_command (ed)
 }
 
 static int
-a_cmd (ed)
-     ed_buffer_t *ed;
+a_cmd (ed_buffer_t *ed)
 {
   int status = 0;               /* Return status */
 
@@ -395,8 +393,7 @@ a_cmd (ed)
 }
 
 static int
-c_cmd (ed)
-     ed_buffer_t *ed;
+c_cmd (ed_buffer_t *ed)
 {
   int status = 0;               /* Return status */
 
@@ -426,8 +423,7 @@ c_cmd (ed)
 }
 
 static int
-d_cmd (ed)
-     ed_buffer_t *ed;
+d_cmd (ed_buffer_t *ed)
 {
   off_t addr = 0;
   int status = 0;               /* Return status */
@@ -464,8 +460,7 @@ d_cmd (ed)
 }
 
 static int
-e_cmd (ed)
-     ed_buffer_t *ed;
+e_cmd (ed_buffer_t *ed)
 {
   if (ed->state->is_modified && !(ed->exec->opt & SCRIPTED))
     return EMOD;
@@ -473,8 +468,7 @@ e_cmd (ed)
 }
 
 static int
-E_cmd (ed)
-     ed_buffer_t *ed;
+E_cmd (ed_buffer_t *ed)
 {
   off_t addr = 0;
   off_t size = 0;
@@ -572,8 +566,7 @@ E_cmd (ed)
 
 #ifdef WANT_ED_MACRO
 static int
-exec_macro (ed)
-     ed_buffer_t *ed;
+exec_macro (ed_buffer_t *ed)
 {
   size_t len;
   int status = 0;
@@ -626,8 +619,7 @@ exec_macro (ed)
 #endif  /* WANT_ED_MACRO */
 
 static int
-f_cmd (ed)
-     ed_buffer_t *ed;
+f_cmd (ed_buffer_t *ed)
 {
   size_t len = 0;
   char *fn = NULL;
@@ -691,8 +683,7 @@ f_cmd (ed)
 }
 
 static int
-global_cmd (ed)
-     ed_buffer_t *ed;
+global_cmd (ed_buffer_t *ed)
 {
   int c = *(ed->input - 1);
   int status = 0;               /* Return status */
@@ -718,8 +709,7 @@ global_cmd (ed)
 }
 
 static int
-H_cmd (ed)
-     ed_buffer_t *ed;
+H_cmd (ed_buffer_t *ed)
 {
 
   if (ed->exec->region->addrs)
@@ -737,8 +727,7 @@ H_cmd (ed)
 }
 
 static int
-h_cmd (ed)
-     ed_buffer_t *ed;
+h_cmd (ed_buffer_t *ed)
 {
   /*
    * Of all commands, at least `h' should be forgiving, but SUSv4,
@@ -761,8 +750,7 @@ h_cmd (ed)
 }
 
 static int
-i_cmd (ed)
-     ed_buffer_t *ed;
+i_cmd (ed_buffer_t *ed)
 {
   int status = 0;               /* Return status */
 
@@ -781,8 +769,7 @@ i_cmd (ed)
 }
 
 static int
-j_cmd (ed)
-     ed_buffer_t *ed;
+j_cmd (ed_buffer_t *ed)
 {
   int status = 0;               /* Return status */
 
@@ -809,8 +796,7 @@ j_cmd (ed)
 }
 
 static int
-k_cmd (ed)
-     ed_buffer_t *ed;
+k_cmd (ed_buffer_t *ed)
 {
   int cx = 0;
   int status = 0;               /* Return status */
@@ -833,8 +819,7 @@ k_cmd (ed)
 }
 
 static int
-l_cmd (ed)
-     ed_buffer_t *ed;
+l_cmd (ed_buffer_t *ed)
 {
   int status = 0;               /* Return status */
 
@@ -859,8 +844,7 @@ l_cmd (ed)
 }
 
 static int
-m_cmd (ed)
-     ed_buffer_t *ed;
+m_cmd (ed_buffer_t *ed)
 {
   off_t addr = 0;
   int append = 0;               /* Append to register? */
@@ -920,8 +904,7 @@ m_cmd (ed)
 }
 
 static int
-n_cmd (ed)
-     ed_buffer_t *ed;
+n_cmd (ed_buffer_t *ed)
 {
   int status = 0;               /* Return status */
 
@@ -947,8 +930,7 @@ n_cmd (ed)
 }
 
 static int
-P_cmd (ed)
-     ed_buffer_t *ed;
+P_cmd (ed_buffer_t *ed)
 {
   if (ed->exec->region->addrs)
     {
@@ -963,8 +945,7 @@ P_cmd (ed)
 }
 
 static int
-p_cmd (ed)
-     ed_buffer_t *ed;
+p_cmd (ed_buffer_t *ed)
 {
   int status = 0;               /* Return status */
 
@@ -989,8 +970,7 @@ p_cmd (ed)
 }
 
 static int
-q_cmd (ed)
-     ed_buffer_t *ed;
+q_cmd (ed_buffer_t *ed)
 {
   int c = *(ed->input - 1);
 
@@ -1005,8 +985,7 @@ q_cmd (ed)
 }
 
 static int
-r_cmd (ed)
-     ed_buffer_t *ed;
+r_cmd (ed_buffer_t *ed)
 {
   off_t addr = 0;
   off_t size = 0;
@@ -1108,8 +1087,7 @@ r_cmd (ed)
 }
 
 static int
-s_cmd (ed)
-     ed_buffer_t *ed;
+s_cmd (ed_buffer_t *ed)
 {
   regex_t *lhs    = NULL;       /* Left-hand substitution pattern buffer */
   off_t s_nth     = 0;          /* Substitution match offset */
@@ -1163,8 +1141,7 @@ s_cmd (ed)
 }
 
 static int
-scroll_backward_half (ed)
-     ed_buffer_t *ed;
+scroll_backward_half (ed_buffer_t *ed)
 {
   int status = 0;               /* Return status */
 
@@ -1227,8 +1204,7 @@ scroll_backward_half (ed)
 }
 
 static int
-scroll_forward_half (ed)
-     ed_buffer_t *ed;
+scroll_forward_half (ed_buffer_t *ed)
 {
   int status;
 
@@ -1296,8 +1272,7 @@ scroll_forward_half (ed)
 }
 
 static int
-t_cmd (ed)
-     ed_buffer_t *ed;
+t_cmd (ed_buffer_t *ed)
 {
   off_t addr = 0;
   int append = 0;               /* Append to register? */
@@ -1341,8 +1316,7 @@ t_cmd (ed)
 }
 
 static int
-u_cmd (ed)
-     ed_buffer_t *ed;
+u_cmd (ed_buffer_t *ed)
 {
   int status = 0;               /* Return status */
 
@@ -1358,8 +1332,7 @@ u_cmd (ed)
 }
 
 static int
-w_cmd (ed)
-     ed_buffer_t *ed;
+w_cmd (ed_buffer_t *ed)
 {
   off_t addr = 0;
   off_t size = 0;
@@ -1537,8 +1510,7 @@ w_cmd (ed)
 
 #ifdef WANT_DES_ENCRYPTION
 static int
-x_cmd (ed)
-     ed_buffer_t *ed;
+x_cmd (ed_buffer_t *ed)
 {
   int status = 0;
 
@@ -1557,8 +1529,7 @@ x_cmd (ed)
 #endif  /* WANT_DES_ENCRYPTION */
 
 static int
-Z_cmd (ed)
-     ed_buffer_t *ed;
+Z_cmd (ed_buffer_t *ed)
 {
   size_t len = 0;
   off_t addr = 0;
@@ -1617,8 +1588,7 @@ Z_cmd (ed)
 }
 
 static int
-z_cmd (ed)
-     ed_buffer_t *ed;
+z_cmd (ed_buffer_t *ed)
 {
   off_t addr = 0;
   size_t len = 0;
@@ -1709,8 +1679,7 @@ z_cmd (ed)
 }
 
 static int
-address_cmd (ed)
-     ed_buffer_t *ed;
+address_cmd (ed_buffer_t *ed)
 {
 
   /* case '=': */
@@ -1721,8 +1690,7 @@ address_cmd (ed)
 }
 
 static int
-shell_cmd (ed)
-     ed_buffer_t *ed;
+shell_cmd (ed_buffer_t *ed)
 {
   off_t addr = 0;
   size_t len = 0;
@@ -1767,8 +1735,7 @@ shell_cmd (ed)
 }
 
 static int
-newline_cmd (ed)
-     ed_buffer_t *ed;
+newline_cmd (ed_buffer_t *ed)
 {
   off_t addr = 0;
   int status = 0;               /* Return status */
@@ -1787,8 +1754,7 @@ newline_cmd (ed)
 }
 
 static int
-comment_cmd (ed)
-     ed_buffer_t *ed;
+comment_cmd (ed_buffer_t *ed)
 {
   /* case '#': */
   while (*ed->input++ != '\n')
@@ -1797,8 +1763,7 @@ comment_cmd (ed)
 }
 
 static int
-invalid_cmd (ed)
-     ed_buffer_t *ed;
+invalid_cmd (ed_buffer_t *ed)
 {
   off_t dot = ed->state->dot;
 
@@ -1810,8 +1775,7 @@ invalid_cmd (ed)
 
 /* normalize_frame_buffer: Exec hidden `Z' command with currrent address. */
 static int
-normalize_frame_buffer (ed)
-     ed_buffer_t *ed;
+normalize_frame_buffer (ed_buffer_t *ed)
 {
   static char *buf = NULL;
   static size_t buf_size = 0;
@@ -1849,10 +1813,7 @@ normalize_frame_buffer (ed)
 
 /* is_valid_range: Return status of address range check. */
 static int
-is_valid_range (from, to, ed)
-     off_t from;
-     off_t to;
-     ed_buffer_t *ed;
+is_valid_range (off_t from, off_t to, ed_buffer_t *ed)
 {
   if (!ed->exec->region->addrs)
     {
@@ -1885,8 +1846,7 @@ is_valid_range (from, to, ed)
  *   filesystem dependent.
  */
 size_t
-get_path_max (ps)
-const char *ps;
+get_path_max (const char *ps)
 {
   return PATH_MAX;
 }

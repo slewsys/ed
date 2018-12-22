@@ -16,9 +16,7 @@ static ed_line_node_t *next_global_node __P ((ed_buffer_t *));
 
 /* mark_global_nodes: Add lines matching a pattern to global queue. */
 int
-mark_global_nodes (want_match, ed)
-     int want_match;
-     ed_buffer_t *ed;
+mark_global_nodes (int want_match, ed_buffer_t *ed)
 {
   regmatch_t rm[1];
   regex_t *re;
@@ -66,8 +64,7 @@ mark_global_nodes (want_match, ed)
  *   queue. Return command status.
  */
 int
-exec_global (ed)
-     ed_buffer_t *ed;
+exec_global (ed_buffer_t *ed)
 {
   static char *gcb = NULL;      /* global command buffer */
   static size_t gcb_size = 0;   /* buffer size */
@@ -161,9 +158,7 @@ exec_global (ed)
  *   pointer.
  */
 static ed_global_node_t *
-append_global_node (lp, ed)
-     const ed_line_node_t *lp;
-     ed_buffer_t *ed;
+append_global_node (const ed_line_node_t *lp, ed_buffer_t *ed)
 {
   ed_global_node_t *gp;
   ed_global_node_t *tq = ed->core->global_head->q_back;
@@ -190,8 +185,7 @@ append_global_node (lp, ed)
  *   node pointer.
  */
 static ed_line_node_t *
-next_global_node (ed)
-     ed_buffer_t *ed;
+next_global_node (ed_buffer_t *ed)
 {
   ed_global_node_t *ap = ed->core->global_head->q_forw;
   ed_line_node_t *lp = ap->lp;
@@ -209,8 +203,7 @@ next_global_node (ed)
 
 /* reset_global_queue: Initialize and reset global queue. */
 void
-reset_global_queue (ed)
-     ed_buffer_t *ed;
+reset_global_queue (ed_buffer_t *ed)
 {
   /* Assert: spl1 () */
 
@@ -236,10 +229,8 @@ reset_global_queue (ed)
 
 /* delete_global_nodes: Delete range of global nodes, excluding end. */
 void
-delete_global_nodes (begin, end, ed)
-     const ed_line_node_t *begin;
-     const ed_line_node_t *end;
-     ed_buffer_t *ed;
+delete_global_nodes (const ed_line_node_t *begin, const ed_line_node_t *end,
+                     ed_buffer_t *ed)
 {
   ed_line_node_t *first = (ed_line_node_t *) begin;
   ed_line_node_t *last = (ed_line_node_t *) end;

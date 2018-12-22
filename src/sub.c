@@ -9,16 +9,16 @@
 
 
 /* Static function declarations. */
-static int apply_subst_template __P ((const char *, const regmatch_t *,
-                                      int, size_t *, ed_buffer_t *));
-static size_t count_matches __P ((const regex_t *, const char *, int len,
-                                  struct ed_state *));
-static int substitute_matching __P ((const regex_t *, const ed_line_node_t *,
-                                     size_t *, off_t, off_t, unsigned,
-                                     ed_buffer_t *));
-static int substitution_modifiers __P ((off_t *, off_t *, unsigned *,
-                                        ed_buffer_t *));
-static int substitution_template __P ((unsigned, ed_buffer_t *));
+static int apply_subst_template (const char *, const regmatch_t *,
+                                 int, size_t *, ed_buffer_t *);
+static size_t count_matches (const regex_t *, const char *, int len,
+                             struct ed_state *);
+static int substitute_matching (const regex_t *, const ed_line_node_t *,
+                                size_t *, off_t, off_t, unsigned,
+                                ed_buffer_t *);
+static int substitution_modifiers (off_t *, off_t *, unsigned *,
+                                   ed_buffer_t *);
+static int substitution_template (unsigned, ed_buffer_t *);
 
 
 #define SGPR_CHARS "\n$+-^gpr0123456789"
@@ -27,12 +27,8 @@ static int substitution_template __P ((unsigned, ed_buffer_t *));
 /* resubstitute: Get repeated substitution modifiers
    from command buffer. Return status. */
 int
-resubstitute (s_nth, s_mod, s_f, sgpr_f, ed)
-     off_t *s_nth;
-     off_t *s_mod;
-     unsigned *s_f;
-     unsigned *sgpr_f;
-     ed_buffer_t *ed;
+resubstitute (off_t *s_nth, off_t *s_mod, unsigned *s_f,
+              unsigned *sgpr_f, ed_buffer_t *ed)
 {
   int status;
   int g_f = 0;                  /* Set if global toggled - e.g. `sg' */
@@ -142,10 +138,7 @@ resubstitute (s_nth, s_mod, s_f, sgpr_f, ed)
 /* substitution_lhs: Get substitution lhs from command buffer; return
    status. */
 int
-substitution_lhs (lhs_p, sgpr_f, ed)
-     regex_t **lhs_p;
-     unsigned *sgpr_f;
-     ed_buffer_t *ed;
+substitution_lhs (regex_t **lhs_p, unsigned *sgpr_f, ed_buffer_t *ed)
 {
   regex_t *re;
 
@@ -187,12 +180,8 @@ size_t rhs_i;                   /* Substitution template buffer index */
 /* substitution_rhs: Get substitution rhs (template) from command
    buffer; return status. */
 int
-substitution_rhs (s_nth, s_mod, s_f, sio_f, ed)
-     off_t *s_nth;
-     off_t *s_mod;
-     unsigned *s_f;
-     unsigned *sio_f;
-     ed_buffer_t *ed;
+substitution_rhs (off_t *s_nth, off_t *s_mod, unsigned *s_f,
+                  unsigned *sio_f, ed_buffer_t *ed)
 {
   size_t len;
   unsigned dc;                    /* Pattern delimiting char */
@@ -237,9 +226,7 @@ substitution_rhs (s_nth, s_mod, s_f, sio_f, ed)
 /* substitution_template: Copy substitution template from command
    buffer; return status. */
 static int
-substitution_template (dc, ed)
-     unsigned dc;               /* Pattern delimiting char */
-     ed_buffer_t *ed;
+substitution_template (unsigned dc, ed_buffer_t *ed)
 {
   if (*++ed->input == '%'
       && (*(ed->input + 1) == dc || *(ed->input + 1) == '\n'))
@@ -281,11 +268,8 @@ substitution_template (dc, ed)
 
 /* substitution_modifiers: Get substitution modifiers from command buffer. */
 static int
-substitution_modifiers (s_nth, s_mod, s_f, ed)
-     off_t *s_nth;
-     off_t *s_mod;
-     unsigned *s_f;
-     ed_buffer_t *ed;
+substitution_modifiers (off_t *s_nth, off_t *s_mod, unsigned *s_f,
+                        ed_buffer_t *ed)
 {
   int status;
 
@@ -353,13 +337,8 @@ substitution_modifiers (s_nth, s_mod, s_f, ed)
 /* init_substitute: Initialize substitution parameters from ed state
    buffer. */
 void
-init_substitute (lhs, s_f, s_nth, s_mod, sio_f, es)
-     regex_t **lhs;
-     unsigned *s_f;
-     off_t *s_nth;
-     off_t *s_mod;
-     unsigned *sio_f;
-     struct ed_substitute *es;
+init_substitute (regex_t **lhs, unsigned *s_f, off_t *s_nth,
+                 off_t *s_mod, unsigned *sio_f, struct ed_substitute *es)
 {
   *lhs = es->lhs;
   rhs = es->rhs;
@@ -374,13 +353,8 @@ init_substitute (lhs, s_f, s_nth, s_mod, sio_f, es)
 
 /* save_substitute: Save substitution parameters in ed state buffer. */
 void
-save_substitute (lhs, s_f, s_nth, s_mod, sio_f, es)
-     regex_t *lhs;
-     unsigned s_f;
-     off_t s_nth;
-     off_t s_mod;
-     unsigned sio_f;
-     struct ed_substitute *es;
+save_substitute (regex_t *lhs, unsigned s_f, off_t s_nth,
+                 off_t s_mod, unsigned sio_f, struct ed_substitute *es)
 {
   es->lhs = lhs;
   es->rhs = rhs;
@@ -400,14 +374,8 @@ size_t rb_size;                 /* Substitution text buffer size */
 /* substitute_lines: For each line in a range, replace text matching a
    pattern per substitution template; return status. */
 int
-substitute_lines (from, to, re, s_nth, s_mod, s_f, ed)
-     off_t from;
-     off_t to;
-     regex_t *re;
-     off_t s_nth;
-     off_t s_mod;
-     unsigned s_f;
-     ed_buffer_t *ed;
+substitute_lines (off_t from, off_t to, regex_t *re, off_t s_nth,
+                  off_t s_mod, unsigned s_f, ed_buffer_t *ed)
 {
   ed_line_node_t *lp;
   ed_line_node_t *mp;
@@ -478,14 +446,9 @@ substitute_lines (from, to, re, s_nth, s_mod, s_f, ed)
 /* substitute_matching: Replace text matched by a pattern according to
    a substitution template; return length of modified text. */
 static int
-substitute_matching (re, lp, len, s_nth, s_mod,  s_f, ed)
-     const regex_t *re;
-     const ed_line_node_t *lp;
-     size_t *len;
-     off_t s_nth;
-     off_t s_mod;
-     unsigned s_f;
-     ed_buffer_t *ed;
+substitute_matching (const regex_t *re, const ed_line_node_t *lp,
+                     size_t *len, off_t s_nth, off_t s_mod,
+                     unsigned s_f, ed_buffer_t *ed)
 {
   regmatch_t rm[SE_MAX];
   char *txt;
@@ -610,11 +573,8 @@ substitute_matching (re, lp, len, s_nth, s_mod,  s_f, ed)
 
 /* count_matches: Return count of matches in given line. */
 static size_t
-count_matches (re, txt, len, buf)
-     const regex_t *re;
-     const char *txt;
-     int len;
-     struct ed_state *buf;
+count_matches (const regex_t *re, const char *txt, int len,
+               struct ed_state *buf)
 {
   regmatch_t rm[SE_MAX];
   const char *eot;
@@ -674,12 +634,8 @@ count_matches (re, txt, len, buf)
 /* apply_subst_template: Modify text according to a
    substitution template; return offset to end of modified text. */
 static int
-apply_subst_template (boln, rm, re_nsub, len, ed)
-     const char *boln;
-     const regmatch_t *rm;
-     int re_nsub;
-     size_t *len;
-     ed_buffer_t *ed;
+apply_subst_template (const char *boln, const regmatch_t *rm,
+                      int re_nsub, size_t *len, ed_buffer_t *ed)
 {
   char *sub = rhs;
   size_t j = 0;

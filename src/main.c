@@ -40,9 +40,7 @@ static void script_die __P ((int, ed_buffer_t *));
 
 /* ed: line editor */
 int
-main (argc, argv)
-     int argc;
-     char **argv;
+main (int argc, char **argv)
 {
   struct option long_options[15] =
     {
@@ -410,9 +408,7 @@ top:
  *   ed->input. Return status.
  */
 static int
-next_edit (status, ed)
-     int status;
-     ed_buffer_t *ed;
+next_edit (int status, ed_buffer_t *ed)
 {
   static char *buf = NULL;
   static size_t buf_size = 0;
@@ -454,9 +450,7 @@ next_edit (status, ed)
  *   ed->input. Return status.
  */
 static int
-save_edit (status, ed)
-     int status;
-     ed_buffer_t *ed;
+save_edit (int status, ed_buffer_t *ed)
 {
   static char *buf = NULL;
   static size_t buf_size = 0;
@@ -510,10 +504,7 @@ save_edit (status, ed)
  *   environment variable; argv[0] points to the given variable name.
  */
 static char **
-getenv_init_argv (s, argc, ed)
-     const char *s;
-     int *argc;
-     ed_buffer_t *ed;
+getenv_init_argv (const char *s, int *argc, ed_buffer_t *ed)
 {
   static char *argv;            /* argument vector buffer */
   static char *env;             /* copy of environment variable */
@@ -552,9 +543,7 @@ getenv_init_argv (s, argc, ed)
 #ifdef WANT_SCRIPT_FLAGS
 /* append_script_expression: Append expression to script. */
 int
-append_script_expression (s, ed)
-     const char *s;
-     ed_buffer_t *ed;
+append_script_expression (const char *s, ed_buffer_t *ed)
 {
   size_t n;
   int status;
@@ -588,9 +577,7 @@ append_script_expression (s, ed)
 
 /* append_script_file: Append file contents to script. */
 int
-append_script_file (fn, ed)
-     char *fn;
-     ed_buffer_t *ed;
+append_script_file (char *fn, ed_buffer_t *ed)
 {
   FILE *fp;
   char *filename;
@@ -666,9 +653,7 @@ append_script_file (fn, ed)
 
 /* ed_usage: Print ed usage. */
 static void
-ed_usage (status, ed)
-     int status;
-     ed_buffer_t *ed;
+ed_usage (int status, ed_buffer_t *ed)
 {
   extern char version_string[]; /* From version.c */
 
@@ -731,9 +716,7 @@ Submit issues to: <bug-ed@gnu.org>.\n"));
 
 /* script_die: Print an error message to stderr, then exit. */
 static void
-script_die (status, ed)
-     int status;
-     ed_buffer_t *ed;
+script_die (int status, ed_buffer_t *ed)
 {
   if (ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL)
       || !ed->exec->file_script)

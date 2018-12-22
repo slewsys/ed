@@ -32,11 +32,11 @@
 # define WRITE(buf, n, fp)	fwrite(buf, sizeof(char), n, fp)
 
 /* Static function declarations. */
-static int expand_des_key __P ((unsigned char *, char *, ed_buffer_t *));
-static void set_des_key __P ((DES_cblock *));
-static int cbc_encode __P ((unsigned char *, int, FILE *));
-static int cbc_decode __P ((unsigned char *, FILE *, ed_buffer_t *));
-static int char_to_int __P ((int, int));
+static int expand_des_key (unsigned char *, char *, ed_buffer_t *);
+static void set_des_key (DES_cblock *);
+static int cbc_encode (unsigned char *, int, FILE *);
+static int cbc_decode (unsigned char *, FILE *, ed_buffer_t *);
+static int char_to_int (int, int);
 
 /* Global variables. */
 static DES_cblock ivec;		/* initialization vector */
@@ -79,9 +79,7 @@ init_des_cipher (void)
 
 /* get_des_char: Return next char in encrypted file. */
 int
-get_des_char (fp, ed)
-     FILE *fp;
-     ed_buffer_t *ed;
+get_des_char (FILE *fp, ed_buffer_t *ed)
 {
   if (des_n >= des_ct)
     {
@@ -94,9 +92,7 @@ get_des_char (fp, ed)
 
 /* put_des_char: Write char to encrypted file, and return char written. */
 int
-put_des_char (c, fp)
-     int c;
-     FILE *fp;
+put_des_char (int c, FILE *fp)
 {
   if (des_n == sizeof des_buf)
     {
@@ -109,8 +105,7 @@ put_des_char (c, fp)
 
 /* flush_des_file: Flush encrypted file's output and return status. */
 int
-flush_des_file (fp)
-     FILE *fp;
+flush_des_file (FILE *fp)
 {
   if (des_n == sizeof des_buf)
     {
@@ -122,8 +117,7 @@ flush_des_file (fp)
 
 /* get des_keyword: Read key from tty. */
 int
-get_des_keyword (ed)
-     ed_buffer_t *ed;
+get_des_keyword (ed_buffer_t *ed)
 {
   DES_cblock msgbuf;		/* I/O buffer */
   char *p;			/* Pointer to key read from tty. */
@@ -156,12 +150,10 @@ get_des_keyword (ed)
 
 /* char_to_int: Convert character to integer per radix. */
 static int
-char_to_int (c, radix)
-     int c;
-     int radix;
+char_to_int (int c, int radix)
 {
 #ifdef HAVE_STRTOL
-  static s[2] = { 0 };
+  static int s[2] = { 0 };
 
   long n;
 
@@ -218,10 +210,7 @@ char_to_int (c, radix)
 
 /* expand_des_key: Convert 64-bit key to bit pattern. */
 static int
-expand_des_key (obuf, kbuf, ed)
-     unsigned char *obuf;       /* Bit pattern. */
-     char *kbuf;                /* Key buffer. */
-     ed_buffer_t *ed;
+expand_des_key (unsigned char *obuf, char *kbuf, ed_buffer_t *ed)
 {
   int i, j;
   int nbuf[64];			/* Buffer for hex/binary key conversion. */
@@ -297,8 +286,7 @@ expand_des_key (obuf, kbuf, ed)
  * DES ignores the low order bit of each character.
  */
 static void
-set_des_key (buf)
-     DES_cblock * buf;          /* Key block. */
+set_des_key (DES_cblock * buf)
 {
   int i, j;
   int par;			/* Parity counter. */
@@ -326,10 +314,7 @@ set_des_key (buf)
 
 /* cbc_encode: Encrypt a block using DES Cipher Block Chaining mode. */
 static int
-cbc_encode (msgbuf, n, fp)
-     unsigned char *msgbuf;
-     int n;
-     FILE *fp;
+cbc_encode (unsigned char *msgbuf, int n, FILE *fp)
 {
   /* Don't encode empty file. */
   if (n == 0 && des_ct == 0)
@@ -363,10 +348,7 @@ cbc_encode (msgbuf, n, fp)
 
 /* cbc_decode: Decrypt using DES Cipher Block Chaining mode. */
 static int
-cbc_decode (msgbuf, fp, ed)
-     unsigned char *msgbuf;     /* Input buffer. */
-     FILE *fp;                  /* Input file pointer. */
-     ed_buffer_t *ed;
+cbc_decode (unsigned char *msgbuf, FILE *fp, ed_buffer_t *ed)
 {
   DES_cblock tbuf;		/* Initialization vector. */
   int n, c;

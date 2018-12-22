@@ -40,8 +40,7 @@ activate_signals (void)
 }
 
 static void
-handle_hup (signo)
-     int signo;
+handle_hup (int signo)
 {
   extern ed_buffer_t *ed;
 
@@ -74,8 +73,7 @@ handle_hup (signo)
 
 
 static void
-handle_int (signo)
-     int signo;
+handle_int (int signo)
 {
   extern ed_buffer_t *ed;
 
@@ -87,8 +85,7 @@ handle_int (signo)
 
 
 static void
-handle_winch (signo)
-     int signo;
+handle_winch (int signo)
 {
   extern ed_buffer_t *ed;
 
@@ -116,8 +113,7 @@ handle_winch (signo)
 
 
 int
-init_signal_handler (ed)
-     ed_buffer_t *ed;
+init_signal_handler (ed_buffer_t *ed)
 {
   /* Override signo-indexed LUT for handlers of interest. */
   sighandler[SIGHUP - 1] = handle_hup;
@@ -144,9 +140,7 @@ init_signal_handler (ed)
 }
 
 static signal_t
-reliable_signal (signo, handler)
-     int signo;
-     signal_t handler;
+reliable_signal (int signo, signal_t handler)
 {
 #ifndef HAVE_SIGACTION
   return signal (signo, handler);
@@ -172,8 +166,7 @@ int _mutex = 0;
    handling when signaling resumed. Otherwise, call signal-indexed
    handler. */
 void
-signal_handler (signo)
-     int signo;
+signal_handler (int signo)
 {
   /* Assert: _sigactive == 1 */
   if (_mutex)

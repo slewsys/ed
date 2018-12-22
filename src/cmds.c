@@ -13,9 +13,7 @@
  *   when either a single period is read or EOF. Return status.
  */
 int
-append_lines (after, ed)
-     off_t after;
-     ed_buffer_t *ed;
+append_lines (off_t after, ed_buffer_t *ed)
 {
   char *s;
   size_t len;
@@ -80,11 +78,7 @@ append_lines (after, ed)
  * copy_lines: Copy a range of lines to after given address. Return status.
  */
 int
-copy_lines (from, to, after, ed)
-     off_t from;
-     off_t to;
-     off_t after;
-     ed_buffer_t *ed;
+copy_lines (off_t from, off_t to, off_t after, ed_buffer_t *ed)
 {
   ed_line_node_t *lp, *np;
   ed_undo_node_t *up = NULL;
@@ -117,10 +111,7 @@ copy_lines (from, to, after, ed)
 
 /* delete_lines: Delete a range of lines. */
 int
-delete_lines (from, to, ed)
-     off_t from;
-     off_t to;
-     ed_buffer_t *ed;
+delete_lines (off_t from, off_t to, ed_buffer_t *ed)
 {
   ed_line_node_t *b, *a;
 
@@ -148,10 +139,7 @@ delete_lines (from, to, ed)
  * join_lines: Replace a range of lines with the joined text of those lines.
  */
 int
-join_lines (from, to, ed)
-     off_t from;
-     off_t to;
-     ed_buffer_t *ed;
+join_lines (off_t from, off_t to, ed_buffer_t *ed)
 {
   static char *lj = NULL;       /* line join buffer */
   static size_t lj_size;        /* buffer size */
@@ -194,11 +182,7 @@ join_lines (from, to, ed)
  * move_lines: Move a range of lines to after given address. Return status.
  */
 int
-move_lines (from, to, after, ed)
-     off_t from;
-     off_t to;
-     off_t after;
-     ed_buffer_t *ed;
+move_lines (off_t from, off_t to, off_t after, ed_buffer_t *ed)
 {
   ed_line_node_t *b1, *a1, *b2, *a2;
   off_t succ = INC_MOD (to, ed->state->lines);
@@ -252,10 +236,7 @@ move_lines (from, to, after, ed)
 
 /* mark_line_node: Set a line node mark. */
 int
-mark_line_node (lp, n, ed)
-     const ed_line_node_t *lp;
-     int n;
-     ed_buffer_t *ed;
+mark_line_node (const ed_line_node_t *lp, int n, ed_buffer_t *ed)
 {
   if (!islower (n))
     {
@@ -271,10 +252,7 @@ mark_line_node (lp, n, ed)
 
 /* get_marked_node_address: Get address of a marked line. Return status. */
 int
-get_marked_node_address (n, addr, ed)
-     int n;
-     off_t *addr;
-     ed_buffer_t *ed;
+get_marked_node_address (int n, off_t *addr, ed_buffer_t *ed)
 {
   if (!islower (n))
     {
@@ -287,10 +265,8 @@ get_marked_node_address (n, addr, ed)
 
 /* transfer_marks: Transfer marks from line node lp to mp. */
 void
-transfer_marks (mp, lp, ed)
-     const ed_line_node_t *mp;
-     const ed_line_node_t *lp;
-     ed_buffer_t *ed;
+transfer_marks (const ed_line_node_t *mp, const ed_line_node_t *lp,
+                ed_buffer_t *ed)
 {
   int n = 25;
 
@@ -305,9 +281,7 @@ transfer_marks (mp, lp, ed)
 
 /* unmark_line_node: Clear line node mark. */
 void
-unmark_line_node (lp, ed)
-     const ed_line_node_t *lp;
-     ed_buffer_t *ed;
+unmark_line_node (const ed_line_node_t *lp, ed_buffer_t *ed)
 {
   int i;
 
