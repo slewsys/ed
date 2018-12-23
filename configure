@@ -3150,6 +3150,7 @@ as_fn_append ac_header_list " termios.h"
 gt_needs="$gt_needs need-formatstring-macros"
 as_fn_append ac_func_list " symlink"
 gt_needs="$gt_needs "
+as_fn_append ac_func_list " arc4random_buf"
 as_fn_append ac_func_list " dup2"
 as_fn_append ac_func_list " flock"
 as_fn_append ac_func_list " ftruncate"
@@ -16750,7 +16751,53 @@ _ACEOF
 
 fi
 
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for arc4random_buf in -lbsd" >&5
+$as_echo_n "checking for arc4random_buf in -lbsd... " >&6; }
+if ${ac_cv_lib_bsd_arc4random_buf+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lbsd  $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
 
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char arc4random_buf ();
+int
+main ()
+{
+return arc4random_buf ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"; then :
+  ac_cv_lib_bsd_arc4random_buf=yes
+else
+  ac_cv_lib_bsd_arc4random_buf=no
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_bsd_arc4random_buf" >&5
+$as_echo "$ac_cv_lib_bsd_arc4random_buf" >&6; }
+if test "x$ac_cv_lib_bsd_arc4random_buf" = xyes; then :
+  ac_cv_lib_bsd='yes'
+else
+  ac_cv_lib_bsd='no'
+fi
+
+if test ."$ac_cv_lib_bsd" = .'yes'; then :
+
+$as_echo "#define HAVE_LIB_BSD 1" >>confdefs.h
+
+fi
 
 #
 # Checks for headers.
@@ -28575,6 +28622,8 @@ $as_echo "#define HAVE_DCGETTEXT 1" >>confdefs.h
 
 
 
+# Ubuntu Xenial (16.04.5) ships with Gettext 0.19.7.
+
  if test ."$LTLIBINTL" != .''; then
   LDADD_LIBINTL_TRUE=
   LDADD_LIBINTL_FALSE='#'
@@ -30438,6 +30487,13 @@ fi
 
 
 
+ac_fn_c_check_func "$LINENO" "" "ac_cv_func_"
+if test "x$ac_cv_func_" = xyes; then :
+
+fi
+
+
+
 
 
 
@@ -30638,13 +30694,16 @@ fi
 $as_echo "${enable_des_encryption:-no}" >&6; }
 
  if test ."$enable_des_encryption" = .'yes' \
-    && test ."$ac_cv_have_openssl" = .'yes'; then
+    && test ."$ac_cv_have_openssl" = .'yes' \
+    && { test ."ac_cv_func_arc4random_buf" = .'yes' \
+         || test ."ac_cv_lib_bsd" = .'yes'; }; then
   LDADD_LIBCRYPT_TRUE=
   LDADD_LIBCRYPT_FALSE='#'
 else
   LDADD_LIBCRYPT_TRUE='#'
   LDADD_LIBCRYPT_FALSE=
 fi
+
 
 if test -z "$LDADD_LIBCRYPT_TRUE"; then :
 

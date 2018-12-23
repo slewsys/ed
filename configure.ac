@@ -134,7 +134,11 @@ AM_CONDITIONAL([LDADD_LIBGNU],
 # Checks for libraries.
 #
 AC_CHECK_LIB([c], [fopen])
-
+AC_CHECK_LIB([bsd], [arc4random_buf],
+  [ac_cv_lib_bsd='yes'], [ac_cv_lib_bsd='no'])
+AS_IF([test ."$ac_cv_lib_bsd" = .'yes'],
+  AC_DEFINE([HAVE_LIB_BSD], [1],
+    [Define to 1 if libbsd is present]))
 
 #
 # Checks for headers.
@@ -238,8 +242,8 @@ AC_DEFINE_UNQUOTED([RETSIGTYPE],[$ac_cv_type_signal],
   [Define as the return type of signal handlers (`int' or `void').])
 AC_REPLACE_FUNCS([memset strspn strtok])
 
-AC_CHECK_FUNCS_ONCE([dup2 flock ftruncate memmove pathconf sigaction          \
-  siglongjmp setbuffer setlocale stat64 strchr strerror strtol                \
+AC_CHECK_FUNCS_ONCE([arc4random_buf dup2 flock ftruncate memmove pathconf \
+  sigaction siglongjmp setbuffer setlocale stat64 strchr strerror strtol \
   strtoul strtoll])
 
 #
@@ -358,7 +362,10 @@ AC_MSG_RESULT([${enable_des_encryption:-no}])
 
 AM_CONDITIONAL([LDADD_LIBCRYPT],
   [test ."$enable_des_encryption" = .'yes' \
-    && test ."$ac_cv_have_openssl" = .'yes'])
+    && test ."$ac_cv_have_openssl" = .'yes' \
+    && { test ."ac_cv_func_arc4random_buf" = .'yes' \
+         || test ."ac_cv_lib_bsd" = .'yes'; }])
+
 AM_COND_IF([LDADD_LIBCRYPT],
   [AC_DEFINE([WANT_DES_ENCRYPTION], [1],
     [Define to 1 to enable DES encryption/decryption of files.])])

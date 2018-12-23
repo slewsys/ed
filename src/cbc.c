@@ -18,6 +18,11 @@
 #ifdef WANT_DES_ENCRYPTION
 # include <openssl/des.h>
 
+/* Provide arc4random_buf(3) on GNU/Linux. */
+# ifdef HAVE_LIB_BSD
+#  include <bsd/stdlib.h>
+# endif
+
 # define _(String) gettext (String)
 
 /*
@@ -152,7 +157,7 @@ get_des_keyword (ed_buffer_t *ed)
 static int
 char_to_int (int c, int radix)
 {
-#ifdef HAVE_STRTOL
+# ifdef HAVE_STRTOL
   static int s[2] = { 0 };
 
   long n;
@@ -160,7 +165,7 @@ char_to_int (int c, int radix)
   s[0] = c;
   errno = 0;
   return (n = strtol (s, NULL, radix)) == 0 && errno == EINVAL ? -1 : n;
-#else  /* !HAVE_STRTOL */
+# else  /* !HAVE_STRTOL */
   switch (c)
     {
     case '0':
@@ -205,7 +210,7 @@ char_to_int (int c, int radix)
 
   /* Not a digit. */
   return -1;
-#endif  /* !HAVE_STRTOL */
+# endif  /* !HAVE_STRTOL */
 }
 
 /* expand_des_key: Convert 64-bit key to bit pattern. */
