@@ -69,17 +69,12 @@ if $verbose; then
              $ $top_srcdir/configure
              $ make
 
-      The distributed testsuite, `$top_srcdir/testsuite/testsuite-dist',
-      must be run from $top_srcdir.  It is invoked via:
+      The testsuite is generated with GNU AutoTest and requires
+      GNU Autoconf and GNU make(1). It is run as follows:
 
-             $ make quick-check
+             $ gmake check
 
-      To run testsuite from another build directory, GNU autoconf(1)
-      and GNU make(1) are required. In this case, use:
-
-             $ gnumake check
-
-      Submit issues or pull requests to: <bug-ed@gnu.org>.
+      Please submit issues or pull requests to: <https://github.com/slewsys/ed>
 
 ------------------------------------------------------------------------
 EOF
