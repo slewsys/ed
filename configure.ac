@@ -375,8 +375,6 @@ AM_COND_IF([LDADD_LIBCRYPT],
 AC_CONFIG_TESTDIR([testsuite])
 AC_CONFIG_FILES([testsuite/ed],
   [chmod 755 testsuite/ed])
-AC_CONFIG_FILES([testsuite/ts-am-sw.ed],
-  [chmod 755 testsuite/ts-am-sw.ed])
 
 # Generate configure helper.
 AM_MISSING_PROG([AUTOM4TE], [autom4te])

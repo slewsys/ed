@@ -25,7 +25,7 @@ ADV = ed-adv
 tut_srcdir = $(srcdir)
 
 # Original source for "A Tutorial Introduction to the Unix Text Editor".
-INTRO_SRC = 								      \
+INTRO_SRC =								      \
     $(tut_srcdir)/intro/e.mac						      \
     $(tut_srcdir)/intro/e0						      \
     $(tut_srcdir)/intro/e1						      \
@@ -49,6 +49,7 @@ ADV_SRC =								      \
     $(tut_srcdir)/adv/ae7						      \
     $(tut_srcdir)/adv/ae9
 
+EXTRA_DIST = $(INTRO).pdf $(ADV).pdf $(INTRO_SRC) $(ADV_SRC) tmac/s.tmac
 
 all: $(INTRO).pdf $(ADV).pdf
 

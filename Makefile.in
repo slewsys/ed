@@ -860,7 +860,7 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 ACLOCAL_AMFLAGS = -I m4
 SUBDIRS = $(am__append_1) src po doc testsuite
-EXTRA_DIST = m4/gnulib-cache.m4
+EXTRA_DIST = m4/gnulib-cache.m4 include/pathmax.h include/argmax.h
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
 
@@ -1354,7 +1354,7 @@ gnulib_srcdir ?= /opt/src/gnu/gnulib
 quick-check: all
 	cd $(top_builddir)/testsuite && $(MAKE) $(AM_MAKEFLAGS) $@
 
-maintainer-update-dist: update-gnulib update-testsuite-dist update-po
+maintainer-update-dist: update-gnulib update-po
 
 update-gnulib:
 	@if test ! -x $(gnulib_srcdir)/gnulib-tool; then		      \
@@ -1393,40 +1393,10 @@ update-gnulib:
 	echo "*** Running autogen.sh ***";				      \
 	./autogen.sh --silent
 
-update-testsuite-dist:
-	@if test ."$(top_srcdir)" != ."$(top_builddir)"; then		      \
-	    echo "$@: $(top_builddir): Must run from \$(top_srcdir)";	      \
-	    exit 1;							      \
-	fi;								      \
-	if test ! -w "$(top_srcdir)"; then				      \
-	    echo "$@: $(top_srcdir): Permission denied.";		      \
-	    exit 1;							      \
-	fi;								      \
-	chmod +x $(top_srcdir)/testsuite/ts-am-sw.ed;			      \
-	if test ! -f $(top_srcdir)/testsuite/.ts-am-sw; then		      \
-	  (cd $(top_srcdir)/testsuite && ./ts-am-sw.ed && touch ./.ts-am-sw); \
-	fi;								      \
-	echo "*** Running autogen.sh ***";				      \
-	./autogen.sh --silent
-	$(MAKE) $(AM_MAKEFLAGS) all
-	-rm -f $(top_srcdir)/testsuite/testsuite;			      \
-	$(MAKE) $(AM_MAKEFLAGS) check;					      \
-	@cp $(top_srcdir)/testsuite/testsuite				      \
-	  $(top_srcdir)/testsuite/testsuite-dist;			      \
-	if test -f $(top_srcdir)/testsuite/.ts-am-sw; then		      \
-	  (cd $(top_srcdir)/testsuite && ./ts-am-sw.ed && rm -f ./.ts-am-sw); \
-	fi;                                                                   \
-	echo "*** Running autogen.sh ***";				      \
-	./autogen.sh --silent
-
 update-po:
-	-(cd $(top_srcdir)/po && $(MAKE) $(AM_MAKEFLAGS) update-po);	      \
-	$(MAKE) $(AM_MAKEFLAGS) clean
+	-$(MAKE) -C po $(AM_MAKEFLAGS) update-po
 
 distclean-local:
-	if test -f $(top_srcdir)/testsuite/.ts-am-sw; then		      \
-	  (cd $(top_srcdir)/testsuite && ./ts-am-sw.ed && rm -f ./.ts-am-sw); \
-	fi
 	rm -f configure.orig
 	rm -rf GPATH GRTAGS GSYMS GTAGS
 	find . -name '[Tt][Aa][Gg][Ss]' -type f -delete

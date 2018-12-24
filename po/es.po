@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: ed 0.271-b10\n"
 "Report-Msgid-Bugs-To: https://github.com/slewsys/ed\n"
 "POT-Creation-Date: 2018-12-23 20:44-0500\n"
-"PO-Revision-Date: 2018-08-21 04:20+0000\n"
+"PO-Revision-Date: 2018-12-24 02:07+0000\n"
 "Last-Translator: Andrew L. Moore <slewsys@gmail.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "Language: es\n"
@@ -306,7 +306,7 @@ msgstr ""
 "  !info ed RET m switches RET\n"
 "para ver la documentación completa de esas opciones.\n"
 "\n"
-"Comunicar problemas a: <bug-ed@gnu.org>.\n"
+"Comunicar problemas a: <https://github.com/slewsys/ed>\n"
 
 #: src/main.c:694
 #, fuzzy, c-format
@@ -346,7 +346,7 @@ msgstr ""
 "  !info ed RET m switches RET\n"
 "para ver la documentación completa de esas opciones.\n"
 "\n"
-"Comunicar problemas a: <bug-ed@gnu.org>.\n"
+"Comunicar problemas a: <https://github.com/slewsys/ed>\n"
 
 #: src/main.c:724
 msgid "script, line %"

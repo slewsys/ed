@@ -811,6 +811,7 @@ ADV_SRC = \
     $(tut_srcdir)/adv/ae7						      \
     $(tut_srcdir)/adv/ae9
 
+EXTRA_DIST = $(INTRO).pdf $(ADV).pdf $(INTRO_SRC) $(ADV_SRC) tmac/s.tmac
 all: all-am
 
 .SUFFIXES:
