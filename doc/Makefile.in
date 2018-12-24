@@ -952,7 +952,7 @@ ed_TEXINFOS = \
 	fdl.texi
 
 man_MANS = $(PROG:=.1)
-EXTRA_DIST = $(man_MANS) SUSv3
+EXTRA_DIST = $(man_MANS) SUSv4
 SUBDIRS = bwk
 all: all-recursive
 

@@ -5,7 +5,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT([ed],[2.0.10],[bug-ed@gnu.org])
+AC_INIT([ed],[2.0.11],[https://github.com/slewsys/ed])
 AC_CONFIG_AUX_DIR([.])
 AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADERS([config.h])
@@ -387,7 +387,6 @@ AC_CONFIG_FILES([Makefile                                                     \
   doc/bwk/Makefile                                                            \
   lib/Makefile                                                                \
   po/Makefile.in                                                              \
-  po/ed.pot                                                                   \
   src/Makefile                                                                \
   testsuite/Makefile
   testsuite/proto.ok-so-at.in])

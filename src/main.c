@@ -689,7 +689,7 @@ If FILE is given, read it for editing.  From within ed, run:\n\
   !info ed RET m switches RET\n\
 to see full documentation of these options.\n\
 \n\
-Submit issues to: <bug-ed@gnu.org>.\n"));
+Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"));
 #else
       printf (_("Options:\n\
   -E, --regexp-extended     Enable extended regular expression syntax.\n\
@@ -707,7 +707,7 @@ If FILE is given, read it for editing.  From within ed, run:\n\
   !info ed RET m switches RET\n\
 to see full documentation of these options.\n\
 \n\
-Submit issues to: <bug-ed@gnu.org>.\n"));
+Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"));
 #endif  /* !WANT_SCRIPT_FLAGS */
     }
   exit (status);
