@@ -14,24 +14,6 @@ AC_CONFIG_MACRO_DIR([m4])
 AC_USE_SYSTEM_EXTENSIONS
 AM_INIT_AUTOMAKE([foreign])
 
-# Capture configured options for displaying in --version output.
-[ac_cv_configure_args=''
- while read line; do
-    configure_args=`expr ."$line" : '^..*set X /bin/.*sh.*configure. \(.*\)$ac_configure_extra_args.*$'`
-    test ."$configure_args" != .'' && break
- done <config.status
- for ac_option in $configure_args; do
-   ac_cv_configure_args="$ac_cv_configure_args $ac_option\n"
- done
-]
-
-AS_IF([test ! ."$ac_cv_configure_args" = .''],
-  AC_DEFINE_UNQUOTED([CONFIGURE_ARGS],
-    ["Configured options:\n$ac_cv_configure_args"],
-    [Options with which "$top_srcdir"/configure was invoked.]),
-    AC_DEFINE_UNQUOTED([CONFIGURE_ARGS], [""],
-      [Options with which "$top_srcdir"/configure was invoked.]))
-
 # Darwin disables nested functions which are used by some AC tests.
 AS_IF([test ."$GCC" = .yes],
   AC_CACHE_CHECK([whether gcc needs -fnested-functions],
@@ -81,7 +63,7 @@ AC_PATH_PROGS([PS2PDF], [ps2pdf14 ps2pdf ps2pdfwr])
 AC_CACHE_CHECK([for ed], [ac_cv_path_ED_COMMAND],
   [AC_PATH_PROGS_FEATURE_CHECK([ED_COMMAND], ["$ED" ed],
     [case `$ac_path_ED_COMMAND --version 2>&1` in
-       ed)
+       ed*)
          ac_cv_path_ED_COMMAND=$ac_path_ED_COMMAND
          ac_path_ED_COMMAND_found=:
          ;;
@@ -113,8 +95,8 @@ AC_MSG_RESULT([$with_included_regex])
 
 AS_IF([test ! ."$with_included_regex" = .'yes'],
   [AC_CHECK_FUNCS([regcomp],[with_included_regex=no],
-    [AC_MSG_WARN([System regex not found, falling back to included version])
-     with_included_regex=yes])])
+    [with_included_regex=yes]
+    [AC_MSG_WARN([System regex not found, falling back to included version])])])
 AM_CONDITIONAL([LIBADD_REGEX], [test ."$with_included_regex" = .'yes'])
 AM_COND_IF([LIBADD_REGEX],
   [AC_DEFINE([HAVE_REG_SYNTAX_T], [1],
@@ -136,9 +118,10 @@ AM_CONDITIONAL([LDADD_LIBGNU],
 AC_CHECK_LIB([c], [fopen])
 AC_CHECK_LIB([bsd], [arc4random_buf],
   [ac_cv_lib_bsd='yes'], [ac_cv_lib_bsd='no'])
-AS_IF([test ."$ac_cv_lib_bsd" = .'yes'],
-  AC_DEFINE([HAVE_LIB_BSD], [1],
-    [Define to 1 if libbsd is present]))
+AM_CONDITIONAL([LDADD_LIBBSD], [test ."$ac_cv_lib_bsd" = .'yes'])
+AM_COND_IF([LDADD_LIBBSD],
+  [AC_DEFINE([HAVE_LIB_BSD], [1],
+    [Define to 1 if libbsd is present])])
 
 #
 # Checks for headers.
@@ -263,7 +246,7 @@ AS_IF([test ."$enable_all_extensions" = .'yes'],
   [enable_file_lock=yes]
   [enable_ed_macro=yes]
   [enable_ed_scroll=yes]
-  [enable_des_encryption=yes])
+  [enable_ed_encryption=yes])
 
 AC_MSG_CHECKING([whether ED environment variable support is requested])
 AC_ARG_ENABLE([ed-envar],
@@ -306,7 +289,7 @@ AS_IF([test ."$enable_file_lock" = .'yes' \
   &&  { test ."$ac_cv_func_flock" = .'no' \
     && test ."$ac_cv_have_decl_f_setlk" != .'no'; }],
       [enable_file_lock=no]
-      AC_MSG_WARN([Don't know how to set file locks; disabling]), [])
+      [AC_MSG_WARN([Missing dependencies; disabling file lock])])
 
 AC_MSG_CHECKING([whether ED macro support is requested])
 AC_ARG_ENABLE([ed-macro],
@@ -354,22 +337,52 @@ AC_ARG_ENABLE([ed-scroll],
     [Define to 1 to enable ED scrolling support.])],[])
 AC_MSG_RESULT([${enable_ed_scroll:-no}])
 
-AC_MSG_CHECKING([whether DES encryption support is requested])
-AC_ARG_ENABLE([des-encryption],
-  [AS_HELP_STRING([--enable-des-encryption],
-    [enable DES encryption/decryption of files.])],[],[])
-AC_MSG_RESULT([${enable_des_encryption:-no}])
+AC_MSG_CHECKING([whether ED encryption support is requested])
+AC_ARG_ENABLE([ed-encryption],
+  [AS_HELP_STRING([--enable-ed-encryption],
+    [enable ED encryption/decryption of files.])],[],[])
+AC_MSG_RESULT([${enable_ed_encryption:-no}])
+AS_IF([test ."$enable_ed_encryption" = .'yes' \
+    && test ."$ac_cv_have_openssl" = .'no' \
+    || { test ."$ac_cv_func_arc4random_buf" = .'no' \
+      && test ."$ac_cv_lib_bsd" = .'no'; }],
+    [enable_ed_encryption=no]
+    [AC_MSG_WARN([Missing dependencies; disabling encryption])])
 
-AM_CONDITIONAL([LDADD_LIBCRYPT],
-  [test ."$enable_des_encryption" = .'yes' \
-    && test ."$ac_cv_have_openssl" = .'yes' \
-    && { test ."ac_cv_func_arc4random_buf" = .'yes' \
-         || test ."ac_cv_lib_bsd" = .'yes'; }])
+AM_CONDITIONAL([LDADD_LIBCRYPT], [test ."$enable_ed_encryption" = .'yes'])
 
 AM_COND_IF([LDADD_LIBCRYPT],
-  [AC_DEFINE([WANT_DES_ENCRYPTION], [1],
-    [Define to 1 to enable DES encryption/decryption of files.])])
+  [AC_DEFINE([WANT_ED_ENCRYPTION], [1],
+    [Define to 1 to enable ED encryption/decryption of files.])])
 
+# Capture configured options for displaying in --version output.
+[configure_options='
+  with_included_regex
+  enable_ed_envar
+  enable_external_filter
+  enable_file_glob
+  enable_file_lock
+  enable_ed_macro
+  enable_ed_register
+  enable_script_flags
+  enable_ed_scroll
+  enable_ed_encryption'
+
+ ac_cv_configure_args=''
+ for ac_var in $configure_options; do
+   eval ac_value=\$$ac_var
+   if test ."$ac_value" = .'yes'; then
+      ac_option="--`echo $ac_var | sed 's|_|-|g'`"
+      ac_cv_configure_args="$ac_cv_configure_args $ac_option\n"
+   fi
+ done]
+
+AS_IF([test ! ."$ac_cv_configure_args" = .''],
+  [AC_DEFINE_UNQUOTED([CONFIGURE_ARGS],
+    ["Configuration:\n$ac_cv_configure_args"],
+    [Options with which "$top_srcdir"/configure was invoked.])],
+  [AC_DEFINE_UNQUOTED([CONFIGURE_ARGS], [""],
+    [Options with which "$top_srcdir"/configure was invoked.])])
 
 # Generate autotest helpers.
 AC_CONFIG_TESTDIR([testsuite])

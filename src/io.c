@@ -200,7 +200,7 @@ read_stream (FILE *fp, off_t after, off_t *size, ed_buffer_t *ed)
   ed->state->input_is_binary = 0;
   ed->state->newline_missing = 0;
 
-#ifdef WANT_DES_ENCRYPTION
+#ifdef WANT_ED_ENCRYPTION
   if (ed->exec->have_key)
     init_des_cipher ();
 #endif
@@ -281,7 +281,7 @@ read_stream (FILE *fp, off_t after, off_t *size, ed_buffer_t *ed)
             */
     fprintf (stderr, _("Newline appended\n"));
 
-#ifdef WANT_DES_ENCRYPTION
+#ifdef WANT_ED_ENCRYPTION
   if (ed->exec->have_key)
     if (*size)
       *size += 8 - *size % 8;     /* Adjust for DES padding. */
@@ -497,12 +497,12 @@ get_stream_line (FILE *fp, size_t *len, ed_buffer_t *ed)
   *len = 0;
 
  top:
-#ifdef WANT_DES_ENCRYPTION
+#ifdef WANT_ED_ENCRYPTION
   for (; (c = (ed->exec->have_key && fp != stdin ? get_des_char (fp, ed)
                : getc (fp))) != EOF && c != '\n'; ++*len)
 #else
   for (; (c = getc (fp)) != EOF && c != '\n'; ++*len)
-#endif  /* !WANT_DES_ENCRYPTION */
+#endif  /* !WANT_ED_ENCRYPTION */
     {
       REALLOC_THROW (tb, tb_size, *len + 1, NULL, ed);
       ed->state->input_is_binary |= !(*(tb + *len) = c);
@@ -684,7 +684,7 @@ write_stream (FILE *fp, ed_line_node_t *lp, off_t n,
   int append_newline = 0;
   int status = 0;
 
-#ifdef WANT_DES_ENCRYPTION
+#ifdef WANT_ED_ENCRYPTION
   if (ed->exec->have_key)
     init_des_cipher ();
 #endif
@@ -712,7 +712,7 @@ write_stream (FILE *fp, ed_line_node_t *lp, off_t n,
       *size += len;
     }
 
-#ifdef WANT_DES_ENCRYPTION
+#ifdef WANT_ED_ENCRYPTION
   if (ed->exec->have_key)
     {
       flush_des_file (fp);
@@ -731,12 +731,12 @@ static int
 put_stream_line (FILE *fp, const char *s, size_t len, ed_buffer_t *ed)
 {
  top:
-#ifdef WANT_DES_ENCRYPTION
+#ifdef WANT_ED_ENCRYPTION
   for (; len && (ed->exec->have_key ? put_des_char ((unsigned) *s, fp)
                  : putc ((unsigned) *s, fp)) != EOF; --len, ++s)
 #else
   for (; len && putc ((unsigned) *s, fp) != EOF; --len, ++s)
-#endif  /* !WANT_DES_ENCRYPTION */
+#endif  /* !WANT_ED_ENCRYPTION */
     ;
   if (ferror (fp))
     switch (errno)

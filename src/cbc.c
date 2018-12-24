@@ -15,7 +15,7 @@
 
 #include "ed.h"
 
-#ifdef WANT_DES_ENCRYPTION
+#ifdef WANT_ED_ENCRYPTION
 # include <openssl/des.h>
 
 /* Provide arc4random_buf(3) on GNU/Linux. */
@@ -387,4 +387,4 @@ cbc_decode (unsigned char *msgbuf, FILE *fp, ed_buffer_t *ed)
     ed->exec->err = _("File read error");
   return EOF;
 }
-#endif /* WANT_DES_ENCRYPTION */
+#endif /* WANT_ED_ENCRYPTION */

@@ -53,7 +53,7 @@ main (int argc, char **argv)
 
       {"help", no_argument, NULL, 'h'},
 
-#ifdef WANT_DES_ENCRYPTION
+#ifdef WANT_ED_ENCRYPTION
       {"crypt", no_argument, NULL, 'x'},
 #endif
 
@@ -103,7 +103,7 @@ top:
                            "e:f:"
 #endif
                            "Ghi::p:RrsVv"
-#ifdef WANT_DES_ENCRYPTION
+#ifdef WANT_ED_ENCRYPTION
                            "x"
 #endif
                            , long_options, NULL)) != -1)
@@ -175,7 +175,7 @@ top:
       case 'v':                 /* Verbose mode. */
         ed->exec->opt |= VERBOSE;
         break;
-#ifdef WANT_DES_ENCRYPTION
+#ifdef WANT_ED_ENCRYPTION
       case 'x':
         if (get_des_keyword (ed) < 0)
           script_die (3, ed);

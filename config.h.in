@@ -859,8 +859,8 @@
 /* Version number of package */
 #undef VERSION
 
-/* Define to 1 to enable DES encryption/decryption of files. */
-#undef WANT_DES_ENCRYPTION
+/* Define to 1 to enable ED encryption/decryption of files. */
+#undef WANT_ED_ENCRYPTION
 
 /* Define to 1 to enable support for ED environment variable. */
 #undef WANT_ED_ENVAR

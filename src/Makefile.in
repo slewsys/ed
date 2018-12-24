@@ -102,6 +102,7 @@ bin_PROGRAMS = ed$(EXEEXT)
 @LDADD_LIBINTL_FALSE@am__append_5 = @LTLIBINTL@
 @LDADD_LIBCRYPT_TRUE@am__append_6 = @OPENSSL_INCLUDES@
 @LDADD_LIBCRYPT_TRUE@am__append_7 = @OPENSSL_LDFLAGS@ @OPENSSL_LIBS@
+@LDADD_LIBBSD_TRUE@am__append_8 = -lbsd
 subdir = src
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/00gnulib.m4 \
@@ -167,7 +168,8 @@ am_ed_OBJECTS = aux.$(OBJEXT) buf.$(OBJEXT) cbc.$(OBJEXT) \
 ed_OBJECTS = $(am_ed_OBJECTS)
 am__DEPENDENCIES_1 =
 ed_DEPENDENCIES = $(am__append_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
@@ -865,7 +867,7 @@ ed_SOURCES = aux.c							      \
 	     version.c
 
 ed_LDADD = $(am__append_1) $(am__append_4) $(am__append_5) \
-	$(am__append_7)
+	$(am__append_7) $(am__append_8)
 AM_CPPFLAGS = -I$(top_srcdir) -I$(top_builddir) -I$(top_srcdir)/lib \
 	-I$(top_builddir)/lib -I$(top_srcdir)/include \
 	-I$(top_builddir)/include -DLOCALEDIR=\"$(localedir)\" \

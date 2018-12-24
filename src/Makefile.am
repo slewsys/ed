@@ -42,7 +42,7 @@ endif LDADD_LIBGNU
 
 if LIBADD_REGEX
 AM_CPPFLAGS += -DRE_ENABLE_I18N=1
-endif
+endif LIBADD_REGEX
 
 if LDADD_LIBINTL
 AM_CPPFLAGS += -I$(top_srcdir)/intl -I$(top_builddir)/intl
@@ -55,6 +55,10 @@ if LDADD_LIBCRYPT
 AM_CPPFLAGS += @OPENSSL_INCLUDES@
 ed_LDADD += @OPENSSL_LDFLAGS@ @OPENSSL_LIBS@
 endif LDADD_LIBCRYPT
+
+if LDADD_LIBBSD
+ed_LDADD += -lbsd
+endif LDADD_LIBBSD
 
 maintainer-clean-local:
 	rm -f .gdb_history

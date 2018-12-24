@@ -15,7 +15,7 @@ echo "w @SCRIPT_NAME@.o")
 wq @SCRIPT_NAME@.o
 _ATEOF_ED
 
-AT_SKIP_IF([! ed --version | egrep -q 'all-extensions|ed-scrolling'])
+AT_SKIP_IF([! ed --version | grep -q 'ed-scroll'])
 AT_CHECK([ed - <script-@SCRIPT_NAME@],
   0, [stdout], [ignore], [], [])
 AT_CHECK([diff -u @SCRIPT_SRC@.r stdout],

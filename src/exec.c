@@ -179,7 +179,7 @@ static int u_cmd (ed_buffer_t *);
 static int w_cmd (ed_buffer_t *);
 static int w_cmd (ed_buffer_t *);
 
-#ifdef WANT_DES_ENCRYPTION
+#ifdef WANT_ED_ENCRYPTION
 static int x_cmd (ed_buffer_t *);
 #endif
 
@@ -258,7 +258,7 @@ static const ed_command_t ed_cmd[] =
    global_cmd,                  /* Bound to key `v'. */
    w_cmd,
 
-#ifdef WANT_DES_ENCRYPTION
+#ifdef WANT_ED_ENCRYPTION
    x_cmd,
 #else
    invalid_cmd,
@@ -1508,7 +1508,7 @@ w_cmd (ed_buffer_t *ed)
 #endif  /* !WANT_FILE_GLOB */
 }
 
-#ifdef WANT_DES_ENCRYPTION
+#ifdef WANT_ED_ENCRYPTION
 static int
 x_cmd (ed_buffer_t *ed)
 {
@@ -1526,7 +1526,7 @@ x_cmd (ed_buffer_t *ed)
   COMMAND_SUFFIX (ed->display->io_f, ed);
   return (status = get_des_keyword (ed)) < 0 ? status : ed->display->io_f;
 }
-#endif  /* WANT_DES_ENCRYPTION */
+#endif  /* WANT_ED_ENCRYPTION */
 
 static int
 Z_cmd (ed_buffer_t *ed)

@@ -900,14 +900,14 @@ char *file_name (size_t *, ed_buffer_t *);
 int filter_lines (off_t, off_t, const char *, ed_buffer_t *);
 #endif
 
-#ifdef WANT_DES_ENCRYPTION
+#ifdef WANT_ED_ENCRYPTION
 int flush_des_file (FILE *);
 #endif
 
 char *get_buffer_line (const ed_line_node_t *, ed_buffer_t *);
 regex_t *get_compiled_regex (unsigned, int, ed_buffer_t *);
 
-#ifdef WANT_DES_ENCRYPTION
+#ifdef WANT_ED_ENCRYPTION
 int get_des_char (FILE *, ed_buffer_t *);
 int get_des_keyword (ed_buffer_t *);
 #endif
@@ -921,7 +921,7 @@ size_t get_path_max (const char *);
 #define get_stdin_line(len, ed) get_stream_line (stdin, len, ed)
 char *get_stream_line (FILE *, size_t *, ed_buffer_t *);
 
-#ifdef WANT_DES_ENCRYPTION
+#ifdef WANT_ED_ENCRYPTION
 void init_des_cipher (void);
 #endif
 
@@ -963,7 +963,7 @@ char *put_buffer_line (const char *, size_t, ed_buffer_t *);
 int push_stack_frame (ed_buffer_t *);
 #endif
 
-#ifdef WANT_DES_ENCRYPTION
+#ifdef WANT_ED_ENCRYPTION
 int put_des_char (int, FILE *);
 #endif
 
