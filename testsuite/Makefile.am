@@ -153,3 +153,5 @@ clean-local:
 	rm -f *.ok-at *.ok-so-at *.fail-at *.err-at *.log
 	rm -rf  *.dir tmpwrk*
 	rm -f $(PACKAGE_M4) $(TESTSUITE_AT) $(TESTSUITE)
+
+install:

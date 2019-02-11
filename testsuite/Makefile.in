@@ -974,7 +974,6 @@ installdirs:
 	for dir in "$(DESTDIR)$(ED_SCRIPTSdir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
-install: install-am
 install-exec: install-exec-am
 install-data: install-data-am
 uninstall: uninstall-am
@@ -1177,6 +1176,8 @@ clean-local:
 	rm -f *.ok-at *.ok-so-at *.fail-at *.err-at *.log
 	rm -rf  *.dir tmpwrk*
 	rm -f $(PACKAGE_M4) $(TESTSUITE_AT) $(TESTSUITE)
+
+install:
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
