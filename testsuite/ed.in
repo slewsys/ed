@@ -5,4 +5,4 @@
 # Process this file with configure to create ed wrapper.
 
 # Invoke ed from source distribution.
-exec '@abs_top_builddir@/@ED_COMMAND@' "$@"
+exec '@abs_top_builddir@/src/ed' "$@"
