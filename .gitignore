@@ -15,6 +15,7 @@ doc/ed-adv-incl.texi
 doc/ed-adv-info.texi
 doc/ed-intro-incl.texi
 doc/ed-intro-info.texi
+lib/regex.h
 libtool
 po/Makefile.in
 po/POTFILES
@@ -23,6 +24,8 @@ src/ed.dSYM/**
 stamp-h1
 testsuite/atconfig
 testsuite/ed
+testsuite/proto.ok-so-at.in
 testsuite/testsuite-dist.dir/**
 testsuite/testsuite-dist.log
 testsuite/ts-am-sw.ed
+*~

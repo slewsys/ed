@@ -1,4 +1,4 @@
-This is ed.info, produced by makeinfo version 6.5 from ed.texi.
+This is ed.info, produced by makeinfo version 6.7 from ed.texi.
 
 Copyright (C) 1993-2013 Andrew L. Moore, SlewSys Research
 
@@ -4182,3 +4182,8 @@ Node: Limitations133885
 Node: Error Handling134521
 
 End Tag Table
+
+
+Local Variables:
+coding: utf-8
+End:

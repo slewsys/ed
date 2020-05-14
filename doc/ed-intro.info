@@ -1,4 +1,4 @@
-This is ed-intro.info, produced by makeinfo version 6.5 from
+This is ed-intro.info, produced by makeinfo version 6.7 from
 ed-intro.texi.
 
    _A Tutorial Introduction to the UNIX Text Editor_
@@ -1359,3 +1359,8 @@ Node: Special Characters34036
 Node: Summary38078
 
 End Tag Table
+
+
+Local Variables:
+coding: utf-8
+End:
