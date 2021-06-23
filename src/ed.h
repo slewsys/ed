@@ -888,6 +888,7 @@ int decode_utf8_char (unsigned char **, int);
 void delete_global_nodes  (const ed_line_node_t *, const ed_line_node_t *,
                            ed_buffer_t *);
 int delete_lines (off_t, off_t, ed_buffer_t *);
+char **dup_argv (int, char **, ed_buffer_t *);
 int display_lines (off_t, off_t, ed_buffer_t *);
 int encode_utf8_char (char *, int *, unsigned int);
 int exec_command (ed_buffer_t *);

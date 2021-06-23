@@ -40,7 +40,7 @@ one_time_init (int argc, char *argv[], ed_buffer_t *ed)
    * even if file globbing support is not enabled.
    */
   ed->file->list->gl_pathc = argc;
-  ed->file->list->gl_pathv = argv;
+  ed->file->list->gl_pathv = dup_argv (argc, argv, ed);
 
   /*
    * Reset file_glob->gl_offs after first glob(3) -- see file_glob().
@@ -521,6 +521,36 @@ quit (int n, ed_buffer_t *ed)
   _exit (n);
 }
 
+char **
+dup_argv (int argc, char **argv, ed_buffer_t *ed)
+{
+  char **pathv_p;
+  size_t len;
+  int i;
+
+  if (!(pathv_p = (char **) malloc ((argc + 1) * sizeof (char *))))
+    {
+      fprintf (stderr, "%s\n", strerror (errno));
+      ed->exec->err = _("Memory exhausted");
+      return NULL;
+    }
+
+  for (i = 0; i < argc; ++i)
+    {
+      len = strlen (argv[i]) + 1;
+      if (!(pathv_p[i] = (char *) malloc (len)))
+        {
+          fprintf (stderr, "%s\n", strerror (errno));
+          ed->exec->err = _("Memory exhausted");
+          return NULL;
+        }
+      memcpy (pathv_p[i], argv[i], len);
+    }
+
+  pathv_p[argc] = NULL;
+
+  return pathv_p;
+}
 
 /* realloc_buffer: Increase size, *n, of buffer, *b, to at least i. */
 void *

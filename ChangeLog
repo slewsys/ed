@@ -1,3 +1,7 @@
+2021-06-23  Andrew L. Moore  <slewsys@gmail.com>
+
+	* src/buf.c (dup_argv): Duplicate file arguments of argv.
+
 2018-09-09  Andrew L. Moore  <slewsys@gmail.com>
 
 	* src/cbc.c (expand_des_key): Require 64-digit binary key,
