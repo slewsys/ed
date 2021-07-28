@@ -1537,7 +1537,7 @@ Z_cmd (ed_buffer_t *ed)
   int status = 0;               /* Return status */
 
   /* scroll backward */
-  if (ed->exec->opt & (TRADITIONAL | POSIXLY_CORRECT))
+  if (ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL))
     {
       ed->exec->err = _("Unknown command");
       return ERR;

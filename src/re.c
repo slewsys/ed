@@ -180,9 +180,12 @@ get_compiled_regex (unsigned dc, int re_type, ed_buffer_t *ed)
      expressions. */
   re->re_endp = pattern + len;
   if (status =
-      regcomp (re, pattern, (REG_PEND | REG_ENHANCED |
+      regcomp (re, pattern, (REG_PEND |
                              (ed->exec->opt & REGEX_EXTENDED
-                              ? REG_EXTENDED : 0))))
+                              ? REG_EXTENDED |
+                              (ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL)
+                               ? 0 : REG_ENHANCED)
+                              : 0)))
 # else
 #  ifdef REG_PEND
 
