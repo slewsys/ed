@@ -10,7 +10,6 @@ autom4te.cache/**
 config.h
 config.log
 config.status
-config.rpath
 doc/ed-adv-incl.texi
 doc/ed-adv-info.texi
 doc/ed-intro-incl.texi

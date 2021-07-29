@@ -1,5 +1,5 @@
 # lib-link.m4 serial 26 (gettext-0.18.2)
-dnl Copyright (C) 2001-2018 Free Software Foundation, Inc.
+dnl Copyright (C) 2001-2015 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
 dnl with or without modifications, as long as this notice is preserved.
@@ -211,7 +211,7 @@ AC_DEFUN([AC_LIB_LINKFLAGS_BODY],
         additional_includedir="$withval/include"
         additional_libdir="$withval/$acl_libdirstem"
         if test "$acl_libdirstem2" != "$acl_libdirstem" \
-           && test ! -d "$withval/$acl_libdirstem"; then
+           && ! test -d "$withval/$acl_libdirstem"; then
           additional_libdir="$withval/$acl_libdirstem2"
         fi
       fi

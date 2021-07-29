@@ -4,7 +4,7 @@
 #
 # Process this file with automake to create Makefile.in
 
-gnulib_srcdir ?= /opt/src/gnu/gnulib
+gnulib_srcdir ?= /opt/src/savannah/gnulib
 
 ACLOCAL_AMFLAGS = -I m4
 
@@ -27,14 +27,12 @@ maintainer-update-dist: update-gnulib update-po
 
 update-gnulib:
 	@if test ! -x $(gnulib_srcdir)/gnulib-tool; then		      \
-	  echo "ghulib-tool: No such file or directory.";		      \
+	  echo "gnulib-tool: No such file or directory.";		      \
 	  exit;								      \
 	else								      \
 	  echo "*** Refreshing gnulib sources ***";			      \
 	fi;								      \
-	opwd=$$PWD;							      \
-	cd "$(gnulib_srcdir)" && git pull;				      \
-	cd $$opwd;							      \
+	git -C "$(gnulib_srcdir)" pull;					      \
 	echo "*** Importing gnulib modules ***";			      \
 	if test -f lib/regex.h; then					      \
 	  rm -f lib/regex.h;						      \
