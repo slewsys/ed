@@ -1,6 +1,6 @@
 # configure.ac: Configure autoconf template for the ed line editor.
 #
-# Copyright © 1993-2018 Andrew L. Moore, SlewSys Research
+# Copyright © 1993-2021 Andrew L. Moore, SlewSys Research
 #
 # Process this file with autoconf to produce a configure script.
 
@@ -63,11 +63,11 @@ AC_PATH_PROGS([PS2PDF], [ps2pdf14 ps2pdf ps2pdfwr])
 AC_CACHE_CHECK([for ed], [ac_cv_path_ED_COMMAND],
   [AC_PATH_PROGS_FEATURE_CHECK([ED_COMMAND], ["$ED" ed],
     [case `$ac_path_ED_COMMAND --version 2>&1` in
-       ed*)
-         ac_cv_path_ED_COMMAND=$ac_path_ED_COMMAND
-         ac_path_ED_COMMAND_found=:
-         ;;
-     esac],
+      ed*)
+        ac_cv_path_ED_COMMAND=$ac_path_ED_COMMAND
+        ac_path_ED_COMMAND_found=:
+        ;;
+    esac],
     [ac_cv_path_ED_COMMAND=./src/ed])])
 AC_SUBST(ED_COMMAND, [$ac_cv_path_ED_COMMAND])
 
@@ -145,7 +145,7 @@ AC_TYPE_LONG_LONG_INT
 AC_C_VOLATILE
 AC_CHECK_TYPES([sig_atomic_t],
   [AC_DEFINE([HAVE_SIG_ATOMIC_T], [1],
-     [Define to 1 to enable file lock support.])],
+    [Define to 1 to enable file lock support.])],
   [],
   [#include <signal.h>])
 AC_CHECK_DECL([F_SETLK],
@@ -179,9 +179,9 @@ AS_IF([test ."$ac_cv_sizeof_size_t" = ."$ac_cv_sizeof_long"],
     AC_DEFINE_UNQUOTED([SIZE_T_FORMAT_STRING], ["llu"],
       [Define format string to print value of type size_t.]),
       AC_DEFINE_UNQUOTED([SIZE_T_SIZE], [unsigned long long],
-       [Define int with storage size of size_t.])
+        [Define int with storage size of size_t.])
       AC_DEFINE_UNQUOTED([SIZE_T_FORMAT_STRING], ["llu"],
-       [Define format string to print value of type size_t.])))
+        [Define format string to print value of type size_t.])))
 
 AS_IF([test ."$ac_cv_sizeof_off_t" = ."$ac_cv_sizeof_long"],
   AC_DEFINE_UNQUOTED([OFF_T_SIZE], [long],
@@ -200,14 +200,9 @@ AS_IF([test ."$ac_cv_sizeof_off_t" = ."$ac_cv_sizeof_long"],
 
 AC_PROG_LIBTOOL
 
-AM_GNU_GETTEXT([no-libtool], [need-formatstring-macros], [../intl])
-
-# Ubuntu Xenial (16.04.5) ships with Gettext 0.19.7.
-AM_GNU_GETTEXT_VERSION([0.19.7])
+AM_GNU_GETTEXT([external], [need-formatstring-macros])
 AM_CONDITIONAL([LDADD_LIBINTL], [test ."$LTLIBINTL" != .''])
-AM_COND_IF([LDADD_LIBINTL], [],
-    [AM_GNU_GETTEXT([external])]
-    :)
+AM_GNU_GETTEXT_VERSION([0.21])
 
 AX_CHECK_OPENSSL([ac_cv_have_openssl='yes'])
 
@@ -368,14 +363,14 @@ AM_COND_IF([LDADD_LIBCRYPT],
   enable_ed_scroll
   enable_ed_encryption'
 
- ac_cv_configure_args=''
- for ac_var in $configure_options; do
-   eval ac_value=\$$ac_var
-   if test ."$ac_value" = .'yes'; then
+  ac_cv_configure_args=''
+  for ac_var in $configure_options; do
+    eval ac_value=\$$ac_var
+    if test ."$ac_value" = .'yes'; then
       ac_option="--`echo $ac_var | sed 's|_|-|g'`"
       ac_cv_configure_args="$ac_cv_configure_args $ac_option\n"
-   fi
- done]
+    fi
+  done]
 
 AS_IF([test ! ."$ac_cv_configure_args" = .''],
   [AC_DEFINE_UNQUOTED([CONFIGURE_ARGS],
@@ -386,7 +381,7 @@ AS_IF([test ! ."$ac_cv_configure_args" = .''],
 
 # Generate autotest helpers.
 AC_CONFIG_TESTDIR([testsuite])
-AC_CONFIG_FILES([testsuite/ed],
+AC_CONFIG_FILES([testsuite/ed ./po/Makefile.in],
   [chmod 755 testsuite/ed])
 
 # Generate configure helper.

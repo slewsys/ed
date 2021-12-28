@@ -1,5 +1,6 @@
 src/aux.c
 src/buf.c
+src/cbc.c
 src/cmds.c
 src/ed.h
 src/exec.c

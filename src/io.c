@@ -274,7 +274,7 @@ read_stream (FILE *fp, off_t after, off_t *size, ed_buffer_t *ed)
    * leave joining the lines up to the user.
    */
   if (newline_inserted && *size > 0)
-    fprintf (stderr, _("Newline inserted"));
+    fprintf (stderr, _("Newline inserted\n"));
   else if (!ed->state->is_binary && ed->state->newline_appended && *size > 0)
            /*
             * && (*size || (ed->state->is_empty && !newline_appended_already)))

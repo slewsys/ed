@@ -501,7 +501,7 @@ expand_glob (char *pattern, int append, glob_t *gp, ed_buffer_t *ed)
               else if (stat (*pathv, &sb) == -1)
                 {
                   fprintf (stderr, "%s: %s\n", *pathv, strerror (errno));
-                  ed->exec->err = _("File stat error");
+                  ed->exec->err = _("File status error");
                   return NULL;
                 }
               else if (S_ISDIR(sb.st_mode))

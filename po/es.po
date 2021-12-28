@@ -3,13 +3,12 @@
 # This file is distributed under the same license as the ed package.
 # Andrew L. Moore <alm@gnu.org>, 2016
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: ed 0.271-b10\n"
+"Project-Id-Version: ed 2.0.11\n"
 "Report-Msgid-Bugs-To: https://github.com/slewsys/ed\n"
-"POT-Creation-Date: 2018-12-23 20:44-0500\n"
-"PO-Revision-Date: 2018-12-24 02:07+0000\n"
+"POT-Creation-Date: 2021-12-29 23:16-0500\n"
+"PO-Revision-Date: 2021-12-30 06:19+0000\n"
 "Last-Translator: Andrew L. Moore <slewsys@gmail.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "Language: es\n"
@@ -24,24 +23,24 @@ msgstr "Error de proceso hijo"
 
 #: src/aux.c:67 src/aux.c:156
 msgid "Pipe open error"
-msgstr "Error abrir pipa"
+msgstr "Error de apertura de pipa"
 
 #: src/aux.c:76 src/aux.c:128
 msgid "Fork error"
-msgstr "Error bifurcación"
+msgstr "Error de bifurcación"
 
 #: src/aux.c:170
 msgid "Pipe close error"
-msgstr "Error cerrar pipa"
+msgstr "Error de cierre de pipa"
 
-#: src/aux.c:227 src/aux.c:440 src/buf.c:267 src/buf.c:436 src/buf.c:553
-#: src/buf.c:583 src/glbl.c:170 src/io.c:303 src/main.c:598 src/page.c:858
-#: src/parse.c:273 src/parse.c:517 src/re.c:155 src/undo.c:26
+#: src/aux.c:227 src/aux.c:440 src/buf.c:267 src/buf.c:436 src/buf.c:534
+#: src/buf.c:544 src/buf.c:583 src/buf.c:613 src/glbl.c:170 src/io.c:302
+#: src/main.c:598 src/page.c:858 src/parse.c:273 src/parse.c:517 src/re.c:155
+#: src/undo.c:26
 msgid "Memory exhausted"
-msgstr "Memoria agotada"
+msgstr "Memoria está agotada"
 
 #: src/aux.c:296 src/aux.c:338
-#, fuzzy
 msgid "Cannot append register to itself."
 msgstr "No se puede agregar registrar a sí mismo"
 
@@ -49,100 +48,114 @@ msgstr "No se puede agregar registrar a sí mismo"
 msgid "Exceeded maximum stack frame depth"
 msgstr "Excedido profunidad máxima del marco de pila."
 
-#: src/aux.c:418 src/aux.c:469 src/aux.c:509 src/aux.c:548 src/io.c:58
-#: src/io.c:582 src/main.c:213 src/main.c:560 src/main.c:620
+#: src/aux.c:418 src/aux.c:469 src/aux.c:509 src/aux.c:548 src/io.c:57
+#: src/io.c:581 src/main.c:213 src/main.c:560 src/main.c:620
 msgid "File seek error"
-msgstr "Error buscar archivo"
+msgstr "Error de búsqueda de archivo"
 
 #: src/aux.c:451 src/aux.c:494 src/aux.c:533 src/buf.c:116
-#, fuzzy
 msgid "dup2 error"
-msgstr "Error bifurcación"
+msgstr "Error de dup2"
 
 #: src/buf.c:128 src/buf.c:281 src/buf.c:296
 msgid "Buffer open error"
-msgstr "Error abrir búfer"
+msgstr "Error de apertura de búfer"
 
 #: src/buf.c:139 src/buf.c:347 src/buf.c:383
 msgid "Buffer seek error"
-msgstr "Error buscar búfer"
+msgstr "Error de búsqueda de búfer"
 
 #: src/buf.c:260 src/main.c:421 src/main.c:479
 msgid "File name too long"
-msgstr "Nombre de archivo demasiado largo"
+msgstr "Nombre de archivo es demasiado largo"
 
 #: src/buf.c:261
 msgid "Invalid buffer name"
-msgstr "Nombe de búfer inválido"
+msgstr "Nombe de búfer no es válido"
 
 #: src/buf.c:312
 msgid "Buffer close error"
-msgstr "Error cerrar búfer"
+msgstr "Error de cierre de búfer"
 
 #: src/buf.c:357
 msgid "Buffer read error"
-msgstr "Error leer búfer"
+msgstr "Error de lectura de búfer"
 
 #: src/buf.c:397 src/buf.c:427
 msgid "Buffer full"
-msgstr "Búfer agotada"
+msgstr "Búfer está agotada"
 
 #: src/buf.c:404
 msgid "Buffer write error"
-msgstr "Error escribir búfer"
+msgstr "Error de escritura de búfer"
 
 #: src/buf.c:500 src/exec.c:101 src/exec.c:130 src/exec.c:1832 src/page.c:301
 #: src/parse.c:223
 msgid "Address out of range"
-msgstr "Dirección fuera del intervalo"
+msgstr "Dirección está fuera de rango"
 
-#: src/buf.c:546
+#: src/buf.c:576
 msgid "Memory request too big"
 msgstr "Pedirse demasiada memoria"
 
-#: src/cmds.c:39 src/exec.c:596 src/io.c:463 src/main.c:331
+#: src/cbc.c:134 src/cbc.c:232 src/cbc.c:237 src/cbc.c:258 src/cbc.c:263
+msgid "Invalid key"
+msgstr "Contraseña no es válida"
+
+#: src/cbc.c:376
+msgid "Decryption failed (block corrupted)."
+msgstr "Descifrado falló (bloque está dañada)"
+
+#: src/cbc.c:385
+msgid "Decryption failed (incomplete block)."
+msgstr "Descifrado falló (bloque está incompleto)"
+
+#: src/cbc.c:387 src/io.c:532 src/main.c:635
+msgid "File read error"
+msgstr "Error de lectura de archivo"
+
+#: src/cmds.c:39 src/exec.c:596 src/io.c:462 src/main.c:331
 msgid "End-of-file unexpected"
-msgstr "Final de archivo inesperado"
+msgstr "Final-de-archivo es inesperado"
 
 #: src/cmds.c:243 src/cmds.c:259
 msgid "Invalid address mark"
-msgstr "Marca inválida de la dirección"
+msgstr "Marca de dirección no es válida"
 
-#: src/ed.h:109
-#, fuzzy
+#: src/ed.h:101
 msgid "Unknown error"
-msgstr "Comando desconocido"
+msgstr "Error es desconocido"
 
-#: src/ed.h:764 src/ed.h:799 src/ed.h:834
+#: src/ed.h:746 src/ed.h:781 src/ed.h:816
 #, fuzzy
 msgid "Numerical result out of range"
-msgstr "Dirección fuera del intervalo"
+msgstr "Número está fuera de rango"
 
 #: src/exec.c:28 src/exec.c:494 src/exec.c:640 src/exec.c:1001 src/exec.c:1362
 #: src/exec.c:1374 src/exec.c:1382
 msgid "Command suffix unexpected"
-msgstr "Sufijo del comando inesperado"
+msgstr "Sufijo de comando es inesperado"
 
 #: src/exec.c:96 src/exec.c:125
 msgid "Destination address required"
-msgstr "Dirección de destinación requerida"
+msgstr "Dirección de destinación está requerida"
 
 #: src/exec.c:328 src/exec.c:341 src/exec.c:353
 msgid "Command prefix unexpected"
-msgstr "Prefijo del comando inesperado"
+msgstr "Prefijo de comando es inesperado"
 
 #: src/exec.c:485 src/exec.c:631 src/exec.c:717 src/exec.c:738 src/exec.c:937
 #: src/exec.c:979 src/exec.c:1325 src/exec.c:1523 src/exec.c:1718
 msgid "Address unexpected"
-msgstr "Dirección inesperada"
+msgstr "Dirección es inesperada"
 
 #: src/exec.c:660
 msgid "Invalid redirection"
-msgstr "Cambio de dirección inválido"
+msgstr "Cambio de dirección no es válido"
 
 #: src/exec.c:679
 msgid "File name not set"
-msgstr "Nombre de archivo no definir"
+msgstr "Nombre de archivo no está definido"
 
 #: src/exec.c:693
 msgid "Recursive global command"
@@ -150,92 +163,83 @@ msgstr "Comando global es recursivo"
 
 #: src/exec.c:748
 msgid "No previous error"
-msgstr "Ningún error previa"
+msgstr "Ningún error previo"
 
 #: src/exec.c:858
 msgid "Invalid destination address"
-msgstr "Dirección de destinación inválida"
+msgstr "Dirección de destinación no es válida"
 
 #: src/exec.c:899 src/exec.c:1311
 msgid "Invalid register"
-msgstr "Registrar inválida"
+msgstr "Registro no es válido"
 
 #: src/exec.c:1156 src/exec.c:1219 src/exec.c:1542 src/exec.c:1602
 #: src/exec.c:1772
 msgid "Unknown command"
-msgstr "Comando desconocido"
+msgstr "Comando no es conocido"
 
 #: src/exec.c:1772
 msgid "Invalid address"
-msgstr "Dirección inválida"
+msgstr "Dirección no es válida"
 
 #: src/exec.c:1790
 msgid "Command too long"
-msgstr "Comando demasiado largo"
+msgstr "Comando es demasiado largo"
 
 #: src/exec.c:1837
 msgid "Invalid address range"
-msgstr "Intervalo de dirección inválida"
+msgstr "Rango de direcciones no es válido"
 
 #: src/glbl.c:131
 msgid "No previous command"
 msgstr "Ningún comando previa"
 
-#: src/io.c:70
+#: src/io.c:69
 msgid "File does not exist"
-msgstr "El archivo no existe"
+msgstr "Archivo no existe"
 
-#: src/io.c:89 src/io.c:154 src/io.c:612 src/io.c:661 src/main.c:608
+#: src/io.c:88 src/io.c:153 src/io.c:611 src/io.c:660 src/main.c:608
 msgid "File open error"
-msgstr "Error abrir archivo"
+msgstr "Error de apertura de archivo"
 
-#: src/io.c:108 src/io.c:626
+#: src/io.c:107 src/io.c:625
 #, c-format
 msgid "%s: File already locked\n"
-msgstr "%s: Archivo ya bloqueado\n"
+msgstr "%s: Archivo ya está bloqueado\n"
 
-#: src/io.c:132 src/io.c:603 src/io.c:641
+#: src/io.c:131 src/io.c:602 src/io.c:640
 msgid "File close error"
-msgstr "Error cerrar archivo"
+msgstr "Error de cierre de archivo"
 
-#: src/io.c:277
-#, c-format
-msgid "Newline inserted"
-msgstr "Nueva línea insertado"
-
-#: src/io.c:282 src/io.c:416
-#, fuzzy, c-format
-msgid "Newline appended\n"
-msgstr "Nueva línea añadido\n"
-
-#: src/io.c:411
+#: src/io.c:276 src/io.c:410
 #, fuzzy, c-format
 msgid "Newline inserted\n"
-msgstr "Nueva línea insertado\n"
+msgstr "Nueva línea está insertado\n"
 
-#: src/io.c:533 src/main.c:635
-msgid "File read error"
-msgstr "Error leer archivo"
+#: src/io.c:281 src/io.c:415
+#, fuzzy, c-format
+msgid "Newline appended\n"
+msgstr "Nueva línea está añadido\n"
 
-#: src/io.c:589
+#: src/io.c:588
 msgid "File truncate error"
-msgstr "Error truncar archivo"
+msgstr "Error de trunca de archivo"
 
-#: src/io.c:702
+#: src/io.c:701
 msgid "File too big"
-msgstr "Archivo demasiado grande"
+msgstr "Archivo es demasiado grande"
 
-#: src/io.c:749 src/main.c:570 src/main.c:644
+#: src/io.c:748 src/main.c:570 src/main.c:644
 msgid "File write error"
-msgstr "Error escribir archivo"
+msgstr "Error de escritura de archivo"
 
-#: src/io.c:774
+#: src/io.c:773 src/parse.c:504
 msgid "File status error"
-msgstr "Error del estado de archivo"
+msgstr "Error de obtiene estado de archivo"
 
-#: src/io.c:781
+#: src/io.c:780
 msgid "Access restricted to regular files"
-msgstr "Acceso restringido a los archivos regulares"
+msgstr "Acceso está restringido a archivos regulares"
 
 #: src/main.c:278
 msgid "Interrupted"
@@ -243,11 +247,11 @@ msgstr "Interrumpido"
 
 #: src/main.c:376
 msgid "WARNING: Buffer modified since last write"
-msgstr "ATENCION: Búfer no escrito desde se modificó"
+msgstr "ATENCION: Búfer no se guarda desde se modificó"
 
 #: src/main.c:528
 msgid "Argument list full"
-msgstr "Lista de argumentos llena"
+msgstr "Lista de argumentos está llena"
 
 #: src/main.c:662
 #, fuzzy, c-format
@@ -288,25 +292,27 @@ msgid ""
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
 "Opciones:\n"
-"  -E, --regexp-extended     Empleo expresiones regular extendida.\n"
-"  -e, --expression=COMANDO  Anexa COMANDO después programa, implica `-s'.\n"
-"  -f, --file=PROGRAMA       Lea comandos del archivo PROGRAMA.\n"
-"  -G, --traditional         Permite la compatibilidad hacia atrás.\n"
+"  -E, --regexp-extended     Se utiliza expresiones regular extendida.\n"
+"  -e, --expression=COMANDO  Anexa COMANDO después de programa,\n"
+"                            implica `-s'.\n"
+"  -f, --file=PROGRAMA       Acepta de archivo PROGRAMA programa,\n"
+"                            implica `-s'.\n"
+"  -G, --traditional         Se utiliza la compatibilidad hacia atrás.\n"
 "  -h, --help                Muestra (esta) ayuda, entonces finaliza.\n"
-"  -i, --in-place[=SUFIJO]   Escríbelo antes de cerar el archivo.\n"
+"  -i, --in-place[=SUFIJO]   Se guarda archivo antes de cerar.\n"
 "  -p, --prompt=CADENA       Aviso de comandos con CADENA.\n"
-"  -R, --ansi-color          Permite códigos de color del ANSI.\n"
-"  -r, --regexp-extended     Empleo expresiones regular extendida.\n"
-"  -s, --script              No permite diagnósticos interactivo.\n"
-"  -v, --verbose             Permite diagnósticos prolijo del error.\n"
+"  -R, --ansi-color          Se utiliza códigos de color de ANSI.\n"
+"  -r, --regexp-extended     Se utiliza expresiones regular extendida.\n"
+"  -s, --script              No se utliza diagnósticos interactivo.\n"
+"  -v, --verbose             Se utliza diagnósticos prolijo de error.\n"
 "  -V, --version             Muestra versión de programa, entonces finaliza.\n"
-"  -x, --crypt               Solicitud de clave de cifrado utilizada para las "
-"siguientes E / S.\n"
-"Si hay ARCHIVO, entonces leerlo al búfer.  Dentro ed, teclee:\n"
+"  -x, --crypt               Solicitar constraseña de cifrado para I/O\n"
+"                            siguientes.\n"
+"Si hay ARCHIVO, lo carga al búfer. Para documentación completa de\n"
+"esas opciones, escriba en Ed:\n"
 "  !info ed RET m switches RET\n"
-"para ver la documentación completa de esas opciones.\n"
-"\n"
-"Comunicar problemas a: <https://github.com/slewsys/ed>\n"
+" \n"
+"Enviar problemas y solicitudes de extracción a: <https://github.com/slewsys/ed>\n"
 
 #: src/main.c:694
 #, fuzzy, c-format
@@ -331,22 +337,26 @@ msgid ""
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
 "Opciones:\n"
-"  -E, --regexp-extended     Empleo expresiones regular extendida.\n"
-"  -G, --traditional         Permite la compatibilidad hacia atrás.\n"
+"  -E, --regexp-extended     Se utiliza expresiones regular extendida.\n"
+"  -e, --expression=COMANDO  Anexa COMANDO después de programa,\n"
+"                            implica `-s'.\n"
+"  -f, --file=PROGRAMA       Acepta de archivo PROGRAMA programa,\n"
+"                            implica `-s'.\n"
+"  -G, --traditional         Se utiliza la compatibilidad hacia atrás.\n"
 "  -h, --help                Muestra (esta) ayuda, entonces finaliza.\n"
-"  -i, --in-place[=SUFIJO]   Escríbelo antes de cerar el archivo.\n"
+"  -i, --in-place[=SUFIJO]   Se guarda archivo antes de cerar.\n"
 "  -p, --prompt=CADENA       Aviso de comandos con CADENA.\n"
-"  -R, --ansi-color          Permite códigos de color del ANSI.\n"
-"  -r, --regexp-extended     Empleo expresiones regular extendida.\n"
-"  -s, --script              No permite diagnósticos interactivo.\n"
-"  -v, --verbose             Permite diagnósticos prolijo del error.\n"
+"  -R, --ansi-color          Se utiliza códigos de color de ANSI.\n"
+"  -r, --regexp-extended     Se utiliza expresiones regular extendida.\n"
+"  -s, --script              No se utliza diagnósticos interactivo.\n"
+"  -v, --verbose             Se utliza diagnósticos prolijo de error.\n"
 "  -V, --version             Muestra versión de programa, entonces finaliza.\n"
 "\n"
-"Si hay ARCHIVO, entonces leerlo al búfer.  Dentro ed, teclee:\n"
+"Si hay ARCHIVO, lo carga al búfer. Para documentación completa de\n"
+"esas opciones, escriba en Ed:\n"
 "  !info ed RET m switches RET\n"
-"para ver la documentación completa de esas opciones.\n"
-"\n"
-"Comunicar problemas a: <https://github.com/slewsys/ed>\n"
+" \n"
+"Enviar problemas y solicitudes de extracción a: <https://github.com/slewsys/ed>\n"
 
 #: src/main.c:724
 msgid "script, line %"
@@ -375,27 +385,23 @@ msgstr "Error de extensión del nombre de archivo"
 
 #: src/parse.c:486
 msgid "No such file or directory"
-msgstr "El archivo o directorio no existe"
-
-#: src/parse.c:504
-msgid "File stat error"
-msgstr "Error del estado de archivo"
+msgstr "No existe tal archivo o directorio"
 
 #: src/parse.c:576
 msgid "Invalid file name"
-msgstr "Nombe de archivo inválido"
+msgstr "Nombre de archivo no es válido"
 
 #: src/parse.c:629
 msgid "Brackets ([]) unbalanced"
-msgstr "Brackets ([]) desemparejado"
+msgstr "Brackets ([]) están desequilibrados"
 
 #: src/parse.c:636
 msgid "Backslash (\\) unexpected"
-msgstr "Diagonal (\\) inesperado"
+msgstr "Diagonal (\\) no está esperado"
 
 #: src/parse.c:693
 msgid "Shell access restricted"
-msgstr "Acceso restringido de shell"
+msgstr "Acceso a shell está restringido"
 
 #: src/parse.c:757
 msgid "No previous shell command"
@@ -403,13 +409,13 @@ msgstr "Ningún comando previa"
 
 #: src/re.c:33
 msgid "Invalid pattern delimiter"
-msgstr "Delimitador inválido del patrón"
+msgstr "Delimitador de patrón no es válido"
 
 #: src/re.c:145
 msgid "No previous pattern"
 msgstr "Ningún patrón previa"
 
-#: src/re.c:268 src/sub.c:439
+#: src/re.c:271 src/sub.c:439
 msgid "No match"
 msgstr "Ningún coincidencia"
 
@@ -419,7 +425,7 @@ msgstr "Error de indicador"
 
 #: src/sub.c:129 src/sub.c:148
 msgid "Unknown command suffix"
-msgstr "Sufijo desconocido del comando"
+msgstr "Sufijo de comando no es conocido"
 
 #: src/sub.c:167 src/sub.c:237
 msgid "No previous substitution"
@@ -427,72 +433,4 @@ msgstr "Ninguna substitución previa"
 
 #: src/undo.c:51
 msgid "Nothing to undo"
-msgstr "Nada deshacer"
-
-#~ msgid "%s: Not a regular file\n"
-#~ msgstr "%s: No es un archivo regular\n"
-
-#~ msgid "%s: File is read-only\n"
-#~ msgstr "%s: El archivo es de solo lectura.\n"
-
-#~ msgid "%s: Exclusive lock not set\n"
-#~ msgstr "%s: Bloqueo exclusivo no establecido\n"
-
-#~ msgid "Warning: Locale unknown\n"
-#~ msgstr "Atencion: Localidad desconocida\n"
-
-#~ msgid "Argument list too long"
-#~ msgstr "Lista de argumentos demasiado largo"
-
-#~ msgid "Success"
-#~ msgstr "Éxito"
-
-#~ msgid "Invalid regular expression"
-#~ msgstr "Expresión regular inválida"
-
-#~ msgid "Invalid collation character"
-#~ msgstr "Carácter de ordenamiento inválido"
-
-#~ msgid "Invalid character class name"
-#~ msgstr "Nombre del clase de carácter inválido"
-
-#~ msgid "Trailing backslash"
-#~ msgstr "Diagonal que se arrastra"
-
-#~ msgid "Invalid back reference"
-#~ msgstr "Referencia hacia atrás inválida"
-
-#, fuzzy
-#~ msgid "Unmatched [, [^, [:, [., or [="
-#~ msgstr "[,  [^, [. o [= desemparejado"
-
-#~ msgid "Unmatched ( or \\("
-#~ msgstr "( o \\( desemparejado"
-
-#~ msgid "Unmatched \\{"
-#~ msgstr "\\{ desemparejado"
-
-#~ msgid "Invalid content of \\{\\}"
-#~ msgstr "Contenido inválido del \\{\\}"
-
-#~ msgid "Invalid range end"
-#~ msgstr "Extremo inválido de intervalo"
-
-#~ msgid "Invalid preceding regular expression"
-#~ msgstr "Expresión regular precedente inválida"
-
-#~ msgid "Premature end of regular expression"
-#~ msgstr "Final prematuro de la expresión regular"
-
-#~ msgid "Regular expression too big"
-#~ msgstr "Expresión regular demasiado grande"
-
-#~ msgid "Unmatched ) or \\)"
-#~ msgstr ") o \\) desemparejado"
-
-#~ msgid "No previous regular expression"
-#~ msgstr "Ninguna expresión regular previa"
-
-#, fuzzy
-#~ msgid "Unsupported command suffix"
-#~ msgstr "Sufijo desconocido del comando"
+msgstr "No hay nada para deshacer"

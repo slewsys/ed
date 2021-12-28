@@ -131,7 +131,7 @@ get_des_keyword (ed_buffer_t *ed)
   /* Get password. */
   if ((p = getpass ("Enter key: ")) == NULL)
     {
-      ed->exec->err = _("Invalid key.");
+      ed->exec->err = _("Invalid key");
       return ERR;
     }
 
@@ -164,7 +164,7 @@ char_to_int (int c, int radix)
 
   s[0] = c;
   errno = 0;
-  return (n = strtol (s, NULL, radix)) == 0 && errno == EINVAL ? -1 : n;
+  return (n = strtol ((char *)s, NULL, radix)) == 0 && errno == EINVAL ? -1 : n;
 # else  /* !HAVE_STRTOL */
   switch (c)
     {

@@ -3,6 +3,7 @@
 **/*.a
 **/*.o
 **/*.ps
+**/*.pdf
 /GPATH
 /GRTAGS
 /GTAGS
@@ -18,6 +19,7 @@ lib/regex.h
 libtool
 po/Makefile.in
 po/POTFILES
+po/stamp-po
 src/ed
 src/ed.dSYM/**
 stamp-h1

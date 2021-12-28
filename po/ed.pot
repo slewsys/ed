@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ed 2.0.11\n"
 "Report-Msgid-Bugs-To: https://github.com/slewsys/ed\n"
-"POT-Creation-Date: 2018-12-23 20:44-0500\n"
+"POT-Creation-Date: 2021-12-29 23:16-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -33,9 +33,10 @@ msgstr ""
 msgid "Pipe close error"
 msgstr ""
 
-#: src/aux.c:227 src/aux.c:440 src/buf.c:267 src/buf.c:436 src/buf.c:553
-#: src/buf.c:583 src/glbl.c:170 src/io.c:303 src/main.c:598 src/page.c:858
-#: src/parse.c:273 src/parse.c:517 src/re.c:155 src/undo.c:26
+#: src/aux.c:227 src/aux.c:440 src/buf.c:267 src/buf.c:436 src/buf.c:534
+#: src/buf.c:544 src/buf.c:583 src/buf.c:613 src/glbl.c:170 src/io.c:302
+#: src/main.c:598 src/page.c:858 src/parse.c:273 src/parse.c:517 src/re.c:155
+#: src/undo.c:26
 msgid "Memory exhausted"
 msgstr ""
 
@@ -47,8 +48,8 @@ msgstr ""
 msgid "Exceeded maximum stack frame depth"
 msgstr ""
 
-#: src/aux.c:418 src/aux.c:469 src/aux.c:509 src/aux.c:548 src/io.c:58
-#: src/io.c:582 src/main.c:213 src/main.c:560 src/main.c:620
+#: src/aux.c:418 src/aux.c:469 src/aux.c:509 src/aux.c:548 src/io.c:57
+#: src/io.c:581 src/main.c:213 src/main.c:560 src/main.c:620
 msgid "File seek error"
 msgstr ""
 
@@ -93,11 +94,27 @@ msgstr ""
 msgid "Address out of range"
 msgstr ""
 
-#: src/buf.c:546
+#: src/buf.c:576
 msgid "Memory request too big"
 msgstr ""
 
-#: src/cmds.c:39 src/exec.c:596 src/io.c:463 src/main.c:331
+#: src/cbc.c:134 src/cbc.c:232 src/cbc.c:237 src/cbc.c:258 src/cbc.c:263
+msgid "Invalid key"
+msgstr ""
+
+#: src/cbc.c:376
+msgid "Decryption failed (block corrupted)."
+msgstr ""
+
+#: src/cbc.c:385
+msgid "Decryption failed (incomplete block)."
+msgstr ""
+
+#: src/cbc.c:387 src/io.c:532 src/main.c:635
+msgid "File read error"
+msgstr ""
+
+#: src/cmds.c:39 src/exec.c:596 src/io.c:462 src/main.c:331
 msgid "End-of-file unexpected"
 msgstr ""
 
@@ -105,11 +122,11 @@ msgstr ""
 msgid "Invalid address mark"
 msgstr ""
 
-#: src/ed.h:109
+#: src/ed.h:101
 msgid "Unknown error"
 msgstr ""
 
-#: src/ed.h:764 src/ed.h:799 src/ed.h:834
+#: src/ed.h:746 src/ed.h:781 src/ed.h:816
 msgid "Numerical result out of range"
 msgstr ""
 
@@ -176,59 +193,50 @@ msgstr ""
 msgid "No previous command"
 msgstr ""
 
-#: src/io.c:70
+#: src/io.c:69
 msgid "File does not exist"
 msgstr ""
 
-#: src/io.c:89 src/io.c:154 src/io.c:612 src/io.c:661 src/main.c:608
+#: src/io.c:88 src/io.c:153 src/io.c:611 src/io.c:660 src/main.c:608
 msgid "File open error"
 msgstr ""
 
-#: src/io.c:108 src/io.c:626
+#: src/io.c:107 src/io.c:625
 #, c-format
 msgid "%s: File already locked\n"
 msgstr ""
 
-#: src/io.c:132 src/io.c:603 src/io.c:641
+#: src/io.c:131 src/io.c:602 src/io.c:640
 msgid "File close error"
 msgstr ""
 
-#: src/io.c:277
-#, c-format
-msgid "Newline inserted"
-msgstr ""
-
-#: src/io.c:282 src/io.c:416
-#, c-format
-msgid "Newline appended\n"
-msgstr ""
-
-#: src/io.c:411
+#: src/io.c:276 src/io.c:410
 #, c-format
 msgid "Newline inserted\n"
 msgstr ""
 
-#: src/io.c:533 src/main.c:635
-msgid "File read error"
+#: src/io.c:281 src/io.c:415
+#, c-format
+msgid "Newline appended\n"
 msgstr ""
 
-#: src/io.c:589
+#: src/io.c:588
 msgid "File truncate error"
 msgstr ""
 
-#: src/io.c:702
+#: src/io.c:701
 msgid "File too big"
 msgstr ""
 
-#: src/io.c:749 src/main.c:570 src/main.c:644
+#: src/io.c:748 src/main.c:570 src/main.c:644
 msgid "File write error"
 msgstr ""
 
-#: src/io.c:774
+#: src/io.c:773 src/parse.c:504
 msgid "File status error"
 msgstr ""
 
-#: src/io.c:781
+#: src/io.c:780
 msgid "Access restricted to regular files"
 msgstr ""
 
@@ -332,10 +340,6 @@ msgstr ""
 msgid "No such file or directory"
 msgstr ""
 
-#: src/parse.c:504
-msgid "File stat error"
-msgstr ""
-
 #: src/parse.c:576
 msgid "Invalid file name"
 msgstr ""
@@ -364,7 +368,7 @@ msgstr ""
 msgid "No previous pattern"
 msgstr ""
 
-#: src/re.c:268 src/sub.c:439
+#: src/re.c:271 src/sub.c:439
 msgid "No match"
 msgstr ""
 

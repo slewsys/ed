@@ -8,7 +8,7 @@ gnulib_srcdir ?= /opt/src/savannah/gnulib
 
 ACLOCAL_AMFLAGS = -I m4
 
-SUBDIRS =
+SUBDIRS = ./po 
 
 if LDADD_LIBGNU
 SUBDIRS += lib
