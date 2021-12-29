@@ -7,14 +7,6 @@
 
 # include "config.h"
 
-/*
- * Work around conflicting off_t typedefs (e.g., if _LARGE_FILE
- * support enabled). Defined per configure, below.
- */
-#ifndef __sun
-# define off_t INTERNAL_OFF_T
-#endif
-
 #include <ctype.h>
 #include <errno.h>
 
@@ -150,16 +142,6 @@ int fstat ();
 #endif  /* !HAVE_FSEEKO */
 
 #include <regex.h>
-
-/* Define off_t per storage size determined by configure. */
-#ifndef __sun
-# undef off_t
-typedef OFF_T_SIZE off_t;
-
-/* Define size_t per storage size determined by configure. */
-# undef size_t
-typedef SIZE_T_SIZE size_t;
-#endif  /* !defined (__sun) */
 
 #ifndef INT_MAX
 # define INT_MAX ((int) (~(unsigned int) 0 >> (unsigned int) 1))

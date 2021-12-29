@@ -21,8 +21,8 @@
 
 
 /* Static function declarations. */
-static ed_line_node_t *append_node_to_register __P ((size_t, off_t, int,
-                                               ed_buffer_t *));
+static ed_line_node_t *append_node_to_register (size_t, off_t, int,
+                                                ed_buffer_t *);
 
 
 #if defined (HAVE_FORK) && defined (WANT_EXTERNAL_FILTER)

@@ -9,9 +9,9 @@
 
 
 /* Static function declarations. */
-static ed_global_node_t *append_global_node __P ((const ed_line_node_t *,
-                                               ed_buffer_t *));
-static ed_line_node_t *next_global_node __P ((ed_buffer_t *));
+static ed_global_node_t *append_global_node (const ed_line_node_t *,
+                                             ed_buffer_t *);
+static ed_line_node_t *next_global_node (ed_buffer_t *);
 
 
 /* mark_global_nodes: Add lines matching a pattern to global queue. */

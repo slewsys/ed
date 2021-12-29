@@ -8,7 +8,7 @@ gnulib_srcdir ?= /opt/src/savannah/gnulib
 
 ACLOCAL_AMFLAGS = -I m4
 
-SUBDIRS = ./po 
+SUBDIRS =
 
 if LDADD_LIBGNU
 SUBDIRS += lib
@@ -68,3 +68,6 @@ distclean-local:
 	rm -rf GPATH GRTAGS GSYMS GTAGS
 	find . -name '[Tt][Aa][Gg][Ss]' -type f -delete
 	find . \( -name '*~' -or -name '#*#' \) -type f -delete
+	if test -f $(top_builddir)/testsuite/Makefile; then		      \
+		$(MAKE) -C $(top_builddir)/testsuite distclean;		      \
+	fi

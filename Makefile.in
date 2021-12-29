@@ -201,11 +201,12 @@ am__define_uniq_tagged_files = \
   unique=`for i in $$list; do \
     if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
   done | $(am__uniquify_input)`
-DIST_SUBDIRS = ./po lib src po doc testsuite
+DIST_SUBDIRS = lib src po doc testsuite
 am__DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/config.h.in \
 	ABOUT-NLS AUTHORS COPYING ChangeLog INSTALL NEWS README.md \
-	THANKS TODO config.guess config.rpath config.sub install-sh \
-	ltmain.sh mdate-sh missing mkinstalldirs texinfo.tex
+	THANKS TODO config.guess config.rpath config.sub depcomp \
+	install-sh ltmain.sh mdate-sh missing mkinstalldirs \
+	texinfo.tex
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 distdir = $(PACKAGE)-$(VERSION)
 top_distdir = $(distdir)
@@ -947,7 +948,7 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 ACLOCAL_AMFLAGS = -I m4
-SUBDIRS = ./po $(am__append_1) src po doc testsuite
+SUBDIRS = $(am__append_1) src po doc testsuite
 EXTRA_DIST = m4/gnulib-cache.m4 include/pathmax.h include/argmax.h
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
@@ -1492,6 +1493,9 @@ distclean-local:
 	rm -rf GPATH GRTAGS GSYMS GTAGS
 	find . -name '[Tt][Aa][Gg][Ss]' -type f -delete
 	find . \( -name '*~' -or -name '#*#' \) -type f -delete
+	if test -f $(top_builddir)/testsuite/Makefile; then		      \
+		$(MAKE) -C $(top_builddir)/testsuite distclean;		      \
+	fi
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

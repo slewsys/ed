@@ -26,10 +26,9 @@
 #endif  /* HAVE_FCNTL_H */
 
 /* Static function declarations. */
-static int put_stream_line __P ((FILE *, const char *, size_t,
-                                 ed_buffer_t *));
-static int read_stream __P ((FILE *, off_t, off_t *, ed_buffer_t *));
-static int get_inode __P ((const char *, INO_T *, ed_buffer_t *));
+static int put_stream_line (FILE *, const char *, size_t, ed_buffer_t *);
+static int read_stream (FILE *, off_t, off_t *, ed_buffer_t *);
+static int get_inode (const char *, INO_T *, ed_buffer_t *);
 
 
 /* read_file: Read file to buffer; return line count. */

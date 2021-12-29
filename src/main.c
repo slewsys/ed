@@ -28,15 +28,15 @@ jmp_buf env;
 ed_buffer_t *ed;
 
 /* Static function declarations. */
-static void ed_usage __P ((int, ed_buffer_t *));
+static void ed_usage (int, ed_buffer_t *);
 
 #ifdef WANT_ED_ENVAR
-static char **getenv_init_argv __P ((const char *, int *, ed_buffer_t *));
+static char **getenv_init_argv (const char *, int *, ed_buffer_t *);
 #endif
 
-static int next_edit __P ((int, ed_buffer_t *));
-static int save_edit __P ((int, ed_buffer_t *));
-static void script_die __P ((int, ed_buffer_t *));
+static int next_edit (int, ed_buffer_t *);
+static int save_edit (int, ed_buffer_t *);
+static void script_die (int, ed_buffer_t *);
 
 /* ed: line editor */
 int

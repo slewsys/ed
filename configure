@@ -30633,7 +30633,7 @@ fi
 # Generate autotest helpers.
 ac_config_commands="$ac_config_commands testsuite/atconfig"
 
-ac_config_files="$ac_config_files testsuite/ed ./po/Makefile.in"
+ac_config_files="$ac_config_files testsuite/ed"
 
 
 # Generate configure helper.
@@ -31866,7 +31866,6 @@ do
     "po-directories") CONFIG_COMMANDS="$CONFIG_COMMANDS po-directories" ;;
     "testsuite/atconfig") CONFIG_COMMANDS="$CONFIG_COMMANDS testsuite/atconfig" ;;
     "testsuite/ed") CONFIG_FILES="$CONFIG_FILES testsuite/ed" ;;
-    "./po/Makefile.in") CONFIG_FILES="$CONFIG_FILES ./po/Makefile.in" ;;
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
     "doc/Makefile") CONFIG_FILES="$CONFIG_FILES doc/Makefile" ;;
     "doc/bwk/Makefile") CONFIG_FILES="$CONFIG_FILES doc/bwk/Makefile" ;;
@@ -33243,7 +33242,6 @@ SHELL=\${CONFIG_SHELL-'$SHELL'}
 ATEOF
  ;;
     "testsuite/ed":F) chmod 755 testsuite/ed ;;
-    "./po/Makefile.in":F) chmod 755 testsuite/ed ;;
 
   esac
 done # for ac_tag

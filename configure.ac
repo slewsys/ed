@@ -381,20 +381,20 @@ AS_IF([test ! ."$ac_cv_configure_args" = .''],
 
 # Generate autotest helpers.
 AC_CONFIG_TESTDIR([testsuite])
-AC_CONFIG_FILES([testsuite/ed ./po/Makefile.in],
-  [chmod 755 testsuite/ed])
+AC_CONFIG_FILES([testsuite/ed], [chmod 755 testsuite/ed])
 
 # Generate configure helper.
 AM_MISSING_PROG([AUTOM4TE], [autom4te])
 
 # Generate Makefiles and conditional headers.
-AC_CONFIG_FILES([Makefile                                                     \
+AC_CONFIG_FILES([                                                             \
+  Makefile                                                                    \
   doc/Makefile                                                                \
   doc/bwk/Makefile                                                            \
   lib/Makefile                                                                \
   po/Makefile.in                                                              \
   src/Makefile                                                                \
-  testsuite/Makefile
+  testsuite/Makefile                                                          \
   testsuite/proto.ok-so-at.in])
 
 AC_OUTPUT
