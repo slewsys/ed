@@ -10,11 +10,11 @@ char *copyright =
   "@(#) Copyright © 1993-2018 Andrew L. Moore, SlewSys Research.\n";
 #endif  /* not lint */
 
-#include <pwd.h>
-
 #include "ed.h"
 #include "argmax.h"
 #include "getopt.h"
+
+#include <pwd.h>
 
 #define STDIN "/dev/stdin"
 
