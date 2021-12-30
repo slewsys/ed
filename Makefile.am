@@ -18,10 +18,16 @@ SUBDIRS += src po doc testsuite
 
 EXTRA_DIST = m4/gnulib-cache.m4 include/pathmax.h include/argmax.h
 
+HEAD_COMMIT = $(shell git rev-parse --short HEAD)
+
 .PHONY: quick-check maintainer-update-dist update-testsuite-dist update-po
 
 quick-check: all
 	cd $(top_builddir)/testsuite && $(MAKE) $(AM_MAKEFLAGS) $@
+
+dist:
+	git archive --format=tar --prefix=$(PACKAGE)-$(VERSION)/ HEAD |	      \
+		gzip >../ed-$(VERSION)~g$(HEAD_COMMIT).tgz
 
 maintainer-update-dist: update-gnulib update-po
 
