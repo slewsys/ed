@@ -109,7 +109,7 @@ init_stdio (ed_buffer_t *ed)
 #else
   if (ed->exec->fp && !(ed->exec->opt & FSCRIPT))
 #endif
-#ifdef __sun
+#if defined(__sun) || defined(__NetBSD__)
     if (dup2 (fileno (ed->exec->fp), fileno (stdin)) < 0)
       {
         fprintf (stderr, "%s\n", strerror (errno));
