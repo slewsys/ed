@@ -51,6 +51,7 @@ AC_DEFUN([gl_EARLY],
   # Code from module dynarray:
   # Code from module extensions:
   # Code from module extern-inline:
+  # Code from module gen-header:
   # Code from module getopt-gnu:
   # Code from module getopt-posix:
   # Code from module gettext-h:
@@ -88,6 +89,7 @@ AC_DEFUN([gl_EARLY],
   # Code from module threadlib:
   gl_THREADLIB_EARLY
   # Code from module unistd:
+  # Code from module vararrays:
   # Code from module verify:
   # Code from module wchar:
   # Code from module wcrtomb:
@@ -116,12 +118,16 @@ AC_DEFUN([gl_INIT],
   m4_pushdef([GL_MODULE_INDICATOR_PREFIX], [GL])
   gl_COMMON
   gl_source_base='lib'
+  gl_source_base_prefix=
   AC_REQUIRE([gl_EXTERN_INLINE])
   gl_FUNC_GETOPT_GNU
   dnl Because of the way gl_FUNC_GETOPT_GNU is implemented (the gl_getopt_required
   dnl mechanism), there is no need to do any AC_LIBOBJ or AC_SUBST here; they are
   dnl done in the getopt-posix module.
   gl_FUNC_GETOPT_POSIX
+  gl_CONDITIONAL_HEADER([getopt.h])
+  gl_CONDITIONAL_HEADER([getopt-cdefs.h])
+  AC_PROG_MKDIR_P
   if test $REPLACE_GETOPT = 1; then
     AC_LIBOBJ([getopt])
     AC_LIBOBJ([getopt1])
@@ -131,6 +137,8 @@ AC_DEFUN([gl_INIT],
   fi
   gl_UNISTD_MODULE_INDICATOR([getopt-posix])
   gl_LIMITS_H
+  gl_CONDITIONAL_HEADER([limits.h])
+  AC_PROG_MKDIR_P
   gl_MULTIARCH
   gl_REGEX
   if test $ac_use_included_regex = yes; then
@@ -138,15 +146,25 @@ AC_DEFUN([gl_INIT],
     gl_PREREQ_REGEX
   fi
   gt_TYPE_SSIZE_T
-  AM_STDBOOL_H
+  gl_STDBOOL_H
+  gl_CONDITIONAL_HEADER([stdbool.h])
+  AC_PROG_MKDIR_P
   gl_STDDEF_H
   gl_STDDEF_H_REQUIRE_DEFAULTS
+  gl_CONDITIONAL_HEADER([stddef.h])
+  AC_PROG_MKDIR_P
   gl_STDINT_H
+  gl_CONDITIONAL_HEADER([stdint.h])
+  dnl Because of gl_REPLACE_LIMITS_H:
+  gl_CONDITIONAL_HEADER([limits.h])
+  AC_PROG_MKDIR_P
   gl_SYS_TYPES_H
   gl_SYS_TYPES_H_REQUIRE_DEFAULTS
   AC_PROG_MKDIR_P
   gl_UNISTD_H
   gl_UNISTD_H_REQUIRE_DEFAULTS
+  AC_PROG_MKDIR_P
+  AC_C_VARARRAYS
   gl_gnulib_enabled_attribute=false
   gl_gnulib_enabled_btowc=false
   gl_gnulib_enabled_37f71b604aa9c54446783d80f42fe547=false
@@ -246,6 +264,7 @@ AC_DEFUN([gl_INIT],
     if ! $gl_gnulib_enabled_67241cf2e9b9409f43aeebaa5c55e7f2; then
       gl_INTTYPES_INCOMPLETE
       gl_INTTYPES_H_REQUIRE_DEFAULTS
+      AC_PROG_MKDIR_P
       gl_gnulib_enabled_67241cf2e9b9409f43aeebaa5c55e7f2=true
     fi
   }
@@ -254,6 +273,7 @@ AC_DEFUN([gl_INIT],
     if ! $gl_gnulib_enabled_langinfo; then
       gl_LANGINFO_H
       gl_LANGINFO_H_REQUIRE_DEFAULTS
+      AC_PROG_MKDIR_P
       gl_gnulib_enabled_langinfo=true
     fi
   }
@@ -279,6 +299,7 @@ AC_DEFUN([gl_INIT],
     if ! $gl_gnulib_enabled_locale; then
       gl_LOCALE_H
       gl_LOCALE_H_REQUIRE_DEFAULTS
+      AC_PROG_MKDIR_P
       gl_gnulib_enabled_locale=true
     fi
   }
@@ -436,6 +457,7 @@ AC_DEFUN([gl_INIT],
     if ! $gl_gnulib_enabled_stdlib; then
       gl_STDLIB_H
       gl_STDLIB_H_REQUIRE_DEFAULTS
+      AC_PROG_MKDIR_P
       gl_gnulib_enabled_stdlib=true
       func_gl_gnulib_m4code_b3ae4a413a1340415f34a52d1dafb147
     fi
@@ -464,8 +486,10 @@ AC_DEFUN([gl_INIT],
     if ! $gl_gnulib_enabled_wchar; then
       gl_WCHAR_H
       gl_WCHAR_H_REQUIRE_DEFAULTS
+      AC_PROG_MKDIR_P
       gl_gnulib_enabled_wchar=true
       func_gl_gnulib_m4code_67241cf2e9b9409f43aeebaa5c55e7f2
+      func_gl_gnulib_m4code_stdlib
     fi
   }
   func_gl_gnulib_m4code_wcrtomb ()
@@ -489,6 +513,7 @@ AC_DEFUN([gl_INIT],
     if ! $gl_gnulib_enabled_3dcce957eadc896e63ab5f137947b410; then
       gl_WCTYPE_H
       gl_WCTYPE_H_REQUIRE_DEFAULTS
+      AC_PROG_MKDIR_P
       gl_gnulib_enabled_3dcce957eadc896e63ab5f137947b410=true
     fi
   }
@@ -664,6 +689,7 @@ AC_DEFUN([gl_INIT],
   m4_pushdef([GL_MODULE_INDICATOR_PREFIX], [GL])
   gl_COMMON
   gl_source_base='tests'
+  gl_source_base_prefix=
 changequote(,)dnl
   gltests_WITNESS=IN_`echo "${PACKAGE-$PACKAGE_TARNAME}" | LC_ALL=C tr abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ | LC_ALL=C sed -e 's/[^A-Z0-9_]/_/g'`_GNULIB_TESTS
 changequote([, ])dnl
@@ -892,6 +918,7 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/sys_types_h.m4
   m4/threadlib.m4
   m4/unistd_h.m4
+  m4/vararrays.m4
   m4/visibility.m4
   m4/warn-on-use.m4
   m4/wchar_h.m4

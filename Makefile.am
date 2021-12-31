@@ -25,9 +25,9 @@ HEAD_COMMIT = $(shell git rev-parse --short HEAD)
 quick-check: all
 	cd $(top_builddir)/testsuite && $(MAKE) $(AM_MAKEFLAGS) $@
 
-dist:
-	git archive --format=tar --prefix=$(PACKAGE)-$(VERSION)/ HEAD |	      \
-		gzip >../ed-$(VERSION)~g$(HEAD_COMMIT).tgz
+# dist:
+#	git archive --format=tar --prefix=$(PACKAGE)-$(VERSION)/ HEAD |	      \
+#		gzip >../ed-$(VERSION)~g$(HEAD_COMMIT).tgz
 
 maintainer-update-dist: update-gnulib update-po
 
@@ -58,6 +58,10 @@ update-gnulib:
 	@if test -f lib/regex.h; then					      \
 	  echo "*** Moving lib/regex.h => lib/regex.h.in ***";		      \
 	  mv lib/regex.h lib/regex.h.in;				      \
+	fi;								      \
+	if test -f lib/dynarray.h; then					      \
+	  echo "*** Moving lib/dynarray.h => lib/dynarray.h.in ***";	      \
+	  mv lib/dynarray.h lib/dynarray.h.in;				      \
 	fi;								      \
 	if test -f lib/patch-Makefile.am.diff; then			      \
 	  echo "*** Patching refreshed lib/Makefile.am ***";		      \

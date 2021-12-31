@@ -141,8 +141,8 @@ host_triplet = @host@
 @gl_GNULIB_ENABLED_locale_TRUE@am__append_11 = locale.h
 @gl_GNULIB_ENABLED_locale_TRUE@am__append_12 = locale.h locale.h-t
 @gl_GNULIB_ENABLED_lock_TRUE@am__append_13 = glthread/lock.h glthread/lock.c
-@LIBADD_REGEX_TRUE@am__append_14 = regex.h
-@LIBADD_REGEX_TRUE@am__append_15 = regex.h
+@LIBADD_REGEX_TRUE@am__append_14 = regex.h dynarray.h malloc/dynarray.h
+@LIBADD_REGEX_TRUE@am__append_15 = regex.h dynarray.h malloc/dynarray.h
 @LIBADD_REGEX_TRUE@am__append_16 = -DRE_ENABLE_I18N=1
 @gl_GNULIB_ENABLED_e7e881d32ca02f1c997b13c737c64bbd_TRUE@am__append_17 = setlocale_null.c
 @gl_GNULIB_ENABLED_stdlib_TRUE@am__append_18 = stdlib.h
@@ -192,11 +192,11 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/00gnulib.m4 \
 	$(top_srcdir)/m4/stdint.m4 $(top_srcdir)/m4/stdlib_h.m4 \
 	$(top_srcdir)/m4/sys_types_h.m4 $(top_srcdir)/m4/threadlib.m4 \
 	$(top_srcdir)/m4/ulonglong.m4 $(top_srcdir)/m4/unistd_h.m4 \
-	$(top_srcdir)/m4/visibility.m4 $(top_srcdir)/m4/warn-on-use.m4 \
-	$(top_srcdir)/m4/wchar_h.m4 $(top_srcdir)/m4/wchar_t.m4 \
-	$(top_srcdir)/m4/wcrtomb.m4 $(top_srcdir)/m4/wctype_h.m4 \
-	$(top_srcdir)/m4/wint_t.m4 $(top_srcdir)/m4/zzgnulib.m4 \
-	$(top_srcdir)/configure.ac
+	$(top_srcdir)/m4/vararrays.m4 $(top_srcdir)/m4/visibility.m4 \
+	$(top_srcdir)/m4/warn-on-use.m4 $(top_srcdir)/m4/wchar_h.m4 \
+	$(top_srcdir)/m4/wchar_t.m4 $(top_srcdir)/m4/wcrtomb.m4 \
+	$(top_srcdir)/m4/wctype_h.m4 $(top_srcdir)/m4/wint_t.m4 \
+	$(top_srcdir)/m4/zzgnulib.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 DIST_COMMON = $(srcdir)/Makefile.am $(noinst_HEADERS) \
@@ -1076,7 +1076,8 @@ EXTRA_DIST = attribute.h btowc.c dynarray.h malloc/dynarray-skeleton.c \
 	lc-charset-dispatch.h mbrtowc-impl-utf8.h mbrtowc-impl.h \
 	mbrtowc.c mbtowc-lock.c mbtowc-lock.h windows-initguard.h \
 	mbsinit.c mbtowc-impl.h mbtowc.c nl_langinfo-lock.c \
-	nl_langinfo.c windows-initguard.h regcomp.c regex.c regex.h.in \
+	nl_langinfo.c windows-initguard.h dynarray.h.in \
+	malloc/dynarray.h.in regcomp.c regex.c regex.h.in \
 	regex_internal.c regex_internal.h regexec.c setlocale-lock.c \
 	setlocale_null.h windows-initguard.h _Noreturn.h arg-nonnull.h \
 	c++defs.h warn-on-use.h stdbool.in.h stddef.in.h stdint.in.h \
@@ -1120,6 +1121,30 @@ EXTRA_libgnu_a_SOURCES = btowc.c malloc/dynarray-skeleton.c getopt.c \
 # Do not rely on a 'configure'-time test for this, since the expression
 # might appear in an installed header, which is used by some other compiler.
 HAVE_INCLUDE_NEXT = (__GNUC__ || __clang__ || 60000000 <= __DECC_VER)
+
+# In 'sed', prepend a "DO NOT EDIT" comment to the pattern space.
+SED_HEADER_NOEDIT = s,^,/* DO NOT EDIT! GENERATED AUTOMATICALLY! */,
+
+# '$(SED_HEADER_STDOUT) -e "..."' runs 'sed' but first outputs "DO NOT EDIT".
+SED_HEADER_STDOUT = sed \
+  -e x \
+  -e '1$(SED_HEADER_NOEDIT)p' \
+  -e x
+
+
+# '$(SED_HEADER_TO_AT_t) FILE' copies FILE to $@-t, prepending a leading
+# "DO_NOT_EDIT".  Although this could be done more simply via:
+#	SED_HEADER_TO_AT_t = $(SED_HEADER_STDOUT) > $@-t
+# the -n and 'w's avoid a fork+exec, at least when GNU Make is used.
+SED_HEADER_TO_AT_t = sed -n \
+  -e x \
+  -e '1$(SED_HEADER_NOEDIT)w $@-t' \
+  -e x \
+  -e 'w $@-t'
+
+
+# Use $(gl_V_at) instead of $(AM_V_GEN) or $(AM_V_at) on a line that
+gl_V_at = $(AM_V_GEN)
 
 # Because this Makefile snippet defines a variable used by other
 # gnulib Makefile snippets, it must be present in all makefiles that
@@ -1663,57 +1688,53 @@ uninstall-am:
 
 
 @gl_GNULIB_ENABLED_dynarray_TRUE@malloc/dynarray.gl.h: malloc/dynarray.h
-@gl_GNULIB_ENABLED_dynarray_TRUE@	$(AM_V_at)$(MKDIR_P) malloc
-@gl_GNULIB_ENABLED_dynarray_TRUE@	$(AM_V_GEN)rm -f $@-t $@ && \
-@gl_GNULIB_ENABLED_dynarray_TRUE@	{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */'; \
-@gl_GNULIB_ENABLED_dynarray_TRUE@	  sed -e '/libc_hidden_proto/d' < $(srcdir)/malloc/dynarray.h; \
-@gl_GNULIB_ENABLED_dynarray_TRUE@	} > $@-t && \
-@gl_GNULIB_ENABLED_dynarray_TRUE@	mv $@-t $@
+@gl_GNULIB_ENABLED_dynarray_TRUE@	$(AM_V_GEN)$(MKDIR_P) 'malloc'
+@gl_GNULIB_ENABLED_dynarray_TRUE@	$(AM_V_at)$(SED_HEADER_STDOUT) \
+@gl_GNULIB_ENABLED_dynarray_TRUE@	  -e '/libc_hidden_proto/d' \
+@gl_GNULIB_ENABLED_dynarray_TRUE@	  $(srcdir)/malloc/dynarray.h > $@-t
+@gl_GNULIB_ENABLED_dynarray_TRUE@	$(AM_V_at)mv $@-t $@
 
 @gl_GNULIB_ENABLED_dynarray_TRUE@malloc/dynarray-skeleton.gl.h: malloc/dynarray-skeleton.c
-@gl_GNULIB_ENABLED_dynarray_TRUE@	$(AM_V_at)$(MKDIR_P) malloc
-@gl_GNULIB_ENABLED_dynarray_TRUE@	$(AM_V_GEN)rm -f $@-t $@ && \
-@gl_GNULIB_ENABLED_dynarray_TRUE@	{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */'; \
-@gl_GNULIB_ENABLED_dynarray_TRUE@	  sed -e 's|<malloc/dynarray\.h>|<malloc/dynarray.gl.h>|g' \
+@gl_GNULIB_ENABLED_dynarray_TRUE@	$(AM_V_GEN)$(MKDIR_P) 'malloc'
+@gl_GNULIB_ENABLED_dynarray_TRUE@	$(AM_V_at)$(SED_HEADER_STDOUT) \
+@gl_GNULIB_ENABLED_dynarray_TRUE@	      -e 's|<malloc/dynarray\.h>|<malloc/dynarray.gl.h>|g' \
 @gl_GNULIB_ENABLED_dynarray_TRUE@	      -e 's|__attribute_maybe_unused__|_GL_ATTRIBUTE_MAYBE_UNUSED|g' \
 @gl_GNULIB_ENABLED_dynarray_TRUE@	      -e 's|__attribute_nonnull__|_GL_ATTRIBUTE_NONNULL|g' \
 @gl_GNULIB_ENABLED_dynarray_TRUE@	      -e 's|__attribute_warn_unused_result__|_GL_ATTRIBUTE_NODISCARD|g' \
 @gl_GNULIB_ENABLED_dynarray_TRUE@	      -e 's|__glibc_likely|_GL_LIKELY|g' \
 @gl_GNULIB_ENABLED_dynarray_TRUE@	      -e 's|__glibc_unlikely|_GL_UNLIKELY|g' \
-@gl_GNULIB_ENABLED_dynarray_TRUE@	      < $(srcdir)/malloc/dynarray-skeleton.c; \
-@gl_GNULIB_ENABLED_dynarray_TRUE@	} > $@-t && \
-@gl_GNULIB_ENABLED_dynarray_TRUE@	mv $@-t $@
+@gl_GNULIB_ENABLED_dynarray_TRUE@	      $(srcdir)/malloc/dynarray-skeleton.c > $@-t
+@gl_GNULIB_ENABLED_dynarray_TRUE@	$(AM_V_at)mv $@-t $@
 
 # We need the following in order to create <getopt.h> when the system
 # doesn't have one that works with the given compiler.
-getopt.h: getopt.in.h $(top_builddir)/config.status $(ARG_NONNULL_H)
-	$(AM_V_GEN)rm -f $@-t $@ && \
-	{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */'; \
-	  sed -e 's|@''GUARD_PREFIX''@|GL|g' \
-	      -e 's|@''HAVE_GETOPT_H''@|$(HAVE_GETOPT_H)|g' \
-	      -e 's|@''INCLUDE_NEXT''@|$(INCLUDE_NEXT)|g' \
-	      -e 's|@''PRAGMA_SYSTEM_HEADER''@|@PRAGMA_SYSTEM_HEADER@|g' \
-	      -e 's|@''PRAGMA_COLUMNS''@|@PRAGMA_COLUMNS@|g' \
-	      -e 's|@''NEXT_GETOPT_H''@|$(NEXT_GETOPT_H)|g' \
-	      -e '/definition of _GL_ARG_NONNULL/r $(ARG_NONNULL_H)' \
-	      < $(srcdir)/getopt.in.h; \
-	} > $@-t && \
-	mv -f $@-t $@
+@GL_GENERATE_GETOPT_H_TRUE@getopt.h: getopt.in.h $(top_builddir)/config.status $(ARG_NONNULL_H)
+@GL_GENERATE_GETOPT_H_TRUE@	$(gl_V_at)$(SED_HEADER_STDOUT) \
+@GL_GENERATE_GETOPT_H_TRUE@	      -e 's|@''GUARD_PREFIX''@|GL|g' \
+@GL_GENERATE_GETOPT_H_TRUE@	      -e 's|@''HAVE_GETOPT_H''@|$(HAVE_GETOPT_H)|g' \
+@GL_GENERATE_GETOPT_H_TRUE@	      -e 's|@''INCLUDE_NEXT''@|$(INCLUDE_NEXT)|g' \
+@GL_GENERATE_GETOPT_H_TRUE@	      -e 's|@''PRAGMA_SYSTEM_HEADER''@|@PRAGMA_SYSTEM_HEADER@|g' \
+@GL_GENERATE_GETOPT_H_TRUE@	      -e 's|@''PRAGMA_COLUMNS''@|@PRAGMA_COLUMNS@|g' \
+@GL_GENERATE_GETOPT_H_TRUE@	      -e 's|@''NEXT_GETOPT_H''@|$(NEXT_GETOPT_H)|g' \
+@GL_GENERATE_GETOPT_H_TRUE@	      -e '/definition of _GL_ARG_NONNULL/r $(ARG_NONNULL_H)' \
+@GL_GENERATE_GETOPT_H_TRUE@	      $(srcdir)/getopt.in.h > $@-t
+@GL_GENERATE_GETOPT_H_TRUE@	$(AM_V_at)mv $@-t $@
+@GL_GENERATE_GETOPT_H_FALSE@getopt.h: $(top_builddir)/config.status
+@GL_GENERATE_GETOPT_H_FALSE@	rm -f $@
 
-getopt-cdefs.h: getopt-cdefs.in.h $(top_builddir)/config.status
-	$(AM_V_GEN)rm -f $@-t $@ && \
-	{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */'; \
-          sed -e 's|@''HAVE_SYS_CDEFS_H''@|$(HAVE_SYS_CDEFS_H)|g' \
-	      < $(srcdir)/getopt-cdefs.in.h; \
-	} > $@-t && \
-	mv -f $@-t $@
+@GL_GENERATE_GETOPT_CDEFS_H_TRUE@getopt-cdefs.h: getopt-cdefs.in.h $(top_builddir)/config.status
+@GL_GENERATE_GETOPT_CDEFS_H_TRUE@	$(AM_V_GEN)$(SED_HEADER_STDOUT) \
+@GL_GENERATE_GETOPT_CDEFS_H_TRUE@	  -e 's|@''HAVE_SYS_CDEFS_H''@|$(HAVE_SYS_CDEFS_H)|g' \
+@GL_GENERATE_GETOPT_CDEFS_H_TRUE@	  $(srcdir)/getopt-cdefs.in.h > $@-t
+@GL_GENERATE_GETOPT_CDEFS_H_TRUE@	$(AM_V_at)mv $@-t $@
+@GL_GENERATE_GETOPT_CDEFS_H_FALSE@getopt-cdefs.h: $(top_builddir)/config.status
+@GL_GENERATE_GETOPT_CDEFS_H_FALSE@	rm -f $@
 
 # We need the following in order to create <inttypes.h> when the system
 # doesn't have one that works with the given compiler.
 @gl_GNULIB_ENABLED_67241cf2e9b9409f43aeebaa5c55e7f2_TRUE@inttypes.h: inttypes.in.h $(top_builddir)/config.status $(CXXDEFS_H) $(WARN_ON_USE_H) $(ARG_NONNULL_H)
-@gl_GNULIB_ENABLED_67241cf2e9b9409f43aeebaa5c55e7f2_TRUE@	$(AM_V_GEN)rm -f $@-t $@ && \
-@gl_GNULIB_ENABLED_67241cf2e9b9409f43aeebaa5c55e7f2_TRUE@	{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */'; \
-@gl_GNULIB_ENABLED_67241cf2e9b9409f43aeebaa5c55e7f2_TRUE@	  sed -e 's/@''HAVE_INTTYPES_H''@/$(HAVE_INTTYPES_H)/g' \
+@gl_GNULIB_ENABLED_67241cf2e9b9409f43aeebaa5c55e7f2_TRUE@	$(gl_V_at)$(SED_HEADER_STDOUT) \
+@gl_GNULIB_ENABLED_67241cf2e9b9409f43aeebaa5c55e7f2_TRUE@	      -e 's/@''HAVE_INTTYPES_H''@/$(HAVE_INTTYPES_H)/g' \
 @gl_GNULIB_ENABLED_67241cf2e9b9409f43aeebaa5c55e7f2_TRUE@	      -e 's|@''INCLUDE_NEXT''@|$(INCLUDE_NEXT)|g' \
 @gl_GNULIB_ENABLED_67241cf2e9b9409f43aeebaa5c55e7f2_TRUE@	      -e 's|@''PRAGMA_SYSTEM_HEADER''@|@PRAGMA_SYSTEM_HEADER@|g' \
 @gl_GNULIB_ENABLED_67241cf2e9b9409f43aeebaa5c55e7f2_TRUE@	      -e 's|@''PRAGMA_COLUMNS''@|@PRAGMA_COLUMNS@|g' \
@@ -1738,16 +1759,14 @@ getopt-cdefs.h: getopt-cdefs.in.h $(top_builddir)/config.status
 @gl_GNULIB_ENABLED_67241cf2e9b9409f43aeebaa5c55e7f2_TRUE@	      -e '/definitions of _GL_FUNCDECL_RPL/r $(CXXDEFS_H)' \
 @gl_GNULIB_ENABLED_67241cf2e9b9409f43aeebaa5c55e7f2_TRUE@	      -e '/definition of _GL_ARG_NONNULL/r $(ARG_NONNULL_H)' \
 @gl_GNULIB_ENABLED_67241cf2e9b9409f43aeebaa5c55e7f2_TRUE@	      -e '/definition of _GL_WARN_ON_USE/r $(WARN_ON_USE_H)' \
-@gl_GNULIB_ENABLED_67241cf2e9b9409f43aeebaa5c55e7f2_TRUE@	      < $(srcdir)/inttypes.in.h; \
-@gl_GNULIB_ENABLED_67241cf2e9b9409f43aeebaa5c55e7f2_TRUE@	} > $@-t && \
-@gl_GNULIB_ENABLED_67241cf2e9b9409f43aeebaa5c55e7f2_TRUE@	mv $@-t $@
+@gl_GNULIB_ENABLED_67241cf2e9b9409f43aeebaa5c55e7f2_TRUE@	      $(srcdir)/inttypes.in.h > $@-t
+@gl_GNULIB_ENABLED_67241cf2e9b9409f43aeebaa5c55e7f2_TRUE@	$(AM_V_at)mv $@-t $@
 
 # We need the following in order to create an empty placeholder for
 # <langinfo.h> when the system doesn't have one.
 @gl_GNULIB_ENABLED_langinfo_TRUE@langinfo.h: langinfo.in.h $(top_builddir)/config.status $(CXXDEFS_H) $(WARN_ON_USE_H)
-@gl_GNULIB_ENABLED_langinfo_TRUE@	$(AM_V_GEN)rm -f $@-t $@ && \
-@gl_GNULIB_ENABLED_langinfo_TRUE@	{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */'; \
-@gl_GNULIB_ENABLED_langinfo_TRUE@	  sed -e 's|@''GUARD_PREFIX''@|GL|g' \
+@gl_GNULIB_ENABLED_langinfo_TRUE@	$(gl_V_at)$(SED_HEADER_STDOUT) \
+@gl_GNULIB_ENABLED_langinfo_TRUE@	      -e 's|@''GUARD_PREFIX''@|GL|g' \
 @gl_GNULIB_ENABLED_langinfo_TRUE@	      -e 's|@''HAVE_LANGINFO_H''@|$(HAVE_LANGINFO_H)|g' \
 @gl_GNULIB_ENABLED_langinfo_TRUE@	      -e 's|@''INCLUDE_NEXT''@|$(INCLUDE_NEXT)|g' \
 @gl_GNULIB_ENABLED_langinfo_TRUE@	      -e 's|@''PRAGMA_SYSTEM_HEADER''@|@PRAGMA_SYSTEM_HEADER@|g' \
@@ -1763,32 +1782,28 @@ getopt-cdefs.h: getopt-cdefs.in.h $(top_builddir)/config.status
 @gl_GNULIB_ENABLED_langinfo_TRUE@	      -e 's|@''REPLACE_NL_LANGINFO''@|$(REPLACE_NL_LANGINFO)|g' \
 @gl_GNULIB_ENABLED_langinfo_TRUE@	      -e '/definitions of _GL_FUNCDECL_RPL/r $(CXXDEFS_H)' \
 @gl_GNULIB_ENABLED_langinfo_TRUE@	      -e '/definition of _GL_WARN_ON_USE/r $(WARN_ON_USE_H)' \
-@gl_GNULIB_ENABLED_langinfo_TRUE@	      < $(srcdir)/langinfo.in.h; \
-@gl_GNULIB_ENABLED_langinfo_TRUE@	} > $@-t && \
-@gl_GNULIB_ENABLED_langinfo_TRUE@	mv $@-t $@
+@gl_GNULIB_ENABLED_langinfo_TRUE@	      $(srcdir)/langinfo.in.h > $@-t
+@gl_GNULIB_ENABLED_langinfo_TRUE@	$(AM_V_at)mv $@-t $@
 
 # We need the following in order to create <limits.h> when the system
 # doesn't have one that is compatible with GNU.
 @GL_GENERATE_LIMITS_H_TRUE@limits.h: limits.in.h $(top_builddir)/config.status
-@GL_GENERATE_LIMITS_H_TRUE@	$(AM_V_GEN)rm -f $@-t $@ && \
-@GL_GENERATE_LIMITS_H_TRUE@	{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */' && \
-@GL_GENERATE_LIMITS_H_TRUE@	  sed -e 's|@''GUARD_PREFIX''@|GL|g' \
+@GL_GENERATE_LIMITS_H_TRUE@	$(gl_V_at)$(SED_HEADER_STDOUT) \
+@GL_GENERATE_LIMITS_H_TRUE@	      -e 's|@''GUARD_PREFIX''@|GL|g' \
 @GL_GENERATE_LIMITS_H_TRUE@	      -e 's|@''INCLUDE_NEXT''@|$(INCLUDE_NEXT)|g' \
 @GL_GENERATE_LIMITS_H_TRUE@	      -e 's|@''PRAGMA_SYSTEM_HEADER''@|@PRAGMA_SYSTEM_HEADER@|g' \
 @GL_GENERATE_LIMITS_H_TRUE@	      -e 's|@''PRAGMA_COLUMNS''@|@PRAGMA_COLUMNS@|g' \
 @GL_GENERATE_LIMITS_H_TRUE@	      -e 's|@''NEXT_LIMITS_H''@|$(NEXT_LIMITS_H)|g' \
-@GL_GENERATE_LIMITS_H_TRUE@	      < $(srcdir)/limits.in.h; \
-@GL_GENERATE_LIMITS_H_TRUE@	} > $@-t && \
-@GL_GENERATE_LIMITS_H_TRUE@	mv $@-t $@
+@GL_GENERATE_LIMITS_H_TRUE@	      $(srcdir)/limits.in.h > $@-t
+@GL_GENERATE_LIMITS_H_TRUE@	$(AM_V_at)mv $@-t $@
 @GL_GENERATE_LIMITS_H_FALSE@limits.h: $(top_builddir)/config.status
 @GL_GENERATE_LIMITS_H_FALSE@	rm -f $@
 
 # We need the following in order to create <locale.h> when the system
 # doesn't have one that provides all definitions.
 @gl_GNULIB_ENABLED_locale_TRUE@locale.h: locale.in.h $(top_builddir)/config.status $(CXXDEFS_H) $(ARG_NONNULL_H) $(WARN_ON_USE_H)
-@gl_GNULIB_ENABLED_locale_TRUE@	$(AM_V_GEN)rm -f $@-t $@ && \
-@gl_GNULIB_ENABLED_locale_TRUE@	{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */' && \
-@gl_GNULIB_ENABLED_locale_TRUE@	  sed -e 's|@''GUARD_PREFIX''@|GL|g' \
+@gl_GNULIB_ENABLED_locale_TRUE@	$(gl_V_at)$(SED_HEADER_STDOUT) \
+@gl_GNULIB_ENABLED_locale_TRUE@	      -e 's|@''GUARD_PREFIX''@|GL|g' \
 @gl_GNULIB_ENABLED_locale_TRUE@	      -e 's|@''INCLUDE_NEXT''@|$(INCLUDE_NEXT)|g' \
 @gl_GNULIB_ENABLED_locale_TRUE@	      -e 's|@''PRAGMA_SYSTEM_HEADER''@|@PRAGMA_SYSTEM_HEADER@|g' \
 @gl_GNULIB_ENABLED_locale_TRUE@	      -e 's|@''PRAGMA_COLUMNS''@|@PRAGMA_COLUMNS@|g' \
@@ -1812,29 +1827,32 @@ getopt-cdefs.h: getopt-cdefs.in.h $(top_builddir)/config.status
 @gl_GNULIB_ENABLED_locale_TRUE@	      -e '/definitions of _GL_FUNCDECL_RPL/r $(CXXDEFS_H)' \
 @gl_GNULIB_ENABLED_locale_TRUE@	      -e '/definition of _GL_ARG_NONNULL/r $(ARG_NONNULL_H)' \
 @gl_GNULIB_ENABLED_locale_TRUE@	      -e '/definition of _GL_WARN_ON_USE/r $(WARN_ON_USE_H)' \
-@gl_GNULIB_ENABLED_locale_TRUE@	      < $(srcdir)/locale.in.h; \
-@gl_GNULIB_ENABLED_locale_TRUE@	} > $@-t && \
-@gl_GNULIB_ENABLED_locale_TRUE@	mv $@-t $@
+@gl_GNULIB_ENABLED_locale_TRUE@	      $(srcdir)/locale.in.h > $@-t
+@gl_GNULIB_ENABLED_locale_TRUE@	$(AM_V_at)mv $@-t $@
 @LIBADD_REGEX_TRUE@regex.h: regex.h.in
-@LIBADD_REGEX_TRUE@	$(LN_S) $(top_srcdir)/lib/$@.in $@
+@LIBADD_REGEX_TRUE@	$(LN_S) -f $@.in $@
+
+@LIBADD_REGEX_TRUE@dynarray.h: dynarray.h.in
+@LIBADD_REGEX_TRUE@	$(LN_S) -f $@.in $@
+
+@LIBADD_REGEX_TRUE@malloc/dynarray.h: malloc/dynarray.h.in
+@LIBADD_REGEX_TRUE@	$(LN_S) -f dynarray.h.in malloc/dynarray.h
 
 # We need the following in order to create <stdbool.h> when the system
 # doesn't have one that works.
 @GL_GENERATE_STDBOOL_H_TRUE@stdbool.h: stdbool.in.h $(top_builddir)/config.status
-@GL_GENERATE_STDBOOL_H_TRUE@	$(AM_V_GEN)rm -f $@-t $@ && \
-@GL_GENERATE_STDBOOL_H_TRUE@	{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */'; \
-@GL_GENERATE_STDBOOL_H_TRUE@	  sed -e 's/@''HAVE__BOOL''@/$(HAVE__BOOL)/g' < $(srcdir)/stdbool.in.h; \
-@GL_GENERATE_STDBOOL_H_TRUE@	} > $@-t && \
-@GL_GENERATE_STDBOOL_H_TRUE@	mv $@-t $@
+@GL_GENERATE_STDBOOL_H_TRUE@	$(gl_V_at)$(SED_HEADER_STDOUT) \
+@GL_GENERATE_STDBOOL_H_TRUE@	  -e 's/@''HAVE__BOOL''@/$(HAVE__BOOL)/g' \
+@GL_GENERATE_STDBOOL_H_TRUE@	  $(srcdir)/stdbool.in.h > $@-t
+@GL_GENERATE_STDBOOL_H_TRUE@	$(AM_V_at)mv $@-t $@
 @GL_GENERATE_STDBOOL_H_FALSE@stdbool.h: $(top_builddir)/config.status
 @GL_GENERATE_STDBOOL_H_FALSE@	rm -f $@
 
 # We need the following in order to create <stddef.h> when the system
 # doesn't have one that works with the given compiler.
 @GL_GENERATE_STDDEF_H_TRUE@stddef.h: stddef.in.h $(top_builddir)/config.status
-@GL_GENERATE_STDDEF_H_TRUE@	$(AM_V_GEN)rm -f $@-t $@ && \
-@GL_GENERATE_STDDEF_H_TRUE@	{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */' && \
-@GL_GENERATE_STDDEF_H_TRUE@	  sed -e 's|@''GUARD_PREFIX''@|GL|g' \
+@GL_GENERATE_STDDEF_H_TRUE@	$(gl_V_at)$(SED_HEADER_STDOUT) \
+@GL_GENERATE_STDDEF_H_TRUE@	      -e 's|@''GUARD_PREFIX''@|GL|g' \
 @GL_GENERATE_STDDEF_H_TRUE@	      -e 's|@''INCLUDE_NEXT''@|$(INCLUDE_NEXT)|g' \
 @GL_GENERATE_STDDEF_H_TRUE@	      -e 's|@''PRAGMA_SYSTEM_HEADER''@|@PRAGMA_SYSTEM_HEADER@|g' \
 @GL_GENERATE_STDDEF_H_TRUE@	      -e 's|@''PRAGMA_COLUMNS''@|@PRAGMA_COLUMNS@|g' \
@@ -1842,18 +1860,16 @@ getopt-cdefs.h: getopt-cdefs.in.h $(top_builddir)/config.status
 @GL_GENERATE_STDDEF_H_TRUE@	      -e 's|@''HAVE_MAX_ALIGN_T''@|$(HAVE_MAX_ALIGN_T)|g' \
 @GL_GENERATE_STDDEF_H_TRUE@	      -e 's|@''HAVE_WCHAR_T''@|$(HAVE_WCHAR_T)|g' \
 @GL_GENERATE_STDDEF_H_TRUE@	      -e 's|@''REPLACE_NULL''@|$(REPLACE_NULL)|g' \
-@GL_GENERATE_STDDEF_H_TRUE@	      < $(srcdir)/stddef.in.h; \
-@GL_GENERATE_STDDEF_H_TRUE@	} > $@-t && \
-@GL_GENERATE_STDDEF_H_TRUE@	mv $@-t $@
+@GL_GENERATE_STDDEF_H_TRUE@	      $(srcdir)/stddef.in.h > $@-t
+@GL_GENERATE_STDDEF_H_TRUE@	$(AM_V_at)mv $@-t $@
 @GL_GENERATE_STDDEF_H_FALSE@stddef.h: $(top_builddir)/config.status
 @GL_GENERATE_STDDEF_H_FALSE@	rm -f $@
 
 # We need the following in order to create <stdint.h> when the system
 # doesn't have one that works with the given compiler.
 @GL_GENERATE_STDINT_H_TRUE@stdint.h: stdint.in.h $(top_builddir)/config.status
-@GL_GENERATE_STDINT_H_TRUE@	$(AM_V_GEN)rm -f $@-t $@ && \
-@GL_GENERATE_STDINT_H_TRUE@	{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */'; \
-@GL_GENERATE_STDINT_H_TRUE@	  sed -e 's|@''GUARD_PREFIX''@|GL|g' \
+@GL_GENERATE_STDINT_H_TRUE@	$(gl_V_at)$(SED_HEADER_STDOUT) \
+@GL_GENERATE_STDINT_H_TRUE@	      -e 's|@''GUARD_PREFIX''@|GL|g' \
 @GL_GENERATE_STDINT_H_TRUE@	      -e 's/@''HAVE_STDINT_H''@/$(HAVE_STDINT_H)/g' \
 @GL_GENERATE_STDINT_H_TRUE@	      -e 's|@''INCLUDE_NEXT''@|$(INCLUDE_NEXT)|g' \
 @GL_GENERATE_STDINT_H_TRUE@	      -e 's|@''PRAGMA_SYSTEM_HEADER''@|@PRAGMA_SYSTEM_HEADER@|g' \
@@ -1880,9 +1896,8 @@ getopt-cdefs.h: getopt-cdefs.in.h $(top_builddir)/config.status
 @GL_GENERATE_STDINT_H_TRUE@	      -e 's/@''HAVE_SIGNED_WINT_T''@/$(HAVE_SIGNED_WINT_T)/g' \
 @GL_GENERATE_STDINT_H_TRUE@	      -e 's/@''WINT_T_SUFFIX''@/$(WINT_T_SUFFIX)/g' \
 @GL_GENERATE_STDINT_H_TRUE@	      -e 's/@''GNULIBHEADERS_OVERRIDE_WINT_T''@/$(GNULIBHEADERS_OVERRIDE_WINT_T)/g' \
-@GL_GENERATE_STDINT_H_TRUE@	      < $(srcdir)/stdint.in.h; \
-@GL_GENERATE_STDINT_H_TRUE@	} > $@-t && \
-@GL_GENERATE_STDINT_H_TRUE@	mv $@-t $@
+@GL_GENERATE_STDINT_H_TRUE@	      $(srcdir)/stdint.in.h > $@-t
+@GL_GENERATE_STDINT_H_TRUE@	$(AM_V_at)mv $@-t $@
 @GL_GENERATE_STDINT_H_FALSE@stdint.h: $(top_builddir)/config.status
 @GL_GENERATE_STDINT_H_FALSE@	rm -f $@
 
@@ -1890,9 +1905,8 @@ getopt-cdefs.h: getopt-cdefs.in.h $(top_builddir)/config.status
 # doesn't have one that works with the given compiler.
 @gl_GNULIB_ENABLED_stdlib_TRUE@stdlib.h: stdlib.in.h $(top_builddir)/config.status $(CXXDEFS_H) \
 @gl_GNULIB_ENABLED_stdlib_TRUE@  $(_NORETURN_H) $(ARG_NONNULL_H) $(WARN_ON_USE_H)
-@gl_GNULIB_ENABLED_stdlib_TRUE@	$(AM_V_GEN)rm -f $@-t $@ && \
-@gl_GNULIB_ENABLED_stdlib_TRUE@	{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */' && \
-@gl_GNULIB_ENABLED_stdlib_TRUE@	  sed -e 's|@''GUARD_PREFIX''@|GL|g' \
+@gl_GNULIB_ENABLED_stdlib_TRUE@	$(gl_V_at)$(SED_HEADER_STDOUT) \
+@gl_GNULIB_ENABLED_stdlib_TRUE@	      -e 's|@''GUARD_PREFIX''@|GL|g' \
 @gl_GNULIB_ENABLED_stdlib_TRUE@	      -e 's|@''INCLUDE_NEXT''@|$(INCLUDE_NEXT)|g' \
 @gl_GNULIB_ENABLED_stdlib_TRUE@	      -e 's|@''PRAGMA_SYSTEM_HEADER''@|@PRAGMA_SYSTEM_HEADER@|g' \
 @gl_GNULIB_ENABLED_stdlib_TRUE@	      -e 's|@''PRAGMA_COLUMNS''@|@PRAGMA_COLUMNS@|g' \
@@ -2017,33 +2031,30 @@ getopt-cdefs.h: getopt-cdefs.in.h $(top_builddir)/config.status
 @gl_GNULIB_ENABLED_stdlib_TRUE@	      -e '/definitions of _GL_FUNCDECL_RPL/r $(CXXDEFS_H)' \
 @gl_GNULIB_ENABLED_stdlib_TRUE@	      -e '/definition of _Noreturn/r $(_NORETURN_H)' \
 @gl_GNULIB_ENABLED_stdlib_TRUE@	      -e '/definition of _GL_ARG_NONNULL/r $(ARG_NONNULL_H)' \
-@gl_GNULIB_ENABLED_stdlib_TRUE@	      -e '/definition of _GL_WARN_ON_USE/r $(WARN_ON_USE_H)'; \
-@gl_GNULIB_ENABLED_stdlib_TRUE@	} > $@-t && \
-@gl_GNULIB_ENABLED_stdlib_TRUE@	mv $@-t $@
+@gl_GNULIB_ENABLED_stdlib_TRUE@	      -e '/definition of _GL_WARN_ON_USE/r $(WARN_ON_USE_H)' \
+@gl_GNULIB_ENABLED_stdlib_TRUE@	      > $@-t
+@gl_GNULIB_ENABLED_stdlib_TRUE@	$(AM_V_at)mv $@-t $@
 
 # We need the following in order to create <sys/types.h> when the system
 # doesn't have one that works with the given compiler.
 sys/types.h: sys_types.in.h $(top_builddir)/config.status
-	$(AM_V_at)$(MKDIR_P) sys
-	$(AM_V_GEN)rm -f $@-t $@ && \
-	{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */'; \
-	  sed -e 's|@''GUARD_PREFIX''@|GL|g' \
+	$(AM_V_GEN)$(MKDIR_P) 'sys'
+	$(AM_V_at)$(SED_HEADER_STDOUT) \
+	      -e 's|@''GUARD_PREFIX''@|GL|g' \
 	      -e 's|@''INCLUDE_NEXT''@|$(INCLUDE_NEXT)|g' \
 	      -e 's|@''PRAGMA_SYSTEM_HEADER''@|@PRAGMA_SYSTEM_HEADER@|g' \
 	      -e 's|@''PRAGMA_COLUMNS''@|@PRAGMA_COLUMNS@|g' \
 	      -e 's|@''NEXT_SYS_TYPES_H''@|$(NEXT_SYS_TYPES_H)|g' \
 	      -e 's|@''WINDOWS_64_BIT_OFF_T''@|$(WINDOWS_64_BIT_OFF_T)|g' \
 	      -e 's|@''WINDOWS_STAT_INODES''@|$(WINDOWS_STAT_INODES)|g' \
-	      < $(srcdir)/sys_types.in.h; \
-	} > $@-t && \
-	mv $@-t $@
+	      $(srcdir)/sys_types.in.h > $@-t
+	$(AM_V_at)mv $@-t $@
 
 # We need the following in order to create an empty placeholder for
 # <unistd.h> when the system doesn't have one.
 unistd.h: unistd.in.h $(top_builddir)/config.status $(CXXDEFS_H) $(ARG_NONNULL_H) $(WARN_ON_USE_H)
-	$(AM_V_GEN)rm -f $@-t $@ && \
-	{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */'; \
-	  sed -e 's|@''GUARD_PREFIX''@|GL|g' \
+	$(gl_V_at)$(SED_HEADER_STDOUT) \
+	      -e 's|@''GUARD_PREFIX''@|GL|g' \
 	      -e 's|@''HAVE_UNISTD_H''@|$(HAVE_UNISTD_H)|g' \
 	      -e 's|@''INCLUDE_NEXT''@|$(INCLUDE_NEXT)|g' \
 	      -e 's|@''PRAGMA_SYSTEM_HEADER''@|@PRAGMA_SYSTEM_HEADER@|g' \
@@ -2229,16 +2240,15 @@ unistd.h: unistd.in.h $(top_builddir)/config.status $(CXXDEFS_H) $(ARG_NONNULL_H
 	      -e 's|@''UNISTD_H_HAVE_WINSOCK2_H_AND_USE_SOCKETS''@|$(UNISTD_H_HAVE_WINSOCK2_H_AND_USE_SOCKETS)|g' \
 	      -e '/definitions of _GL_FUNCDECL_RPL/r $(CXXDEFS_H)' \
 	      -e '/definition of _GL_ARG_NONNULL/r $(ARG_NONNULL_H)' \
-	      -e '/definition of _GL_WARN_ON_USE/r $(WARN_ON_USE_H)'; \
-	} > $@-t && \
-	mv $@-t $@
+	      -e '/definition of _GL_WARN_ON_USE/r $(WARN_ON_USE_H)' \
+	      > $@-t
+	$(AM_V_at)mv $@-t $@
 
 # We need the following in order to create <wchar.h> when the system
 # version does not work standalone.
 @gl_GNULIB_ENABLED_wchar_TRUE@wchar.h: wchar.in.h $(top_builddir)/config.status $(CXXDEFS_H) $(ARG_NONNULL_H) $(WARN_ON_USE_H)
-@gl_GNULIB_ENABLED_wchar_TRUE@	$(AM_V_GEN)rm -f $@-t $@ && \
-@gl_GNULIB_ENABLED_wchar_TRUE@	{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */'; \
-@gl_GNULIB_ENABLED_wchar_TRUE@	  sed -e 's|@''GUARD_PREFIX''@|GL|g' \
+@gl_GNULIB_ENABLED_wchar_TRUE@	$(gl_V_at)$(SED_HEADER_STDOUT) \
+@gl_GNULIB_ENABLED_wchar_TRUE@	      -e 's|@''GUARD_PREFIX''@|GL|g' \
 @gl_GNULIB_ENABLED_wchar_TRUE@	      -e 's|@''INCLUDE_NEXT''@|$(INCLUDE_NEXT)|g' \
 @gl_GNULIB_ENABLED_wchar_TRUE@	      -e 's|@''PRAGMA_SYSTEM_HEADER''@|@PRAGMA_SYSTEM_HEADER@|g' \
 @gl_GNULIB_ENABLED_wchar_TRUE@	      -e 's|@''PRAGMA_COLUMNS''@|@PRAGMA_COLUMNS@|g' \
@@ -2289,6 +2299,7 @@ unistd.h: unistd.in.h $(top_builddir)/config.status $(CXXDEFS_H) $(ARG_NONNULL_H
 @gl_GNULIB_ENABLED_wchar_TRUE@	      -e 's/@''GNULIB_WCSWIDTH''@/$(GL_GNULIB_WCSWIDTH)/g' \
 @gl_GNULIB_ENABLED_wchar_TRUE@	      -e 's/@''GNULIB_WCSFTIME''@/$(GL_GNULIB_WCSFTIME)/g' \
 @gl_GNULIB_ENABLED_wchar_TRUE@	      -e 's/@''GNULIB_MDA_WCSDUP''@/$(GL_GNULIB_MDA_WCSDUP)/g' \
+@gl_GNULIB_ENABLED_wchar_TRUE@	      -e 's/@''GNULIB_FREE_POSIX''@/$(GL_GNULIB_FREE_POSIX)/g' \
 @gl_GNULIB_ENABLED_wchar_TRUE@	      < $(srcdir)/wchar.in.h | \
 @gl_GNULIB_ENABLED_wchar_TRUE@	  sed -e 's|@''HAVE_WINT_T''@|$(HAVE_WINT_T)|g' \
 @gl_GNULIB_ENABLED_wchar_TRUE@	      -e 's|@''HAVE_BTOWC''@|$(HAVE_BTOWC)|g' \
@@ -2337,6 +2348,7 @@ unistd.h: unistd.in.h $(top_builddir)/config.status $(CXXDEFS_H) $(ARG_NONNULL_H
 @gl_GNULIB_ENABLED_wchar_TRUE@	  sed -e 's|@''REPLACE_MBSTATE_T''@|$(REPLACE_MBSTATE_T)|g' \
 @gl_GNULIB_ENABLED_wchar_TRUE@	      -e 's|@''REPLACE_BTOWC''@|$(REPLACE_BTOWC)|g' \
 @gl_GNULIB_ENABLED_wchar_TRUE@	      -e 's|@''REPLACE_WCTOB''@|$(REPLACE_WCTOB)|g' \
+@gl_GNULIB_ENABLED_wchar_TRUE@	      -e 's|@''REPLACE_FREE''@|$(REPLACE_FREE)|g' \
 @gl_GNULIB_ENABLED_wchar_TRUE@	      -e 's|@''REPLACE_MBSINIT''@|$(REPLACE_MBSINIT)|g' \
 @gl_GNULIB_ENABLED_wchar_TRUE@	      -e 's|@''REPLACE_MBRTOWC''@|$(REPLACE_MBRTOWC)|g' \
 @gl_GNULIB_ENABLED_wchar_TRUE@	      -e 's|@''REPLACE_MBRLEN''@|$(REPLACE_MBRLEN)|g' \
@@ -2351,16 +2363,15 @@ unistd.h: unistd.in.h $(top_builddir)/config.status $(CXXDEFS_H) $(ARG_NONNULL_H
 @gl_GNULIB_ENABLED_wchar_TRUE@	      -e 's|@''REPLACE_WCSTOK''@|$(REPLACE_WCSTOK)|g' \
 @gl_GNULIB_ENABLED_wchar_TRUE@	      -e '/definitions of _GL_FUNCDECL_RPL/r $(CXXDEFS_H)' \
 @gl_GNULIB_ENABLED_wchar_TRUE@	      -e '/definition of _GL_ARG_NONNULL/r $(ARG_NONNULL_H)' \
-@gl_GNULIB_ENABLED_wchar_TRUE@	      -e '/definition of _GL_WARN_ON_USE/r $(WARN_ON_USE_H)'; \
-@gl_GNULIB_ENABLED_wchar_TRUE@	} > $@-t && \
-@gl_GNULIB_ENABLED_wchar_TRUE@	mv $@-t $@
+@gl_GNULIB_ENABLED_wchar_TRUE@	      -e '/definition of _GL_WARN_ON_USE/r $(WARN_ON_USE_H)' \
+@gl_GNULIB_ENABLED_wchar_TRUE@	      > $@-t
+@gl_GNULIB_ENABLED_wchar_TRUE@	$(AM_V_at)mv $@-t $@
 
 # We need the following in order to create <wctype.h> when the system
 # doesn't have one that works with the given compiler.
 @gl_GNULIB_ENABLED_3dcce957eadc896e63ab5f137947b410_TRUE@wctype.h: wctype.in.h $(top_builddir)/config.status $(CXXDEFS_H) $(WARN_ON_USE_H)
-@gl_GNULIB_ENABLED_3dcce957eadc896e63ab5f137947b410_TRUE@	$(AM_V_GEN)rm -f $@-t $@ && \
-@gl_GNULIB_ENABLED_3dcce957eadc896e63ab5f137947b410_TRUE@	{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */'; \
-@gl_GNULIB_ENABLED_3dcce957eadc896e63ab5f137947b410_TRUE@	  sed -e 's|@''GUARD_PREFIX''@|GL|g' \
+@gl_GNULIB_ENABLED_3dcce957eadc896e63ab5f137947b410_TRUE@	$(gl_V_at)$(SED_HEADER_STDOUT) \
+@gl_GNULIB_ENABLED_3dcce957eadc896e63ab5f137947b410_TRUE@	      -e 's|@''GUARD_PREFIX''@|GL|g' \
 @gl_GNULIB_ENABLED_3dcce957eadc896e63ab5f137947b410_TRUE@	      -e 's/@''HAVE_WCTYPE_H''@/$(HAVE_WCTYPE_H)/g' \
 @gl_GNULIB_ENABLED_3dcce957eadc896e63ab5f137947b410_TRUE@	      -e 's|@''INCLUDE_NEXT''@|$(INCLUDE_NEXT)|g' \
 @gl_GNULIB_ENABLED_3dcce957eadc896e63ab5f137947b410_TRUE@	      -e 's|@''PRAGMA_SYSTEM_HEADER''@|@PRAGMA_SYSTEM_HEADER@|g' \
@@ -2387,9 +2398,8 @@ unistd.h: unistd.in.h $(top_builddir)/config.status $(CXXDEFS_H) $(ARG_NONNULL_H
 @gl_GNULIB_ENABLED_3dcce957eadc896e63ab5f137947b410_TRUE@	      -e 's/@''REPLACE_TOWLOWER''@/$(REPLACE_TOWLOWER)/g' \
 @gl_GNULIB_ENABLED_3dcce957eadc896e63ab5f137947b410_TRUE@	      -e '/definitions of _GL_FUNCDECL_RPL/r $(CXXDEFS_H)' \
 @gl_GNULIB_ENABLED_3dcce957eadc896e63ab5f137947b410_TRUE@	      -e '/definition of _GL_WARN_ON_USE/r $(WARN_ON_USE_H)' \
-@gl_GNULIB_ENABLED_3dcce957eadc896e63ab5f137947b410_TRUE@	      < $(srcdir)/wctype.in.h; \
-@gl_GNULIB_ENABLED_3dcce957eadc896e63ab5f137947b410_TRUE@	} > $@-t && \
-@gl_GNULIB_ENABLED_3dcce957eadc896e63ab5f137947b410_TRUE@	mv $@-t $@
+@gl_GNULIB_ENABLED_3dcce957eadc896e63ab5f137947b410_TRUE@	      $(srcdir)/wctype.in.h > $@-t
+@gl_GNULIB_ENABLED_3dcce957eadc896e63ab5f137947b410_TRUE@	$(AM_V_at)mv $@-t $@
 
 mostlyclean-local: mostlyclean-generic
 	@for dir in '' $(MOSTLYCLEANDIRS); do \

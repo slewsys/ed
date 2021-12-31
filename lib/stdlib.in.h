@@ -99,6 +99,35 @@ struct random_data
 # include <unistd.h>
 #endif
 
+/* _GL_ATTRIBUTE_DEALLOC (F, I) declares that the function returns pointers
+   that can be freed by passing them as the Ith argument to the
+   function F.  */
+#ifndef _GL_ATTRIBUTE_DEALLOC
+# if __GNUC__ >= 11
+#  define _GL_ATTRIBUTE_DEALLOC(f, i) __attribute__ ((__malloc__ (f, i)))
+# else
+#  define _GL_ATTRIBUTE_DEALLOC(f, i)
+# endif
+#endif
+
+/* _GL_ATTRIBUTE_DEALLOC_FREE declares that the function returns pointers that
+   can be freed via 'free'; it can be used only after declaring 'free'.  */
+/* Applies to: functions.  Cannot be used on inline functions.  */
+#ifndef _GL_ATTRIBUTE_DEALLOC_FREE
+# define _GL_ATTRIBUTE_DEALLOC_FREE _GL_ATTRIBUTE_DEALLOC (free, 1)
+#endif
+
+/* _GL_ATTRIBUTE_MALLOC declares that the function returns a pointer to freshly
+   allocated memory.  */
+/* Applies to: functions.  */
+#ifndef _GL_ATTRIBUTE_MALLOC
+# if __GNUC__ >= 3 || defined __clang__
+#  define _GL_ATTRIBUTE_MALLOC __attribute__ ((__malloc__))
+# else
+#  define _GL_ATTRIBUTE_MALLOC
+# endif
+#endif
+
 /* The __attribute__ feature is available in gcc versions 2.5 and later.
    The attribute __pure__ was added in gcc 2.96.  */
 #ifndef _GL_ATTRIBUTE_PURE
@@ -799,29 +828,35 @@ _GL_CXXALIASWARN (putenv);
 /* Sort an array of NMEMB elements, starting at address BASE, each element
    occupying SIZE bytes, in ascending order according to the comparison
    function COMPARE.  */
+# ifdef __cplusplus
+extern "C" {
+# endif
+# if !GNULIB_defined_qsort_r_fn_types
+typedef int (*_gl_qsort_r_compar_fn) (void const *, void const *, void *);
+#  define GNULIB_defined_qsort_r_fn_types 1
+# endif
+# ifdef __cplusplus
+}
+# endif
 # if @REPLACE_QSORT_R@
 #  if !(defined __cplusplus && defined GNULIB_NAMESPACE)
 #   undef qsort_r
 #   define qsort_r rpl_qsort_r
 #  endif
 _GL_FUNCDECL_RPL (qsort_r, void, (void *base, size_t nmemb, size_t size,
-                                  int (*compare) (void const *, void const *,
-                                                  void *),
+                                  _gl_qsort_r_compar_fn compare,
                                   void *arg) _GL_ARG_NONNULL ((1, 4)));
 _GL_CXXALIAS_RPL (qsort_r, void, (void *base, size_t nmemb, size_t size,
-                                  int (*compare) (void const *, void const *,
-                                                  void *),
+                                  _gl_qsort_r_compar_fn compare,
                                   void *arg));
 # else
 #  if !@HAVE_QSORT_R@
 _GL_FUNCDECL_SYS (qsort_r, void, (void *base, size_t nmemb, size_t size,
-                                  int (*compare) (void const *, void const *,
-                                                  void *),
+                                  _gl_qsort_r_compar_fn compare,
                                   void *arg) _GL_ARG_NONNULL ((1, 4)));
 #  endif
 _GL_CXXALIAS_SYS (qsort_r, void, (void *base, size_t nmemb, size_t size,
-                                  int (*compare) (void const *, void const *,
-                                                  void *),
+                                  _gl_qsort_r_compar_fn compare,
                                   void *arg));
 # endif
 _GL_CXXALIASWARN (qsort_r);

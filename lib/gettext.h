@@ -1,13 +1,13 @@
 /* Convenience header for conditional use of GNU <libintl.h>.
-   Copyright (C) 1995-1998, 2000-2002, 2004-2006, 2009-2021 Free Software
+   Copyright (C) 1995-1998, 2000-2002, 2004-2006, 2009-2020 Free Software
    Foundation, Inc.
 
-   This file is free software: you can redistribute it and/or modify
-   it under the terms of the GNU Lesser General Public License as
-   published by the Free Software Foundation; either version 2.1 of the
-   License, or (at your option) any later version.
+   This program is free software: you can redistribute it and/or modify
+   it under the terms of the GNU Lesser General Public License as published by
+   the Free Software Foundation; either version 2.1 of the License, or
+   (at your option) any later version.
 
-   This file is distributed in the hope that it will be useful,
+   This program is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU Lesser General Public License for more details.
@@ -192,8 +192,8 @@ npgettext_aux (const char *domain,
 
 #if (!defined GNULIB_NO_VLA \
      && (((__GNUC__ >= 3 || __GNUG__ >= 2) && !defined __STRICT_ANSI__) \
-     /*  || (__STDC_VERSION__ == 199901L && !defined __HP_cc)
-         || (__STDC_VERSION__ >= 201112L && !defined __STDC_NO_VLA__) */ ))
+         /* || (__STDC_VERSION__ == 199901L && !defined __HP_cc)
+            || (__STDC_VERSION__ >= 201112L && !defined __STDC_NO_VLA__) */ ))
 # define _LIBGETTEXT_HAVE_VARIABLE_SIZE_ARRAYS 1
 #else
 # define _LIBGETTEXT_HAVE_VARIABLE_SIZE_ARRAYS 0
