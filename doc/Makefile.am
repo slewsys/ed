@@ -135,3 +135,6 @@ clean-local:
 	rm -f $(INTRO_INCL_TEXI) $(ADV_INCL_TEXI)			      \
 	    $(INTRO_INFO_TEXI) $(ADV_INFO_TEXI)				      \
 	    $(TEX_EXTRA)
+
+distclean-local:
+	rm -f ed-adv.info ed-intro.info ed.info stamp-vti version.texi
