@@ -100,9 +100,9 @@ main (int argc, char **argv)
 top:
   while ((c = getopt_long (argc, argv, "E"
 #ifdef WANT_SCRIPT_FLAGS
-                           "e:f:"
+                           "e:f:i::"
 #endif
-                           "Ghi::p:RrsVv"
+                           "Ghp:RrsVv"
 #ifdef WANT_ED_ENCRYPTION
                            "x"
 #endif
@@ -135,6 +135,7 @@ top:
         ed->exec->opt |= PRINT_HELP;
         ed_usage (0, ed);
         break;
+#ifdef WANT_SCRIPT_FLAGS
       case 'i':
         ed->exec->opt |= IN_PLACE;
         if (optarg != NULL)
@@ -145,6 +146,7 @@ top:
             strcpy (ed->file->suffix, optarg);
           }
         break;
+#endif
       case 'p':                 /* Set ed command prompt. */
         ed->exec->opt |= PROMPT;
 
@@ -213,6 +215,16 @@ top:
       ed->exec->err = _("File seek error");
       script_die (3, ed);
     }
+
+#ifdef WANT_SCRIPT_FLAGS
+  if ((ed->exec->opt & IN_PLACE) && ! (ed->exec->opt & FSCRIPT))
+    {
+      fprintf (stderr, "%s: %s\n",
+               ed->exec->opt & RESTRICTED ? "red" : "ed",
+               _("Option '-i' requires '-e' or '-f'"));
+      ed_usage (1, ed);
+    }
+#endif
 
 #ifdef HAVE_LOCALE_H
 
@@ -293,9 +305,11 @@ top:
         goto error;
       ed->exec->opt &= ~PRINT_FIRST_FILE;
 
+#ifdef WANT_SCRIPT_FLAGS
       if (ed->exec->opt & IN_PLACE && ed->file->suffix
           && (status = save_edit (0, ed)) < 0)
         goto error;
+#endif
 
       if (signal_status < 0)
         {
@@ -357,19 +371,23 @@ top:
 #ifdef WANT_FILE_GLOB
           if (!(ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL)))
             {
+# ifdef WANT_SCRIPT_FLAGS
               if (ed->exec->opt & IN_PLACE
                   && ((status = save_edit (status, ed)) < 0))
                 goto error;
+# endif
 
               goto next;
             }
-#endif
+#endif  /* WANT_FILE_GLOB */
           /* FALLTHROUGH */
         case EOF:
+#ifdef WANT_SCRIPT_FLAGS
           if (!(ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL))
               && ed->exec->opt & IN_PLACE
               && (status = save_edit (status, ed)) < 0)
             goto error;
+#endif
 
           quit (ed->exec->status, ed);
         case EMOD:
@@ -455,6 +473,7 @@ save_edit (int status, ed_buffer_t *ed)
   static char *buf = NULL;
   static size_t buf_size = 0;
 
+  char *name;
   char *suffix;
   size_t len;
 
@@ -473,17 +492,30 @@ save_edit (int status, ed_buffer_t *ed)
       break;
     }
 
-  if ((len = strlen (*ed->file->list->gl_pathv) + strlen (suffix))
-      >= get_path_max (*ed->file->list->gl_pathv))
+  name = (*ed->file->list->gl_pathv != NULL
+          && **ed->file->list->gl_pathv != '\0'
+          && **ed->file->list->gl_pathv != '!'
+          ? *ed->file->list->gl_pathv
+          : (ed->file->name != NULL
+             && *ed->file->name != '\0'
+             && *ed->file->name != '!' ? ed->file->name
+             : NULL));
+
+  if (!name)
+    {
+      ed->exec->err = _("File name not set");
+      return FATAL;
+    }
+  else if ((len = strlen (name) + strlen (suffix)) >= get_path_max (name))
     {
       ed->exec->err = _("File name too long");
-      return ERR;
+      return FATAL;
     }
 
   /* Allocate for string `w <filename>\n\0' */
   REALLOC_THROW (buf, buf_size, len + 4, ERR, ed);
 
-  sprintf (ed->input = buf, "w %s%s\n", *ed->file->list->gl_pathv, suffix);
+  sprintf (ed->input = buf, "w %s%s\n", name, suffix);
 
   ed->exec->region->addrs = 0;
   ed->exec->region->start = 0;
@@ -663,7 +695,7 @@ ed_usage (int status, ed_buffer_t *ed)
     printf (_("Usage: %s [-] [-EGhirsVvx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE]\n"),
             ed->exec->opt & RESTRICTED ? "red" : "ed");
 #else
-    printf (_("Usage: %s [-] [-EGhirsVvx] [-p PROMPT] [FILE]\n"),
+    printf (_("Usage: %s [-] [-EGhrsVvx] [-p PROMPT] [FILE]\n"),
             ed->exec->opt & RESTRICTED ? "red" : "ed");
 #endif  /* !WANT_SCRIPT_FLAGS */
   else if (ed->exec->opt & PRINT_VERSION)
@@ -700,7 +732,6 @@ Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"));
   -E, --regexp-extended     Enable extended regular expression syntax.\n\
   -G, --traditional         Enable backward compatibility.\n\
   -h, --help                Dispaly (this) help, then exit.\n\
-  -i, --in-place[=SUFFIX]   Write file before closing, with optional backup.\n\
   -p, --prompt=STRING       Prompt for commands with STRING.\n\
   -R, --ansi-color          Enable support for ANSI color codes.\n\
   -r, --regexp-extended     Enable extended regular expression syntax.\n\
