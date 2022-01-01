@@ -515,7 +515,7 @@ quit (int n, ed_buffer_t *ed)
     }
   if (ed->exec->fp)
     {
-      (void) fclose (ed->core->fp);
+      (void) fclose (ed->exec->fp);
       unlink (ed->exec->pathname);
     }
   _exit (n);
