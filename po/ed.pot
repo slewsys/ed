@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ed 2.0.11\n"
 "Report-Msgid-Bugs-To: https://github.com/slewsys/ed\n"
-"POT-Creation-Date: 2021-12-29 23:16-0500\n"
+"POT-Creation-Date: 2022-01-01 04:19-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -35,7 +35,7 @@ msgstr ""
 
 #: src/aux.c:227 src/aux.c:440 src/buf.c:267 src/buf.c:436 src/buf.c:534
 #: src/buf.c:544 src/buf.c:583 src/buf.c:613 src/glbl.c:170 src/io.c:302
-#: src/main.c:598 src/page.c:858 src/parse.c:273 src/parse.c:517 src/re.c:155
+#: src/main.c:630 src/page.c:858 src/parse.c:273 src/parse.c:517 src/re.c:155
 #: src/undo.c:26
 msgid "Memory exhausted"
 msgstr ""
@@ -49,7 +49,7 @@ msgid "Exceeded maximum stack frame depth"
 msgstr ""
 
 #: src/aux.c:418 src/aux.c:469 src/aux.c:509 src/aux.c:548 src/io.c:57
-#: src/io.c:581 src/main.c:213 src/main.c:560 src/main.c:620
+#: src/io.c:581 src/main.c:215 src/main.c:592 src/main.c:652
 msgid "File seek error"
 msgstr ""
 
@@ -65,7 +65,7 @@ msgstr ""
 msgid "Buffer seek error"
 msgstr ""
 
-#: src/buf.c:260 src/main.c:421 src/main.c:479
+#: src/buf.c:260 src/main.c:439 src/main.c:511
 msgid "File name too long"
 msgstr ""
 
@@ -110,11 +110,11 @@ msgstr ""
 msgid "Decryption failed (incomplete block)."
 msgstr ""
 
-#: src/cbc.c:387 src/io.c:532 src/main.c:635
+#: src/cbc.c:387 src/io.c:532 src/main.c:667
 msgid "File read error"
 msgstr ""
 
-#: src/cmds.c:39 src/exec.c:596 src/io.c:462 src/main.c:331
+#: src/cmds.c:39 src/exec.c:596 src/io.c:462 src/main.c:345
 msgid "End-of-file unexpected"
 msgstr ""
 
@@ -152,7 +152,7 @@ msgstr ""
 msgid "Invalid redirection"
 msgstr ""
 
-#: src/exec.c:679
+#: src/exec.c:679 src/main.c:506
 msgid "File name not set"
 msgstr ""
 
@@ -197,7 +197,7 @@ msgstr ""
 msgid "File does not exist"
 msgstr ""
 
-#: src/io.c:88 src/io.c:153 src/io.c:611 src/io.c:660 src/main.c:608
+#: src/io.c:88 src/io.c:153 src/io.c:611 src/io.c:660 src/main.c:640
 msgid "File open error"
 msgstr ""
 
@@ -228,7 +228,7 @@ msgstr ""
 msgid "File too big"
 msgstr ""
 
-#: src/io.c:748 src/main.c:570 src/main.c:644
+#: src/io.c:748 src/main.c:602 src/main.c:676
 msgid "File write error"
 msgstr ""
 
@@ -240,29 +240,39 @@ msgstr ""
 msgid "Access restricted to regular files"
 msgstr ""
 
-#: src/main.c:278
+#: src/main.c:224
+msgid "Option '-i' requires '-e' or '-f'"
+msgstr ""
+
+#: src/main.c:290
 msgid "Interrupted"
 msgstr ""
 
-#: src/main.c:376
+#: src/main.c:394
 msgid "WARNING: Buffer modified since last write"
 msgstr ""
 
-#: src/main.c:528
+#: src/main.c:560
 msgid "Argument list full"
 msgstr ""
 
-#: src/main.c:662
+#: src/main.c:695
 #, c-format
-msgid "Usage: %s [-] [-EGhirsVv] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE]\n"
+msgid ""
+"Usage: %s [-] [-EGhirsVvx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE]\n"
 msgstr ""
 
-#: src/main.c:668
+#: src/main.c:698
+#, c-format
+msgid "Usage: %s [-] [-EGhrsVvx] [-p PROMPT] [FILE]\n"
+msgstr ""
+
+#: src/main.c:705
 #, c-format
 msgid "Usage: %s [OPTION...] [FILE]\n"
 msgstr ""
 
-#: src/main.c:673
+#: src/main.c:710
 #, c-format
 msgid ""
 "Options:\n"
@@ -289,21 +299,21 @@ msgid ""
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
 
-#: src/main.c:694
+#: src/main.c:731
 #, c-format
 msgid ""
 "Options:\n"
 "  -E, --regexp-extended     Enable extended regular expression syntax.\n"
 "  -G, --traditional         Enable backward compatibility.\n"
 "  -h, --help                Dispaly (this) help, then exit.\n"
-"  -i, --in-place[=SUFFIX]   Write file before closing, with optional "
-"backup.\n"
 "  -p, --prompt=STRING       Prompt for commands with STRING.\n"
 "  -R, --ansi-color          Enable support for ANSI color codes.\n"
 "  -r, --regexp-extended     Enable extended regular expression syntax.\n"
 "  -s, --script              Suppress interactive diagnostics.\n"
 "  -v, --verbose             Enable verbose error diagnostics.\n"
 "  -V, --version             Print version information, then exit.\n"
+"  -x, --crypt               Prompt for encryption key used for subsequent I/"
+"O.\n"
 "\n"
 "If FILE is given, read it for editing.  From within ed, run:\n"
 "  !info ed RET m switches RET\n"
@@ -312,7 +322,7 @@ msgid ""
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
 
-#: src/main.c:724
+#: src/main.c:761
 msgid "script, line %"
 msgstr ""
 

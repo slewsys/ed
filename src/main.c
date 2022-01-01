@@ -659,8 +659,13 @@ ed_usage (int status, ed_buffer_t *ed)
 
 
   if (status)
-    printf (_("Usage: %s [-] [-EGhirsVv] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE]\n"),
+#ifdef WANT_SCRIPT_FLAGS
+    printf (_("Usage: %s [-] [-EGhirsVvx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE]\n"),
             ed->exec->opt & RESTRICTED ? "red" : "ed");
+#else
+    printf (_("Usage: %s [-] [-EGhirsVvx] [-p PROMPT] [FILE]\n"),
+            ed->exec->opt & RESTRICTED ? "red" : "ed");
+#endif  /* !WANT_SCRIPT_FLAGS */
   else if (ed->exec->opt & PRINT_VERSION)
     printf ("ed %s\n%s", version_string, CONFIGURE_ARGS);
   else if (ed->exec->opt & PRINT_HELP)
@@ -702,6 +707,7 @@ Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"));
   -s, --script              Suppress interactive diagnostics.\n\
   -v, --verbose             Enable verbose error diagnostics.\n\
   -V, --version             Print version information, then exit.\n\
+  -x, --crypt               Prompt for encryption key used for subsequent I/O.\n\
 \n\
 If FILE is given, read it for editing.  From within ed, run:\n\
   !info ed RET m switches RET\n\

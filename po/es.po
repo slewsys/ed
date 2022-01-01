@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ed 2.0.11\n"
 "Report-Msgid-Bugs-To: https://github.com/slewsys/ed\n"
-"POT-Creation-Date: 2021-12-29 23:16-0500\n"
-"PO-Revision-Date: 2021-12-30 06:19+0000\n"
+"POT-Creation-Date: 2022-01-01 04:19-0500\n"
+"PO-Revision-Date: 2022-01-01 09:22+0000\n"
 "Last-Translator: Andrew L. Moore <slewsys@gmail.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "Language: es\n"
@@ -35,7 +35,7 @@ msgstr "Error de cierre de pipa"
 
 #: src/aux.c:227 src/aux.c:440 src/buf.c:267 src/buf.c:436 src/buf.c:534
 #: src/buf.c:544 src/buf.c:583 src/buf.c:613 src/glbl.c:170 src/io.c:302
-#: src/main.c:598 src/page.c:858 src/parse.c:273 src/parse.c:517 src/re.c:155
+#: src/main.c:630 src/page.c:858 src/parse.c:273 src/parse.c:517 src/re.c:155
 #: src/undo.c:26
 msgid "Memory exhausted"
 msgstr "Memoria está agotada"
@@ -49,7 +49,7 @@ msgid "Exceeded maximum stack frame depth"
 msgstr "Excedido profunidad máxima del marco de pila."
 
 #: src/aux.c:418 src/aux.c:469 src/aux.c:509 src/aux.c:548 src/io.c:57
-#: src/io.c:581 src/main.c:213 src/main.c:560 src/main.c:620
+#: src/io.c:581 src/main.c:215 src/main.c:592 src/main.c:652
 msgid "File seek error"
 msgstr "Error de búsqueda de archivo"
 
@@ -65,7 +65,7 @@ msgstr "Error de apertura de búfer"
 msgid "Buffer seek error"
 msgstr "Error de búsqueda de búfer"
 
-#: src/buf.c:260 src/main.c:421 src/main.c:479
+#: src/buf.c:260 src/main.c:439 src/main.c:511
 msgid "File name too long"
 msgstr "Nombre de archivo es demasiado largo"
 
@@ -110,11 +110,11 @@ msgstr "Descifrado falló (bloque está dañada)"
 msgid "Decryption failed (incomplete block)."
 msgstr "Descifrado falló (bloque está incompleto)"
 
-#: src/cbc.c:387 src/io.c:532 src/main.c:635
+#: src/cbc.c:387 src/io.c:532 src/main.c:667
 msgid "File read error"
 msgstr "Error de lectura de archivo"
 
-#: src/cmds.c:39 src/exec.c:596 src/io.c:462 src/main.c:331
+#: src/cmds.c:39 src/exec.c:596 src/io.c:462 src/main.c:345
 msgid "End-of-file unexpected"
 msgstr "Final-de-archivo es inesperado"
 
@@ -127,7 +127,6 @@ msgid "Unknown error"
 msgstr "Error es desconocido"
 
 #: src/ed.h:746 src/ed.h:781 src/ed.h:816
-#, fuzzy
 msgid "Numerical result out of range"
 msgstr "Número está fuera de rango"
 
@@ -153,7 +152,7 @@ msgstr "Dirección es inesperada"
 msgid "Invalid redirection"
 msgstr "Cambio de dirección no es válido"
 
-#: src/exec.c:679
+#: src/exec.c:679 src/main.c:506
 msgid "File name not set"
 msgstr "Nombre de archivo no está definido"
 
@@ -198,7 +197,7 @@ msgstr "Ningún comando previa"
 msgid "File does not exist"
 msgstr "Archivo no existe"
 
-#: src/io.c:88 src/io.c:153 src/io.c:611 src/io.c:660 src/main.c:608
+#: src/io.c:88 src/io.c:153 src/io.c:611 src/io.c:660 src/main.c:640
 msgid "File open error"
 msgstr "Error de apertura de archivo"
 
@@ -212,12 +211,12 @@ msgid "File close error"
 msgstr "Error de cierre de archivo"
 
 #: src/io.c:276 src/io.c:410
-#, fuzzy, c-format
+#, c-format
 msgid "Newline inserted\n"
 msgstr "Nueva línea está insertado\n"
 
 #: src/io.c:281 src/io.c:415
-#, fuzzy, c-format
+#, c-format
 msgid "Newline appended\n"
 msgstr "Nueva línea está añadido\n"
 
@@ -229,7 +228,7 @@ msgstr "Error de trunca de archivo"
 msgid "File too big"
 msgstr "Archivo es demasiado grande"
 
-#: src/io.c:748 src/main.c:570 src/main.c:644
+#: src/io.c:748 src/main.c:602 src/main.c:676
 msgid "File write error"
 msgstr "Error de escritura de archivo"
 
@@ -241,32 +240,45 @@ msgstr "Error de obtiene estado de archivo"
 msgid "Access restricted to regular files"
 msgstr "Acceso está restringido a archivos regulares"
 
-#: src/main.c:278
+#: src/main.c:224
+#, fuzzy
+#| msgid "Option -i requires -e or -f"
+msgid "Option '-i' requires '-e' or '-f'"
+msgstr "Opción -i requiere -e o -f"
+
+#: src/main.c:290
 msgid "Interrupted"
 msgstr "Interrumpido"
 
-#: src/main.c:376
+#: src/main.c:394
 msgid "WARNING: Buffer modified since last write"
 msgstr "ATENCION: Búfer no se guarda desde se modificó"
 
-#: src/main.c:528
+#: src/main.c:560
 msgid "Argument list full"
 msgstr "Lista de argumentos está llena"
 
-#: src/main.c:662
-#, fuzzy, c-format
-msgid "Usage: %s [-] [-EGhirsVv] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE]\n"
+#: src/main.c:695
+#, c-format
+msgid ""
+"Usage: %s [-] [-EGhirsVvx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE]\n"
 msgstr ""
-"Modo de empleo: %s [-] [-EGhirsVv] [-e COMANDO] [-f PROGRAMA] [-p AVISO] "
+"Modo de empleo: %s [-] [-EGhirsVvx] [-e COMANDO] [-f PROGRAMA] [-p AVISO] "
 "[ARCHIVO]\n"
 
-#: src/main.c:668
+#: src/main.c:698
+#, fuzzy, c-format
+#| msgid "Usage: %s [-] [-EGhirsVvx] [-p PROMPT] [FILE]\n"
+msgid "Usage: %s [-] [-EGhrsVvx] [-p PROMPT] [FILE]\n"
+msgstr "Modo de empleo: %s [-] [-EGhirsVvx] [-p AVISO] [ARCHIVO]\n"
+
+#: src/main.c:705
 #, c-format
 msgid "Usage: %s [OPTION...] [FILE]\n"
 msgstr "Modo de empleo: %s [OPCIÓN...] [ARCHIVO]\n"
 
-#: src/main.c:673
-#, fuzzy, c-format
+#: src/main.c:710
+#, c-format
 msgid ""
 "Options:\n"
 "  -E, --regexp-extended     Enable extended regular expression syntax.\n"
@@ -308,27 +320,29 @@ msgstr ""
 "  -V, --version             Muestra versión de programa, entonces finaliza.\n"
 "  -x, --crypt               Solicitar constraseña de cifrado para I/O\n"
 "                            siguientes.\n"
+"\n"
 "Si hay ARCHIVO, lo carga al búfer. Para documentación completa de\n"
 "esas opciones, escriba en Ed:\n"
 "  !info ed RET m switches RET\n"
-" \n"
-"Enviar problemas y solicitudes de extracción a: <https://github.com/slewsys/ed>\n"
+"\n"
+"Enviar problemas y solicitudes de extracción a:\n"
+"  <https://github.com/slewsys/ed>\n"
 
-#: src/main.c:694
+#: src/main.c:731
 #, fuzzy, c-format
 msgid ""
 "Options:\n"
 "  -E, --regexp-extended     Enable extended regular expression syntax.\n"
 "  -G, --traditional         Enable backward compatibility.\n"
 "  -h, --help                Dispaly (this) help, then exit.\n"
-"  -i, --in-place[=SUFFIX]   Write file before closing, with optional "
-"backup.\n"
 "  -p, --prompt=STRING       Prompt for commands with STRING.\n"
 "  -R, --ansi-color          Enable support for ANSI color codes.\n"
 "  -r, --regexp-extended     Enable extended regular expression syntax.\n"
 "  -s, --script              Suppress interactive diagnostics.\n"
 "  -v, --verbose             Enable verbose error diagnostics.\n"
 "  -V, --version             Print version information, then exit.\n"
+"  -x, --crypt               Prompt for encryption key used for subsequent I/"
+"O.\n"
 "\n"
 "If FILE is given, read it for editing.  From within ed, run:\n"
 "  !info ed RET m switches RET\n"
@@ -338,27 +352,25 @@ msgid ""
 msgstr ""
 "Opciones:\n"
 "  -E, --regexp-extended     Se utiliza expresiones regular extendida.\n"
-"  -e, --expression=COMANDO  Anexa COMANDO después de programa,\n"
-"                            implica `-s'.\n"
-"  -f, --file=PROGRAMA       Acepta de archivo PROGRAMA programa,\n"
-"                            implica `-s'.\n"
 "  -G, --traditional         Se utiliza la compatibilidad hacia atrás.\n"
 "  -h, --help                Muestra (esta) ayuda, entonces finaliza.\n"
-"  -i, --in-place[=SUFIJO]   Se guarda archivo antes de cerar.\n"
 "  -p, --prompt=CADENA       Aviso de comandos con CADENA.\n"
 "  -R, --ansi-color          Se utiliza códigos de color de ANSI.\n"
 "  -r, --regexp-extended     Se utiliza expresiones regular extendida.\n"
 "  -s, --script              No se utliza diagnósticos interactivo.\n"
 "  -v, --verbose             Se utliza diagnósticos prolijo de error.\n"
 "  -V, --version             Muestra versión de programa, entonces finaliza.\n"
+"  -x, --crypt               Solicitar constraseña de cifrado para I/O\n"
+"                            siguientes.\n"
 "\n"
 "Si hay ARCHIVO, lo carga al búfer. Para documentación completa de\n"
 "esas opciones, escriba en Ed:\n"
 "  !info ed RET m switches RET\n"
-" \n"
-"Enviar problemas y solicitudes de extracción a: <https://github.com/slewsys/ed>\n"
+"\n"
+"Enviar problemas y solicitudes de extracción a:\n"
+"  <https://github.com/slewsys/ed>\n"
 
-#: src/main.c:724
+#: src/main.c:761
 msgid "script, line %"
 msgstr "escritura, línea %"
 
@@ -367,7 +379,6 @@ msgid "Access restricted to working directory"
 msgstr "Acceso restringido al directorio actual"
 
 #: src/parse.c:323
-#, fuzzy
 msgid "Too many file names"
 msgstr "Desmasiados archivos"
 
@@ -433,4 +444,4 @@ msgstr "Ninguna substitución previa"
 
 #: src/undo.c:51
 msgid "Nothing to undo"
-msgstr "No hay nada para deshacer"
+msgstr "Nada para deshacer"
