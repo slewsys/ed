@@ -443,7 +443,7 @@ push_stack_frame (ed_buffer_t *ed)
     }
 
   /* Push file pointer, input size and return address. */
-#if defined(__sun) || defined(__NetBSD__)
+#if defined(__sun) || defined(__NetBSD__) || defined(__OpenBSD__)
   if (dup2 (fileno (stdin),
             fileno (ed->core->stack_frame[ed->core->sp]->fp)) < 0)
     {
@@ -486,7 +486,7 @@ pop_stack_frame (ed_buffer_t *ed)
   --ed->core->sp;
 
   /* Restore file pointer, input size and return address. */
-#if defined(__sun) || defined(__NetBSD__)
+#if defined(__sun) || defined(__NetBSD__) || defined(__OpenBSD__)
   if (dup2 (fileno (ed->core->stack_frame[ed->core->sp]->fp),
             fileno (stdin)) < 0)
     {
@@ -526,7 +526,7 @@ unwind_stack_frame (int status, ed_buffer_t *ed)
       --ed->core->sp;
 
       /* Restore file pointer and input size. */
-#if defined(__sun) || defined(__NetBSD__)
+#if defined(__sun) || defined(__NetBSD__) || defined(__OpenBSD__)
       if (dup2 (fileno (ed->core->stack_frame[0]->fp), fileno (stdin)) < 0)
         {
           fprintf (stderr, "%s\n", strerror (errno));
