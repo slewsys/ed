@@ -1241,11 +1241,9 @@ USD:12-13
 .%D 1981
 .Re
 .Sh LIMITATIONS
-.Nm
-processes only globbed
-.Ar file
-arguments for backslash escapes.
-.Pp
+When processing a file name, backslash escape processing is
+limited to protecting an initial exclamation mark (!).
+Pp
 If a text (non-binary) file is not terminated by an
 .Em end-of-line
 character, then

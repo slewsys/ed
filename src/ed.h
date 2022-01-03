@@ -5,7 +5,7 @@
  *  This file is part of ed.
  */
 
-# include "config.h"
+#include "config.h"
 
 #include <ctype.h>
 #include <errno.h>
@@ -327,7 +327,7 @@ struct ed_state
   int is_empty;                 /* If set, buffer is "logically" empty. */
   int is_modified;              /* If set, buffer contains unsaved data. */
   int newline_appended;         /* if set, newline appended to buffer. */
-  int newline_missing;      /* If set, newline needed on input.  */
+  int newline_missing;          /* If set, newline needed on input.  */
   int input_is_binary;          /* If set, binary data on input. */
 };
 

@@ -355,6 +355,7 @@ file_glob (size_t *len, int cm, int replace, int uniquely, ed_buffer_t *ed)
         --ed->file->list->gl_pathv;
         offs = ed->file->glob->gl_pathc - ed->file->list->gl_pathc;
         gp = ed->file->glob;
+        break;
 
       default:
         offs = ed->file->glob->gl_pathc - ed->file->list->gl_pathc;

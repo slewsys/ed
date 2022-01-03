@@ -1,0 +1,20 @@
+name: Build/Test
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        OS: [ubuntu-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v2
+      - name: configure
+        run: ./configure --enable-all-extensions --with-included-regex
+      - name: make
+        run: make
+      - name: make check
+        run: make check

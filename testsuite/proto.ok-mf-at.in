@@ -1,0 +1,22 @@
+# proto.ok-mf-at.in: Autotest template for the ed testsuite.
+#
+# Copyright © 2021 Andrew L. Moore, SlewSys Research
+#
+# Process this file with autotest to create testsuite (see also Makefile.am).
+
+AT_SETUP([Script: @SCRIPT_NAME@.tmf])
+
+cat >script-@SCRIPT_NAME@ <<_ATEOF_ED
+H
+~e @SCRIPT_SRC@.1.d @SCRIPT_SRC@.2.d @SCRIPT_SRC@.3.d
+$(test -s @SCRIPT_SRC@.tmf &&
+cat @SCRIPT_SRC@.tmf ||
+echo "w @SCRIPT_NAME@.o")
+wq @SCRIPT_NAME@.o
+_ATEOF_ED
+
+AT_SKIP_IF([! ed --version | grep -q 'file-glob'])
+AT_CHECK([ed - <script-@SCRIPT_NAME@ &&
+diff -u @SCRIPT_SRC@.r @SCRIPT_NAME@.o],
+0, [ignore], [ignore], [], [])
+AT_CLEANUP()

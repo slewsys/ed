@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: ed 2.0.11\n"
+"Project-Id-Version: ed 2.0.12\n"
 "Report-Msgid-Bugs-To: https://github.com/slewsys/ed\n"
-"POT-Creation-Date: 2022-01-01 04:19-0500\n"
+"POT-Creation-Date: 2022-01-07 18:31-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -35,7 +35,7 @@ msgstr ""
 
 #: src/aux.c:227 src/aux.c:440 src/buf.c:267 src/buf.c:436 src/buf.c:534
 #: src/buf.c:544 src/buf.c:583 src/buf.c:613 src/glbl.c:170 src/io.c:302
-#: src/main.c:630 src/page.c:858 src/parse.c:273 src/parse.c:517 src/re.c:155
+#: src/main.c:630 src/page.c:858 src/parse.c:273 src/parse.c:518 src/re.c:155
 #: src/undo.c:26
 msgid "Memory exhausted"
 msgstr ""
@@ -44,7 +44,7 @@ msgstr ""
 msgid "Cannot append register to itself."
 msgstr ""
 
-#: src/aux.c:400
+#: src/aux.c:402
 msgid "Exceeded maximum stack frame depth"
 msgstr ""
 
@@ -89,7 +89,7 @@ msgstr ""
 msgid "Buffer write error"
 msgstr ""
 
-#: src/buf.c:500 src/exec.c:101 src/exec.c:130 src/exec.c:1832 src/page.c:301
+#: src/buf.c:500 src/exec.c:101 src/exec.c:130 src/exec.c:1858 src/page.c:301
 #: src/parse.c:223
 msgid "Address out of range"
 msgstr ""
@@ -114,7 +114,7 @@ msgstr ""
 msgid "File read error"
 msgstr ""
 
-#: src/cmds.c:39 src/exec.c:596 src/io.c:462 src/main.c:345
+#: src/cmds.c:39 src/exec.c:611 src/io.c:462 src/main.c:345
 msgid "End-of-file unexpected"
 msgstr ""
 
@@ -130,8 +130,8 @@ msgstr ""
 msgid "Numerical result out of range"
 msgstr ""
 
-#: src/exec.c:28 src/exec.c:494 src/exec.c:640 src/exec.c:1001 src/exec.c:1362
-#: src/exec.c:1374 src/exec.c:1382
+#: src/exec.c:28 src/exec.c:505 src/exec.c:592 src/exec.c:655 src/exec.c:681
+#: src/exec.c:1027 src/exec.c:1388 src/exec.c:1400 src/exec.c:1408
 msgid "Command suffix unexpected"
 msgstr ""
 
@@ -139,53 +139,53 @@ msgstr ""
 msgid "Destination address required"
 msgstr ""
 
-#: src/exec.c:328 src/exec.c:341 src/exec.c:353
+#: src/exec.c:339 src/exec.c:352 src/exec.c:364
 msgid "Command prefix unexpected"
 msgstr ""
 
-#: src/exec.c:485 src/exec.c:631 src/exec.c:717 src/exec.c:738 src/exec.c:937
-#: src/exec.c:979 src/exec.c:1325 src/exec.c:1523 src/exec.c:1718
+#: src/exec.c:496 src/exec.c:646 src/exec.c:743 src/exec.c:764 src/exec.c:963
+#: src/exec.c:1005 src/exec.c:1351 src/exec.c:1549 src/exec.c:1744
 msgid "Address unexpected"
 msgstr ""
 
-#: src/exec.c:660
+#: src/exec.c:675
 msgid "Invalid redirection"
 msgstr ""
 
-#: src/exec.c:679 src/main.c:506
+#: src/exec.c:705 src/main.c:506
 msgid "File name not set"
 msgstr ""
 
-#: src/exec.c:693
+#: src/exec.c:719
 msgid "Recursive global command"
 msgstr ""
 
-#: src/exec.c:748
+#: src/exec.c:774
 msgid "No previous error"
 msgstr ""
 
-#: src/exec.c:858
+#: src/exec.c:884
 msgid "Invalid destination address"
 msgstr ""
 
-#: src/exec.c:899 src/exec.c:1311
+#: src/exec.c:925 src/exec.c:1337
 msgid "Invalid register"
 msgstr ""
 
-#: src/exec.c:1156 src/exec.c:1219 src/exec.c:1542 src/exec.c:1602
-#: src/exec.c:1772
+#: src/exec.c:1182 src/exec.c:1245 src/exec.c:1568 src/exec.c:1628
+#: src/exec.c:1798
 msgid "Unknown command"
 msgstr ""
 
-#: src/exec.c:1772
+#: src/exec.c:1798
 msgid "Invalid address"
 msgstr ""
 
-#: src/exec.c:1790
+#: src/exec.c:1816
 msgid "Command too long"
 msgstr ""
 
-#: src/exec.c:1837
+#: src/exec.c:1863
 msgid "Invalid address range"
 msgstr ""
 
@@ -232,7 +232,7 @@ msgstr ""
 msgid "File write error"
 msgstr ""
 
-#: src/io.c:773 src/parse.c:504
+#: src/io.c:773 src/parse.c:505
 msgid "File status error"
 msgstr ""
 
@@ -326,7 +326,7 @@ msgstr ""
 msgid "script, line %"
 msgstr ""
 
-#: src/parse.c:256 src/parse.c:601
+#: src/parse.c:256 src/parse.c:602
 msgid "Access restricted to working directory"
 msgstr ""
 
@@ -334,39 +334,39 @@ msgstr ""
 msgid "Too many file names"
 msgstr ""
 
-#: src/parse.c:338 src/parse.c:351 src/parse.c:377
+#: src/parse.c:338 src/parse.c:351 src/parse.c:378
 msgid "No more files"
 msgstr ""
 
-#: src/parse.c:445
+#: src/parse.c:446
 msgid "File glob too long"
 msgstr ""
 
-#: src/parse.c:466 src/parse.c:470 src/parse.c:490
+#: src/parse.c:467 src/parse.c:471 src/parse.c:491
 msgid "Pathname expansion error"
 msgstr ""
 
-#: src/parse.c:486
+#: src/parse.c:487
 msgid "No such file or directory"
 msgstr ""
 
-#: src/parse.c:576
+#: src/parse.c:577
 msgid "Invalid file name"
 msgstr ""
 
-#: src/parse.c:629
+#: src/parse.c:630
 msgid "Brackets ([]) unbalanced"
 msgstr ""
 
-#: src/parse.c:636
+#: src/parse.c:637
 msgid "Backslash (\\) unexpected"
 msgstr ""
 
-#: src/parse.c:693
+#: src/parse.c:694
 msgid "Shell access restricted"
 msgstr ""
 
-#: src/parse.c:757
+#: src/parse.c:758
 msgid "No previous shell command"
 msgstr ""
 

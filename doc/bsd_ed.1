@@ -1450,13 +1450,8 @@ USD:12-13
 .
 .
 .Sh LIMITATIONS
-The
-.Nm
-utility processes
-.Ar file
-arguments for backslash escapes, i.e.\&, in a filename, any characters
-preceded by a backslash (\\) are interpreted literally.
-.
+When processing a file name, backslash escape processing is
+limited to protecting an initial exclamation mark (!).
 .Pp
 If a text (non-binary) file is not terminated by an
 .Em end-of-line

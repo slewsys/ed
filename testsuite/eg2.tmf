@@ -1,0 +1,7 @@
+~en
+# For each line containing numbers, add 10 the first.
+g!\([^-0-9.]*\)\([-0-9.]\{1,\}\)\(.*\)!s!!\1\
+\2\
+\3!\
+-!awk '{ print $1 + 10 }'\
+-,+j

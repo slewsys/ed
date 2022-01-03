@@ -137,6 +137,20 @@
   while (0)
 #endif  /* !WANT_ED_REGISTER */
 
+#ifdef WANT_ED_REGISTER
+
+/* GET_INPUT_REGISTER:  Get index of register for reading. */
+# define GET_INPUT_REGISTER(ed)                                               \
+  do                                                                          \
+    {                                                                         \
+      (ed)->core->regbuf->io_f |= REGISTER_READ;                              \
+      (ed)->core->regbuf->read_idx =                                          \
+        isdigit (*(ed)->input) ? *(ed)->input++ - '0' : REGBUF_MAX - 1;       \
+      SKIP_WHITESPACE (ed);                                                   \
+    }                                                                         \
+  while (0)
+#endif
+
 /* Static function declarations. */
 static int address_cmd (ed_buffer_t *);
 static int comment_cmd (ed_buffer_t *);
@@ -292,23 +306,18 @@ exec_command (ed_buffer_t *ed)
     {
 #ifdef WANT_ED_REGISTER
     case '<':
-      if (!((ed)->exec->opt & (POSIXLY_CORRECT | TRADITIONAL)))
-        {
-          ed->core->regbuf->io_f |= REGISTER_READ;
-          ++ed->input;
-          ed->core->regbuf->read_idx =
-            isdigit (*ed->input) ? *ed->input++ - '0' : REGBUF_MAX - 1;
-          SKIP_WHITESPACE (ed);
-        }
+      if (ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL))
+        return invalid_cmd (ed);
+      ++ed->input;
+      GET_INPUT_REGISTER (ed);
       break;
 #endif  /* WANT_ED_REGISTER */
 #ifdef WANT_FILE_GLOB
     case '~':
-      if (!((ed)->exec->opt & (POSIXLY_CORRECT | TRADITIONAL)))
-        {
-          ++ed->file->is_glob;
-          ++ed->input;
-        }
+      if (ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL))
+        return invalid_cmd (ed);
+      ++ed->file->is_glob;
+      ++ed->input;
       break;
 #endif  /* WANT_FILE_GLOB */
     default:
@@ -323,7 +332,9 @@ exec_command (ed_buffer_t *ed)
 #ifdef WANT_ED_MACRO
     case '@':
 #endif
-      if (ed->file->is_glob)
+      if (ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL))
+        return invalid_cmd (ed);
+      else if (ed->file->is_glob)
         {
           ed->exec->err = _("Command prefix unexpected");
           return ERR;
@@ -367,7 +378,7 @@ exec_command (ed_buffer_t *ed)
       return comment_cmd (ed);
     default:
       return (c >= ED_KEY_FIRST ? ed_cmd[(c - ED_KEY_FIRST) & ED_KEY_MASK](ed)
-              : invalid_cmd(ed));
+              : invalid_cmd (ed));
     }
 }
 
@@ -573,10 +584,14 @@ exec_macro (ed_buffer_t *ed)
 
   /* case '@': */
 
-  /* Use default register if none specified. */
   if (!ed->core->regbuf->io_f)
-    ed->core->regbuf->read_idx = REGBUF_MAX - 1;
-
+    GET_INPUT_REGISTER (ed);
+  SKIP_WHITESPACE (ed);
+  if (*ed->input != '\n')
+    {
+      ed->exec->err = _("Command suffix unexpected");
+      return ERR;
+    }
   if ((status = script_from_register (ed)) < 0 || !ed->exec->fp)
     return status;
 
@@ -632,7 +647,7 @@ f_cmd (ed_buffer_t *ed)
       return ERR;
     }
 #ifdef WANT_FILE_GLOB
-  if ((cy = *ed->input) == 'n' || cy == 'p')
+  if (ed->file->is_glob && ((cy = *ed->input) == 'n' || cy == 'p'))
     ++ed->input;
 #endif
   if (!isspace ((unsigned char) *ed->input))
@@ -661,7 +676,12 @@ f_cmd (ed_buffer_t *ed)
       return ERR;
     }
 
-  if (*ed->input == '\n' && cy != 'n' && cy != 'p')
+  if (*ed->input != '\n' && (cy == 'n' || cy == 'p'))
+    {
+      ed->exec->err = _("Command suffix unexpected");
+      return ERR;
+    }
+  else if (*ed->input == '\n' && cy != 'n' && cy != 'p')
     ++ed->input;
   else
     {
@@ -669,11 +689,17 @@ f_cmd (ed_buffer_t *ed)
       REALLOC_THROW (ed->file->name, ed->file->name_size, len+1, ERR, ed);
       strcpy (ed->file->name, fn);
     }
-  if (ed->file->is_glob && ed->file->glob->gl_pathc > 0)
+  if (ed->file->is_glob && cy != 'n' && cy != 'p'
+      && ed->file->glob->gl_pathc > 0)
     for (cx = 0; cx < ed->file->glob->gl_pathc; ++cx)
-      puts (ed->file->glob->gl_pathv[cx]);
+      /*
+       * puts (ed->file->glob->gl_pathv[cx]);
+       */
+      printf (ed->exec->opt & SCRIPTED ? "" : "%s\n",
+              ed->file->glob->gl_pathv[cx]);
   else if (ed->file->name)
-    puts (ed->file->name);
+    printf (ed->exec->opt & SCRIPTED && (cy == 'n' || cy == 'p')
+            ? "" : "%s\n", ed->file->name);
   else if (ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL))
     {
       ed->exec->err = _("File name not set");

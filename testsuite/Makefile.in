@@ -903,9 +903,10 @@ ED_SCRIPTSdir = $(srcdir)
 # Templates for generating autotest .at scripts.
 AT_PROTO_OK = $(ED_SCRIPTSdir)/proto.ok-at.in
 AT_PROTO_OK_SO = $(ED_SCRIPTSdir)/proto.ok-so-at.in
+AT_PROTO_OK_MF = $(ED_SCRIPTSdir)/proto.ok-mf-at.in
 AT_PROTO_ERR = $(ED_SCRIPTSdir)/proto.err-at.in
 AT_PROTO_FAIL = $(ED_SCRIPTSdir)/proto.fail-at.in
-SUFFIXES = .t .tso .err .ok-at .ok-so-at .err-at .fail-at
+SUFFIXES = .t .tso .tmf .err .ok-at .ok-so-at .ok-mf-at .err-at .fail-at
 
 # Ed scripts which should complete sucessfully.
 ED_SCRIPTS_OK = \
@@ -921,6 +922,11 @@ ED_SCRIPTS_OK_SO = \
 	zf1.tso zf2.tso zf3.tso zf4.tso zf5.tso zf6.tso zf7.tso		      \
 	zb1.tso zb2.tso zb3.tso zb4.tso	zb5.tso zb6.tso	zb7.tso		      \
 	zfh1.tso zfh2.tso zbh1.tso zbh2.tso
+
+
+# Ed scripts which should complete sucessfully if file globbing is available.
+ED_SCRIPTS_OK_MF = \
+	eg1.tmf eg2.tmf eg3.tmf
 
 
 # Ed scripts which should complete, but with non-zero exit status.
@@ -943,18 +949,21 @@ ED_SCRIPTS_RESULTS_PIPED = $(wildcard *.rr)
 # corresponding autotest template (cf. $(TESTSUITE_AT) rule below).
 AT_SCRIPTS_OK = $(ED_SCRIPTS_OK:.t=.ok-at)
 AT_SCRIPTS_OK_SO = $(ED_SCRIPTS_OK_SO:.tso=.ok-so-at)
+AT_SCRIPTS_OK_MF = $(ED_SCRIPTS_OK_MF:.tmf=.ok-mf-at)
 AT_SCRIPTS_ERR = $(ED_SCRIPTS_ERR:.err=.err-at)
 AT_SCRIPTS_FAIL = $(ED_SCRIPTS_ERR:.err=.fail-at)
 EXTRA_DIST = \
-	$(AT_PROTO_OK) $(AT_PROTO_OK_SO).in $(AT_PROTO_ERR) $(AT_PROTO_FAIL)  \
-	$(ED_SCRIPTS_OK) $(ED_SCRIPTS_OK_SO) $(ED_SCRIPTS_ERR)		      \
-	$(ED_SCRIPTS_FAIL) $(ED_SCRIPTS_DATA) $(ED_SCRIPTS_DATA_COMPRESSED)   \
-	$(ED_SCRIPTS_RESULTS) $(ED_SCRIPTS_RESULTS_PIPED)
+	$(AT_PROTO_OK) $(AT_PROTO_OK_SO).in $(AT_PROTO_OK_MF)                 \
+	$(AT_PROTO_ERR) $(AT_PROTO_FAIL)                                      \
+	$(ED_SCRIPTS_OK) $(ED_SCRIPTS_OK_SO) $(ED_SCRIPTS_OK_MF)              \
+	$(ED_SCRIPTS_ERR) $(ED_SCRIPTS_FAIL) $(ED_SCRIPTS_DATA)               \
+	$(ED_SCRIPTS_DATA_COMPRESSED) $(ED_SCRIPTS_RESULTS)                   \
+	$(ED_SCRIPTS_RESULTS_PIPED)
 
 all: all-am
 
 .SUFFIXES:
-.SUFFIXES: .t .tso .err .ok-at .ok-so-at .err-at .fail-at
+.SUFFIXES: .t .tso .tmf .err .ok-at .ok-so-at .ok-mf-at .err-at .fail-at
 $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	@for dep in $?; do \
 	  case '$(am__configure_deps)' in \
@@ -1193,6 +1202,12 @@ uninstall-am: uninstall-ED_SCRIPTSDATA
 	    >"$@".tmp
 	mv "$@".tmp "$@"
 
+.tmf.ok-mf-at:
+	sed -e "s^@SCRIPT_NAME@^$*^g"                                         \
+	    -e "s^@SCRIPT_SRC@^$(abs_srcdir)/$*^g" "$(AT_PROTO_OK_MF)"        \
+	    >"$@".tmp
+	mv "$@".tmp "$@"
+
 .err.err-at:
 	sed -e "s^@SCRIPT_NAME@^$*^g"                                         \
 	    -e "s^@SCRIPT_SRC@^$(abs_srcdir)/$*^g" "$(AT_PROTO_ERR)"          \
@@ -1227,13 +1242,14 @@ $(TESTSUITE): $(TESTSUITE_AT) $(PACKAGE_M4)
 	$(AUTOTEST) -I $(ED_SCRIPTSdir) "$@".at -o "$@".tmp
 	mv "$@".tmp "$@"
 
-$(TESTSUITE_AT): $(AT_SCRIPTS_OK) $(AT_SCRIPTS_OK_SO) $(AT_SCRIPTS_ERR)       \
-		 $(AT_SCRIPTS_FAIL)
+$(TESTSUITE_AT): $(AT_SCRIPTS_OK) $(AT_SCRIPTS_OK_SO) $(AT_SCRIPTS_OK_MF)     \
+		 $(AT_SCRIPTS_ERR) $(AT_SCRIPTS_FAIL)
 	{                                                                     \
 	  echo 'AT_INIT';                                                     \
 	  echo 'AT_TESTED([ed])';                                             \
 	} >"$@".tmp
-	for scpt in $(AT_SCRIPTS_OK) $(AT_SCRIPTS_OK_SO) $(AT_SCRIPTS_ERR)    \
+	for scpt in $(AT_SCRIPTS_OK) $(AT_SCRIPTS_OK_SO)                      \
+		    $(AT_SCRIPTS_OK_MF) $(AT_SCRIPTS_ERR)                     \
 		    $(AT_SCRIPTS_FAIL); do				      \
 	  echo "m4_include([$$scpt])";					      \
 	done >>"$@".tmp
@@ -1261,7 +1277,7 @@ distclean-local:
 	rm -f atconfig proto.ok-so-at.in
 
 clean-local:
-	rm -f *.ok-at *.ok-so-at *.fail-at *.err-at *.log
+	rm -f *.ok-at *.ok-so-at *.ok-mf-at *.fail-at *.err-at *.log
 	rm -rf  *.dir tmpwrk*
 	rm -f $(PACKAGE_M4) $(TESTSUITE_AT) $(TESTSUITE)
 

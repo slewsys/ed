@@ -395,15 +395,15 @@ script_from_register (ed_buffer_t *ed)
   ed_line_node_t *rp;
   int status;
 
-  if (ed->core->sp >= STACK_FRAMES_MAX)
+  if (!read_head)
+    return 0;
+  else if (ed->core->sp >= STACK_FRAMES_MAX)
     {
       ed->exec->err = _("Exceeded maximum stack frame depth");
       return ERR;
     }
   else if ((status = push_stack_frame (ed)) < 0)
     return status;
-  else if (!read_head)
-    return 0;
 
   for (rp = read_head->q_forw; rp != read_head; rp = rp->q_forw)
     {
