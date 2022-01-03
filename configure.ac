@@ -14,29 +14,6 @@ AC_CONFIG_MACRO_DIR([m4])
 AC_USE_SYSTEM_EXTENSIONS
 AM_INIT_AUTOMAKE([foreign])
 
-# Darwin disables nested functions which are used by some AC tests.
-AS_IF([test ."$GCC" = .yes],
-  AC_CACHE_CHECK([whether gcc needs -fnested-functions],
-    [ac_cv_gcc_cflags_nested_functions],
-    AC_RUN_IFELSE([AC_LANG_SOURCE([
-#include <stdio.h>
-
-int
-main ()
-{
-  int nested () { return 0; }
-
-  nested ();
-  return 0;
-}
-      ])],
-      [ac_cv_gcc_cflags_nested_functions=no],
-      [ac_cv_gcc_cflags_nested_functions=yes],
-      [ac_cv_gcc_cflags_nested_functions=no])))
-
-AS_IF([test ."$ac_cv_gcc_cflags_nested_functions" = .'yes'],
-    [CFLAGS="$CFLAGS -fnested-functions"])
-
 # Check function prototypes.
 CFLAGS="$CFLAGS -Wimplicit-function-declaration"
 export CFLAGS
