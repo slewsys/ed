@@ -20,7 +20,7 @@
 : ${MKTEMP:='/usr/bin/mktemp'}
 : ${PRCG:='/usr/local/bin/prcg'}
 : ${RM:='/bin/rm'}
-: ${SED:='/usr/bin/sed'}
+: ${SED:='/bin/sed'}
 
 declare script_name=${0##*/}
 

@@ -51,7 +51,7 @@ ed_TEXINFOS =								      \
 	fdl.texi
 
 man_MANS = $(PROG:=.1)
-EXTRA_DIST = $(man_MANS) SUSv4
+EXTRA_DIST = $(man_MANS) SUSv4.md
 
 SUBDIRS = bwk
 
@@ -73,9 +73,15 @@ commented:
 	do test -f "$$f" || cp "$(srcdir)/$$f" .; done
 	$(MAKEINFO) $(INFO)
 
-$(INFO): $(INTRO_INCL_TEXI) $(ADV_INCL_TEXI)
+# $(INFO): $(INTRO_INCL_TEXI) $(ADV_INCL_TEXI)
+#	$(MAKEINFO) -I . -o $@ $(TEXI) $(INTRO_INCL_TEXI) $(ADV_INCL_TEXI)
+
 $(INTRO_INFO): $(INTRO_INFO_TEXI)
+	$(MAKEINFO) -I . -o $@ $(INTRO_INFO_TEXI)
+
 $(ADV_INFO): $(ADV_INFO_TEXI)
+	$(MAKEINFO) -I . -o $@ $(ADV_INFO_TEXI)
+
 $(PS): $(TEXI) $(INTRO_PS) $(ADV_PS)
 $(PDF): $(TEXI) $(INTRO_PDF) $(ADV_PDF)
 
@@ -88,10 +94,11 @@ $(INTRO_INCL_TEXI): $(INTRO_INFO_TEXI)
 
 # Strip hardcopy formatting prior to running makeinfo.
 $(INTRO_INFO_TEXI): $(INTRO_TEXI)
-	sed -e 's/``@kbd{\([^'\'']*\)}'\'\''/``\1'\'\''/g'                    \
+	sed -e 's/`@kbd{\([^'\'']*\)}'\''/`\1'\''/g'                          \
 	    -e 's/@code{\([^}]*\)}/\1/g'                                      \
 	    -e 's/@math{_\\sqcup}/ /g'                                        \
 	    -e 's/@strong{@code{\([^}]*\)}}/\1/g'                             \
+	    -e 's/@strong{@kbd{\([^}]*\)}}/\1/g'                              \
 	    -e 's/@strong{\([^}]*\)}/\1/g'                                    \
 	    $(srcdir)/$(INTRO_TEXI) >$@.tmp
 	mv $@.tmp $@
@@ -105,10 +112,11 @@ $(ADV_INCL_TEXI): $(ADV_INFO_TEXI)
 
 # Strip hardcopy formatting prior to running makeinfo.
 $(ADV_INFO_TEXI): $(ADV_TEXI)
-	sed -e 's/``@kbd{\([^'\'']*\)}'\'\''/``\1'\'\''/g'                    \
+	sed -e 's/`@kbd{\([^'\'']*\)}'\''/`\1'\''/g'                          \
 	    -e 's/@code{\([^}]*\)}/\1/g'                                      \
 	    -e 's/@math{_\\sqcup}/ /g'                                        \
 	    -e 's/@strong{@code{\([^}]*\)}}/\1/g'                             \
+	    -e 's/@strong{@kbd{\([^}]*\)}}/\1/g'                              \
 	    -e 's/@strong{\([^}]*\)}/\1/g'                                    \
 	    $(srcdir)/$(ADV_TEXI) >$@.tmp
 	mv $@.tmp $@

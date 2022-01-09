@@ -12,7 +12,7 @@
 
 @dircategory Text creation and manipulation
 @direntry
-* ed introduction: (ed-intro).Introduction to the Unix Text Editor.
+* ed introduction: (ed-intro).  Introduction to the Unix Text Editor.
 @end direntry
 
 @copying

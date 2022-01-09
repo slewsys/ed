@@ -9,32 +9,36 @@ with commnad-line option **-G**.
 **Table of Contents**
 
 - [Extensions to the SUSv4 standard](#extensions-to-the-susv4-standard)
-- [Scrolling](#scrolling)
-- [Cut-and-Paste](#cut-and-paste)
-- [File Globbing](#file-globbing)
-- [External Filtering](#external-filtering)
-- [File Locking](#file-locking)
-- [Macros](#macros)
-- [ED Environment Variable](#ed-environment-variable)
-- [Binary Files](#binary-files)
-- [BSD Dialect](#bsd-dialect)
-- [Global Search](#global-search)
-- [Piped Input](#piped-input)
-- [SunOS Dialect](#sunos-dialect)
+   - [Scrolling](#scrolling)
+   - [Cut-and-Paste](#cut-and-paste)
+   - [File Globbing](#file-globbing)
+   - [External Filtering](#external-filtering)
+   - [File Locking](#file-locking)
+   - [Macros](#macros)
+   - [Script Flags](#script-flags)
+   - [ED Environment Variable](#ed-environment-variable)
+   - [Binary Files](#binary-files)
+   - [BSD Dialect](#bsd-dialect)
+   - [Global Search](#global-search)
+   - [Piped Input](#piped-input)
+   - [SunOS Dialect](#sunos-dialect)
 - [Deviations from the SUSv4 standard](#deviations-from-the-susv4-standard)
-- [Pattern delimiters](#pattern-delimiters)
-- [Undo within global command](#undo-within-global-command)
-- [Move within global command](#move-within-global-command)
-- [Shell command arguments](#shell-command-arguments)
+   - [Extended Regular Expressions](#extended-regular-expressions)
+   - [Pattern delimiters](#pattern-delimiters)
+   - [Undo within global command](#undo-within-global-command)
+   - [Move within global command](#move-within-global-command)
+   - [Shell command arguments](#shell-command-arguments)
 - [Examples](#examples)
-- [Repeated Substitution Modifiers](#repeated-substitution-modifiers)
+   - [Repeated Substitution Modifiers](#repeated-substitution-modifiers)
 
 <!-- markdown-toc end -->
 
-Several extensions to standard `ed` syntax can be enabled during
-configuration as summarized below.
-
 ## Extensions to the SUSv4 standard
+
+None of the `ed` extensions discussed below are enabled by default.
+They can all be enabled with `configure` option
+**--enable-all-extensions**. Alternatively, individual extensions can
+be enabled as described below.
 
 ### Scrolling
 
@@ -267,6 +271,81 @@ $ ed -p '*'          <-- Prompt for commands with '*'.
 $
 ```
 
+### Script Flags
+
+`ed` dropped the programming constructs of its ancestor, `QED`, that
+were later adopted by `sed`, but it's REPL interface and random access
+addressing still prove useful on occasion. Additional command-line
+flags for scripting are enabled by `configure` option
+***--enable-script-flags***. These are summarized as follows:
+
+    -i, --in-place[=SUFFIX]  Write file before closing, optionally
+                             back up the original.
+    -e, -expression=COMMAND  Add COMMAND to script input - implies -s.
+    -f, --file=SCRIPT        Read commands from file SCRIPT - implies -s.
+
+The flag **-f** enables stand-alone `ed` scripts.  For example:
+
+```
+#!/bin/ed -f
+#
+# @(#) cats.ed
+#
+# SYNOPSIS
+#   cats.ed file >new
+#
+# DESCRIPTION
+#   This script replaces a sequence of multiple newlines in a file with
+#   a single newline and prints the result to the standard output.
+#
+#
+# Append token (∴@∴) to end of each line.
+,s/$/∴@∴/
+# Join all lines
+,j
+# Substitue two newlines for sequences of multiple tokens not at EOF.
+s;\(∴@∴\)\{2,\}\([^∴]\);\
+\
+\2;g
+# Substitue one newline for sequences of one or more tokens.
+,s;\(∴@∴\)\{1,\};\
+;g
+# Print the result to standard output.
+,p
+# Avoid buffer-modified warning by quitting unconditionally.
+Q
+```
+
+Flags **-i** and **-e** are also borrowed from  `sed`.  The `sed` command:
+
+```shell
+sed -i -e 's/old/new/' file
+```
+
+in `ed` dialect becomes:
+
+```shell
+ed -i -e ',s/old/new/' file
+```
+
+Note the difference here: `sed` commands are applied to every input
+line by default, whereas `ed` requires an explicit range.
+
+Each `ed` expression argument is placed on a line by itself. So the
+`ed` script:
+
+    a
+    hello
+    .
+    s/x*/!/gp
+    Q
+
+could be written on the command line as:
+
+```
+ed -e 'a' -e 'hello' -e '.' -e 's/x*/!/gp' -e 'Q'
+```
+
 ### ED Environment Variable
 
 The `ed` environment variable, **ED**, is enabled with the `configure`
@@ -349,6 +428,11 @@ only and prohibits shell commands.
 
 ## Deviations from the SUSv4 standard
 
+### Extended Regular Expressions
+
+Extended regular expression syntax is available if `ed` is invoked
+with command-line flag `-E` or `-r`.
+
 ### Pattern delimiters
 
 To support the BSD **s** command (see EXTENSIONS above), substitution
@@ -389,8 +473,10 @@ hello world
 
 In the previous example, note that the default file name is not set, i.e.,
 
-     *f
-     *
+```shell
+*f
+*
+```
 
 ## Examples
 

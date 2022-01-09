@@ -12,7 +12,7 @@
 
 @dircategory Text creation and manipulation
 @direntry
-* ed advanced topics: (ed-adv).Advanced Editing on UNIX.
+* ed advanced topics: (ed-adv). Advanced Editing on UNIX.
 @end direntry
 
 @copying
@@ -181,8 +181,8 @@ theoretical knowledge, not something you have confidence in.
 * The Brackets:: `@kbd{[]}'
 * The Ampersand:: `@kbd{&}'
 * Substituting Newlines::
-* Joining Lines::
-* Rearranging a Line:: @kbd{\(@dots{}\)}
+* Joining Lines:: `@kbd{j}'
+* Rearranging a Line:: `@kbd{\(@dots{}\)}'
 @end menu
 
 @node The List Command, The Substitute Command, SPECIAL CHARACTERS, SPECIAL CHARACTERS

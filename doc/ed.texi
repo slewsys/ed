@@ -16,7 +16,7 @@
 
 @dircategory Text creation and manipulation
 @direntry
-* ed : (ed).The Standard Unix Text Editor
+* ed: (ed).                    The Standard Unix Text Editor
 @end direntry
 
 @copying
