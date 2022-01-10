@@ -1783,6 +1783,11 @@ static int
 comment_cmd (ed_buffer_t *ed)
 {
   /* case '#': */
+  if (ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL))
+    {
+      ed->exec->err = _("Unknown command");
+      return ERR;
+    }
   while (*ed->input++ != '\n')
     ;
   return 0;
