@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: ed 2.0.11\n"
+"Project-Id-Version: ed 2.0.12\n"
 "Report-Msgid-Bugs-To: https://github.com/slewsys/ed\n"
-"POT-Creation-Date: 2022-01-07 18:31-0500\n"
-"PO-Revision-Date: 2022-01-01 09:22+0000\n"
+"POT-Creation-Date: 2022-01-10 08:04-0500\n"
+"PO-Revision-Date: 2022-01-10 12:48+0000\n"
 "Last-Translator: Andrew L. Moore <slewsys@gmail.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "Language: es\n"
@@ -89,7 +89,7 @@ msgstr "Búfer está agotada"
 msgid "Buffer write error"
 msgstr "Error de escritura de búfer"
 
-#: src/buf.c:500 src/exec.c:101 src/exec.c:130 src/exec.c:1858 src/page.c:301
+#: src/buf.c:500 src/exec.c:101 src/exec.c:130 src/exec.c:1863 src/page.c:301
 #: src/parse.c:223
 msgid "Address out of range"
 msgstr "Dirección está fuera de rango"
@@ -173,19 +173,19 @@ msgid "Invalid register"
 msgstr "Registro no es válido"
 
 #: src/exec.c:1182 src/exec.c:1245 src/exec.c:1568 src/exec.c:1628
-#: src/exec.c:1798
+#: src/exec.c:1788 src/exec.c:1803
 msgid "Unknown command"
 msgstr "Comando no es conocido"
 
-#: src/exec.c:1798
+#: src/exec.c:1803
 msgid "Invalid address"
 msgstr "Dirección no es válida"
 
-#: src/exec.c:1816
+#: src/exec.c:1821
 msgid "Command too long"
 msgstr "Comando es demasiado largo"
 
-#: src/exec.c:1863
+#: src/exec.c:1868
 msgid "Invalid address range"
 msgstr "Rango de direcciones no es válido"
 

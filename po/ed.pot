@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ed 2.0.12\n"
 "Report-Msgid-Bugs-To: https://github.com/slewsys/ed\n"
-"POT-Creation-Date: 2022-01-07 18:31-0500\n"
+"POT-Creation-Date: 2022-01-10 08:04-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -89,7 +89,7 @@ msgstr ""
 msgid "Buffer write error"
 msgstr ""
 
-#: src/buf.c:500 src/exec.c:101 src/exec.c:130 src/exec.c:1858 src/page.c:301
+#: src/buf.c:500 src/exec.c:101 src/exec.c:130 src/exec.c:1863 src/page.c:301
 #: src/parse.c:223
 msgid "Address out of range"
 msgstr ""
@@ -173,19 +173,19 @@ msgid "Invalid register"
 msgstr ""
 
 #: src/exec.c:1182 src/exec.c:1245 src/exec.c:1568 src/exec.c:1628
-#: src/exec.c:1798
+#: src/exec.c:1788 src/exec.c:1803
 msgid "Unknown command"
 msgstr ""
 
-#: src/exec.c:1798
+#: src/exec.c:1803
 msgid "Invalid address"
 msgstr ""
 
-#: src/exec.c:1816
+#: src/exec.c:1821
 msgid "Command too long"
 msgstr ""
 
-#: src/exec.c:1863
+#: src/exec.c:1868
 msgid "Invalid address range"
 msgstr ""
 
