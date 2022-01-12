@@ -1,0 +1,17 @@
+Source: ed
+Section: editors
+Priority: standard
+Maintainer: Andrew L. Moore <slewsys@gmail.com>
+Build-Depends: debhelper-compat (= 13), dh-autoreconf
+Standards-Version: 4.5.1
+Homepage: https://github.com/slewsys/ed
+Rules-Requires-Root: no
+
+Package: ed
+Architecture: any
+Multi-Arch: foreign
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Description: The standard Unix text editor.
+ ed is a line-oriented text editor. It is used create, display, modify
+ and otherwise manipulate text files. When invoked as red, it is
+ restricted to editing files in the working directory.

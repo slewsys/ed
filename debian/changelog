@@ -1,0 +1,5 @@
+ed (1:2.0.13-0) unstable; urgency=high
+
+  * Initial Debian package support.
+
+ -- Andrew L. Moore <slewsys@gmail.com>  Wed, 12 Jan 2022 04:52:57 -0500
