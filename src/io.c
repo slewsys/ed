@@ -38,8 +38,9 @@ read_file (const char *fn, off_t after, off_t *addr,
 {
   FILE *fp = NULL;
   INO_T inode;
-  int status;
+  int status = 0;
   int already_open = 0;         /* File already open. */
+  int already_locked = 0;         /* File already locked. */
   int read_only = 0;            /* File access permissions. */
   int unlockable = 0;           /* Exclusive lock capability. */
 
@@ -57,6 +58,7 @@ read_file (const char *fn, off_t after, off_t *addr,
           ed->exec->err = _("File seek error");
           return ERR;
         }
+      status = 0;
     }
   else
     {
@@ -102,7 +104,11 @@ read_file (const char *fn, off_t after, off_t *addr,
     }
 
   /* Assert: File lock released on file close. */
-  if (!status && set_file_lock (fp, 1) != 0 && isatty (0))
+  if (!status && set_file_lock (fp, 1) != 0)
+    already_locked = 1;
+
+  if (already_locked && isatty (0)
+      && !(ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL)))
     fprintf (stderr, (ed->exec->opt & VERBOSE
                       ? _("%s: File already locked\n") : ""), fn);
 #endif  /* HAVE_FILE_LOCK */
@@ -192,7 +198,9 @@ read_stream (FILE *fp, off_t after, off_t *size, ed_buffer_t *ed)
   char *tb;
   size_t len;
   int newline_inserted = 0;
-  int newline_appended_already = ed->state->newline_appended;
+  /*
+   * int newline_appended_already = ed->state->newline_appended;
+   */
   int stream_appended = after == ed->state->lines;
 
   ed->state->dot = after;
@@ -318,7 +326,9 @@ read_stream_r (FILE *fp, off_t after, off_t *size, ed_buffer_t *ed)
   char *t;
   size_t len = 0;
   int newline_inserted = 0;
-  int newline_appended_already = ed->state->newline_appended;
+  /*
+   * int newline_appended_already = ed->state->newline_appended;
+   */
   int stream_appended = after == ed->state->lines;
 
   ed->state->input_is_binary = 0;
@@ -485,8 +495,10 @@ get_stream_line (FILE *fp, size_t *len, ed_buffer_t *ed)
   static size_t tb_size = 0;    /* buffer size */
 
   int c;
+#ifdef F_GETPATH
   char fb[PATH_MAX];
   char *fn;
+#endif
 
   /*
    * NB: stdin is not buffered to avoid I/O contention (see buf.c),

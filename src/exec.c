@@ -1018,7 +1018,6 @@ r_cmd (ed_buffer_t *ed)
   size_t len = 0;
   char *fn = NULL;
   int cx = 0;
-  int cy = 0;
   int is_default = 0;
   int status = 0;               /* Return status */
 
@@ -1369,7 +1368,6 @@ w_cmd (ed_buffer_t *ed)
   int c = *(ed->input - 1);
   int cx = 0;
   int cy = 0;
-  int cz = 0;
 
   /*
    * Allow writing an empty buffer provided no addresses are
@@ -1409,8 +1407,6 @@ w_cmd (ed_buffer_t *ed)
       return ERR;
     }
   SKIP_WHITESPACE (ed);
-
-  cz = *ed->input == '!';
 
   /* If file glob empty, use current file, not first in list!. */
   if (ed->file->is_glob && *ed->input == '\n')
@@ -1620,7 +1616,6 @@ z_cmd (ed_buffer_t *ed)
   size_t len = 0;
   int c = *(ed->input - 1);
   int status = 0;               /* Return status */
-  int zhfw_off = 0;             /* Half-page-scroll-forward offset. */
 
   /* scroll forward */
   if (ed->exec->opt & POSIXLY_CORRECT)

@@ -651,7 +651,6 @@ append_text_node (ed_text_node_t *th, const char *tb, const size_t len)
 {
   ed_text_node_t *tp;
   ed_text_node_t *tq = th->q_back;
-  size_t text_size = 0;
 
   spl1 ();
 

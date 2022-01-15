@@ -70,7 +70,6 @@ main (int argc, char **argv)
     };
   char **argv_new;
   char **argv_prev = NULL;
-  char wbuf[3];
   char *cs;
   long l;
   size_t len;
@@ -234,8 +233,7 @@ top:
 #endif
 
 #ifdef ENABLE_NLS
-  if (!bindtextdomain (PACKAGE, LOCALEDIR) ||
-      !textdomain (PACKAGE))
+  if (!bindtextdomain (PACKAGE, LOCALEDIR) || !textdomain (PACKAGE))
     fprintf (stderr, "%s\n", strerror(errno));
 #endif
 

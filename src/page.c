@@ -504,14 +504,13 @@ put_frame_buffer_line (ed_line_node_t *lp, off_t addr,
   static char fmt[27] = { '\0' }; /* Line no. format, e.g., "% 3lld\t" */
 
   off_t n;
-  ed_frame_node_t *rp;
   char line_no[OFF_T_LEN + TAB_WIDTH + 1];
   char *cp, *s;
   size_t col = 0;
   size_t len;
   unsigned int sgr_len = 0;     /* Length of ANSI SGR sequence. */
   int form_feed = 0;
-  int csize;
+  int csize = 1;                /* UTF-8 byte width. */
 
   /*
    * Per SUSv4, 2013, the `$' (dollar sign) character is output by the
@@ -602,6 +601,7 @@ put_frame_buffer_line (ed_line_node_t *lp, off_t addr,
               for (; sgr_len--; --fb->rem_chars, ++s)
                 if (fb_putc ((unsigned) *s, fb, ed) < 0)
                   return ERR;
+              csize = 0;
               continue;
             }
 
