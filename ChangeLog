@@ -1,3 +1,79 @@
+2022-01-15  Andrew L. Moore  <slewsys@gmail.com>
+
+	* src/exec.c (f_cmd, e_cmd, E_cmd, r_cmd, w_cmd, W_cmd):
+	Align extended command diagnostics more closely to POSIX intent.
+
+	If the default file is changed by an extended command, the name
+	of the new default is printed only if help/verbose mode is enabled
+	- i.e., in ed, command `H', or, on the command line, option `-v'.
+	This affects the extended commands, ~f, ~e, ~r and ~w as
+	summarized below.
+
+	The extended file command, ~f, now works as follows:
+
+	    ~f file-glob  - sets the file list and default file name to
+			    the first in the list, then prints the default
+			    file name.
+	    ~f            - prints the current file list without changing
+			    the default file name.
+	    ~fn           - changes the default file name to the "next" in
+			    the current file list and prints the new
+			    default file name.
+	    ~fp           - changes the default file name to the
+			    "previous" in the current file list and prints
+			    the new default file name.
+
+	The extended edit commands, ~e and ~E now work as follows:
+
+	    ~e file-glob  - sets the file list and edits the first in list.
+	    ~e            - edits the first file in the current file list,
+			    effectively "rewinding" it.
+	    ~en           - edits the "next" file in the current file list.
+	    ~ep           - edits the "previous" file in the current file
+			    list.
+
+	The extended read command, ~r, now works as follows:
+
+	    ~r file-glob  - if file-glob expands to a unique file, reads
+			    that file without changing either the current
+			    file list or the default file name.
+	    ~r            - reads the default file, which may or may not be
+			    the first in the current file list.
+
+	The extended write commands, ~w and ~W, now work as follows:
+
+	    ~w file-glob  - if file-glob expands to a unique file, writes
+			    the buffer contents to that file without
+			    changing either the current file list or the
+			    default file name.
+	    ~w            - write the default file, which may or may not
+			    be the first in the current file list.
+	    ~wn           - writes the buffer contents to the default file,
+			    then edits the "next" file current file list.
+	    ~wn           - writes the buffer contents to the default file,
+			    then edits the "previous" file current file
+			    list.
+
+	See also ChangeLog entry 2006-12-29 for an earlier, though more
+	complete, description of these commands.
+
+	* src/main.c (main):
+	* src/buf.c (append_text_node):
+	* src/exec.c (r_cmd, w_cmd, z_cmd)
+	* src/io.c (get_stream_line): Remove unused variables.
+
+	* src/io.c (read_file):
+	* src/page.c (put_frame_buffer_line): Properly Initialize variables.
+
+2022-01-12  Andrew L. Moore  <slewsys@gmail.com>
+
+	* debian (*): Add Debian package support.
+
+2022-01-10  Andrew L. Moore  <slewsys@gmail.com>
+
+	* src/exec.c (comment_cmd): In POSIX mode, comments should report
+	and error. Reported by grylem.
+
 2021-12-27  gettextize  <bug-gnu-gettext@gnu.org>
 
 	* m4/gettext.m4: Upgrade to gettext-0.21.
@@ -1335,14 +1411,14 @@
 	extended ed command     description
 	-------------------     -----------
 
-	en or En                Edits next file in `default file list' and
+	~en or ~En              Edits next file in `default file list' and
 				sets `default file name'. Any lines in the
 				editor buffer are deleted before the new
 				file is read. Attempting to go past end of
 				list raises an error. The new `default
 				file name' and size are printed to stdout.
 
-	ep or Ep                Edits previous file in `default file list'
+	~ep or ~Ep              Edits previous file in `default file list'
 				and sets `default file name'.  Any lines
 				in the editor buffer are deleted before
 				the new file is read. Attempting to go
@@ -1436,12 +1512,12 @@
 				    r !shell command
 				(q.v.).
 
-	(1,$)wn or Wn           Equivalent to a `w' (or `W') command fol-
+	(1,$)~wn or ~Wn         Equivalent to a `w' (or `W') command fol-
 				lowed by an `en' command. The name and
 				size of the file written to are printed to
 				stdout.
 
-	(1,$)wp or Wp           Equivalent to a `w' (or `W') command fol-
+	(1,$)~wp or ~Wp         Equivalent to a `w' (or `W') command fol-
 				lowed by an `ep' command. The name and
 				size of the file written to are printed to
 				stdout.

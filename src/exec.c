@@ -50,12 +50,11 @@
               clearerr (stdin);                                               \
               return ERR;                                                     \
             }                                                                 \
-          if (_subs && (!((ed)->exec->opt & SCRIPTED)                         \
-                        || (ed)->exec->opt & (POSIXLY_CORRECT | TRADITIONAL)))\
+          if (_subs)                                                          \
             puts ((fn) + 1);                                                  \
         }                                                                     \
       else if (!((fn) =                                                       \
-                 ((ed)->file->is_glob || (cm) == 'n' || (cm) == 'p'           \
+                 ((ed)->file->is_glob                                         \
                   ? file_glob (&(len), (cm), (replace), (uniquely), (ed))     \
                   : file_name (&(len), (ed)))))                               \
         {                                                                     \
@@ -473,7 +472,7 @@ d_cmd (ed_buffer_t *ed)
 static int
 e_cmd (ed_buffer_t *ed)
 {
-  if (ed->state->is_modified && !(ed->exec->opt & SCRIPTED))
+  if (ed->state->is_modified)
     return EMOD;
   return E_cmd (ed);
 }
@@ -497,7 +496,7 @@ E_cmd (ed_buffer_t *ed)
       return ERR;
     }
 #ifdef WANT_FILE_GLOB
-  if ((cy = *ed->input) == 'n' || cy == 'p')
+  if (ed->file->is_glob && ((cy = *ed->input) == 'n' || cy == 'p'))
     ++ed->input;
 #endif
   if (!isspace ((unsigned char) *ed->input))
@@ -536,8 +535,7 @@ E_cmd (ed_buffer_t *ed)
   init_ed_state (-1, &ed->state[1]);
   spl0 ();
 
-  if (*fn == '!' ||
-      (*fn == '\0' && ed->file->name && *ed->file->name == '!'))
+  if (*fn == '!' || (*fn == '\0' && ed->file->name && *ed->file->name == '!'))
     {
       if ((status = read_pipe (*fn == '!' ? fn : ed->file->name,
                                0, &addr, &size, ed)) < 0)
@@ -563,8 +561,8 @@ E_cmd (ed_buffer_t *ed)
       if ((status = read_file (is_default ? ed->file->name : "/dev/null",
                                0, &addr, &size, is_default, ed)) < 0)
         return status;
-      if (ed->file->is_glob || cx == '\n')
-        printf (ed->exec->opt & SCRIPTED ? "" : "%s\n", ed->file->name);
+      if (ed->file->is_glob && ed->exec->opt & VERBOSE)
+        puts (ed->file->name);
     }
   printf (ed->exec->opt & SCRIPTED ? "" : "%" OFF_T_FORMAT_STRING "\n", size);
 
@@ -640,6 +638,7 @@ f_cmd (ed_buffer_t *ed)
   char *fn = NULL;
   int cx = 0;
   int cy = 0;
+  int i;
 
   if (ed->exec->region->addrs)
     {
@@ -681,7 +680,7 @@ f_cmd (ed_buffer_t *ed)
       ed->exec->err = _("Command suffix unexpected");
       return ERR;
     }
-  else if (*ed->input == '\n' && cy != 'n' && cy != 'p')
+  else if ((cx = *ed->input == '\n' && cy != 'n' && cy != 'p'))
     ++ed->input;
   else
     {
@@ -689,17 +688,24 @@ f_cmd (ed_buffer_t *ed)
       REALLOC_THROW (ed->file->name, ed->file->name_size, len+1, ERR, ed);
       strcpy (ed->file->name, fn);
     }
-  if (ed->file->is_glob && cy != 'n' && cy != 'p'
-      && ed->file->glob->gl_pathc > 0)
-    for (cx = 0; cx < ed->file->glob->gl_pathc; ++cx)
-      /*
-       * puts (ed->file->glob->gl_pathv[cx]);
-       */
-      printf (ed->exec->opt & SCRIPTED ? "" : "%s\n",
-              ed->file->glob->gl_pathv[cx]);
+
+  /*
+   * ~f            - prints the current file list without changing the default
+   *                 file name.
+   * ~fn           - changes the default file name to the "next" in the
+   *                 current file list and prints the new default file name.
+   * ~fp           - changes the default file name to the "previous" in the
+   *                 current file list and prints the new default file name.
+   * ~f file-glob  - sets the file list and default file name to the first
+   *                 in the list, then prints the default file name.
+   * f             - prints the default file name.
+   * f file        - sets the default file name and prints it.
+   */
+  if (cx && ed->file->is_glob && ed->file->glob->gl_pathc > 0)
+    for (i = 0; i < ed->file->glob->gl_pathc; ++i)
+      puts (ed->file->glob->gl_pathv[i]);
   else if (ed->file->name)
-    printf (ed->exec->opt & SCRIPTED && (cy == 'n' || cy == 'p')
-            ? "" : "%s\n", ed->file->name);
+    puts (ed->file->name);
   else if (ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL))
     {
       ed->exec->err = _("File name not set");
@@ -1006,8 +1012,8 @@ q_cmd (ed_buffer_t *ed)
       return ERR;
     }
   COMMAND_SUFFIX (ed->display->io_f, ed);
-  return (c == 'q' && ed->state->is_modified &&
-          !(ed->exec->opt & SCRIPTED) ? EMOD : EOF);
+  return (c == 'q' && ed->state->is_modified
+          && !(ed->exec->opt & SCRIPTED) ? EMOD : EOF);
 }
 
 static int
@@ -1087,8 +1093,8 @@ r_cmd (ed_buffer_t *ed)
                                is_default, ed)) < 0)
         return status;
 
-      if (ed->file->is_glob)
-        printf (ed->exec->opt & SCRIPTED ? "" : "%s\n", fn);
+      if (ed->file->is_glob && ed->exec->opt & VERBOSE)
+        puts (fn);
 
       /*
        * Reading `/dev/null' to the end of a binary file is a
@@ -1102,7 +1108,7 @@ r_cmd (ed_buffer_t *ed)
 
   /* If multiple file args on command line, print first one. */
   if (ed->exec->opt & PRINT_FIRST_FILE && ed->file->list->gl_pathc > 1)
-    printf (ed->exec->opt & SCRIPTED ? "" : "%s\n", ed->file->name);
+    puts (ed->file->name);
 
   printf (ed->exec->opt & SCRIPTED ? "" : "%" OFF_T_FORMAT_STRING "\n",
           size);
@@ -1217,8 +1223,8 @@ scroll_backward_half (ed_buffer_t *ed)
   /*
    * if ((!ed->display->is_paging && ed->exec->region->end < ed->state->dot)
    */
-  if ((!ed->display->is_paging &&
-       ed->exec->region->end <= ed->display->ws_row / 2 + 1)
+  if ((!ed->display->is_paging
+       && ed->exec->region->end <= ed->display->ws_row / 2 + 1)
       || ed->state->dot == ed->state->lines)
     {
       ed->display->io_f |= ZHBW;
@@ -1279,8 +1285,8 @@ scroll_forward_half (ed_buffer_t *ed)
       if ((status = normalize_frame_buffer (ed)) < 0)
         return status;
 
-      if ((!ed->display->is_paging &&
-           ed->exec->region->end <= ed->display->ws_row / 2 + 1)
+      if ((!ed->display->is_paging
+           && ed->exec->region->end <= ed->display->ws_row / 2 + 1)
           || ed->state->dot == ed->state->lines)
         {
           ed->display->io_f |= ZHBW;
@@ -1387,7 +1393,7 @@ w_cmd (ed_buffer_t *ed)
       return ERR;
     }
 #ifdef WANT_FILE_GLOB
-  else if ((cy = *ed->input) == 'n' || cy == 'p')
+  else if (ed->file->is_glob && ((cy = *ed->input) == 'n' || cy == 'p'))
     ++ed->input;
 #endif
   else if ((cx = *ed->input) == 'q')
@@ -1479,35 +1485,33 @@ w_cmd (ed_buffer_t *ed)
                 (POSIXLY_CORRECT|TRADITIONAL|SCRIPTED|EXIT_ON_ERROR)))
             ed->exec->status = 0;
         }
-      if (ed->file->is_glob || cy == 'n' || cy == 'p')
-        printf (ed->exec->opt & SCRIPTED ? "" : "%s\n",
-                (is_default ? ed->file->name
-                 : (*fn != '\0' ? fn : "/dev/null")));
+      if (ed->file->is_glob && ed->exec->opt & VERBOSE)
+        puts (is_default ? ed->file->name : (*fn != '\0' ? fn : "/dev/null"));
     }
   printf (ed->exec->opt & SCRIPTED ? "" : "%" OFF_T_FORMAT_STRING "\n", size);
 
   /*
-   *                        State Variables
-   * Write command          cx    cy    cz
-   * =============          ===============
-   *   w                    '\n'  '\n'  '\0'
-   *   w filename           ' '   ' '   'f'
-   *   w !shell-cmd         '\n'  '\n'  '!'
-   *   wn                         'n'   '\0'
-   *   wn filename                'n'   '\0'
-   *   wn !shell-cmd              'n'   '!'
-   *   wp                         'p'   '\0'
-   *   wp filename                'p'   '\0'
-   *   wp !shell-cmd              'p'   '!'
-   *   wq                   'q'   'q'   '\0'
-   *   wq filename          'q'   'q'   'f'
-   *   wq !shell-cmd        'q'   'q'   '!'
-   *   ~w                   '\n'  '\n'  '\0'
-   *   ~w fileglob          ' '   ' '   'f'
-   *   ~w !shell-cmd        ' '   ' '   '!'
-   *   ~wq                  'q'   'q'   '\0'
-   *   ~wq fileglob         'q'   'q'   'f'
-   *   ~wq !shell-cmd       'q'   'q'   '!'
+   *                        State Vars
+   * Write command          cx    cy
+   * =============          ==========
+   *   w                    '\n'  '\n'
+   *   w filename           ' '   ' '
+   *   w !shell-cmd         '\n'  '\n'
+   *   wn                         'n'
+   *   wn filename                'n'
+   *   wn !shell-cmd              'n'
+   *   wp                         'p'
+   *   wp filename                'p'
+   *   wp !shell-cmd              'p'
+   *   wq                   'q'   'q'
+   *   wq filename          'q'   'q'
+   *   wq !shell-cmd        'q'   'q'
+   *   ~w                   '\n'  '\n'
+   *   ~w fileglob          ' '   ' '
+   *   ~w !shell-cmd        ' '   ' '
+   *   ~wq                  'q'   'q'
+   *   ~wq fileglob         'q'   'q'
+   *   ~wq !shell-cmd       'q'   'q'
    */
 
 #ifdef WANT_FILE_GLOB

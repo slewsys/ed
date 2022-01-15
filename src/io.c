@@ -118,14 +118,14 @@ read_file (const char *fn, off_t after, off_t *addr,
     return status;
   *addr = ed->state->dot - after;
 
-  if (read_only &&
-      !(ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL | SCRIPTED)))
+  if (read_only
+      && !(ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL)))
     fprintf (stderr, (ed->exec->opt & VERBOSE
                       ? "%s: File is read-only\n" : ""), fn);
 
 #ifdef WANT_FILE_LOCK
-  if (unlockable &&
-      !(ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL | SCRIPTED)))
+  if (unlockable
+      && !(ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL)))
     fprintf (stderr, (ed->exec->opt & VERBOSE
                       ? "%s: Exclusive lock not set\n" : ""), fn);
 

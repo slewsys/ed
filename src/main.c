@@ -245,7 +245,7 @@ top:
    * editing. For SUSv4 compatibility, suppress printing the name if
    * only one file arg is given.
    */
-  if (argc > 0)
+  if (argc > 0 && ed->exec->opt & VERBOSE)
     ed->exec->opt |= PRINT_FIRST_FILE;
 #endif
 
@@ -446,8 +446,8 @@ next_edit (int status, ed_buffer_t *ed)
 # ifdef WANT_SAFE_WRITE
            status == EOF_GLOB ? "~E\n" :
 # endif  /* WANT_SAFE_WRITE */
-           status == EOF_NEXT ? "En\n" :
-           status == EOF_PREV ? "Ep\n" :
+           status == EOF_NEXT ? "~En\n" :
+           status == EOF_PREV ? "~Ep\n" :
            "r %s\n",
            *ed->file->list->gl_pathv);
 #else
