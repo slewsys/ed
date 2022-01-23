@@ -868,7 +868,9 @@ dup_frame_node (const ed_frame_node_t *rp, ed_buffer_t *ed)
 }
 #endif  /* WANT_ED_SCROLL */
 
-/* sgr_span: Return length of ANSI SGR sequence, otherwise 0. */
+/* sgr_span: Return length of ANSI SGR sequence, otherwise 0.
+ *           Cf. <https://github.com/termstandard/colors>
+ */
 static unsigned int
 sgr_span (const char *s)
 {
@@ -876,7 +878,7 @@ sgr_span (const char *s)
 
   if (*s != ESCAPE || *++s != '[')
     return 0;
-  while (isdigit (*++s) || *s == ';')
+  while (isdigit (*++s) || *s == ';' || *s == ':')
     ;
   return *s == 'm' ? s - t + 1 : 0;
 }
