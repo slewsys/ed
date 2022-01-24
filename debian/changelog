@@ -1,4 +1,4 @@
-ed (1:2.0.13-0) unstable; urgency=high
+ed (1:2.0.13-1) unstable; urgency=high
 
   * Initial Debian package support.
 

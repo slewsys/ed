@@ -1,1 +1,1 @@
-/GNU GENERAL PUBLIC LICENSE/+2;/END OF TERMS AND CONDITIONS/-! tr 'a-zA-Z' 'n-za-mN-ZA-M'
+,! tr 'a-zA-Z' 'n-za-mN-ZA-M'
