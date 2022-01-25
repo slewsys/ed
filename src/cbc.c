@@ -4,7 +4,7 @@
  *
  *  Copyright © 1993 The Regents of the University of California.
  *
- *  Copyright © 2013, 2018 Andrew L. Moore, SlewSys Research
+ *  Copyright © 2013, 2022 Andrew L. Moore, SlewSys Research
  *
  *  This file is part of ed.
  */

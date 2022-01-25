@@ -1,6 +1,6 @@
 /* sub.c: Substitution routines for the ed line editor.
  *
- *  Copyright © 1993-2018 Andrew L. Moore, SlewSys Research
+ *  Copyright © 1993-2022 Andrew L. Moore, SlewSys Research
  *
  *  This file is part of ed.
  */
