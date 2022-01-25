@@ -568,7 +568,7 @@ E_cmd (ed_buffer_t *ed)
 
   /* Per SUSv4, exit_status cannot be reset. We'll do it anyhow ... */
   if (!(ed->exec->opt
-        & (POSIXLY_CORRECT|TRADITIONAL|SCRIPTED|EXIT_ON_ERROR)))
+        & (POSIXLY_CORRECT | TRADITIONAL | SCRIPTED | EXIT_ON_ERROR)))
     ed->exec->status = 0;
   return 0;
 }
@@ -1110,8 +1110,8 @@ r_cmd (ed_buffer_t *ed)
   if (ed->exec->opt & PRINT_FIRST_FILE && ed->file->list->gl_pathc > 1)
     puts (ed->file->name);
 
-  printf (ed->exec->opt & SCRIPTED ? "" : "%" OFF_T_FORMAT_STRING "\n",
-          size);
+  printf (ed->exec->opt & (SCRIPTED | WRITE_ONLY) ? ""
+          : "%" OFF_T_FORMAT_STRING "\n", size);
   if (addr && addr != ed->state->lines)
     ed->state->is_modified = 1;
   return 0;
@@ -1482,7 +1482,7 @@ w_cmd (ed_buffer_t *ed)
            * anyhow ...
            */
           if (!(ed->exec->opt &
-                (POSIXLY_CORRECT|TRADITIONAL|SCRIPTED|EXIT_ON_ERROR)))
+                (POSIXLY_CORRECT | TRADITIONAL | SCRIPTED | EXIT_ON_ERROR)))
             ed->exec->status = 0;
         }
       if (ed->file->is_glob && ed->exec->opt & VERBOSE)

@@ -72,8 +72,15 @@ read_file (const char *fn, off_t after, off_t *addr,
           return ERR;
         }
 
+      /* File is write-only */
+      else if (ed->exec->opt & WRITE_ONLY)
+        return 0;
+
+      else if ((status = is_fifo (fn, ed)) < 0)
+        return ERR;
+
       /* File not writable. */
-      else if ((status = access (fn, W_OK)) == -1)
+      else if (status || (status = access (fn, W_OK)) == -1)
         read_only = 1;
 
 #ifdef WANT_FILE_LOCK
@@ -848,3 +855,18 @@ set_file_lock (FILE *fp, int exclusive)
 }
 
 #endif  /* WANT_FILE_LOCK */
+
+/* is_fifo: Return FIFO status of pathname. */
+int
+is_fifo (const char *fn, ed_buffer_t *ed)
+  {
+    struct stat sb;
+
+    if (stat(fn, &sb) < 0)
+      {
+        fprintf (stderr, "%s: %s\n", fn, strerror (errno));
+        ed->exec->err = _("File stat error");
+        return ERR;
+      }
+    return S_ISFIFO (sb.st_mode);
+  }

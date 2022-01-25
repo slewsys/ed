@@ -1,3 +1,36 @@
+2022-01-25  Andrew L. Moore  <slewsys@gmail.com>
+
+	* src/exec.c (r_cmd):
+	* src/io.c (read_file, is_fifo): Open FIFOs in read-only mode by
+	default. This allows ed to read the output of process
+	substitutions, e.g.,
+
+	    $ echo p | ed - <(echo hello)
+	    hello
+	    $
+
+	Reading from a pipe via /dev/fd/0, i.e.,
+
+	    $ echo hello | ed -e 'p' /dev/fd/0
+
+	doesn't work as expected yet.
+
+	* src/main.c (main, ed_usage): Add option -w for writing to
+	process substitutions, e.g.,
+
+	    $  ed -w - >(gzip -c - >temp.gz) <<'EOF'
+	    r !curl wttr.in?format=\%t
+	    wq
+	    EOF
+	    $ gzip -cd temp.gz
+	    +57°F
+	    $
+
+2022-01-24  Andrew L. Moore  <slewsys@gmail.com>
+
+	* COPYING, testsuite/bang3.d: Resolve Debian Lintian errors by
+	removing full text of GPL.
+
 2022-01-15  Andrew L. Moore  <slewsys@gmail.com>
 
 	* src/exec.c (f_cmd, e_cmd, E_cmd, r_cmd, w_cmd, W_cmd):

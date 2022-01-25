@@ -120,7 +120,8 @@ int dup2 ();
 #ifdef HAVE_SYS_STAT_H
 # include <sys/stat.h>
 #else
-int fstat ();
+int fstat (int, struct stat *);
+int stat (const char *, struct stat *);
 #endif  /* !HAVE_SYS_STAT_H */
 
 #ifndef S_ISREG
@@ -495,7 +496,8 @@ enum ed_command_flags
   FSCRIPT           = 0x0800,   /* If set, script via option `-f'.. */
   SCRIPTED          = 0x1000,   /* If set, script mode enabled. */
   TRADITIONAL       = 0x2000,   /* If set, be backward compatible. */
-  VERBOSE           = 0x4000    /* If set, print error diagnostics. */
+  VERBOSE           = 0x4000,   /* If set, print error diagnostics. */
+  WRITE_ONLY        = 0x8000    /* If set, open file in write-only mode. */
 };
 
 /* Ed state parameters. */
@@ -927,6 +929,7 @@ int inter_register_copy (int, ed_buffer_t *);
 int inter_register_move (int, ed_buffer_t *);
 #endif
 
+int is_fifo (const char *, ed_buffer_t *);
 int is_utf8_str (const char *, size_t);
 int join_lines (off_t, off_t, ed_buffer_t *);
 int mark_global_nodes (int, ed_buffer_t *);

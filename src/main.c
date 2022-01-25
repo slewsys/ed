@@ -42,7 +42,7 @@ static void script_die (int, ed_buffer_t *);
 int
 main (int argc, char **argv)
 {
-  struct option long_options[15] =
+  struct option long_options[16] =
     {
       {"ansi-color", no_argument, NULL, 'R'},
 
@@ -66,7 +66,8 @@ main (int argc, char **argv)
       {"traditional", no_argument, NULL, 'G'},
       {"verbose", no_argument, NULL, 'v'},
       {"version", no_argument, NULL, 'V'},
-      {0, 0, 0, 0},
+      {"write", no_argument, NULL, 'w'},
+      {0, 0, 0, 0}
     };
   char **argv_new;
   char **argv_prev = NULL;
@@ -101,7 +102,7 @@ top:
 #ifdef WANT_SCRIPT_FLAGS
                            "e:f:i::"
 #endif
-                           "Ghp:RrsVv"
+                           "Ghp:RrsVvw"
 #ifdef WANT_ED_ENCRYPTION
                            "x"
 #endif
@@ -175,6 +176,9 @@ top:
         break;
       case 'v':                 /* Verbose mode. */
         ed->exec->opt |= VERBOSE;
+        break;
+      case 'w':                 /* Open file in write-only mode. */
+        ed->exec->opt |=  WRITE_ONLY;
         break;
 #ifdef WANT_ED_ENCRYPTION
       case 'x':
@@ -690,10 +694,10 @@ ed_usage (int status, ed_buffer_t *ed)
 
   if (status)
 #ifdef WANT_SCRIPT_FLAGS
-    printf (_("Usage: %s [-] [-EGhirsVvx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE]\n"),
+    printf (_("Usage: %s [-] [-EGhirsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE]\n"),
             ed->exec->opt & RESTRICTED ? "red" : "ed");
 #else
-    printf (_("Usage: %s [-] [-EGhrsVvx] [-p PROMPT] [FILE]\n"),
+    printf (_("Usage: %s [-] [-EGhrsVvwx] [-p PROMPT] [FILE]\n"),
             ed->exec->opt & RESTRICTED ? "red" : "ed");
 #endif  /* !WANT_SCRIPT_FLAGS */
   else if (ed->exec->opt & PRINT_VERSION)
@@ -718,6 +722,7 @@ ed_usage (int status, ed_buffer_t *ed)
   -s, --script              Suppress interactive diagnostics.\n\
   -v, --verbose             Enable verbose error diagnostics.\n\
   -V, --version             Print version information, then exit.\n\
+  -w, --write               Open file in write-only mode.\n\
   -x, --crypt               Prompt for encryption key used for subsequent I/O.\n\
 \n\
 If FILE is given, read it for editing.  From within ed, run:\n\
@@ -736,6 +741,7 @@ Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"));
   -s, --script              Suppress interactive diagnostics.\n\
   -v, --verbose             Enable verbose error diagnostics.\n\
   -V, --version             Print version information, then exit.\n\
+  -w, --write               Open file in write-only mode.\n\
   -x, --crypt               Prompt for encryption key used for subsequent I/O.\n\
 \n\
 If FILE is given, read it for editing.  From within ed, run:\n\
