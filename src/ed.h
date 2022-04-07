@@ -598,8 +598,8 @@ enum ed_command_error
   (RE_SYNTAX_ED_BASIC | RE_DOT_NOT_NULL)
 
 # define RE_SYNTAX_ED_EXTENDED                                                \
-  (_RE_SYNTAX_ED_COMMON | RE_NO_BK_BRACES | RE_NO_BK_PARENS |                 \
-   RE_NO_BK_VBAR)
+  ((_RE_SYNTAX_ED_COMMON & ~RE_NO_GNU_OPS) | RE_NO_BK_BRACES |                \
+   RE_NO_BK_PARENS | RE_NO_BK_VBAR)
 
 # undef RE_SYNTAX_POSIX_EXTENDED
 # define RE_SYNTAX_POSIX_EXTENDED                                             \
