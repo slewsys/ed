@@ -64,7 +64,7 @@ more easily.
 @c @contents
 
 @headings off
-@everyheading @| -@thispage- @|
+@everyheading @| - @thispage - @|
 @setchapternewpage off
 @c @fonttextsize 10
 

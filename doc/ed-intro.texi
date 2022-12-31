@@ -49,7 +49,7 @@ editing.
 
 @c Preserve appearance of historical document
 @headings off
-@everyheading @| -@thispage- @|
+@everyheading @| - @thispage - @|
 @c @fonttextsize 10
 
 @ifnottex
