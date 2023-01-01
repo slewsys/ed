@@ -76,6 +76,12 @@
 /* Define to 1 if you have the <crtdefs.h> header file. */
 #undef HAVE_CRTDEFS_H
 
+/* Define to 1 if bool, true and false work as per C2023. */
+#undef HAVE_C_BOOL
+
+/* Define to 1 if the static_assert keyword works. */
+#undef HAVE_C_STATIC_ASSERT
+
 /* Define to 1 if C supports variable-length arrays. */
 #undef HAVE_C_VARARRAYS
 
@@ -427,6 +433,114 @@
 #endif
     
 
+/* Define to 1 if ctype.h defines __header_inline. */
+#undef HAVE___HEADER_INLINE
+
+/* Please see the Gnulib manual for how to use these macros.
+
+   Suppress extern inline with HP-UX cc, as it appears to be broken; see
+   <https://lists.gnu.org/r/bug-texinfo/2013-02/msg00030.html>.
+
+   Suppress extern inline with Sun C in standards-conformance mode, as it
+   mishandles inline functions that call each other.  E.g., for 'inline void f
+   (void) { } inline void g (void) { f (); }', c99 incorrectly complains
+   'reference to static identifier "f" in extern inline function'.
+   This bug was observed with Oracle Developer Studio 12.6
+   (Sun C 5.15 SunOS_sparc 2017/05/30).
+
+   Suppress extern inline (with or without __attribute__ ((__gnu_inline__)))
+   on configurations that mistakenly use 'static inline' to implement
+   functions or macros in standard C headers like <ctype.h>.  For example,
+   if isdigit is mistakenly implemented via a static inline function,
+   a program containing an extern inline function that calls isdigit
+   may not work since the C standard prohibits extern inline functions
+   from calling static functions (ISO C 99 section 6.7.4.(3).
+   This bug is known to occur on:
+
+     OS X 10.8 and earlier; see:
+     https://lists.gnu.org/r/bug-gnulib/2012-12/msg00023.html
+
+     DragonFly; see
+     http://muscles.dragonflybsd.org/bulk/clang-master-potential/20141111_102002/logs/ah-tty-0.3.12.log
+
+     FreeBSD; see:
+     https://lists.gnu.org/r/bug-gnulib/2014-07/msg00104.html
+
+   OS X 10.9 has a macro __header_inline indicating the bug is fixed for C and
+   for clang but remains for g++; see <https://trac.macports.org/ticket/41033>.
+   Assume DragonFly and FreeBSD will be similar.
+
+   GCC 4.3 and above with -std=c99 or -std=gnu99 implements ISO C99
+   inline semantics, unless -fgnu89-inline is used.  It defines a macro
+   __GNUC_STDC_INLINE__ to indicate this situation or a macro
+   __GNUC_GNU_INLINE__ to indicate the opposite situation.
+   GCC 4.2 with -std=c99 or -std=gnu99 implements the GNU C inline
+   semantics but warns, unless -fgnu89-inline is used:
+     warning: C99 inline functions are not supported; using GNU89
+     warning: to disable this warning use -fgnu89-inline or the gnu_inline function attribute
+   It defines a macro __GNUC_GNU_INLINE__ to indicate this situation.
+ */
+#if (((defined __APPLE__ && defined __MACH__) \
+      || defined __DragonFly__ || defined __FreeBSD__) \
+     && (defined HAVE___HEADER_INLINE \
+         ? (defined __cplusplus && defined __GNUC_STDC_INLINE__ \
+            && ! defined __clang__) \
+         : ((! defined _DONT_USE_CTYPE_INLINE_ \
+             && (defined __GNUC__ || defined __cplusplus)) \
+            || (defined _FORTIFY_SOURCE && 0 < _FORTIFY_SOURCE \
+                && defined __GNUC__ && ! defined __cplusplus))))
+# define _GL_EXTERN_INLINE_STDHEADER_BUG
+#endif
+#if ((__GNUC__ \
+      ? defined __GNUC_STDC_INLINE__ && __GNUC_STDC_INLINE__ \
+      : (199901L <= __STDC_VERSION__ \
+         && !defined __HP_cc \
+         && !defined __PGI \
+         && !(defined __SUNPRO_C && __STDC__))) \
+     && !defined _GL_EXTERN_INLINE_STDHEADER_BUG)
+# define _GL_INLINE inline
+# define _GL_EXTERN_INLINE extern inline
+# define _GL_EXTERN_INLINE_IN_USE
+#elif (2 < __GNUC__ + (7 <= __GNUC_MINOR__) && !defined __STRICT_ANSI__ \
+       && !defined _GL_EXTERN_INLINE_STDHEADER_BUG)
+# if defined __GNUC_GNU_INLINE__ && __GNUC_GNU_INLINE__
+   /* __gnu_inline__ suppresses a GCC 4.2 diagnostic.  */
+#  define _GL_INLINE extern inline __attribute__ ((__gnu_inline__))
+# else
+#  define _GL_INLINE extern inline
+# endif
+# define _GL_EXTERN_INLINE extern
+# define _GL_EXTERN_INLINE_IN_USE
+#else
+# define _GL_INLINE _GL_UNUSED static
+# define _GL_EXTERN_INLINE _GL_UNUSED static
+#endif
+
+/* In GCC 4.6 (inclusive) to 5.1 (exclusive),
+   suppress bogus "no previous prototype for 'FOO'"
+   and "no previous declaration for 'FOO'" diagnostics,
+   when FOO is an inline function in the header; see
+   <https://gcc.gnu.org/bugzilla/show_bug.cgi?id=54113> and
+   <https://gcc.gnu.org/bugzilla/show_bug.cgi?id=63877>.  */
+#if __GNUC__ == 4 && 6 <= __GNUC_MINOR__
+# if defined __GNUC_STDC_INLINE__ && __GNUC_STDC_INLINE__
+#  define _GL_INLINE_HEADER_CONST_PRAGMA
+# else
+#  define _GL_INLINE_HEADER_CONST_PRAGMA \
+     _Pragma ("GCC diagnostic ignored \"-Wsuggest-attribute=const\"")
+# endif
+# define _GL_INLINE_HEADER_BEGIN \
+    _Pragma ("GCC diagnostic push") \
+    _Pragma ("GCC diagnostic ignored \"-Wmissing-prototypes\"") \
+    _Pragma ("GCC diagnostic ignored \"-Wmissing-declarations\"") \
+    _GL_INLINE_HEADER_CONST_PRAGMA
+# define _GL_INLINE_HEADER_END \
+    _Pragma ("GCC diagnostic pop")
+#else
+# define _GL_INLINE_HEADER_BEGIN
+# define _GL_INLINE_HEADER_END
+#endif
+
 /* Define to 1 if the compiler supports the keyword '__inline'. */
 #undef HAVE___INLINE
 
@@ -619,11 +733,15 @@
 #ifndef __STDC_WANT_IEC_60559_DFP_EXT__
 # undef __STDC_WANT_IEC_60559_DFP_EXT__
 #endif
+/* Enable extensions specified by C23 Annex F.  */
+#ifndef __STDC_WANT_IEC_60559_EXT__
+# undef __STDC_WANT_IEC_60559_EXT__
+#endif
 /* Enable extensions specified by ISO/IEC TS 18661-4:2015.  */
 #ifndef __STDC_WANT_IEC_60559_FUNCS_EXT__
 # undef __STDC_WANT_IEC_60559_FUNCS_EXT__
 #endif
-/* Enable extensions specified by ISO/IEC TS 18661-3:2015.  */
+/* Enable extensions specified by C23 Annex H and ISO/IEC TS 18661-3:2015.  */
 #ifndef __STDC_WANT_IEC_60559_TYPES_EXT__
 # undef __STDC_WANT_IEC_60559_TYPES_EXT__
 #endif
@@ -802,7 +920,9 @@
 /* Attributes.  */
 #if (defined __has_attribute \
      && (!defined __clang_minor__ \
-         || 3 < __clang_major__ + (5 <= __clang_minor__)))
+         || (defined __apple_build_version__ \
+             ? 6000000 <= __apple_build_version__ \
+             : 3 < __clang_major__ + (5 <= __clang_minor__))))
 # define _GL_HAS_ATTRIBUTE(attr) __has_attribute (__##attr##__)
 #else
 # define _GL_HAS_ATTRIBUTE(attr) _GL_ATTR_##attr
@@ -836,10 +956,10 @@
 # define _GL_ATTR_warn_unused_result _GL_GNUC_PREREQ (3, 4)
 #endif
 
-#ifdef __has_c_attribute
-# define _GL_HAS_C_ATTRIBUTE(attr) __has_c_attribute (__##attr##__)
-#else
-# define _GL_HAS_C_ATTRIBUTE(attr) 0
+/* Disable GCC -Wpedantic if using __has_c_attribute and this is not C23+.  */
+#if (defined __has_c_attribute && _GL_GNUC_PREREQ (4, 6) \
+     && (defined __STDC_VERSION__ ? __STDC_VERSION__ : 0) <= 201710)
+# pragma GCC diagnostic ignored "-Wpedantic"
 #endif
 
 
@@ -913,7 +1033,19 @@
 #else
 # define _GL_ATTRIBUTE_DEALLOC(f, i)
 #endif
-#define _GL_ATTRIBUTE_DEALLOC_FREE _GL_ATTRIBUTE_DEALLOC (free, 1)
+/* If gnulib's <string.h> or <wchar.h> has already defined this macro, continue
+   to use this earlier definition, since <stdlib.h> may not have been included
+   yet.  */
+#ifndef _GL_ATTRIBUTE_DEALLOC_FREE
+# if defined __cplusplus && defined __GNUC__ && !defined __clang__
+/* Work around GCC bug <https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108231> */
+#  define _GL_ATTRIBUTE_DEALLOC_FREE \
+     _GL_ATTRIBUTE_DEALLOC ((void (*) (void *)) free, 1)
+# else
+#  define _GL_ATTRIBUTE_DEALLOC_FREE \
+     _GL_ATTRIBUTE_DEALLOC (free, 1)
+# endif
+#endif
 
 /* _GL_ATTRIBUTE_DEPRECATED: Declares that an entity is deprecated.
    The compiler may warn if the entity is used.  */
@@ -923,11 +1055,15 @@
      - enumeration, enumeration item,
      - typedef,
    in C++ also: namespace, class, template specialization.  */
-#if _GL_HAS_C_ATTRIBUTE (deprecated)
-# define _GL_ATTRIBUTE_DEPRECATED [[__deprecated__]]
-#elif _GL_HAS_ATTRIBUTE (deprecated)
+#ifdef __has_c_attribute
+# if __has_c_attribute (__deprecated__)
+#  define _GL_ATTRIBUTE_DEPRECATED [[__deprecated__]]
+# endif
+#endif
+#if !defined _GL_ATTRIBUTE_DEPRECATED && _GL_HAS_ATTRIBUTE (deprecated)
 # define _GL_ATTRIBUTE_DEPRECATED __attribute__ ((__deprecated__))
-#else
+#endif
+#ifndef _GL_ATTRIBUTE_DEPRECATED
 # define _GL_ATTRIBUTE_DEPRECATED
 #endif
 
@@ -961,11 +1097,15 @@
    'default' label.  The compiler should not warn in this case.  */
 /* Applies to: Empty statement (;), inside a 'switch' statement.  */
 /* Always expands to something.  */
-#if _GL_HAS_C_ATTRIBUTE (fallthrough)
-# define _GL_ATTRIBUTE_FALLTHROUGH [[__fallthrough__]]
-#elif _GL_HAS_ATTRIBUTE (fallthrough)
+#ifdef __has_c_attribute
+# if __has_c_attribute (__fallthrough__)
+#  define _GL_ATTRIBUTE_FALLTHROUGH [[__fallthrough__]]
+# endif
+#endif
+#if !defined _GL_ATTRIBUTE_FALLTHROUGH && _GL_HAS_ATTRIBUTE (fallthrough)
 # define _GL_ATTRIBUTE_FALLTHROUGH __attribute__ ((__fallthrough__))
-#else
+#endif
+#ifndef _GL_ATTRIBUTE_FALLTHROUGH
 # define _GL_ATTRIBUTE_FALLTHROUGH ((void) 0)
 #endif
 
@@ -1026,15 +1166,19 @@
      - enumeration, enumeration item,
      - typedef,
    in C++ also: class.  */
-/* In C++ and C2x, this is spelled [[__maybe_unused__]].
+/* In C++ and C23, this is spelled [[__maybe_unused__]].
    GCC's syntax is __attribute__ ((__unused__)).
    clang supports both syntaxes.  */
-#if _GL_HAS_C_ATTRIBUTE (maybe_unused)
-# define _GL_ATTRIBUTE_MAYBE_UNUSED [[__maybe_unused__]]
-#else
+#ifdef __has_c_attribute
+# if __has_c_attribute (__maybe_unused__)
+#  define _GL_ATTRIBUTE_MAYBE_UNUSED [[__maybe_unused__]]
+# endif
+#endif
+#ifndef _GL_ATTRIBUTE_MAYBE_UNUSED
 # define _GL_ATTRIBUTE_MAYBE_UNUSED _GL_ATTRIBUTE_UNUSED
 #endif
-/* Alternative spelling of this macro, for convenience.  */
+/* Alternative spelling of this macro, for convenience and for
+   compatibility with glibc/include/libc-symbols.h.  */
 #define _GL_UNUSED _GL_ATTRIBUTE_MAYBE_UNUSED
 /* Earlier spellings of this macro.  */
 #define _UNUSED_PARAMETER_ _GL_ATTRIBUTE_MAYBE_UNUSED
@@ -1043,11 +1187,15 @@
    discard the return value.  The compiler may warn if the caller does not use
    the return value, unless the caller uses something like ignore_value.  */
 /* Applies to: function, enumeration, class.  */
-#if _GL_HAS_C_ATTRIBUTE (nodiscard)
-# define _GL_ATTRIBUTE_NODISCARD [[__nodiscard__]]
-#elif _GL_HAS_ATTRIBUTE (warn_unused_result)
+#ifdef __has_c_attribute
+# if __has_c_attribute (__nodiscard__)
+#  define _GL_ATTRIBUTE_NODISCARD [[__nodiscard__]]
+# endif
+#endif
+#if !defined _GL_ATTRIBUTE_NODISCARD && _GL_HAS_ATTRIBUTE (warn_unused_result)
 # define _GL_ATTRIBUTE_NODISCARD __attribute__ ((__warn_unused_result__))
-#else
+#endif
+#ifndef _GL_ATTRIBUTE_NODISCARD
 # define _GL_ATTRIBUTE_NODISCARD
 #endif
 
@@ -1160,111 +1308,6 @@
 
 /* Define to empty if `const' does not conform to ANSI C. */
 #undef const
-
-/* Please see the Gnulib manual for how to use these macros.
-
-   Suppress extern inline with HP-UX cc, as it appears to be broken; see
-   <https://lists.gnu.org/r/bug-texinfo/2013-02/msg00030.html>.
-
-   Suppress extern inline with Sun C in standards-conformance mode, as it
-   mishandles inline functions that call each other.  E.g., for 'inline void f
-   (void) { } inline void g (void) { f (); }', c99 incorrectly complains
-   'reference to static identifier "f" in extern inline function'.
-   This bug was observed with Oracle Developer Studio 12.6
-   (Sun C 5.15 SunOS_sparc 2017/05/30).
-
-   Suppress extern inline (with or without __attribute__ ((__gnu_inline__)))
-   on configurations that mistakenly use 'static inline' to implement
-   functions or macros in standard C headers like <ctype.h>.  For example,
-   if isdigit is mistakenly implemented via a static inline function,
-   a program containing an extern inline function that calls isdigit
-   may not work since the C standard prohibits extern inline functions
-   from calling static functions (ISO C 99 section 6.7.4.(3).
-   This bug is known to occur on:
-
-     OS X 10.8 and earlier; see:
-     https://lists.gnu.org/r/bug-gnulib/2012-12/msg00023.html
-
-     DragonFly; see
-     http://muscles.dragonflybsd.org/bulk/clang-master-potential/20141111_102002/logs/ah-tty-0.3.12.log
-
-     FreeBSD; see:
-     https://lists.gnu.org/r/bug-gnulib/2014-07/msg00104.html
-
-   OS X 10.9 has a macro __header_inline indicating the bug is fixed for C and
-   for clang but remains for g++; see <https://trac.macports.org/ticket/41033>.
-   Assume DragonFly and FreeBSD will be similar.
-
-   GCC 4.3 and above with -std=c99 or -std=gnu99 implements ISO C99
-   inline semantics, unless -fgnu89-inline is used.  It defines a macro
-   __GNUC_STDC_INLINE__ to indicate this situation or a macro
-   __GNUC_GNU_INLINE__ to indicate the opposite situation.
-   GCC 4.2 with -std=c99 or -std=gnu99 implements the GNU C inline
-   semantics but warns, unless -fgnu89-inline is used:
-     warning: C99 inline functions are not supported; using GNU89
-     warning: to disable this warning use -fgnu89-inline or the gnu_inline function attribute
-   It defines a macro __GNUC_GNU_INLINE__ to indicate this situation.
- */
-#if (((defined __APPLE__ && defined __MACH__) \
-      || defined __DragonFly__ || defined __FreeBSD__) \
-     && (defined __header_inline \
-         ? (defined __cplusplus && defined __GNUC_STDC_INLINE__ \
-            && ! defined __clang__) \
-         : ((! defined _DONT_USE_CTYPE_INLINE_ \
-             && (defined __GNUC__ || defined __cplusplus)) \
-            || (defined _FORTIFY_SOURCE && 0 < _FORTIFY_SOURCE \
-                && defined __GNUC__ && ! defined __cplusplus))))
-# define _GL_EXTERN_INLINE_STDHEADER_BUG
-#endif
-#if ((__GNUC__ \
-      ? defined __GNUC_STDC_INLINE__ && __GNUC_STDC_INLINE__ \
-      : (199901L <= __STDC_VERSION__ \
-         && !defined __HP_cc \
-         && !defined __PGI \
-         && !(defined __SUNPRO_C && __STDC__))) \
-     && !defined _GL_EXTERN_INLINE_STDHEADER_BUG)
-# define _GL_INLINE inline
-# define _GL_EXTERN_INLINE extern inline
-# define _GL_EXTERN_INLINE_IN_USE
-#elif (2 < __GNUC__ + (7 <= __GNUC_MINOR__) && !defined __STRICT_ANSI__ \
-       && !defined _GL_EXTERN_INLINE_STDHEADER_BUG)
-# if defined __GNUC_GNU_INLINE__ && __GNUC_GNU_INLINE__
-   /* __gnu_inline__ suppresses a GCC 4.2 diagnostic.  */
-#  define _GL_INLINE extern inline __attribute__ ((__gnu_inline__))
-# else
-#  define _GL_INLINE extern inline
-# endif
-# define _GL_EXTERN_INLINE extern
-# define _GL_EXTERN_INLINE_IN_USE
-#else
-# define _GL_INLINE _GL_UNUSED static
-# define _GL_EXTERN_INLINE _GL_UNUSED static
-#endif
-
-/* In GCC 4.6 (inclusive) to 5.1 (exclusive),
-   suppress bogus "no previous prototype for 'FOO'"
-   and "no previous declaration for 'FOO'" diagnostics,
-   when FOO is an inline function in the header; see
-   <https://gcc.gnu.org/bugzilla/show_bug.cgi?id=54113> and
-   <https://gcc.gnu.org/bugzilla/show_bug.cgi?id=63877>.  */
-#if __GNUC__ == 4 && 6 <= __GNUC_MINOR__
-# if defined __GNUC_STDC_INLINE__ && __GNUC_STDC_INLINE__
-#  define _GL_INLINE_HEADER_CONST_PRAGMA
-# else
-#  define _GL_INLINE_HEADER_CONST_PRAGMA \
-     _Pragma ("GCC diagnostic ignored \"-Wsuggest-attribute=const\"")
-# endif
-# define _GL_INLINE_HEADER_BEGIN \
-    _Pragma ("GCC diagnostic push") \
-    _Pragma ("GCC diagnostic ignored \"-Wmissing-prototypes\"") \
-    _Pragma ("GCC diagnostic ignored \"-Wmissing-declarations\"") \
-    _GL_INLINE_HEADER_CONST_PRAGMA
-# define _GL_INLINE_HEADER_END \
-    _Pragma ("GCC diagnostic pop")
-#else
-# define _GL_INLINE_HEADER_BEGIN
-# define _GL_INLINE_HEADER_END
-#endif
 
 /* Define to `__inline__' or `__inline' if that's what the C compiler
    calls it, or to nothing if 'inline' is not supported under any name.  */
@@ -1388,3 +1431,34 @@
 /* Define to empty if the keyword `volatile' does not work. Warning: valid
    code using `volatile' can become incorrect without. Disable with care. */
 #undef volatile
+
+#ifndef HAVE_C_BOOL
+# if !defined __cplusplus && !defined __bool_true_false_are_defined
+#  if HAVE_STDBOOL_H
+#   include <stdbool.h>
+#  else
+#   if defined __SUNPRO_C
+#    error "<stdbool.h> is not usable with this configuration. To make it usable, add -D_STDC_C99= to $CC."
+#   else
+#    error "<stdbool.h> does not exist on this platform. Use gnulib module 'stdbool-c99' instead of gnulib module 'stdbool'."
+#   endif
+#  endif
+# endif
+# if !true
+#  define true (!false)
+# endif
+#endif
+
+#if (!defined HAVE_C_STATIC_ASSERT && !defined assert \
+     && (!defined __cplusplus \
+         || (__cpp_static_assert < 201411 \
+             && __GNUG__ < 6 && __clang_major__ < 6)))
+ #include <assert.h>
+ #undef/**/assert
+ /* Solaris 11.4 <assert.h> defines static_assert as a macro with 2 arguments.
+    We need it also to be invocable with a single argument.  */
+ #if defined __sun && (__STDC_VERSION__ - 0 >= 201112L) && !defined __cplusplus
+  #undef static_assert
+  #define static_assert _Static_assert
+ #endif
+#endif

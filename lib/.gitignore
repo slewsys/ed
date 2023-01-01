@@ -1,2 +1,4 @@
 /dynarray.h
 /regex.h
+/assert.in.h
+/intprops-internal.h

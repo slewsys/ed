@@ -1,5 +1,5 @@
-# gnulib-common.m4 serial 69
-dnl Copyright (C) 2007-2021 Free Software Foundation, Inc.
+# gnulib-common.m4 serial 75
+dnl Copyright (C) 2007-2022 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
 dnl with or without modifications, as long as this notice is preserved.
@@ -69,7 +69,9 @@ AC_DEFUN([gl_COMMON_BODY], [
 [/* Attributes.  */
 #if (defined __has_attribute \
      && (!defined __clang_minor__ \
-         || 3 < __clang_major__ + (5 <= __clang_minor__)))
+         || (defined __apple_build_version__ \
+             ? 6000000 <= __apple_build_version__ \
+             : 3 < __clang_major__ + (5 <= __clang_minor__))))
 # define _GL_HAS_ATTRIBUTE(attr) __has_attribute (__##attr##__)
 #else
 # define _GL_HAS_ATTRIBUTE(attr) _GL_ATTR_##attr
@@ -103,13 +105,13 @@ AC_DEFUN([gl_COMMON_BODY], [
 # define _GL_ATTR_warn_unused_result _GL_GNUC_PREREQ (3, 4)
 #endif
 
-#ifdef __has_c_attribute
-# define _GL_HAS_C_ATTRIBUTE(attr) __has_c_attribute (__##attr##__)
-#else
-# define _GL_HAS_C_ATTRIBUTE(attr) 0
+/* Disable GCC -Wpedantic if using __has_c_attribute and this is not C23+.  */
+#if (defined __has_c_attribute && _GL_GNUC_PREREQ (4, 6) \
+     && (defined __STDC_VERSION__ ? __STDC_VERSION__ : 0) <= 201710)
+# pragma GCC diagnostic ignored "-Wpedantic"
 #endif
 
-]dnl There is no _GL_ATTRIBUTE_ALIGNED; use stdalign's _Alignas instead.
+]dnl There is no _GL_ATTRIBUTE_ALIGNED; use stdalign's alignas instead.
 [
 /* _GL_ATTRIBUTE_ALLOC_SIZE ((N)) declares that the Nth argument of the function
    is the size of the returned memory block.
@@ -181,7 +183,19 @@ AC_DEFUN([gl_COMMON_BODY], [
 #else
 # define _GL_ATTRIBUTE_DEALLOC(f, i)
 #endif
-#define _GL_ATTRIBUTE_DEALLOC_FREE _GL_ATTRIBUTE_DEALLOC (free, 1)
+/* If gnulib's <string.h> or <wchar.h> has already defined this macro, continue
+   to use this earlier definition, since <stdlib.h> may not have been included
+   yet.  */
+#ifndef _GL_ATTRIBUTE_DEALLOC_FREE
+# if defined __cplusplus && defined __GNUC__ && !defined __clang__
+/* Work around GCC bug <https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108231> */
+#  define _GL_ATTRIBUTE_DEALLOC_FREE \
+     _GL_ATTRIBUTE_DEALLOC ((void (*) (void *)) free, 1)
+# else
+#  define _GL_ATTRIBUTE_DEALLOC_FREE \
+     _GL_ATTRIBUTE_DEALLOC (free, 1)
+# endif
+#endif
 
 /* _GL_ATTRIBUTE_DEPRECATED: Declares that an entity is deprecated.
    The compiler may warn if the entity is used.  */
@@ -191,11 +205,15 @@ AC_DEFUN([gl_COMMON_BODY], [
      - enumeration, enumeration item,
      - typedef,
    in C++ also: namespace, class, template specialization.  */
-#if _GL_HAS_C_ATTRIBUTE (deprecated)
-# define _GL_ATTRIBUTE_DEPRECATED [[__deprecated__]]
-#elif _GL_HAS_ATTRIBUTE (deprecated)
+#ifdef __has_c_attribute
+# if __has_c_attribute (__deprecated__)
+#  define _GL_ATTRIBUTE_DEPRECATED [[__deprecated__]]
+# endif
+#endif
+#if !defined _GL_ATTRIBUTE_DEPRECATED && _GL_HAS_ATTRIBUTE (deprecated)
 # define _GL_ATTRIBUTE_DEPRECATED __attribute__ ((__deprecated__))
-#else
+#endif
+#ifndef _GL_ATTRIBUTE_DEPRECATED
 # define _GL_ATTRIBUTE_DEPRECATED
 #endif
 
@@ -229,11 +247,15 @@ AC_DEFUN([gl_COMMON_BODY], [
    'default' label.  The compiler should not warn in this case.  */
 /* Applies to: Empty statement (;), inside a 'switch' statement.  */
 /* Always expands to something.  */
-#if _GL_HAS_C_ATTRIBUTE (fallthrough)
-# define _GL_ATTRIBUTE_FALLTHROUGH [[__fallthrough__]]
-#elif _GL_HAS_ATTRIBUTE (fallthrough)
+#ifdef __has_c_attribute
+# if __has_c_attribute (__fallthrough__)
+#  define _GL_ATTRIBUTE_FALLTHROUGH [[__fallthrough__]]
+# endif
+#endif
+#if !defined _GL_ATTRIBUTE_FALLTHROUGH && _GL_HAS_ATTRIBUTE (fallthrough)
 # define _GL_ATTRIBUTE_FALLTHROUGH __attribute__ ((__fallthrough__))
-#else
+#endif
+#ifndef _GL_ATTRIBUTE_FALLTHROUGH
 # define _GL_ATTRIBUTE_FALLTHROUGH ((void) 0)
 #endif
 
@@ -294,15 +316,19 @@ AC_DEFUN([gl_COMMON_BODY], [
      - enumeration, enumeration item,
      - typedef,
    in C++ also: class.  */
-/* In C++ and C2x, this is spelled [[__maybe_unused__]].
+/* In C++ and C23, this is spelled [[__maybe_unused__]].
    GCC's syntax is __attribute__ ((__unused__)).
    clang supports both syntaxes.  */
-#if _GL_HAS_C_ATTRIBUTE (maybe_unused)
-# define _GL_ATTRIBUTE_MAYBE_UNUSED [[__maybe_unused__]]
-#else
+#ifdef __has_c_attribute
+# if __has_c_attribute (__maybe_unused__)
+#  define _GL_ATTRIBUTE_MAYBE_UNUSED [[__maybe_unused__]]
+# endif
+#endif
+#ifndef _GL_ATTRIBUTE_MAYBE_UNUSED
 # define _GL_ATTRIBUTE_MAYBE_UNUSED _GL_ATTRIBUTE_UNUSED
 #endif
-/* Alternative spelling of this macro, for convenience.  */
+/* Alternative spelling of this macro, for convenience and for
+   compatibility with glibc/include/libc-symbols.h.  */
 #define _GL_UNUSED _GL_ATTRIBUTE_MAYBE_UNUSED
 /* Earlier spellings of this macro.  */
 #define _UNUSED_PARAMETER_ _GL_ATTRIBUTE_MAYBE_UNUSED
@@ -311,11 +337,15 @@ AC_DEFUN([gl_COMMON_BODY], [
    discard the return value.  The compiler may warn if the caller does not use
    the return value, unless the caller uses something like ignore_value.  */
 /* Applies to: function, enumeration, class.  */
-#if _GL_HAS_C_ATTRIBUTE (nodiscard)
-# define _GL_ATTRIBUTE_NODISCARD [[__nodiscard__]]
-#elif _GL_HAS_ATTRIBUTE (warn_unused_result)
+#ifdef __has_c_attribute
+# if __has_c_attribute (__nodiscard__)
+#  define _GL_ATTRIBUTE_NODISCARD [[__nodiscard__]]
+# endif
+#endif
+#if !defined _GL_ATTRIBUTE_NODISCARD && _GL_HAS_ATTRIBUTE (warn_unused_result)
 # define _GL_ATTRIBUTE_NODISCARD __attribute__ ((__warn_unused_result__))
-#else
+#endif
+#ifndef _GL_ATTRIBUTE_NODISCARD
 # define _GL_ATTRIBUTE_NODISCARD
 #endif
 
@@ -813,6 +843,24 @@ AC_DEFUN([gl_CACHE_VAL_SILENT],
   ])
 ])
 
+# gl_CONDITIONAL(conditional, condition)
+# is like AM_CONDITIONAL(conditional, condition), except that it does not
+# produce an error
+#   configure: error: conditional "..." was never defined.
+#   Usually this means the macro was only invoked conditionally.
+# when only invoked conditionally. Instead, in that case, both the _TRUE
+# and the _FALSE case are disabled.
+AC_DEFUN([gl_CONDITIONAL],
+[
+  pushdef([AC_CONFIG_COMMANDS_PRE], [:])dnl
+  AM_CONDITIONAL([$1], [$2])
+  popdef([AC_CONFIG_COMMANDS_PRE])dnl
+  if test -z "${[$1]_TRUE}" && test -z "${[$1]_FALSE}"; then
+    [$1]_TRUE='#'
+    [$1]_FALSE='#'
+  fi
+])
+
 # gl_CC_ALLOW_WARNINGS
 # sets and substitutes a variable GL_CFLAG_ALLOW_WARNINGS, to a $(CC) option
 # that reverts a preceding '-Werror' option, if available.
@@ -879,6 +927,72 @@ AC_DEFUN([gl_CXX_ALLOW_WARNINGS],
   AC_SUBST([GL_CXXFLAG_ALLOW_WARNINGS])
 ])
 
+# gl_CC_GNULIB_WARNINGS
+# sets and substitutes a variable GL_CFLAG_GNULIB_WARNINGS, to a $(CC) option
+# set that enables or disables warnings as suitable for the Gnulib coding style.
+AC_DEFUN([gl_CC_GNULIB_WARNINGS],
+[
+  AC_REQUIRE([gl_CC_ALLOW_WARNINGS])
+  dnl Assume that the compiler supports -Wno-* options only if it also supports
+  dnl -Wno-error.
+  GL_CFLAG_GNULIB_WARNINGS=''
+  if test -n "$GL_CFLAG_ALLOW_WARNINGS"; then
+    dnl Enable these warning options:
+    dnl
+    dnl                                       GCC             clang
+    dnl -Wno-cast-qual                        >= 3            >= 3.9
+    dnl -Wno-conversion                       >= 3            >= 3.9
+    dnl -Wno-float-conversion                 >= 4.9          >= 3.9
+    dnl -Wno-float-equal                      >= 3            >= 3.9
+    dnl -Wimplicit-fallthrough                >= 7            >= 3.9
+    dnl -Wno-pedantic                         >= 4.8          >= 3.9
+    dnl -Wno-sign-compare                     >= 3            >= 3.9
+    dnl -Wno-sign-conversion                  >= 4.3          >= 3.9
+    dnl -Wno-type-limits                      >= 4.3          >= 3.9
+    dnl -Wno-undef                            >= 3            >= 3.9
+    dnl -Wno-unsuffixed-float-constants       >= 4.5
+    dnl -Wno-unused-function                  >= 3            >= 3.9
+    dnl -Wno-unused-parameter                 >= 3            >= 3.9
+    dnl
+    cat > conftest.c <<\EOF
+      #if __GNUC__ >= 3 || (__clang_major__ + (__clang_minor__ >= 9) > 3)
+      -Wno-cast-qual
+      -Wno-conversion
+      -Wno-float-equal
+      -Wno-sign-compare
+      -Wno-undef
+      -Wno-unused-function
+      -Wno-unused-parameter
+      #endif
+      #if __GNUC__ + (__GNUC_MINOR__ >= 9) > 4 || (__clang_major__ + (__clang_minor__ >= 9) > 3)
+      -Wno-float-conversion
+      #endif
+      #if __GNUC__ >= 7 || (__clang_major__ + (__clang_minor__ >= 9) > 3)
+      -Wimplicit-fallthrough
+      #endif
+      #if __GNUC__ + (__GNUC_MINOR__ >= 8) > 4 || (__clang_major__ + (__clang_minor__ >= 9) > 3)
+      -Wno-pedantic
+      #endif
+      #if __GNUC__ + (__GNUC_MINOR__ >= 3) > 4 || (__clang_major__ + (__clang_minor__ >= 9) > 3)
+      -Wno-sign-conversion
+      -Wno-type-limits
+      #endif
+      #if __GNUC__ + (__GNUC_MINOR__ >= 5) > 4
+      -Wno-unsuffixed-float-constants
+      #endif
+EOF
+    gl_command="$CC $CFLAGS $CPPFLAGS -E conftest.c > conftest.out"
+    if AC_TRY_EVAL([gl_command]); then
+      gl_options=`grep -v '#' conftest.out`
+      for word in $gl_options; do
+        GL_CFLAG_GNULIB_WARNINGS="$GL_CFLAG_GNULIB_WARNINGS $word"
+      done
+    fi
+    rm -f conftest.c conftest.out
+  fi
+  AC_SUBST([GL_CFLAG_GNULIB_WARNINGS])
+])
+
 dnl gl_CONDITIONAL_HEADER([foo.h])
 dnl takes a shell variable GL_GENERATE_FOO_H (with value true or false) as input
 dnl and produces
@@ -903,7 +1017,7 @@ AC_DEFUN([gl_CONDITIONAL_HEADER],
     *) echo "*** gl_generate_var is not set correctly" 1>&2; exit 1 ;;
   esac
   AC_SUBST(gl_header_name)
-  AM_CONDITIONAL(gl_generate_cond, [$gl_generate_var])
+  gl_CONDITIONAL(gl_generate_cond, [$gl_generate_var])
   m4_popdef([gl_generate_cond])
   m4_popdef([gl_generate_var])
   m4_popdef([gl_header_name])

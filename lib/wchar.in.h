@@ -1,6 +1,6 @@
 /* A substitute for ISO C99 <wchar.h>, for platforms that have issues.
 
-   Copyright (C) 2007-2021 Free Software Foundation, Inc.
+   Copyright (C) 2007-2022 Free Software Foundation, Inc.
 
    This file is free software: you can redistribute it and/or modify
    it under the terms of the GNU Lesser General Public License as
@@ -99,7 +99,14 @@
    can be freed via 'free'; it can be used only after declaring 'free'.  */
 /* Applies to: functions.  Cannot be used on inline functions.  */
 #ifndef _GL_ATTRIBUTE_DEALLOC_FREE
-# define _GL_ATTRIBUTE_DEALLOC_FREE _GL_ATTRIBUTE_DEALLOC (free, 1)
+# if defined __cplusplus && defined __GNUC__ && !defined __clang__
+/* Work around GCC bug <https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108231> */
+#  define _GL_ATTRIBUTE_DEALLOC_FREE \
+     _GL_ATTRIBUTE_DEALLOC ((void (*) (void *)) free, 1)
+# else
+#  define _GL_ATTRIBUTE_DEALLOC_FREE \
+     _GL_ATTRIBUTE_DEALLOC (free, 1)
+# endif
 #endif
 
 /* _GL_ATTRIBUTE_MALLOC declares that the function returns a pointer to freshly
@@ -175,13 +182,43 @@ typedef int rpl_mbstate_t;
 # endif
 #endif
 
-/* Declare 'free' if needed for _GL_ATTRIBUTE_DEALLOC_FREE.  */
-_GL_EXTERN_C void free (void *);
+/* Make _GL_ATTRIBUTE_DEALLOC_FREE work, even though <stdlib.h> may not have
+   been included yet.  */
 #if @GNULIB_FREE_POSIX@
 # if (@REPLACE_FREE@ && !defined free \
       && !(defined __cplusplus && defined GNULIB_NAMESPACE))
-#  define free rpl_free
+/* We can't do '#define free rpl_free' here.  */
+_GL_EXTERN_C void rpl_free (void *);
+#  undef _GL_ATTRIBUTE_DEALLOC_FREE
+#  define _GL_ATTRIBUTE_DEALLOC_FREE _GL_ATTRIBUTE_DEALLOC (rpl_free, 1)
+# else
+#  if defined _MSC_VER && !defined free
+_GL_EXTERN_C
+#   if defined _DLL
+     __declspec (dllimport)
+#   endif
+     void __cdecl free (void *);
+#  else
+#   if defined __cplusplus && (__GLIBC__ + (__GLIBC_MINOR__ >= 14) > 2)
+_GL_EXTERN_C void free (void *) throw ();
+#   else
 _GL_EXTERN_C void free (void *);
+#   endif
+#  endif
+# endif
+#else
+# if defined _MSC_VER && !defined free
+_GL_EXTERN_C
+#   if defined _DLL
+     __declspec (dllimport)
+#   endif
+     void __cdecl free (void *);
+# else
+#  if defined __cplusplus && (__GLIBC__ + (__GLIBC_MINOR__ >= 14) > 2)
+_GL_EXTERN_C void free (void *) throw ();
+#  else
+_GL_EXTERN_C void free (void *);
+#  endif
 # endif
 #endif
 
@@ -715,7 +752,10 @@ _GL_WARN_ON_USE (wcslen, "wcslen is unportable - "
 
 /* Return the number of wide characters in S, but at most MAXLEN.  */
 #if @GNULIB_WCSNLEN@
-# if !@HAVE_WCSNLEN@
+/* On Solaris 11.3, the header files declare the function in the std::
+   namespace, not in the global namespace.  So, force a declaration in
+   the global namespace.  */
+# if !@HAVE_WCSNLEN@ || (defined __sun && defined __cplusplus)
 _GL_FUNCDECL_SYS (wcsnlen, size_t, (const wchar_t *s, size_t maxlen)
                                    _GL_ATTRIBUTE_PURE);
 # endif
@@ -752,7 +792,10 @@ _GL_WARN_ON_USE (wcscpy, "wcscpy is unportable - "
 
 /* Copy SRC to DEST, returning the address of the terminating L'\0' in DEST.  */
 #if @GNULIB_WCPCPY@
-# if !@HAVE_WCPCPY@
+/* On Solaris 11.3, the header files declare the function in the std::
+   namespace, not in the global namespace.  So, force a declaration in
+   the global namespace.  */
+# if !@HAVE_WCPCPY@ || (defined __sun && defined __cplusplus)
 _GL_FUNCDECL_SYS (wcpcpy, wchar_t *,
                   (wchar_t *restrict dest, const wchar_t *restrict src));
 # endif
@@ -793,7 +836,10 @@ _GL_WARN_ON_USE (wcsncpy, "wcsncpy is unportable - "
 /* Copy no more than N characters of SRC to DEST, returning the address of
    the last character written into DEST.  */
 #if @GNULIB_WCPNCPY@
-# if !@HAVE_WCPNCPY@
+/* On Solaris 11.3, the header files declare the function in the std::
+   namespace, not in the global namespace.  So, force a declaration in
+   the global namespace.  */
+# if !@HAVE_WCPNCPY@ || (defined __sun && defined __cplusplus)
 _GL_FUNCDECL_SYS (wcpncpy, wchar_t *,
                   (wchar_t *restrict dest,
                    const wchar_t *restrict src, size_t n));
@@ -895,7 +941,10 @@ _GL_WARN_ON_USE (wcsncmp, "wcsncmp is unportable - "
 
 /* Compare S1 and S2, ignoring case.  */
 #if @GNULIB_WCSCASECMP@
-# if !@HAVE_WCSCASECMP@
+/* On Solaris 11.3, the header files declare the function in the std::
+   namespace, not in the global namespace.  So, force a declaration in
+   the global namespace.  */
+# if !@HAVE_WCSCASECMP@ || (defined __sun && defined __cplusplus)
 _GL_FUNCDECL_SYS (wcscasecmp, int, (const wchar_t *s1, const wchar_t *s2)
                                    _GL_ATTRIBUTE_PURE);
 # endif
@@ -912,7 +961,10 @@ _GL_WARN_ON_USE (wcscasecmp, "wcscasecmp is unportable - "
 
 /* Compare no more than N chars of S1 and S2, ignoring case.  */
 #if @GNULIB_WCSNCASECMP@
-# if !@HAVE_WCSNCASECMP@
+/* On Solaris 11.3, the header files declare the function in the std::
+   namespace, not in the global namespace.  So, force a declaration in
+   the global namespace.  */
+# if !@HAVE_WCSNCASECMP@ || (defined __sun && defined __cplusplus)
 _GL_FUNCDECL_SYS (wcsncasecmp, int,
                   (const wchar_t *s1, const wchar_t *s2, size_t n)
                   _GL_ATTRIBUTE_PURE);
@@ -979,7 +1031,10 @@ _GL_WARN_ON_USE (wcsxfrm, "wcsxfrm is unportable - "
 #  endif
 _GL_CXXALIAS_MDA (wcsdup, wchar_t *, (const wchar_t *s));
 # else
-#  if !@HAVE_WCSDUP@ || __GNUC__ >= 11
+/* On Solaris 11.3, the header files declare the function in the std::
+   namespace, not in the global namespace.  So, force a declaration in
+   the global namespace.  */
+#  if !@HAVE_WCSDUP@ || (defined __sun && defined __cplusplus) || __GNUC__ >= 11
 _GL_FUNCDECL_SYS (wcsdup, wchar_t *,
                   (const wchar_t *s)
                   _GL_ATTRIBUTE_MALLOC _GL_ATTRIBUTE_DEALLOC_FREE);

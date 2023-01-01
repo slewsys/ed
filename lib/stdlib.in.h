@@ -1,6 +1,6 @@
 /* A GNU-like <stdlib.h>.
 
-   Copyright (C) 1995, 2001-2004, 2006-2021 Free Software Foundation, Inc.
+   Copyright (C) 1995, 2001-2004, 2006-2022 Free Software Foundation, Inc.
 
    This file is free software: you can redistribute it and/or modify
    it under the terms of the GNU Lesser General Public License as
@@ -184,7 +184,11 @@ _GL_WARN_ON_USE (_Exit, "_Exit is unportable - "
 #   undef free
 #   define free rpl_free
 #  endif
+#  if defined __cplusplus && (__GLIBC__ + (__GLIBC_MINOR__ >= 14) > 2)
+_GL_FUNCDECL_RPL (free, void, (void *ptr) throw ());
+#  else
 _GL_FUNCDECL_RPL (free, void, (void *ptr));
+#  endif
 _GL_CXXALIAS_RPL (free, void, (void *ptr));
 # else
 _GL_CXXALIAS_SYS (free, void, (void *ptr));
@@ -222,7 +226,7 @@ _GL_FUNCDECL_SYS (aligned_alloc, void *,
 _GL_CXXALIAS_SYS (aligned_alloc, void *, (size_t alignment, size_t size));
 #  endif
 # endif
-# if @HAVE_ALIGNED_ALLOC@
+# if (__GLIBC__ >= 2) && @HAVE_ALIGNED_ALLOC@
 _GL_CXXALIASWARN (aligned_alloc);
 # endif
 #else
@@ -260,7 +264,8 @@ _GL_WARN_ON_USE (atoll, "atoll is unportable - "
 #endif
 
 #if @GNULIB_CALLOC_POSIX@
-# if @REPLACE_CALLOC@
+# if (@GNULIB_CALLOC_POSIX@ && @REPLACE_CALLOC_FOR_CALLOC_POSIX@) \
+     || (@GNULIB_CALLOC_GNU@ && @REPLACE_CALLOC_FOR_CALLOC_GNU@)
 #  if !(defined __cplusplus && defined GNULIB_NAMESPACE)
 #   undef calloc
 #   define calloc rpl_calloc
@@ -474,7 +479,8 @@ _GL_WARN_ON_USE (grantpt, "grantpt is not portable - "
    by never specifying a zero size), so it does not need malloc or
    realloc to be redefined.  */
 #if @GNULIB_MALLOC_POSIX@
-# if @REPLACE_MALLOC@
+# if (@GNULIB_MALLOC_POSIX@ && @REPLACE_MALLOC_FOR_MALLOC_POSIX@) \
+     || (@GNULIB_MALLOC_GNU@ && @REPLACE_MALLOC_FOR_MALLOC_GNU@)
 #  if !((defined __cplusplus && defined GNULIB_NAMESPACE) \
         || _GL_USE_STDLIB_ALLOC)
 #   undef malloc
@@ -1107,7 +1113,8 @@ _GL_WARN_ON_USE (setstate_r, "setstate_r is unportable - "
 
 
 #if @GNULIB_REALLOC_POSIX@
-# if @REPLACE_REALLOC@
+# if (@GNULIB_REALLOC_POSIX@ && @REPLACE_REALLOC_FOR_REALLOC_POSIX@) \
+     || (@GNULIB_REALLOC_GNU@ && @REPLACE_REALLOC_FOR_REALLOC_GNU@)
 #  if !((defined __cplusplus && defined GNULIB_NAMESPACE) \
         || _GL_USE_STDLIB_ALLOC)
 #   undef realloc
@@ -1356,7 +1363,9 @@ _GL_CXXALIAS_SYS (strtol, long,
                   (const char *restrict string, char **restrict endptr,
                    int base));
 # endif
+# if __GLIBC__ >= 2
 _GL_CXXALIASWARN (strtol);
+# endif
 #elif defined GNULIB_POSIXCHECK
 # undef strtol
 # if HAVE_RAW_DECL_STRTOL
@@ -1437,7 +1446,9 @@ _GL_CXXALIAS_SYS (strtoul, unsigned long,
                   (const char *restrict string, char **restrict endptr,
                    int base));
 # endif
+# if __GLIBC__ >= 2
 _GL_CXXALIASWARN (strtoul);
+# endif
 #elif defined GNULIB_POSIXCHECK
 # undef strtoul
 # if HAVE_RAW_DECL_STRTOUL

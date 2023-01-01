@@ -1,10 +1,10 @@
 ## DO NOT EDIT! GENERATED AUTOMATICALLY!
 ## Process this file with automake to produce Makefile.in.
-# Copyright (C) 2002-2021 Free Software Foundation, Inc.
+# Copyright (C) 2002-2022 Free Software Foundation, Inc.
 #
 # This file is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 3 of the License, or
+# the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 #
 # This file is distributed in the hope that it will be useful,
@@ -35,7 +35,7 @@
 #  getopt-gnu \
 #  regex
 
-AUTOMAKE_OPTIONS = 1.11 gnits subdir-objects
+AUTOMAKE_OPTIONS = 1.14 gnits subdir-objects
 
 SUBDIRS =
 noinst_HEADERS =
@@ -57,6 +57,7 @@ AM_CFLAGS =
 noinst_LIBRARIES += libgnu.a
 
 libgnu_a_SOURCES =
+libgnu_a_CFLAGS = $(AM_CFLAGS) $(GL_CFLAG_GNULIB_WARNINGS)
 libgnu_a_LIBADD = $(gl_LIBOBJS)
 libgnu_a_DEPENDENCIES = $(gl_LIBOBJS)
 EXTRA_libgnu_a_SOURCES =
@@ -70,6 +71,39 @@ HAVE_INCLUDE_NEXT = (__GNUC__ || __clang__ || 60000000 <= __DECC_VER)
 
 ## end   gnulib module absolute-header
 
+## begin gnulib module assert-h
+
+if gl_GNULIB_ENABLED_d07eca4c7a24aaac657c64e6568d4c2f
+BUILT_SOURCES += $(ASSERT_H)
+
+# We need the following in order to create <assert.h> when the system
+# doesn't have one that works with the given compiler.
+if GL_GENERATE_ASSERT_H
+assert.h: assert.in.h verify.h $(top_builddir)/config.status
+	$(gl_V_at){ $(SED_HEADER_STDOUT) \
+	      -e 's|@''INCLUDE_NEXT''@|$(INCLUDE_NEXT)|g' \
+	      -e 's|@''PRAGMA_SYSTEM_HEADER''@|@PRAGMA_SYSTEM_HEADER@|g' \
+	      -e 's|@''PRAGMA_COLUMNS''@|@PRAGMA_COLUMNS@|g' \
+	      -e 's|@''NEXT_ASSERT_H''@|$(NEXT_ASSERT_H)|g' \
+	      < $(srcdir)/assert.in.h && \
+	  sed -e '/@assert.h omit start@/,/@assert.h omit end@/d' \
+	      -e 's|_gl_verify|_gl_static_assert|g' \
+	      -e 's|_GL_VERIFY|_GL_STATIC_ASSERT|g' \
+	      -e 's|_GL\(_STATIC_ASSERT_H\)|_GL\1|g' \
+	      < $(srcdir)/verify.h; \
+	} > $@-t
+	$(AM_V_at)mv $@-t $@
+else
+assert.h: $(top_builddir)/config.status
+	rm -f $@
+endif
+MOSTLYCLEANFILES += assert.h assert.h-t
+
+endif
+EXTRA_DIST += assert.in.h verify.h
+
+## end   gnulib module assert-h
+
 ## begin gnulib module attribute
 
 if gl_GNULIB_ENABLED_attribute
@@ -82,69 +116,26 @@ EXTRA_DIST += attribute.h
 ## begin gnulib module btowc
 
 if gl_GNULIB_ENABLED_btowc
+if GL_COND_OBJ_BTOWC
+libgnu_a_SOURCES += btowc.c
+endif
 
 endif
-EXTRA_DIST += btowc.c
-
-EXTRA_libgnu_a_SOURCES += btowc.c
-
 ## end   gnulib module btowc
-
-## begin gnulib module dynarray
-
-if gl_GNULIB_ENABLED_dynarray
-BUILT_SOURCES += malloc/dynarray.gl.h malloc/dynarray-skeleton.gl.h
-
-malloc/dynarray.gl.h: malloc/dynarray.h
-	$(AM_V_GEN)$(MKDIR_P) '%reldir%/malloc'
-	$(AM_V_at)$(SED_HEADER_STDOUT) \
-	  -e '/libc_hidden_proto/d' \
-	  $(srcdir)/malloc/dynarray.h > $@-t
-	$(AM_V_at)mv $@-t $@
-MOSTLYCLEANFILES += malloc/dynarray.gl.h malloc/dynarray.gl.h-t
-
-malloc/dynarray-skeleton.gl.h: malloc/dynarray-skeleton.c
-	$(AM_V_GEN)$(MKDIR_P) '%reldir%/malloc'
-	$(AM_V_at)$(SED_HEADER_STDOUT) \
-	      -e 's|<malloc/dynarray\.h>|<malloc/dynarray.gl.h>|g' \
-	      -e 's|__attribute_maybe_unused__|_GL_ATTRIBUTE_MAYBE_UNUSED|g' \
-	      -e 's|__attribute_nonnull__|_GL_ATTRIBUTE_NONNULL|g' \
-	      -e 's|__attribute_warn_unused_result__|_GL_ATTRIBUTE_NODISCARD|g' \
-	      -e 's|__glibc_likely|_GL_LIKELY|g' \
-	      -e 's|__glibc_unlikely|_GL_UNLIKELY|g' \
-	      $(srcdir)/malloc/dynarray-skeleton.c > $@-t
-	$(AM_V_at)mv $@-t $@
-MOSTLYCLEANFILES += malloc/dynarray-skeleton.gl.h malloc/dynarray-skeleton.gl.h-t
-
-libgnu_a_SOURCES += malloc/dynarray_at_failure.c                 malloc/dynarray_emplace_enlarge.c                 malloc/dynarray_finalize.c                 malloc/dynarray_resize.c                 malloc/dynarray_resize_clear.c
-
-endif
-EXTRA_DIST += dynarray.h malloc/dynarray-skeleton.c malloc/dynarray.h
-
-EXTRA_libgnu_a_SOURCES += malloc/dynarray-skeleton.c
-
-## end   gnulib module dynarray
 
 ## begin gnulib module gen-header
 
-# In 'sed', prepend a "DO NOT EDIT" comment to the pattern space.
-SED_HEADER_NOEDIT = s,^,/* DO NOT EDIT! GENERATED AUTOMATICALLY! */,
+# In 'sed', replace the pattern space with a "DO NOT EDIT" comment.
+SED_HEADER_NOEDIT = s,.*,/* DO NOT EDIT! GENERATED AUTOMATICALLY! */,
 
 # '$(SED_HEADER_STDOUT) -e "..."' runs 'sed' but first outputs "DO NOT EDIT".
-SED_HEADER_STDOUT = sed \
-  -e x \
-  -e '1$(SED_HEADER_NOEDIT)p' \
-  -e x
+SED_HEADER_STDOUT = sed -e 1h -e '1$(SED_HEADER_NOEDIT)' -e 1G
 
 # '$(SED_HEADER_TO_AT_t) FILE' copies FILE to $@-t, prepending a leading
 # "DO_NOT_EDIT".  Although this could be done more simply via:
 #	SED_HEADER_TO_AT_t = $(SED_HEADER_STDOUT) > $@-t
-# the -n and 'w's avoid a fork+exec, at least when GNU Make is used.
-SED_HEADER_TO_AT_t = sed -n \
-  -e x \
-  -e '1$(SED_HEADER_NOEDIT)w $@-t' \
-  -e x \
-  -e 'w $@-t'
+# the -n and 'w' avoid a fork+exec, at least when GNU Make is used.
+SED_HEADER_TO_AT_t = $(SED_HEADER_STDOUT) -n -e 'w $@-t'
 
 # Use $(gl_V_at) instead of $(AM_V_GEN) or $(AM_V_at) on a line that
 gl_V_at = $(AM_V_GEN)
@@ -187,9 +178,11 @@ endif
 
 MOSTLYCLEANFILES += getopt.h getopt.h-t getopt-cdefs.h getopt-cdefs.h-t
 
-EXTRA_DIST += getopt-cdefs.in.h getopt-core.h getopt-ext.h getopt-pfx-core.h getopt-pfx-ext.h getopt.c getopt.in.h getopt1.c getopt_int.h
+if GL_COND_OBJ_GETOPT
+libgnu_a_SOURCES += getopt.c getopt1.c
+endif
 
-EXTRA_libgnu_a_SOURCES += getopt.c getopt1.c
+EXTRA_DIST += getopt-cdefs.in.h getopt-core.h getopt-ext.h getopt-pfx-core.h getopt-pfx-ext.h getopt.in.h getopt_int.h
 
 ## end   gnulib module getopt-posix
 
@@ -200,6 +193,41 @@ libgnu_a_SOURCES += gettext.h
 
 endif
 ## end   gnulib module gettext-h
+
+## begin gnulib module glibc-internal/dynarray
+
+if gl_GNULIB_ENABLED_fd38c7e463b54744b77b98aeafb4fa7c
+BUILT_SOURCES += malloc/dynarray.gl.h malloc/dynarray-skeleton.gl.h
+
+malloc/dynarray.gl.h: malloc/dynarray.h
+	$(AM_V_GEN)$(MKDIR_P) '%reldir%/malloc'
+	$(AM_V_at)$(SED_HEADER_STDOUT) \
+	  -e '/libc_hidden_proto/d' \
+	  $(srcdir)/malloc/dynarray.h > $@-t
+	$(AM_V_at)mv $@-t $@
+MOSTLYCLEANFILES += malloc/dynarray.gl.h malloc/dynarray.gl.h-t
+
+malloc/dynarray-skeleton.gl.h: malloc/dynarray-skeleton.c
+	$(AM_V_GEN)$(MKDIR_P) '%reldir%/malloc'
+	$(AM_V_at)$(SED_HEADER_STDOUT) \
+	      -e 's|<malloc/dynarray\.h>|<malloc/dynarray.gl.h>|g' \
+	      -e 's|__attribute_maybe_unused__|_GL_ATTRIBUTE_MAYBE_UNUSED|g' \
+	      -e 's|__attribute_nonnull__|_GL_ATTRIBUTE_NONNULL|g' \
+	      -e 's|__attribute_warn_unused_result__|_GL_ATTRIBUTE_NODISCARD|g' \
+	      -e 's|__glibc_likely|_GL_LIKELY|g' \
+	      -e 's|__glibc_unlikely|_GL_UNLIKELY|g' \
+	      $(srcdir)/malloc/dynarray-skeleton.c > $@-t
+	$(AM_V_at)mv $@-t $@
+MOSTLYCLEANFILES += malloc/dynarray-skeleton.gl.h malloc/dynarray-skeleton.gl.h-t
+
+libgnu_a_SOURCES += malloc/dynarray_at_failure.c                 malloc/dynarray_emplace_enlarge.c                 malloc/dynarray_finalize.c                 malloc/dynarray_resize.c                 malloc/dynarray_resize_clear.c
+
+endif
+EXTRA_DIST += dynarray.h malloc/dynarray-skeleton.c malloc/dynarray.h
+
+EXTRA_libgnu_a_SOURCES += malloc/dynarray-skeleton.c
+
+## end   gnulib module glibc-internal/dynarray
 
 ## begin gnulib module hard-locale
 
@@ -216,7 +244,7 @@ EXTRA_DIST += hard-locale.h
 if gl_GNULIB_ENABLED_intprops
 
 endif
-EXTRA_DIST += intprops.h
+EXTRA_DIST += intprops-internal.h intprops.h
 
 ## end   gnulib module intprops
 
@@ -308,6 +336,7 @@ EXTRA_DIST += cdefs.h libc-config.h
 
 ## begin gnulib module limits-h
 
+if gl_GNULIB_ENABLED_46f732ef6fef4ccd68de017c9ed88bed
 BUILT_SOURCES += $(LIMITS_H)
 
 # We need the following in order to create <limits.h> when the system
@@ -328,6 +357,7 @@ limits.h: $(top_builddir)/config.status
 endif
 MOSTLYCLEANFILES += limits.h limits.h-t
 
+endif
 EXTRA_DIST += limits.in.h
 
 ## end   gnulib module limits-h
@@ -387,12 +417,11 @@ EXTRA_DIST += locale.in.h
 ## begin gnulib module localeconv
 
 if gl_GNULIB_ENABLED_localeconv
+if GL_COND_OBJ_LOCALECONV
+libgnu_a_SOURCES += localeconv.c
+endif
 
 endif
-EXTRA_DIST += localeconv.c
-
-EXTRA_libgnu_a_SOURCES += localeconv.c
-
 ## end   gnulib module localeconv
 
 ## begin gnulib module lock
@@ -406,51 +435,58 @@ endif
 ## begin gnulib module mbrtowc
 
 if gl_GNULIB_ENABLED_mbrtowc
+if GL_COND_OBJ_MBRTOWC
+libgnu_a_SOURCES += mbrtowc.c
+endif
 
 endif
-EXTRA_DIST += lc-charset-dispatch.c lc-charset-dispatch.h mbrtowc-impl-utf8.h mbrtowc-impl.h mbrtowc.c mbtowc-lock.c mbtowc-lock.h windows-initguard.h
+EXTRA_DIST += lc-charset-dispatch.c lc-charset-dispatch.h mbrtowc-impl-utf8.h mbrtowc-impl.h mbtowc-lock.c mbtowc-lock.h windows-initguard.h
 
-EXTRA_libgnu_a_SOURCES += lc-charset-dispatch.c mbrtowc.c mbtowc-lock.c
+EXTRA_libgnu_a_SOURCES += lc-charset-dispatch.c mbtowc-lock.c
 
 ## end   gnulib module mbrtowc
 
 ## begin gnulib module mbsinit
 
 if gl_GNULIB_ENABLED_mbsinit
+if GL_COND_OBJ_MBSINIT
+libgnu_a_SOURCES += mbsinit.c
+endif
 
 endif
-EXTRA_DIST += mbsinit.c
-
-EXTRA_libgnu_a_SOURCES += mbsinit.c
-
 ## end   gnulib module mbsinit
 
 ## begin gnulib module mbtowc
 
 if gl_GNULIB_ENABLED_mbtowc
+if GL_COND_OBJ_MBTOWC
+libgnu_a_SOURCES += mbtowc.c
+endif
 
 endif
-EXTRA_DIST += mbtowc-impl.h mbtowc.c
-
-EXTRA_libgnu_a_SOURCES += mbtowc.c
+EXTRA_DIST += mbtowc-impl.h
 
 ## end   gnulib module mbtowc
 
 ## begin gnulib module nl_langinfo
 
 if gl_GNULIB_ENABLED_nl_langinfo
+if GL_COND_OBJ_NL_LANGINFO
+libgnu_a_SOURCES += nl_langinfo.c
+endif
+if GL_COND_OBJ_NL_LANGINFO_LOCK
+libgnu_a_SOURCES += nl_langinfo-lock.c
+endif
 
 endif
-EXTRA_DIST += nl_langinfo-lock.c nl_langinfo.c windows-initguard.h
-
-EXTRA_libgnu_a_SOURCES += nl_langinfo-lock.c nl_langinfo.c
+EXTRA_DIST += windows-initguard.h
 
 ## end   gnulib module nl_langinfo
 
 ## begin gnulib module regex
 
-
 if LIBADD_REGEX
+libgnu_a_SOURCES += regex.c
 BUILT_SOURCES += regex.h dynarray.h malloc/dynarray.h
 DISTCLEANFILES += regex.h dynarray.h malloc/dynarray.h
 AM_CPPFLAGS += -DRE_ENABLE_I18N=1
@@ -465,9 +501,9 @@ malloc/dynarray.h: malloc/dynarray.h.in
 
 endif LIBADD_REGEX
 
-EXTRA_DIST += dynarray.h.in malloc/dynarray.h.in regcomp.c regex.c regex.h.in regex_internal.c regex_internal.h regexec.c
+EXTRA_DIST += dynarray.h.in malloc/dynarray.h.in regcomp.c regex.h.in regex_internal.c regex_internal.h regexec.c
 
-EXTRA_libgnu_a_SOURCES += regcomp.c regex.c regex_internal.c regexec.c
+EXTRA_libgnu_a_SOURCES += regcomp.c regex_internal.c regexec.c
 
 ## end   gnulib module regex
 
@@ -475,11 +511,12 @@ EXTRA_libgnu_a_SOURCES += regcomp.c regex.c regex_internal.c regexec.c
 
 if gl_GNULIB_ENABLED_e7e881d32ca02f1c997b13c737c64bbd
 libgnu_a_SOURCES += setlocale_null.c
+if GL_COND_OBJ_SETLOCALE_LOCK
+libgnu_a_SOURCES += setlocale-lock.c
+endif
 
 endif
-EXTRA_DIST += setlocale-lock.c setlocale_null.h windows-initguard.h
-
-EXTRA_libgnu_a_SOURCES += setlocale-lock.c
+EXTRA_DIST += setlocale_null.h windows-initguard.h
 
 ## end   gnulib module setlocale-null
 
@@ -533,28 +570,6 @@ EXTRA_DIST += warn-on-use.h
 
 ## end   gnulib module snippet/warn-on-use
 
-## begin gnulib module stdbool
-
-BUILT_SOURCES += $(STDBOOL_H)
-
-# We need the following in order to create <stdbool.h> when the system
-# doesn't have one that works.
-if GL_GENERATE_STDBOOL_H
-stdbool.h: stdbool.in.h $(top_builddir)/config.status
-	$(gl_V_at)$(SED_HEADER_STDOUT) \
-	  -e 's/@''HAVE__BOOL''@/$(HAVE__BOOL)/g' \
-	  $(srcdir)/stdbool.in.h > $@-t
-	$(AM_V_at)mv $@-t $@
-else
-stdbool.h: $(top_builddir)/config.status
-	rm -f $@
-endif
-MOSTLYCLEANFILES += stdbool.h stdbool.h-t
-
-EXTRA_DIST += stdbool.in.h
-
-## end   gnulib module stdbool
-
 ## begin gnulib module stddef
 
 BUILT_SOURCES += $(STDDEF_H)
@@ -586,6 +601,7 @@ EXTRA_DIST += stddef.in.h
 
 ## begin gnulib module stdint
 
+if gl_GNULIB_ENABLED_stdint
 BUILT_SOURCES += $(STDINT_H)
 
 # We need the following in order to create <stdint.h> when the system
@@ -628,6 +644,7 @@ stdint.h: $(top_builddir)/config.status
 endif
 MOSTLYCLEANFILES += stdint.h stdint.h-t
 
+endif
 EXTRA_DIST += stdint.in.h
 
 ## end   gnulib module stdint
@@ -650,12 +667,14 @@ stdlib.h: stdlib.in.h $(top_builddir)/config.status $(CXXDEFS_H) \
 	      -e 's/@''GNULIB__EXIT''@/$(GL_GNULIB__EXIT)/g' \
 	      -e 's/@''GNULIB_ALIGNED_ALLOC''@/$(GL_GNULIB_ALIGNED_ALLOC)/g' \
 	      -e 's/@''GNULIB_ATOLL''@/$(GL_GNULIB_ATOLL)/g' \
+	      -e 's/@''GNULIB_CALLOC_GNU''@/$(GL_GNULIB_CALLOC_GNU)/g' \
 	      -e 's/@''GNULIB_CALLOC_POSIX''@/$(GL_GNULIB_CALLOC_POSIX)/g' \
 	      -e 's/@''GNULIB_CANONICALIZE_FILE_NAME''@/$(GL_GNULIB_CANONICALIZE_FILE_NAME)/g' \
 	      -e 's/@''GNULIB_FREE_POSIX''@/$(GL_GNULIB_FREE_POSIX)/g' \
 	      -e 's/@''GNULIB_GETLOADAVG''@/$(GL_GNULIB_GETLOADAVG)/g' \
 	      -e 's/@''GNULIB_GETSUBOPT''@/$(GL_GNULIB_GETSUBOPT)/g' \
 	      -e 's/@''GNULIB_GRANTPT''@/$(GL_GNULIB_GRANTPT)/g' \
+	      -e 's/@''GNULIB_MALLOC_GNU''@/$(GL_GNULIB_MALLOC_GNU)/g' \
 	      -e 's/@''GNULIB_MALLOC_POSIX''@/$(GL_GNULIB_MALLOC_POSIX)/g' \
 	      -e 's/@''GNULIB_MBTOWC''@/$(GL_GNULIB_MBTOWC)/g' \
 	      -e 's/@''GNULIB_MKDTEMP''@/$(GL_GNULIB_MKDTEMP)/g' \
@@ -671,6 +690,7 @@ stdlib.h: stdlib.in.h $(top_builddir)/config.status $(CXXDEFS_H) \
 	      -e 's/@''GNULIB_QSORT_R''@/$(GL_GNULIB_QSORT_R)/g' \
 	      -e 's/@''GNULIB_RANDOM''@/$(GL_GNULIB_RANDOM)/g' \
 	      -e 's/@''GNULIB_RANDOM_R''@/$(GL_GNULIB_RANDOM_R)/g' \
+	      -e 's/@''GNULIB_REALLOC_GNU''@/$(GL_GNULIB_REALLOC_GNU)/g' \
 	      -e 's/@''GNULIB_REALLOC_POSIX''@/$(GL_GNULIB_REALLOC_POSIX)/g' \
 	      -e 's/@''GNULIB_REALLOCARRAY''@/$(GL_GNULIB_REALLOCARRAY)/g' \
 	      -e 's/@''GNULIB_REALPATH''@/$(GL_GNULIB_REALPATH)/g' \
@@ -737,11 +757,13 @@ stdlib.h: stdlib.in.h $(top_builddir)/config.status $(CXXDEFS_H) \
 	      -e 's|@''HAVE_UNLOCKPT''@|$(HAVE_UNLOCKPT)|g' \
 	      -e 's|@''HAVE_DECL_UNSETENV''@|$(HAVE_DECL_UNSETENV)|g' \
 	      -e 's|@''REPLACE_ALIGNED_ALLOC''@|$(REPLACE_ALIGNED_ALLOC)|g' \
-	      -e 's|@''REPLACE_CALLOC''@|$(REPLACE_CALLOC)|g' \
+	      -e 's|@''REPLACE_CALLOC_FOR_CALLOC_GNU''@|$(REPLACE_CALLOC_FOR_CALLOC_GNU)|g' \
+	      -e 's|@''REPLACE_CALLOC_FOR_CALLOC_POSIX''@|$(REPLACE_CALLOC_FOR_CALLOC_POSIX)|g' \
 	      -e 's|@''REPLACE_CANONICALIZE_FILE_NAME''@|$(REPLACE_CANONICALIZE_FILE_NAME)|g' \
 	      -e 's|@''REPLACE_FREE''@|$(REPLACE_FREE)|g' \
 	      -e 's|@''REPLACE_INITSTATE''@|$(REPLACE_INITSTATE)|g' \
-	      -e 's|@''REPLACE_MALLOC''@|$(REPLACE_MALLOC)|g' \
+	      -e 's|@''REPLACE_MALLOC_FOR_MALLOC_GNU''@|$(REPLACE_MALLOC_FOR_MALLOC_GNU)|g' \
+	      -e 's|@''REPLACE_MALLOC_FOR_MALLOC_POSIX''@|$(REPLACE_MALLOC_FOR_MALLOC_POSIX)|g' \
 	      -e 's|@''REPLACE_MBTOWC''@|$(REPLACE_MBTOWC)|g' \
 	      -e 's|@''REPLACE_MKSTEMP''@|$(REPLACE_MKSTEMP)|g' \
 	      -e 's|@''REPLACE_POSIX_MEMALIGN''@|$(REPLACE_POSIX_MEMALIGN)|g' \
@@ -751,7 +773,8 @@ stdlib.h: stdlib.in.h $(top_builddir)/config.status $(CXXDEFS_H) \
 	      -e 's|@''REPLACE_QSORT_R''@|$(REPLACE_QSORT_R)|g' \
 	      -e 's|@''REPLACE_RANDOM''@|$(REPLACE_RANDOM)|g' \
 	      -e 's|@''REPLACE_RANDOM_R''@|$(REPLACE_RANDOM_R)|g' \
-	      -e 's|@''REPLACE_REALLOC''@|$(REPLACE_REALLOC)|g' \
+	      -e 's|@''REPLACE_REALLOC_FOR_REALLOC_GNU''@|$(REPLACE_REALLOC_FOR_REALLOC_GNU)|g' \
+	      -e 's|@''REPLACE_REALLOC_FOR_REALLOC_POSIX''@|$(REPLACE_REALLOC_FOR_REALLOC_POSIX)|g' \
 	      -e 's|@''REPLACE_REALLOCARRAY''@|$(REPLACE_REALLOCARRAY)|g' \
 	      -e 's|@''REPLACE_REALPATH''@|$(REPLACE_REALPATH)|g' \
 	      -e 's|@''REPLACE_SETENV''@|$(REPLACE_SETENV)|g' \
@@ -868,6 +891,7 @@ unistd.h: unistd.in.h $(top_builddir)/config.status $(CXXDEFS_H) $(ARG_NONNULL_H
 	      -e 's/@''GNULIB_GETOPT_POSIX''@/$(GL_GNULIB_GETOPT_POSIX)/g' \
 	      -e 's/@''GNULIB_GETPAGESIZE''@/$(GL_GNULIB_GETPAGESIZE)/g' \
 	      -e 's/@''GNULIB_GETPASS''@/$(GL_GNULIB_GETPASS)/g' \
+	      -e 's/@''GNULIB_GETPASS_GNU''@/$(GL_GNULIB_GETPASS_GNU)/g' \
 	      -e 's/@''GNULIB_GETUSERSHELL''@/$(GL_GNULIB_GETUSERSHELL)/g' \
 	      -e 's/@''GNULIB_GROUP_MEMBER''@/$(GL_GNULIB_GROUP_MEMBER)/g' \
 	      -e 's/@''GNULIB_ISATTY''@/$(GL_GNULIB_ISATTY)/g' \
@@ -969,6 +993,7 @@ unistd.h: unistd.in.h $(top_builddir)/config.status $(CXXDEFS_H) $(ARG_NONNULL_H
 	  sed -e 's|@''REPLACE_ACCESS''@|$(REPLACE_ACCESS)|g' \
 	      -e 's|@''REPLACE_CHOWN''@|$(REPLACE_CHOWN)|g' \
 	      -e 's|@''REPLACE_CLOSE''@|$(REPLACE_CLOSE)|g' \
+	      -e 's|@''REPLACE_COPY_FILE_RANGE''@|$(REPLACE_COPY_FILE_RANGE)|g' \
 	      -e 's|@''REPLACE_DUP''@|$(REPLACE_DUP)|g' \
 	      -e 's|@''REPLACE_DUP2''@|$(REPLACE_DUP2)|g' \
 	      -e 's|@''REPLACE_EXECL''@|$(REPLACE_EXECL)|g' \
@@ -988,6 +1013,7 @@ unistd.h: unistd.in.h $(top_builddir)/config.status $(CXXDEFS_H) $(ARG_NONNULL_H
 	      -e 's|@''REPLACE_GETGROUPS''@|$(REPLACE_GETGROUPS)|g' \
 	      -e 's|@''REPLACE_GETPAGESIZE''@|$(REPLACE_GETPAGESIZE)|g' \
 	      -e 's|@''REPLACE_GETPASS''@|$(REPLACE_GETPASS)|g' \
+	      -e 's|@''REPLACE_GETPASS_FOR_GETPASS_GNU''@|$(REPLACE_GETPASS_FOR_GETPASS_GNU)|g' \
 	      -e 's|@''REPLACE_ISATTY''@|$(REPLACE_ISATTY)|g' \
 	      -e 's|@''REPLACE_LCHOWN''@|$(REPLACE_LCHOWN)|g' \
 	      -e 's|@''REPLACE_LINK''@|$(REPLACE_LINK)|g' \
@@ -1168,12 +1194,11 @@ EXTRA_DIST += wchar.in.h
 ## begin gnulib module wcrtomb
 
 if gl_GNULIB_ENABLED_wcrtomb
+if GL_COND_OBJ_WCRTOMB
+libgnu_a_SOURCES += wcrtomb.c
+endif
 
 endif
-EXTRA_DIST += wcrtomb.c
-
-EXTRA_libgnu_a_SOURCES += wcrtomb.c
-
 ## end   gnulib module wcrtomb
 
 ## begin gnulib module wctype-h
@@ -1225,44 +1250,48 @@ EXTRA_DIST += wctype.in.h
 ## begin gnulib module windows-mutex
 
 if gl_GNULIB_ENABLED_503a4cb75d69c787103d0aa2ab7d8440
+if GL_COND_OBJ_WINDOWS_MUTEX
+libgnu_a_SOURCES += windows-mutex.c
+endif
 
 endif
-EXTRA_DIST += windows-initguard.h windows-mutex.c windows-mutex.h
-
-EXTRA_libgnu_a_SOURCES += windows-mutex.c
+EXTRA_DIST += windows-initguard.h windows-mutex.h
 
 ## end   gnulib module windows-mutex
 
 ## begin gnulib module windows-once
 
 if gl_GNULIB_ENABLED_68a4501daeca58988392c7e60b4917ab
+if GL_COND_OBJ_WINDOWS_ONCE
+libgnu_a_SOURCES += windows-once.c
+endif
 
 endif
-EXTRA_DIST += windows-once.c windows-once.h
-
-EXTRA_libgnu_a_SOURCES += windows-once.c
+EXTRA_DIST += windows-once.h
 
 ## end   gnulib module windows-once
 
 ## begin gnulib module windows-recmutex
 
 if gl_GNULIB_ENABLED_f0efff84a70f4afba30902bb8ffe9354
+if GL_COND_OBJ_WINDOWS_RECMUTEX
+libgnu_a_SOURCES += windows-recmutex.c
+endif
 
 endif
-EXTRA_DIST += windows-initguard.h windows-recmutex.c windows-recmutex.h
-
-EXTRA_libgnu_a_SOURCES += windows-recmutex.c
+EXTRA_DIST += windows-initguard.h windows-recmutex.h
 
 ## end   gnulib module windows-recmutex
 
 ## begin gnulib module windows-rwlock
 
 if gl_GNULIB_ENABLED_8bb827fe37eaccf1b97feb0c87bc92ef
+if GL_COND_OBJ_WINDOWS_RWLOCK
+libgnu_a_SOURCES += windows-rwlock.c
+endif
 
 endif
-EXTRA_DIST += windows-initguard.h windows-rwlock.c windows-rwlock.h
-
-EXTRA_libgnu_a_SOURCES += windows-rwlock.c
+EXTRA_DIST += windows-initguard.h windows-rwlock.h
 
 ## end   gnulib module windows-rwlock
 
@@ -1274,3 +1303,7 @@ mostlyclean-local: mostlyclean-generic
 	  fi; \
 	done; \
 	:
+distclean-local: distclean-gnulib-libobjs
+distclean-gnulib-libobjs:
+	-rm -f @gl_LIBOBJDEPS@
+maintainer-clean-local: distclean-gnulib-libobjs

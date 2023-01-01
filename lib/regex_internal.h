@@ -1,5 +1,5 @@
 /* Extended regular expression matching and search library.
-   Copyright (C) 2002-2021 Free Software Foundation, Inc.
+   Copyright (C) 2002-2022 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
    Contributed by Isamu Hasegawa <isamu@yamato.ibm.com>.
 
@@ -29,7 +29,6 @@
 #include <locale.h>
 #include <wchar.h>
 #include <wctype.h>
-#include <stdbool.h>
 #include <stdint.h>
 
 #ifndef _LIBC
