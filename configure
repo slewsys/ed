@@ -32506,14 +32506,6 @@ printf "%s\n" "#define HAVE_MBRTOWC 1" >>confdefs.h
 
   fi
 
-if test ${ac_cv_func_setvbuf_reversed+y}
-then :
-  printf %s "(cached) " >&6
-else $as_nop
-  ac_cv_func_setvbuf_reversed=no
-fi
-
-
 
 printf "%s\n" "#define RETSIGTYPE $ac_cv_type_signal" >>confdefs.h
 

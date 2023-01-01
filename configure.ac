@@ -194,7 +194,6 @@ AC_FUNC_MALLOC
 AC_FUNC_REALLOC
 
 AC_FUNC_MBRTOWC
-AC_FUNC_SETVBUF_REVERSED
 AC_DEFINE_UNQUOTED([RETSIGTYPE],[$ac_cv_type_signal],
   [Define as the return type of signal handlers (`int' or `void').])
 AC_REPLACE_FUNCS([memset strspn strtok])
