@@ -21068,13 +21068,13 @@ else $as_nop
 #include "confdefs.h"
 #include <sys/types.h>
 
-
 int
 main (void)
 {
-switch (0) case 0: case (sizeof (long) == $ac_size):;
-  ;
-  return 0;
+  switch (0) {
+    case 0:;
+    case (sizeof (long) == $ac_size):;
+  }
 }
 _ACEOF
 if ac_fn_c_try_compile "$LINENO"
@@ -21108,13 +21108,13 @@ else $as_nop
 #include "confdefs.h"
 #include <sys/types.h>
 
-
 int
 main (void)
 {
-switch (0) case 0: case (sizeof (long long) == $ac_size):;
-  ;
-  return 0;
+  switch (0) {
+    case 0:;
+    case (sizeof (long long) == $ac_size):;
+  }
 }
 _ACEOF
 if ac_fn_c_try_compile "$LINENO"
@@ -21148,13 +21148,13 @@ else $as_nop
 #include "confdefs.h"
 #include <sys/types.h>
 $headers
-
 int
 main (void)
 {
-switch (0) case 0: case (sizeof (size_t) == $ac_size):;
-  ;
-  return 0;
+  switch (0) {
+    case 0:;
+    case (sizeof (size_t) == $ac_size):;
+  }
 }
 _ACEOF
 if ac_fn_c_try_compile "$LINENO"
@@ -21188,13 +21188,13 @@ else $as_nop
 #include "confdefs.h"
 #include <sys/types.h>
 $headers
-
 int
 main (void)
 {
-switch (0) case 0: case (sizeof (off_t) == $ac_size):;
-  ;
-  return 0;
+  switch (0) {
+    case 0:;
+    case (sizeof (off_t) == $ac_size):;
+  }
 }
 _ACEOF
 if ac_fn_c_try_compile "$LINENO"
