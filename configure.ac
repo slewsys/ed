@@ -4,7 +4,7 @@
 #
 # Process this file with autoconf to produce a configure script.
 
-AC_PREREQ([2.69])
+AC_PREREQ([2.71])
 AC_INIT([ed],[2.0.13],[https://github.com/slewsys/ed])
 AC_CONFIG_AUX_DIR([.])
 AC_CONFIG_SRCDIR([config.h.in])
@@ -104,7 +104,9 @@ AM_COND_IF([LDADD_LIBBSD],
 # Checks for headers.
 #
 AC_HEADER_STDBOOL
-AC_HEADER_STDC
+AC_CHECK_INCLUDES_DEFAULT
+AC_PROG_EGREP
+
 AC_HEADER_SYS_WAIT
 AC_HEADER_TIOCGWINSZ
 AC_CHECK_HEADERS_ONCE([fcntl.h glob.h libintl.h limits.h locale.h \
@@ -175,7 +177,7 @@ AS_IF([test ."$ac_cv_sizeof_off_t" = ."$ac_cv_sizeof_long"],
       AC_DEFINE_UNQUOTED([OFF_T_FORMAT_STRING], ["lld"],
         [Define format string to print value of type off_t.])))
 
-AC_PROG_LIBTOOL
+LT_INIT
 
 AM_GNU_GETTEXT([external], [need-formatstring-macros])
 AM_CONDITIONAL([LDADD_LIBINTL], [test ."$LTLIBINTL" != .''])

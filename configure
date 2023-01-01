@@ -20548,8 +20548,6 @@ printf "%s\n" "#define HAVE_STDBOOL_H 1" >>confdefs.h
 
 fi
 
-# Autoupdate added the next two lines to ensure that your configure
-# script's behavior did not change.  They are probably safe to remove.
 
 { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for egrep" >&5
 printf %s "checking for egrep... " >&6; }
