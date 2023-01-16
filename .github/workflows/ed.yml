@@ -12,6 +12,10 @@ jobs:
         OS: [ubuntu-latest, macos-latest]
     steps:
       - uses: actions/checkout@v2
+      - name: install autopoint & gettext
+        run: sudo apt install autopoint gettext
+      - name: run autoreconf
+        run: ./autogen.sh
       - name: configure
         run: ./configure --enable-all-extensions --with-included-regex
       - name: make

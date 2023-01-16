@@ -40,12 +40,14 @@
 #  --lib=libgnu \
 #  --source-base=lib \
 #  --m4-base=m4 \
+#  --po-base=po \
 #  --doc-base=doc \
 #  --tests-base=tests \
-#  --aux-dir=. \
+#  --aux-dir=/opt/src/alm/ed/current/ed \
 #  --conditional-dependencies \
 #  --no-libtool \
 #  --macro-prefix=gl \
+#  --po-domain=ed \
 #  getopt-gnu \
 #  regex
 
@@ -153,6 +155,8 @@ host_triplet = @host@
 @GL_COND_OBJ_MBTOWC_TRUE@@gl_GNULIB_ENABLED_mbtowc_TRUE@am__append_23 = mbtowc.c
 @GL_COND_OBJ_NL_LANGINFO_TRUE@@gl_GNULIB_ENABLED_nl_langinfo_TRUE@am__append_24 = nl_langinfo.c
 @GL_COND_OBJ_NL_LANGINFO_LOCK_TRUE@@gl_GNULIB_ENABLED_nl_langinfo_TRUE@am__append_25 = nl_langinfo-lock.c
+
+# if GL_COND_OBJ_REGEX
 @LIBADD_REGEX_TRUE@am__append_26 = regex.c
 @LIBADD_REGEX_TRUE@am__append_27 = regex.h dynarray.h malloc/dynarray.h
 @LIBADD_REGEX_TRUE@am__append_28 = regex.h dynarray.h malloc/dynarray.h
@@ -1171,7 +1175,7 @@ CLEANFILES =
 DISTCLEANFILES = $(am__append_28)
 MAINTAINERCLEANFILES = 
 # No GNU Make output.
-AM_CPPFLAGS = $(am__append_29)
+AM_CPPFLAGS = -DDEFAULT_TEXT_DOMAIN=\"ed-gnulib\" $(am__append_29)
 AM_CFLAGS = 
 libgnu_a_SOURCES = $(am__append_3) $(am__append_4) $(am__append_5) \
 	$(am__append_8) $(am__append_9) $(am__append_16) \

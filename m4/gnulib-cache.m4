@@ -31,12 +31,14 @@
 #  --lib=libgnu \
 #  --source-base=lib \
 #  --m4-base=m4 \
+#  --po-base=po \
 #  --doc-base=doc \
 #  --tests-base=tests \
-#  --aux-dir=. \
+#  --aux-dir=/opt/src/alm/ed/current/ed \
 #  --conditional-dependencies \
 #  --no-libtool \
 #  --macro-prefix=gl \
+#  --po-domain=ed \
 #  getopt-gnu \
 #  regex
 
@@ -49,12 +51,12 @@ gl_MODULES([
 gl_AVOID([])
 gl_SOURCE_BASE([lib])
 gl_M4_BASE([m4])
-gl_PO_BASE([])
+gl_PO_BASE([po])
 gl_DOC_BASE([doc])
 gl_TESTS_BASE([tests])
 gl_LIB([libgnu])
 gl_MAKEFILE_NAME([])
 gl_CONDITIONAL_DEPENDENCIES
 gl_MACRO_PREFIX([gl])
-gl_PO_DOMAIN([])
+gl_PO_DOMAIN([ed])
 gl_WITNESS_C_MACRO([])

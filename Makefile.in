@@ -1483,15 +1483,18 @@ update-gnulib:
 	  rm -f lib/regex.h;						      \
 	fi;								      \
 	"$(gnulib_srcdir)/gnulib-tool" --import				      \
+	  --dir=$($top_srcdir)                                                \
 	  --lib=libgnu							      \
 	  --source-base=lib						      \
 	  --m4-base=m4							      \
+	  --po-base=po                                                        \
 	  --doc-base=doc						      \
 	  --tests-base=tests						      \
-	  --aux-dir=.							      \
+	  --aux-dir=$(top_srcdir)					      \
 	  --conditional-dependencies					      \
 	  --no-libtool							      \
 	  --macro-prefix=gl						      \
+	  --po-domain=ed                                                      \
 	  getopt-gnu							      \
 	  regex
 	@if test -f lib/regex.h; then					      \
@@ -1501,6 +1504,10 @@ update-gnulib:
 	if test -f lib/dynarray.h; then					      \
 	  echo "*** Moving lib/dynarray.h => lib/dynarray.h.in ***";	      \
 	  mv lib/dynarray.h lib/dynarray.h.in;				      \
+	fi;								      \
+	if test -f lib/malloc/dynarray.h; then				      \
+	  echo "*** Moving lib/malloc/dynarray.h => lib/malloc/dynarray.h.in ***"; \
+	  mv lib/malloc/dynarray.h lib/malloc/dynarray.h.in;		      \
 	fi;								      \
 	if test -f lib/patch-Makefile.am.diff; then			      \
 	  echo "*** Patching refreshed lib/Makefile.am ***";		      \

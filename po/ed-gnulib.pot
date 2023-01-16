@@ -1,0 +1,125 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# This file is distributed under the same license as the ed package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ed 2.0.13\n"
+"Report-Msgid-Bugs-To: bug-gnulib@gnu.org\n"
+"POT-Creation-Date: 2023-01-16 07:44-0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: lib/getopt.c:278
+#, c-format
+msgid "%s: option '%s%s' is ambiguous\n"
+msgstr ""
+
+#: lib/getopt.c:284
+#, c-format
+msgid "%s: option '%s%s' is ambiguous; possibilities:"
+msgstr ""
+
+#: lib/getopt.c:319
+#, c-format
+msgid "%s: unrecognized option '%s%s'\n"
+msgstr ""
+
+#: lib/getopt.c:345
+#, c-format
+msgid "%s: option '%s%s' doesn't allow an argument\n"
+msgstr ""
+
+#: lib/getopt.c:360
+#, c-format
+msgid "%s: option '%s%s' requires an argument\n"
+msgstr ""
+
+#: lib/getopt.c:621
+#, c-format
+msgid "%s: invalid option -- '%c'\n"
+msgstr ""
+
+#: lib/getopt.c:636 lib/getopt.c:682
+#, c-format
+msgid "%s: option requires an argument -- '%c'\n"
+msgstr ""
+
+#: lib/regcomp.c:122
+msgid "Success"
+msgstr ""
+
+#: lib/regcomp.c:125
+msgid "No match"
+msgstr ""
+
+#: lib/regcomp.c:128
+msgid "Invalid regular expression"
+msgstr ""
+
+#: lib/regcomp.c:131
+msgid "Invalid collation character"
+msgstr ""
+
+#: lib/regcomp.c:134
+msgid "Invalid character class name"
+msgstr ""
+
+#: lib/regcomp.c:137
+msgid "Trailing backslash"
+msgstr ""
+
+#: lib/regcomp.c:140
+msgid "Invalid back reference"
+msgstr ""
+
+#: lib/regcomp.c:143
+msgid "Unmatched [, [^, [:, [., or [="
+msgstr ""
+
+#: lib/regcomp.c:146
+msgid "Unmatched ( or \\("
+msgstr ""
+
+#: lib/regcomp.c:149
+msgid "Unmatched \\{"
+msgstr ""
+
+#: lib/regcomp.c:152
+msgid "Invalid content of \\{\\}"
+msgstr ""
+
+#: lib/regcomp.c:155
+msgid "Invalid range end"
+msgstr ""
+
+#: lib/regcomp.c:158
+msgid "Memory exhausted"
+msgstr ""
+
+#: lib/regcomp.c:161
+msgid "Invalid preceding regular expression"
+msgstr ""
+
+#: lib/regcomp.c:164
+msgid "Premature end of regular expression"
+msgstr ""
+
+#: lib/regcomp.c:167
+msgid "Regular expression too big"
+msgstr ""
+
+#: lib/regcomp.c:170
+msgid "Unmatched ) or \\)"
+msgstr ""
+
+#: lib/regcomp.c:650
+msgid "No previous regular expression"
+msgstr ""

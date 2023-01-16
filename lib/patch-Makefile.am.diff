@@ -1,28 +1,27 @@
---- Makefile.am-gnulib	2023-01-01 06:52:03.743389996 -0500
-+++ Makefile.am	2023-01-01 06:55:40.853127511 -0500
-@@ -485,11 +485,23 @@
+--- Makefile.am.orig	2023-01-16 07:29:33.636868594 -0500
++++ Makefile.am	2023-01-16 07:34:25.670173989 -0500
+@@ -489,11 +489,23 @@
  
  ## begin gnulib module regex
  
 -if GL_COND_OBJ_REGEX
++# if GL_COND_OBJ_REGEX
 +if LIBADD_REGEX
  libgnu_a_SOURCES += regex.c
--endif
 +BUILT_SOURCES += regex.h dynarray.h malloc/dynarray.h
 +DISTCLEANFILES += regex.h dynarray.h malloc/dynarray.h
 +AM_CPPFLAGS += -DRE_ENABLE_I18N=1
 +regex.h: regex.h.in
 +	$(LN_S) -f $@.in $@
- 
--EXTRA_DIST += regcomp.c regex.h regex_internal.c regex_internal.h regexec.c
++
 +dynarray.h: dynarray.h.in
 +	$(LN_S) -f $@.in $@
 +
 +malloc/dynarray.h: malloc/dynarray.h.in
 +	$(LN_S) -f dynarray.h.in malloc/dynarray.h
-+
-+endif LIBADD_REGEX
-+
+ endif
+ 
+-EXTRA_DIST += regcomp.c regex.h regex_internal.c regex_internal.h regexec.c
 +EXTRA_DIST += dynarray.h.in malloc/dynarray.h.in regcomp.c regex.h.in regex_internal.c regex_internal.h regexec.c
  
  EXTRA_libgnu_a_SOURCES += regcomp.c regex_internal.c regexec.c

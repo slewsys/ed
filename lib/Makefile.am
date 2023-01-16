@@ -26,12 +26,14 @@
 #  --lib=libgnu \
 #  --source-base=lib \
 #  --m4-base=m4 \
+#  --po-base=po \
 #  --doc-base=doc \
 #  --tests-base=tests \
-#  --aux-dir=. \
+#  --aux-dir=/opt/src/alm/ed/current/ed \
 #  --conditional-dependencies \
 #  --no-libtool \
 #  --macro-prefix=gl \
+#  --po-domain=ed \
 #  getopt-gnu \
 #  regex
 
@@ -61,6 +63,8 @@ libgnu_a_CFLAGS = $(AM_CFLAGS) $(GL_CFLAG_GNULIB_WARNINGS)
 libgnu_a_LIBADD = $(gl_LIBOBJS)
 libgnu_a_DEPENDENCIES = $(gl_LIBOBJS)
 EXTRA_libgnu_a_SOURCES =
+
+AM_CPPFLAGS += -DDEFAULT_TEXT_DOMAIN=\"ed-gnulib\"
 
 ## begin gnulib module absolute-header
 
@@ -485,6 +489,7 @@ EXTRA_DIST += windows-initguard.h
 
 ## begin gnulib module regex
 
+# if GL_COND_OBJ_REGEX
 if LIBADD_REGEX
 libgnu_a_SOURCES += regex.c
 BUILT_SOURCES += regex.h dynarray.h malloc/dynarray.h
@@ -498,8 +503,7 @@ dynarray.h: dynarray.h.in
 
 malloc/dynarray.h: malloc/dynarray.h.in
 	$(LN_S) -f dynarray.h.in malloc/dynarray.h
-
-endif LIBADD_REGEX
+endif
 
 EXTRA_DIST += dynarray.h.in malloc/dynarray.h.in regcomp.c regex.h.in regex_internal.c regex_internal.h regexec.c
 
