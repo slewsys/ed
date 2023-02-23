@@ -29,7 +29,18 @@ if [ ! -w "$abs_srcdir" ]; then
     exit 2
 fi
 
-autoreconf_cmd=$(which autoreconf)
+automake_cmd=$(which automake 2>/dev/null)
+exit_status=$?
+if test $exit_status -ne 0; then
+    cat <<EOF
+$script_name: automake: File not found
+Please verify installation of GNU Autoconf, Automake, Gettext and
+Libtool before running this script.
+EOF
+    exit $exit_status
+fi
+
+autoreconf_cmd=$(which autoreconf 2>/dev/null)
 exit_status=$?
 if test $exit_status -ne 0; then
     cat <<EOF
@@ -43,12 +54,34 @@ fi
 $verbose && cat <<EOF
 $script_name: Running:
   cd "$abs_srcdir" &&
+  automake --verbose --add-missing --copy --force-missing >&2
+
+EOF
+
+automake_output=$(
+    cd "$abs_srcdir" &&
+        automake --verbose --add-missing --copy --force-missing 2>&1
+               )
+exit_status=$?
+if test $exit_status -ne 0; then
+    cat <<EOF
+$script_name:
+$automake_output
+EOF
+    exit $exit_status
+fi
+
+$verbose && cat <<EOF
+$script_name: Running:
+  cd "$abs_srcdir" &&
   autoreconf --verbose --force --install -I ./m4 >&2
 
 EOF
 
-
-autoconf_output=$(cd "$abs_srcdir" && autoreconf --verbose --force --install -I ./m4 2>&1)
+autoconf_output=$(
+    cd "$abs_srcdir" &&
+        autoreconf --verbose --force --install -I ./m4 2>&1
+               )
 exit_status=$?
 if test $exit_status -ne 0; then
     cat <<EOF
@@ -63,8 +96,9 @@ if $verbose; then
     cat >&2 <<'EOF'
 ========================================================================
 
-     Autoreconf appears to have completed successfully. To continue,
-     optionally create and cd to a build directory, then run:
+     Automake and autoreconf appear to have completed successfully.
+     To continue, optionally create and cd to a build directory, then
+     run:
 
              $ $top_srcdir/configure
              $ make

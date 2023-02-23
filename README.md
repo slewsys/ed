@@ -2,47 +2,10 @@
 
 # The standard Unix text editor
 
-<!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-refresh-toc -->
-**Table of Contents**
-
-- [The standard Unix text editor](#the-standard-unix-text-editor)
-- [Installation](#installation)
-   - [Binary Distributions](#binary-distributions)
-   - [Compiling from source](#compiling-from-source)
-   - [Building from Git](#building-from-git)
-   - [Building a Debian package](#building-a-debian-package)
-- [Tutorials](#tutorials)
-- [Extensions to the SUSv4 standard](#extensions-to-the-susv4-standard)
-   - [Scrolling](#scrolling)
-   - [Cut-and-Paste](#cut-and-paste)
-   - [File Globbing](#file-globbing)
-   - [External Filtering](#external-filtering)
-   - [File Locking](#file-locking)
-   - [Macros](#macros)
-   - [Script Flags](#script-flags)
-   - [ED Environment Variable](#ed-environment-variable)
-   - [Binary Files](#binary-files)
-   - [BSD Dialect](#bsd-dialect)
-   - [Global Search](#global-search)
-   - [Piped Input](#piped-input)
-   - [SunOS Dialect](#sunos-dialect)
-- [Deviations from the SUSv4 standard](#deviations-from-the-susv4-standard)
-   - [Extended Regular Expressions](#extended-regular-expressions)
-   - [Pattern delimiters](#pattern-delimiters)
-   - [Undo within global command](#undo-within-global-command)
-   - [Move within global command](#move-within-global-command)
-   - [Shell command arguments](#shell-command-arguments)
-- [Examples](#examples)
-   - [Repeated Substitution Modifiers](#repeated-substitution-modifiers)
-- [References](#references)
-
-<!-- markdown-toc end -->
-
 Ed is an implementation of the Unix line editor. It is 100% POSIX
 compatible, 8-bit clean with 64-bit addressing. It includes the GNU
 regular expression library, but can be linked against any
-POSIX-compatilbe alternative. Natural Language support
-requires an external _libintl_ library.
+POSIX-compatilbe alternative.
 
 Several optional extensions to the SUSv4 standard are described
 [below](#extensions-to-the-susv4-standard).
@@ -51,10 +14,70 @@ so can be safely enabled by default.
 
 # Installation
 ## Binary Distributions
+
 Some binary packages are available - see
 [Releases](https://github.com/slewsys/ed/releases).
 
-## Compiling from source
+## Prerequisites for building from source
+
+To build `ed` from source, the following prerequisite packages are
+needed:
+
+ - **GNU** `autoconf`,
+ - **GNU** `automake`,
+ - **GNU** `autopoint`,
+ - **GNU** `gettext`,
+ - **GNU** `libtool`, and
+ - **GNU** `texinfo`.
+
+Additional packages for generating PDFs of Brian W. Kernighan's
+`ed` tutorials are:
+
+ - **GNU** `roff`, and
+ - `ghostscript`.
+
+### CentOS/RHEL
+
+On Red Hat and Red Hat-based systems, the prerequisite packages can be
+installed by running the commands:
+
+```shell
+sudo dnf group install 'Development Tools'
+sudo dnf install -y gettext-devel ghostscript groff textinfo
+```
+
+### Debian/Ubuntu
+
+On Debian/Ubuntu systems, the prerequisite packages can be installed
+by running the command:
+
+```shell
+sudo apt install -y build-essential autoconf automake \
+    autopoint gettext ghostscript groff libtool texinfo
+```
+
+### Fedora
+
+On Fedora, the prerequisite packages can be installed by running the
+commands:
+
+```shell
+sudo dnf group install 'C Development Tools and Libraries'
+sudo dnf install -y gettext-devel ghostscript groff textinfo
+```
+
+### OpenSUSE
+
+On OpenSUSE, the prerequisite packages can be installed by running the
+commands:
+
+```shell
+sudo zypper --non-interactive install -t pattern devel_C_C++
+sudo zypper --non-interactive install -y gettext-tools ghostscript \
+    groff makeinfo textinfo
+```
+
+## Building from source
 The easiest way to build from source is to run:
 
 ```shell
@@ -426,16 +449,32 @@ line by default, whereas `ed` requires an explicit range.
 Each `ed` expression argument is placed on a line by itself. So the
 `ed` script:
 
-    a
-    hello
-    .
-    s/x*/!/gp
-    Q
+```
+a
+hello
+world
+.
+g/x*/s//!/gp
+```
 
 could be written on the command line as:
 
+```shell
+ed -e 'a' -e 'hello' -e 'world' -e '.' -e 'g/x*/s//!/gp'
 ```
-ed -e 'a' -e 'hello' -e '.' -e 's/x*/!/gp' -e 'Q'
+
+or, using Bash shell construct $'string' to decode
+backslash-escaped characters in *string*:
+
+```shell
+ed -e $'a\nhello\nworld\n.\ng/x*/s//!/gp'
+```
+
+Note that this last example is equivalent to the more traditional (and
+equally unreadable):
+
+```shell
+printf 'a\nhello\nworld\n.\ng/x*/s//!/gp\n' | ed -
 ```
 
 ### ED Environment Variable
@@ -491,8 +530,8 @@ with the SUSv4 standard. This includes the following commands:
 ```shell
 (.,.)s[rgpn]     - to repeat a previous substitution,
 (1,$)W           - for appending text to an existing file,
-(1,$)wq          - for exiting after a write,
-(.)z[n]          - for scrolling through the buffer, and
+(1,$)wq          - for exiting after a write, and
+(.)z[n]          - for scrolling through the buffer.
 ```
 
 BSD line-addressing syntax - i.e., **^** as synonym for **+** and
@@ -508,7 +547,7 @@ backslash (**\\**).
 
 ### Piped Input
 
-For backwards compatibility, errors in piped scripts do not force ed
+For backward compatibility, errors in piped scripts do not force ed
 to exit. SUSv4 only specifies `ed`'s response for input via regular
 files (including here documents) or standard input.
 

@@ -36,18 +36,6 @@ AC_PATH_PROG([GROFF], [groff])
 AC_ARG_VAR([PS2PDF], [PostScript to PDF filter])
 AC_PATH_PROGS([PS2PDF], [ps2pdf14 ps2pdf ps2pdfwr])
 
-# Checks for prior deployment of this package - used by `upgrade-sh'
-AC_CACHE_CHECK([for ed], [ac_cv_path_ED_COMMAND],
-  [AC_PATH_PROGS_FEATURE_CHECK([ED_COMMAND], ["$ED" ed],
-    [case `$ac_path_ED_COMMAND --version 2>&1` in
-      ed*)
-        ac_cv_path_ED_COMMAND=$ac_path_ED_COMMAND
-        ac_path_ED_COMMAND_found=:
-        ;;
-    esac],
-    [ac_cv_path_ED_COMMAND=./src/ed])])
-AC_SUBST(ED_COMMAND, [$ac_cv_path_ED_COMMAND])
-
 # Checks availability of GNU make
 AX_CHECK_GNU_MAKE()
 AS_IF([test ."$_cv_gnu_make_command" != .''],
