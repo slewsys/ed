@@ -853,6 +853,7 @@ CFLAG_VISIBILITY
 GL_COND_OBJ_MBRTOWC_FALSE
 GL_COND_OBJ_MBRTOWC_TRUE
 LIB_MBRTOWC
+MBRTOWC_LIB
 LOCALE_ZH_CN
 LOCALE_FR_UTF8
 LOCALE_JA
@@ -909,6 +910,10 @@ INT64_MAX_EQ_LONG_MAX
 INT32_MAX_LT_INTMAX_MAX
 REPLACE_STRTOUMAX
 REPLACE_STRTOIMAX
+REPLACE_IMAXDIV
+REPLACE_IMAXABS
+HAVE_IMAXDIV
+HAVE_IMAXABS
 HAVE_IMAXDIV_T
 HAVE_DECL_STRTOUMAX
 HAVE_DECL_STRTOIMAX
@@ -941,8 +946,11 @@ GNULIBHEADERS_OVERRIDE_WINT_T
 NEXT_AS_FIRST_DIRECTIVE_LIMITS_H
 NEXT_LIMITS_H
 LIB_HARD_LOCALE
+HARD_LOCALE_LIB
 LIB_SETLOCALE_NULL
+SETLOCALE_NULL_LIB
 LIB_SCHED_YIELD
+SCHED_YIELD_LIB
 LIBPMULTITHREAD
 LIBPTHREAD
 LTLIBINTL
@@ -967,17 +975,24 @@ REPLACE_QSORT_R
 REPLACE_PUTENV
 REPLACE_PTSNAME_R
 REPLACE_PTSNAME
+REPLACE_POSIX_OPENPT
 REPLACE_POSIX_MEMALIGN
 REPLACE_MKSTEMP
+REPLACE_MKOSTEMPS
+REPLACE_MKOSTEMP
 REPLACE_MBTOWC
 REPLACE_MALLOC_FOR_MALLOC_POSIX
 REPLACE_MALLOC_FOR_MALLOC_GNU
 REPLACE_INITSTATE
+REPLACE_GETSUBOPT
+REPLACE_GETPROGNAME
+REPLACE_GETLOADAVG
 REPLACE_FREE
 REPLACE_CANONICALIZE_FILE_NAME
 REPLACE_CALLOC_FOR_CALLOC_POSIX
 REPLACE_CALLOC_FOR_CALLOC_GNU
 REPLACE_ALIGNED_ALLOC
+REPLACE__EXIT
 HAVE_DECL_UNSETENV
 HAVE_UNLOCKPT
 HAVE_SYS_LOADAVG_H
@@ -1014,6 +1029,7 @@ HAVE_DECL_INITSTATE
 HAVE_INITSTATE
 HAVE_GRANTPT
 HAVE_GETSUBOPT
+HAVE_GETPROGNAME
 HAVE_DECL_GETLOADAVG
 HAVE_DECL_GCVT
 HAVE_DECL_FCVT
@@ -1062,6 +1078,7 @@ GL_GNULIB_MALLOC_POSIX
 GL_GNULIB_MALLOC_GNU
 GL_GNULIB_GRANTPT
 GL_GNULIB_GETSUBOPT
+GL_GNULIB_GETPROGNAME
 GL_GNULIB_GETLOADAVG
 GL_GNULIB_FREE_POSIX
 GL_GNULIB_CANONICALIZE_FILE_NAME
@@ -1115,6 +1132,7 @@ GL_GNULIB_BTOWC
 GL_COND_OBJ_BTOWC_FALSE
 GL_COND_OBJ_BTOWC_TRUE
 LOCALE_FR
+REPLACE_WMEMPCPY
 REPLACE_WCSTOK
 REPLACE_WCSFTIME
 REPLACE_WCSWIDTH
@@ -1306,12 +1324,14 @@ REPLACE_TRUNCATE
 REPLACE_SYMLINKAT
 REPLACE_SYMLINK
 REPLACE_SLEEP
+REPLACE_SETHOSTNAME
 REPLACE_RMDIR
 REPLACE_READLINKAT
 REPLACE_READLINK
 REPLACE_READ
 REPLACE_PWRITE
 REPLACE_PREAD
+REPLACE_PIPE2
 REPLACE_LSEEK
 REPLACE_LINKAT
 REPLACE_LINK
@@ -1322,10 +1342,12 @@ REPLACE_GETPASS
 REPLACE_GETPAGESIZE
 REPLACE_GETGROUPS
 REPLACE_GETLOGIN_R
+REPLACE_GETENTROPY
 REPLACE_GETDTABLESIZE
 REPLACE_GETDOMAINNAME
 REPLACE_GETCWD
 REPLACE_FTRUNCATE
+REPLACE_FDATASYNC
 REPLACE_FCHOWNAT
 REPLACE_FACCESSAT
 REPLACE_EXECVPE
@@ -1335,6 +1357,7 @@ REPLACE_EXECV
 REPLACE_EXECLP
 REPLACE_EXECLE
 REPLACE_EXECL
+REPLACE_DUP3
 REPLACE_DUP2
 REPLACE_DUP
 REPLACE_COPY_FILE_RANGE
@@ -3590,7 +3613,6 @@ as_fn_append ac_header_c_list " langinfo.h langinfo_h HAVE_LANGINFO_H"
 as_fn_append ac_header_c_list " xlocale.h xlocale_h HAVE_XLOCALE_H"
 as_fn_append ac_func_c_list " mbsinit HAVE_MBSINIT"
 as_fn_append ac_func_c_list " mbrtowc HAVE_MBRTOWC"
-as_fn_append ac_func_c_list " nl_langinfo HAVE_NL_LANGINFO"
 as_fn_append ac_header_c_list " stdbool.h stdbool_h HAVE_STDBOOL_H"
 as_fn_append ac_header_c_list " features.h features_h HAVE_FEATURES_H"
 as_fn_append ac_header_c_list " crtdefs.h crtdefs_h HAVE_CRTDEFS_H"
@@ -8276,6 +8298,7 @@ printf "%s\n" "#define HAVE___HEADER_INLINE 1" >>confdefs.h
   REPLACE_COPY_FILE_RANGE=0;
   REPLACE_DUP=0;
   REPLACE_DUP2=0;
+  REPLACE_DUP3=0;
   REPLACE_EXECL=0;
   REPLACE_EXECLE=0;
   REPLACE_EXECLP=0;
@@ -8285,10 +8308,12 @@ printf "%s\n" "#define HAVE___HEADER_INLINE 1" >>confdefs.h
   REPLACE_EXECVPE=0;
   REPLACE_FACCESSAT=0;
   REPLACE_FCHOWNAT=0;
+  REPLACE_FDATASYNC=0;
   REPLACE_FTRUNCATE=0;
   REPLACE_GETCWD=0;
   REPLACE_GETDOMAINNAME=0;
   REPLACE_GETDTABLESIZE=0;
+  REPLACE_GETENTROPY=0;
   REPLACE_GETLOGIN_R=0;
   REPLACE_GETGROUPS=0;
   REPLACE_GETPAGESIZE=0;
@@ -8299,12 +8324,14 @@ printf "%s\n" "#define HAVE___HEADER_INLINE 1" >>confdefs.h
   REPLACE_LINK=0;
   REPLACE_LINKAT=0;
   REPLACE_LSEEK=0;
+  REPLACE_PIPE2=0;
   REPLACE_PREAD=0;
   REPLACE_PWRITE=0;
   REPLACE_READ=0;
   REPLACE_READLINK=0;
   REPLACE_READLINKAT=0;
   REPLACE_RMDIR=0;
+  REPLACE_SETHOSTNAME=0;
   REPLACE_SLEEP=0;
   REPLACE_SYMLINK=0;
   REPLACE_SYMLINKAT=0;
@@ -9744,7 +9771,14 @@ then :
 else $as_nop
   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
-#include <stddef.h>
+/* On FreeBSD 12.0/x86, max_align_t defined by <stddef.h> has
+               the correct alignment with the default (wrong) definition of
+               _Alignof, but a wrong alignment as soon as we activate an
+               ISO C compliant _Alignof definition.  */
+            #if ((defined __GNUC__ && 4 <= __GNUC__) || defined __clang__) && !defined __cplusplus
+             #define _Alignof(type) __builtin_offsetof (struct { char __a; type __b; }, __b)
+            #endif
+            #include <stddef.h>
             unsigned int s = sizeof (max_align_t);
             #if defined __GNUC__ || defined __clang__ || defined __IBM__ALIGNOF__
             int check1[2 * (__alignof__ (double) <= __alignof__ (max_align_t)) - 1];
@@ -10217,6 +10251,7 @@ printf "%s\n" "$gl_cv_next_unistd_h" >&6; }
   REPLACE_WCSWIDTH=0;
   REPLACE_WCSFTIME=0;
   REPLACE_WCSTOK=0;
+  REPLACE_WMEMPCPY=0;
 
 
 
@@ -10674,6 +10709,10 @@ printf "%s\n" "$gt_cv_locale_fr" >&6; }
 
 
 
+  GL_GNULIB_GETPROGNAME=0
+
+
+
   GL_GNULIB_GETSUBOPT=0
 
 
@@ -10843,6 +10882,7 @@ printf "%s\n" "$gt_cv_locale_fr" >&6; }
   HAVE_DECL_FCVT=1;
   HAVE_DECL_GCVT=1;
   HAVE_DECL_GETLOADAVG=1;
+  HAVE_GETPROGNAME=1;
   HAVE_GETSUBOPT=1;
   HAVE_GRANTPT=1;
   HAVE_INITSTATE=1;
@@ -10879,17 +10919,24 @@ printf "%s\n" "$gt_cv_locale_fr" >&6; }
   HAVE_SYS_LOADAVG_H=0;
   HAVE_UNLOCKPT=1;
   HAVE_DECL_UNSETENV=1;
+  REPLACE__EXIT=0;
   REPLACE_ALIGNED_ALLOC=0;
   REPLACE_CALLOC_FOR_CALLOC_GNU=0;
   REPLACE_CALLOC_FOR_CALLOC_POSIX=0;
   REPLACE_CANONICALIZE_FILE_NAME=0;
   REPLACE_FREE=0;
+  REPLACE_GETLOADAVG=0;
+  REPLACE_GETPROGNAME=0;
+  REPLACE_GETSUBOPT=0;
   REPLACE_INITSTATE=0;
   REPLACE_MALLOC_FOR_MALLOC_GNU=0;
   REPLACE_MALLOC_FOR_MALLOC_POSIX=0;
   REPLACE_MBTOWC=0;
+  REPLACE_MKOSTEMP=0;
+  REPLACE_MKOSTEMPS=0;
   REPLACE_MKSTEMP=0;
   REPLACE_POSIX_MEMALIGN=0;
+  REPLACE_POSIX_OPENPT=0;
   REPLACE_PTSNAME=0;
   REPLACE_PTSNAME_R=0;
   REPLACE_PUTENV=0;
@@ -10969,8 +11016,8 @@ rm -f core conftest.err conftest.$ac_objext conftest.beam \
         LIBS=$save_LIBS
         test $gl_pthread_api = yes && break
       done
-      echo "$as_me:10972: gl_pthread_api=$gl_pthread_api" >&5
-      echo "$as_me:10973: LIBPTHREAD=$LIBPTHREAD" >&5
+      echo "$as_me:11019: gl_pthread_api=$gl_pthread_api" >&5
+      echo "$as_me:11020: LIBPTHREAD=$LIBPTHREAD" >&5
 
       gl_pthread_in_glibc=no
       # On Linux with glibc >= 2.34, libc contains the fully functional
@@ -10996,7 +11043,7 @@ rm -rf conftest*
 
           ;;
       esac
-      echo "$as_me:10999: gl_pthread_in_glibc=$gl_pthread_in_glibc" >&5
+      echo "$as_me:11046: gl_pthread_in_glibc=$gl_pthread_in_glibc" >&5
 
       # Test for libpthread by looking for pthread_kill. (Not pthread_self,
       # since it is defined as a macro on OSF/1.)
@@ -11051,7 +11098,7 @@ then :
              # On Solaris 10 or newer, this test is no longer needed, because
              # libc contains the fully functional pthread functions.
              case "$host_os" in
-               solaris | solaris2.1-9 | solaris2.1-9.* | hpux*)
+               solaris | solaris2.[1-9] | solaris2.[1-9].* | hpux*)
 
 printf "%s\n" "#define PTHREAD_IN_USE_DETECTION_HARD 1" >>confdefs.h
 
@@ -11150,7 +11197,7 @@ fi
 
         fi
       fi
-      echo "$as_me:11153: LIBPMULTITHREAD=$LIBPMULTITHREAD" >&5
+      echo "$as_me:11200: LIBPMULTITHREAD=$LIBPMULTITHREAD" >&5
     fi
     { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether POSIX threads API is available" >&5
 printf %s "checking whether POSIX threads API is available... " >&6; }
@@ -11177,7 +11224,7 @@ sched_yield ();
 _ACEOF
 if ac_fn_c_try_link "$LINENO"
 then :
-  LIB_SCHED_YIELD=
+  SCHED_YIELD_LIB=
 
 else $as_nop
          { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for sched_yield in -lrt" >&5
@@ -11217,7 +11264,7 @@ fi
 printf "%s\n" "$ac_cv_lib_rt_sched_yield" >&6; }
 if test "x$ac_cv_lib_rt_sched_yield" = xyes
 then :
-  LIB_SCHED_YIELD=-lrt
+  SCHED_YIELD_LIB=-lrt
 else $as_nop
             { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for sched_yield in -lposix4" >&5
 printf %s "checking for sched_yield in -lposix4... " >&6; }
@@ -11256,7 +11303,7 @@ fi
 printf "%s\n" "$ac_cv_lib_posix4_sched_yield" >&6; }
 if test "x$ac_cv_lib_posix4_sched_yield" = xyes
 then :
-  LIB_SCHED_YIELD=-lposix4
+  SCHED_YIELD_LIB=-lposix4
 fi
 
 fi
@@ -11265,6 +11312,8 @@ fi
 fi
 rm -f core conftest.err conftest.$ac_objext conftest.beam \
     conftest$ac_exeext conftest.$ac_ext
+
+        LIB_SCHED_YIELD="$SCHED_YIELD_LIB"
 
 
     gl_pthreadlib_body_done=done
@@ -11284,9 +11333,32 @@ then :
   printf %s "(cached) " >&6
 else $as_nop
   case "$host_os" in
-       # Guess no on musl libc, macOS, FreeBSD, NetBSD, OpenBSD, AIX, Haiku, Cygwin.
-       *-musl* | darwin* | freebsd* | midnightbsd* | netbsd* | openbsd* | aix* | haiku* | cygwin*)
+       # Guess no on musl libc, macOS, FreeBSD, NetBSD, OpenBSD, AIX, Haiku.
+       *-musl* | midipix* | darwin* | freebsd* | midnightbsd* | netbsd* | openbsd* | aix* | haiku*)
          gl_cv_func_setlocale_null_all_mtsafe=no ;;
+       # Guess no on Cygwin < 3.4.6.
+       cygwin*)
+         cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+#if defined __CYGWIN__
+ #include <cygwin/version.h>
+ #if CYGWIN_VERSION_DLL_COMBINED >= CYGWIN_VERSION_DLL_MAKE_COMBINED (3004, 6)
+  Lucky user
+ #endif
+#endif
+
+_ACEOF
+if (eval "$ac_cpp conftest.$ac_ext") 2>&5 |
+  $EGREP "Lucky user" >/dev/null 2>&1
+then :
+  gl_cv_func_setlocale_null_all_mtsafe=yes
+else $as_nop
+  gl_cv_func_setlocale_null_all_mtsafe=no
+fi
+rm -rf conftest*
+
+        ;;
        # Guess yes on glibc, HP-UX, IRIX, Solaris, native Windows.
        *-gnu* | gnu* | hpux* | irix* | solaris* | mingw*)
          gl_cv_func_setlocale_null_all_mtsafe=yes ;;
@@ -11325,7 +11397,7 @@ else $as_nop
        openbsd* | aix*)
          gl_cv_func_setlocale_null_one_mtsafe=no ;;
        # Guess yes on glibc, musl libc, macOS, FreeBSD, NetBSD, HP-UX, IRIX, Solaris, Haiku, Cygwin, native Windows.
-       *-gnu* | gnu* | *-musl* | darwin* | freebsd* | midnightbsd* | netbsd* | hpux* | irix* | solaris* | haiku* | cygwin* | mingw*)
+       *-gnu* | gnu* | *-musl* | midipix* | darwin* | freebsd* | midnightbsd* | netbsd* | hpux* | irix* | solaris* | haiku* | cygwin* | mingw*)
          gl_cv_func_setlocale_null_one_mtsafe=yes ;;
        # If we don't know, obey --enable-cross-guesses.
        *)
@@ -11353,7 +11425,7 @@ printf "%s\n" "#define SETLOCALE_NULL_ONE_MTSAFE $SETLOCALE_NULL_ONE_MTSAFE" >>c
 
     if test $SETLOCALE_NULL_ALL_MTSAFE = 0 || test $SETLOCALE_NULL_ONE_MTSAFE = 0; then
     case "$host_os" in
-      mingw*) LIB_SETLOCALE_NULL= ;;
+      mingw*) SETLOCALE_NULL_LIB= ;;
       *)
 
 
@@ -11468,14 +11540,16 @@ printf "%s\n" "#define HAVE_WEAK_SYMBOLS 1" >>confdefs.h
   esac
 
         case "$gl_cv_have_weak" in
-          *yes) LIB_SETLOCALE_NULL= ;;
-          *)    LIB_SETLOCALE_NULL="$LIBPTHREAD" ;;
+          *yes) SETLOCALE_NULL_LIB= ;;
+          *)    SETLOCALE_NULL_LIB="$LIBPTHREAD" ;;
         esac
         ;;
     esac
   else
-    LIB_SETLOCALE_NULL=
+    SETLOCALE_NULL_LIB=
   fi
+
+    LIB_SETLOCALE_NULL="$SETLOCALE_NULL_LIB"
 
 
 
@@ -11576,6 +11650,7 @@ else $as_nop
             int wb = WORD_BIT;
             int ullw = ULLONG_WIDTH;
             int bw = BOOL_WIDTH;
+            int bm = BOOL_MAX;
 
 int
 main (void)
@@ -12549,6 +12624,10 @@ printf "%s\n" "$ac_res" >&6; }
   HAVE_DECL_STRTOIMAX=1;
   HAVE_DECL_STRTOUMAX=1;
   HAVE_IMAXDIV_T=1;
+  HAVE_IMAXABS=1;
+  HAVE_IMAXDIV=1;
+  REPLACE_IMAXABS=0;
+  REPLACE_IMAXDIV=0;
   REPLACE_STRTOIMAX=0;
   REPLACE_STRTOUMAX=0;
   INT32_MAX_LT_INTMAX_MAX=1;
@@ -13407,8 +13486,8 @@ rm -f core conftest.err conftest.$ac_objext conftest.beam \
         LIBS=$save_LIBS
         test $gl_pthread_api = yes && break
       done
-      echo "$as_me:13410: gl_pthread_api=$gl_pthread_api" >&5
-      echo "$as_me:13411: LIBPTHREAD=$LIBPTHREAD" >&5
+      echo "$as_me:13489: gl_pthread_api=$gl_pthread_api" >&5
+      echo "$as_me:13490: LIBPTHREAD=$LIBPTHREAD" >&5
 
       gl_pthread_in_glibc=no
       # On Linux with glibc >= 2.34, libc contains the fully functional
@@ -13434,7 +13513,7 @@ rm -rf conftest*
 
           ;;
       esac
-      echo "$as_me:13437: gl_pthread_in_glibc=$gl_pthread_in_glibc" >&5
+      echo "$as_me:13516: gl_pthread_in_glibc=$gl_pthread_in_glibc" >&5
 
       # Test for libpthread by looking for pthread_kill. (Not pthread_self,
       # since it is defined as a macro on OSF/1.)
@@ -13489,7 +13568,7 @@ then :
              # On Solaris 10 or newer, this test is no longer needed, because
              # libc contains the fully functional pthread functions.
              case "$host_os" in
-               solaris | solaris2.1-9 | solaris2.1-9.* | hpux*)
+               solaris | solaris2.[1-9] | solaris2.[1-9].* | hpux*)
 
 printf "%s\n" "#define PTHREAD_IN_USE_DETECTION_HARD 1" >>confdefs.h
 
@@ -13588,7 +13667,7 @@ fi
 
         fi
       fi
-      echo "$as_me:13591: LIBPMULTITHREAD=$LIBPMULTITHREAD" >&5
+      echo "$as_me:13670: LIBPMULTITHREAD=$LIBPMULTITHREAD" >&5
     fi
     { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether POSIX threads API is available" >&5
 printf %s "checking whether POSIX threads API is available... " >&6; }
@@ -13615,7 +13694,7 @@ sched_yield ();
 _ACEOF
 if ac_fn_c_try_link "$LINENO"
 then :
-  LIB_SCHED_YIELD=
+  SCHED_YIELD_LIB=
 
 else $as_nop
          { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for sched_yield in -lrt" >&5
@@ -13655,7 +13734,7 @@ fi
 printf "%s\n" "$ac_cv_lib_rt_sched_yield" >&6; }
 if test "x$ac_cv_lib_rt_sched_yield" = xyes
 then :
-  LIB_SCHED_YIELD=-lrt
+  SCHED_YIELD_LIB=-lrt
 else $as_nop
             { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for sched_yield in -lposix4" >&5
 printf %s "checking for sched_yield in -lposix4... " >&6; }
@@ -13694,7 +13773,7 @@ fi
 printf "%s\n" "$ac_cv_lib_posix4_sched_yield" >&6; }
 if test "x$ac_cv_lib_posix4_sched_yield" = xyes
 then :
-  LIB_SCHED_YIELD=-lposix4
+  SCHED_YIELD_LIB=-lposix4
 fi
 
 fi
@@ -13703,6 +13782,8 @@ fi
 fi
 rm -f core conftest.err conftest.$ac_objext conftest.beam \
     conftest$ac_exeext conftest.$ac_ext
+
+        LIB_SCHED_YIELD="$SCHED_YIELD_LIB"
 
 
     gl_pthreadlib_body_done=done
@@ -13816,8 +13897,8 @@ rm -f core conftest.err conftest.$ac_objext conftest.beam \
         LIBS=$save_LIBS
         test $gl_pthread_api = yes && break
       done
-      echo "$as_me:13819: gl_pthread_api=$gl_pthread_api" >&5
-      echo "$as_me:13820: LIBPTHREAD=$LIBPTHREAD" >&5
+      echo "$as_me:13900: gl_pthread_api=$gl_pthread_api" >&5
+      echo "$as_me:13901: LIBPTHREAD=$LIBPTHREAD" >&5
 
       gl_pthread_in_glibc=no
       # On Linux with glibc >= 2.34, libc contains the fully functional
@@ -13843,7 +13924,7 @@ rm -rf conftest*
 
           ;;
       esac
-      echo "$as_me:13846: gl_pthread_in_glibc=$gl_pthread_in_glibc" >&5
+      echo "$as_me:13927: gl_pthread_in_glibc=$gl_pthread_in_glibc" >&5
 
       # Test for libpthread by looking for pthread_kill. (Not pthread_self,
       # since it is defined as a macro on OSF/1.)
@@ -13898,7 +13979,7 @@ then :
              # On Solaris 10 or newer, this test is no longer needed, because
              # libc contains the fully functional pthread functions.
              case "$host_os" in
-               solaris | solaris2.1-9 | solaris2.1-9.* | hpux*)
+               solaris | solaris2.[1-9] | solaris2.[1-9].* | hpux*)
 
 printf "%s\n" "#define PTHREAD_IN_USE_DETECTION_HARD 1" >>confdefs.h
 
@@ -13997,7 +14078,7 @@ fi
 
         fi
       fi
-      echo "$as_me:14000: LIBPMULTITHREAD=$LIBPMULTITHREAD" >&5
+      echo "$as_me:14081: LIBPMULTITHREAD=$LIBPMULTITHREAD" >&5
     fi
     { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether POSIX threads API is available" >&5
 printf %s "checking whether POSIX threads API is available... " >&6; }
@@ -14024,7 +14105,7 @@ sched_yield ();
 _ACEOF
 if ac_fn_c_try_link "$LINENO"
 then :
-  LIB_SCHED_YIELD=
+  SCHED_YIELD_LIB=
 
 else $as_nop
          { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for sched_yield in -lrt" >&5
@@ -14064,7 +14145,7 @@ fi
 printf "%s\n" "$ac_cv_lib_rt_sched_yield" >&6; }
 if test "x$ac_cv_lib_rt_sched_yield" = xyes
 then :
-  LIB_SCHED_YIELD=-lrt
+  SCHED_YIELD_LIB=-lrt
 else $as_nop
             { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for sched_yield in -lposix4" >&5
 printf %s "checking for sched_yield in -lposix4... " >&6; }
@@ -14103,7 +14184,7 @@ fi
 printf "%s\n" "$ac_cv_lib_posix4_sched_yield" >&6; }
 if test "x$ac_cv_lib_posix4_sched_yield" = xyes
 then :
-  LIB_SCHED_YIELD=-lposix4
+  SCHED_YIELD_LIB=-lposix4
 fi
 
 fi
@@ -14113,17 +14194,80 @@ fi
 rm -f core conftest.err conftest.$ac_objext conftest.beam \
     conftest$ac_exeext conftest.$ac_ext
 
+        LIB_SCHED_YIELD="$SCHED_YIELD_LIB"
+
 
     gl_pthreadlib_body_done=done
   fi
 
         if test $ac_cv_header_threads_h = yes; then
-                                                            ac_fn_c_check_func "$LINENO" "thrd_create" "ac_cv_func_thrd_create"
-if test "x$ac_cv_func_thrd_create" = xyes
+
+
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for thrd_create" >&5
+printf %s "checking for thrd_create... " >&6; }
+if test ${gl_cv_onwards_func_thrd_create+y}
 then :
-  printf "%s\n" "#define HAVE_THRD_CREATE 1" >>confdefs.h
+  printf %s "(cached) " >&6
+else $as_nop
+
+  exec 9>&6 6>/dev/null
+
+       case "$host_os" in
+
+         linux*-android*)
+           ac_fn_check_decl "$LINENO" "thrd_create" "ac_cv_have_decl_thrd_create" "#include <threads.h>
+" "$ac_c_undeclared_builtin_options" "CFLAGS"
+if test "x$ac_cv_have_decl_thrd_create" = xyes
+then :
 
 fi
+           if test $ac_cv_have_decl_thrd_create = yes; then
+             ac_fn_c_check_func "$LINENO" "thrd_create" "ac_cv_func_thrd_create"
+if test "x$ac_cv_func_thrd_create" = xyes
+then :
+
+fi
+
+             if test $ac_cv_func_thrd_create = yes; then
+               gl_cv_onwards_func_thrd_create=yes
+             else
+                                                            gl_cv_onwards_func_thrd_create='future OS version'
+             fi
+           else
+             gl_cv_onwards_func_thrd_create='future OS version'
+           fi
+           ;;
+
+
+         *)
+           ac_fn_c_check_func "$LINENO" "thrd_create" "ac_cv_func_thrd_create"
+if test "x$ac_cv_func_thrd_create" = xyes
+then :
+
+fi
+
+           gl_cv_onwards_func_thrd_create=$ac_cv_func_thrd_create
+           ;;
+
+       esac
+
+  exec 6>&9 9>&-
+
+
+fi
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $gl_cv_onwards_func_thrd_create" >&5
+printf "%s\n" "$gl_cv_onwards_func_thrd_create" >&6; }
+
+  case "$gl_cv_onwards_func_thrd_create" in
+    future*) ac_cv_func_thrd_create=no ;;
+    *)       ac_cv_func_thrd_create=$gl_cv_onwards_func_thrd_create ;;
+  esac
+  if test $ac_cv_func_thrd_create = yes; then
+
+printf "%s\n" "#define HAVE_THRD_CREATE 1" >>confdefs.h
+
+  fi
+
 
           if test $ac_cv_func_thrd_create = yes; then
             LIBSTDTHREAD=
@@ -14176,7 +14320,7 @@ fi
 
           fi
         else
-                    LIBSTDTHREAD="$LIBPMULTITHREAD $LIB_SCHED_YIELD"
+                    LIBSTDTHREAD="$LIBPMULTITHREAD $SCHED_YIELD_LIB"
         fi
         ;;
     esac
@@ -14648,7 +14792,6 @@ fi
 { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $gt_cv_locale_zh_CN" >&5
 printf "%s\n" "$gt_cv_locale_zh_CN" >&6; }
   LOCALE_ZH_CN=$gt_cv_locale_zh_CN
-
 
 
 
@@ -16191,7 +16334,7 @@ esac
 /* end confdefs.h.  */
 #if defined __clang__ && __STDC_VERSION__ < 202311
              #pragma clang diagnostic error "-Wc2x-extensions"
-             #pragma clang diagnostic error "-Wc++17-extensions"
+             #pragma clang diagnostic error "-Wc++1z-extensions"
             #endif
             #ifdef INCLUDE_ASSERT_H
              #include <assert.h>
@@ -16612,7 +16755,9 @@ printf "%s\n" "$gl_cv___builtin_expect" >&6; }
   {
     if ! $gl_gnulib_enabled_30838f5439487421042f2225bed3af76; then
 
-      LIB_HARD_LOCALE="$LIB_SETLOCALE_NULL"
+      HARD_LOCALE_LIB="$SETLOCALE_NULL_LIB"
+
+            LIB_HARD_LOCALE="$HARD_LOCALE_LIB"
 
       gl_gnulib_enabled_30838f5439487421042f2225bed3af76=true
       func_gl_gnulib_m4code_e7e881d32ca02f1c997b13c737c64bbd
@@ -16855,22 +17000,22 @@ else $as_nop
      if test "$cross_compiling" = yes
 then :
   case "$host_os" in
-                         # Guess no on glibc systems.
-          *-gnu* | gnu*) gl_cv_pthread_rwlock_rdlock_prefer_writer="guessing no" ;;
-                         # Guess no on musl systems.
-          *-musl*)       gl_cv_pthread_rwlock_rdlock_prefer_writer="guessing no" ;;
-                         # Guess no on bionic systems.
-          *-android*)    gl_cv_pthread_rwlock_rdlock_prefer_writer="guessing no" ;;
-                         # Guess yes on native Windows with the mingw-w64 winpthreads library.
-                         # Guess no on native Windows with the gnulib windows-rwlock module.
-          mingw*)        if test "$gl_use_threads" = yes || test "$gl_use_threads" = posix; then
-                           gl_cv_pthread_rwlock_rdlock_prefer_writer="guessing yes"
-                         else
-                           gl_cv_pthread_rwlock_rdlock_prefer_writer="guessing no"
-                         fi
-                         ;;
-                         # If we don't know, obey --enable-cross-guesses.
-          *)             gl_cv_pthread_rwlock_rdlock_prefer_writer="$gl_cross_guess_normal" ;;
+                              # Guess no on glibc systems.
+          *-gnu* | gnu*)      gl_cv_pthread_rwlock_rdlock_prefer_writer="guessing no" ;;
+                              # Guess no on musl systems.
+          *-musl* | midipix*) gl_cv_pthread_rwlock_rdlock_prefer_writer="guessing no" ;;
+                              # Guess no on bionic systems.
+          *-android*)         gl_cv_pthread_rwlock_rdlock_prefer_writer="guessing no" ;;
+                              # Guess yes on native Windows with the mingw-w64 winpthreads library.
+                              # Guess no on native Windows with the gnulib windows-rwlock module.
+          mingw*)             if test "$gl_use_threads" = yes || test "$gl_use_threads" = posix; then
+                                gl_cv_pthread_rwlock_rdlock_prefer_writer="guessing yes"
+                              else
+                                gl_cv_pthread_rwlock_rdlock_prefer_writer="guessing no"
+                              fi
+                              ;;
+                              # If we don't know, obey --enable-cross-guesses.
+          *)                  gl_cv_pthread_rwlock_rdlock_prefer_writer="$gl_cross_guess_normal" ;;
          esac
 
 else $as_nop
@@ -17910,7 +18055,7 @@ printf "%s\n" "#define MBRTOWC_IN_C_LOCALE_MAYBE_EILSEQ 1" >>confdefs.h
   fi
   if test $REPLACE_MBSTATE_T = 1; then
     case "$host_os" in
-      mingw*) LIB_MBRTOWC= ;;
+      mingw*) MBRTOWC_LIB= ;;
       *)
 
 
@@ -18025,14 +18170,16 @@ printf "%s\n" "#define HAVE_WEAK_SYMBOLS 1" >>confdefs.h
   esac
 
         case "$gl_cv_have_weak" in
-          *yes) LIB_MBRTOWC= ;;
-          *)    LIB_MBRTOWC="$LIBPTHREAD" ;;
+          *yes) MBRTOWC_LIB= ;;
+          *)    MBRTOWC_LIB="$LIBPTHREAD" ;;
         esac
         ;;
     esac
   else
-    LIB_MBRTOWC=
+    MBRTOWC_LIB=
   fi
+
+    LIB_MBRTOWC="$MBRTOWC_LIB"
 
 
 
@@ -18506,15 +18653,79 @@ printf "%s\n" "#define GNULIB_TEST_MBSINIT 1" >>confdefs.h
 
 
 
-  ac_fn_c_check_func "$LINENO" "mbtowc" "ac_cv_func_mbtowc"
+
+
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for mbtowc" >&5
+printf %s "checking for mbtowc... " >&6; }
+if test ${gl_cv_onwards_func_mbtowc+y}
+then :
+  printf %s "(cached) " >&6
+else $as_nop
+
+  exec 9>&6 6>/dev/null
+
+       case "$host_os" in
+
+         linux*-android*)
+           ac_fn_check_decl "$LINENO" "mbtowc" "ac_cv_have_decl_mbtowc" "#include <stdlib.h>
+" "$ac_c_undeclared_builtin_options" "CFLAGS"
+if test "x$ac_cv_have_decl_mbtowc" = xyes
+then :
+
+fi
+           if test $ac_cv_have_decl_mbtowc = yes; then
+             ac_fn_c_check_func "$LINENO" "mbtowc" "ac_cv_func_mbtowc"
 if test "x$ac_cv_func_mbtowc" = xyes
 then :
-  printf "%s\n" "#define HAVE_MBTOWC 1" >>confdefs.h
 
 fi
 
+             if test $ac_cv_func_mbtowc = yes; then
+               gl_cv_onwards_func_mbtowc=yes
+             else
+                                                            gl_cv_onwards_func_mbtowc='future OS version'
+             fi
+           else
+             gl_cv_onwards_func_mbtowc='future OS version'
+           fi
+           ;;
+
+
+         *)
+           ac_fn_c_check_func "$LINENO" "mbtowc" "ac_cv_func_mbtowc"
+if test "x$ac_cv_func_mbtowc" = xyes
+then :
+
+fi
+
+           gl_cv_onwards_func_mbtowc=$ac_cv_func_mbtowc
+           ;;
+
+       esac
+
+  exec 6>&9 9>&-
+
+
+fi
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $gl_cv_onwards_func_mbtowc" >&5
+printf "%s\n" "$gl_cv_onwards_func_mbtowc" >&6; }
+
+  case "$gl_cv_onwards_func_mbtowc" in
+    future*) ac_cv_func_mbtowc=no ;;
+    *)       ac_cv_func_mbtowc=$gl_cv_onwards_func_mbtowc ;;
+  esac
+  if test $ac_cv_func_mbtowc = yes; then
+
+printf "%s\n" "#define HAVE_MBTOWC 1" >>confdefs.h
+
+  fi
+
+
   if test $ac_cv_func_mbtowc = no; then
     HAVE_MBTOWC=0
+    case "$gl_cv_onwards_func_mbtowc" in
+      future*) REPLACE_MBTOWC=1 ;;
+    esac
   else
     if false; then
       REPLACE_MBTOWC=1
@@ -18583,6 +18794,73 @@ printf "%s\n" "#define GNULIB_TEST_MBTOWC 1" >>confdefs.h
     if ! $gl_gnulib_enabled_nl_langinfo; then
 
 
+
+
+
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for nl_langinfo" >&5
+printf %s "checking for nl_langinfo... " >&6; }
+if test ${gl_cv_onwards_func_nl_langinfo+y}
+then :
+  printf %s "(cached) " >&6
+else $as_nop
+
+  exec 9>&6 6>/dev/null
+
+       case "$host_os" in
+
+         linux*-android*)
+           ac_fn_check_decl "$LINENO" "nl_langinfo" "ac_cv_have_decl_nl_langinfo" "#include <langinfo.h>
+" "$ac_c_undeclared_builtin_options" "CFLAGS"
+if test "x$ac_cv_have_decl_nl_langinfo" = xyes
+then :
+
+fi
+           if test $ac_cv_have_decl_nl_langinfo = yes; then
+             ac_fn_c_check_func "$LINENO" "nl_langinfo" "ac_cv_func_nl_langinfo"
+if test "x$ac_cv_func_nl_langinfo" = xyes
+then :
+
+fi
+
+             if test $ac_cv_func_nl_langinfo = yes; then
+               gl_cv_onwards_func_nl_langinfo=yes
+             else
+                                                            gl_cv_onwards_func_nl_langinfo='future OS version'
+             fi
+           else
+             gl_cv_onwards_func_nl_langinfo='future OS version'
+           fi
+           ;;
+
+
+         *)
+           ac_fn_c_check_func "$LINENO" "nl_langinfo" "ac_cv_func_nl_langinfo"
+if test "x$ac_cv_func_nl_langinfo" = xyes
+then :
+
+fi
+
+           gl_cv_onwards_func_nl_langinfo=$ac_cv_func_nl_langinfo
+           ;;
+
+       esac
+
+  exec 6>&9 9>&-
+
+
+fi
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $gl_cv_onwards_func_nl_langinfo" >&5
+printf "%s\n" "$gl_cv_onwards_func_nl_langinfo" >&6; }
+
+  case "$gl_cv_onwards_func_nl_langinfo" in
+    future*) ac_cv_func_nl_langinfo=no ;;
+    *)       ac_cv_func_nl_langinfo=$gl_cv_onwards_func_nl_langinfo ;;
+  esac
+  if test $ac_cv_func_nl_langinfo = yes; then
+
+printf "%s\n" "#define HAVE_NL_LANGINFO 1" >>confdefs.h
+
+  fi
 
 
 
@@ -18665,9 +18943,12 @@ printf "%s\n" "#define REPLACE_NL_LANGINFO 1" >>confdefs.h
     fi
   else
     HAVE_NL_LANGINFO=0
+    case "$gl_cv_onwards_func_nl_langinfo" in
+      future*) REPLACE_NL_LANGINFO=1 ;;
+    esac
   fi
   if test $HAVE_NL_LANGINFO = 0 || test $HAVE_LANGINFO_CODESET = 0; then
-    LIB_NL_LANGINFO="$LIB_SETLOCALE_NULL"
+    LIB_NL_LANGINFO="$SETLOCALE_NULL_LIB"
   else
     LIB_NL_LANGINFO=
   fi
@@ -18840,9 +19121,32 @@ then :
   printf %s "(cached) " >&6
 else $as_nop
   case "$host_os" in
-       # Guess no on musl libc, macOS, FreeBSD, NetBSD, OpenBSD, AIX, Haiku, Cygwin.
-       *-musl* | darwin* | freebsd* | midnightbsd* | netbsd* | openbsd* | aix* | haiku* | cygwin*)
+       # Guess no on musl libc, macOS, FreeBSD, NetBSD, OpenBSD, AIX, Haiku.
+       *-musl* | midipix* | darwin* | freebsd* | midnightbsd* | netbsd* | openbsd* | aix* | haiku*)
          gl_cv_func_setlocale_null_all_mtsafe=no ;;
+       # Guess no on Cygwin < 3.4.6.
+       cygwin*)
+         cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+#if defined __CYGWIN__
+ #include <cygwin/version.h>
+ #if CYGWIN_VERSION_DLL_COMBINED >= CYGWIN_VERSION_DLL_MAKE_COMBINED (3004, 6)
+  Lucky user
+ #endif
+#endif
+
+_ACEOF
+if (eval "$ac_cpp conftest.$ac_ext") 2>&5 |
+  $EGREP "Lucky user" >/dev/null 2>&1
+then :
+  gl_cv_func_setlocale_null_all_mtsafe=yes
+else $as_nop
+  gl_cv_func_setlocale_null_all_mtsafe=no
+fi
+rm -rf conftest*
+
+        ;;
        # Guess yes on glibc, HP-UX, IRIX, Solaris, native Windows.
        *-gnu* | gnu* | hpux* | irix* | solaris* | mingw*)
          gl_cv_func_setlocale_null_all_mtsafe=yes ;;
@@ -18881,7 +19185,7 @@ else $as_nop
        openbsd* | aix*)
          gl_cv_func_setlocale_null_one_mtsafe=no ;;
        # Guess yes on glibc, musl libc, macOS, FreeBSD, NetBSD, HP-UX, IRIX, Solaris, Haiku, Cygwin, native Windows.
-       *-gnu* | gnu* | *-musl* | darwin* | freebsd* | midnightbsd* | netbsd* | hpux* | irix* | solaris* | haiku* | cygwin* | mingw*)
+       *-gnu* | gnu* | *-musl* | midipix* | darwin* | freebsd* | midnightbsd* | netbsd* | hpux* | irix* | solaris* | haiku* | cygwin* | mingw*)
          gl_cv_func_setlocale_null_one_mtsafe=yes ;;
        # If we don't know, obey --enable-cross-guesses.
        *)
@@ -18909,7 +19213,7 @@ printf "%s\n" "#define SETLOCALE_NULL_ONE_MTSAFE $SETLOCALE_NULL_ONE_MTSAFE" >>c
 
     if test $SETLOCALE_NULL_ALL_MTSAFE = 0 || test $SETLOCALE_NULL_ONE_MTSAFE = 0; then
     case "$host_os" in
-      mingw*) LIB_SETLOCALE_NULL= ;;
+      mingw*) SETLOCALE_NULL_LIB= ;;
       *)
 
 
@@ -19024,14 +19328,16 @@ printf "%s\n" "#define HAVE_WEAK_SYMBOLS 1" >>confdefs.h
   esac
 
         case "$gl_cv_have_weak" in
-          *yes) LIB_SETLOCALE_NULL= ;;
-          *)    LIB_SETLOCALE_NULL="$LIBPTHREAD" ;;
+          *yes) SETLOCALE_NULL_LIB= ;;
+          *)    SETLOCALE_NULL_LIB="$LIBPTHREAD" ;;
         esac
         ;;
     esac
   else
-    LIB_SETLOCALE_NULL=
+    SETLOCALE_NULL_LIB=
   fi
+
+    LIB_SETLOCALE_NULL="$SETLOCALE_NULL_LIB"
 
 
 

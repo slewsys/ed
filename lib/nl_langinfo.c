@@ -1,6 +1,6 @@
 /* nl_langinfo() replacement: query locale dependent information.
 
-   Copyright (C) 2007-2022 Free Software Foundation, Inc.
+   Copyright (C) 2007-2023 Free Software Foundation, Inc.
 
    This file is free software: you can redistribute it and/or modify
    it under the terms of the GNU Lesser General Public License as
@@ -70,6 +70,8 @@
 static char *
 ctype_codeset (void)
 {
+  /* This function is only used on platforms which don't have uselocale().
+     Therefore we don't need to look at the per-thread locale first, here.  */
   static char result[2 + 10 + 1];
   char buf[2 + 10 + 1];
   char locale[SETLOCALE_NULL_MAX];

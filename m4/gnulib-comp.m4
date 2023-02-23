@@ -1,5 +1,5 @@
 # DO NOT EDIT! GENERATED AUTOMATICALLY!
-# Copyright (C) 2002-2022 Free Software Foundation, Inc.
+# Copyright (C) 2002-2023 Free Software Foundation, Inc.
 #
 # This file is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@
 # other built files.
 
 
-# This macro should be invoked from /opt/src/alm/ed/current/ed/configure.ac, in the section
+# This macro should be invoked from ./configure.ac, in the section
 # "Checks for programs", right after AC_PROG_CC, and certainly before
 # any checks for libraries, header files, types and library functions.
 AC_DEFUN([gl_EARLY],
@@ -100,7 +100,7 @@ AC_DEFUN([gl_EARLY],
   # Code from module windows-rwlock:
 ])
 
-# This macro should be invoked from /opt/src/alm/ed/current/ed/configure.ac, in the section
+# This macro should be invoked from ./configure.ac, in the section
 # "Check for header files, types and library functions".
 AC_DEFUN([gl_INIT],
 [
@@ -250,7 +250,10 @@ AC_DEFUN([gl_INIT],
   {
     if ! $gl_gnulib_enabled_30838f5439487421042f2225bed3af76; then
       AC_REQUIRE([gl_FUNC_SETLOCALE_NULL])
-      LIB_HARD_LOCALE="$LIB_SETLOCALE_NULL"
+      HARD_LOCALE_LIB="$SETLOCALE_NULL_LIB"
+      AC_SUBST([HARD_LOCALE_LIB])
+      dnl For backward compatibility.
+      LIB_HARD_LOCALE="$HARD_LOCALE_LIB"
       AC_SUBST([LIB_HARD_LOCALE])
       gl_gnulib_enabled_30838f5439487421042f2225bed3af76=true
       func_gl_gnulib_m4code_e7e881d32ca02f1c997b13c737c64bbd

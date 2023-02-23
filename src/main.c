@@ -1,13 +1,13 @@
 /* main.c: Entry point for the ed line editor.
  *
- *  Copyright © 1993-2022 Andrew L. Moore, SlewSys Research
+ *  Copyright © 1993-2023 Andrew L. Moore, SlewSys Research
  *
  *  This file is part of ed.
  */
 
 #ifndef lint
 char *copyright =
-  "@(#) Copyright © 1993-2022 Andrew L. Moore, SlewSys Research.\n";
+  "@(#) Copyright © 1993-2023 Andrew L. Moore, SlewSys Research.\n";
 #endif  /* not lint */
 
 #include "ed.h"
@@ -726,8 +726,8 @@ ed_usage (int status, ed_buffer_t *ed)
   -x, --crypt               Prompt for encryption key used for subsequent I/O.\n\
 \n\
 If FILE is given, read it for editing.  From within ed, run:\n\
-  !info ed RET m switches RET\n\
-to see full documentation of these options.\n\
+  !info ed-intro RET\n\
+for a tutorial introduction to ed.\n\
 \n\
 Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"));
 #else
@@ -745,8 +745,8 @@ Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"));
   -x, --crypt               Prompt for encryption key used for subsequent I/O.\n\
 \n\
 If FILE is given, read it for editing.  From within ed, run:\n\
-  !info ed RET m switches RET\n\
-to see full documentation of these options.\n\
+  !info ed-intro RET\n\
+for a tutorial introduction to ed.\n\
 \n\
 Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"));
 #endif  /* !WANT_SCRIPT_FLAGS */

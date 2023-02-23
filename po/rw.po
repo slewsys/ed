@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mailutils 0.6\n"
 "Report-Msgid-Bugs-To: bug-gnulib@gnu.org\n"
-"POT-Creation-Date: 2023-01-16 07:44-0500\n"
+"POT-Creation-Date: 2023-02-23 02:29-0500\n"
 "PO-Revision-Date: 2005-04-04 10:55-0700\n"
 "Last-Translator: Steven Michael Murphy <murf@e-tools.com>\n"
 "Language-Team: Kinyarwanda <translation-team-rw@lists.sourceforge.net>\n"
@@ -66,7 +66,7 @@ msgstr "%s:Ihitamo"
 msgid "Success"
 msgstr "Ibyatunganye"
 
-#: lib/regcomp.c:125
+#: lib/regcomp.c:125 src/re.c:271 src/sub.c:439
 msgid "No match"
 msgstr ""
 
@@ -115,7 +115,10 @@ msgstr ""
 msgid "Invalid range end"
 msgstr "Ipaji Urutonde"
 
-#: lib/regcomp.c:158
+#: lib/regcomp.c:158 src/aux.c:227 src/aux.c:440 src/buf.c:267 src/buf.c:436
+#: src/buf.c:534 src/buf.c:544 src/buf.c:583 src/buf.c:613 src/glbl.c:170
+#: src/io.c:317 src/main.c:632 src/page.c:858 src/parse.c:273 src/parse.c:518
+#: src/re.c:155 src/undo.c:26
 #, fuzzy
 msgid "Memory exhausted"
 msgstr "Ububiko"
@@ -143,6 +146,427 @@ msgstr ""
 #, fuzzy
 msgid "No previous regular expression"
 msgstr "Ikosa in Ibisanzwe imvugo Gushaka"
+
+#: src/aux.c:35
+msgid "Child process error"
+msgstr ""
+
+# svtools/source\misc\errtxt.src:RID_ERRHDL.ERRCODE_CLASS_WRITE.text
+#: src/aux.c:67 src/aux.c:156
+#, fuzzy
+msgid "Pipe open error"
+msgstr "Kwandika ikosa"
+
+# 4952
+#: src/aux.c:76 src/aux.c:128
+#, fuzzy
+msgid "Fork error"
+msgstr "Ikosa ryo mu Isoma"
+
+#: src/aux.c:170
+msgid "Pipe close error"
+msgstr ""
+
+#: src/aux.c:296 src/aux.c:338
+msgid "Cannot append register to itself."
+msgstr ""
+
+#: src/aux.c:402
+msgid "Exceeded maximum stack frame depth"
+msgstr ""
+
+# svtools/source\misc\errtxt.src:RID_ERRHDL.ERRCODE_CLASS_WRITE.text
+#: src/aux.c:418 src/aux.c:469 src/aux.c:509 src/aux.c:548 src/io.c:58
+#: src/io.c:600 src/main.c:218 src/main.c:594 src/main.c:654
+#, fuzzy
+msgid "File seek error"
+msgstr "Kwandika ikosa"
+
+# 4952
+#: src/aux.c:451 src/aux.c:494 src/aux.c:533 src/buf.c:116
+#, fuzzy
+msgid "dup2 error"
+msgstr "Ikosa ryo mu Isoma"
+
+#: src/buf.c:128 src/buf.c:281 src/buf.c:296
+msgid "Buffer open error"
+msgstr ""
+
+#: src/buf.c:139 src/buf.c:347 src/buf.c:383
+msgid "Buffer seek error"
+msgstr ""
+
+#: src/buf.c:260 src/main.c:441 src/main.c:513
+msgid "File name too long"
+msgstr ""
+
+#: src/buf.c:261
+#, fuzzy
+msgid "Invalid buffer name"
+msgstr "Umubare utari wo"
+
+#: src/buf.c:312
+msgid "Buffer close error"
+msgstr ""
+
+# 4952
+#: src/buf.c:357
+#, fuzzy
+msgid "Buffer read error"
+msgstr "Ikosa ryo mu Isoma"
+
+#: src/buf.c:397 src/buf.c:427
+msgid "Buffer full"
+msgstr ""
+
+# svtools/source\misc\errtxt.src:RID_ERRHDL.ERRCODE_CLASS_WRITE.text
+#: src/buf.c:404
+#, fuzzy
+msgid "Buffer write error"
+msgstr "Kwandika ikosa"
+
+#: src/buf.c:500 src/exec.c:100 src/exec.c:129 src/exec.c:1862 src/page.c:301
+#: src/parse.c:223
+#, fuzzy
+msgid "Address out of range"
+msgstr "Inyuguti Inyuma Bya Urutonde"
+
+#: src/buf.c:576
+msgid "Memory request too big"
+msgstr ""
+
+#: src/cbc.c:134 src/cbc.c:232 src/cbc.c:237 src/cbc.c:258 src/cbc.c:263
+#, fuzzy
+msgid "Invalid key"
+msgstr "Sibyo Ukoresha:"
+
+#: src/cbc.c:376
+msgid "Decryption failed (block corrupted)."
+msgstr ""
+
+#: src/cbc.c:385
+msgid "Decryption failed (incomplete block)."
+msgstr ""
+
+# svtools/source\misc\errtxt.src:RID_ERRHDL.ERRCODE_CLASS_WRITE.text
+#: src/cbc.c:387 src/io.c:551 src/main.c:669
+#, fuzzy
+msgid "File read error"
+msgstr "Kwandika ikosa"
+
+#: src/cmds.c:39 src/exec.c:609 src/io.c:479 src/main.c:347
+msgid "End-of-file unexpected"
+msgstr ""
+
+#: src/cmds.c:243 src/cmds.c:259
+#, fuzzy
+msgid "Invalid address mark"
+msgstr "Sibyo Inyuguti ishuri"
+
+#: src/ed.h:101
+#, fuzzy
+msgid "Unknown error"
+msgstr "Sisitemu Ikosa"
+
+#: src/ed.h:748 src/ed.h:783 src/ed.h:818
+#, fuzzy
+msgid "Numerical result out of range"
+msgstr "Inyuguti Inyuma Bya Urutonde"
+
+#: src/exec.c:28 src/exec.c:504 src/exec.c:590 src/exec.c:654 src/exec.c:680
+#: src/exec.c:1032 src/exec.c:1392 src/exec.c:1404 src/exec.c:1412
+msgid "Command suffix unexpected"
+msgstr ""
+
+#: src/exec.c:95 src/exec.c:124
+msgid "Destination address required"
+msgstr ""
+
+#: src/exec.c:338 src/exec.c:351 src/exec.c:363
+msgid "Command prefix unexpected"
+msgstr ""
+
+#: src/exec.c:495 src/exec.c:645 src/exec.c:749 src/exec.c:770 src/exec.c:969
+#: src/exec.c:1011 src/exec.c:1356 src/exec.c:1549 src/exec.c:1743
+msgid "Address unexpected"
+msgstr ""
+
+#: src/exec.c:674
+#, fuzzy
+msgid "Invalid redirection"
+msgstr "%s:Sibyo Ibisanzwe imvugo"
+
+#: src/exec.c:711 src/main.c:508
+msgid "File name not set"
+msgstr ""
+
+#: src/exec.c:725
+msgid "Recursive global command"
+msgstr ""
+
+#: src/exec.c:780
+#, fuzzy
+msgid "No previous error"
+msgstr "Ikosa in Ibisanzwe imvugo Gushaka"
+
+#: src/exec.c:890
+#, fuzzy
+msgid "Invalid destination address"
+msgstr "Sibyo Inyuguti ishuri"
+
+#: src/exec.c:931 src/exec.c:1342
+#, fuzzy
+msgid "Invalid register"
+msgstr "Sibyo Ukoresha:"
+
+#: src/exec.c:1187 src/exec.c:1250 src/exec.c:1568 src/exec.c:1627
+#: src/exec.c:1787 src/exec.c:1802
+#, fuzzy
+msgid "Unknown command"
+msgstr "Sisitemu Ikosa"
+
+#: src/exec.c:1802
+#, fuzzy
+msgid "Invalid address"
+msgstr "%s:Sibyo Ibisanzwe imvugo"
+
+#: src/exec.c:1820
+msgid "Command too long"
+msgstr ""
+
+#: src/exec.c:1867
+#, fuzzy
+msgid "Invalid address range"
+msgstr "Ipaji Urutonde"
+
+#: src/glbl.c:131
+msgid "No previous command"
+msgstr ""
+
+#: src/io.c:71
+msgid "File does not exist"
+msgstr ""
+
+# svtools/source\misc\errtxt.src:RID_ERRHDL.ERRCODE_CLASS_WRITE.text
+#: src/io.c:97 src/io.c:166 src/io.c:630 src/io.c:679 src/main.c:642
+#, fuzzy
+msgid "File open error"
+msgstr "Kwandika ikosa"
+
+#: src/io.c:120 src/io.c:644
+#, c-format
+msgid "%s: File already locked\n"
+msgstr ""
+
+#: src/io.c:144 src/io.c:621 src/io.c:659
+msgid "File close error"
+msgstr ""
+
+#: src/io.c:291 src/io.c:427
+#, c-format
+msgid "Newline inserted\n"
+msgstr ""
+
+#: src/io.c:296 src/io.c:432
+#, c-format
+msgid "Newline appended\n"
+msgstr ""
+
+# svtools/source\misc\errtxt.src:RID_ERRHDL.ERRCODE_CLASS_WRITE.text
+#: src/io.c:607
+#, fuzzy
+msgid "File truncate error"
+msgstr "Kwandika ikosa"
+
+#: src/io.c:720
+msgid "File too big"
+msgstr ""
+
+# svtools/source\misc\errtxt.src:RID_ERRHDL.ERRCODE_CLASS_WRITE.text
+#: src/io.c:767 src/main.c:604 src/main.c:678
+#, fuzzy
+msgid "File write error"
+msgstr "Kwandika ikosa"
+
+#: src/io.c:792 src/parse.c:505
+msgid "File status error"
+msgstr ""
+
+#: src/io.c:799
+msgid "Access restricted to regular files"
+msgstr ""
+
+# svtools/source\misc\errtxt.src:RID_ERRHDL.ERRCODE_CLASS_WRITE.text
+#: src/io.c:868
+#, fuzzy
+msgid "File stat error"
+msgstr "Kwandika ikosa"
+
+#: src/main.c:227
+msgid "Option '-i' requires '-e' or '-f'"
+msgstr ""
+
+#: src/main.c:292
+msgid "Interrupted"
+msgstr ""
+
+#: src/main.c:396
+msgid "WARNING: Buffer modified since last write"
+msgstr ""
+
+#: src/main.c:562
+msgid "Argument list full"
+msgstr ""
+
+#: src/main.c:697
+#, c-format
+msgid ""
+"Usage: %s [-] [-EGhirsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE]\n"
+msgstr ""
+
+#: src/main.c:700
+#, c-format
+msgid "Usage: %s [-] [-EGhrsVvwx] [-p PROMPT] [FILE]\n"
+msgstr ""
+
+#: src/main.c:707
+#, c-format
+msgid "Usage: %s [OPTION...] [FILE]\n"
+msgstr ""
+
+#: src/main.c:712
+#, c-format
+msgid ""
+"Options:\n"
+"  -E, --regexp-extended     Enable extended regular expression syntax.\n"
+"  -e, --expression=COMMAND  Add COMMAND to scripted input - implies `-s'.\n"
+"  -f, --file=SCRIPT         Read commands from file SCRIPT - implies `-s'.\n"
+"  -G, --traditional         Enable backward compatibility.\n"
+"  -h, --help                Dispaly (this) help, then exit.\n"
+"  -i, --in-place[=SUFFIX]   Write file before closing, with optional "
+"backup.\n"
+"  -p, --prompt=STRING       Prompt for commands with STRING.\n"
+"  -R, --ansi-color          Enable support for ANSI color codes.\n"
+"  -r, --regexp-extended     Enable extended regular expression syntax.\n"
+"  -s, --script              Suppress interactive diagnostics.\n"
+"  -v, --verbose             Enable verbose error diagnostics.\n"
+"  -V, --version             Print version information, then exit.\n"
+"  -w, --write               Open file in write-only mode.\n"
+"  -x, --crypt               Prompt for encryption key used for subsequent I/"
+"O.\n"
+"\n"
+"If FILE is given, read it for editing.  From within ed, run:\n"
+"  !info ed-intro RET\n"
+"for a tutorial introduction to ed.\n"
+"\n"
+"Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
+msgstr ""
+
+#: src/main.c:734
+#, c-format
+msgid ""
+"Options:\n"
+"  -E, --regexp-extended     Enable extended regular expression syntax.\n"
+"  -G, --traditional         Enable backward compatibility.\n"
+"  -h, --help                Dispaly (this) help, then exit.\n"
+"  -p, --prompt=STRING       Prompt for commands with STRING.\n"
+"  -R, --ansi-color          Enable support for ANSI color codes.\n"
+"  -r, --regexp-extended     Enable extended regular expression syntax.\n"
+"  -s, --script              Suppress interactive diagnostics.\n"
+"  -v, --verbose             Enable verbose error diagnostics.\n"
+"  -V, --version             Print version information, then exit.\n"
+"  -w, --write               Open file in write-only mode.\n"
+"  -x, --crypt               Prompt for encryption key used for subsequent I/"
+"O.\n"
+"\n"
+"If FILE is given, read it for editing.  From within ed, run:\n"
+"  !info ed-intro RET\n"
+"for a tutorial introduction to ed.\n"
+"\n"
+"Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
+msgstr ""
+
+#: src/main.c:765
+msgid "script, line %"
+msgstr ""
+
+#: src/parse.c:256 src/parse.c:602
+#, fuzzy
+msgid "Access restricted to working directory"
+msgstr "Byanze Kuri Garuka Kuri bushyinguro"
+
+#: src/parse.c:323
+#, fuzzy
+msgid "Too many file names"
+msgstr "ingingo"
+
+#: src/parse.c:338 src/parse.c:351 src/parse.c:378
+msgid "No more files"
+msgstr ""
+
+#: src/parse.c:446
+msgid "File glob too long"
+msgstr ""
+
+#: src/parse.c:467 src/parse.c:471 src/parse.c:491
+msgid "Pathname expansion error"
+msgstr ""
+
+#: src/parse.c:487
+#, fuzzy
+msgid "No such file or directory"
+msgstr "Kuri bushyinguro"
+
+#: src/parse.c:577
+#, fuzzy
+msgid "Invalid file name"
+msgstr "Ipaji Urutonde"
+
+#: src/parse.c:630
+msgid "Brackets ([]) unbalanced"
+msgstr ""
+
+#: src/parse.c:637
+msgid "Backslash (\\) unexpected"
+msgstr ""
+
+#: src/parse.c:694
+msgid "Shell access restricted"
+msgstr ""
+
+#: src/parse.c:758
+#, fuzzy
+msgid "No previous shell command"
+msgstr "Ikosa in Ibisanzwe imvugo Gushaka"
+
+#: src/re.c:33
+#, fuzzy
+msgid "Invalid pattern delimiter"
+msgstr "Sibyo Inyuguti ishuri"
+
+#: src/re.c:145
+#, fuzzy
+msgid "No previous pattern"
+msgstr "Ikosa in Ibisanzwe imvugo Gushaka"
+
+# 4952
+#: src/signal.c:136
+#, fuzzy
+msgid "Signal error"
+msgstr "Ikosa ryo mu Isoma"
+
+#: src/sub.c:129 src/sub.c:148
+msgid "Unknown command suffix"
+msgstr ""
+
+#: src/sub.c:167 src/sub.c:237
+#, fuzzy
+msgid "No previous substitution"
+msgstr "Ikosa in Ibisanzwe imvugo Gushaka"
+
+#: src/undo.c:51
+msgid "Nothing to undo"
+msgstr ""
 
 #, fuzzy, c-format
 #~ msgid "invalid argument %s for %s"
@@ -244,23 +668,9 @@ msgstr "Ikosa in Ibisanzwe imvugo Gushaka"
 #~ msgid "(PROGRAM ERROR) No version known!?"
 #~ msgstr "(Verisiyo"
 
-#, fuzzy, c-format
-#~ msgid "%s: Too many arguments\n"
-#~ msgstr "ingingo"
-
 #, fuzzy
 #~ msgid "(PROGRAM ERROR) Option should have been recognized!?"
 #~ msgstr "(Verisiyo"
-
-# 4952
-#, fuzzy
-#~ msgid "program error"
-#~ msgstr "Ikosa ryo mu Isoma"
-
-# svtools/source\misc\errtxt.src:RID_ERRHDL.ERRCODE_CLASS_WRITE.text
-#, fuzzy
-#~ msgid "write error"
-#~ msgstr "Kwandika ikosa"
 
 #, fuzzy, c-format
 #~ msgid "error while opening \"%s\" for reading"
@@ -356,10 +766,6 @@ msgstr "Ikosa in Ibisanzwe imvugo Gushaka"
 #~ msgid "Request not canceled"
 #~ msgstr "Ikintu OYA Byabonetse"
 
-#, fuzzy
-#~ msgid "Unknown error"
-#~ msgstr "Sisitemu Ikosa"
-
 #, fuzzy, c-format
 #~ msgid "%s: option `--%s' doesn't allow an argument\n"
 #~ msgstr "%s:Ihitamo Kwemerera"
@@ -397,10 +803,6 @@ msgstr "Ikosa in Ibisanzwe imvugo Gushaka"
 #~ msgstr "Kurema bushyinguro"
 
 #, fuzzy, c-format
-#~ msgid "cannot chdir to directory %s"
-#~ msgstr "Kuri bushyinguro"
-
-#, fuzzy, c-format
 #~ msgid "cannot change permissions of %s"
 #~ msgstr "Guhindura>> Uruhushya Bya"
 
@@ -411,10 +813,6 @@ msgstr "Ikosa in Ibisanzwe imvugo Gushaka"
 #, fuzzy
 #~ msgid "unable to record current working directory"
 #~ msgstr "Kuri Icyabitswe KIGEZWEHO bushyinguro"
-
-#, fuzzy
-#~ msgid "failed to return to initial working directory"
-#~ msgstr "Byanze Kuri Garuka Kuri bushyinguro"
 
 #, fuzzy
 #~ msgid "Failed to open /dev/zero for read"
@@ -440,10 +838,6 @@ msgstr "Ikosa in Ibisanzwe imvugo Gushaka"
 #~ msgid "iconv function not available"
 #~ msgstr "Umumaro OYA Bihari"
 
-#, fuzzy
-#~ msgid "character out of range"
-#~ msgstr "Inyuguti Inyuma Bya Urutonde"
-
 #, fuzzy, c-format
 #~ msgid "cannot convert U+%04X to local character set"
 #~ msgstr "GUHINDURA U Kuri Inyuguti Gushyiraho"
@@ -451,10 +845,6 @@ msgstr "Ikosa in Ibisanzwe imvugo Gushaka"
 #, fuzzy, c-format
 #~ msgid "cannot convert U+%04X to local character set: %s"
 #~ msgstr "GUHINDURA U Kuri Inyuguti Gushyiraho"
-
-#, fuzzy
-#~ msgid "invalid user"
-#~ msgstr "Sibyo Ukoresha:"
 
 #, fuzzy
 #~ msgid "invalid group"

@@ -1,5 +1,5 @@
 ## DO NOT EDIT! GENERATED AUTOMATICALLY!
-# Copyright (C) 2002-2022 Free Software Foundation, Inc.
+# Copyright (C) 2002-2023 Free Software Foundation, Inc.
 #
 # This file is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -105,3 +105,20 @@ lib/windows-recmutex.c
 lib/windows-recmutex.h
 lib/windows-rwlock.c
 lib/windows-rwlock.h
+src/aux.c
+src/buf.c
+src/cbc.c
+src/cmds.c
+src/ed.h
+src/exec.c
+src/glbl.c
+src/io.c
+src/main.c
+src/page.c
+src/parse.c
+src/re.c
+src/signal.c
+src/sub.c
+src/undo.c
+src/utf8.c
+src/version.c

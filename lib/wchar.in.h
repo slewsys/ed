@@ -1,6 +1,6 @@
 /* A substitute for ISO C99 <wchar.h>, for platforms that have issues.
 
-   Copyright (C) 2007-2022 Free Software Foundation, Inc.
+   Copyright (C) 2007-2023 Free Software Foundation, Inc.
 
    This file is free software: you can redistribute it and/or modify
    it under the terms of the GNU Lesser General Public License as
@@ -188,7 +188,11 @@ typedef int rpl_mbstate_t;
 # if (@REPLACE_FREE@ && !defined free \
       && !(defined __cplusplus && defined GNULIB_NAMESPACE))
 /* We can't do '#define free rpl_free' here.  */
+#  if defined __cplusplus && (__GLIBC__ + (__GLIBC_MINOR__ >= 14) > 2)
+_GL_EXTERN_C void rpl_free (void *) throw ();
+#  else
 _GL_EXTERN_C void rpl_free (void *);
+#  endif
 #  undef _GL_ATTRIBUTE_DEALLOC_FREE
 #  define _GL_ATTRIBUTE_DEALLOC_FREE _GL_ATTRIBUTE_DEALLOC (rpl_free, 1)
 # else
@@ -441,7 +445,9 @@ _GL_CXXALIAS_SYS (mbsnrtowcs, size_t,
                    const char **restrict srcp, size_t srclen, size_t len,
                    mbstate_t *restrict ps));
 # endif
+# if __GLIBC__ >= 2
 _GL_CXXALIASWARN (mbsnrtowcs);
+# endif
 #elif defined GNULIB_POSIXCHECK
 # undef mbsnrtowcs
 # if HAVE_RAW_DECL_MBSNRTOWCS
@@ -694,14 +700,27 @@ _GL_WARN_ON_USE (wmemmove, "wmemmove is unportable - "
 /* Copy N wide characters of SRC to DEST.
    Return pointer to wide characters after the last written wide character.  */
 #if @GNULIB_WMEMPCPY@
-# if !@HAVE_WMEMPCPY@
+# if @REPLACE_WMEMPCPY@
+#  if !(defined __cplusplus && defined GNULIB_NAMESPACE)
+#   undef wmempcpy
+#   define wmempcpy rpl_wmempcpy
+#  endif
+_GL_FUNCDECL_RPL (wmempcpy, wchar_t *,
+                  (wchar_t *restrict dest,
+                   const wchar_t *restrict src, size_t n));
+_GL_CXXALIAS_RPL (wmempcpy, wchar_t *,
+                  (wchar_t *restrict dest,
+                   const wchar_t *restrict src, size_t n));
+# else
+#  if !@HAVE_WMEMPCPY@
 _GL_FUNCDECL_SYS (wmempcpy, wchar_t *,
                   (wchar_t *restrict dest,
                    const wchar_t *restrict src, size_t n));
-# endif
+#  endif
 _GL_CXXALIAS_SYS (wmempcpy, wchar_t *,
                   (wchar_t *restrict dest,
                    const wchar_t *restrict src, size_t n));
+# endif
 # if __GLIBC__ >= 2
 _GL_CXXALIASWARN (wmempcpy);
 # endif

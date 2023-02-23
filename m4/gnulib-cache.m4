@@ -1,4 +1,4 @@
-# Copyright (C) 2002-2022 Free Software Foundation, Inc.
+# Copyright (C) 2002-2023 Free Software Foundation, Inc.
 #
 # This file is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -34,7 +34,7 @@
 #  --po-base=po \
 #  --doc-base=doc \
 #  --tests-base=tests \
-#  --aux-dir=/opt/src/alm/ed/current/ed \
+#  --aux-dir=. \
 #  --conditional-dependencies \
 #  --no-libtool \
 #  --macro-prefix=gl \

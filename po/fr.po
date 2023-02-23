@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnulib-4.0.0.2567\n"
 "Report-Msgid-Bugs-To: bug-gnulib@gnu.org\n"
-"POT-Creation-Date: 2023-01-16 07:44-0500\n"
+"POT-Creation-Date: 2023-02-23 02:29-0500\n"
 "PO-Revision-Date: 2019-05-21 20:15+0200\n"
 "Last-Translator: Stéphane Aulery <lkppo@free.fr>\n"
 "Language-Team: French <traduc@traduc.org>\n"
@@ -62,7 +62,7 @@ msgstr "%s : l'option nécessite un argument -- « %c »\n"
 msgid "Success"
 msgstr "Succès"
 
-#: lib/regcomp.c:125
+#: lib/regcomp.c:125 src/re.c:271 src/sub.c:439
 msgid "No match"
 msgstr "Pas de correspondance"
 
@@ -106,7 +106,10 @@ msgstr "Le contenu de \\{\\} n'est pas valable"
 msgid "Invalid range end"
 msgstr "Borne finale de l'intervalle non valable"
 
-#: lib/regcomp.c:158
+#: lib/regcomp.c:158 src/aux.c:227 src/aux.c:440 src/buf.c:267 src/buf.c:436
+#: src/buf.c:534 src/buf.c:544 src/buf.c:583 src/buf.c:613 src/glbl.c:170
+#: src/io.c:317 src/main.c:632 src/page.c:858 src/parse.c:273 src/parse.c:518
+#: src/re.c:155 src/undo.c:26
 msgid "Memory exhausted"
 msgstr "Mémoire épuisée"
 
@@ -129,6 +132,460 @@ msgstr ") ou \\) non appairée"
 #: lib/regcomp.c:650
 msgid "No previous regular expression"
 msgstr "Pas d'expression rationnelle précédente"
+
+#: src/aux.c:35
+#, fuzzy
+#| msgid "%s subprocess I/O error"
+msgid "Child process error"
+msgstr "erreur d'entrée sortie du sous-processus %s"
+
+#: src/aux.c:67 src/aux.c:156
+#, fuzzy
+#| msgid "write error"
+msgid "Pipe open error"
+msgstr "erreur d'écriture"
+
+#: src/aux.c:76 src/aux.c:128
+#, fuzzy
+#| msgid "program error"
+msgid "Fork error"
+msgstr "erreur du programme"
+
+#: src/aux.c:170
+msgid "Pipe close error"
+msgstr ""
+
+#: src/aux.c:296 src/aux.c:338
+msgid "Cannot append register to itself."
+msgstr ""
+
+#: src/aux.c:402
+msgid "Exceeded maximum stack frame depth"
+msgstr ""
+
+#: src/aux.c:418 src/aux.c:469 src/aux.c:509 src/aux.c:548 src/io.c:58
+#: src/io.c:600 src/main.c:218 src/main.c:594 src/main.c:654
+#, fuzzy
+#| msgid "write error"
+msgid "File seek error"
+msgstr "erreur d'écriture"
+
+#: src/aux.c:451 src/aux.c:494 src/aux.c:533 src/buf.c:116
+#, fuzzy
+#| msgid "Bus error"
+msgid "dup2 error"
+msgstr "Erreur de bus"
+
+#: src/buf.c:128 src/buf.c:281 src/buf.c:296
+#, fuzzy
+#| msgid "Bus error"
+msgid "Buffer open error"
+msgstr "Erreur de bus"
+
+#: src/buf.c:139 src/buf.c:347 src/buf.c:383
+#, fuzzy
+#| msgid "Bus error"
+msgid "Buffer seek error"
+msgstr "Erreur de bus"
+
+#: src/buf.c:260 src/main.c:441 src/main.c:513
+msgid "File name too long"
+msgstr ""
+
+#: src/buf.c:261
+#, fuzzy
+#| msgid "Invalid back reference"
+msgid "Invalid buffer name"
+msgstr "Référence antérieure non valable"
+
+#: src/buf.c:312
+#, fuzzy
+#| msgid "Bus error"
+msgid "Buffer close error"
+msgstr "Erreur de bus"
+
+#: src/buf.c:357
+#, fuzzy
+#| msgid "Bus error"
+msgid "Buffer read error"
+msgstr "Erreur de bus"
+
+#: src/buf.c:397 src/buf.c:427
+msgid "Buffer full"
+msgstr ""
+
+#: src/buf.c:404
+#, fuzzy
+#| msgid "write error"
+msgid "Buffer write error"
+msgstr "erreur d'écriture"
+
+#: src/buf.c:500 src/exec.c:100 src/exec.c:129 src/exec.c:1862 src/page.c:301
+#: src/parse.c:223
+#, fuzzy
+#| msgid "character out of range"
+msgid "Address out of range"
+msgstr "caractère hors limites"
+
+#: src/buf.c:576
+msgid "Memory request too big"
+msgstr ""
+
+#: src/cbc.c:134 src/cbc.c:232 src/cbc.c:237 src/cbc.c:258 src/cbc.c:263
+#, fuzzy
+#| msgid "invalid user"
+msgid "Invalid key"
+msgstr "utilisateur non valable"
+
+#: src/cbc.c:376
+msgid "Decryption failed (block corrupted)."
+msgstr ""
+
+#: src/cbc.c:385
+msgid "Decryption failed (incomplete block)."
+msgstr ""
+
+#: src/cbc.c:387 src/io.c:551 src/main.c:669
+#, fuzzy
+#| msgid "write error"
+msgid "File read error"
+msgstr "erreur d'écriture"
+
+#: src/cmds.c:39 src/exec.c:609 src/io.c:479 src/main.c:347
+msgid "End-of-file unexpected"
+msgstr ""
+
+#: src/cmds.c:243 src/cmds.c:259
+#, fuzzy
+#| msgid "Invalid character class name"
+msgid "Invalid address mark"
+msgstr "Nom de classe de caractères non valable"
+
+#: src/ed.h:101
+msgid "Unknown error"
+msgstr "Erreur inconnue"
+
+#: src/ed.h:748 src/ed.h:783 src/ed.h:818
+#, fuzzy
+#| msgid "character out of range"
+msgid "Numerical result out of range"
+msgstr "caractère hors limites"
+
+#: src/exec.c:28 src/exec.c:504 src/exec.c:590 src/exec.c:654 src/exec.c:680
+#: src/exec.c:1032 src/exec.c:1392 src/exec.c:1404 src/exec.c:1412
+msgid "Command suffix unexpected"
+msgstr ""
+
+#: src/exec.c:95 src/exec.c:124
+msgid "Destination address required"
+msgstr ""
+
+#: src/exec.c:338 src/exec.c:351 src/exec.c:363
+msgid "Command prefix unexpected"
+msgstr ""
+
+#: src/exec.c:495 src/exec.c:645 src/exec.c:749 src/exec.c:770 src/exec.c:969
+#: src/exec.c:1011 src/exec.c:1356 src/exec.c:1549 src/exec.c:1743
+msgid "Address unexpected"
+msgstr ""
+
+#: src/exec.c:674
+#, fuzzy
+#| msgid "Invalid regular expression"
+msgid "Invalid redirection"
+msgstr "Expression rationnelle non valable"
+
+#: src/exec.c:711 src/main.c:508
+msgid "File name not set"
+msgstr ""
+
+#: src/exec.c:725
+msgid "Recursive global command"
+msgstr ""
+
+#: src/exec.c:780
+#, fuzzy
+#| msgid "No previous regular expression"
+msgid "No previous error"
+msgstr "Pas d'expression rationnelle précédente"
+
+#: src/exec.c:890
+#, fuzzy
+#| msgid "Invalid collation character"
+msgid "Invalid destination address"
+msgstr "Caractère d'assemblage non valable"
+
+#: src/exec.c:931 src/exec.c:1342
+#, fuzzy
+#| msgid "invalid user"
+msgid "Invalid register"
+msgstr "utilisateur non valable"
+
+#: src/exec.c:1187 src/exec.c:1250 src/exec.c:1568 src/exec.c:1627
+#: src/exec.c:1787 src/exec.c:1802
+#, fuzzy
+#| msgid "Unknown error"
+msgid "Unknown command"
+msgstr "Erreur inconnue"
+
+#: src/exec.c:1802
+#, fuzzy
+#| msgid "Invalid regular expression"
+msgid "Invalid address"
+msgstr "Expression rationnelle non valable"
+
+#: src/exec.c:1820
+msgid "Command too long"
+msgstr ""
+
+#: src/exec.c:1867
+#, fuzzy
+#| msgid "Invalid range end"
+msgid "Invalid address range"
+msgstr "Borne finale de l'intervalle non valable"
+
+#: src/glbl.c:131
+msgid "No previous command"
+msgstr ""
+
+#: src/io.c:71
+msgid "File does not exist"
+msgstr ""
+
+#: src/io.c:97 src/io.c:166 src/io.c:630 src/io.c:679 src/main.c:642
+#, fuzzy
+#| msgid "write error"
+msgid "File open error"
+msgstr "erreur d'écriture"
+
+#: src/io.c:120 src/io.c:644
+#, c-format
+msgid "%s: File already locked\n"
+msgstr ""
+
+#: src/io.c:144 src/io.c:621 src/io.c:659
+msgid "File close error"
+msgstr ""
+
+#: src/io.c:291 src/io.c:427
+#, c-format
+msgid "Newline inserted\n"
+msgstr ""
+
+#: src/io.c:296 src/io.c:432
+#, c-format
+msgid "Newline appended\n"
+msgstr ""
+
+#: src/io.c:607
+#, fuzzy
+#| msgid "write error"
+msgid "File truncate error"
+msgstr "erreur d'écriture"
+
+#: src/io.c:720
+msgid "File too big"
+msgstr ""
+
+#: src/io.c:767 src/main.c:604 src/main.c:678
+#, fuzzy
+#| msgid "write error"
+msgid "File write error"
+msgstr "erreur d'écriture"
+
+#: src/io.c:792 src/parse.c:505
+#, fuzzy
+#| msgid "Bus error"
+msgid "File status error"
+msgstr "Erreur de bus"
+
+#: src/io.c:799
+msgid "Access restricted to regular files"
+msgstr ""
+
+#: src/io.c:868
+#, fuzzy
+#| msgid "write error"
+msgid "File stat error"
+msgstr "erreur d'écriture"
+
+#: src/main.c:227
+msgid "Option '-i' requires '-e' or '-f'"
+msgstr ""
+
+#: src/main.c:292
+#, fuzzy
+#| msgid "Interrupt"
+msgid "Interrupted"
+msgstr "Interrompre"
+
+#: src/main.c:396
+msgid "WARNING: Buffer modified since last write"
+msgstr ""
+
+#: src/main.c:562
+#, fuzzy
+#| msgid "Argument buffer too small"
+msgid "Argument list full"
+msgstr "Mémoire tampon d'argument trop petite"
+
+#: src/main.c:697
+#, c-format
+msgid ""
+"Usage: %s [-] [-EGhirsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE]\n"
+msgstr ""
+
+#: src/main.c:700
+#, c-format
+msgid "Usage: %s [-] [-EGhrsVvwx] [-p PROMPT] [FILE]\n"
+msgstr ""
+
+#: src/main.c:707
+#, c-format
+msgid "Usage: %s [OPTION...] [FILE]\n"
+msgstr ""
+
+#: src/main.c:712
+#, c-format
+msgid ""
+"Options:\n"
+"  -E, --regexp-extended     Enable extended regular expression syntax.\n"
+"  -e, --expression=COMMAND  Add COMMAND to scripted input - implies `-s'.\n"
+"  -f, --file=SCRIPT         Read commands from file SCRIPT - implies `-s'.\n"
+"  -G, --traditional         Enable backward compatibility.\n"
+"  -h, --help                Dispaly (this) help, then exit.\n"
+"  -i, --in-place[=SUFFIX]   Write file before closing, with optional "
+"backup.\n"
+"  -p, --prompt=STRING       Prompt for commands with STRING.\n"
+"  -R, --ansi-color          Enable support for ANSI color codes.\n"
+"  -r, --regexp-extended     Enable extended regular expression syntax.\n"
+"  -s, --script              Suppress interactive diagnostics.\n"
+"  -v, --verbose             Enable verbose error diagnostics.\n"
+"  -V, --version             Print version information, then exit.\n"
+"  -w, --write               Open file in write-only mode.\n"
+"  -x, --crypt               Prompt for encryption key used for subsequent I/"
+"O.\n"
+"\n"
+"If FILE is given, read it for editing.  From within ed, run:\n"
+"  !info ed-intro RET\n"
+"for a tutorial introduction to ed.\n"
+"\n"
+"Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
+msgstr ""
+
+#: src/main.c:734
+#, c-format
+msgid ""
+"Options:\n"
+"  -E, --regexp-extended     Enable extended regular expression syntax.\n"
+"  -G, --traditional         Enable backward compatibility.\n"
+"  -h, --help                Dispaly (this) help, then exit.\n"
+"  -p, --prompt=STRING       Prompt for commands with STRING.\n"
+"  -R, --ansi-color          Enable support for ANSI color codes.\n"
+"  -r, --regexp-extended     Enable extended regular expression syntax.\n"
+"  -s, --script              Suppress interactive diagnostics.\n"
+"  -v, --verbose             Enable verbose error diagnostics.\n"
+"  -V, --version             Print version information, then exit.\n"
+"  -w, --write               Open file in write-only mode.\n"
+"  -x, --crypt               Prompt for encryption key used for subsequent I/"
+"O.\n"
+"\n"
+"If FILE is given, read it for editing.  From within ed, run:\n"
+"  !info ed-intro RET\n"
+"for a tutorial introduction to ed.\n"
+"\n"
+"Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
+msgstr ""
+
+#: src/main.c:765
+msgid "script, line %"
+msgstr ""
+
+#: src/parse.c:256 src/parse.c:602
+#, fuzzy
+#| msgid "failed to return to initial working directory"
+msgid "Access restricted to working directory"
+msgstr "échec de retour au répertoire initial de travail"
+
+#: src/parse.c:323
+#, fuzzy
+#| msgid "%s: Too many arguments\n"
+msgid "Too many file names"
+msgstr "%s : trop d'arguments\n"
+
+#: src/parse.c:338 src/parse.c:351 src/parse.c:378
+#, fuzzy
+#| msgid "named file"
+msgid "No more files"
+msgstr "fichier nommé"
+
+#: src/parse.c:446
+msgid "File glob too long"
+msgstr ""
+
+#: src/parse.c:467 src/parse.c:471 src/parse.c:491
+msgid "Pathname expansion error"
+msgstr ""
+
+#: src/parse.c:487
+msgid "No such file or directory"
+msgstr ""
+
+#: src/parse.c:577
+#, fuzzy
+#| msgid "Invalid range end"
+msgid "Invalid file name"
+msgstr "Borne finale de l'intervalle non valable"
+
+#: src/parse.c:630
+msgid "Brackets ([]) unbalanced"
+msgstr ""
+
+#: src/parse.c:637
+msgid "Backslash (\\) unexpected"
+msgstr ""
+
+#: src/parse.c:694
+msgid "Shell access restricted"
+msgstr ""
+
+#: src/parse.c:758
+#, fuzzy
+#| msgid "No previous regular expression"
+msgid "No previous shell command"
+msgstr "Pas d'expression rationnelle précédente"
+
+#: src/re.c:33
+#, fuzzy
+#| msgid "Invalid character class name"
+msgid "Invalid pattern delimiter"
+msgstr "Nom de classe de caractères non valable"
+
+#: src/re.c:145
+#, fuzzy
+#| msgid "No previous regular expression"
+msgid "No previous pattern"
+msgstr "Pas d'expression rationnelle précédente"
+
+#: src/signal.c:136
+#, fuzzy
+#| msgid "program error"
+msgid "Signal error"
+msgstr "erreur du programme"
+
+#: src/sub.c:129 src/sub.c:148
+msgid "Unknown command suffix"
+msgstr ""
+
+#: src/sub.c:167 src/sub.c:237
+#, fuzzy
+#| msgid "No previous regular expression"
+msgid "No previous substitution"
+msgstr "Pas d'expression rationnelle précédente"
+
+#: src/undo.c:51
+msgid "Nothing to undo"
+msgstr ""
 
 #, c-format
 #~ msgid "invalid argument %s for %s"
@@ -210,10 +667,6 @@ msgstr "Pas d'expression rationnelle précédente"
 #~ msgid "(PROGRAM ERROR) No version known!?"
 #~ msgstr "(Erreur du programme) pas de version connue !"
 
-#, c-format
-#~ msgid "%s: Too many arguments\n"
-#~ msgstr "%s : trop d'arguments\n"
-
 #~ msgid "(PROGRAM ERROR) Option should have been recognized!?"
 #~ msgstr "(Erreur du programme) l'option aurait dû être reconnue !"
 
@@ -271,9 +724,6 @@ msgstr "Pas d'expression rationnelle précédente"
 #~ msgid "cannot open stats file for writing"
 #~ msgstr "impossible d'ouvrir les permissions du fichier en écriture"
 
-#~ msgid "program error"
-#~ msgstr "erreur du programme"
-
 #~ msgid "stack overflow"
 #~ msgstr "dépassement de pile"
 
@@ -297,9 +747,6 @@ msgstr "Pas d'expression rationnelle précédente"
 
 #~ msgid "error closing file"
 #~ msgstr "erreur de fermeture de fichier"
-
-#~ msgid "write error"
-#~ msgstr "erreur d'écriture"
 
 #, c-format
 #~ msgid "preserving permissions for %s"
@@ -414,9 +861,6 @@ msgstr "Pas d'expression rationnelle précédente"
 #~ msgid "multiplexed file"
 #~ msgstr "fichier multipléxé"
 
-#~ msgid "named file"
-#~ msgstr "fichier nommé"
-
 #~ msgid "network special file"
 #~ msgstr "fichier spécial de réseau"
 
@@ -471,9 +915,6 @@ msgstr "Pas d'expression rationnelle précédente"
 #~ msgid "System error"
 #~ msgstr "Erreur système"
 
-#~ msgid "Argument buffer too small"
-#~ msgstr "Mémoire tampon d'argument trop petite"
-
 #~ msgid "Processing request in progress"
 #~ msgstr "Traitement de la requête en cours"
 
@@ -491,9 +932,6 @@ msgstr "Pas d'expression rationnelle précédente"
 
 #~ msgid "Parameter string not correctly encoded"
 #~ msgstr "Chaîne de paramètre mal encodé"
-
-#~ msgid "Unknown error"
-#~ msgstr "Erreur inconnue"
 
 #~ msgid "invalid source_version argument to compile_java_class"
 #~ msgstr "argument source_version non valable pour compile_java_class"
@@ -519,10 +957,6 @@ msgstr "Pas d'expression rationnelle précédente"
 #~ "$JAVAC"
 
 #, c-format
-#~ msgid "%s subprocess I/O error"
-#~ msgstr "erreur d'entrée sortie du sous-processus %s"
-
-#, c-format
 #~ msgid "cannot stat %s"
 #~ msgstr "impossible de lire les permissions de %s"
 
@@ -539,9 +973,6 @@ msgstr "Pas d'expression rationnelle précédente"
 
 #~ msgid "unable to record current working directory"
 #~ msgstr "impossible de mémoriser le répertoire de travail courant"
-
-#~ msgid "failed to return to initial working directory"
-#~ msgstr "échec de retour au répertoire initial de travail"
 
 #~ msgid "Failed to open /dev/zero for read"
 #~ msgstr "Échec d'ouverture de /dev/zero en lecture"
@@ -597,9 +1028,6 @@ msgstr "Pas d'expression rationnelle précédente"
 #~ msgid "Hangup"
 #~ msgstr "Raccrocher"
 
-#~ msgid "Interrupt"
-#~ msgstr "Interrompre"
-
 #~ msgid "Quit"
 #~ msgstr "Quitter"
 
@@ -617,9 +1045,6 @@ msgstr "Pas d'expression rationnelle précédente"
 
 #~ msgid "Killed"
 #~ msgstr "Tué"
-
-#~ msgid "Bus error"
-#~ msgstr "Erreur de bus"
 
 #~ msgid "Segmentation fault"
 #~ msgstr "Erreur de segmentation"
@@ -728,9 +1153,6 @@ msgstr "Pas d'expression rationnelle précédente"
 #~ msgid "iconv function not available"
 #~ msgstr "fonction iconv non disponible"
 
-#~ msgid "character out of range"
-#~ msgstr "caractère hors limites"
-
 #, c-format
 #~ msgid "cannot convert U+%04X to local character set"
 #~ msgstr "impossible de convertir U+%04X dans le jeu de caractères local"
@@ -738,9 +1160,6 @@ msgstr "Pas d'expression rationnelle précédente"
 #, c-format
 #~ msgid "cannot convert U+%04X to local character set: %s"
 #~ msgstr "impossible de convertir U+%04X dans le jeu de caractères local : %s"
-
-#~ msgid "invalid user"
-#~ msgstr "utilisateur non valable"
 
 #~ msgid "invalid group"
 #~ msgstr "groupe non valable"
