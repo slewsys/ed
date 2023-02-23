@@ -93,20 +93,20 @@ sudo make install
 ## Building from Git
 Updating Natural Language translation files requires:
 
- - _GNU gettext_ tools and
- - _GNU libintl_ library.
+ - **GNU** `gettext` tools.
 
 Generating documentation requires:
 
  - a typesetting system (e.g., `groff` or `troff`),
- - _GNU texinfo_ and
+ - **GNU** `texinfo` and
  - additional tools for producing PDFs (.e.g, `texi2pdf` and `ps2pdf`).
 
 Ruunning tests requires:
 
- - _GNU automake_,
- - _GNU autoconf_ and
- - _GNU libtool_.
+ - **GNU** `make`
+ - **GNU** `automake`,
+ - **GNU** `autoconf` and
+ - **GNU** `libtool`.
 
 Assuming these are available, run:
 
