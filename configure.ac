@@ -54,12 +54,13 @@ AC_PROG_YACC
 AC_MSG_CHECKING([whether included regex is requested])
 AC_ARG_WITH([included-regex],
   [AS_HELP_STRING([--with-included-regex],
-    [use GNU regex library included here])],[],
-    [with_included_regex=check])
+    [use GNU regex library included here])],
+    [], [with_included_regex=check])
 AC_MSG_RESULT([$with_included_regex])
 
 AS_IF([test ! ."$with_included_regex" = .'yes'],
-  [AC_CHECK_FUNCS([regcomp],[with_included_regex=no],
+  [AC_CHECK_FUNCS([regcomp],
+    [with_included_regex=no],
     [with_included_regex=yes]
     [AC_MSG_WARN([System regex not found, falling back to included version])])])
 AM_CONDITIONAL([LIBADD_REGEX], [test ."$with_included_regex" = .'yes'])

@@ -54,13 +54,13 @@ fi
 $verbose && cat <<EOF
 $script_name: Running:
   cd "$abs_srcdir" &&
-  automake --verbose --add-missing --copy --force-missing >&2
+  automake --verbose --add-missing --copy >&2
 
 EOF
 
 automake_output=$(
     cd "$abs_srcdir" &&
-        automake --verbose --add-missing --copy --force-missing 2>&1
+        automake --verbose --add-missing --copy 2>&1
                )
 exit_status=$?
 if test $exit_status -ne 0; then
@@ -74,13 +74,13 @@ fi
 $verbose && cat <<EOF
 $script_name: Running:
   cd "$abs_srcdir" &&
-  autoreconf --verbose --force --install -I ./m4 >&2
+  autoreconf --verbose --install -I ./m4 >&2
 
 EOF
 
 autoconf_output=$(
     cd "$abs_srcdir" &&
-        autoreconf --verbose --force --install -I ./m4 2>&1
+        autoreconf --verbose --install -I ./m4 2>&1
                )
 exit_status=$?
 if test $exit_status -ne 0; then
