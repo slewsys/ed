@@ -15,7 +15,7 @@
 /* Define to the number of bits in type 'wint_t'. */
 #undef BITSIZEOF_WINT_T
 
-/* Options with which "$top_srcdir"/configure was invoked. */
+/* Options with which "${top_srcdir}/configure" was invoked. */
 #undef CONFIGURE_ARGS
 
 /* Define to 1 if translation of program messages to the user's native
@@ -580,7 +580,7 @@
 /* Define format string to print value of type off_t. */
 #undef OFF_T_FORMAT_STRING
 
-/* Define int with storage size of size_t. */
+/* Define int with storage size of off_t. */
 #undef OFF_T_SIZE
 
 /* Name of package */
