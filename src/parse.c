@@ -619,7 +619,9 @@ regular_expression (unsigned dc, size_t *len, ed_buffer_t *ed)
 
   char *s = ed->input;
 
-  for (; (unsigned char) *ed->input != dc && *ed->input != '\n'; ++ed->input)
+  for (; ((unsigned char) *ed->input != dc
+          || (dc == '\\' && (unsigned char) *(ed->input + 1) == dc))
+         && *ed->input != '\n'; ++ed->input)
     switch (*ed->input)
       {
       default:

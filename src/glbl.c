@@ -33,7 +33,8 @@ mark_global_nodes (int want_match, ed_buffer_t *ed)
       spl0 ();
       return ERR;
     }
-  if (*ed->input == dc && *ed->input != '\n')
+  if ((dc == '\\' ? *ed->input == dc && *(ed->input + 1) != dc
+       : *ed->input == dc) && *ed->input != '\n')
     ++ed->input;
   reset_global_queue (ed);
   spl0 ();

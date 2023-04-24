@@ -1,0 +1,10 @@
+hello
+heqlo
+hqlo
+\qlo
+\\qo
+\\\q
+he\q
+helq
+hellq
+world

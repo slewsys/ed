@@ -37,7 +37,9 @@ get_compiled_regex (unsigned dc, int re_type, ed_buffer_t *ed)
   /* Assert: spl1 () */
 
   /* Use previous pattern. */
-  if (dc == '\n' || *++ed->input == '\n' || *ed->input == dc)
+  if (dc == '\n' || *++ed->input == '\n'
+      || (dc == '\\' ?  *ed->input == dc &&  *(ed->input + 1) != dc
+          : *ed->input == dc))
     {
       /*
        *  For a substitution command, there may be two patterns
