@@ -140,15 +140,15 @@ AX_COMPILE_CHECK_SIZEOF(long long)
 AX_COMPILE_CHECK_SIZEOF(size_t, $headers)
 AX_COMPILE_CHECK_SIZEOF(off_t, $headers)
 
-if test ."$ac_cv_sizeof_size_t" = ."$ac_cv_sizeof_long"; then
-    AC_DEFINE_UNQUOTED([SIZE_T_SIZE], [unsigned long],
-      [Define int with storage size of size_t.])
-    AC_DEFINE_UNQUOTED([SIZE_T_FORMAT_STRING], ["lu"],
-      [Define format string to print value of type size_t.])
-else
+if test ."$ac_cv_sizeof_size_t" = ."$ac_cv_sizeof_long_long"; then
     AC_DEFINE_UNQUOTED([SIZE_T_SIZE], [unsigned long long],
       [Define int with storage size of size_t.])
     AC_DEFINE_UNQUOTED([SIZE_T_FORMAT_STRING], ["llu"],
+      [Define format string to print value of type size_t.])
+else
+    AC_DEFINE_UNQUOTED([SIZE_T_SIZE], [unsigned long],
+      [Define int with storage size of size_t.])
+    AC_DEFINE_UNQUOTED([SIZE_T_FORMAT_STRING], ["lu"],
       [Define format string to print value of type size_t.])
 fi
 

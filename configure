@@ -29393,19 +29393,19 @@ printf "%s\n" "#define SIZEOF_OFF_T $ac_cv_sizeof_off_t" >>confdefs.h
 
 
 
-if test ."$ac_cv_sizeof_size_t" = ."$ac_cv_sizeof_long"; then
-
-printf "%s\n" "#define SIZE_T_SIZE unsigned long" >>confdefs.h
-
-
-printf "%s\n" "#define SIZE_T_FORMAT_STRING \"lu\"" >>confdefs.h
-
-else
+if test ."$ac_cv_sizeof_size_t" = ."$ac_cv_sizeof_long_long"; then
 
 printf "%s\n" "#define SIZE_T_SIZE unsigned long long" >>confdefs.h
 
 
 printf "%s\n" "#define SIZE_T_FORMAT_STRING \"llu\"" >>confdefs.h
+
+else
+
+printf "%s\n" "#define SIZE_T_SIZE unsigned long" >>confdefs.h
+
+
+printf "%s\n" "#define SIZE_T_FORMAT_STRING \"lu\"" >>confdefs.h
 
 fi
 
