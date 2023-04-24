@@ -4,7 +4,7 @@
 #
 # Process this file with autoconf to produce a configure script.
 
-AC_PREREQ([2.71])
+AC_PREREQ([2.69])
 AC_INIT([ed],[2.0.13],[https://github.com/slewsys/ed])
 AC_CONFIG_AUX_DIR([.])
 AC_CONFIG_SRCDIR([config.h.in])
@@ -152,17 +152,34 @@ else
       [Define format string to print value of type size_t.])
 fi
 
-if test ."$ac_cv_sizeof_off_t" = ."$ac_cv_sizeof_long"; then
-    AC_DEFINE_UNQUOTED([OFF_T_SIZE], [long],
-      [Define int with storage size of off_t.])
-    AC_DEFINE_UNQUOTED([OFF_T_FORMAT_STRING], ["ld"],
-      [Define format string to print value of type off_t.])
-else
-    AC_DEFINE_UNQUOTED([OFF_T_SIZE], [long long],
-      [Define int with storage size of off_t.])
-    AC_DEFINE_UNQUOTED([OFF_T_FORMAT_STRING], ["lld"],
-      [Define format string to print value of type off_t.])
-fi
+case `$CC -dumpmachine | cut -d- -f1` in
+    aarch64|x86_64)
+        if test ."$ac_cv_sizeof_off_t" = ."$ac_cv_sizeof_long"; then
+            AC_DEFINE_UNQUOTED([OFF_T_SIZE], [long],
+              [Define int with storage size of off_t.])
+            AC_DEFINE_UNQUOTED([OFF_T_FORMAT_STRING], ["ld"],
+              [Define format string to print value of type off_t.])
+        else
+            AC_DEFINE_UNQUOTED([OFF_T_SIZE], [long long],
+              [Define int with storage size of off_t.])
+            AC_DEFINE_UNQUOTED([OFF_T_FORMAT_STRING], ["lld"],
+              [Define format string to print value of type off_t.])
+        fi
+        ;;
+    *)
+        if test ."$ac_cv_sizeof_off_t" = ."$ac_cv_sizeof_long_long"; then
+            AC_DEFINE_UNQUOTED([OFF_T_SIZE], [long long],
+              [Define int with storage size of off_t.])
+            AC_DEFINE_UNQUOTED([OFF_T_FORMAT_STRING], ["lld"],
+              [Define format string to print value of type off_t.])
+        else
+            AC_DEFINE_UNQUOTED([OFF_T_SIZE], [long],
+              [Define int with storage size of off_t.])
+            AC_DEFINE_UNQUOTED([OFF_T_FORMAT_STRING], ["ld"],
+              [Define format string to print value of type off_t.])
+        fi
+        ;;
+esac
 LT_INIT
 
 AM_GNU_GETTEXT([external], [need-formatstring-macros])
@@ -331,7 +348,7 @@ AC_ARG_ENABLE([ed-encryption],
   [AS_HELP_STRING([--enable-ed-encryption],
     [enable ED encryption/decryption of files.])], [], [])
 if test ."$enable_ed_encryption" = .'yes' \
-        || { test ! ."$enable_ed_encryption" = .'yes' \
+        || { test ! ."$enable_ed_encryption" = .'no' \
                   && test ."$enable_all_extensions" = .'yes'; }; then
     if test ."$ac_cv_have_openssl" = .'no' \
             || { test ."$ac_cv_func_arc4random_buf" = .'no' \

@@ -29409,21 +29409,42 @@ printf "%s\n" "#define SIZE_T_FORMAT_STRING \"lu\"" >>confdefs.h
 
 fi
 
-if test ."$ac_cv_sizeof_off_t" = ."$ac_cv_sizeof_long"; then
+case `$CC -dumpmachine | cut -d- -f1` in
+    x86_64)
+        if test ."$ac_cv_sizeof_off_t" = ."$ac_cv_sizeof_long"; then
 
 printf "%s\n" "#define OFF_T_SIZE long" >>confdefs.h
 
 
 printf "%s\n" "#define OFF_T_FORMAT_STRING \"ld\"" >>confdefs.h
 
-else
+        else
 
 printf "%s\n" "#define OFF_T_SIZE long long" >>confdefs.h
 
 
 printf "%s\n" "#define OFF_T_FORMAT_STRING \"lld\"" >>confdefs.h
 
-fi
+        fi
+        ;;
+    *)
+        if test ."$ac_cv_sizeof_off_t" = ."$ac_cv_sizeof_long_long"; then
+
+printf "%s\n" "#define OFF_T_SIZE long long" >>confdefs.h
+
+
+printf "%s\n" "#define OFF_T_FORMAT_STRING \"lld\"" >>confdefs.h
+
+        else
+
+printf "%s\n" "#define OFF_T_SIZE long" >>confdefs.h
+
+
+printf "%s\n" "#define OFF_T_FORMAT_STRING \"ld\"" >>confdefs.h
+
+        fi
+        ;;
+esac
 
 
 
@@ -33019,7 +33040,7 @@ then :
 fi
 
 if test ."$enable_ed_encryption" = .'yes' \
-        || { test ! ."$enable_ed_encryption" = .'yes' \
+        || { test ! ."$enable_ed_encryption" = .'no' \
                   && test ."$enable_all_extensions" = .'yes'; }; then
     if test ."$ac_cv_have_openssl" = .'no' \
             || { test ."$ac_cv_func_arc4random_buf" = .'no' \

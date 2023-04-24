@@ -1,7 +1,7 @@
 /Makefile.am
 /_Noreturn.h
 /arg-nonnull.h
-/assert.in.h
+#/assert.in.h
 /attribute.h
 /btowc.c
 /c++defs.h
