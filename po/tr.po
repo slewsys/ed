@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: coreutils 5.3.0\n"
 "Report-Msgid-Bugs-To: bug-gnulib@gnu.org\n"
-"POT-Creation-Date: 2023-02-23 02:29-0500\n"
+"POT-Creation-Date: 2023-04-24 15:16+0000\n"
 "PO-Revision-Date: 2005-03-14 04:17+0200\n"
 "Last-Translator: Deniz Akkus Kanca <deniz@arayan.com>\n"
 "Language-Team: Turkish <gnu-tr-u12a@lists.sourceforge.net>\n"
@@ -67,7 +67,7 @@ msgstr "%s: seçenek bir argümanla kullanılır -- %c\n"
 msgid "Success"
 msgstr ""
 
-#: lib/regcomp.c:125 src/re.c:271 src/sub.c:439
+#: lib/regcomp.c:125 src/re.c:273 src/sub.c:439
 msgid "No match"
 msgstr ""
 
@@ -117,9 +117,9 @@ msgid "Invalid range end"
 msgstr "Geçersiz sayfa aralığı `%s'"
 
 #: lib/regcomp.c:158 src/aux.c:227 src/aux.c:440 src/buf.c:267 src/buf.c:436
-#: src/buf.c:534 src/buf.c:544 src/buf.c:583 src/buf.c:613 src/glbl.c:170
+#: src/buf.c:534 src/buf.c:544 src/buf.c:583 src/buf.c:613 src/glbl.c:171
 #: src/io.c:317 src/main.c:632 src/page.c:858 src/parse.c:273 src/parse.c:518
-#: src/re.c:155 src/undo.c:26
+#: src/re.c:157 src/undo.c:26
 #, fuzzy
 msgid "Memory exhausted"
 msgstr "bellek tükendi"
@@ -341,7 +341,7 @@ msgstr ""
 msgid "Invalid address range"
 msgstr "Geçersiz sayfa aralığı `%s'"
 
-#: src/glbl.c:131
+#: src/glbl.c:132
 msgid "No previous command"
 msgstr ""
 
@@ -526,19 +526,19 @@ msgstr "%s dizinine geçilemedi"
 msgid "Invalid file name"
 msgstr "Geçersiz sayfa aralığı `%s'"
 
-#: src/parse.c:630
+#: src/parse.c:632
 msgid "Brackets ([]) unbalanced"
 msgstr ""
 
-#: src/parse.c:637
+#: src/parse.c:639
 msgid "Backslash (\\) unexpected"
 msgstr ""
 
-#: src/parse.c:694
+#: src/parse.c:696
 msgid "Shell access restricted"
 msgstr ""
 
-#: src/parse.c:758
+#: src/parse.c:760
 #, fuzzy
 msgid "No previous shell command"
 msgstr "düzenli ifade (regular expression) aramasında hata oluştu"
@@ -548,7 +548,7 @@ msgstr "düzenli ifade (regular expression) aramasında hata oluştu"
 msgid "Invalid pattern delimiter"
 msgstr "geçersiz karakter sınıfı `%s'"
 
-#: src/re.c:145
+#: src/re.c:147
 #, fuzzy
 msgid "No previous pattern"
 msgstr "düzenli ifade (regular expression) aramasında hata oluştu"

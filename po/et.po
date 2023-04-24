@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnulib 2.0.0.3462.e9796\n"
 "Report-Msgid-Bugs-To: bug-gnulib@gnu.org\n"
-"POT-Creation-Date: 2023-02-23 02:29-0500\n"
+"POT-Creation-Date: 2023-04-24 15:16+0000\n"
 "PO-Revision-Date: 2011-05-19 15:10+0300\n"
 "Last-Translator: Toomas Soome <Toomas.Soome@microlink.ee>\n"
 "Language-Team: Estonian <linux-ee@lists.eenet.ee>\n"
@@ -62,7 +62,7 @@ msgstr "%s: võti nõuab argumenti -- '%c'\n"
 msgid "Success"
 msgstr ""
 
-#: lib/regcomp.c:125 src/re.c:271 src/sub.c:439
+#: lib/regcomp.c:125 src/re.c:273 src/sub.c:439
 msgid "No match"
 msgstr ""
 
@@ -107,9 +107,9 @@ msgid "Invalid range end"
 msgstr "Vigane vahemiku lõpp"
 
 #: lib/regcomp.c:158 src/aux.c:227 src/aux.c:440 src/buf.c:267 src/buf.c:436
-#: src/buf.c:534 src/buf.c:544 src/buf.c:583 src/buf.c:613 src/glbl.c:170
+#: src/buf.c:534 src/buf.c:544 src/buf.c:583 src/buf.c:613 src/glbl.c:171
 #: src/io.c:317 src/main.c:632 src/page.c:858 src/parse.c:273 src/parse.c:518
-#: src/re.c:155 src/undo.c:26
+#: src/re.c:157 src/undo.c:26
 msgid "Memory exhausted"
 msgstr "Mälu on otsas"
 
@@ -344,7 +344,7 @@ msgstr ""
 msgid "Invalid address range"
 msgstr "Vigane vahemiku lõpp"
 
-#: src/glbl.c:131
+#: src/glbl.c:132
 msgid "No previous command"
 msgstr ""
 
@@ -535,19 +535,19 @@ msgstr ""
 msgid "Invalid file name"
 msgstr "Vigane vahemiku lõpp"
 
-#: src/parse.c:630
+#: src/parse.c:632
 msgid "Brackets ([]) unbalanced"
 msgstr ""
 
-#: src/parse.c:637
+#: src/parse.c:639
 msgid "Backslash (\\) unexpected"
 msgstr ""
 
-#: src/parse.c:694
+#: src/parse.c:696
 msgid "Shell access restricted"
 msgstr ""
 
-#: src/parse.c:758
+#: src/parse.c:760
 #, fuzzy
 #| msgid "No previous regular expression"
 msgid "No previous shell command"
@@ -559,7 +559,7 @@ msgstr "Eelmist regulaaravaldist pole"
 msgid "Invalid pattern delimiter"
 msgstr "Vigane sümbolite klassi nimi"
 
-#: src/re.c:145
+#: src/re.c:147
 #, fuzzy
 #| msgid "No previous regular expression"
 msgid "No previous pattern"

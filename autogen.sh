@@ -29,24 +29,35 @@ if [ ! -w "$abs_srcdir" ]; then
     exit 2
 fi
 
-automake_cmd=$(which automake 2>/dev/null)
-exit_status=$?
-if test $exit_status -ne 0; then
-    cat <<EOF
-$script_name: automake: File not found
-Please verify installation of GNU Autoconf, Automake, Gettext and
-Libtool before running this script.
+for cmd in aclocal autoheader automake autoreconf; do
+    eval ${cmd}_cmd='$(which '$cmd' 2>/dev/null)'
+    exit_status=$?
+    if test $exit_status -ne 0; then
+        cat <<EOF
+$script_name: $cmd: Command not found
+Please verify installation of GNU Autoconf, Automake, Autopoint,
+Libtool, Gettext and Texinfo before running this script.
 EOF
-    exit $exit_status
-fi
+        exit $exit_status
+    fi
+done
 
-autoreconf_cmd=$(which autoreconf 2>/dev/null)
+$verbose && cat <<EOF
+$script_name: Running:
+  cd "$abs_srcdir" &&
+  $aclocal_cmd -I./m4 --verbose --force --install >&2
+
+EOF
+
+aclocal_output=$(
+    cd "$abs_srcdir" &&
+        $aclocal_cmd -I./m4 --force --install 2>&1
+               )
 exit_status=$?
 if test $exit_status -ne 0; then
-    cat <<EOF
-$script_name: autoreconf: File not found
-Please verify installation of GNU Autoconf, Automake, Gettext and
-Libtool before running this script.
+    cat >&2 <<EOF
+$script_name:
+$aclocal_output
 EOF
     exit $exit_status
 fi
@@ -54,17 +65,37 @@ fi
 $verbose && cat <<EOF
 $script_name: Running:
   cd "$abs_srcdir" &&
-  automake --verbose --add-missing --copy >&2
+  $autoheader_cmd --verbose --force --warnings=gnu >&2
+
+EOF
+
+autoheader_output=$(
+    cd "$abs_srcdir" &&
+        $autoheader_cmd --verbose --force --warnings=gnu 2>&1
+               )
+exit_status=$?
+if test $exit_status -ne 0; then
+    cat >&2 <<EOF
+$script_name:
+$autoheader_output
+EOF
+    exit $exit_status
+fi
+
+$verbose && cat <<EOF
+$script_name: Running:
+  cd "$abs_srcdir" &&
+  $automake_cmd --verbose --force-missing --copy --gnu >&2
 
 EOF
 
 automake_output=$(
     cd "$abs_srcdir" &&
-        automake --verbose --add-missing --copy 2>&1
+        $automake_cmd --verbose --force-missing --copy 2>&1
                )
 exit_status=$?
 if test $exit_status -ne 0; then
-    cat <<EOF
+    cat >&2 <<EOF
 $script_name:
 $automake_output
 EOF
@@ -74,19 +105,19 @@ fi
 $verbose && cat <<EOF
 $script_name: Running:
   cd "$abs_srcdir" &&
-  autoreconf --verbose --install -I ./m4 >&2
+  $autoreconf_cmd -I./m4 --verbose --install >&2
 
 EOF
 
-autoconf_output=$(
+autoreconf_output=$(
     cd "$abs_srcdir" &&
-        autoreconf --verbose --install -I ./m4 2>&1
+        $autoreconf_cmd -I./m4 --verbose --install 2>&1
                )
 exit_status=$?
 if test $exit_status -ne 0; then
-    cat <<EOF
+    cat >&2 <<EOF
 $script_name:
-$autoconf_output
+$autoreconf_output
 EOF
     exit $exit_status
 fi
@@ -96,15 +127,14 @@ if $verbose; then
     cat >&2 <<'EOF'
 ========================================================================
 
-     Automake and autoreconf appear to have completed successfully.
-     To continue, optionally create and cd to a build directory, then
-     run:
+     Autotools appears to have completed successfully. To continue,
+     optionally create and cd to a build directory, then run:
 
              $ $top_srcdir/configure
              $ make
 
       The testsuite is generated with GNU AutoTest and requires
-      GNU Autoconf and GNU make(1). It is run as follows:
+      GNU make. It is run as follows:
 
              $ gmake check
 

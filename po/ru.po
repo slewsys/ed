@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnulib 4.0.0.2567\n"
 "Report-Msgid-Bugs-To: bug-gnulib@gnu.org\n"
-"POT-Creation-Date: 2023-02-23 02:29-0500\n"
+"POT-Creation-Date: 2023-04-24 15:16+0000\n"
 "PO-Revision-Date: 2019-05-21 18:46+0300\n"
 "Last-Translator: Yuri Kozlov <yuray@komyakino.ru>\n"
 "Language-Team: Russian <gnu@d07.ru>\n"
@@ -17,8 +17,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Bugs: Report translation errors to the Language-Team address.\n"
-"Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Lokalize 2.0\n"
 
 #: lib/getopt.c:278
@@ -60,7 +60,7 @@ msgstr "%s: для параметра требуется аргумент -- «%
 msgid "Success"
 msgstr "Успешно"
 
-#: lib/regcomp.c:125 src/re.c:271 src/sub.c:439
+#: lib/regcomp.c:125 src/re.c:273 src/sub.c:439
 msgid "No match"
 msgstr "Нет совпадений"
 
@@ -105,9 +105,9 @@ msgid "Invalid range end"
 msgstr "Неверный конец диапазона"
 
 #: lib/regcomp.c:158 src/aux.c:227 src/aux.c:440 src/buf.c:267 src/buf.c:436
-#: src/buf.c:534 src/buf.c:544 src/buf.c:583 src/buf.c:613 src/glbl.c:170
+#: src/buf.c:534 src/buf.c:544 src/buf.c:583 src/buf.c:613 src/glbl.c:171
 #: src/io.c:317 src/main.c:632 src/page.c:858 src/parse.c:273 src/parse.c:518
-#: src/re.c:155 src/undo.c:26
+#: src/re.c:157 src/undo.c:26
 msgid "Memory exhausted"
 msgstr "Закончилась память"
 
@@ -342,7 +342,7 @@ msgstr ""
 msgid "Invalid address range"
 msgstr "Неверный конец диапазона"
 
-#: src/glbl.c:131
+#: src/glbl.c:132
 msgid "No previous command"
 msgstr ""
 
@@ -535,19 +535,19 @@ msgstr ""
 msgid "Invalid file name"
 msgstr "Неверный конец диапазона"
 
-#: src/parse.c:630
+#: src/parse.c:632
 msgid "Brackets ([]) unbalanced"
 msgstr ""
 
-#: src/parse.c:637
+#: src/parse.c:639
 msgid "Backslash (\\) unexpected"
 msgstr ""
 
-#: src/parse.c:694
+#: src/parse.c:696
 msgid "Shell access restricted"
 msgstr ""
 
-#: src/parse.c:758
+#: src/parse.c:760
 #, fuzzy
 #| msgid "No previous regular expression"
 msgid "No previous shell command"
@@ -559,7 +559,7 @@ msgstr "Отсутствует предыдущее регулярное выр�
 msgid "Invalid pattern delimiter"
 msgstr "Неверное имя класса символов"
 
-#: src/re.c:145
+#: src/re.c:147
 #, fuzzy
 #| msgid "No previous regular expression"
 msgid "No previous pattern"

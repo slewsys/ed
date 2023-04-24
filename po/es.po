@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ed 2.0.12\n"
 "Report-Msgid-Bugs-To: bug-gnulib@gnu.org\n"
-"POT-Creation-Date: 2023-02-23 02:29-0500\n"
+"POT-Creation-Date: 2023-04-24 15:16+0000\n"
 "PO-Revision-Date: 2023-02-23 10:20+0000\n"
 "Last-Translator: Andrew L. Moore <slewsys@gmail.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
@@ -56,7 +56,7 @@ msgstr "%s: opción requiere un argumento -- '%c'\n"
 msgid "Success"
 msgstr "Éxito"
 
-#: lib/regcomp.c:125 src/re.c:271 src/sub.c:439
+#: lib/regcomp.c:125 src/re.c:273 src/sub.c:439
 msgid "No match"
 msgstr "Ningún coincidencia"
 
@@ -101,9 +101,9 @@ msgid "Invalid range end"
 msgstr "Fin de intervalo no es válido"
 
 #: lib/regcomp.c:158 src/aux.c:227 src/aux.c:440 src/buf.c:267 src/buf.c:436
-#: src/buf.c:534 src/buf.c:544 src/buf.c:583 src/buf.c:613 src/glbl.c:170
+#: src/buf.c:534 src/buf.c:544 src/buf.c:583 src/buf.c:613 src/glbl.c:171
 #: src/io.c:317 src/main.c:632 src/page.c:858 src/parse.c:273 src/parse.c:518
-#: src/re.c:155 src/undo.c:26
+#: src/re.c:157 src/undo.c:26
 msgid "Memory exhausted"
 msgstr "Memoria está lleno"
 
@@ -292,7 +292,7 @@ msgstr "Comando es demasiado largo"
 msgid "Invalid address range"
 msgstr "Intervalo de dirección no es válido"
 
-#: src/glbl.c:131
+#: src/glbl.c:132
 msgid "No previous command"
 msgstr "Ningún comando previa"
 
@@ -507,19 +507,19 @@ msgstr "No existe tal archivo o directorio"
 msgid "Invalid file name"
 msgstr "Nombre de archivo no es válido"
 
-#: src/parse.c:630
+#: src/parse.c:632
 msgid "Brackets ([]) unbalanced"
 msgstr "Brackets ([]) están desequilibrados"
 
-#: src/parse.c:637
+#: src/parse.c:639
 msgid "Backslash (\\) unexpected"
 msgstr "Diagonal (\\) no está esperado"
 
-#: src/parse.c:694
+#: src/parse.c:696
 msgid "Shell access restricted"
 msgstr "Acceso a shell está restringido"
 
-#: src/parse.c:758
+#: src/parse.c:760
 msgid "No previous shell command"
 msgstr "Ningún comando previa"
 
@@ -527,7 +527,7 @@ msgstr "Ningún comando previa"
 msgid "Invalid pattern delimiter"
 msgstr "Delimitador de patrón no es válido"
 
-#: src/re.c:145
+#: src/re.c:147
 msgid "No previous pattern"
 msgstr "Ningún patrón previa"
 
