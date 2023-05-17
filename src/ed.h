@@ -453,6 +453,7 @@ struct ed_execute
   FILE *fp;                     /* Command script file pointer. */
   char *file_script;            /* File argument of `-f script' option. */
   char *pathname;               /* Concatenation of scripts. */
+  char *address;                /* Initial address command list. */
   const char *err;              /* Error message. */
   char *prompt;                 /* Interactive command prompt. */
   off_t line_no;                /* Script line number. */

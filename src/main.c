@@ -28,6 +28,7 @@ jmp_buf env;
 ed_buffer_t *ed;
 
 /* Static function declarations. */
+static int append_address_command (const char *, ed_buffer_t *);
 static void ed_usage (int, ed_buffer_t *);
 
 #ifdef WANT_ED_ENVAR
@@ -35,6 +36,7 @@ static char **getenv_init_argv (const char *, int *, ed_buffer_t *);
 #endif
 
 static int next_edit (int, ed_buffer_t *);
+static char **collect_address_args (int *, char **, ed_buffer_t *);
 static int save_edit (int, ed_buffer_t *);
 static void script_die (int, ed_buffer_t *);
 
@@ -209,6 +211,13 @@ top:
       goto top;
     }
 
+  argv = collect_address_args (&argc, argv, ed);
+  /*
+   * fprintf(stderr, "*argv: %s\n", *argv);
+   * return 0;
+   */
+
+
   /* In case of option `-f' or `-e', rewind internal script file. */
   if (ed->exec->fp
       && (fflush (ed->exec->fp) == EOF
@@ -330,8 +339,15 @@ top:
           fflush (stdout);
         }
 
+      if (ed->exec->address)
+        {
+          ed->input = ed->exec->address;
+          if (*(ed->exec->address = strchr (ed->exec->address, '\n') + 1) == '\0')
+            ed->exec->address = NULL;
+        }
+
       /* End of input. */
-      if (!(ed->input = get_stdin_line (&len, ed)))
+      else if (!(ed->input = get_stdin_line (&len, ed)))
         {
           status = (!feof (stdin)
                     ? ERR : (ed->state->is_modified
@@ -422,6 +438,102 @@ top:
   /* NOTREACHED */
 }
 
+
+/*
+ * collect_address_args: Handle command-line arguments of the form `+n',
+ *   `+/' and `+?'.
+ */
+static char **
+collect_address_args (int *argc_p, char **argv, ed_buffer_t *ed)
+{
+  static char *argv_new = NULL;    /* argument vector buffer */
+  static size_t argv_new_size = 0; /* argv_new buffer size */
+
+  int argc_new = 0;
+
+  if (*argc_p == 0)
+    return argv;
+
+  /* Scan for arguments of the form `+n', `+/' or `+?'. */
+  for (int i = 0; i < *argc_p; ++i)
+    {
+      if (argv[i][0] != '+')
+        {
+          REALLOC_THROW (argv_new, argv_new_size,
+                         (++argc_new + 1) * sizeof (char *), NULL, ed);
+          *((char **) argv_new + argc_new - 1) = argv[i];
+          continue;
+        }
+
+      switch (argv[i][1])
+        {
+        case '0': case '1': case '2': case '3': case '4':
+        case '5': case '6': case '7': case '8': case '9':
+          size_t address = 0;
+          char *endp = argv[i] + 1;
+
+          STRTOUL_THROW(address, endp, &endp, NULL);
+
+          /* Reject, e.g., `+33a'. */
+          if (*endp != '\0')
+            {
+              REALLOC_THROW (argv_new, argv_new_size,
+                             (++argc_new + 1) * sizeof (char *), NULL, ed);
+              *((char **) argv_new + argc_new - 1) = argv[i];
+              continue;
+            }
+          else if (append_address_command (argv[i] + 1, ed) < 0)
+            script_die (3, ed);
+          break;
+        case '/':
+        case '?':
+          char *regexp = NULL;
+          char *regexp_parsed = NULL;
+          size_t regexp_size = 0;
+          size_t regexp_len = 0;
+          size_t argv_len = strlen (argv[i] + 2);
+          int delim = argv[i][1];
+
+          REALLOC_THROW (regexp, regexp_size, argv_len + 2, NULL, ed);
+          strncpy (regexp, argv[i] + 2, argv_len);
+          regexp[argv_len] = '\n';
+          regexp[argv_len + 1] = '\0';
+          ed->input = regexp;
+          if ((regexp_parsed =
+               regular_expression (delim, &regexp_len, ed)) == NULL)
+            script_die (3, ed);
+          free (regexp);
+          if (regexp_len != argv_len)
+            {
+              REALLOC_THROW (argv_new, argv_new_size,
+                             (++argc_new + 1) * sizeof (char *), NULL, ed);
+              *((char **) argv_new + argc_new - 1) = argv[i];
+              continue;
+            }
+          else if (append_address_command (argv[i] + 1, ed) < 0)
+            script_die (3, ed);
+
+          fprintf (stderr, "regexp: %s\n", regexp_parsed);
+          /*
+           * exit (0);
+           */
+          break;
+        default:
+          REALLOC_THROW (argv_new, argv_new_size,
+                         (++argc_new + 1) * sizeof (char *), NULL, ed);
+          *((char **) argv_new + argc_new - 1) = argv[i];
+          break;
+        }
+    }
+
+  if (!argv_new)
+    REALLOC_THROW (argv_new, argv_new_size,
+                   sizeof (char *), NULL, ed);
+
+  *((char **) argv_new + argc_new) = NULL;
+  *argc_p = argc_new;
+  return (char **) argv_new;
+}
 
 /*
  * next_edit: Construct ed command per status, pointed to by
@@ -573,6 +685,24 @@ getenv_init_argv (const char *s, int *argc, ed_buffer_t *ed)
 }
 #endif /* WANT_ED_ENVAR */
 
+
+/* append_address_command: Append address command to address buffer. */
+static int
+append_address_command (const char *s, ed_buffer_t *ed)
+{
+  static size_t address_size = 0;
+  static size_t previous_len = 0;
+
+  size_t len = strlen(s);
+
+  REALLOC_THROW (ed->exec->address, address_size,
+                        previous_len + len + 2, ERR, ed);
+  strncpy (ed->exec->address + previous_len, s, len);
+  previous_len += len + 1;
+  ed->exec->address[previous_len - 1] = '\n';
+  ed->exec->address[previous_len] = '\0';
+  return 0;
+}
 
 #ifdef WANT_SCRIPT_FLAGS
 /* append_script_expression: Append expression to script. */
