@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: coreutils 5.2.1\n"
 "Report-Msgid-Bugs-To: bug-gnulib@gnu.org\n"
-"POT-Creation-Date: 2023-04-24 15:16+0000\n"
+"POT-Creation-Date: 2023-05-17 13:44-0400\n"
 "PO-Revision-Date: 2004-03-17 11:58+0200\n"
 "Last-Translator: Petri Jooste <rkwjpj@puk.ac.za>\n"
 "Language-Team: Afrikaans <i18n@af.org.za>\n"
@@ -113,7 +113,7 @@ msgstr "%s: ongeldige reëlmatige uitdrukking: %s"
 
 #: lib/regcomp.c:158 src/aux.c:227 src/aux.c:440 src/buf.c:267 src/buf.c:436
 #: src/buf.c:534 src/buf.c:544 src/buf.c:583 src/buf.c:613 src/glbl.c:171
-#: src/io.c:317 src/main.c:632 src/page.c:858 src/parse.c:273 src/parse.c:518
+#: src/io.c:317 src/main.c:754 src/page.c:858 src/parse.c:273 src/parse.c:518
 #: src/re.c:157 src/undo.c:26
 #, fuzzy
 msgid "Memory exhausted"
@@ -171,7 +171,7 @@ msgid "Exceeded maximum stack frame depth"
 msgstr ""
 
 #: src/aux.c:418 src/aux.c:469 src/aux.c:509 src/aux.c:548 src/io.c:58
-#: src/io.c:600 src/main.c:218 src/main.c:594 src/main.c:654
+#: src/io.c:600 src/main.c:224 src/main.c:716 src/main.c:776
 #, fuzzy
 #| msgid "write error"
 msgid "File seek error"
@@ -190,7 +190,7 @@ msgstr ""
 msgid "Buffer seek error"
 msgstr ""
 
-#: src/buf.c:260 src/main.c:441 src/main.c:513
+#: src/buf.c:260 src/main.c:545 src/main.c:617
 msgid "File name too long"
 msgstr ""
 
@@ -244,13 +244,13 @@ msgstr ""
 msgid "Decryption failed (incomplete block)."
 msgstr ""
 
-#: src/cbc.c:387 src/io.c:551 src/main.c:669
+#: src/cbc.c:387 src/io.c:551 src/main.c:791
 #, fuzzy
 #| msgid "write error"
 msgid "File read error"
 msgstr "skryffout"
 
-#: src/cmds.c:39 src/exec.c:609 src/io.c:479 src/main.c:347
+#: src/cmds.c:39 src/exec.c:609 src/io.c:479 src/main.c:360
 msgid "End-of-file unexpected"
 msgstr ""
 
@@ -264,7 +264,7 @@ msgstr "ongeldige karakterklas `%s'"
 msgid "Unknown error"
 msgstr "Onbekende stelselfout"
 
-#: src/ed.h:748 src/ed.h:783 src/ed.h:818
+#: src/ed.h:749 src/ed.h:784 src/ed.h:819
 #, fuzzy
 #| msgid "character out of range"
 msgid "Numerical result out of range"
@@ -293,7 +293,7 @@ msgstr ""
 msgid "Invalid redirection"
 msgstr "%s: ongeldige reëlmatige uitdrukking: %s"
 
-#: src/exec.c:711 src/main.c:508
+#: src/exec.c:711 src/main.c:612
 msgid "File name not set"
 msgstr ""
 
@@ -345,7 +345,7 @@ msgstr ""
 msgid "File does not exist"
 msgstr ""
 
-#: src/io.c:97 src/io.c:166 src/io.c:630 src/io.c:679 src/main.c:642
+#: src/io.c:97 src/io.c:166 src/io.c:630 src/io.c:679 src/main.c:764
 #, fuzzy
 #| msgid "write error"
 msgid "File open error"
@@ -380,7 +380,7 @@ msgstr "skryffout"
 msgid "File too big"
 msgstr ""
 
-#: src/io.c:767 src/main.c:604 src/main.c:678
+#: src/io.c:767 src/main.c:726 src/main.c:800
 #, fuzzy
 #| msgid "write error"
 msgid "File write error"
@@ -400,39 +400,50 @@ msgstr ""
 msgid "File stat error"
 msgstr "skryffout"
 
-#: src/main.c:227
+#: src/main.c:233
 msgid "Option '-i' requires '-e' or '-f'"
 msgstr ""
 
-#: src/main.c:292
+#: src/main.c:298
 msgid "Interrupted"
 msgstr ""
 
-#: src/main.c:396
+#: src/main.c:409
 msgid "WARNING: Buffer modified since last write"
 msgstr ""
 
-#: src/main.c:562
+#: src/main.c:666
 msgid "Argument list full"
 msgstr ""
 
-#: src/main.c:697
+#: src/main.c:819
+#, c-format
+msgid ""
+"Usage: %s [-] [-EGhirsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE...]\n"
+msgstr ""
+
+#: src/main.c:822
 #, c-format
 msgid ""
 "Usage: %s [-] [-EGhirsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE]\n"
 msgstr ""
 
-#: src/main.c:700
+#: src/main.c:826
 #, c-format
 msgid "Usage: %s [-] [-EGhrsVvwx] [-p PROMPT] [FILE]\n"
 msgstr ""
 
-#: src/main.c:707
+#: src/main.c:834
+#, c-format
+msgid "Usage: %s [OPTION...] [FILE...]\n"
+msgstr ""
+
+#: src/main.c:837
 #, c-format
 msgid "Usage: %s [OPTION...] [FILE]\n"
 msgstr ""
 
-#: src/main.c:712
+#: src/main.c:843
 #, c-format
 msgid ""
 "Options:\n"
@@ -460,7 +471,7 @@ msgid ""
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
 
-#: src/main.c:734
+#: src/main.c:865
 #, c-format
 msgid ""
 "Options:\n"
@@ -484,7 +495,7 @@ msgid ""
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
 
-#: src/main.c:765
+#: src/main.c:896
 msgid "script, line %"
 msgstr ""
 
