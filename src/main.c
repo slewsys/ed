@@ -46,33 +46,43 @@ main (int argc, char **argv)
 {
   struct option long_options[16] =
     {
-      {"ansi-color", no_argument, NULL, 'R'},
+      {"ansi-color",      no_argument,       NULL, 'R'},
 
 #ifdef WANT_SCRIPT_FLAGS
-      {"expression", required_argument, NULL, 'e'},
-      {"file", required_argument, NULL, 'f'},
+      {"expression",      required_argument, NULL, 'e'},
+      {"file",            required_argument, NULL, 'f'},
 #endif
 
-      {"help", no_argument, NULL, 'h'},
+      {"help",            no_argument,       NULL, 'h'},
 
 #ifdef WANT_ED_ENCRYPTION
-      {"crypt", no_argument, NULL, 'x'},
+      {"crypt",           no_argument,       NULL, 'x'},
 #endif
 
-      {"in-place", optional_argument, NULL, 'i'},
-      {"prompt", required_argument, NULL, 'p'},
-      {"quiet", no_argument, NULL, 's'},           /* Deprecated long option */
-      {"regexp-extended", no_argument, NULL, 'E'}, /* BSD extended regexp */
-      {"regexp-extended", no_argument, NULL, 'r'}, /* GNU extended regexp */
-      {"scripted", no_argument, NULL, 's'},
-      {"traditional", no_argument, NULL, 'G'},
-      {"verbose", no_argument, NULL, 'v'},
-      {"version", no_argument, NULL, 'V'},
-      {"write", no_argument, NULL, 'w'},
-      {0, 0, 0, 0}
+      {"in-place",        optional_argument, NULL, 'i'},
+      {"prompt",          required_argument, NULL, 'p'},
+      {"regexp-extended", no_argument,       NULL, 'E'}, /* BSD extended regexp */
+      {"regexp-extended", no_argument,       NULL, 'r'}, /* GNU extended regexp */
+      {"scripted",        no_argument,       NULL, 's'},
+      {"traditional",     no_argument,       NULL, 'G'},
+      {"verbose",         no_argument,       NULL, 'v'},
+      {"version",         no_argument,       NULL, 'V'},
+      {"write",           no_argument,       NULL, 'w'},
+      {0,                 0,                 0,    0}
     };
+  const char *short_options = "E"
+#ifdef WANT_SCRIPT_FLAGS
+    "e:f:i::"
+#endif
+    "Ghp:RrsVvw"
+#ifdef WANT_ED_ENCRYPTION
+    "x"
+#endif
+    ;
+
   char **argv_new;
   char **argv_prev = NULL;
+
   char *cs;
   long l;
   size_t len;
@@ -100,15 +110,7 @@ main (int argc, char **argv)
 #endif
 
 top:
-  while ((c = getopt_long (argc, argv, "E"
-#ifdef WANT_SCRIPT_FLAGS
-                           "e:f:i::"
-#endif
-                           "Ghp:RrsVvw"
-#ifdef WANT_ED_ENCRYPTION
-                           "x"
-#endif
-                           , long_options, NULL)) != -1)
+  while ((c = getopt_long (argc, argv, short_options, long_options, NULL)) != -1)
     switch (c)
       {
       default:
@@ -212,11 +214,6 @@ top:
     }
 
   argv = collect_address_args (&argc, argv, ed);
-  /*
-   * fprintf(stderr, "*argv: %s\n", *argv);
-   * return 0;
-   */
-
 
   /* In case of option `-f' or `-e', rewind internal script file. */
   if (ed->exec->fp
@@ -512,11 +509,6 @@ collect_address_args (int *argc_p, char **argv, ed_buffer_t *ed)
             }
           else if (append_address_command (argv[i] + 1, ed) < 0)
             script_die (3, ed);
-
-          fprintf (stderr, "regexp: %s\n", regexp_parsed);
-          /*
-           * exit (0);
-           */
           break;
         default:
           REALLOC_THROW (argv_new, argv_new_size,
@@ -821,11 +813,15 @@ ed_usage (int status, ed_buffer_t *ed)
 {
   extern char version_string[]; /* From version.c */
 
-
   if (status)
 #ifdef WANT_SCRIPT_FLAGS
+# ifdef WANT_FILE_GLOB
+    printf (_("Usage: %s [-] [-EGhirsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE...]\n"),
+            ed->exec->opt & RESTRICTED ? "red" : "ed");
+# else
     printf (_("Usage: %s [-] [-EGhirsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE]\n"),
             ed->exec->opt & RESTRICTED ? "red" : "ed");
+# endif /* !WANT_FILE_GLOB */
 #else
     printf (_("Usage: %s [-] [-EGhrsVvwx] [-p PROMPT] [FILE]\n"),
             ed->exec->opt & RESTRICTED ? "red" : "ed");
@@ -834,8 +830,13 @@ ed_usage (int status, ed_buffer_t *ed)
     printf ("ed %s\n%s", version_string, CONFIGURE_ARGS);
   else if (ed->exec->opt & PRINT_HELP)
     {
+#ifdef WANT_FILE_GLOB
+      printf (_("Usage: %s [OPTION...] [FILE...]\n"), (ed->exec->opt & RESTRICTED
+                                                    ? "red" : "ed"));
+#else
       printf (_("Usage: %s [OPTION...] [FILE]\n"), (ed->exec->opt & RESTRICTED
                                                     ? "red" : "ed"));
+#endif  /* !WANT_FILE_GLOB */
   /* TODO: Implement configured-feature-based help. Take all-or-none
      approach for now. */
 #ifdef WANT_SCRIPT_FLAGS
