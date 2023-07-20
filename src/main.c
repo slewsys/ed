@@ -462,13 +462,19 @@ collect_address_args (int *argc_p, char **argv, ed_buffer_t *ed)
           continue;
         }
 
+      size_t address = 0;
+      char *endp = argv[i] + 1;
+      char *regexp = NULL;
+      char *regexp_parsed = NULL;
+      size_t regexp_size = 0;
+      size_t regexp_len = 0;
+      size_t argv_len = strlen (argv[i] + 2);
+      int delim = argv[i][1];
+
       switch (argv[i][1])
         {
         case '0': case '1': case '2': case '3': case '4':
         case '5': case '6': case '7': case '8': case '9':
-          size_t address = 0;
-          char *endp = argv[i] + 1;
-
           STRTOUL_THROW(address, endp, &endp, NULL);
 
           /* Reject, e.g., `+33a'. */
@@ -484,13 +490,6 @@ collect_address_args (int *argc_p, char **argv, ed_buffer_t *ed)
           break;
         case '/':
         case '?':
-          char *regexp = NULL;
-          char *regexp_parsed = NULL;
-          size_t regexp_size = 0;
-          size_t regexp_len = 0;
-          size_t argv_len = strlen (argv[i] + 2);
-          int delim = argv[i][1];
-
           REALLOC_THROW (regexp, regexp_size, argv_len + 2, NULL, ed);
           strncpy (regexp, argv[i] + 2, argv_len);
           regexp[argv_len] = '\n';

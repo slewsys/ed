@@ -122,14 +122,59 @@ sudo make install
 ## Building a Debian package
 To build a Debian package with `gbp`:
 
+Install prerequisites on Debian/Ubuntu:
+
+```shell
+sudo apt install git-buildpackage libssl-dev
+```
+
+Create a destination directory for Debian build products:
+
 ```shell
 mkdir build
 cd ./build
+```
+
+Clone **ed** repository into destination directory and run **Git Buildpackage** (`gbp`):
+
+```shell
 git clone https://github.com/slewsys/ed ed-2.0.13
 cd ./ed-2.0.13
 git branch upstream
 gbp buildpackage --git-debian-branch=main --git-upstream-tree=branch
 ```
+
+`gbp` will fail with the error:
+
+> dpkg-source: info: local changes detected, the modified files are:
+> ed-2.0.13/Makefile.in
+> ed-2.0.13/aclocal.m4
+> ed-2.0.13/config.h.in
+> ed-2.0.13/configure
+> ed-2.0.13/doc/Makefile.in
+> ed-2.0.13/doc/bwk/Makefile.in
+> ed-2.0.13/lib/Makefile.in
+> ed-2.0.13/src/Makefile.in
+> ed-2.0.13/testsuite/Makefile.in
+
+This reflects the fact that the **ed** repository does not contain
+generated files. To resolve this, add the missing files to the tar
+archive and run `gbp` again:
+
+```shell
+cd ..
+gunzip ./ed_2.0.13.orig.tar.gz
+tar --append -f ./ed_2.0.13.orig.tar \
+ed-2.0.13/{Makefile.in,aclocal.m4,config.h.in,configure,doc/Makefile.in,\
+doc/bwk/Makefile.in,lib/Makefile.in,src/Makefile.in,testsuite/Makefile.in,\
+po/stamp-po}
+gzip ed_2.0.13.orig.tar
+cd -
+gbp buildpackage --git-debian-branch=main --git-upstream-tree=branch
+```
+
+The build products, Debian packages with *deb* suffix, should appear in
+the parent folder (*build*).
 
 # Tutorials
 
