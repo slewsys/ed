@@ -2,6 +2,44 @@
 
 # The standard Unix text editor
 
+- [Description](#description)
+- [Installation](#installation)
+   - [Binary Distributions](#binary-distributions)
+   - [Prerequisites for building from source](#prerequisites-for-building-from-source)
+      - [CentOS/RHEL](#centosrhel)
+      - [Debian/Ubuntu](#debianubuntu)
+      - [Fedora](#fedora)
+      - [OpenSUSE](#opensuse)
+   - [Building from source](#building-from-source)
+   - [Building from Git](#building-from-git)
+   - [Building a Debian package](#building-a-debian-package)
+- [Tutorials](#tutorials)
+- [Extensions to the SUSv4 standard](#extensions-to-the-susv4-standard)
+   - [Scrolling](#scrolling)
+   - [Cut-and-Paste](#cut-and-paste)
+   - [File Globbing](#file-globbing)
+   - [External Filtering](#external-filtering)
+   - [File Locking](#file-locking)
+   - [Macros](#macros)
+   - [Script Flags](#script-flags)
+   - [ED Environment Variable](#ed-environment-variable)
+   - [Binary Files](#binary-files)
+   - [BSD Dialect](#bsd-dialect)
+   - [Global Search](#global-search)
+   - [Piped Input](#piped-input)
+   - [SunOS Dialect](#sunos-dialect)
+- [Deviations from the SUSv4 standard](#deviations-from-the-susv4-standard)
+   - [Extended Regular Expressions](#extended-regular-expressions)
+   - [Pattern delimiters](#pattern-delimiters)
+   - [Undo within global command](#undo-within-global-command)
+   - [Move within global command](#move-within-global-command)
+   - [Shell command arguments](#shell-command-arguments)
+- [Examples](#examples)
+   - [Repeated Substitution Modifiers](#repeated-substitution-modifiers)
+- [References](#references)
+
+## Description
+
 Ed is an implementation of the Unix line editor. It is 100% POSIX
 compatible, 8-bit clean with 64-bit addressing. It includes the GNU
 regular expression library, but can be linked against any
@@ -12,13 +50,13 @@ Several optional extensions to the SUSv4 standard are described
 The extensions are careful not to alter `ed`'s standard behavior and
 so can be safely enabled by default.
 
-# Installation
-## Binary Distributions
+## Installation
+### Binary Distributions
 
 Some binary packages are available - see
 [Releases](https://github.com/slewsys/ed/releases).
 
-## Prerequisites for building from source
+### Prerequisites for building from source
 
 To build `ed` from source, the following prerequisite packages are
 needed:
@@ -36,7 +74,7 @@ Additional packages for generating PDFs of Brian W. Kernighan's
  - **GNU** `roff`, and
  - `ghostscript`.
 
-### CentOS/RHEL
+#### CentOS/RHEL
 
 On Red Hat and Red Hat-based systems, the prerequisite packages can be
 installed by running the commands:
@@ -46,7 +84,7 @@ sudo dnf group install 'Development Tools'
 sudo dnf install -y gettext-devel ghostscript groff textinfo
 ```
 
-### Debian/Ubuntu
+#### Debian/Ubuntu
 
 On Debian/Ubuntu systems, the prerequisite packages can be installed
 by running the command:
@@ -56,7 +94,7 @@ sudo apt install -y build-essential autoconf automake \
     autopoint gettext ghostscript groff libtool texinfo
 ```
 
-### Fedora
+#### Fedora
 
 On Fedora, the prerequisite packages can be installed by running the
 commands:
@@ -66,7 +104,7 @@ sudo dnf group install 'C Development Tools and Libraries'
 sudo dnf install -y gettext-devel ghostscript groff textinfo
 ```
 
-### OpenSUSE
+#### OpenSUSE
 
 On OpenSUSE, the prerequisite packages can be installed by running the
 commands:
@@ -77,7 +115,7 @@ sudo zypper --non-interactive install -y gettext-tools ghostscript \
     groff makeinfo textinfo
 ```
 
-## Building from source
+### Building from source
 The easiest way to build from source is to run:
 
 ```shell
@@ -90,7 +128,7 @@ make
 sudo make install
 ```
 
-## Building from Git
+### Building from Git
 Updating Natural Language translation files requires:
 
  - **GNU** `gettext` tools.
@@ -119,7 +157,7 @@ make
 make check
 sudo make install
 ```
-## Building a Debian package
+### Building a Debian package
 To build a Debian package with `gbp`:
 
 Install prerequisites on Debian/Ubuntu:
@@ -176,7 +214,7 @@ gbp buildpackage --git-debian-branch=main --git-upstream-tree=branch
 The build products, Debian packages with *deb* suffix, should appear in
 the parent folder (*build*).
 
-# Tutorials
+## Tutorials
 
 Brian W. Kernighan's `ed` tutorials are included as PDFs, info
 documents and NROFF manuscripts. See _doc/bwk/_ or, from within `ed`,
@@ -186,14 +224,12 @@ type:
 !info ed RET m tutorial RET
 ```
 
-# Extensions to and deviations from the SUSv4 standard.
+## Extensions to the SUSv4 standard
 
 This implementation of `ed` scores 100% on *The Open Group Shell and
 Utilities Verification Suite of IEEE Std 1003.1-2017* when either the
 environment variable **POSIXLY_CORRECT** is defined or `ed` is invoked
 with commnad-line option **-G**.
-
-## Extensions to the SUSv4 standard
 
 None of the `ed` extensions discussed below are enabled by default.
 They can all be enabled with `configure` option
@@ -738,7 +774,7 @@ In the previous example, note that the default file name is not set, i.e.,
 | sp        | s;a;x;g   | substitution print modifier (**p**).        |
 | sp        | s;a;x;gl  |                                             |
 
-# References
+## References
 
 The `ed` algorithm is described in Kernighan and Plauger's book
 _Software Tools in Pascal_, Addison-Wesley, 1981.
