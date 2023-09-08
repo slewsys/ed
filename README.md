@@ -15,6 +15,7 @@
    - [Building a Debian package](#building-a-debian-package)
 - [Tutorials](#tutorials)
 - [Extensions to the SUSv4 standard](#extensions-to-the-susv4-standard)
+   - [Command-line address arguments](#command-line-address-arguments)
    - [Scrolling](#scrolling)
    - [Cut-and-Paste](#cut-and-paste)
    - [File Globbing](#file-globbing)
@@ -233,8 +234,29 @@ with commnad-line option **-G**.
 
 None of the `ed` extensions discussed below are enabled by default.
 They can all be enabled with `configure` option
-**--enable-all-extensions**. Alternatively, individual extensions can
+**--enable-all-extensions**.  Alternatively, individual extensions can
 be enabled as described below.
+
+### Command-line address arguments
+
+Command-line address arguments are enabled with the `configure` option
+**--enable-address-arguments**. Valid address arguments are of the
+form:
+
+| Command-line Argument | Action |
+| --- | --- |
+| `+N` | Set the current line (dot) to line number `N`. |
+| `+/RE` | Set dot to next line matching regular expression `RE`. |
+| `+?RE` | Set dot to the previous line matching regular expression `RE`. |
+
+Address arguments can be combined, e.g.,
+
+```shell
+ed +3 +/RE1 +?RE2 FILE
+```
+
+searches *FILE* forward from line 3 for `RE1` and, from there,
+backward for `RE2`.
 
 ### Scrolling
 

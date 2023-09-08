@@ -88,3 +88,4 @@ distclean-local:
 	if test -f $(top_builddir)/testsuite/Makefile; then		      \
 		$(MAKE) -C $(top_builddir)/testsuite distclean;		      \
 	fi
+	rm -f po/POTFILES.in

@@ -36,7 +36,11 @@ static char **getenv_init_argv (const char *, int *, ed_buffer_t *);
 #endif
 
 static int next_edit (int, ed_buffer_t *);
+
+#ifdef WANT_ADDRESS_ARGUMENTS
 static char **collect_address_args (int *, char **, ed_buffer_t *);
+#endif
+
 static int save_edit (int, ed_buffer_t *);
 static void script_die (int, ed_buffer_t *);
 
@@ -213,7 +217,9 @@ top:
       goto top;
     }
 
+#ifdef WANT_ADDRESS_ARGUMENTS
   argv = collect_address_args (&argc, argv, ed);
+#endif
 
   /* In case of option `-f' or `-e', rewind internal script file. */
   if (ed->exec->fp
@@ -436,6 +442,7 @@ top:
 }
 
 
+#ifdef WANT_ADDRESS_ARGUMENTS
 /*
  * collect_address_args: Handle command-line arguments of the form `+n',
  *   `+/' and `+?'.
@@ -525,6 +532,7 @@ collect_address_args (int *argc_p, char **argv, ed_buffer_t *ed)
   *argc_p = argc_new;
   return (char **) argv_new;
 }
+#endif  /* WANT_ADDRESS_ARGUMENTS */
 
 /*
  * next_edit: Construct ed command per status, pointed to by
@@ -677,6 +685,7 @@ getenv_init_argv (const char *s, int *argc, ed_buffer_t *ed)
 #endif /* WANT_ED_ENVAR */
 
 
+#ifdef WANT_ADDRESS_ARGUMENTS
 /* append_address_command: Append address command to address buffer. */
 static int
 append_address_command (const char *s, ed_buffer_t *ed)
@@ -694,6 +703,7 @@ append_address_command (const char *s, ed_buffer_t *ed)
   ed->exec->address[previous_len] = '\0';
   return 0;
 }
+#endif  /* WANT_ADDRESS_ARGUMENTS */
 
 #ifdef WANT_SCRIPT_FLAGS
 /* append_script_expression: Append expression to script. */

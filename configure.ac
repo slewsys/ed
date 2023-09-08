@@ -67,6 +67,11 @@ if test ! ."$with_included_regex" = .'yes'; then
        AC_MSG_WARN([System regex not found, falling back to included version])])
 fi
 AC_MSG_RESULT([$with_included_regex])
+if test ."$with_included_regex" = .'yes'; then
+   ln -sf POTFILES-regex.in po/POTFILES.in
+else
+   ln -sf POTFILES-noregex.in po/POTFILES.in
+fi
 AM_CONDITIONAL([LIBADD_REGEX], [test ."$with_included_regex" = .'yes'])
 AM_COND_IF([LIBADD_REGEX],
   [AC_DEFINE([HAVE_REG_SYNTAX_T], [1],
@@ -78,9 +83,9 @@ AM_COND_IF([LIBADD_REGEX],
 #include <regex.h>]])])
 
 gl_INIT
-AM_CONDITIONAL([LDADD_LIBGNU],
-  [test ."$with_included_regex" = .'yes' \
-    || test ."$ac_cv_func_getopt_long_only" = .'yes'])
+AM_CONDITIONAL([LDADD_LIBGNU], [true])
+  dnl [test ."$with_included_regex" = .'yes' \
+  dnl   || test ."$ac_cv_func_getopt_long_only" = .'yes'])
 
 #
 # Checks for libraries.
@@ -213,6 +218,19 @@ AC_ARG_ENABLE([all-extensions],
   [AS_HELP_STRING([--enable-all-extensions],
     [enable all ED extensions.])], [], [])
 AC_MSG_RESULT([${enable_all_extensions:-no}])
+
+AC_MSG_CHECKING([whether ED command-line address argument support is requested])
+AC_ARG_ENABLE([address-arguments],
+  [AS_HELP_STRING([--enable-address-arguments],
+    [enable command-line address arguments])], [], [])
+if test ."$enable_address_arguments" = .'yes' \
+        || { test ! ."$enable_address_arguments" = .'no' \
+                  && test ."$enable_all_extensions" = .'yes'; }; then
+    enable_address_arguments=yes
+    AC_DEFINE([WANT_ADDRESS_ARGUMENTS], [1],
+      [Define to 1 to enable support for command-line address arguments.])
+fi
+AC_MSG_RESULT([${enable_address_arguments:-no}])
 
 AC_MSG_CHECKING([whether ED environment variable support is requested])
 AC_ARG_ENABLE([ed-envar],

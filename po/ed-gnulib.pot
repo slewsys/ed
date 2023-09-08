@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: ed 2.0.13\n"
-"Report-Msgid-Bugs-To: https://github.com/slewsys/ed\n"
-"POT-Creation-Date: 2022-01-12 06:04-0500\n"
+"Report-Msgid-Bugs-To: bug-gnulib@gnu.org\n"
+"POT-Creation-Date: 2023-09-08 04:02-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,6 +16,41 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: lib/getopt.c:278
+#, c-format
+msgid "%s: option '%s%s' is ambiguous\n"
+msgstr ""
+
+#: lib/getopt.c:284
+#, c-format
+msgid "%s: option '%s%s' is ambiguous; possibilities:"
+msgstr ""
+
+#: lib/getopt.c:319
+#, c-format
+msgid "%s: unrecognized option '%s%s'\n"
+msgstr ""
+
+#: lib/getopt.c:345
+#, c-format
+msgid "%s: option '%s%s' doesn't allow an argument\n"
+msgstr ""
+
+#: lib/getopt.c:360
+#, c-format
+msgid "%s: option '%s%s' requires an argument\n"
+msgstr ""
+
+#: lib/getopt.c:621
+#, c-format
+msgid "%s: invalid option -- '%c'\n"
+msgstr ""
+
+#: lib/getopt.c:636 lib/getopt.c:682
+#, c-format
+msgid "%s: option requires an argument -- '%c'\n"
+msgstr ""
 
 #: src/aux.c:35
 msgid "Child process error"
@@ -34,8 +69,8 @@ msgid "Pipe close error"
 msgstr ""
 
 #: src/aux.c:227 src/aux.c:440 src/buf.c:267 src/buf.c:436 src/buf.c:534
-#: src/buf.c:544 src/buf.c:583 src/buf.c:613 src/glbl.c:170 src/io.c:302
-#: src/main.c:630 src/page.c:858 src/parse.c:273 src/parse.c:518 src/re.c:155
+#: src/buf.c:544 src/buf.c:583 src/buf.c:613 src/glbl.c:171 src/io.c:317
+#: src/main.c:753 src/page.c:858 src/parse.c:273 src/parse.c:518 src/re.c:157
 #: src/undo.c:26
 msgid "Memory exhausted"
 msgstr ""
@@ -48,8 +83,8 @@ msgstr ""
 msgid "Exceeded maximum stack frame depth"
 msgstr ""
 
-#: src/aux.c:418 src/aux.c:469 src/aux.c:509 src/aux.c:548 src/io.c:57
-#: src/io.c:581 src/main.c:215 src/main.c:592 src/main.c:652
+#: src/aux.c:418 src/aux.c:469 src/aux.c:509 src/aux.c:548 src/io.c:58
+#: src/io.c:600 src/main.c:224 src/main.c:715 src/main.c:775
 msgid "File seek error"
 msgstr ""
 
@@ -65,7 +100,7 @@ msgstr ""
 msgid "Buffer seek error"
 msgstr ""
 
-#: src/buf.c:260 src/main.c:439 src/main.c:511
+#: src/buf.c:260 src/main.c:544 src/main.c:616
 msgid "File name too long"
 msgstr ""
 
@@ -89,7 +124,7 @@ msgstr ""
 msgid "Buffer write error"
 msgstr ""
 
-#: src/buf.c:500 src/exec.c:101 src/exec.c:130 src/exec.c:1863 src/page.c:301
+#: src/buf.c:500 src/exec.c:100 src/exec.c:129 src/exec.c:1862 src/page.c:301
 #: src/parse.c:223
 msgid "Address out of range"
 msgstr ""
@@ -110,11 +145,11 @@ msgstr ""
 msgid "Decryption failed (incomplete block)."
 msgstr ""
 
-#: src/cbc.c:387 src/io.c:532 src/main.c:667
+#: src/cbc.c:387 src/io.c:551 src/main.c:790
 msgid "File read error"
 msgstr ""
 
-#: src/cmds.c:39 src/exec.c:611 src/io.c:462 src/main.c:345
+#: src/cmds.c:39 src/exec.c:609 src/io.c:479 src/main.c:360
 msgid "End-of-file unexpected"
 msgstr ""
 
@@ -126,153 +161,168 @@ msgstr ""
 msgid "Unknown error"
 msgstr ""
 
-#: src/ed.h:746 src/ed.h:781 src/ed.h:816
+#: src/ed.h:749 src/ed.h:784 src/ed.h:819
 msgid "Numerical result out of range"
 msgstr ""
 
-#: src/exec.c:28 src/exec.c:505 src/exec.c:592 src/exec.c:655 src/exec.c:681
-#: src/exec.c:1027 src/exec.c:1388 src/exec.c:1400 src/exec.c:1408
+#: src/exec.c:28 src/exec.c:504 src/exec.c:590 src/exec.c:654 src/exec.c:680
+#: src/exec.c:1032 src/exec.c:1392 src/exec.c:1404 src/exec.c:1412
 msgid "Command suffix unexpected"
 msgstr ""
 
-#: src/exec.c:96 src/exec.c:125
+#: src/exec.c:95 src/exec.c:124
 msgid "Destination address required"
 msgstr ""
 
-#: src/exec.c:339 src/exec.c:352 src/exec.c:364
+#: src/exec.c:338 src/exec.c:351 src/exec.c:363
 msgid "Command prefix unexpected"
 msgstr ""
 
-#: src/exec.c:496 src/exec.c:646 src/exec.c:743 src/exec.c:764 src/exec.c:963
-#: src/exec.c:1005 src/exec.c:1351 src/exec.c:1549 src/exec.c:1744
+#: src/exec.c:495 src/exec.c:645 src/exec.c:749 src/exec.c:770 src/exec.c:969
+#: src/exec.c:1011 src/exec.c:1356 src/exec.c:1549 src/exec.c:1743
 msgid "Address unexpected"
 msgstr ""
 
-#: src/exec.c:675
+#: src/exec.c:674
 msgid "Invalid redirection"
 msgstr ""
 
-#: src/exec.c:705 src/main.c:506
+#: src/exec.c:711 src/main.c:611
 msgid "File name not set"
 msgstr ""
 
-#: src/exec.c:719
+#: src/exec.c:725
 msgid "Recursive global command"
 msgstr ""
 
-#: src/exec.c:774
+#: src/exec.c:780
 msgid "No previous error"
 msgstr ""
 
-#: src/exec.c:884
+#: src/exec.c:890
 msgid "Invalid destination address"
 msgstr ""
 
-#: src/exec.c:925 src/exec.c:1337
+#: src/exec.c:931 src/exec.c:1342
 msgid "Invalid register"
 msgstr ""
 
-#: src/exec.c:1182 src/exec.c:1245 src/exec.c:1568 src/exec.c:1628
-#: src/exec.c:1788 src/exec.c:1803
+#: src/exec.c:1187 src/exec.c:1250 src/exec.c:1568 src/exec.c:1627
+#: src/exec.c:1787 src/exec.c:1802
 msgid "Unknown command"
 msgstr ""
 
-#: src/exec.c:1803
+#: src/exec.c:1802
 msgid "Invalid address"
 msgstr ""
 
-#: src/exec.c:1821
+#: src/exec.c:1820
 msgid "Command too long"
 msgstr ""
 
-#: src/exec.c:1868
+#: src/exec.c:1867
 msgid "Invalid address range"
 msgstr ""
 
-#: src/glbl.c:131
+#: src/glbl.c:132
 msgid "No previous command"
 msgstr ""
 
-#: src/io.c:69
+#: src/io.c:71
 msgid "File does not exist"
 msgstr ""
 
-#: src/io.c:88 src/io.c:153 src/io.c:611 src/io.c:660 src/main.c:640
+#: src/io.c:97 src/io.c:166 src/io.c:630 src/io.c:679 src/main.c:763
 msgid "File open error"
 msgstr ""
 
-#: src/io.c:107 src/io.c:625
+#: src/io.c:120 src/io.c:644
 #, c-format
 msgid "%s: File already locked\n"
 msgstr ""
 
-#: src/io.c:131 src/io.c:602 src/io.c:640
+#: src/io.c:144 src/io.c:621 src/io.c:659
 msgid "File close error"
 msgstr ""
 
-#: src/io.c:276 src/io.c:410
+#: src/io.c:291 src/io.c:427
 #, c-format
 msgid "Newline inserted\n"
 msgstr ""
 
-#: src/io.c:281 src/io.c:415
+#: src/io.c:296 src/io.c:432
 #, c-format
 msgid "Newline appended\n"
 msgstr ""
 
-#: src/io.c:588
+#: src/io.c:607
 msgid "File truncate error"
 msgstr ""
 
-#: src/io.c:701
+#: src/io.c:720
 msgid "File too big"
 msgstr ""
 
-#: src/io.c:748 src/main.c:602 src/main.c:676
+#: src/io.c:767 src/main.c:725 src/main.c:799
 msgid "File write error"
 msgstr ""
 
-#: src/io.c:773 src/parse.c:505
+#: src/io.c:792 src/parse.c:505
 msgid "File status error"
 msgstr ""
 
-#: src/io.c:780
+#: src/io.c:799
 msgid "Access restricted to regular files"
 msgstr ""
 
-#: src/main.c:224
+#: src/io.c:868
+msgid "File stat error"
+msgstr ""
+
+#: src/main.c:233
 msgid "Option '-i' requires '-e' or '-f'"
 msgstr ""
 
-#: src/main.c:290
+#: src/main.c:298
 msgid "Interrupted"
 msgstr ""
 
-#: src/main.c:394
+#: src/main.c:409
 msgid "WARNING: Buffer modified since last write"
 msgstr ""
 
-#: src/main.c:560
+#: src/main.c:665
 msgid "Argument list full"
 msgstr ""
 
-#: src/main.c:695
+#: src/main.c:818
 #, c-format
 msgid ""
-"Usage: %s [-] [-EGhirsVvx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE]\n"
+"Usage: %s [-] [-EGhirsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE...]\n"
 msgstr ""
 
-#: src/main.c:698
+#: src/main.c:821
 #, c-format
-msgid "Usage: %s [-] [-EGhrsVvx] [-p PROMPT] [FILE]\n"
+msgid ""
+"Usage: %s [-] [-EGhirsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE]\n"
 msgstr ""
 
-#: src/main.c:705
+#: src/main.c:825
+#, c-format
+msgid "Usage: %s [-] [-EGhrsVvwx] [-p PROMPT] [FILE]\n"
+msgstr ""
+
+#: src/main.c:833
+#, c-format
+msgid "Usage: %s [OPTION...] [FILE...]\n"
+msgstr ""
+
+#: src/main.c:836
 #, c-format
 msgid "Usage: %s [OPTION...] [FILE]\n"
 msgstr ""
 
-#: src/main.c:710
+#: src/main.c:842
 #, c-format
 msgid ""
 "Options:\n"
@@ -289,17 +339,18 @@ msgid ""
 "  -s, --script              Suppress interactive diagnostics.\n"
 "  -v, --verbose             Enable verbose error diagnostics.\n"
 "  -V, --version             Print version information, then exit.\n"
+"  -w, --write               Open file in write-only mode.\n"
 "  -x, --crypt               Prompt for encryption key used for subsequent I/"
 "O.\n"
 "\n"
 "If FILE is given, read it for editing.  From within ed, run:\n"
-"  !info ed RET m switches RET\n"
-"to see full documentation of these options.\n"
+"  !info ed-intro RET\n"
+"for a tutorial introduction to ed.\n"
 "\n"
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
 
-#: src/main.c:731
+#: src/main.c:864
 #, c-format
 msgid ""
 "Options:\n"
@@ -312,17 +363,18 @@ msgid ""
 "  -s, --script              Suppress interactive diagnostics.\n"
 "  -v, --verbose             Enable verbose error diagnostics.\n"
 "  -V, --version             Print version information, then exit.\n"
+"  -w, --write               Open file in write-only mode.\n"
 "  -x, --crypt               Prompt for encryption key used for subsequent I/"
 "O.\n"
 "\n"
 "If FILE is given, read it for editing.  From within ed, run:\n"
-"  !info ed RET m switches RET\n"
-"to see full documentation of these options.\n"
+"  !info ed-intro RET\n"
+"for a tutorial introduction to ed.\n"
 "\n"
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
 
-#: src/main.c:761
+#: src/main.c:895
 msgid "script, line %"
 msgstr ""
 
@@ -354,19 +406,19 @@ msgstr ""
 msgid "Invalid file name"
 msgstr ""
 
-#: src/parse.c:630
+#: src/parse.c:632
 msgid "Brackets ([]) unbalanced"
 msgstr ""
 
-#: src/parse.c:637
+#: src/parse.c:639
 msgid "Backslash (\\) unexpected"
 msgstr ""
 
-#: src/parse.c:694
+#: src/parse.c:696
 msgid "Shell access restricted"
 msgstr ""
 
-#: src/parse.c:758
+#: src/parse.c:760
 msgid "No previous shell command"
 msgstr ""
 
@@ -374,11 +426,11 @@ msgstr ""
 msgid "Invalid pattern delimiter"
 msgstr ""
 
-#: src/re.c:145
+#: src/re.c:147
 msgid "No previous pattern"
 msgstr ""
 
-#: src/re.c:271 src/sub.c:439
+#: src/re.c:273 src/sub.c:439
 msgid "No match"
 msgstr ""
 
