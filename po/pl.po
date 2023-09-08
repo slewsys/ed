@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnulib 4.0.0.2567\n"
 "Report-Msgid-Bugs-To: bug-gnulib@gnu.org\n"
-"POT-Creation-Date: 2023-05-17 13:44-0400\n"
+"POT-Creation-Date: 2023-09-08 04:02-0400\n"
 "PO-Revision-Date: 2019-05-19 20:02+0200\n"
 "Last-Translator: Jakub Bogusz <qboosh@pld-linux.org>\n"
 "Language-Team: Polish <translation-team-pl@lists.sourceforge.net>\n"
@@ -58,81 +58,6 @@ msgstr "%s: błędna opcja -- '%c'\n"
 msgid "%s: option requires an argument -- '%c'\n"
 msgstr "%s: opcja musi mieć argument -- '%c'\n"
 
-#: lib/regcomp.c:122
-msgid "Success"
-msgstr "Sukces"
-
-#: lib/regcomp.c:125 src/re.c:273 src/sub.c:439
-msgid "No match"
-msgstr "Nic nie pasuje"
-
-#: lib/regcomp.c:128
-msgid "Invalid regular expression"
-msgstr "Błędne wyrażenie regularne"
-
-#: lib/regcomp.c:131
-msgid "Invalid collation character"
-msgstr "Błędny znak sortowany"
-
-#: lib/regcomp.c:134
-msgid "Invalid character class name"
-msgstr "Błędna nazwa klasy znaków"
-
-#: lib/regcomp.c:137
-msgid "Trailing backslash"
-msgstr "Kończący znak `\\'"
-
-#: lib/regcomp.c:140
-msgid "Invalid back reference"
-msgstr "Błędne odniesienie wstecz"
-
-#: lib/regcomp.c:143
-msgid "Unmatched [, [^, [:, [., or [="
-msgstr "Niesparowane [, [^, [:, [. lub [="
-
-#: lib/regcomp.c:146
-msgid "Unmatched ( or \\("
-msgstr "Niesparowane ( lub \\("
-
-#: lib/regcomp.c:149
-msgid "Unmatched \\{"
-msgstr "Niesparowane \\{"
-
-#: lib/regcomp.c:152
-msgid "Invalid content of \\{\\}"
-msgstr "Błędna zawartość \\{\\}"
-
-#: lib/regcomp.c:155
-msgid "Invalid range end"
-msgstr "Błędny koniec zakresu"
-
-#: lib/regcomp.c:158 src/aux.c:227 src/aux.c:440 src/buf.c:267 src/buf.c:436
-#: src/buf.c:534 src/buf.c:544 src/buf.c:583 src/buf.c:613 src/glbl.c:171
-#: src/io.c:317 src/main.c:754 src/page.c:858 src/parse.c:273 src/parse.c:518
-#: src/re.c:157 src/undo.c:26
-msgid "Memory exhausted"
-msgstr "Pamięć wyczerpana"
-
-#: lib/regcomp.c:161
-msgid "Invalid preceding regular expression"
-msgstr "Błędne poprzedzające wyrażenie regularne"
-
-#: lib/regcomp.c:164
-msgid "Premature end of regular expression"
-msgstr "Przedwczesny koniec wyrażenia regularnego"
-
-#: lib/regcomp.c:167
-msgid "Regular expression too big"
-msgstr "Wyrażenie regularne zbyt duże"
-
-#: lib/regcomp.c:170
-msgid "Unmatched ) or \\)"
-msgstr "Niesparowane ) lub \\)"
-
-#: lib/regcomp.c:650
-msgid "No previous regular expression"
-msgstr "Brak poprzedniego wyrażenia regularnego"
-
 #: src/aux.c:35
 #, fuzzy
 #| msgid "%s subprocess I/O error"
@@ -155,6 +80,13 @@ msgstr "błąd programu"
 msgid "Pipe close error"
 msgstr ""
 
+#: src/aux.c:227 src/aux.c:440 src/buf.c:267 src/buf.c:436 src/buf.c:534
+#: src/buf.c:544 src/buf.c:583 src/buf.c:613 src/glbl.c:171 src/io.c:317
+#: src/main.c:753 src/page.c:858 src/parse.c:273 src/parse.c:518 src/re.c:157
+#: src/undo.c:26
+msgid "Memory exhausted"
+msgstr "Pamięć wyczerpana"
+
 #: src/aux.c:296 src/aux.c:338
 msgid "Cannot append register to itself."
 msgstr ""
@@ -164,7 +96,7 @@ msgid "Exceeded maximum stack frame depth"
 msgstr ""
 
 #: src/aux.c:418 src/aux.c:469 src/aux.c:509 src/aux.c:548 src/io.c:58
-#: src/io.c:600 src/main.c:224 src/main.c:716 src/main.c:776
+#: src/io.c:600 src/main.c:224 src/main.c:715 src/main.c:775
 #, fuzzy
 #| msgid "write error"
 msgid "File seek error"
@@ -188,7 +120,7 @@ msgstr "Błąd szyny"
 msgid "Buffer seek error"
 msgstr "Błąd szyny"
 
-#: src/buf.c:260 src/main.c:545 src/main.c:617
+#: src/buf.c:260 src/main.c:544 src/main.c:616
 msgid "File name too long"
 msgstr ""
 
@@ -245,7 +177,7 @@ msgstr ""
 msgid "Decryption failed (incomplete block)."
 msgstr ""
 
-#: src/cbc.c:387 src/io.c:551 src/main.c:791
+#: src/cbc.c:387 src/io.c:551 src/main.c:790
 #, fuzzy
 #| msgid "write error"
 msgid "File read error"
@@ -295,7 +227,7 @@ msgstr ""
 msgid "Invalid redirection"
 msgstr "Błędne wyrażenie regularne"
 
-#: src/exec.c:711 src/main.c:612
+#: src/exec.c:711 src/main.c:611
 msgid "File name not set"
 msgstr ""
 
@@ -352,7 +284,7 @@ msgstr ""
 msgid "File does not exist"
 msgstr ""
 
-#: src/io.c:97 src/io.c:166 src/io.c:630 src/io.c:679 src/main.c:764
+#: src/io.c:97 src/io.c:166 src/io.c:630 src/io.c:679 src/main.c:763
 #, fuzzy
 #| msgid "write error"
 msgid "File open error"
@@ -387,7 +319,7 @@ msgstr "błąd zapisu"
 msgid "File too big"
 msgstr ""
 
-#: src/io.c:767 src/main.c:726 src/main.c:800
+#: src/io.c:767 src/main.c:725 src/main.c:799
 #, fuzzy
 #| msgid "write error"
 msgid "File write error"
@@ -423,40 +355,40 @@ msgstr "Przerwanie"
 msgid "WARNING: Buffer modified since last write"
 msgstr ""
 
-#: src/main.c:666
+#: src/main.c:665
 #, fuzzy
 #| msgid "Argument buffer too small"
 msgid "Argument list full"
 msgstr "Bufor argumentu zbyt mały"
 
-#: src/main.c:819
+#: src/main.c:818
 #, c-format
 msgid ""
 "Usage: %s [-] [-EGhirsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE...]\n"
 msgstr ""
 
-#: src/main.c:822
+#: src/main.c:821
 #, c-format
 msgid ""
 "Usage: %s [-] [-EGhirsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE]\n"
 msgstr ""
 
-#: src/main.c:826
+#: src/main.c:825
 #, c-format
 msgid "Usage: %s [-] [-EGhrsVvwx] [-p PROMPT] [FILE]\n"
 msgstr ""
 
-#: src/main.c:834
+#: src/main.c:833
 #, c-format
 msgid "Usage: %s [OPTION...] [FILE...]\n"
 msgstr ""
 
-#: src/main.c:837
+#: src/main.c:836
 #, c-format
 msgid "Usage: %s [OPTION...] [FILE]\n"
 msgstr ""
 
-#: src/main.c:843
+#: src/main.c:842
 #, c-format
 msgid ""
 "Options:\n"
@@ -484,7 +416,7 @@ msgid ""
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
 
-#: src/main.c:865
+#: src/main.c:864
 #, c-format
 msgid ""
 "Options:\n"
@@ -508,7 +440,7 @@ msgid ""
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
 
-#: src/main.c:896
+#: src/main.c:895
 msgid "script, line %"
 msgstr ""
 
@@ -578,6 +510,10 @@ msgstr "Błędna nazwa klasy znaków"
 msgid "No previous pattern"
 msgstr "Brak poprzedniego wyrażenia regularnego"
 
+#: src/re.c:273 src/sub.c:439
+msgid "No match"
+msgstr "Nic nie pasuje"
+
 #: src/signal.c:136
 #, fuzzy
 #| msgid "program error"
@@ -597,6 +533,54 @@ msgstr "Brak poprzedniego wyrażenia regularnego"
 #: src/undo.c:51
 msgid "Nothing to undo"
 msgstr ""
+
+#~ msgid "Success"
+#~ msgstr "Sukces"
+
+#~ msgid "Invalid regular expression"
+#~ msgstr "Błędne wyrażenie regularne"
+
+#~ msgid "Invalid collation character"
+#~ msgstr "Błędny znak sortowany"
+
+#~ msgid "Invalid character class name"
+#~ msgstr "Błędna nazwa klasy znaków"
+
+#~ msgid "Trailing backslash"
+#~ msgstr "Kończący znak `\\'"
+
+#~ msgid "Invalid back reference"
+#~ msgstr "Błędne odniesienie wstecz"
+
+#~ msgid "Unmatched [, [^, [:, [., or [="
+#~ msgstr "Niesparowane [, [^, [:, [. lub [="
+
+#~ msgid "Unmatched ( or \\("
+#~ msgstr "Niesparowane ( lub \\("
+
+#~ msgid "Unmatched \\{"
+#~ msgstr "Niesparowane \\{"
+
+#~ msgid "Invalid content of \\{\\}"
+#~ msgstr "Błędna zawartość \\{\\}"
+
+#~ msgid "Invalid range end"
+#~ msgstr "Błędny koniec zakresu"
+
+#~ msgid "Invalid preceding regular expression"
+#~ msgstr "Błędne poprzedzające wyrażenie regularne"
+
+#~ msgid "Premature end of regular expression"
+#~ msgstr "Przedwczesny koniec wyrażenia regularnego"
+
+#~ msgid "Regular expression too big"
+#~ msgstr "Wyrażenie regularne zbyt duże"
+
+#~ msgid "Unmatched ) or \\)"
+#~ msgstr "Niesparowane ) lub \\)"
+
+#~ msgid "No previous regular expression"
+#~ msgstr "Brak poprzedniego wyrażenia regularnego"
 
 #, c-format
 #~ msgid "invalid argument %s for %s"

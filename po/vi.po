@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnulib-3.0.0.6062.a6b16\n"
 "Report-Msgid-Bugs-To: bug-gnulib@gnu.org\n"
-"POT-Creation-Date: 2023-05-17 13:44-0400\n"
+"POT-Creation-Date: 2023-09-08 04:02-0400\n"
 "PO-Revision-Date: 2014-01-13 08:31+0700\n"
 "Last-Translator: Trần Ngọc Quân <vnwildman@gmail.com>\n"
 "Language-Team: Vietnamese <translation-team-vi@lists.sourceforge.net>\n"
@@ -62,83 +62,6 @@ msgstr "%s: tùy chọn không hợp lệ -- “%c”\n"
 msgid "%s: option requires an argument -- '%c'\n"
 msgstr "%s: tùy chọn yêu cầu một đối số -- “%c”\n"
 
-#: lib/regcomp.c:122
-msgid "Success"
-msgstr "Thành công"
-
-#: lib/regcomp.c:125 src/re.c:273 src/sub.c:439
-msgid "No match"
-msgstr "Không khớp"
-
-#: lib/regcomp.c:128
-msgid "Invalid regular expression"
-msgstr "Biểu thức chính quy không hợp lệ"
-
-#: lib/regcomp.c:131
-msgid "Invalid collation character"
-msgstr "Ký tự đối chiếu không hợp lệ"
-
-#: lib/regcomp.c:134
-msgid "Invalid character class name"
-msgstr "Tên loại ký tự không hợp lệ"
-
-#: lib/regcomp.c:137
-msgid "Trailing backslash"
-msgstr "Có xuyệc ngược theo sau"
-
-#: lib/regcomp.c:140
-msgid "Invalid back reference"
-msgstr "Tham chiếu ngược không hợp lệ"
-
-#: lib/regcomp.c:143
-#, fuzzy
-#| msgid "Unmatched [ or [^"
-msgid "Unmatched [, [^, [:, [., or [="
-msgstr "Chưa khớp ký tự “[” hay “[^”"
-
-#: lib/regcomp.c:146
-msgid "Unmatched ( or \\("
-msgstr "Chưa khớp ký tự “(” hay “\\(”"
-
-#: lib/regcomp.c:149
-msgid "Unmatched \\{"
-msgstr "Chưa khớp ký tự “\\{”"
-
-#: lib/regcomp.c:152
-msgid "Invalid content of \\{\\}"
-msgstr "Nội dung của “\\{\\}” không hợp lệ"
-
-#: lib/regcomp.c:155
-msgid "Invalid range end"
-msgstr "Kết thúc phạm vi không hợp lệ"
-
-#: lib/regcomp.c:158 src/aux.c:227 src/aux.c:440 src/buf.c:267 src/buf.c:436
-#: src/buf.c:534 src/buf.c:544 src/buf.c:583 src/buf.c:613 src/glbl.c:171
-#: src/io.c:317 src/main.c:754 src/page.c:858 src/parse.c:273 src/parse.c:518
-#: src/re.c:157 src/undo.c:26
-msgid "Memory exhausted"
-msgstr "Hết bộ nhớ"
-
-#: lib/regcomp.c:161
-msgid "Invalid preceding regular expression"
-msgstr "Biểu thức chính quy đi trước không hợp lệ"
-
-#: lib/regcomp.c:164
-msgid "Premature end of regular expression"
-msgstr "Biểu thức chính quy kết thúc quá sớm"
-
-#: lib/regcomp.c:167
-msgid "Regular expression too big"
-msgstr "Biểu thức chính quy quá lớn"
-
-#: lib/regcomp.c:170
-msgid "Unmatched ) or \\)"
-msgstr "Chưa khớp ký tự “)” hay “\\)”"
-
-#: lib/regcomp.c:650
-msgid "No previous regular expression"
-msgstr "Không có biểu thức chính quy đi trước"
-
 #: src/aux.c:35
 #, fuzzy
 #| msgid "%s subprocess I/O error"
@@ -161,6 +84,13 @@ msgstr "lỗi chương trình"
 msgid "Pipe close error"
 msgstr ""
 
+#: src/aux.c:227 src/aux.c:440 src/buf.c:267 src/buf.c:436 src/buf.c:534
+#: src/buf.c:544 src/buf.c:583 src/buf.c:613 src/glbl.c:171 src/io.c:317
+#: src/main.c:753 src/page.c:858 src/parse.c:273 src/parse.c:518 src/re.c:157
+#: src/undo.c:26
+msgid "Memory exhausted"
+msgstr "Hết bộ nhớ"
+
 #: src/aux.c:296 src/aux.c:338
 msgid "Cannot append register to itself."
 msgstr ""
@@ -170,7 +100,7 @@ msgid "Exceeded maximum stack frame depth"
 msgstr ""
 
 #: src/aux.c:418 src/aux.c:469 src/aux.c:509 src/aux.c:548 src/io.c:58
-#: src/io.c:600 src/main.c:224 src/main.c:716 src/main.c:776
+#: src/io.c:600 src/main.c:224 src/main.c:715 src/main.c:775
 #, fuzzy
 #| msgid "write error"
 msgid "File seek error"
@@ -194,7 +124,7 @@ msgstr "Lỗi bus"
 msgid "Buffer seek error"
 msgstr "Lỗi bus"
 
-#: src/buf.c:260 src/main.c:545 src/main.c:617
+#: src/buf.c:260 src/main.c:544 src/main.c:616
 msgid "File name too long"
 msgstr ""
 
@@ -251,7 +181,7 @@ msgstr ""
 msgid "Decryption failed (incomplete block)."
 msgstr ""
 
-#: src/cbc.c:387 src/io.c:551 src/main.c:791
+#: src/cbc.c:387 src/io.c:551 src/main.c:790
 #, fuzzy
 #| msgid "write error"
 msgid "File read error"
@@ -301,7 +231,7 @@ msgstr ""
 msgid "Invalid redirection"
 msgstr "Biểu thức chính quy không hợp lệ"
 
-#: src/exec.c:711 src/main.c:612
+#: src/exec.c:711 src/main.c:611
 msgid "File name not set"
 msgstr ""
 
@@ -358,7 +288,7 @@ msgstr ""
 msgid "File does not exist"
 msgstr ""
 
-#: src/io.c:97 src/io.c:166 src/io.c:630 src/io.c:679 src/main.c:764
+#: src/io.c:97 src/io.c:166 src/io.c:630 src/io.c:679 src/main.c:763
 #, fuzzy
 #| msgid "write error"
 msgid "File open error"
@@ -393,7 +323,7 @@ msgstr "lỗi ghi"
 msgid "File too big"
 msgstr ""
 
-#: src/io.c:767 src/main.c:726 src/main.c:800
+#: src/io.c:767 src/main.c:725 src/main.c:799
 #, fuzzy
 #| msgid "write error"
 msgid "File write error"
@@ -429,40 +359,40 @@ msgstr "Ngắt"
 msgid "WARNING: Buffer modified since last write"
 msgstr ""
 
-#: src/main.c:666
+#: src/main.c:665
 #, fuzzy
 #| msgid "Argument buffer too small"
 msgid "Argument list full"
 msgstr "Vùng đệm đối số quá ngắn"
 
-#: src/main.c:819
+#: src/main.c:818
 #, c-format
 msgid ""
 "Usage: %s [-] [-EGhirsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE...]\n"
 msgstr ""
 
-#: src/main.c:822
+#: src/main.c:821
 #, c-format
 msgid ""
 "Usage: %s [-] [-EGhirsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE]\n"
 msgstr ""
 
-#: src/main.c:826
+#: src/main.c:825
 #, c-format
 msgid "Usage: %s [-] [-EGhrsVvwx] [-p PROMPT] [FILE]\n"
 msgstr ""
 
-#: src/main.c:834
+#: src/main.c:833
 #, c-format
 msgid "Usage: %s [OPTION...] [FILE...]\n"
 msgstr ""
 
-#: src/main.c:837
+#: src/main.c:836
 #, c-format
 msgid "Usage: %s [OPTION...] [FILE]\n"
 msgstr ""
 
-#: src/main.c:843
+#: src/main.c:842
 #, c-format
 msgid ""
 "Options:\n"
@@ -490,7 +420,7 @@ msgid ""
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
 
-#: src/main.c:865
+#: src/main.c:864
 #, c-format
 msgid ""
 "Options:\n"
@@ -514,7 +444,7 @@ msgid ""
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
 
-#: src/main.c:896
+#: src/main.c:895
 msgid "script, line %"
 msgstr ""
 
@@ -582,6 +512,10 @@ msgstr "Tên loại ký tự không hợp lệ"
 msgid "No previous pattern"
 msgstr "Không có biểu thức chính quy đi trước"
 
+#: src/re.c:273 src/sub.c:439
+msgid "No match"
+msgstr "Không khớp"
+
 #: src/signal.c:136
 #, fuzzy
 #| msgid "program error"
@@ -601,6 +535,56 @@ msgstr "Không có biểu thức chính quy đi trước"
 #: src/undo.c:51
 msgid "Nothing to undo"
 msgstr ""
+
+#~ msgid "Success"
+#~ msgstr "Thành công"
+
+#~ msgid "Invalid regular expression"
+#~ msgstr "Biểu thức chính quy không hợp lệ"
+
+#~ msgid "Invalid collation character"
+#~ msgstr "Ký tự đối chiếu không hợp lệ"
+
+#~ msgid "Invalid character class name"
+#~ msgstr "Tên loại ký tự không hợp lệ"
+
+#~ msgid "Trailing backslash"
+#~ msgstr "Có xuyệc ngược theo sau"
+
+#~ msgid "Invalid back reference"
+#~ msgstr "Tham chiếu ngược không hợp lệ"
+
+#, fuzzy
+#~| msgid "Unmatched [ or [^"
+#~ msgid "Unmatched [, [^, [:, [., or [="
+#~ msgstr "Chưa khớp ký tự “[” hay “[^”"
+
+#~ msgid "Unmatched ( or \\("
+#~ msgstr "Chưa khớp ký tự “(” hay “\\(”"
+
+#~ msgid "Unmatched \\{"
+#~ msgstr "Chưa khớp ký tự “\\{”"
+
+#~ msgid "Invalid content of \\{\\}"
+#~ msgstr "Nội dung của “\\{\\}” không hợp lệ"
+
+#~ msgid "Invalid range end"
+#~ msgstr "Kết thúc phạm vi không hợp lệ"
+
+#~ msgid "Invalid preceding regular expression"
+#~ msgstr "Biểu thức chính quy đi trước không hợp lệ"
+
+#~ msgid "Premature end of regular expression"
+#~ msgstr "Biểu thức chính quy kết thúc quá sớm"
+
+#~ msgid "Regular expression too big"
+#~ msgstr "Biểu thức chính quy quá lớn"
+
+#~ msgid "Unmatched ) or \\)"
+#~ msgstr "Chưa khớp ký tự “)” hay “\\)”"
+
+#~ msgid "No previous regular expression"
+#~ msgstr "Không có biểu thức chính quy đi trước"
 
 #, c-format
 #~ msgid "invalid argument %s for %s"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnulib 1.1\n"
 "Report-Msgid-Bugs-To: bug-gnulib@gnu.org\n"
-"POT-Creation-Date: 2023-05-17 13:44-0400\n"
+"POT-Creation-Date: 2023-09-08 04:02-0400\n"
 "PO-Revision-Date: 2007-07-20 12:24-0600\n"
 "Last-Translator: Kevin Scannell <kscanne@gmail.com>\n"
 "Language-Team: Irish <gaeilge-gnulinux@lists.sourceforge.net>\n"
@@ -61,83 +61,6 @@ msgstr "%s: rogha neamhbhailí -- %c\n"
 msgid "%s: option requires an argument -- '%c'\n"
 msgstr "%s: tá argóint de dhíth i ndiaidh na rogha -- %c\n"
 
-#: lib/regcomp.c:122
-msgid "Success"
-msgstr "D'éirigh leis"
-
-#: lib/regcomp.c:125 src/re.c:273 src/sub.c:439
-msgid "No match"
-msgstr "Gan mheaitseáil"
-
-#: lib/regcomp.c:128
-msgid "Invalid regular expression"
-msgstr "Slonn ionadaíochta neamhbhailí"
-
-#: lib/regcomp.c:131
-msgid "Invalid collation character"
-msgstr "Carachtar neamhbhailí comhordaithe"
-
-#: lib/regcomp.c:134
-msgid "Invalid character class name"
-msgstr "Ainm neamhbhailí ar aicme charachtar"
-
-#: lib/regcomp.c:137
-msgid "Trailing backslash"
-msgstr "Cúlslais chun deiridh"
-
-#: lib/regcomp.c:140
-msgid "Invalid back reference"
-msgstr "Cúltagairt neamhbhailí"
-
-#: lib/regcomp.c:143
-#, fuzzy
-#| msgid "Unmatched [ or [^"
-msgid "Unmatched [, [^, [:, [., or [="
-msgstr "[ nó [^ corr"
-
-#: lib/regcomp.c:146
-msgid "Unmatched ( or \\("
-msgstr "( nó \\( corr"
-
-#: lib/regcomp.c:149
-msgid "Unmatched \\{"
-msgstr "\\{ corr"
-
-#: lib/regcomp.c:152
-msgid "Invalid content of \\{\\}"
-msgstr "Ábhar neamhbhailí idir \\{ agus \\}"
-
-#: lib/regcomp.c:155
-msgid "Invalid range end"
-msgstr "Deireadh raoin neamhbhailí"
-
-#: lib/regcomp.c:158 src/aux.c:227 src/aux.c:440 src/buf.c:267 src/buf.c:436
-#: src/buf.c:534 src/buf.c:544 src/buf.c:583 src/buf.c:613 src/glbl.c:171
-#: src/io.c:317 src/main.c:754 src/page.c:858 src/parse.c:273 src/parse.c:518
-#: src/re.c:157 src/undo.c:26
-msgid "Memory exhausted"
-msgstr "Cuimhne ídithe"
-
-#: lib/regcomp.c:161
-msgid "Invalid preceding regular expression"
-msgstr "Is neamhbhailí an slonn ionadaíochta roimhe seo"
-
-#: lib/regcomp.c:164
-msgid "Premature end of regular expression"
-msgstr "Deireadh le slonn ionadaíochta gan choinne"
-
-#: lib/regcomp.c:167
-msgid "Regular expression too big"
-msgstr "Slonn ionadaíochta rómhór"
-
-#: lib/regcomp.c:170
-msgid "Unmatched ) or \\)"
-msgstr ") nó \\) corr"
-
-#: lib/regcomp.c:650
-msgid "No previous regular expression"
-msgstr "Níl aon slonn ionadaíochta roimhe seo"
-
 #: src/aux.c:35
 #, fuzzy
 msgid "Child process error"
@@ -159,6 +82,13 @@ msgstr "earráid chláir"
 msgid "Pipe close error"
 msgstr ""
 
+#: src/aux.c:227 src/aux.c:440 src/buf.c:267 src/buf.c:436 src/buf.c:534
+#: src/buf.c:544 src/buf.c:583 src/buf.c:613 src/glbl.c:171 src/io.c:317
+#: src/main.c:753 src/page.c:858 src/parse.c:273 src/parse.c:518 src/re.c:157
+#: src/undo.c:26
+msgid "Memory exhausted"
+msgstr "Cuimhne ídithe"
+
 #: src/aux.c:296 src/aux.c:338
 msgid "Cannot append register to itself."
 msgstr ""
@@ -168,7 +98,7 @@ msgid "Exceeded maximum stack frame depth"
 msgstr ""
 
 #: src/aux.c:418 src/aux.c:469 src/aux.c:509 src/aux.c:548 src/io.c:58
-#: src/io.c:600 src/main.c:224 src/main.c:716 src/main.c:776
+#: src/io.c:600 src/main.c:224 src/main.c:715 src/main.c:775
 #, fuzzy
 #| msgid "write error"
 msgid "File seek error"
@@ -188,7 +118,7 @@ msgstr ""
 msgid "Buffer seek error"
 msgstr ""
 
-#: src/buf.c:260 src/main.c:545 src/main.c:617
+#: src/buf.c:260 src/main.c:544 src/main.c:616
 msgid "File name too long"
 msgstr ""
 
@@ -243,7 +173,7 @@ msgstr ""
 msgid "Decryption failed (incomplete block)."
 msgstr ""
 
-#: src/cbc.c:387 src/io.c:551 src/main.c:791
+#: src/cbc.c:387 src/io.c:551 src/main.c:790
 #, fuzzy
 #| msgid "write error"
 msgid "File read error"
@@ -293,7 +223,7 @@ msgstr ""
 msgid "Invalid redirection"
 msgstr "Slonn ionadaíochta neamhbhailí"
 
-#: src/exec.c:711 src/main.c:612
+#: src/exec.c:711 src/main.c:611
 msgid "File name not set"
 msgstr ""
 
@@ -350,7 +280,7 @@ msgstr ""
 msgid "File does not exist"
 msgstr ""
 
-#: src/io.c:97 src/io.c:166 src/io.c:630 src/io.c:679 src/main.c:764
+#: src/io.c:97 src/io.c:166 src/io.c:630 src/io.c:679 src/main.c:763
 #, fuzzy
 #| msgid "write error"
 msgid "File open error"
@@ -385,7 +315,7 @@ msgstr "earráid sa scríobh"
 msgid "File too big"
 msgstr ""
 
-#: src/io.c:767 src/main.c:726 src/main.c:800
+#: src/io.c:767 src/main.c:725 src/main.c:799
 #, fuzzy
 #| msgid "write error"
 msgid "File write error"
@@ -419,40 +349,40 @@ msgstr "Idirbhriste ag comhartha"
 msgid "WARNING: Buffer modified since last write"
 msgstr ""
 
-#: src/main.c:666
+#: src/main.c:665
 #, fuzzy
 #| msgid "Argument buffer too small"
 msgid "Argument list full"
 msgstr "Tá an argóint mhaoláin róbheag"
 
-#: src/main.c:819
+#: src/main.c:818
 #, c-format
 msgid ""
 "Usage: %s [-] [-EGhirsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE...]\n"
 msgstr ""
 
-#: src/main.c:822
+#: src/main.c:821
 #, c-format
 msgid ""
 "Usage: %s [-] [-EGhirsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE]\n"
 msgstr ""
 
-#: src/main.c:826
+#: src/main.c:825
 #, c-format
 msgid "Usage: %s [-] [-EGhrsVvwx] [-p PROMPT] [FILE]\n"
 msgstr ""
 
-#: src/main.c:834
+#: src/main.c:833
 #, c-format
 msgid "Usage: %s [OPTION...] [FILE...]\n"
 msgstr ""
 
-#: src/main.c:837
+#: src/main.c:836
 #, c-format
 msgid "Usage: %s [OPTION...] [FILE]\n"
 msgstr ""
 
-#: src/main.c:843
+#: src/main.c:842
 #, c-format
 msgid ""
 "Options:\n"
@@ -480,7 +410,7 @@ msgid ""
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
 
-#: src/main.c:865
+#: src/main.c:864
 #, c-format
 msgid ""
 "Options:\n"
@@ -504,7 +434,7 @@ msgid ""
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
 
-#: src/main.c:896
+#: src/main.c:895
 msgid "script, line %"
 msgstr ""
 
@@ -574,6 +504,10 @@ msgstr "Ainm neamhbhailí ar aicme charachtar"
 msgid "No previous pattern"
 msgstr "Níl aon slonn ionadaíochta roimhe seo"
 
+#: src/re.c:273 src/sub.c:439
+msgid "No match"
+msgstr "Gan mheaitseáil"
+
 #: src/signal.c:136
 #, fuzzy
 #| msgid "program error"
@@ -593,6 +527,56 @@ msgstr "Níl aon slonn ionadaíochta roimhe seo"
 #: src/undo.c:51
 msgid "Nothing to undo"
 msgstr ""
+
+#~ msgid "Success"
+#~ msgstr "D'éirigh leis"
+
+#~ msgid "Invalid regular expression"
+#~ msgstr "Slonn ionadaíochta neamhbhailí"
+
+#~ msgid "Invalid collation character"
+#~ msgstr "Carachtar neamhbhailí comhordaithe"
+
+#~ msgid "Invalid character class name"
+#~ msgstr "Ainm neamhbhailí ar aicme charachtar"
+
+#~ msgid "Trailing backslash"
+#~ msgstr "Cúlslais chun deiridh"
+
+#~ msgid "Invalid back reference"
+#~ msgstr "Cúltagairt neamhbhailí"
+
+#, fuzzy
+#~| msgid "Unmatched [ or [^"
+#~ msgid "Unmatched [, [^, [:, [., or [="
+#~ msgstr "[ nó [^ corr"
+
+#~ msgid "Unmatched ( or \\("
+#~ msgstr "( nó \\( corr"
+
+#~ msgid "Unmatched \\{"
+#~ msgstr "\\{ corr"
+
+#~ msgid "Invalid content of \\{\\}"
+#~ msgstr "Ábhar neamhbhailí idir \\{ agus \\}"
+
+#~ msgid "Invalid range end"
+#~ msgstr "Deireadh raoin neamhbhailí"
+
+#~ msgid "Invalid preceding regular expression"
+#~ msgstr "Is neamhbhailí an slonn ionadaíochta roimhe seo"
+
+#~ msgid "Premature end of regular expression"
+#~ msgstr "Deireadh le slonn ionadaíochta gan choinne"
+
+#~ msgid "Regular expression too big"
+#~ msgstr "Slonn ionadaíochta rómhór"
+
+#~ msgid "Unmatched ) or \\)"
+#~ msgstr ") nó \\) corr"
+
+#~ msgid "No previous regular expression"
+#~ msgstr "Níl aon slonn ionadaíochta roimhe seo"
 
 #, c-format
 #~ msgid "invalid argument %s for %s"

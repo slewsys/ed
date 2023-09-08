@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnulib 4.0.0.2567\n"
 "Report-Msgid-Bugs-To: bug-gnulib@gnu.org\n"
-"POT-Creation-Date: 2023-05-17 13:44-0400\n"
+"POT-Creation-Date: 2023-09-08 04:02-0400\n"
 "PO-Revision-Date: 2019-12-15 13:01+0800\n"
 "Last-Translator: pan93412 <pan93412@gmail.com>\n"
 "Language-Team: Chinese (traditional) <zh-l10n@lists.linux.org.tw>\n"
@@ -61,81 +61,6 @@ msgstr "%s：無效選項 -- '%c'\n"
 msgid "%s: option requires an argument -- '%c'\n"
 msgstr "%s：選項需要參數 -- '%c'\n"
 
-#: lib/regcomp.c:122
-msgid "Success"
-msgstr "成功"
-
-#: lib/regcomp.c:125 src/re.c:273 src/sub.c:439
-msgid "No match"
-msgstr "無符合項目"
-
-#: lib/regcomp.c:128
-msgid "Invalid regular expression"
-msgstr "正規表示式無效"
-
-#: lib/regcomp.c:131
-msgid "Invalid collation character"
-msgstr "定序字元無效"
-
-#: lib/regcomp.c:134
-msgid "Invalid character class name"
-msgstr "字元類型名稱無效"
-
-#: lib/regcomp.c:137
-msgid "Trailing backslash"
-msgstr "末尾反斜線"
-
-#: lib/regcomp.c:140
-msgid "Invalid back reference"
-msgstr "向後參考無效"
-
-#: lib/regcomp.c:143
-msgid "Unmatched [, [^, [:, [., or [="
-msgstr "不對稱的 [、[^、[:、[. 或 [="
-
-#: lib/regcomp.c:146
-msgid "Unmatched ( or \\("
-msgstr "不對稱的 ( 或 \\("
-
-#: lib/regcomp.c:149
-msgid "Unmatched \\{"
-msgstr "不對稱的 \\{"
-
-#: lib/regcomp.c:152
-msgid "Invalid content of \\{\\}"
-msgstr "\\{\\} 中內容無效"
-
-#: lib/regcomp.c:155
-msgid "Invalid range end"
-msgstr "結束範圍無效"
-
-#: lib/regcomp.c:158 src/aux.c:227 src/aux.c:440 src/buf.c:267 src/buf.c:436
-#: src/buf.c:534 src/buf.c:544 src/buf.c:583 src/buf.c:613 src/glbl.c:171
-#: src/io.c:317 src/main.c:754 src/page.c:858 src/parse.c:273 src/parse.c:518
-#: src/re.c:157 src/undo.c:26
-msgid "Memory exhausted"
-msgstr "記憶體用盡"
-
-#: lib/regcomp.c:161
-msgid "Invalid preceding regular expression"
-msgstr "前置正規表示式無效"
-
-#: lib/regcomp.c:164
-msgid "Premature end of regular expression"
-msgstr "正規表示式過早結束"
-
-#: lib/regcomp.c:167
-msgid "Regular expression too big"
-msgstr "正規表示式過長"
-
-#: lib/regcomp.c:170
-msgid "Unmatched ) or \\)"
-msgstr "不對稱的 ) 或 \\)"
-
-#: lib/regcomp.c:650
-msgid "No previous regular expression"
-msgstr "沒有上一個正規表示式"
-
 #: src/aux.c:35
 #, fuzzy
 #| msgid "%s subprocess I/O error"
@@ -158,6 +83,13 @@ msgstr "程式錯誤"
 msgid "Pipe close error"
 msgstr ""
 
+#: src/aux.c:227 src/aux.c:440 src/buf.c:267 src/buf.c:436 src/buf.c:534
+#: src/buf.c:544 src/buf.c:583 src/buf.c:613 src/glbl.c:171 src/io.c:317
+#: src/main.c:753 src/page.c:858 src/parse.c:273 src/parse.c:518 src/re.c:157
+#: src/undo.c:26
+msgid "Memory exhausted"
+msgstr "記憶體用盡"
+
 #: src/aux.c:296 src/aux.c:338
 msgid "Cannot append register to itself."
 msgstr ""
@@ -167,7 +99,7 @@ msgid "Exceeded maximum stack frame depth"
 msgstr ""
 
 #: src/aux.c:418 src/aux.c:469 src/aux.c:509 src/aux.c:548 src/io.c:58
-#: src/io.c:600 src/main.c:224 src/main.c:716 src/main.c:776
+#: src/io.c:600 src/main.c:224 src/main.c:715 src/main.c:775
 #, fuzzy
 #| msgid "write error"
 msgid "File seek error"
@@ -191,7 +123,7 @@ msgstr "匯流排錯誤"
 msgid "Buffer seek error"
 msgstr "匯流排錯誤"
 
-#: src/buf.c:260 src/main.c:545 src/main.c:617
+#: src/buf.c:260 src/main.c:544 src/main.c:616
 msgid "File name too long"
 msgstr ""
 
@@ -248,7 +180,7 @@ msgstr ""
 msgid "Decryption failed (incomplete block)."
 msgstr ""
 
-#: src/cbc.c:387 src/io.c:551 src/main.c:791
+#: src/cbc.c:387 src/io.c:551 src/main.c:790
 #, fuzzy
 #| msgid "write error"
 msgid "File read error"
@@ -298,7 +230,7 @@ msgstr ""
 msgid "Invalid redirection"
 msgstr "正規表示式無效"
 
-#: src/exec.c:711 src/main.c:612
+#: src/exec.c:711 src/main.c:611
 msgid "File name not set"
 msgstr ""
 
@@ -355,7 +287,7 @@ msgstr ""
 msgid "File does not exist"
 msgstr ""
 
-#: src/io.c:97 src/io.c:166 src/io.c:630 src/io.c:679 src/main.c:764
+#: src/io.c:97 src/io.c:166 src/io.c:630 src/io.c:679 src/main.c:763
 #, fuzzy
 #| msgid "write error"
 msgid "File open error"
@@ -390,7 +322,7 @@ msgstr "寫入時發生錯誤"
 msgid "File too big"
 msgstr ""
 
-#: src/io.c:767 src/main.c:726 src/main.c:800
+#: src/io.c:767 src/main.c:725 src/main.c:799
 #, fuzzy
 #| msgid "write error"
 msgid "File write error"
@@ -426,40 +358,40 @@ msgstr "中斷"
 msgid "WARNING: Buffer modified since last write"
 msgstr ""
 
-#: src/main.c:666
+#: src/main.c:665
 #, fuzzy
 #| msgid "Argument buffer too small"
 msgid "Argument list full"
 msgstr "參數緩衝區過小"
 
-#: src/main.c:819
+#: src/main.c:818
 #, c-format
 msgid ""
 "Usage: %s [-] [-EGhirsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE...]\n"
 msgstr ""
 
-#: src/main.c:822
+#: src/main.c:821
 #, c-format
 msgid ""
 "Usage: %s [-] [-EGhirsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE]\n"
 msgstr ""
 
-#: src/main.c:826
+#: src/main.c:825
 #, c-format
 msgid "Usage: %s [-] [-EGhrsVvwx] [-p PROMPT] [FILE]\n"
 msgstr ""
 
-#: src/main.c:834
+#: src/main.c:833
 #, c-format
 msgid "Usage: %s [OPTION...] [FILE...]\n"
 msgstr ""
 
-#: src/main.c:837
+#: src/main.c:836
 #, c-format
 msgid "Usage: %s [OPTION...] [FILE]\n"
 msgstr ""
 
-#: src/main.c:843
+#: src/main.c:842
 #, c-format
 msgid ""
 "Options:\n"
@@ -487,7 +419,7 @@ msgid ""
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
 
-#: src/main.c:865
+#: src/main.c:864
 #, c-format
 msgid ""
 "Options:\n"
@@ -511,7 +443,7 @@ msgid ""
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
 
-#: src/main.c:896
+#: src/main.c:895
 msgid "script, line %"
 msgstr ""
 
@@ -583,6 +515,10 @@ msgstr "字元類型名稱無效"
 msgid "No previous pattern"
 msgstr "沒有上一個正規表示式"
 
+#: src/re.c:273 src/sub.c:439
+msgid "No match"
+msgstr "無符合項目"
+
 #: src/signal.c:136
 #, fuzzy
 #| msgid "program error"
@@ -602,6 +538,54 @@ msgstr "沒有上一個正規表示式"
 #: src/undo.c:51
 msgid "Nothing to undo"
 msgstr ""
+
+#~ msgid "Success"
+#~ msgstr "成功"
+
+#~ msgid "Invalid regular expression"
+#~ msgstr "正規表示式無效"
+
+#~ msgid "Invalid collation character"
+#~ msgstr "定序字元無效"
+
+#~ msgid "Invalid character class name"
+#~ msgstr "字元類型名稱無效"
+
+#~ msgid "Trailing backslash"
+#~ msgstr "末尾反斜線"
+
+#~ msgid "Invalid back reference"
+#~ msgstr "向後參考無效"
+
+#~ msgid "Unmatched [, [^, [:, [., or [="
+#~ msgstr "不對稱的 [、[^、[:、[. 或 [="
+
+#~ msgid "Unmatched ( or \\("
+#~ msgstr "不對稱的 ( 或 \\("
+
+#~ msgid "Unmatched \\{"
+#~ msgstr "不對稱的 \\{"
+
+#~ msgid "Invalid content of \\{\\}"
+#~ msgstr "\\{\\} 中內容無效"
+
+#~ msgid "Invalid range end"
+#~ msgstr "結束範圍無效"
+
+#~ msgid "Invalid preceding regular expression"
+#~ msgstr "前置正規表示式無效"
+
+#~ msgid "Premature end of regular expression"
+#~ msgstr "正規表示式過早結束"
+
+#~ msgid "Regular expression too big"
+#~ msgstr "正規表示式過長"
+
+#~ msgid "Unmatched ) or \\)"
+#~ msgstr "不對稱的 ) 或 \\)"
+
+#~ msgid "No previous regular expression"
+#~ msgstr "沒有上一個正規表示式"
 
 #, c-format
 #~ msgid "invalid argument %s for %s"

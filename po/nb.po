@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GNU textutils 2.0.20\n"
 "Report-Msgid-Bugs-To: bug-gnulib@gnu.org\n"
-"POT-Creation-Date: 2023-05-17 13:44-0400\n"
+"POT-Creation-Date: 2023-09-08 04:02-0400\n"
 "PO-Revision-Date: 2002-01-27 21:35+0100\n"
 "Last-Translator: Eivind Tagseth <eivindt@multinet.no>\n"
 "Language-Team: Norwegian <i18n-nb@lister.ping.uio.no>\n"
@@ -58,90 +58,6 @@ msgstr "%s: ukjent flagg -- %c\n"
 msgid "%s: option requires an argument -- '%c'\n"
 msgstr "%s: flagget trenger et argument -- %c\n"
 
-#: lib/regcomp.c:122
-msgid "Success"
-msgstr ""
-
-#: lib/regcomp.c:125 src/re.c:273 src/sub.c:439
-msgid "No match"
-msgstr ""
-
-#: lib/regcomp.c:128
-#, fuzzy
-msgid "Invalid regular expression"
-msgstr "%s: ugyldig regulært uttrykk: %s"
-
-#: lib/regcomp.c:131
-#, fuzzy
-msgid "Invalid collation character"
-msgstr "ugyldig tegn-klasse «%s»"
-
-#: lib/regcomp.c:134
-#, fuzzy
-msgid "Invalid character class name"
-msgstr "ugyldig tegn-klasse «%s»"
-
-#: lib/regcomp.c:137
-msgid "Trailing backslash"
-msgstr ""
-
-#: lib/regcomp.c:140
-msgid "Invalid back reference"
-msgstr ""
-
-#: lib/regcomp.c:143
-msgid "Unmatched [, [^, [:, [., or [="
-msgstr ""
-
-#: lib/regcomp.c:146
-msgid "Unmatched ( or \\("
-msgstr ""
-
-#: lib/regcomp.c:149
-msgid "Unmatched \\{"
-msgstr ""
-
-#: lib/regcomp.c:152
-msgid "Invalid content of \\{\\}"
-msgstr ""
-
-#: lib/regcomp.c:155
-#, fuzzy
-msgid "Invalid range end"
-msgstr "%s: ugyldig regulært uttrykk: %s"
-
-#: lib/regcomp.c:158 src/aux.c:227 src/aux.c:440 src/buf.c:267 src/buf.c:436
-#: src/buf.c:534 src/buf.c:544 src/buf.c:583 src/buf.c:613 src/glbl.c:171
-#: src/io.c:317 src/main.c:754 src/page.c:858 src/parse.c:273 src/parse.c:518
-#: src/re.c:157 src/undo.c:26
-#, fuzzy
-msgid "Memory exhausted"
-msgstr "virtuelt minne oppbrukt"
-
-#: lib/regcomp.c:161
-#, fuzzy
-msgid "Invalid preceding regular expression"
-msgstr "%s: ugyldig regulært uttrykk: %s"
-
-#: lib/regcomp.c:164
-#, fuzzy
-msgid "Premature end of regular expression"
-msgstr "feil i søk med regulært uttrykk"
-
-#: lib/regcomp.c:167
-#, fuzzy
-msgid "Regular expression too big"
-msgstr "%s: ugyldig regulært uttrykk: %s"
-
-#: lib/regcomp.c:170
-msgid "Unmatched ) or \\)"
-msgstr ""
-
-#: lib/regcomp.c:650
-#, fuzzy
-msgid "No previous regular expression"
-msgstr "feil i søk med regulært uttrykk"
-
 #: src/aux.c:35
 msgid "Child process error"
 msgstr ""
@@ -161,6 +77,14 @@ msgstr "lesefeil"
 msgid "Pipe close error"
 msgstr ""
 
+#: src/aux.c:227 src/aux.c:440 src/buf.c:267 src/buf.c:436 src/buf.c:534
+#: src/buf.c:544 src/buf.c:583 src/buf.c:613 src/glbl.c:171 src/io.c:317
+#: src/main.c:753 src/page.c:858 src/parse.c:273 src/parse.c:518 src/re.c:157
+#: src/undo.c:26
+#, fuzzy
+msgid "Memory exhausted"
+msgstr "virtuelt minne oppbrukt"
+
 #: src/aux.c:296 src/aux.c:338
 msgid "Cannot append register to itself."
 msgstr ""
@@ -170,7 +94,7 @@ msgid "Exceeded maximum stack frame depth"
 msgstr ""
 
 #: src/aux.c:418 src/aux.c:469 src/aux.c:509 src/aux.c:548 src/io.c:58
-#: src/io.c:600 src/main.c:224 src/main.c:716 src/main.c:776
+#: src/io.c:600 src/main.c:224 src/main.c:715 src/main.c:775
 #, fuzzy
 #| msgid "write error"
 msgid "File seek error"
@@ -189,7 +113,7 @@ msgstr ""
 msgid "Buffer seek error"
 msgstr ""
 
-#: src/buf.c:260 src/main.c:545 src/main.c:617
+#: src/buf.c:260 src/main.c:544 src/main.c:616
 msgid "File name too long"
 msgstr ""
 
@@ -242,7 +166,7 @@ msgstr ""
 msgid "Decryption failed (incomplete block)."
 msgstr ""
 
-#: src/cbc.c:387 src/io.c:551 src/main.c:791
+#: src/cbc.c:387 src/io.c:551 src/main.c:790
 #, fuzzy
 #| msgid "write error"
 msgid "File read error"
@@ -290,7 +214,7 @@ msgstr ""
 msgid "Invalid redirection"
 msgstr "%s: ugyldig regulært uttrykk: %s"
 
-#: src/exec.c:711 src/main.c:612
+#: src/exec.c:711 src/main.c:611
 msgid "File name not set"
 msgstr ""
 
@@ -342,7 +266,7 @@ msgstr ""
 msgid "File does not exist"
 msgstr ""
 
-#: src/io.c:97 src/io.c:166 src/io.c:630 src/io.c:679 src/main.c:764
+#: src/io.c:97 src/io.c:166 src/io.c:630 src/io.c:679 src/main.c:763
 #, fuzzy
 #| msgid "write error"
 msgid "File open error"
@@ -377,7 +301,7 @@ msgstr "feil ved skriving"
 msgid "File too big"
 msgstr ""
 
-#: src/io.c:767 src/main.c:726 src/main.c:800
+#: src/io.c:767 src/main.c:725 src/main.c:799
 #, fuzzy
 #| msgid "write error"
 msgid "File write error"
@@ -409,38 +333,38 @@ msgstr ""
 msgid "WARNING: Buffer modified since last write"
 msgstr ""
 
-#: src/main.c:666
+#: src/main.c:665
 msgid "Argument list full"
 msgstr ""
 
-#: src/main.c:819
+#: src/main.c:818
 #, c-format
 msgid ""
 "Usage: %s [-] [-EGhirsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE...]\n"
 msgstr ""
 
-#: src/main.c:822
+#: src/main.c:821
 #, c-format
 msgid ""
 "Usage: %s [-] [-EGhirsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE]\n"
 msgstr ""
 
-#: src/main.c:826
+#: src/main.c:825
 #, c-format
 msgid "Usage: %s [-] [-EGhrsVvwx] [-p PROMPT] [FILE]\n"
 msgstr ""
 
-#: src/main.c:834
+#: src/main.c:833
 #, c-format
 msgid "Usage: %s [OPTION...] [FILE...]\n"
 msgstr ""
 
-#: src/main.c:837
+#: src/main.c:836
 #, c-format
 msgid "Usage: %s [OPTION...] [FILE]\n"
 msgstr ""
 
-#: src/main.c:843
+#: src/main.c:842
 #, c-format
 msgid ""
 "Options:\n"
@@ -468,7 +392,7 @@ msgid ""
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
 
-#: src/main.c:865
+#: src/main.c:864
 #, c-format
 msgid ""
 "Options:\n"
@@ -492,7 +416,7 @@ msgid ""
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
 
-#: src/main.c:896
+#: src/main.c:895
 msgid "script, line %"
 msgstr ""
 
@@ -555,6 +479,10 @@ msgstr "ugyldig tegn-klasse «%s»"
 msgid "No previous pattern"
 msgstr "feil i søk med regulært uttrykk"
 
+#: src/re.c:273 src/sub.c:439
+msgid "No match"
+msgstr ""
+
 #: src/signal.c:136
 #, fuzzy
 msgid "Signal error"
@@ -572,6 +500,38 @@ msgstr "feil i søk med regulært uttrykk"
 #: src/undo.c:51
 msgid "Nothing to undo"
 msgstr ""
+
+#, fuzzy
+#~ msgid "Invalid regular expression"
+#~ msgstr "%s: ugyldig regulært uttrykk: %s"
+
+#, fuzzy
+#~ msgid "Invalid collation character"
+#~ msgstr "ugyldig tegn-klasse «%s»"
+
+#, fuzzy
+#~ msgid "Invalid character class name"
+#~ msgstr "ugyldig tegn-klasse «%s»"
+
+#, fuzzy
+#~ msgid "Invalid range end"
+#~ msgstr "%s: ugyldig regulært uttrykk: %s"
+
+#, fuzzy
+#~ msgid "Invalid preceding regular expression"
+#~ msgstr "%s: ugyldig regulært uttrykk: %s"
+
+#, fuzzy
+#~ msgid "Premature end of regular expression"
+#~ msgstr "feil i søk med regulært uttrykk"
+
+#, fuzzy
+#~ msgid "Regular expression too big"
+#~ msgstr "%s: ugyldig regulært uttrykk: %s"
+
+#, fuzzy
+#~ msgid "No previous regular expression"
+#~ msgstr "feil i søk med regulært uttrykk"
 
 #, c-format
 #~ msgid "invalid argument %s for %s"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ed 2.0.12\n"
 "Report-Msgid-Bugs-To: bug-gnulib@gnu.org\n"
-"POT-Creation-Date: 2023-05-17 13:44-0400\n"
+"POT-Creation-Date: 2023-09-08 04:02-0400\n"
 "PO-Revision-Date: 2023-05-17 18:21+0000\n"
 "Last-Translator: Andrew L. Moore <slewsys@gmail.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
@@ -52,81 +52,6 @@ msgstr "%s: opción no válida -- '%c'\n"
 msgid "%s: option requires an argument -- '%c'\n"
 msgstr "%s: opción requiere un argumento -- '%c'\n"
 
-#: lib/regcomp.c:122
-msgid "Success"
-msgstr "Éxito"
-
-#: lib/regcomp.c:125 src/re.c:273 src/sub.c:439
-msgid "No match"
-msgstr "Ningún coincidencia"
-
-#: lib/regcomp.c:128
-msgid "Invalid regular expression"
-msgstr "Expresión regular no es válido"
-
-#: lib/regcomp.c:131
-msgid "Invalid collation character"
-msgstr "Carácter de orden no es válida"
-
-#: lib/regcomp.c:134
-msgid "Invalid character class name"
-msgstr "Nombre de clase no es válido"
-
-#: lib/regcomp.c:137
-msgid "Trailing backslash"
-msgstr "Barra diagonal inversa final no es válida"
-
-#: lib/regcomp.c:140
-msgid "Invalid back reference"
-msgstr "Volver referencia no es válido"
-
-#: lib/regcomp.c:143
-msgid "Unmatched [, [^, [:, [., or [="
-msgstr "Uno de [, [^, [:, [., o [= es inigualable"
-
-#: lib/regcomp.c:146
-msgid "Unmatched ( or \\("
-msgstr "Uno de ( o \\( es inigualable"
-
-#: lib/regcomp.c:149
-msgid "Unmatched \\{"
-msgstr "\\{ es inigualable"
-
-#: lib/regcomp.c:152
-msgid "Invalid content of \\{\\}"
-msgstr "Contenido de \\{\\} no is válido"
-
-#: lib/regcomp.c:155
-msgid "Invalid range end"
-msgstr "Fin de intervalo no es válido"
-
-#: lib/regcomp.c:158 src/aux.c:227 src/aux.c:440 src/buf.c:267 src/buf.c:436
-#: src/buf.c:534 src/buf.c:544 src/buf.c:583 src/buf.c:613 src/glbl.c:171
-#: src/io.c:317 src/main.c:754 src/page.c:858 src/parse.c:273 src/parse.c:518
-#: src/re.c:157 src/undo.c:26
-msgid "Memory exhausted"
-msgstr "Memoria está lleno"
-
-#: lib/regcomp.c:161
-msgid "Invalid preceding regular expression"
-msgstr "Expresión regular anterior no es válido"
-
-#: lib/regcomp.c:164
-msgid "Premature end of regular expression"
-msgstr "Fin de expresión regular es prematuro"
-
-#: lib/regcomp.c:167
-msgid "Regular expression too big"
-msgstr "Expresión regular es demasiado grande"
-
-#: lib/regcomp.c:170
-msgid "Unmatched ) or \\)"
-msgstr ") o \\) es inigualable"
-
-#: lib/regcomp.c:650
-msgid "No previous regular expression"
-msgstr "Ningún expresión regular previa"
-
 #: src/aux.c:35
 msgid "Child process error"
 msgstr "Error de proceso hijo"
@@ -143,6 +68,13 @@ msgstr "Error de bifurcación"
 msgid "Pipe close error"
 msgstr "Error de cierre de pipa"
 
+#: src/aux.c:227 src/aux.c:440 src/buf.c:267 src/buf.c:436 src/buf.c:534
+#: src/buf.c:544 src/buf.c:583 src/buf.c:613 src/glbl.c:171 src/io.c:317
+#: src/main.c:753 src/page.c:858 src/parse.c:273 src/parse.c:518 src/re.c:157
+#: src/undo.c:26
+msgid "Memory exhausted"
+msgstr "Memoria está lleno"
+
 #: src/aux.c:296 src/aux.c:338
 msgid "Cannot append register to itself."
 msgstr "No se puede agregar registrar a sí mismo"
@@ -152,7 +84,7 @@ msgid "Exceeded maximum stack frame depth"
 msgstr "Excedido profunidad máxima del marco de pila."
 
 #: src/aux.c:418 src/aux.c:469 src/aux.c:509 src/aux.c:548 src/io.c:58
-#: src/io.c:600 src/main.c:224 src/main.c:716 src/main.c:776
+#: src/io.c:600 src/main.c:224 src/main.c:715 src/main.c:775
 msgid "File seek error"
 msgstr "Error de búsqueda de archivo"
 
@@ -168,7 +100,7 @@ msgstr "Error de apertura de búfer"
 msgid "Buffer seek error"
 msgstr "Error de búsqueda de búfer"
 
-#: src/buf.c:260 src/main.c:545 src/main.c:617
+#: src/buf.c:260 src/main.c:544 src/main.c:616
 msgid "File name too long"
 msgstr "Nombre de archivo es demasiado largo"
 
@@ -213,7 +145,7 @@ msgstr "Descifrado falló (bloque está dañada)"
 msgid "Decryption failed (incomplete block)."
 msgstr "Descifrado falló (bloque está incompleto)"
 
-#: src/cbc.c:387 src/io.c:551 src/main.c:791
+#: src/cbc.c:387 src/io.c:551 src/main.c:790
 msgid "File read error"
 msgstr "Error de lectura de archivo"
 
@@ -255,7 +187,7 @@ msgstr "Dirección es inesperada"
 msgid "Invalid redirection"
 msgstr "Redirección no es válido"
 
-#: src/exec.c:711 src/main.c:612
+#: src/exec.c:711 src/main.c:611
 msgid "File name not set"
 msgstr "Nombre de archivo no está definido"
 
@@ -300,7 +232,7 @@ msgstr "Ningún comando previa"
 msgid "File does not exist"
 msgstr "Archivo no existe"
 
-#: src/io.c:97 src/io.c:166 src/io.c:630 src/io.c:679 src/main.c:764
+#: src/io.c:97 src/io.c:166 src/io.c:630 src/io.c:679 src/main.c:763
 msgid "File open error"
 msgstr "Error de apertura de archivo"
 
@@ -331,7 +263,7 @@ msgstr "Error de trunca de archivo"
 msgid "File too big"
 msgstr "Archivo es demasiado grande"
 
-#: src/io.c:767 src/main.c:726 src/main.c:800
+#: src/io.c:767 src/main.c:725 src/main.c:799
 msgid "File write error"
 msgstr "Error de escritura de archivo"
 
@@ -359,39 +291,40 @@ msgstr "Interrumpido"
 msgid "WARNING: Buffer modified since last write"
 msgstr "ATENCION: Búfer no se guarda desde se modificó"
 
-#: src/main.c:666
+#: src/main.c:665
 msgid "Argument list full"
 msgstr "Lista de argumentos está llena"
 
-#: src/main.c:819
+#: src/main.c:818
 #, c-format
 msgid ""
 "Usage: %s [-] [-EGhirsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE...]\n"
-msgstr "Uso: %s [-] [-EGhirsVvx] [-e COMANDO] [-f PROGRAMA] [-p AVISO] [ARCHIVO...]\n"
+msgstr ""
+"Uso: %s [-] [-EGhirsVvx] [-e COMANDO] [-f PROGRAMA] [-p AVISO] [ARCHIVO...]\n"
 
-#: src/main.c:822
+#: src/main.c:821
 #, c-format
 msgid ""
 "Usage: %s [-] [-EGhirsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE]\n"
 msgstr ""
 "Uso: %s [-] [-EGhirsVvx] [-e COMANDO] [-f PROGRAMA] [-p AVISO] [ARCHIVO]\n"
 
-#: src/main.c:826
+#: src/main.c:825
 #, c-format
 msgid "Usage: %s [-] [-EGhrsVvwx] [-p PROMPT] [FILE]\n"
 msgstr "Uso: %s [-] [-EGhirsVvx] [-p AVISO] [ARCHIVO]\n"
 
-#: src/main.c:834
+#: src/main.c:833
 #, c-format
 msgid "Usage: %s [OPTION...] [FILE...]\n"
 msgstr "Modo de empleo: %s [OPCIÓN...] [ARCHIVO...]\n"
 
-#: src/main.c:837
+#: src/main.c:836
 #, c-format
 msgid "Usage: %s [OPTION...] [FILE]\n"
 msgstr "Modo de empleo: %s [OPCIÓN...] [ARCHIVO]\n"
 
-#: src/main.c:843
+#: src/main.c:842
 #, c-format
 msgid ""
 "Options:\n"
@@ -443,7 +376,7 @@ msgstr ""
 "Enviar problemas y solicitudes de extracción a:\n"
 "  <https://github.com/slewsys/ed>\n"
 
-#: src/main.c:865
+#: src/main.c:864
 #, c-format
 msgid ""
 "Options:\n"
@@ -486,7 +419,7 @@ msgstr ""
 "Enviar problemas y solicitudes de extracción a:\n"
 "  <https://github.com/slewsys/ed>\n"
 
-#: src/main.c:896
+#: src/main.c:895
 msgid "script, line %"
 msgstr "programa, línea %"
 
@@ -542,6 +475,10 @@ msgstr "Delimitador de patrón no es válido"
 msgid "No previous pattern"
 msgstr "Ningún patrón previa"
 
+#: src/re.c:273 src/sub.c:439
+msgid "No match"
+msgstr "Ningún coincidencia"
+
 #: src/signal.c:136
 msgid "Signal error"
 msgstr "Error de indicador"
@@ -557,3 +494,51 @@ msgstr "Ninguna substitución previa"
 #: src/undo.c:51
 msgid "Nothing to undo"
 msgstr "Nada para deshacer"
+
+#~ msgid "Success"
+#~ msgstr "Éxito"
+
+#~ msgid "Invalid regular expression"
+#~ msgstr "Expresión regular no es válido"
+
+#~ msgid "Invalid collation character"
+#~ msgstr "Carácter de orden no es válida"
+
+#~ msgid "Invalid character class name"
+#~ msgstr "Nombre de clase no es válido"
+
+#~ msgid "Trailing backslash"
+#~ msgstr "Barra diagonal inversa final no es válida"
+
+#~ msgid "Invalid back reference"
+#~ msgstr "Volver referencia no es válido"
+
+#~ msgid "Unmatched [, [^, [:, [., or [="
+#~ msgstr "Uno de [, [^, [:, [., o [= es inigualable"
+
+#~ msgid "Unmatched ( or \\("
+#~ msgstr "Uno de ( o \\( es inigualable"
+
+#~ msgid "Unmatched \\{"
+#~ msgstr "\\{ es inigualable"
+
+#~ msgid "Invalid content of \\{\\}"
+#~ msgstr "Contenido de \\{\\} no is válido"
+
+#~ msgid "Invalid range end"
+#~ msgstr "Fin de intervalo no es válido"
+
+#~ msgid "Invalid preceding regular expression"
+#~ msgstr "Expresión regular anterior no es válido"
+
+#~ msgid "Premature end of regular expression"
+#~ msgstr "Fin de expresión regular es prematuro"
+
+#~ msgid "Regular expression too big"
+#~ msgstr "Expresión regular es demasiado grande"
+
+#~ msgid "Unmatched ) or \\)"
+#~ msgstr ") o \\) es inigualable"
+
+#~ msgid "No previous regular expression"
+#~ msgstr "Ningún expresión regular previa"
