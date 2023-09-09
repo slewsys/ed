@@ -164,7 +164,8 @@ To build a Debian package with `gbp`:
 Install prerequisites on Debian/Ubuntu:
 
 ```shell
-sudo apt install git-buildpackage libssl-dev
+sudo apt build-dep ed
+sudo apt install git-buildpackage libssl-dev texinfo
 ```
 
 Create a destination directory for Debian build products:
