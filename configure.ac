@@ -387,16 +387,17 @@ AM_COND_IF([LDADD_LIBCRYPT],
 
 # Capture configured options for displaying in --version output.
 [configure_options='
-  with_included_regex
+  enable_address_arguments
+  enable_ed_encryption
   enable_ed_envar
+  enable_ed_macro
+  enable_ed_register
+  enable_ed_scroll
   enable_external_filter
   enable_file_glob
   enable_file_lock
-  enable_ed_macro
-  enable_ed_register
   enable_script_flags
-  enable_ed_scroll
-  enable_ed_encryption'
+  with_included_regex'
 
   ac_cv_configure_args=''
   for ac_var in $configure_options; do
