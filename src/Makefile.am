@@ -5,22 +5,22 @@
 # Process this file with automake to create Makefile.in
 
 bin_PROGRAMS = ed
-ed_SOURCES = aux.c							      \
-	     buf.c							      \
-	     cbc.c							      \
-	     cmds.c							      \
-	     ed.h							      \
-	     exec.c							      \
-	     glbl.c							      \
-	     io.c							      \
-	     main.c							      \
-	     page.c							      \
-	     parse.c							      \
-	     re.c							      \
-	     signal.c							      \
-	     sub.c							      \
-	     undo.c							      \
-	     utf8.c							      \
+ed_SOURCES = aux.c							\
+	     buf.c							\
+	     cbc.c							\
+	     cmds.c							\
+	     ed.h							\
+	     exec.c							\
+	     glbl.c							\
+	     io.c							\
+	     main.c							\
+	     page.c							\
+	     parse.c							\
+	     re.c							\
+	     signal.c							\
+	     sub.c							\
+	     undo.c							\
+	     utf8.c							\
 	     version.c
 
 ed_LDADD =
@@ -28,13 +28,14 @@ ed_LDADD =
 # To override system libs, link order important here.
 localedir = $(datadir)/locale
 
-AM_CPPFLAGS = -I$(top_srcdir)						      \
-	      -I$(top_builddir)						      \
-	      -I$(top_srcdir)/lib					      \
-	      -I$(top_builddir)/lib					      \
-	      -I$(top_srcdir)/include					      \
-	      -I$(top_builddir)/include					      \
-	      -DLOCALEDIR=\"$(localedir)\"
+AM_CPPFLAGS = -I$(top_srcdir)						\
+	      -I$(top_builddir)						\
+	      -I$(top_srcdir)/lib					\
+	      -I$(top_builddir)/lib					\
+	      -I$(top_srcdir)/include					\
+	      -I$(top_builddir)/include					\
+	      -DLOCALEDIR=\"$(localedir)\"				\
+	      -D_FORTIFY_SOURCE=3
 
 if LDADD_LIBGNU
 ed_LDADD += ../lib/libgnu.a
