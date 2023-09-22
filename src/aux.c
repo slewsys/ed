@@ -55,7 +55,11 @@ filter_lines (off_t from, off_t to, const char *sc, ed_buffer_t *ed)
   int status = 0;
 
   /* Flush any buffered I/O. */
-  fflush (NULL);
+  if (fflush (NULL) < 0) {
+      fprintf (stderr, "%s\n", strerror (errno));
+      ed->exec->err = _("Flush error");
+      return ERR;
+  }
 
   /*
    * Create two pipes: one for writing to the shell command and
