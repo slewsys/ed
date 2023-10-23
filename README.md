@@ -82,7 +82,8 @@ installed by running the commands:
 
 ```shell
 sudo dnf group install 'Development Tools'
-sudo dnf install -y gettext-devel ghostscript groff textinfo
+sudo dnf install -y gettext-devel ghostscript groff \
+    openssl-devel textinfo
 ```
 
 #### Debian/Ubuntu
@@ -92,7 +93,8 @@ by running the command:
 
 ```shell
 sudo apt install -y build-essential autoconf automake \
-    autopoint gettext ghostscript groff libtool texinfo
+    autopoint gettext ghostscript groff libssl-dev \
+    libtool texinfo
 ```
 
 #### Fedora
@@ -102,7 +104,8 @@ commands:
 
 ```shell
 sudo dnf group install 'C Development Tools and Libraries'
-sudo dnf install -y gettext-devel ghostscript groff textinfo
+sudo dnf install -y gettext-devel ghostscript groff \
+    openssl-devel textinfo
 ```
 
 #### OpenSUSE
@@ -113,7 +116,7 @@ commands:
 ```shell
 sudo zypper --non-interactive install -t pattern devel_C_C++
 sudo zypper --non-interactive install -y gettext-tools ghostscript \
-    groff makeinfo textinfo
+    groff libopenssl-3-devel textinfo
 ```
 
 ### Building from source
