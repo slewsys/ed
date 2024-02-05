@@ -1,6 +1,6 @@
 /* sub.c: Substitution routines for the ed line editor.
  *
- *  Copyright © 1993-2022 Andrew L. Moore, SlewSys Research
+ *  Copyright © 1993-2024 Andrew L. Moore, SlewSys Research
  *
  *  This file is part of ed.
  */
@@ -460,6 +460,11 @@ substitute_matching (const regex_t *re, const ed_line_node_t *lp,
   int nil_prev;
   int nil_next = 1;
   int status;
+#ifdef REG_STARTEND
+  int eflag = REG_STARTEND;
+#else
+  int eflag = 0;
+#endif
 
   if (!(txt = get_buffer_line (lp, ed)))
     return ERR;
@@ -482,18 +487,14 @@ substitute_matching (const regex_t *re, const ed_line_node_t *lp,
   else if (!s_mod)
     s_mod = 1;
 
-#ifdef REG_STARTEND
-  for (*len = 0, eot = txt + lp->len, rm->rm_so = 0, rm->rm_eo = lp->len;
-       (!changed || (s_f & GSUB))
-         && !regexec (re, txt, SE_MAX, rm, REG_STARTEND);
-       txt += j, rm->rm_so = 0, rm->rm_eo = eot - txt)
-#else
+#ifndef REG_STARTEND
   if (ed->state->is_binary)
     NUL_TO_NEWLINE (txt, lp->len);
-  for (*len = 0, eot = txt + lp->len;
-       (!changed || (s_f & GSUB)) && !regexec (re, txt, SE_MAX, rm, 0);
-       txt += j)
-#endif  /* !REG_STARTEND */
+#endif
+  for (*len = 0, eot = txt + lp->len, rm->rm_so = 0, rm->rm_eo = lp->len;
+       (!changed || (s_f & GSUB))
+         && !regexec (re, txt, SE_MAX, rm, eflag);
+       txt += j, rm->rm_so = 0, rm->rm_eo = eot - txt, eflag |= REG_NOTBOL)
     {
       i = rm->rm_so, j = rm->rm_eo;
       nil_prev = nil_next, nil_next = !j;
@@ -583,18 +584,19 @@ count_matches (const regex_t *re, const char *txt, int len,
   int matched_prev = 0;
   int nul_prev;
   int nul_next = 1;
-
 #ifdef REG_STARTEND
-  for (eot = txt + len, rm->rm_so = 0, rm->rm_eo = len;
-       !regexec (re, txt, SE_MAX, rm, REG_STARTEND);
-       txt += off, rm->rm_so = 0, rm->rm_eo = eot - txt)
+  int eflag = REG_STARTEND;
 #else
+  int eflag = 0;
+#endif
+
+#ifndef REG_STARTEND
   if (buf->is_binary)
     NUL_TO_NEWLINE (txt, len);
-  for (eot = txt + len;
-       !regexec (re, txt, SE_MAX, rm, 0);
-       txt += off)
-#endif  /* !REG_STARTEND */
+#endif
+  for (eot = txt + len, rm->rm_so = 0, rm->rm_eo = len;
+       !regexec (re, txt, SE_MAX, rm, eflag);
+       txt += off, rm->rm_so = 0, rm->rm_eo = eot - txt, eflag |= REG_NOTBOL)
     {
       off = rm->rm_eo;
       nul_prev = nul_next;
