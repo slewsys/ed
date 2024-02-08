@@ -1,7 +1,5 @@
 # proto.err-at.in: Autotest template for the ed testsuite.
 #
-# Copyright © 2005-2018 Andrew L. Moore, SlewSys Research
-#
 # Process this file with autotest to create testsuite (see also Makefile.am).
 
 AT_SETUP([Pipe: @SCRIPT_NAME@.err])

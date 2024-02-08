@@ -1,7 +1,5 @@
 # Makefile.am: Testsuite subdirectory automake template for the ed line editor.
 #
-# Copyright © 1993-2017 Andrew L. Moore, SlewSys Research
-#
 # Process this file with automake to create Makefile.in.
 
 AUTOTEST      = $(AUTOM4TE) --language=autotest

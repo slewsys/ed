@@ -1,7 +1,5 @@
 # Makefile.am: Top-level automake template for the ed line editor.
 #
-# Copyright © 1993-2018 Andrew L. Moore, SlewSys Research
-#
 # Process this file with automake to create Makefile.in
 
 gnulib_srcdir ?= /opt/src/savannah/gnulib

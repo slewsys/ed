@@ -1,7 +1,5 @@
 # Makefile.am: Doc/tutorial automake template for the ed line editor.
 #
-# Copyright © 2006-2016 Andrew L. Moore, SlewSys Research
-#
 # Process this file with automake to create Makefile.in.
 
 SUFFIXES = .ps .pdf

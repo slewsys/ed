@@ -1,8 +1,8 @@
 /* ed.h: Header for the ed line editor.
  *
- *  Copyright © 1993-2022 Andrew L. Moore, SlewSys Research
+ *  Copyright © 1993-2024 Andrew L. Moore, SlewSys Research
  *
- *  This file is part of ed.
+ *  SPDX-License-Identifier:  BSD-2-Clause OR GPL-2.0-or-later OR MIT
  */
 
 #include "config.h"

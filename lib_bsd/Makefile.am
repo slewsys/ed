@@ -1,7 +1,5 @@
 # Makefile.am: Lib subdirectory automake template for the ed line editor.
 #
-# Copyright © 1993-2016 Andrew L. Moore, SlewSys Research
-#
 # Process this file with automake to create Makefile.in
 
 # BSD getopt(3) requires optreset -- ln -sf bsd_getopt.h getopt.h
@@ -18,12 +16,12 @@ libed_a_SOURCES =
 libed_a_LIBADD = $(LIBOBJS)
 
 AM_CPPFLAGS = -I$(top_srcdir)						      \
-              -I$(top_srcdir)/lib					      \
-              -I$(top_srcdir)/include					      \
-              -I$(top_builddir)						      \
-              -I$(top_builddir)/lib					      \
-              -I$(top_builddir)/include					      \
-              -DLOCALEDIR=\"$(localedir)\"
+	      -I$(top_srcdir)/lib					      \
+	      -I$(top_srcdir)/include					      \
+	      -I$(top_builddir)						      \
+	      -I$(top_builddir)/lib					      \
+	      -I$(top_builddir)/include					      \
+	      -DLOCALEDIR=\"$(localedir)\"
 
 localedir = $(datadir)/locale
 
@@ -39,7 +37,7 @@ if WITH_INCLUDED_REGEX
 noinst_HEADERS += regex.h
 libed_a_SOURCES += regex.c
 AM_CPPFLAGS += -DRE_ENABLE_I18N=1					      \
-               -D__USE_GNU=1						      \
-               -I$(top_srcdir)/regex					      \
-               -I$(top_builddir)/regex
+	       -D__USE_GNU=1						      \
+	       -I$(top_srcdir)/regex					      \
+	       -I$(top_builddir)/regex
 endif WITH_INCLUDED_REGEX

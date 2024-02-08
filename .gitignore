@@ -20,6 +20,7 @@
 /po/Makefile.in
 /po/POTFILES
 /po/stamp-po
+/po/*.gmo
 /src/ed
 /src/ed.dSYM/**
 /stamp-h1
