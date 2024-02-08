@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnulib 3.0.0.6062.a6b16\n"
 "Report-Msgid-Bugs-To: bug-gnulib@gnu.org\n"
-"POT-Creation-Date: 2023-09-08 04:02-0400\n"
+"POT-Creation-Date: 2024-02-08 13:57-0500\n"
 "PO-Revision-Date: 2012-11-11 13:26+0200\n"
 "Last-Translator: Leandro Regueiro <leandro.regueiro@gmail.com>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
@@ -64,49 +64,127 @@ msgstr "%s: opción incorrecta -- «%c»\n"
 msgid "%s: option requires an argument -- '%c'\n"
 msgstr "%s: a opción require un argumento -- «%c»\n"
 
+#: lib/regcomp.c:122
+msgid "Success"
+msgstr "Éxito"
+
+#: lib/regcomp.c:125 src/re.c:273 src/sub.c:439
+msgid "No match"
+msgstr "Sen coincidencias"
+
+#: lib/regcomp.c:128
+msgid "Invalid regular expression"
+msgstr "Expresión regular non válida"
+
+#: lib/regcomp.c:131
+msgid "Invalid collation character"
+msgstr "Carácter de ordenación incorrecto"
+
+#: lib/regcomp.c:134
+msgid "Invalid character class name"
+msgstr "Nome da clase de caracteres incorrecto"
+
+#: lib/regcomp.c:137
+msgid "Trailing backslash"
+msgstr "Barra invertida ao final"
+
+#: lib/regcomp.c:140
+#, fuzzy
+#| msgid "invalid user"
+msgid "Invalid back reference"
+msgstr "usuario incorrecto"
+
+#: lib/regcomp.c:143
+#, fuzzy
+#| msgid "Unmatched [ or [^"
+msgid "Unmatched [, [^, [:, [., or [="
+msgstr "[ ou [^ sen parella"
+
+#: lib/regcomp.c:146
+msgid "Unmatched ( or \\("
+msgstr "( ou \\( sen parella"
+
+#: lib/regcomp.c:149
+msgid "Unmatched \\{"
+msgstr "\\{ sen parella"
+
+#: lib/regcomp.c:152
+msgid "Invalid content of \\{\\}"
+msgstr "Contido de \\{\\} non válido"
+
+#: lib/regcomp.c:155
+msgid "Invalid range end"
+msgstr "Fin de intervalo non válido"
+
+#: lib/regcomp.c:158 src/aux.c:231 src/aux.c:444 src/buf.c:267 src/buf.c:436
+#: src/buf.c:534 src/buf.c:544 src/buf.c:583 src/buf.c:613 src/glbl.c:171
+#: src/io.c:317 src/main.c:763 src/page.c:858 src/parse.c:273 src/parse.c:518
+#: src/re.c:157 src/sub.c:480 src/sub.c:615 src/undo.c:26
+msgid "Memory exhausted"
+msgstr "Memoria esgotada"
+
+#: lib/regcomp.c:161
+msgid "Invalid preceding regular expression"
+msgstr "Expresión regular precedente non válida"
+
+#: lib/regcomp.c:164
+msgid "Premature end of regular expression"
+msgstr "Fin prematura da expresión regular"
+
+#: lib/regcomp.c:167
+msgid "Regular expression too big"
+msgstr "Expresión regular grande de máis"
+
+#: lib/regcomp.c:170
+msgid "Unmatched ) or \\)"
+msgstr ") ou \\) sen parella"
+
+#: lib/regcomp.c:650
+msgid "No previous regular expression"
+msgstr "Non hai ningunha expresión regular anterior"
+
 #: src/aux.c:35
 msgid "Child process error"
 msgstr ""
 
-#: src/aux.c:67 src/aux.c:156
+#: src/aux.c:60
+#, fuzzy
+#| msgid "Bus error"
+msgid "Flush error"
+msgstr "Erro de bus"
+
+#: src/aux.c:71 src/aux.c:160
 #, fuzzy
 #| msgid "write error"
 msgid "Pipe open error"
 msgstr "erro de escritura"
 
-#: src/aux.c:76 src/aux.c:128
+#: src/aux.c:80 src/aux.c:132
 #, fuzzy
 #| msgid "program error"
 msgid "Fork error"
 msgstr "erro do programa"
 
-#: src/aux.c:170
+#: src/aux.c:174
 msgid "Pipe close error"
 msgstr ""
 
-#: src/aux.c:227 src/aux.c:440 src/buf.c:267 src/buf.c:436 src/buf.c:534
-#: src/buf.c:544 src/buf.c:583 src/buf.c:613 src/glbl.c:171 src/io.c:317
-#: src/main.c:753 src/page.c:858 src/parse.c:273 src/parse.c:518 src/re.c:157
-#: src/undo.c:26
-msgid "Memory exhausted"
-msgstr "Memoria esgotada"
-
-#: src/aux.c:296 src/aux.c:338
+#: src/aux.c:300 src/aux.c:342
 msgid "Cannot append register to itself."
 msgstr ""
 
-#: src/aux.c:402
+#: src/aux.c:406
 msgid "Exceeded maximum stack frame depth"
 msgstr ""
 
-#: src/aux.c:418 src/aux.c:469 src/aux.c:509 src/aux.c:548 src/io.c:58
-#: src/io.c:600 src/main.c:224 src/main.c:715 src/main.c:775
+#: src/aux.c:422 src/aux.c:473 src/aux.c:513 src/aux.c:552 src/io.c:58
+#: src/io.c:600 src/main.c:230 src/main.c:725 src/main.c:785
 #, fuzzy
 #| msgid "write error"
 msgid "File seek error"
 msgstr "erro de escritura"
 
-#: src/aux.c:451 src/aux.c:494 src/aux.c:533 src/buf.c:116
+#: src/aux.c:455 src/aux.c:498 src/aux.c:537 src/buf.c:116
 #, fuzzy
 #| msgid "Bus error"
 msgid "dup2 error"
@@ -124,7 +202,7 @@ msgstr "Erro de bus"
 msgid "Buffer seek error"
 msgstr "Erro de bus"
 
-#: src/buf.c:260 src/main.c:544 src/main.c:616
+#: src/buf.c:260 src/main.c:552 src/main.c:624
 msgid "File name too long"
 msgstr ""
 
@@ -167,27 +245,27 @@ msgstr "carácter fóra de intervalo"
 msgid "Memory request too big"
 msgstr ""
 
-#: src/cbc.c:134 src/cbc.c:232 src/cbc.c:237 src/cbc.c:258 src/cbc.c:263
+#: src/cbc.c:131 src/cbc.c:229 src/cbc.c:234 src/cbc.c:255 src/cbc.c:260
 #, fuzzy
 #| msgid "invalid user"
 msgid "Invalid key"
 msgstr "usuario incorrecto"
 
-#: src/cbc.c:376
+#: src/cbc.c:373
 msgid "Decryption failed (block corrupted)."
 msgstr ""
 
-#: src/cbc.c:385
+#: src/cbc.c:382
 msgid "Decryption failed (incomplete block)."
 msgstr ""
 
-#: src/cbc.c:387 src/io.c:551 src/main.c:790
+#: src/cbc.c:384 src/io.c:551 src/main.c:800
 #, fuzzy
 #| msgid "write error"
 msgid "File read error"
 msgstr "erro de escritura"
 
-#: src/cmds.c:39 src/exec.c:609 src/io.c:479 src/main.c:360
+#: src/cmds.c:39 src/exec.c:609 src/io.c:479 src/main.c:366
 msgid "End-of-file unexpected"
 msgstr ""
 
@@ -201,7 +279,7 @@ msgstr "Nome da clase de caracteres incorrecto"
 msgid "Unknown error"
 msgstr "Erro descoñecido"
 
-#: src/ed.h:749 src/ed.h:784 src/ed.h:819
+#: src/ed.h:747 src/ed.h:782 src/ed.h:817
 #, fuzzy
 #| msgid "character out of range"
 msgid "Numerical result out of range"
@@ -231,7 +309,7 @@ msgstr ""
 msgid "Invalid redirection"
 msgstr "Expresión regular non válida"
 
-#: src/exec.c:711 src/main.c:611
+#: src/exec.c:711 src/main.c:619
 msgid "File name not set"
 msgstr ""
 
@@ -288,7 +366,7 @@ msgstr ""
 msgid "File does not exist"
 msgstr ""
 
-#: src/io.c:97 src/io.c:166 src/io.c:630 src/io.c:679 src/main.c:763
+#: src/io.c:97 src/io.c:166 src/io.c:630 src/io.c:679 src/main.c:773
 #, fuzzy
 #| msgid "write error"
 msgid "File open error"
@@ -323,7 +401,7 @@ msgstr "erro de escritura"
 msgid "File too big"
 msgstr ""
 
-#: src/io.c:767 src/main.c:725 src/main.c:799
+#: src/io.c:767 src/main.c:735 src/main.c:809
 #, fuzzy
 #| msgid "write error"
 msgid "File write error"
@@ -345,50 +423,50 @@ msgstr ""
 msgid "File stat error"
 msgstr "erro de escritura"
 
-#: src/main.c:233
+#: src/main.c:239
 msgid "Option '-i' requires '-e' or '-f'"
 msgstr ""
 
-#: src/main.c:298
+#: src/main.c:304
 msgid "Interrupted"
 msgstr ""
 
-#: src/main.c:409
+#: src/main.c:415
 msgid "WARNING: Buffer modified since last write"
 msgstr ""
 
-#: src/main.c:665
+#: src/main.c:673
 msgid "Argument list full"
 msgstr ""
 
-#: src/main.c:818
+#: src/main.c:828
 #, c-format
 msgid ""
 "Usage: %s [-] [-EGhirsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE...]\n"
 msgstr ""
 
-#: src/main.c:821
+#: src/main.c:831
 #, c-format
 msgid ""
 "Usage: %s [-] [-EGhirsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE]\n"
 msgstr ""
 
-#: src/main.c:825
+#: src/main.c:835
 #, c-format
 msgid "Usage: %s [-] [-EGhrsVvwx] [-p PROMPT] [FILE]\n"
 msgstr ""
 
-#: src/main.c:833
+#: src/main.c:843
 #, c-format
 msgid "Usage: %s [OPTION...] [FILE...]\n"
 msgstr ""
 
-#: src/main.c:836
+#: src/main.c:846
 #, c-format
 msgid "Usage: %s [OPTION...] [FILE]\n"
 msgstr ""
 
-#: src/main.c:842
+#: src/main.c:852
 #, c-format
 msgid ""
 "Options:\n"
@@ -416,7 +494,7 @@ msgid ""
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
 
-#: src/main.c:864
+#: src/main.c:874
 #, c-format
 msgid ""
 "Options:\n"
@@ -440,7 +518,7 @@ msgid ""
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
 
-#: src/main.c:895
+#: src/main.c:905
 msgid "script, line %"
 msgstr ""
 
@@ -510,10 +588,6 @@ msgstr "Nome da clase de caracteres incorrecto"
 msgid "No previous pattern"
 msgstr "Non hai ningunha expresión regular anterior"
 
-#: src/re.c:273 src/sub.c:439
-msgid "No match"
-msgstr "Sen coincidencias"
-
 #: src/signal.c:136
 #, fuzzy
 #| msgid "program error"
@@ -530,56 +604,13 @@ msgstr ""
 msgid "No previous substitution"
 msgstr "Non hai ningunha expresión regular anterior"
 
+#: src/sub.c:474 src/sub.c:609
+msgid "Too many regex subexpressions"
+msgstr ""
+
 #: src/undo.c:51
 msgid "Nothing to undo"
 msgstr ""
-
-#~ msgid "Success"
-#~ msgstr "Éxito"
-
-#~ msgid "Invalid regular expression"
-#~ msgstr "Expresión regular non válida"
-
-#~ msgid "Invalid collation character"
-#~ msgstr "Carácter de ordenación incorrecto"
-
-#~ msgid "Invalid character class name"
-#~ msgstr "Nome da clase de caracteres incorrecto"
-
-#~ msgid "Trailing backslash"
-#~ msgstr "Barra invertida ao final"
-
-#, fuzzy
-#~| msgid "Unmatched [ or [^"
-#~ msgid "Unmatched [, [^, [:, [., or [="
-#~ msgstr "[ ou [^ sen parella"
-
-#~ msgid "Unmatched ( or \\("
-#~ msgstr "( ou \\( sen parella"
-
-#~ msgid "Unmatched \\{"
-#~ msgstr "\\{ sen parella"
-
-#~ msgid "Invalid content of \\{\\}"
-#~ msgstr "Contido de \\{\\} non válido"
-
-#~ msgid "Invalid range end"
-#~ msgstr "Fin de intervalo non válido"
-
-#~ msgid "Invalid preceding regular expression"
-#~ msgstr "Expresión regular precedente non válida"
-
-#~ msgid "Premature end of regular expression"
-#~ msgstr "Fin prematura da expresión regular"
-
-#~ msgid "Regular expression too big"
-#~ msgstr "Expresión regular grande de máis"
-
-#~ msgid "Unmatched ) or \\)"
-#~ msgstr ") ou \\) sen parella"
-
-#~ msgid "No previous regular expression"
-#~ msgstr "Non hai ningunha expresión regular anterior"
 
 #, c-format
 #~ msgid "invalid argument %s for %s"

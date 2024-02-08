@@ -159,8 +159,7 @@ int stat (const char *, struct stat *);
 #endif
 
 #ifndef SIZE_T_MAX
-# define SIZE_T_MAX                                                           \
-  ((size_t) (~(size_t) 0))
+# define SIZE_T_MAX ((size_t) (~(size_t) 0))
 #endif
 
 #define LINECHARS SIZE_T_MAX    /* Max chars per line, including NULs. */
@@ -172,8 +171,7 @@ int stat (const char *, struct stat *);
 #endif
 
 #ifndef OFF_T_MAX
-#  define OFF_T_MAX                                                           \
-  ((off_t) (~(size_t) 0 >> (size_t) 1))
+#  define OFF_T_MAX ((off_t) (~(size_t) 0 >> (size_t) 1))
 #  define OFF_T_MIN (-OFF_T_MAX - 1)
 #endif
 
@@ -607,7 +605,7 @@ enum ed_command_error
   (RE_SYNTAX_ED_EXTENDED | RE_DOT_NOT_NULL)
 #endif  /* HAVE_REG_SYNTAX_T */
 
-#define SE_MAX 30               /* max subexpressions in regexp */
+#define SE_MAX ((size_t) (~(unsigned) 0))  /* Max RE subexpressions. */
 
 /* Types of regexes. */
 enum search_type

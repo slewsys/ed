@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: coreutils 5.0.91\n"
 "Report-Msgid-Bugs-To: bug-gnulib@gnu.org\n"
-"POT-Creation-Date: 2023-09-08 04:02-0400\n"
+"POT-Creation-Date: 2024-02-08 13:57-0500\n"
 "PO-Revision-Date: 2003-10-30 01:10+0200\n"
 "Last-Translator: Ales Nyakhaychyk <nab@mail.by>\n"
 "Language-Team: Belarusian <i18n@mova.org>\n"
@@ -62,49 +62,133 @@ msgstr "%s: нерэчаісны выбар -- %c\n"
 msgid "%s: option requires an argument -- '%c'\n"
 msgstr "%s: выбар патрабуе довад -- %c\n"
 
+#: lib/regcomp.c:122
+msgid "Success"
+msgstr ""
+
+#: lib/regcomp.c:125 src/re.c:273 src/sub.c:439
+msgid "No match"
+msgstr ""
+
+#: lib/regcomp.c:128
+#, fuzzy
+msgid "Invalid regular expression"
+msgstr "%s: нерэчаісны звычайны выраз: %s"
+
+#: lib/regcomp.c:131
+#, fuzzy
+msgid "Invalid collation character"
+msgstr "нерэчаісны знак %s у радку рэжыму %s"
+
+#: lib/regcomp.c:134
+#, fuzzy
+msgid "Invalid character class name"
+msgstr "нерэчаісны знак %s у радку рэжыму %s"
+
+#: lib/regcomp.c:137
+msgid "Trailing backslash"
+msgstr ""
+
+#: lib/regcomp.c:140
+#, fuzzy
+#| msgid "invalid user"
+msgid "Invalid back reference"
+msgstr "нерэчаісны карыстальнік"
+
+#: lib/regcomp.c:143
+msgid "Unmatched [, [^, [:, [., or [="
+msgstr ""
+
+#: lib/regcomp.c:146
+msgid "Unmatched ( or \\("
+msgstr ""
+
+#: lib/regcomp.c:149
+msgid "Unmatched \\{"
+msgstr ""
+
+#: lib/regcomp.c:152
+msgid "Invalid content of \\{\\}"
+msgstr ""
+
+#: lib/regcomp.c:155
+#, fuzzy
+msgid "Invalid range end"
+msgstr "%s: нерэчаісны звычайны выраз: %s"
+
+#: lib/regcomp.c:158 src/aux.c:231 src/aux.c:444 src/buf.c:267 src/buf.c:436
+#: src/buf.c:534 src/buf.c:544 src/buf.c:583 src/buf.c:613 src/glbl.c:171
+#: src/io.c:317 src/main.c:763 src/page.c:858 src/parse.c:273 src/parse.c:518
+#: src/re.c:157 src/sub.c:480 src/sub.c:615 src/undo.c:26
+#, fuzzy
+msgid "Memory exhausted"
+msgstr "памяць вычарпана"
+
+#: lib/regcomp.c:161
+#, fuzzy
+msgid "Invalid preceding regular expression"
+msgstr "%s: нерэчаісны звычайны выраз: %s"
+
+#: lib/regcomp.c:164
+#, fuzzy
+msgid "Premature end of regular expression"
+msgstr "памылка ў пошуку звычайнага выразу"
+
+#: lib/regcomp.c:167
+#, fuzzy
+msgid "Regular expression too big"
+msgstr "%s: нерэчаісны звычайны выраз: %s"
+
+#: lib/regcomp.c:170
+msgid "Unmatched ) or \\)"
+msgstr ""
+
+#: lib/regcomp.c:650
+#, fuzzy
+msgid "No previous regular expression"
+msgstr "памылка ў пошуку звычайнага выразу"
+
 #: src/aux.c:35
 msgid "Child process error"
 msgstr ""
 
-#: src/aux.c:67 src/aux.c:156
+#: src/aux.c:60
+#, fuzzy
+#| msgid "write error"
+msgid "Flush error"
+msgstr "памылка запісу"
+
+#: src/aux.c:71 src/aux.c:160
 #, fuzzy
 #| msgid "write error"
 msgid "Pipe open error"
 msgstr "памылка запісу"
 
-#: src/aux.c:76 src/aux.c:128
+#: src/aux.c:80 src/aux.c:132
 #, fuzzy
 msgid "Fork error"
 msgstr "памылка чытаньня"
 
-#: src/aux.c:170
+#: src/aux.c:174
 msgid "Pipe close error"
 msgstr ""
 
-#: src/aux.c:227 src/aux.c:440 src/buf.c:267 src/buf.c:436 src/buf.c:534
-#: src/buf.c:544 src/buf.c:583 src/buf.c:613 src/glbl.c:171 src/io.c:317
-#: src/main.c:753 src/page.c:858 src/parse.c:273 src/parse.c:518 src/re.c:157
-#: src/undo.c:26
-#, fuzzy
-msgid "Memory exhausted"
-msgstr "памяць вычарпана"
-
-#: src/aux.c:296 src/aux.c:338
+#: src/aux.c:300 src/aux.c:342
 msgid "Cannot append register to itself."
 msgstr ""
 
-#: src/aux.c:402
+#: src/aux.c:406
 msgid "Exceeded maximum stack frame depth"
 msgstr ""
 
-#: src/aux.c:418 src/aux.c:469 src/aux.c:509 src/aux.c:548 src/io.c:58
-#: src/io.c:600 src/main.c:224 src/main.c:715 src/main.c:775
+#: src/aux.c:422 src/aux.c:473 src/aux.c:513 src/aux.c:552 src/io.c:58
+#: src/io.c:600 src/main.c:230 src/main.c:725 src/main.c:785
 #, fuzzy
 #| msgid "write error"
 msgid "File seek error"
 msgstr "памылка запісу"
 
-#: src/aux.c:451 src/aux.c:494 src/aux.c:533 src/buf.c:116
+#: src/aux.c:455 src/aux.c:498 src/aux.c:537 src/buf.c:116
 #, fuzzy
 msgid "dup2 error"
 msgstr "памылка чытаньня"
@@ -117,7 +201,7 @@ msgstr ""
 msgid "Buffer seek error"
 msgstr ""
 
-#: src/buf.c:260 src/main.c:544 src/main.c:616
+#: src/buf.c:260 src/main.c:552 src/main.c:624
 msgid "File name too long"
 msgstr ""
 
@@ -157,27 +241,27 @@ msgstr "знак па за дапушчальнымі межамі"
 msgid "Memory request too big"
 msgstr ""
 
-#: src/cbc.c:134 src/cbc.c:232 src/cbc.c:237 src/cbc.c:258 src/cbc.c:263
+#: src/cbc.c:131 src/cbc.c:229 src/cbc.c:234 src/cbc.c:255 src/cbc.c:260
 #, fuzzy
 #| msgid "invalid user"
 msgid "Invalid key"
 msgstr "нерэчаісны карыстальнік"
 
-#: src/cbc.c:376
+#: src/cbc.c:373
 msgid "Decryption failed (block corrupted)."
 msgstr ""
 
-#: src/cbc.c:385
+#: src/cbc.c:382
 msgid "Decryption failed (incomplete block)."
 msgstr ""
 
-#: src/cbc.c:387 src/io.c:551 src/main.c:790
+#: src/cbc.c:384 src/io.c:551 src/main.c:800
 #, fuzzy
 #| msgid "write error"
 msgid "File read error"
 msgstr "памылка запісу"
 
-#: src/cmds.c:39 src/exec.c:609 src/io.c:479 src/main.c:360
+#: src/cmds.c:39 src/exec.c:609 src/io.c:479 src/main.c:366
 msgid "End-of-file unexpected"
 msgstr ""
 
@@ -191,7 +275,7 @@ msgstr "нерэчаісны знак %s у радку рэжыму %s"
 msgid "Unknown error"
 msgstr "Невядомая сыстэмная памылка"
 
-#: src/ed.h:749 src/ed.h:784 src/ed.h:819
+#: src/ed.h:747 src/ed.h:782 src/ed.h:817
 #, fuzzy
 #| msgid "character out of range"
 msgid "Numerical result out of range"
@@ -220,7 +304,7 @@ msgstr ""
 msgid "Invalid redirection"
 msgstr "%s: нерэчаісны звычайны выраз: %s"
 
-#: src/exec.c:711 src/main.c:611
+#: src/exec.c:711 src/main.c:619
 msgid "File name not set"
 msgstr ""
 
@@ -272,7 +356,7 @@ msgstr ""
 msgid "File does not exist"
 msgstr ""
 
-#: src/io.c:97 src/io.c:166 src/io.c:630 src/io.c:679 src/main.c:763
+#: src/io.c:97 src/io.c:166 src/io.c:630 src/io.c:679 src/main.c:773
 #, fuzzy
 #| msgid "write error"
 msgid "File open error"
@@ -307,7 +391,7 @@ msgstr "памылка запісу"
 msgid "File too big"
 msgstr ""
 
-#: src/io.c:767 src/main.c:725 src/main.c:799
+#: src/io.c:767 src/main.c:735 src/main.c:809
 #, fuzzy
 #| msgid "write error"
 msgid "File write error"
@@ -327,50 +411,50 @@ msgstr ""
 msgid "File stat error"
 msgstr "памылка запісу"
 
-#: src/main.c:233
+#: src/main.c:239
 msgid "Option '-i' requires '-e' or '-f'"
 msgstr ""
 
-#: src/main.c:298
+#: src/main.c:304
 msgid "Interrupted"
 msgstr ""
 
-#: src/main.c:409
+#: src/main.c:415
 msgid "WARNING: Buffer modified since last write"
 msgstr ""
 
-#: src/main.c:665
+#: src/main.c:673
 msgid "Argument list full"
 msgstr ""
 
-#: src/main.c:818
+#: src/main.c:828
 #, c-format
 msgid ""
 "Usage: %s [-] [-EGhirsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE...]\n"
 msgstr ""
 
-#: src/main.c:821
+#: src/main.c:831
 #, c-format
 msgid ""
 "Usage: %s [-] [-EGhirsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE]\n"
 msgstr ""
 
-#: src/main.c:825
+#: src/main.c:835
 #, c-format
 msgid "Usage: %s [-] [-EGhrsVvwx] [-p PROMPT] [FILE]\n"
 msgstr ""
 
-#: src/main.c:833
+#: src/main.c:843
 #, c-format
 msgid "Usage: %s [OPTION...] [FILE...]\n"
 msgstr ""
 
-#: src/main.c:836
+#: src/main.c:846
 #, c-format
 msgid "Usage: %s [OPTION...] [FILE]\n"
 msgstr ""
 
-#: src/main.c:842
+#: src/main.c:852
 #, c-format
 msgid ""
 "Options:\n"
@@ -398,7 +482,7 @@ msgid ""
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
 
-#: src/main.c:864
+#: src/main.c:874
 #, c-format
 msgid ""
 "Options:\n"
@@ -422,7 +506,7 @@ msgid ""
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
 
-#: src/main.c:895
+#: src/main.c:905
 msgid "script, line %"
 msgstr ""
 
@@ -487,10 +571,6 @@ msgstr "нерэчаісны знак %s у радку рэжыму %s"
 msgid "No previous pattern"
 msgstr "памылка ў пошуку звычайнага выразу"
 
-#: src/re.c:273 src/sub.c:439
-msgid "No match"
-msgstr ""
-
 #: src/signal.c:136
 #, fuzzy
 msgid "Signal error"
@@ -505,41 +585,13 @@ msgstr ""
 msgid "No previous substitution"
 msgstr "памылка ў пошуку звычайнага выразу"
 
+#: src/sub.c:474 src/sub.c:609
+msgid "Too many regex subexpressions"
+msgstr ""
+
 #: src/undo.c:51
 msgid "Nothing to undo"
 msgstr ""
-
-#, fuzzy
-#~ msgid "Invalid regular expression"
-#~ msgstr "%s: нерэчаісны звычайны выраз: %s"
-
-#, fuzzy
-#~ msgid "Invalid collation character"
-#~ msgstr "нерэчаісны знак %s у радку рэжыму %s"
-
-#, fuzzy
-#~ msgid "Invalid character class name"
-#~ msgstr "нерэчаісны знак %s у радку рэжыму %s"
-
-#, fuzzy
-#~ msgid "Invalid range end"
-#~ msgstr "%s: нерэчаісны звычайны выраз: %s"
-
-#, fuzzy
-#~ msgid "Invalid preceding regular expression"
-#~ msgstr "%s: нерэчаісны звычайны выраз: %s"
-
-#, fuzzy
-#~ msgid "Premature end of regular expression"
-#~ msgstr "памылка ў пошуку звычайнага выразу"
-
-#, fuzzy
-#~ msgid "Regular expression too big"
-#~ msgstr "%s: нерэчаісны звычайны выраз: %s"
-
-#, fuzzy
-#~ msgid "No previous regular expression"
-#~ msgstr "памылка ў пошуку звычайнага выразу"
 
 #, c-format
 #~ msgid "invalid argument %s for %s"
