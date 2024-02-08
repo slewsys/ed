@@ -10,9 +10,9 @@
 
 /* Static function declarations. */
 static int apply_subst_template (const char *, const regmatch_t *,
-                                 int, size_t *, ed_buffer_t *);
-static size_t count_matches (const regex_t *, const char *, int len,
-                             struct ed_state *);
+                                 size_t, size_t *, ed_buffer_t *);
+static ssize_t count_matches (const regex_t *, const char *, int len,
+                             ed_buffer_t *);
 static int substitute_matching (const regex_t *, const ed_line_node_t *,
                                 size_t *, off_t, off_t, unsigned,
                                 ed_buffer_t *);
@@ -450,11 +450,13 @@ substitute_matching (const regex_t *re, const ed_line_node_t *lp,
                      size_t *len, off_t s_nth, off_t s_mod,
                      unsigned s_f, ed_buffer_t *ed)
 {
-  regmatch_t rm[SE_MAX];
+  static regmatch_t *rm = NULL;
+  static size_t rm_size = 0;
+
   char *txt;
   char *eot;
+  ssize_t n = 0;
   size_t i, j, k = 0;
-  size_t n = 0;
   size_t changed = 0;
   int matched_prev = 0;
   int nil_prev;
@@ -468,11 +470,20 @@ substitute_matching (const regex_t *re, const ed_line_node_t *lp,
 
   if (!(txt = get_buffer_line (lp, ed)))
     return ERR;
+  else if (re->re_nsub >= SE_MAX)
+    {
+      ed->exec->err = _("Too many regex subexpressions");
+      return ERR;
+    }
+  else
+    REALLOC_THROW (rm, rm_size,
+                   (re->re_nsub + 1) * sizeof(regmatch_t), ERR, ed);
 
   /* If match-relative and requested match (s_nth) > available (n),
      then nothing to do. */
-  if ((s_f & SNLR || s_f & SMLR)
-      && (n = count_matches (re, txt, lp->len, ed->state)) <= labs(s_nth))
+  if ((n = count_matches (re, txt, lp->len, ed)) < 0)
+    return ERR;
+  else if ((s_f & SNLR || s_f & SMLR) && n <= labs(s_nth))
     return *len = 0;
 
   /* Last match-relative s_nth?  */
@@ -493,7 +504,7 @@ substitute_matching (const regex_t *re, const ed_line_node_t *lp,
 #endif
   for (*len = 0, eot = txt + lp->len, rm->rm_so = 0, rm->rm_eo = lp->len;
        (!changed || (s_f & GSUB))
-         && !regexec (re, txt, SE_MAX, rm, eflag);
+         && !regexec (re, txt, re->re_nsub + 1, rm, eflag);
        txt += j, rm->rm_so = 0, rm->rm_eo = eot - txt, eflag |= REG_NOTBOL)
     {
       i = rm->rm_so, j = rm->rm_eo;
@@ -573,14 +584,17 @@ substitute_matching (const regex_t *re, const ed_line_node_t *lp,
 
 
 /* count_matches: Return count of matches in given line. */
-static size_t
+static ssize_t
 count_matches (const regex_t *re, const char *txt, int len,
-               struct ed_state *buf)
+               ed_buffer_t *ed)
 {
-  regmatch_t rm[SE_MAX];
+  static regmatch_t *rm = NULL;
+  static size_t rm_size = 0;
+
   const char *eot;
   size_t off = 0;
   size_t nmatches = 0;
+
   int matched_prev = 0;
   int nul_prev;
   int nul_next = 1;
@@ -590,12 +604,21 @@ count_matches (const regex_t *re, const char *txt, int len,
   int eflag = 0;
 #endif
 
+  if (re->re_nsub >= SE_MAX)
+    {
+      ed->exec->err = _("Too many regex subexpressions");
+      return ERR;
+    }
+  else
+    REALLOC_THROW (rm, rm_size,
+                   (re->re_nsub + 1) * sizeof(regmatch_t), ERR, ed);
+
 #ifndef REG_STARTEND
-  if (buf->is_binary)
+  if (ed->state->is_binary)
     NUL_TO_NEWLINE (txt, len);
 #endif
   for (eot = txt + len, rm->rm_so = 0, rm->rm_eo = len;
-       !regexec (re, txt, SE_MAX, rm, eflag);
+       !regexec (re, txt, re->re_nsub + 1, rm, eflag);
        txt += off, rm->rm_so = 0, rm->rm_eo = eot - txt, eflag |= REG_NOTBOL)
     {
       off = rm->rm_eo;
@@ -637,12 +660,21 @@ count_matches (const regex_t *re, const char *txt, int len,
    substitution template; return offset to end of modified text. */
 static int
 apply_subst_template (const char *boln, const regmatch_t *rm,
-                      int re_nsub, size_t *len, ed_buffer_t *ed)
+                      size_t re_nsub, size_t *len, ed_buffer_t *ed)
 {
+  static int *cc = NULL;        /* Case-change stack. */
+  static size_t cc_size = 0;
+
   char *sub = rhs;
+  size_t cc_top = 0;
   size_t j = 0;
   size_t k = 0;
   int n;
+  int change_once = 0;
+
+  if (cc_size < rhs_i / 2 + 1)
+    REALLOC_THROW (cc, cc_size, rhs_i /  2 + 1, ERR, ed);
+  cc[cc_top++] = 0;
 
   for (; sub < rhs + rhs_i; ++sub)
     if (*sub == '&')
@@ -651,21 +683,71 @@ apply_subst_template (const char *boln, const regmatch_t *rm,
         k = rm->rm_eo;
         REALLOC_THROW (rb, rb_size, *len + k - j, ERR, ed);
         while (j < k)
-          *(rb + (*len)++) = *(boln + j++);
+          {
+            *(rb + (*len)++) = ((cc[cc_top - 1] > 0 || change_once > 0)
+                                ?  toupper (*(boln + j++))
+                                : (cc[cc_top - 1] < 0 || change_once < 0)
+                                ? tolower (*(boln + j++))
+                                : *(boln + j++));
+            change_once = 0;
+          }
       }
-    else if (*sub == '\\' && isdigit ((unsigned char) *++sub)
-             && (n = *sub - '0') <= re_nsub)
-      {
-        j = rm[n].rm_so;
-        k = rm[n].rm_eo;
-        REALLOC_THROW (rb, rb_size, *len + k - j, ERR, ed);
-        while (j < k)
-          *(rb + (*len)++) = *(boln + j++);
-      }
+    else if (*sub == '\\')
+      switch ((unsigned char ) *++sub)
+        {
+        case '0': case '1': case '2': case '3': case '4':
+        case '5': case '6': case '7': case '8': case '9':
+          if ((n = *sub - '0') <= re_nsub)
+            {
+              j = rm[n].rm_so;
+              k = rm[n].rm_eo;
+              REALLOC_THROW (rb, rb_size, *len + k - j, ERR, ed);
+              while (j < k)
+                {
+                  *(rb + (*len)++) = ((cc[cc_top - 1] > 0 || change_once > 0)
+                                      ?  toupper (*(boln + j++))
+                                      : (cc[cc_top - 1] < 0 || change_once < 0)
+                                      ? tolower (*(boln + j++))
+                                      : *(boln + j++));
+                  change_once = 0;
+                }
+            }
+          break;
+        case 'U':
+          cc[cc_top++] = 1;
+          break;
+        case 'u':
+          change_once = 1;
+          break;
+        case 'L':
+          cc[cc_top++] = -1;
+          break;
+        case 'l':
+          change_once = -1;
+          break;
+        case 'E':
+          if (cc_top > 1)
+            --cc_top;
+          break;
+        default:
+          REALLOC_THROW (rb, rb_size, *len + 1, ERR, ed);
+          *(rb + (*len)++) = ((cc[cc_top - 1] > 0 || change_once > 0)
+                              ?  toupper (*sub)
+                              : (cc[cc_top - 1] < 0 || change_once < 0)
+                              ? tolower (*sub)
+                              : *sub);
+          change_once = 0;
+          break;
+        }
     else
       {
         REALLOC_THROW (rb, rb_size, *len + 1, ERR, ed);
-        *(rb + (*len)++) = *sub;
+        *(rb + (*len)++) = ((cc[cc_top - 1] > 0 || change_once > 0)
+                            ?  toupper (*sub)
+                            : (cc[cc_top - 1] < 0 || change_once < 0)
+                            ? tolower (*sub)
+                            : *sub);
+        change_once = 0;
       }
   REALLOC_THROW (rb, rb_size, *len + 1, ERR, ed);
   *(rb + *len) = '\0';
