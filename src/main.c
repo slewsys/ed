@@ -1,6 +1,6 @@
 /* main.c: Entry point for the ed line editor.
  *
- *  Copyright © 1993-2023 Andrew L. Moore, SlewSys Research
+ *  Copyright © 1993-2024 Andrew L. Moore, SlewSys Research
  *
  *  SPDX-License-Identifier:  BSD-2-Clause OR GPL-2.0-or-later OR MIT
  */
@@ -410,6 +410,13 @@ top:
             goto error;
 #endif
 
+          /* Command-line files still available and stdin seekable... */
+          if (ed->file->list->gl_offs && ed->file->list->gl_pathc > 1
+              && FSEEK(stdin, 0L, SEEK_SET) != -1)
+            {
+              status = EOF_NEXT;
+              goto next;
+            }
           quit (ed->exec->status, ed);
         case EMOD:
           ed->exec->err = _("WARNING: Buffer modified since last write");

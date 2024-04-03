@@ -1,6 +1,6 @@
 /* buf.c: Buffer routines for the ed line editor.
  *
- *  Copyright © 1993-2022 Andrew L. Moore, SlewSys Research
+ *  Copyright © 1993-2024 Andrew L. Moore, SlewSys Research
  *
  *  SPDX-License-Identifier:  BSD-2-Clause OR GPL-2.0-or-later OR MIT
  */
@@ -193,8 +193,8 @@ init_ed_command (int init_glob, ed_buffer_t *ed)
   /* File info */
 #ifdef WANT_FILE_LOCK
 
-  /* GNU/Linux double-frees on fclose() here... */
-#if __linux__
+  /* XXX: GNU/Linux double-frees on fclose().  */
+#ifndef __linux__
   if (ed->file->handle)
 
     /* Assert: No writes since fopen(3). */

@@ -1,6 +1,6 @@
 /* io.c: I/O routines for the ed line editor.
  *
- *  Copyright © 1993-2022 Andrew L. Moore, SlewSys Research
+ *  Copyright © 1993-2024 Andrew L. Moore, SlewSys Research
  *
  *  SPDX-License-Identifier:  BSD-2-Clause OR GPL-2.0-or-later OR MIT
  */
@@ -615,7 +615,8 @@ write_file (const char *fn, int is_default, off_t from, off_t to,
    * File-locking requires file write access, so this case should not
    * be reached.
    */
-  else if (file_already_open && fclose (ed->file->handle) < 0)
+  else if (file_already_open
+           && (fclose (ed->file->handle) < 0 || !(ed->file->handle = NULL)))
     {
       fprintf (stderr, "%s: %s\n", ed->file->name, strerror (errno));
       ed->exec->err = _("File close error");
