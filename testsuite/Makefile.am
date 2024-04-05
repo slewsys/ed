@@ -106,7 +106,7 @@ EXTRA_DIST =								      \
 	$(ED_SCRIPTS_DATA_COMPRESSED) $(ED_SCRIPTS_RESULTS)                   \
 	$(ED_SCRIPTS_RESULTS_PIPED)
 
-.PHONY: build-and-run-testsuite quick-check
+.PHONY: build-and-run-testsuite
 
 check-local:
 	if $(MAKE) --version 2>&1 | grep -qi 'gnu make'; then                 \
@@ -114,8 +114,6 @@ check-local:
 	else                                                                  \
 	  if test _"@GNU_MAKE_COMMAND@" != _''; then                          \
 	    @GNU_MAKE_COMMAND@ $(AM_MAKEFLAGS) build-and-run-testsuite;       \
-	  elif test _"@abs_top_srcdir@" = _"@abs_top_builddir@"; then         \
-	    $(MAKE) $(AM_MAKEFLAGS) quick-check;                              \
 	  else                                                                \
 	    echo "Running testsuite outside $$top_srcdir requires GNU make."; \
 	  fi;                                                                 \
@@ -151,13 +149,6 @@ $(PACKAGE_M4): $(top_srcdir)/configure.ac
 	  echo 'm4_define([AT_PACKAGE_BUGREPORT], [@PACKAGE_BUGREPORT@])';    \
 	} >"$@".tmp
 	mv "$@".tmp "$@"
-
-quick-check:
-	if test -f $(TESTSUITE)-dist; then                                    \
-	  $(SHELL) $(TESTSUITE)-dist;                                         \
-	else                                                                  \
-	  $(MAKE) $(AM_MAKEFLAGS) check-local;                                \
-	fi
 
 distclean-local:
 	rm -f atconfig proto.ok-so-at.in
