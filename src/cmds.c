@@ -1,8 +1,8 @@
 /* cmds.c: Basic editor commands for the ed line editor.
  *
- *  Copyright © 1993-2018 Andrew L. Moore, SlewSys Research
+ * SPDX-FileCopyrightText: 1993-2024 Andrew L. Moore, SlewSys Research
  *
- *  SPDX-License-Identifier:  BSD-2-Clause OR GPL-2.0-or-later OR MIT
+ * SPDX-License-Identifier: BSD-2-Clause OR GPL-2.0-or-later OR MIT
  */
 
 #include "ed.h"

@@ -1,6 +1,8 @@
 # configure.ac: Configure autoconf template for the ed line editor.
 #
-# Copyright © 1993-2021 Andrew L. Moore, SlewSys Research
+# SPDX-FileCopyrightText: 1993-2024 Andrew L. Moore, SlewSys Research
+#
+# SPDX-License-Identifier: BSD-2-Clause OR GPL-2.0-or-later OR MIT
 #
 # Process this file with autoconf to produce a configure script.
 
