@@ -29,7 +29,7 @@ if [ ! -w "$abs_srcdir" ]; then
     exit 2
 fi
 
-for cmd in aclocal autoheader automake autoreconf; do
+for cmd in aclocal autoheader automake autoreconf libtoolize; do
     eval ${cmd}_cmd='$(which '$cmd' 2>/dev/null)'
     exit_status=$?
     if test $exit_status -ne 0; then
@@ -85,6 +85,26 @@ fi
 $verbose && cat <<EOF
 $script_name: Running:
   cd "$abs_srcdir" &&
+  $autoreconf_cmd -I./m4 --verbose --install >&2
+
+EOF
+
+autoreconf_output=$(
+    cd "$abs_srcdir" &&
+        $autoreconf_cmd -I./m4 --verbose --install 2>&1
+               )
+exit_status=$?
+if test $exit_status -ne 0; then
+    cat >&2 <<EOF
+$script_name:
+$autoreconf_output
+EOF
+    exit $exit_status
+fi
+
+$verbose && cat <<EOF
+$script_name: Running:
+  cd "$abs_srcdir" &&
   $automake_cmd --verbose --force-missing --copy --gnu >&2
 
 EOF
@@ -98,6 +118,26 @@ if test $exit_status -ne 0; then
     cat >&2 <<EOF
 $script_name:
 $automake_output
+EOF
+    exit $exit_status
+fi
+
+$verbose && cat <<EOF
+$script_name: Running:
+  cd "$abs_srcdir" &&
+  $libtoolize_cmd --verbose --force --install --copy  >&2
+
+EOF
+
+libtoolize_output=$(
+    cd "$abs_srcdir" &&
+        $libtoolize_cmd --verbose --force --install --copy  2>&1
+               )
+exit_status=$?
+if test $exit_status -ne 0; then
+    cat >&2 <<EOF
+$script_name:
+$libtoolize_output
 EOF
     exit $exit_status
 fi

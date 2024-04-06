@@ -2,7 +2,7 @@
 #
 # Process this file with automake to create Makefile.in
 
-# BSD getopt(3) requires optreset -- ln -sf bsd_getopt.h getopt.h
+# BSD getopt(3) requires optreset -- ln -sf bsd-getopt.h getopt.h
 # libed_a_SOURCES = getopt_long.c
 # noinst_LIBRARIES = libed.a
 # noinst_HEADERS = error.h getopt.h gettext.h pathmax.h
