@@ -24,6 +24,11 @@ HEAD_COMMIT = $(shell git rev-parse --short HEAD)
 #	git archive --format=tar --prefix=$(PACKAGE)-$(VERSION)/ HEAD |	      \
 #		gzip >../ed-$(VERSION)~g$(HEAD_COMMIT).tgz
 
+check-valgrind: clean
+	$(MAKE) $(AM_MAKEFLAGS) CFLAGS='-g -O0'				      \
+	    -C $(abs_top_builddir) all
+	$(MAKE) -C $(abs_top_srcdir)/testsuite check-valgrind
+
 maintainer-update-dist: update-gnulib update-po
 
 update-gnulib:

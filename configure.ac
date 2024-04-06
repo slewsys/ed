@@ -57,6 +57,11 @@ AC_PROG_INSTALL
 AC_PROG_MKDIR_P
 AC_PROG_YACC
 
+# Enable memory/heap diagnostics and profiling.
+AX_VALGRIND_DFLT([helgrind], [off])
+AX_VALGRIND_DFLT([drd], [off])
+AX_VALGRIND_CHECK
+
 AC_MSG_CHECKING([whether included regex is requested])
 AC_ARG_WITH([included-regex],
   [AS_HELP_STRING([--with-included-regex],

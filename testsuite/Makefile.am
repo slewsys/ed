@@ -7,6 +7,7 @@ PACKAGE_M4    = package.m4
 TESTSUITE     = testsuite
 TESTSUITE_AT  = $(TESTSUITE).at
 ED_SCRIPTSdir = $(srcdir)
+@VALGRIND_CHECK_RULES@
 
 # Templates for generating autotest .at scripts.
 AT_PROTO_OK    = $(ED_SCRIPTSdir)/proto.ok-at.in
@@ -106,21 +107,41 @@ EXTRA_DIST =								      \
 	$(ED_SCRIPTS_DATA_COMPRESSED) $(ED_SCRIPTS_RESULTS)                   \
 	$(ED_SCRIPTS_RESULTS_PIPED)
 
-.PHONY: build-and-run-testsuite
+.PHONY: build-and-run-testsuite build-and-run-valgrind
 
 check-local:
-	if $(MAKE) --version 2>&1 | grep -qi 'gnu make'; then                 \
-	  $(MAKE) $(AM_MAKEFLAGS) build-and-run-testsuite;                    \
-	else                                                                  \
-	  if test _"@GNU_MAKE_COMMAND@" != _''; then                          \
-	    @GNU_MAKE_COMMAND@ $(AM_MAKEFLAGS) build-and-run-testsuite;       \
-	  else                                                                \
-	    echo "Running testsuite outside $$top_srcdir requires GNU make."; \
-	  fi;                                                                 \
+	rm -f $(abs_builddir)/ed
+	if $(MAKE) --version 2>&1 | grep -q 'GNU Make'; then		      \
+	  $(MAKE) $(AM_MAKEFLAGS) build-and-run-testsuite;		      \
+	else								      \
+	  if test _"$(GNU_MAKE_COMMAND)" != _''; then			      \
+	    $(GNU_MAKE_COMMAND) $(AM_MAKEFLAGS) build-and-run-testsuite;      \
+	  else								      \
+	    echo "Running testsuite outside $$top_srcdir requires GNU Make."; \
+	  fi;								      \
 	fi
 
-build-and-run-testsuite: atconfig $(TESTSUITE)
-	$(SHELL) $(TESTSUITE)
+check-valgrind-local:
+	rm -f $(abs_builddir)/ed
+	if $(MAKE) --version 2>&1 | grep -q 'GNU Make'; then		      \
+	  $(MAKE) $(AM_MAKEFLAGS) build-and-run-valgrind;		      \
+	else								      \
+	  if test _"$(GNU_MAKE_COMMAND)" != _''; then			      \
+	    $(GNU_MAKE_COMMAND) $(AM_MAKEFLAGS) build-and-run-valgrind;	      \
+	  else								      \
+	    echo "Running valgrind outside $$top_srcdir requires GNU Make.";  \
+	  fi;								      \
+	fi
+
+build-and-run-testsuite: atconfig ed $(TESTSUITE)
+	$(abs_srcdir)/$(TESTSUITE)
+
+build-and-run-valgrind: atconfig ed $(TESTSUITE)
+	$(SED) -i -e "/^exec/s;';'$(VALGRIND)' $(VALGRIND_memcheck_FLAGS) ';" \
+	    $(abs_builddir)/ed
+	$(abs_srcdir)/$(TESTSUITE) -d
+	find $(abs_builddir)/$(TESTSUITE).dir -name '*.log' \
+	    | xargs -n30 grep 'lost'
 
 $(TESTSUITE): $(TESTSUITE_AT) $(PACKAGE_M4)
 	$(AUTOTEST) -I $(ED_SCRIPTSdir) "$@".at -o "$@".tmp
