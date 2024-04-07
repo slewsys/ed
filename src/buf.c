@@ -524,31 +524,22 @@ quit (int n, ed_buffer_t *ed)
 char **
 dup_argv (int argc, char **argv, ed_buffer_t *ed)
 {
-  char **pathv_p;
-  size_t len;
+  static char **pathv_p = NULL;
+  static size_t pathv_p_size = 0;
+
+  size_t sz = 0;
+  size_t len = 0;
   int i;
 
-  if (!(pathv_p = (char **) malloc ((argc + 1) * sizeof (char *))))
+  REALLOC_THROW (pathv_p, pathv_p_size,
+                 (argc + 1) * sizeof (char *), NULL, ed);
+
+  for (i = 0, pathv_p[i] = NULL; i < argc; ++i, pathv_p[i] = NULL, len = 0)
     {
-      fprintf (stderr, "%s\n", strerror (errno));
-      ed->exec->err = _("Memory exhausted");
-      return NULL;
+      sz = strlen (argv[i]) + 1;
+      REALLOC_THROW (pathv_p[i], len, sz, NULL, ed);
+      memmove (pathv_p[i], argv[i], sz);
     }
-
-  for (i = 0; i < argc; ++i)
-    {
-      len = strlen (argv[i]) + 1;
-      if (!(pathv_p[i] = (char *) malloc (len)))
-        {
-          fprintf (stderr, "%s\n", strerror (errno));
-          ed->exec->err = _("Memory exhausted");
-          return NULL;
-        }
-      memcpy (pathv_p[i], argv[i], len);
-    }
-
-  pathv_p[argc] = NULL;
-
   return pathv_p;
 }
 

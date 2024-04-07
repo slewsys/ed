@@ -172,9 +172,9 @@ substitution_lhs (regex_t **lhs_p, unsigned *sgpr_f, ed_buffer_t *ed)
 
 
 /* Global declarations */
-char *rhs;                      /* Substitution template buffer */
-size_t rhs_size;                /* Substitution template buffer size */
-size_t rhs_i;                   /* Substitution template buffer index */
+static char *rhs;                 /* Substitution template buffer */
+static size_t rhs_size;           /* Substitution template buffer size */
+static size_t rhs_i;              /* Substitution template buffer index */
 
 
 /* substitution_rhs: Get substitution rhs (template) from command
@@ -238,12 +238,6 @@ substitution_template (unsigned dc, ed_buffer_t *ed)
           return ERR;
         }
       return 0;
-    }
-
-  if (!ed->exec->global)
-    {
-      rhs = NULL;
-      rhs_size = 0;
     }
 
   for (rhs_i = 0; *ed->input != dc; ++rhs_i, ++ed->input)
@@ -337,13 +331,10 @@ substitution_modifiers (off_t *s_nth, off_t *s_mod, unsigned *s_f,
 /* init_substitute: Initialize substitution parameters from ed state
    buffer. */
 void
-init_substitute (regex_t **lhs, unsigned *s_f, off_t *s_nth,
+init_substitute (regex_t **lhs_p, unsigned *s_f, off_t *s_nth,
                  off_t *s_mod, unsigned *sio_f, struct ed_substitute *es)
 {
-  *lhs = es->lhs;
-  rhs = es->rhs;
-  rhs_size = es->rhs_size;
-  rhs_i = es->rhs_i;
+  *lhs_p = es->lhs;
   *s_nth = es->s_nth;
   *s_mod = es->s_mod;
   *s_f = es->s_f;
@@ -357,9 +348,6 @@ save_substitute (regex_t *lhs, unsigned s_f, off_t s_nth,
                  off_t s_mod, unsigned sio_f, struct ed_substitute *es)
 {
   es->lhs = lhs;
-  es->rhs = rhs;
-  es->rhs_size = rhs_size;
-  es->rhs_i = rhs_i;
   es->s_nth = s_nth;
   es->s_mod = s_mod;
   es->s_f = s_f;
@@ -368,8 +356,8 @@ save_substitute (regex_t *lhs, unsigned s_f, off_t s_nth,
 
 
 /* Global declarations */
-char *rb;                       /* Substitution text buffer */
-size_t rb_size;                 /* Substitution text buffer size */
+static char *rb;                       /* Substitution text buffer */
+static size_t rb_size;                 /* Substitution text buffer size */
 
 /* substitute_lines: For each line in a range, replace text matching a
    pattern per substitution template; return status. */
