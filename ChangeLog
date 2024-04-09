@@ -1,3 +1,181 @@
+2024-04-07  Andrew L. Moore  <slewsys@gmail.com>
+
+	* Fix memory leaks flagged by valgrind.
+
+2024-04-06  Andrew L. Moore <slewsys@gmail.com>
+
+	* Add target check-valgrind.
+
+2024  Andrew L. Moore <slewsys@gmail.com>
+
+	* Remove remainder of generated files.
+
+2024-04-06 Andrew L. Moore <slewsys@gmail.com>
+
+	* Comply with REUSE Specification – Version 3.0.
+
+2024-04-05 Andrew L. Moore <slewsys@gmail.com>
+
+	* Remove references to quick-check.
+
+2024-04-03 Andrew L. Moore <slewsys@gmail.com>
+
+	* Apply script to each file on command line. For this to work, the
+	script must be seekable. And to avoid infinite loops, if the
+	script modifies the input file list, it is only applied to the
+	first file on the command line.
+
+	* Fix typo to prevent double-free on Linux.
+
+2024-02-08 Andrew L. Moore <slewsys@gmail.com>
+
+	* In substitution templates, support case modifier sequences:
+
+	    \L - Substitute in lowercase until \E.
+	    \l - Substitute next char in lowercase.
+	    \U - Substitute in uppercase until \E.
+	    \u - Substitute next char in uppercase.
+
+	As currently implemented, these only work for 8-bit locales.
+	The sequences \L and \U can be nested.  For instance, given input:
+	`abcde', the command:
+
+	    s/\(.\)\(.\)/\U\L\1\E \2/g
+
+	produces: `a Bc De', i.e., \L overrides \U until \E, then \U becomes
+	active again until the end of the current substitution.
+
+	* In substitution templates, a back-reference that does not match any
+	subexpressions is now replaced with the empty string instead of the
+	offending digit, as per The Open Group's 2018 publication (cf.
+	https://pubs.opengroup.org/onlinepubs/9699919799/utilities/ed.html).
+
+2024-02-08 Andrew L. Moore <slewsys@gmail.com>
+
+	* Use SPDX license expressions.
+
+2024-02-05 Andrew L. Moore <slewsys@gmail.com>
+
+	* Restore missing REG_NOTBOL.
+	Reported by Victor <vico/tuta+io>.
+
+2023-09-22 Andrew L. Moore <slewsys@gmail.com>
+
+	* Report error if fflush fails.
+
+2023-09-20 Andrew L. Moore <slewsys@gmail.com>
+
+	* Add CPP flag _FORTIFY_SOURCE=3.
+
+2023-09-10 Andrew L. Moore <slewsys@gmail.com>
+
+	* Version command output missing --enable-address-argments.
+
+
+2023-09-08 Andrew L. Moore <slewsys@gmail.com>
+
+	* Fix update-po Makefile target to support external regex.
+
+	* Add configure option for command-line address arguments.
+
+
+2023-07-20 Andrew L. Moore <slewsys@gmail.com>
+
+	* Move declarations out of switch statement for compatibility.
+
+
+2023-05-17 Andrew L. Moore <slewsys@gmail.com>
+
+	* Support command-line address arguments.
+	Valid address arguments are:
+
+	    +N   - Go to and print line N.
+	    +/RE - Search forward to and print the first line matching RE.
+	    +?RE - Search backward to and print the first line matching RE.
+
+	Address arguments can be repeated, e.g.,
+
+	    ed +3 +/RE1 +?RE2 FILE
+
+	searches FILE forward from line 3 for RE1 and, from there,
+	backward for RE2.
+
+2023-04-24 Andrew L. Moore <slewsys@gmail.com>
+
+	* Remove generated files.
+
+
+2023-04-24 Andrew L. Moore <slewsys@gmail.com>
+
+	* Handle edge case where backslash is used as pattern delimiter.
+	POSIX does not disallow backslash (\) as a pattern delimiter ed, but
+	it does specify that a backslash-escaped delimiter may occur in the
+	pattern. Therefore, just as:
+
+	    ed <<'EOF'
+	    a
+	    hel\o
+	    .
+	    s;\\
+	    EOF
+
+	is a valid script producing output 'helo', the following should
+	produce the same:
+
+	    ed <<'EOF'
+	    a
+	    hel\o
+	    .
+	    s\\\
+	    EOF
+
+	Prior to this commit the substitution `s\\\` was being interpreted as
+	`s///`, not `s/\\//p` as it should.
+
+2023-03-13 Andrew L. Moore <slewsys@gmail.com>
+
+	* Support static builds.
+
+	* Properly handle configure's --disable-feature options.
+	Don't nest Autoconf macro AS_IF.
+	Warn if an extension is enabled by another.
+	Support enabling all feature extensions and then selectively disabling
+	some, e.g.,
+
+	    ./configure --enable-all-extensions --disable-ed-encryption
+
+2023-01-16 Andrew L. Moore <slewsys@gmail.com>
+
+	* Re-import Gnulib.
+
+2022-12-31 Andrew L. Moore <slewsys@gmail.com>
+
+	* Fix BWK texi docs for latest makeinfo.
+
+2022-04-07 Andrew L. Moore <slewsys@gmail.com>
+
+	* Support GNU regex operators in extended regular expressions.
+
+	When `ed` is linked against a GNU regex library and invoked with
+	either option `-E` or `-r`, then the following additional GNU regular
+	expression operators are recognized:
+
+	    \s - matches a whitespace character
+	    \S - matches a non-whitespace character
+	    \w - matches a word character
+	    \W - matches a non-word character
+	    \< - matches the beginning of a word
+	    \> - matches the end of a word
+	    \b - matches a word boundary (beginning or end)
+	    \B - matches a non-word boundary
+
+	"Words" in the above are any sequence of UTF-8 characters, digits
+	and/or underscores (_).
+
+	    $ ed -re 's/\W+//gp' <(echo 'hϵllo, ☪ こんにちは')
+	    hϵlloこんにちは
+	    $
+
 2022-01-25  Andrew L. Moore  <slewsys@gmail.com>
 
 	* src/exec.c (r_cmd):
