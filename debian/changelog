@@ -15,21 +15,9 @@ ed (1:2.1.0-1) unstable; urgency=medium
 
   * Fix typo to prevent double-free on Linux.
 
-  * In substitution templates, support case modifier sequences:
-
-	\L - Substitute in lowercase until \E.
-	\l - Substitute next char in lowercase.
-	\U - Substitute in uppercase until \E.
-	\u - Substitute next char in uppercase.
-
+  * In substitution templates, support case modifier sequences.
     As currently implemented, these only work for 8-bit locales.
-    The sequences \L and \U can be nested.  For instance, given input:
-    `abcde', the command:
-
-	s/\(.\)\(.\)/\U\L\1\E \2/g
-
-    produces: `a Bc De', i.e., \L overrides \U until \E, then \U becomes
-    active again until the end of the current substitution.
+    The sequences can be nested.
 
   * In substitution templates, a back-reference that does not match any
     subexpressions is now replaced with the empty string instead of the
@@ -37,7 +25,7 @@ ed (1:2.1.0-1) unstable; urgency=medium
     https://pubs.opengroup.org/onlinepubs/9699919799/utilities/ed.html).
 
   * Restore missing REG_NOTBOL.
-    Reported by Victor <vico/tuta+io>.
+    Reported by Victor <vico/tuta.io>.
 
   * Report error if fflush fails.
 
@@ -45,98 +33,32 @@ ed (1:2.1.0-1) unstable; urgency=medium
 
   * Add configure option for command-line address arguments.
 
-  * Support command-line address arguments.
-    Valid address arguments are
-
-	+N   - Go to and print line N.
-	+/RE - Search forward to and print the first line matching RE.
-	+?RE - Search backward to and print the first line matching RE.
-
-    Address arguments can be repeated, e.g.,
-
-	ed +3 +/RE1 +?RE2 FILE
-
-    searches FILE forward from line 3 for RE1 and, from there,
-    backward for RE2.
-
   * Silence clang format string warnings on arm and aarch64.
 
   * Handle edge case where backslash is used as pattern delimiter.
 
-    POSIX does not disallow backslash (\) as a pattern delimiter ed, but
-    it does specify that a backslash-escaped delimiter may occur in the
-    pattern. Therefore, just as:
-
-    ```shell
-    ed <<'EOF'
-    a
-    hel\o
-    .
-    s;\\
-    EOF
-    ```
-
-    is a valid script producing output 'helo', the following should
-    produce the same:
-
-    ```shell
-    ed <<'EOF'
-    a
-    hel\o
-    .
-    s\\\
-    EOF
-    ```
-
-    Prior to this commit the substitution `s\\\` was being interpreted as
-    `s///`, not `s/\\//p` as it should.
-
   * Support static builds.
 
-  * Properly handle configure's --disable-feature options.
+  * Properly handle configure's disable feature options.
     Don't nest Autoconf macro AS_IF.
     Warn if an extension is enabled by another.
-    Support enabling all feature extensions and then selectively disabling
-    some, e.g.,
-
-	./configure --enable-all-extensions --disable-ed-encryption
 
   * Add  autoreconf to GitHub actions.
 
   * Support GNU regex operators in extended regular expressions.
 
   * When `ed` is linked against a GNU regex library and invoked with
-    either option `-E` or `-r`, then the following additional GNU regular
-    expression operators are recognized:
+    either option `-E` or `-r`, then additional GNU regular
+    expression short-hand operators are recognized.
 
-      \s - matches a whitespace character
-      \S - matches a non-whitespace character
-      \w - matches a word character
-      \W - matches a non-word character
-      \< - matches the beginning of a word
-      \> - matches the end of a word
-      \b - matches a word boundary (beginning or end)
-      \B - matches a non-word boundary
-
-  * "Words" in the above are any sequence of UTF-8 characters, digits
-    and/or underscores (_).
-      $ ed -re 's/\W+//gp' <(echo 'hϵllo, ☪ こんにちは')
-      hϵlloこんにちは
-      $
-
+ -- Andrew L. Moore <slewsys@gmail.com>  Wed, 10 Apr 2024 04:19:33 +0000
 
 ed (1:2.0.13-2) unstable; urgency=medium
 
-  * Allow ed to read output of process substitution, e.g.:
-      $ ed -e 'p'  <(echo hello)
-      echo
-      $
+  * Allow ed to read output of process substitution.
   * Support GNU regex operators in extended regular expressions.
   * Handle edge case where backslash is used as pattern delimiter.
-  * Support command-line address arguments, e.g.:
-      $ ed +3 +/RE1 +?RE2 FILE
-    searches FILE forward from line 3 for RE1 and, from there,
-    backward for RE2.
+  * Support command-line address arguments.
 
  -- Andrew L. Moore <slewsys@gmail.com>  Fri, 08 Sep 2023 01:40:08 +0000
 

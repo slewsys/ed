@@ -43,7 +43,7 @@ Files: contrib/*
 Copyright: 1993-2024 Andrew L. Moore <slewsys@gmail.com>
 License: BSD-2-Clause OR GPL-2.0-or-later OR MIT
 
-Files: debian/* .github/* ABOUT-NLS AUTHORS BUGS COPYING FAQ.md NEWS THANKS TODO .gitignore
+Files: debian/* .github/* ABOUT-NLS AUTHORS BUGS COPYING NEWS THANKS TODO .gitignore
 Copyright: 1993-2024 Andrew L. Moore <slewsys@gmail.com>
 License: CC0-1.0
 
