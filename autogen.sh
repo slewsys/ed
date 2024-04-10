@@ -10,7 +10,7 @@ script_name=$(basename $0)
 case "$1" in
     -h*|--h*)
         echo "Usage: $script_name [-h|--help] [-s|--silent] [maintainer-update-dist]"
-        exit
+        exitn
         ;;
 esac
 
@@ -29,7 +29,7 @@ if [ ! -w "$abs_srcdir" ]; then
     exit 2
 fi
 
-for cmd in aclocal autoheader automake autoreconf libtoolize; do
+for cmd in aclocal autoheader autopoint automake autoreconf libtoolize; do
     eval ${cmd}_cmd='$(which '$cmd' 2>/dev/null)'
     exit_status=$?
     if test $exit_status -ne 0; then
@@ -78,6 +78,26 @@ if test $exit_status -ne 0; then
     cat >&2 <<EOF
 $script_name:
 $autoheader_output
+EOF
+    exit $exit_status
+fi
+
+$verbose && cat <<EOF
+$script_name: Running:
+  cd "$abs_srcdir" &&
+  $autopoint_cmd --force >&2
+
+EOF
+
+autopoint_output=$(
+    cd "$abs_srcdir" &&
+        $autopoint_cmd --force 2>&1
+               )
+exit_status=$?
+if test $exit_status -ne 0; then
+    cat >&2 <<EOF
+$script_name:
+$autopoint_output
 EOF
     exit $exit_status
 fi

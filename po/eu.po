@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: coreutils-5.2.1\n"
 "Report-Msgid-Bugs-To: bug-gnulib@gnu.org\n"
-"POT-Creation-Date: 2024-02-08 13:57-0500\n"
+"POT-Creation-Date: 2024-04-09 21:57-0400\n"
 "PO-Revision-Date: 2005-01-04 20:27+0100\n"
 "Last-Translator: Mikel Olasagasti <hey_neken@mundurat.net>\n"
 "Language-Team: Basque <translation-team-eu@lists.sourceforge.net>\n"
@@ -19,43 +19,43 @@ msgstr ""
 "X-Bugs: Report translation errors to the Language-Team address.\n"
 "Plural-Forms:  nplurals=2; plural=(n != 1);\n"
 
-#: lib/getopt.c:278
+#: lib/getopt.c:282
 #, fuzzy, c-format
 #| msgid "%s: option `%s' is ambiguous\n"
 msgid "%s: option '%s%s' is ambiguous\n"
 msgstr "%s: '%s' aukera anbiguoa da\n"
 
-#: lib/getopt.c:284
+#: lib/getopt.c:288
 #, fuzzy, c-format
 #| msgid "%s: option `%s' is ambiguous\n"
 msgid "%s: option '%s%s' is ambiguous; possibilities:"
 msgstr "%s: '%s' aukera anbiguoa da\n"
 
-#: lib/getopt.c:319
+#: lib/getopt.c:322
 #, fuzzy, c-format
 #| msgid "%s: unrecognized option `%c%s'\n"
 msgid "%s: unrecognized option '%s%s'\n"
 msgstr "%s: '%c%s' aukera ezezaguna\n"
 
-#: lib/getopt.c:345
+#: lib/getopt.c:348
 #, fuzzy, c-format
 #| msgid "%s: option `%c%s' doesn't allow an argument\n"
 msgid "%s: option '%s%s' doesn't allow an argument\n"
 msgstr "%s: '%c%s' aukerak ez du argumenturik onartzen\n"
 
-#: lib/getopt.c:360
+#: lib/getopt.c:363
 #, fuzzy, c-format
 #| msgid "%s: option `%s' requires an argument\n"
 msgid "%s: option '%s%s' requires an argument\n"
 msgstr "%s: '%s' aukerak argumentu bat behar du\n"
 
-#: lib/getopt.c:621
+#: lib/getopt.c:624
 #, fuzzy, c-format
 #| msgid "%s: invalid option -- %c\n"
 msgid "%s: invalid option -- '%c'\n"
 msgstr "%s: -- %c aukera baliogabea\n"
 
-#: lib/getopt.c:636 lib/getopt.c:682
+#: lib/getopt.c:639 lib/getopt.c:685
 #, fuzzy, c-format
 #| msgid "%s: option requires an argument -- %c\n"
 msgid "%s: option requires an argument -- '%c'\n"
@@ -65,7 +65,7 @@ msgstr "%s: aukerak --%c argumentu bat behar du\n"
 msgid "Success"
 msgstr ""
 
-#: lib/regcomp.c:125 src/re.c:273 src/sub.c:439
+#: lib/regcomp.c:125 src/re.c:273 src/sub.c:427
 msgid "No match"
 msgstr ""
 
@@ -116,9 +116,8 @@ msgid "Invalid range end"
 msgstr "baliogabea"
 
 #: lib/regcomp.c:158 src/aux.c:231 src/aux.c:444 src/buf.c:267 src/buf.c:436
-#: src/buf.c:534 src/buf.c:544 src/buf.c:583 src/buf.c:613 src/glbl.c:171
-#: src/io.c:317 src/main.c:763 src/page.c:858 src/parse.c:273 src/parse.c:518
-#: src/re.c:157 src/sub.c:480 src/sub.c:615 src/undo.c:26
+#: src/buf.c:574 src/buf.c:604 src/glbl.c:171 src/io.c:317 src/main.c:770
+#: src/page.c:858 src/parse.c:273 src/parse.c:518 src/re.c:157 src/undo.c:26
 #, fuzzy
 msgid "Memory exhausted"
 msgstr "memoria agortuta"
@@ -181,7 +180,7 @@ msgid "Exceeded maximum stack frame depth"
 msgstr ""
 
 #: src/aux.c:422 src/aux.c:473 src/aux.c:513 src/aux.c:552 src/io.c:58
-#: src/io.c:600 src/main.c:230 src/main.c:725 src/main.c:785
+#: src/io.c:600 src/main.c:230 src/main.c:732 src/main.c:792
 #, fuzzy
 #| msgid "write error"
 msgid "File seek error"
@@ -200,7 +199,7 @@ msgstr ""
 msgid "Buffer seek error"
 msgstr ""
 
-#: src/buf.c:260 src/main.c:552 src/main.c:624
+#: src/buf.c:260 src/main.c:559 src/main.c:631
 msgid "File name too long"
 msgstr ""
 
@@ -236,7 +235,7 @@ msgstr "idazketa errorea"
 msgid "Address out of range"
 msgstr "karakterea barrutitik kanpora"
 
-#: src/buf.c:576
+#: src/buf.c:567
 msgid "Memory request too big"
 msgstr ""
 
@@ -254,7 +253,7 @@ msgstr ""
 msgid "Decryption failed (incomplete block)."
 msgstr ""
 
-#: src/cbc.c:384 src/io.c:551 src/main.c:800
+#: src/cbc.c:384 src/io.c:551 src/main.c:807
 #, fuzzy
 #| msgid "write error"
 msgid "File read error"
@@ -303,7 +302,7 @@ msgstr ""
 msgid "Invalid redirection"
 msgstr "baliogabea"
 
-#: src/exec.c:711 src/main.c:619
+#: src/exec.c:711 src/main.c:626
 msgid "File name not set"
 msgstr ""
 
@@ -355,18 +354,18 @@ msgstr ""
 msgid "File does not exist"
 msgstr ""
 
-#: src/io.c:97 src/io.c:166 src/io.c:630 src/io.c:679 src/main.c:773
+#: src/io.c:97 src/io.c:166 src/io.c:631 src/io.c:680 src/main.c:780
 #, fuzzy
 #| msgid "write error"
 msgid "File open error"
 msgstr "idazketa errorea"
 
-#: src/io.c:120 src/io.c:644
+#: src/io.c:120 src/io.c:645
 #, c-format
 msgid "%s: File already locked\n"
 msgstr ""
 
-#: src/io.c:144 src/io.c:621 src/io.c:659
+#: src/io.c:144 src/io.c:622 src/io.c:660
 msgid "File close error"
 msgstr ""
 
@@ -386,25 +385,25 @@ msgstr ""
 msgid "File truncate error"
 msgstr "idazketa errorea"
 
-#: src/io.c:720
+#: src/io.c:721
 msgid "File too big"
 msgstr ""
 
-#: src/io.c:767 src/main.c:735 src/main.c:809
+#: src/io.c:768 src/main.c:742 src/main.c:816
 #, fuzzy
 #| msgid "write error"
 msgid "File write error"
 msgstr "idazketa errorea"
 
-#: src/io.c:792 src/parse.c:505
+#: src/io.c:793 src/parse.c:505
 msgid "File status error"
 msgstr ""
 
-#: src/io.c:799
+#: src/io.c:800
 msgid "Access restricted to regular files"
 msgstr ""
 
-#: src/io.c:868
+#: src/io.c:869
 #, fuzzy
 #| msgid "write error"
 msgid "File stat error"
@@ -418,42 +417,42 @@ msgstr ""
 msgid "Interrupted"
 msgstr ""
 
-#: src/main.c:415
+#: src/main.c:422
 msgid "WARNING: Buffer modified since last write"
 msgstr ""
 
-#: src/main.c:673
+#: src/main.c:680
 msgid "Argument list full"
 msgstr ""
 
-#: src/main.c:828
+#: src/main.c:835
 #, c-format
 msgid ""
 "Usage: %s [-] [-EGhirsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE...]\n"
 msgstr ""
 
-#: src/main.c:831
+#: src/main.c:838
 #, c-format
 msgid ""
 "Usage: %s [-] [-EGhirsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE]\n"
 msgstr ""
 
-#: src/main.c:835
+#: src/main.c:842
 #, c-format
 msgid "Usage: %s [-] [-EGhrsVvwx] [-p PROMPT] [FILE]\n"
 msgstr ""
 
-#: src/main.c:843
+#: src/main.c:850
 #, c-format
 msgid "Usage: %s [OPTION...] [FILE...]\n"
 msgstr ""
 
-#: src/main.c:846
+#: src/main.c:853
 #, c-format
 msgid "Usage: %s [OPTION...] [FILE]\n"
 msgstr ""
 
-#: src/main.c:852
+#: src/main.c:859
 #, c-format
 msgid ""
 "Options:\n"
@@ -481,7 +480,7 @@ msgid ""
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
 
-#: src/main.c:874
+#: src/main.c:881
 #, c-format
 msgid ""
 "Options:\n"
@@ -505,7 +504,7 @@ msgid ""
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
 
-#: src/main.c:905
+#: src/main.c:912
 msgid "script, line %"
 msgstr ""
 
@@ -582,7 +581,7 @@ msgstr ""
 msgid "No previous substitution"
 msgstr "in bilatu"
 
-#: src/sub.c:474 src/sub.c:609
+#: src/sub.c:463 src/sub.c:597
 msgid "Too many regex subexpressions"
 msgstr ""
 

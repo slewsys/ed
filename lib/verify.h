@@ -1,6 +1,6 @@
 /* Compile-time assert-like macros.
 
-   Copyright (C) 2005-2006, 2009-2023 Free Software Foundation, Inc.
+   Copyright (C) 2005-2006, 2009-2024 Free Software Foundation, Inc.
 
    This file is free software: you can redistribute it and/or modify
    it under the terms of the GNU Lesser General Public License as
@@ -188,9 +188,9 @@ template <int w>
     _gl_verify_type<(R) ? 1 : -1>
 #elif defined _GL_HAVE__STATIC_ASSERT
 # define _GL_VERIFY_TYPE(R, DIAGNOSTIC) \
-    struct {                                   \
-      _Static_assert (R, DIAGNOSTIC);          \
-      int _gl_dummy;                          \
+    struct { \
+      _Static_assert (R, DIAGNOSTIC); \
+      int _gl_dummy; \
     }
 #else
 # define _GL_VERIFY_TYPE(R, DIAGNOSTIC) \
@@ -212,8 +212,8 @@ template <int w>
 #elif defined _GL_HAVE__STATIC_ASSERT
 # define _GL_VERIFY(R, DIAGNOSTIC, ...) _Static_assert (R, DIAGNOSTIC)
 #else
-# define _GL_VERIFY(R, DIAGNOSTIC, ...)                                \
-    extern int (*_GL_GENSYM (_gl_verify_function) (void))	       \
+# define _GL_VERIFY(R, DIAGNOSTIC, ...) \
+    extern int (*_GL_GENSYM (_gl_verify_function) (void)) \
       [_GL_VERIFY_TRUE (R, DIAGNOSTIC)]
 # if 4 < __GNUC__ + (6 <= __GNUC_MINOR__)
 #  pragma GCC diagnostic ignored "-Wnested-externs"
@@ -241,10 +241,16 @@ template <int w>
 #   define _Static_assert(...) \
       _GL_VERIFY (__VA_ARGS__, "static assertion failed", -)
 #  else
-    /* Work around MSVC preprocessor incompatibility with ISO C; see
-       <https://stackoverflow.com/questions/5134523/>.  */
-#   define _Static_assert(R, ...) \
-      _GL_VERIFY ((R), "static assertion failed", -)
+#   if defined __cplusplus && _MSC_VER >= 1910
+     /* In MSVC 14.1 or newer, static_assert accepts one or two arguments,
+        but _Static_assert is not defined.  */
+#    define _Static_assert static_assert
+#   else
+     /* Work around MSVC preprocessor incompatibility with ISO C; see
+        <https://stackoverflow.com/questions/5134523/>.  */
+#    define _Static_assert(R, ...) \
+       _GL_VERIFY ((R), "static assertion failed", -)
+#   endif
 #  endif
 # endif
 /* Define static_assert if needed.  */
@@ -252,7 +258,7 @@ template <int w>
       && __STDC_VERSION__ < 202311 \
       && (!defined __cplusplus \
           || (__cpp_static_assert < 201411 \
-              && __GNUG__ < 6 && __clang_major__ < 6)))
+              && __GNUG__ < 6 && __clang_major__ < 6 && _MSC_VER < 1910)))
 #  if defined __cplusplus && _MSC_VER >= 1900 && !defined __clang__
 /* MSVC 14 in C++ mode supports the two-arguments static_assert but not
    the one-argument static_assert, and it does not support _Static_assert.
@@ -285,14 +291,16 @@ template <int w>
 # define _GL_HAS_BUILTIN_TRAP 0
 #endif
 
-#if defined __clang_major__ && __clang_major__ < 5
-# define _GL_HAS_BUILTIN_UNREACHABLE 0
-#elif 4 < __GNUC__ + (5 <= __GNUC_MINOR__)
-# define _GL_HAS_BUILTIN_UNREACHABLE 1
-#elif defined __has_builtin
-# define _GL_HAS_BUILTIN_UNREACHABLE __has_builtin (__builtin_unreachable)
-#else
-# define _GL_HAS_BUILTIN_UNREACHABLE 0
+#ifndef _GL_HAS_BUILTIN_UNREACHABLE
+# if defined __clang_major__ && __clang_major__ < 5
+#  define _GL_HAS_BUILTIN_UNREACHABLE 0
+# elif 4 < __GNUC__ + (5 <= __GNUC_MINOR__)
+#  define _GL_HAS_BUILTIN_UNREACHABLE 1
+# elif defined __has_builtin
+#  define _GL_HAS_BUILTIN_UNREACHABLE __has_builtin (__builtin_unreachable)
+# else
+#  define _GL_HAS_BUILTIN_UNREACHABLE 0
+# endif
 #endif
 
 /* Each of these macros verifies that its argument R is nonzero.  To

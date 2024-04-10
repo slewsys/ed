@@ -1,5 +1,6 @@
-# stdlib_h.m4 serial 71
-dnl Copyright (C) 2007-2023 Free Software Foundation, Inc.
+# stdlib_h.m4
+# serial 77
+dnl Copyright (C) 2007-2024 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
 dnl with or without modifications, as long as this notice is preserved.
@@ -24,13 +25,56 @@ AC_DEFUN_ONCE([gl_STDLIB_H],
 #endif
     ]], [_Exit aligned_alloc atoll canonicalize_file_name free
     getloadavg getprogname getsubopt grantpt
-    initstate initstate_r mbtowc mkdtemp mkostemp mkostemps mkstemp mkstemps
-    posix_memalign posix_openpt ptsname ptsname_r qsort_r
+    initstate initstate_r mbstowcs mbtowc mkdtemp mkostemp mkostemps mkstemp
+    mkstemps posix_memalign posix_openpt ptsname ptsname_r qsort_r
     random random_r reallocarray realpath rpmatch secure_getenv setenv
     setstate setstate_r srandom srandom_r
     strtod strtol strtold strtoll strtoul strtoull unlockpt unsetenv])
 
   AC_REQUIRE([AC_C_RESTRICT])
+
+  dnl Test whether MB_CUR_MAX needs to be overridden.
+  dnl On Solaris 10, in UTF-8 locales, its value is 3 but needs to be 4.
+  dnl Fortunately, we can do this because on this platform MB_LEN_MAX is 5.
+  AC_REQUIRE([AC_CANONICAL_HOST])
+  AC_REQUIRE([gt_LOCALE_FR_UTF8])
+  AC_CACHE_CHECK([whether MB_CUR_MAX is correct],
+    [gl_cv_macro_MB_CUR_MAX_good],
+    [
+      dnl Initial guess, used when cross-compiling or when no suitable locale
+      dnl is present.
+changequote(,)dnl
+      case "$host_os" in
+                  # Guess no on Solaris.
+        solaris*) gl_cv_macro_MB_CUR_MAX_good="guessing no" ;;
+                  # Guess yes otherwise.
+        *)        gl_cv_macro_MB_CUR_MAX_good="guessing yes" ;;
+      esac
+changequote([,])dnl
+      if test $LOCALE_FR_UTF8 != none; then
+        AC_RUN_IFELSE(
+          [AC_LANG_SOURCE([[
+#include <locale.h>
+#include <stdlib.h>
+int main ()
+{
+  int result = 0;
+  if (setlocale (LC_ALL, "$LOCALE_FR_UTF8") != NULL)
+    {
+      if (MB_CUR_MAX < 4)
+        result |= 1;
+    }
+  return result;
+}]])],
+          [gl_cv_macro_MB_CUR_MAX_good=yes],
+          [gl_cv_macro_MB_CUR_MAX_good=no],
+          [:])
+      fi
+    ])
+  case "$gl_cv_macro_MB_CUR_MAX_good" in
+    *yes) ;;
+    *) REPLACE_MB_CUR_MAX=1 ;;
+  esac
 
   AC_CHECK_DECLS_ONCE([ecvt])
   if test $ac_cv_have_decl_ecvt = no; then
@@ -78,6 +122,7 @@ AC_DEFUN([gl_STDLIB_H_REQUIRE_DEFAULTS],
     gl_MODULE_INDICATOR_INIT_VARIABLE([GNULIB_GRANTPT])
     gl_MODULE_INDICATOR_INIT_VARIABLE([GNULIB_MALLOC_GNU])
     gl_MODULE_INDICATOR_INIT_VARIABLE([GNULIB_MALLOC_POSIX])
+    gl_MODULE_INDICATOR_INIT_VARIABLE([GNULIB_MBSTOWCS])
     gl_MODULE_INDICATOR_INIT_VARIABLE([GNULIB_MBTOWC])
     gl_MODULE_INDICATOR_INIT_VARIABLE([GNULIB_MKDTEMP])
     gl_MODULE_INDICATOR_INIT_VARIABLE([GNULIB_MKOSTEMP])
@@ -90,6 +135,7 @@ AC_DEFUN([gl_STDLIB_H_REQUIRE_DEFAULTS],
     gl_MODULE_INDICATOR_INIT_VARIABLE([GNULIB_PTSNAME_R])
     gl_MODULE_INDICATOR_INIT_VARIABLE([GNULIB_PUTENV])
     gl_MODULE_INDICATOR_INIT_VARIABLE([GNULIB_QSORT_R])
+    gl_MODULE_INDICATOR_INIT_VARIABLE([GNULIB_RAND])
     gl_MODULE_INDICATOR_INIT_VARIABLE([GNULIB_RANDOM])
     gl_MODULE_INDICATOR_INIT_VARIABLE([GNULIB_RANDOM_R])
     gl_MODULE_INDICATOR_INIT_VARIABLE([GNULIB_REALLOCARRAY])
@@ -100,6 +146,7 @@ AC_DEFUN([gl_STDLIB_H_REQUIRE_DEFAULTS],
     gl_MODULE_INDICATOR_INIT_VARIABLE([GNULIB_SECURE_GETENV])
     gl_MODULE_INDICATOR_INIT_VARIABLE([GNULIB_SETENV])
     gl_MODULE_INDICATOR_INIT_VARIABLE([GNULIB_STRTOD])
+    gl_MODULE_INDICATOR_INIT_VARIABLE([GNULIB_STRTOF])
     gl_MODULE_INDICATOR_INIT_VARIABLE([GNULIB_STRTOL])
     gl_MODULE_INDICATOR_INIT_VARIABLE([GNULIB_STRTOLD])
     gl_MODULE_INDICATOR_INIT_VARIABLE([GNULIB_STRTOLL])
@@ -131,6 +178,7 @@ AC_DEFUN([gl_STDLIB_H_DEFAULTS],
   HAVE_DECL_FCVT=1;          AC_SUBST([HAVE_DECL_FCVT])
   HAVE_DECL_GCVT=1;          AC_SUBST([HAVE_DECL_GCVT])
   HAVE_DECL_GETLOADAVG=1;    AC_SUBST([HAVE_DECL_GETLOADAVG])
+  HAVE_DECL_PROGRAM_INVOCATION_NAME=1; AC_SUBST([HAVE_DECL_PROGRAM_INVOCATION_NAME])
   HAVE_GETPROGNAME=1;        AC_SUBST([HAVE_GETPROGNAME])
   HAVE_GETSUBOPT=1;          AC_SUBST([HAVE_GETSUBOPT])
   HAVE_GRANTPT=1;            AC_SUBST([HAVE_GRANTPT])
@@ -159,6 +207,7 @@ AC_DEFUN([gl_STDLIB_H_DEFAULTS],
   HAVE_SETSTATE=1;           AC_SUBST([HAVE_SETSTATE])
   HAVE_DECL_SETSTATE=1;      AC_SUBST([HAVE_DECL_SETSTATE])
   HAVE_STRTOD=1;             AC_SUBST([HAVE_STRTOD])
+  HAVE_STRTOF=1;             AC_SUBST([HAVE_STRTOF])
   HAVE_STRTOL=1;             AC_SUBST([HAVE_STRTOL])
   HAVE_STRTOLD=1;            AC_SUBST([HAVE_STRTOLD])
   HAVE_STRTOLL=1;            AC_SUBST([HAVE_STRTOLL])
@@ -180,6 +229,8 @@ AC_DEFUN([gl_STDLIB_H_DEFAULTS],
   REPLACE_INITSTATE=0;       AC_SUBST([REPLACE_INITSTATE])
   REPLACE_MALLOC_FOR_MALLOC_GNU=0;    AC_SUBST([REPLACE_MALLOC_FOR_MALLOC_GNU])
   REPLACE_MALLOC_FOR_MALLOC_POSIX=0;  AC_SUBST([REPLACE_MALLOC_FOR_MALLOC_POSIX])
+  REPLACE_MB_CUR_MAX=0;      AC_SUBST([REPLACE_MB_CUR_MAX])
+  REPLACE_MBSTOWCS=0;        AC_SUBST([REPLACE_MBSTOWCS])
   REPLACE_MBTOWC=0;          AC_SUBST([REPLACE_MBTOWC])
   REPLACE_MKOSTEMP=0;        AC_SUBST([REPLACE_MKOSTEMP])
   REPLACE_MKOSTEMPS=0;       AC_SUBST([REPLACE_MKOSTEMPS])
@@ -190,6 +241,7 @@ AC_DEFUN([gl_STDLIB_H_DEFAULTS],
   REPLACE_PTSNAME_R=0;       AC_SUBST([REPLACE_PTSNAME_R])
   REPLACE_PUTENV=0;          AC_SUBST([REPLACE_PUTENV])
   REPLACE_QSORT_R=0;         AC_SUBST([REPLACE_QSORT_R])
+  REPLACE_RAND=0;            AC_SUBST([REPLACE_RAND])
   REPLACE_RANDOM=0;          AC_SUBST([REPLACE_RANDOM])
   REPLACE_RANDOM_R=0;        AC_SUBST([REPLACE_RANDOM_R])
   REPLACE_REALLOC_FOR_REALLOC_GNU=0;    AC_SUBST([REPLACE_REALLOC_FOR_REALLOC_GNU])
@@ -199,6 +251,7 @@ AC_DEFUN([gl_STDLIB_H_DEFAULTS],
   REPLACE_SETENV=0;          AC_SUBST([REPLACE_SETENV])
   REPLACE_SETSTATE=0;        AC_SUBST([REPLACE_SETSTATE])
   REPLACE_STRTOD=0;          AC_SUBST([REPLACE_STRTOD])
+  REPLACE_STRTOF=0;          AC_SUBST([REPLACE_STRTOF])
   REPLACE_STRTOL=0;          AC_SUBST([REPLACE_STRTOL])
   REPLACE_STRTOLD=0;         AC_SUBST([REPLACE_STRTOLD])
   REPLACE_STRTOLL=0;         AC_SUBST([REPLACE_STRTOLL])

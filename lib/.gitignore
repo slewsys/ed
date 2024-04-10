@@ -71,3 +71,14 @@
 /windows-recmutex.h
 /windows-rwlock.c
 /windows-rwlock.h
+/iswblank.c
+/iswctype-impl.h
+/iswctype.c
+/iswdigit.c
+/iswpunct.c
+/iswxdigit.c
+/mbszero.c
+/setlocale_null-unlocked.c
+/stdckdint.in.h
+/wctype-impl.h
+/wctype.c

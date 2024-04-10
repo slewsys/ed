@@ -1,5 +1,6 @@
-# pthread_rwlock_rdlock.m4 serial 5
-dnl Copyright (C) 2017-2023 Free Software Foundation, Inc.
+# pthread_rwlock_rdlock.m4
+# serial 8
+dnl Copyright (C) 2017-2024 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
 dnl with or without modifications, as long as this notice is preserved.
@@ -34,11 +35,11 @@ dnl https://sourceware.org/bugzilla/show_bug.cgi?id=13701
 dnl https://bugzilla.redhat.com/show_bug.cgi?id=1410052
 AC_DEFUN([gl_PTHREAD_RWLOCK_RDLOCK_PREFER_WRITER],
 [
-  AC_REQUIRE([gl_THREADLIB_EARLY])
+  AC_REQUIRE([gl_THREADLIB])
   AC_REQUIRE([AC_CANONICAL_HOST]) dnl for cross-compiles
   AC_CACHE_CHECK([whether pthread_rwlock_rdlock prefers a writer to a reader],
     [gl_cv_pthread_rwlock_rdlock_prefer_writer],
-    [save_LIBS="$LIBS"
+    [saved_LIBS="$LIBS"
      LIBS="$LIBS $LIBMULTITHREAD"
      AC_RUN_IFELSE(
        [AC_LANG_SOURCE([[
@@ -164,7 +165,7 @@ main ()
           *-android*)         gl_cv_pthread_rwlock_rdlock_prefer_writer="guessing no" ;;
                               # Guess yes on native Windows with the mingw-w64 winpthreads library.
                               # Guess no on native Windows with the gnulib windows-rwlock module.
-          mingw*)             if test "$gl_use_threads" = yes || test "$gl_use_threads" = posix; then
+          mingw* | windows*)  if test "$gl_use_threads" = yes || test "$gl_use_threads" = posix; then
                                 gl_cv_pthread_rwlock_rdlock_prefer_writer="guessing yes"
                               else
                                 gl_cv_pthread_rwlock_rdlock_prefer_writer="guessing no"
@@ -174,7 +175,7 @@ main ()
           *)                  gl_cv_pthread_rwlock_rdlock_prefer_writer="$gl_cross_guess_normal" ;;
          esac
        ])
-     LIBS="$save_LIBS"
+     LIBS="$saved_LIBS"
     ])
   case "$gl_cv_pthread_rwlock_rdlock_prefer_writer" in
     *yes)
