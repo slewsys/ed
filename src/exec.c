@@ -1717,6 +1717,10 @@ address_cmd (ed_buffer_t *ed)
 static int
 shell_cmd (ed_buffer_t *ed)
 {
+  /*
+   * static char exit_status[BUFSIZ];
+   */
+
   off_t addr = 0;
   size_t len = 0;
   char *fn = NULL;
@@ -1732,7 +1736,23 @@ shell_cmd (ed_buffer_t *ed)
   if (!ed->exec->region->addrs)
     {
       /* system(3) blocks SIGCHLD. */
-      system (++fn);
+      status = system(++fn);
+
+      /*
+       * XXX: status always -1 on Linux.
+       */
+      /*
+       * if ((status = system (++fn)) < 0
+       *     || WIFEXITED (status) && WEXITSTATUS (status) == 127)
+       *   {
+       *     fprintf (stderr, "%s\n", strerror (errno));
+       *     ed->exec->err = _("Child process error");
+       *     return status;
+       *   }
+       * snprintf (exit_status, sizeof exit_status, _("Exit status: %#x"),
+       *           0xff & WEXITSTATUS (status));
+       * ed->exec->err = exit_status;
+       */
       printf (ed->exec->opt & SCRIPTED ? "" : "!\n");
     }
   else

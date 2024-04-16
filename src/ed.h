@@ -124,6 +124,18 @@ int fstat (int, struct stat *);
 int stat (const char *, struct stat *);
 #endif  /* !HAVE_SYS_STAT_H */
 
+#ifdef HAVE_SYS_WAIT_H
+# include <sys/wait.h>
+#endif
+
+#ifndef WIFEXITED
+# define WIFEXITED(status) (((status) & 0xff) == 0)
+#endif
+
+#ifndef WEXITSTATUS
+# define WEXITSTATUS(status) ((unsigned)(status) >> 8)
+#endif
+
 #ifndef S_ISREG
 # define S_ISREG(mode) (((mode) & S_IFMT) == S_IFREG)
 #endif

@@ -7,18 +7,6 @@
 
 #include "ed.h"
 
-#ifdef HAVE_SYS_WAIT_H
-# include <sys/wait.h>
-#endif
-
-#ifndef WIFEXITED
-# define WIFEXITED(status) (((status) & 0xff) == 0)
-#endif
-
-#ifndef WEXITSTATUS
-# define WEXITSTATUS(status) ((unsigned)(status) >> 8)
-#endif
-
 
 /* Static function declarations. */
 static ed_line_node_t *append_node_to_register (size_t, off_t, int,
@@ -26,14 +14,30 @@ static ed_line_node_t *append_node_to_register (size_t, off_t, int,
 
 
 #if defined (HAVE_FORK) && defined (WANT_EXTERNAL_FILTER)
-# define WAITPID(pid)                                                         \
+# define WAITPID()                                                            \
   do                                                                          \
     {                                                                         \
-      waitpid (pid, &status, 0);                                              \
-      if (!status && WIFEXITED (status) && WEXITSTATUS (status) == 127)       \
+      pid_t any_pid;                                                          \
+      int pid_status = 0;                                                     \
+      int saved_pid_status = 0;                                               \
+      int count = 0;                                                          \
+      while (shell_pid != -1 && write_pid != -1 && count < 2)                 \
+        {                                                                     \
+          if ((any_pid = waitpid (-1, &pid_status, 0)) == shell_pid)          \
+            saved_pid_status = pid_status;                                    \
+          count += 1;                                                         \
+        }                                                                     \
+      if (saved_pid_status && WIFEXITED (saved_pid_status)                    \
+          && WEXITSTATUS (saved_pid_status) == 127)                           \
         {                                                                     \
           ed->exec->err = _("Child process error");                           \
           status = ERR;                                                       \
+        }                                                                     \
+      else if (saved_pid_status)                                              \
+        {                                                                     \
+          snprintf (exit_status, sizeof exit_status, _("Exit status: %#x"),   \
+                    WEXITSTATUS (saved_pid_status));                          \
+          ed->exec->err = exit_status;                                        \
         }                                                                     \
     }                                                                         \
   while (0)
@@ -46,6 +50,8 @@ static ed_line_node_t *append_node_to_register (size_t, off_t, int,
 int
 filter_lines (off_t from, off_t to, const char *sc, ed_buffer_t *ed)
 {
+  static char exit_status[BUFSIZ];
+
   FILE *ipp, *opp;
   ed_line_node_t *lp = get_line_node (from, ed);
   off_t n = from ? to - from + 1 : 0;
@@ -96,7 +102,7 @@ filter_lines (off_t from, off_t to, const char *sc, ed_buffer_t *ed)
           /* || dup2 (op[1], 2)  < 0 */
           || close (ip[0]) < 0 || close (ip[1]) < 0
           || close (op[0]) < 0 || close (op[1]) < 0
-          || execl ("/bin/sh", "sh", "-c", sc, NULL))
+          || execl ("/bin/sh", "sh", "-c", sc, NULL) < 0)
         {
           fprintf (stderr, "%s\n", strerror (errno));
           _exit (127 << 8);
@@ -175,10 +181,9 @@ filter_lines (off_t from, off_t to, const char *sc, ed_buffer_t *ed)
       status = ERR;
       goto err;
     }
-  WAITPID (write_pid);
 
  err:
-  WAITPID (shell_pid);
+  WAITPID ();
   return status;
 }
 #endif  /* defined (HAVE_FORK) && defined (WANT_EXTERNAL_FILTER) */
