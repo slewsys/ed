@@ -31,7 +31,9 @@ one_time_init (int argc, char *argv[], ed_buffer_t *ed)
 
   if ((status = init_stdio (ed)) < 0
       || (status = create_disk_buffer (&ed->core->fp,
-                                       &ed->core->pathname, ed)) < 0)
+                                       &ed->core->pathname,
+                                       &ed->core->pathname_size,
+                                       ed)) < 0)
     return status;
 
   /*
@@ -234,7 +236,9 @@ reopen_ed_buffer (ed_buffer_t *ed)
 
   if ((status = close_ed_buffer (ed)) < 0
       || (status = create_disk_buffer (&ed->core->fp,
-                                       &ed->core->pathname, ed)) < 0)
+                                       &ed->core->pathname,
+                                       &ed->core->pathname_size,
+                                       ed)) < 0)
     return status;
   return 0;
 }
@@ -242,57 +246,56 @@ reopen_ed_buffer (ed_buffer_t *ed)
 
 /* create_disk_buffer: Open an on-disk buffer. */
 int
-create_disk_buffer (FILE **fp, char **buf, ed_buffer_t *ed)
+create_disk_buffer (FILE **fp, char **name, size_t *name_size, ed_buffer_t *ed)
 {
   STAT_T sb;
   char template[] = "ed.XXXXXXXXXX";
-  char *s;
-  size_t len;
+  char *s = NULL;
+  size_t s_size = 0;
+  size_t path_size = 0;
+  int add_path_sep = 0;
   int fd;
-  int m = 0;
 
   if ((!(s = getenv ("TMPDIR")) || *s == '\0')
       && (!(s = _PATH_TMP) || *s == '\0'))
     s = "/tmp/";
-  m = *(s + (len = strlen (s)) - 1) != '/';
-  if (len > get_path_max (s) - sizeof template - m)
+  s_size = strlen (s);
+  add_path_sep = *(s + s_size - 1) != '/';
+  path_size = s_size + add_path_sep + sizeof template;
+  if (path_size >= get_path_max (s))
     {
-      fprintf (stderr, "%s/%s: %s\n", s, template, _("File name too long"));
+      fprintf (stderr, add_path_sep ? "%s/%s: %s\n" : "%s%s: %s\n",
+               s, template, _("File name too long"));
       ed->exec->err = _("Invalid buffer name");
       return ERR;
     }
-  if (!(*buf = (char *) realloc (*buf, len + sizeof template + 1)))
-    {
-      fprintf (stderr, "%s\n", strerror (errno));
-      ed->exec->err = _("Memory exhausted");
-      return ERR;
-    }
-  strcpy (*buf, s);
-  strcpy (*buf + len, m ? "/" : "");
-  strcpy (*buf + len + m, template);
+  REALLOC_THROW (*name, *name_size, path_size + 1, ERR, ed);
+  strcpy (*name, s);
+  strcpy (*name + s_size, add_path_sep ? "/" : "");
+  strcpy (*name + s_size + add_path_sep, template);
 
   /* NB: Don't unlink(2) buffer upon opening in case it resides on NFS. */
-  if (!mktemp (*buf)
-      || (fd = open (*buf, O_CREAT | O_EXCL | O_RDWR, 0600)) < 0
+  if (!mktemp (*name)
+      || (fd = open (*name, O_CREAT | O_EXCL | O_RDWR, 0600)) < 0
       || FSTAT (fd, &sb) < 0
       || !(*fp = fdopen (fd, "w+")))
     {
-      fprintf (stderr, "%s: %s\n", *buf, strerror (errno));
+      fprintf (stderr, "%s: %s\n", *name, strerror (errno));
       ed->exec->err = _("Buffer open error");
       return ERR;
     }
 
   /*
-   * fstat(3) is supposed to fail if any subpath of `buf' is not a
+   * fstat(3) is supposed to fail if any subpath of `name' is not a
    * directory. Even on systems for which this does not hold, if the
    * default `/tmp' folder is used, it's reasonable to assume that all
-   * is well. So it only remains to verify that `buf' itself is not a
-   * symlink on systems where `open (buf, O_EXCL)' is not considered
+   * is well. So it only remains to verify that `name' itself is not a
+   * symlink on systems where `open (name, O_EXCL)' is not considered
    * an error.
    */
   if (!S_ISREG (sb.st_mode))
     {
-      fprintf (stderr, "%s: Not a regular file\n", *buf);
+      fprintf (stderr, "%s: Not a regular file\n", *name);
       ed->exec->err = _("Buffer open error");
       return ERR;
     }

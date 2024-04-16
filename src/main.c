@@ -722,7 +722,9 @@ append_script_expression (const char *s, ed_buffer_t *ed)
 
   if (!ed->exec->fp
       && (status = create_disk_buffer (&ed->exec->fp,
-                                       &ed->exec->pathname, ed)) < 0)
+                                       &ed->exec->pathname,
+                                       &ed->exec->pathname_size,
+                                       ed)) < 0)
     return status;
 
   /* Append string `s' to end of file `ed->exec->pathname'. */
@@ -782,7 +784,9 @@ append_script_file (char *fn, ed_buffer_t *ed)
     }
   if (!ed->exec->fp
       && (status = create_disk_buffer (&ed->exec->fp,
-                                       &ed->exec->pathname, ed)) < 0)
+                                       &ed->exec->pathname,
+                                       &ed->exec->pathname_size,
+                                       ed)) < 0)
     return status;
 
   /* Append contents of script to end of internal script. */

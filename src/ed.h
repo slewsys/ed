@@ -451,6 +451,7 @@ struct ed_execute
   FILE *fp;                     /* Command script file pointer. */
   char *file_script;            /* File argument of `-f script' option. */
   char *pathname;               /* Concatenation of scripts. */
+  size_t pathname_size;         /* Concatenation of scripts. */
   char *address;                /* Initial address command list. */
   const char *err;              /* Error message. */
   char *prompt;                 /* Interactive command prompt. */
@@ -866,7 +867,7 @@ int append_to_register (off_t, off_t, int, ed_buffer_t *);
 ed_undo_node_t *append_undo_node (int, off_t, off_t, ed_buffer_t *);
 int close_ed_buffer (ed_buffer_t *);
 int copy_lines (off_t, off_t, off_t, ed_buffer_t *);
-int create_disk_buffer (FILE **, char **, ed_buffer_t *);
+int create_disk_buffer (FILE **, char **, size_t *, ed_buffer_t *);
 int decode_utf8_char (unsigned char **, int);
 void delete_global_nodes  (const ed_line_node_t *, const ed_line_node_t *,
                            ed_buffer_t *);
