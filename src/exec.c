@@ -517,13 +517,6 @@ E_cmd (ed_buffer_t *ed)
     }
   reset_undo_queue (ed);
   reset_global_queue (ed);
-#ifdef WANT_ED_REGISTER
-  for (cz = 0; cz < REGBUF_MAX; ++cz)
-    {
-      reset_register_queue (cz, ed);
-    }
-#endif
-
   if (reopen_ed_buffer (ed) < 0)
     {
       spl0 ();
@@ -581,20 +574,24 @@ exec_macro (ed_buffer_t *ed)
   int status = 0;
 
   /* case '@': */
+  if ((status = is_valid_range (ed->state->dot, ed->state->dot, ed)) < 0)
+    return status;
 
   if (!ed->core->regbuf->io_f)
     GET_INPUT_REGISTER (ed);
-  SKIP_WHITESPACE (ed);
+  else
+    SKIP_WHITESPACE (ed);
   if (*ed->input != '\n')
     {
       ed->exec->err = _("Command suffix unexpected");
       return ERR;
     }
+
   if ((status = script_from_register (ed)) < 0 || !ed->exec->fp)
-    return status;
+    goto err;
 
   /* Execute script. */
-  for (;;)
+  for (ed->state->dot = ed->exec->region->end;;)
     {
       if (!(ed->input = get_stdin_line (&len, ed)))
         {
@@ -612,11 +609,6 @@ exec_macro (ed_buffer_t *ed)
           break;
         }
 
-      /*
-       * ++ed->exec->line_no;
-       */
-       ed->exec->global = 0;
-
       if ((status = address_range (ed)) < 0
           || (status = exec_command (ed)) < 0
           || ((ed->display->io_f = status) > 0
@@ -625,6 +617,7 @@ exec_macro (ed_buffer_t *ed)
         break;
     }
 
+ err:
   /* Pop stack frame, or unwind on error. */
   return (status < 0 && status != EOF ? unwind_stack_frame (status, ed)
           : pop_stack_frame (ed));
@@ -906,7 +899,7 @@ m_cmd (ed_buffer_t *ed)
     case REGISTER_READ:
       if ((status = append_from_register (addr, ed)) < 0
           || (status =
-              reset_register_queue (ed->core->regbuf->read_idx, ed)) < 0)
+              reset_register_buffer (ed->core->regbuf->read_idx, ed)) < 0)
         return status;
       break;
     case REGISTER_WRITE:

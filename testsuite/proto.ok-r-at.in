@@ -1,0 +1,20 @@
+# proto.ok-r-at.in: Autotest template for the ed testsuite.
+#
+# Process this file with autotest to create testsuite (see also Makefile.am).
+
+AT_SETUP([Script: @SCRIPT_NAME@.tr])
+
+cat >script-@SCRIPT_NAME@ <<_ATEOF_ED
+H
+r @SCRIPT_SRC@.d
+$(test -s @SCRIPT_SRC@.tr &&
+cat @SCRIPT_SRC@.tr ||
+echo "w @SCRIPT_NAME@.o")
+wq @SCRIPT_NAME@.o
+_ATEOF_ED
+
+AT_SKIP_IF([! ed --version | grep -q 'ed-register'])
+AT_CHECK([ed - <script-@SCRIPT_NAME@ &&
+diff -u @SCRIPT_SRC@.r @SCRIPT_NAME@.o],
+0, [ignore], [ignore], [], [])
+AT_CLEANUP()

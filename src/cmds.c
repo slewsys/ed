@@ -24,7 +24,11 @@ append_lines (off_t after, ed_buffer_t *ed)
   ed->state->input_is_binary = 0;
   for (ed->state->dot = after;;)
     {
+#ifdef WANT_ED_MACRO
+      if (!ed->exec->global || ed->core->sp)
+#else
       if (!ed->exec->global)
+#endif
         {
           if (!(ed->input = get_stdin_line (&len, ed)))
             {
@@ -49,7 +53,11 @@ append_lines (off_t after, ed_buffer_t *ed)
           ++ed->input;
           return 0;
         }
+#ifdef WANT_ED_MACRO
+      if (ed->exec->global && !ed->core->sp)
+#else
       if (ed->exec->global)
+#endif
         {
           for (s = ed->input; *s++ != '\n';)
             ;

@@ -520,6 +520,14 @@ quit (int n, ed_buffer_t *ed)
       (void) fclose (ed->exec->fp);
       unlink (ed->exec->pathname);
     }
+#ifdef WANT_ED_REGISTER
+  for (int i = 0; i < REGBUF_MAX; ++i)
+      if (ed->core->regbuf->fp[i])
+        {
+          (void) fclose (ed->core->regbuf->fp[i]);
+          unlink (ed->core->regbuf->path[i].name);
+        }
+#endif
   _exit (n);
 }
 
@@ -595,24 +603,14 @@ init_core_buffer (ed_buffer_t *ed)
 }
 
 #ifdef WANT_ED_REGISTER
-/* init_register_queue: Initialize given ed_core register queue. */
+/* init_register_buffer: Initialize ed register buffer. */
 int
-init_register_queue (int idx, ed_buffer_t *ed)
+init_register_buffer (int idx, ed_buffer_t *ed)
 {
-  ed_line_node_t *rq;
-
-  spl1 ();
-  if (!(rq = (ed_line_node_t *) malloc (sizeof (ed_line_node_t))))
-    {
-      fprintf (stderr, "%s\n", strerror (errno));
-      ed->exec->err = _("Memory exhausted");
-      spl0 ();
-      return ERR;
-    }
-  LINK_NODES (rq, rq);
-  ed->core->regbuf->lp[idx] = rq;
-  spl0 ();
-  return 0;
+  return  create_disk_buffer (&ed->core->regbuf->fp[idx],
+                              &ed->core->regbuf->path[idx].name,
+                              &ed->core->regbuf->path[idx].size,
+                              ed);
 }
 #endif  /* WANT_ED_REGISTER */
 
@@ -626,6 +624,7 @@ init_script_buffer (ed_buffer_t *ed)
                               ed);
 }
 
+
 /* init_global_queue: Initialize ed_core global queue. */
 void
 init_global_queue (ed_global_node_t **aq, ed_line_node_t **lq, ed_buffer_t *ed)
@@ -633,6 +632,7 @@ init_global_queue (ed_global_node_t **aq, ed_line_node_t **lq, ed_buffer_t *ed)
   *aq = ed->core->global_head;
   *lq = ed->core->line_head;
 }
+
 
 /* init_undo_queue: Initialize ed_core undo queue. */
 void

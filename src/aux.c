@@ -7,12 +7,6 @@
 
 #include "ed.h"
 
-
-/* Static function declarations. */
-static ed_line_node_t *append_node_to_register (size_t, off_t, int,
-                                                ed_buffer_t *);
-
-
 #if defined (HAVE_FORK) && defined (WANT_EXTERNAL_FILTER)
 # define WAITPID()                                                            \
   do                                                                          \
@@ -188,209 +182,6 @@ filter_lines (off_t from, off_t to, const char *sc, ed_buffer_t *ed)
 }
 #endif  /* defined (HAVE_FORK) && defined (WANT_EXTERNAL_FILTER) */
 
-#ifdef WANT_ED_REGISTER
-/*
- * append_from_register: Append lines from register to buffer after given
- *   address.
- */
-int
-append_from_register (off_t addr, ed_buffer_t *ed)
-{
-  int read_idx = ed->core->regbuf->read_idx;
-  ed_line_node_t *read_head = ed->core->regbuf->lp[read_idx];
-  ed_line_node_t *lp, *rp;
-  ed_undo_node_t *up = NULL;
-
-  if (read_head)
-    for (rp = read_head->q_forw; rp != read_head; rp = rp->q_forw)
-      {
-        spl1 ();
-        if (!(lp = append_line_node (rp->len, rp->seek, addr, ed)))
-          {
-            spl0 ();
-            return ERR;
-          }
-        ed->state->dot = ++addr;
-        APPEND_UNDO_NODE (lp, up, addr, ed);
-        ed->state->is_modified = 1;
-        spl0 ();
-      }
-  return 0;
-}
-
-
-/*
- * append_node_to_register: Append node to end of given register.
- *   Return node pointer.
- */
-static ed_line_node_t *
-append_node_to_register (size_t len, off_t offset, int idx, ed_buffer_t *ed)
-{
-  ed_line_node_t *lp;
-  ed_line_node_t *tq = ed->core->regbuf->lp[idx]->q_back;
-
-  spl1 ();
-  if (!(lp = (ed_line_node_t *) malloc (ED_LINE_NODE_T_SIZE)))
-    {
-      fprintf (stderr, "%s\n", strerror (errno));
-      ed->exec->err = _("Memory exhausted");
-      spl0 ();
-      return NULL;
-    }
-  lp->len = len;
-  lp->seek = offset;
-
-  /* APPEND_NODE is macro, so tq variable is mandatory! */
-  APPEND_NODE (lp, tq);
-  spl0 ();
-  return lp;
-}
-
-
-/*
- * append_to_register: Write addressed lines to given register. If
- *   `append' is zero, any previous register contents are lost.
- */
-int
-append_to_register (off_t from, off_t to, int append, ed_buffer_t *ed)
-{
-  int write_idx = ed->core->regbuf->write_idx;
-  ed_line_node_t *write_head = ed->core->regbuf->lp[write_idx];
-  ed_line_node_t *lp = get_line_node (from, ed);
-  off_t n = from ? to - from + 1 : 0;
-
-  if (!write_head)
-    {
-      if (!init_register_queue (write_idx, ed))
-        write_head = ed->core->regbuf->lp[write_idx];
-      else
-        return ERR;
-    }
-
-  if (!append && reset_register_queue (write_idx, ed) < 0)
-    return ERR;
-
-  for (; n; --n, lp = lp->q_forw)
-    if (!append_node_to_register (lp->len, lp->seek, write_idx, ed))
-      return ERR;
-  return 0;
-}
-
-
-/*
- * inter_register_copy: Write lines from one register to another. If
- *   `append' is zero, any previous contents of target register are
- *   lost.
- */
-int
-inter_register_copy (int append, ed_buffer_t *ed)
-{
-  int read_idx = ed->core->regbuf->read_idx;
-  int write_idx = ed->core->regbuf->write_idx;
-  ed_line_node_t *read_head = ed->core->regbuf->lp[read_idx];
-  ed_line_node_t *write_head = ed->core->regbuf->lp[write_idx];
-  ed_line_node_t *rp;
-
-  if (!write_head)
-    {
-      if (!init_register_queue (write_idx, ed))
-        write_head = ed->core->regbuf->lp[write_idx];
-      else
-        return ERR;
-    }
-
-  /* Appending register to itself. */
-  if (append && read_idx == write_idx)
-    {
-      ed->exec->err = _("Cannot append register to itself.");
-      return ERR;
-    }
-
-  /* Not overwriting register with itself. */
-  else if (append || read_idx != write_idx)
-    {
-      if (!append && reset_register_queue (write_idx, ed) < 0)
-        return ERR;
-
-      if (read_head)
-        for (rp = read_head->q_forw; rp != read_head; rp = rp->q_forw)
-          if (!append_node_to_register (rp->len, rp->seek, write_idx, ed))
-            return ERR;
-    }
-  return 0;
-}
-
-
-/*
- * inter_register_move: Move lines from one register to another. If `append'
- *   is zero, any previous contents of target register are lost.
- */
-int
-inter_register_move (int append, ed_buffer_t *ed)
-{
-  int read_idx = ed->core->regbuf->read_idx;
-  int write_idx = ed->core->regbuf->write_idx;
-  ed_line_node_t *read_head = ed->core->regbuf->lp[read_idx];
-  ed_line_node_t *write_head = ed->core->regbuf->lp[write_idx];
-
-  if (!write_head)
-    {
-      if (!init_register_queue (write_idx, ed))
-        write_head = ed->core->regbuf->lp[write_idx];
-      else
-        return ERR;
-    }
-
-  /* Appending register to itself. */
-  if (append && read_idx == write_idx)
-    {
-      ed->exec->err = _("Cannot append register to itself.");
-      return ERR;
-    }
-
-  /* Not overwriting register with itself. */
-  else if (append || read_idx != write_idx)
-    {
-
-      if (!append && reset_register_queue (write_idx, ed) < 0)
-        return ERR;
-
-      /* Read register not empty. */
-      if (read_head && read_head != read_head->q_forw)
-        {
-          spl1 ();
-          LINK_NODES (write_head->q_back, read_head->q_forw);
-          LINK_NODES (read_head->q_back, write_head);
-          LINK_NODES (read_head, read_head);
-          spl0 ();
-        }
-    }
-  return 0;
-}
-
-
-/* reset_register_queue: Release nodes of given register. */
-int
-reset_register_queue (int idx, ed_buffer_t *ed)
-{
-  ed_line_node_t *head = ed->core->regbuf->lp[idx];
-  ed_line_node_t *rp, *rn;
-
-  if (head)
-    {
-      spl1 ();
-      for (rp = head->q_forw; rp != head; rp = rn)
-        {
-          rn = rp->q_forw;
-          UNLINK_NODE (rp);
-          free (rp);
-        }
-      spl0 ();
-    }
-  return 0;
-}
-#endif  /* WANT_ED_REGISTER */
-
 #ifdef WANT_ED_MACRO
 /*
  * script_from_register: Append lines from register to script buffer and
@@ -400,13 +191,12 @@ int
 script_from_register (ed_buffer_t *ed)
 {
   int read_idx = ed->core->regbuf->read_idx;
-  ed_line_node_t *read_head = ed->core->regbuf->lp[read_idx];
-  ed_line_node_t *rp;
+  FILE *read_fp = ed->core->regbuf->fp[read_idx];
+  size_t size = 0;
+  off_t offset = 0;
   int status;
 
-  if (!read_head)
-    return 0;
-  else if (ed->core->sp >= STACK_FRAMES_MAX)
+  if (ed->core->sp >= STACK_FRAMES_MAX)
     {
       ed->exec->err = _("Exceeded maximum stack frame depth");
       return ERR;
@@ -414,23 +204,40 @@ script_from_register (ed_buffer_t *ed)
   else if ((status = push_stack_frame (ed)) < 0)
     return status;
 
-  for (rp = read_head->q_forw; rp != read_head; rp = rp->q_forw)
+  if (!read_fp)
     {
-      if ((status =
-           append_script_expression (get_buffer_line (rp, ed), ed)) < 0)
+      /* Can't return until stdin initialized. */
+      if ((status = init_register_buffer (read_idx, ed)) < 0)
         return status;
+      read_fp = ed->core->regbuf->fp[read_idx];
+    }
+  else if (FSEEK (read_fp, 0L, SEEK_SET) == -1)
+    {
+      fprintf (stderr, "%s\n", strerror (errno));
+      ed->exec->err = _("File seek error");
+      clearerr (read_fp);
+      return ERR;
     }
 
-  if (fflush (ed->exec->fp) == EOF)
+  if (!ed->exec->fp)
     {
-      fprintf (stderr, "%s: %s\n", ed->exec->pathname, strerror (errno));
+      if ((status = init_script_buffer (ed)) < 0)
+        return status;
+    }
+  else if (FSEEK (ed->exec->fp, 0L, SEEK_END) == -1
+           || (offset = FTELL (ed->exec->fp)) == -1)
+    {
+      fprintf (stderr, "%s\n", strerror (errno));
       ed->exec->err = _("File seek error");
       clearerr (ed->exec->fp);
       return ERR;
     }
-  else if ((status = init_stdio (ed)) < 0)
+
+  if ((status = append_stream (ed->exec->fp, read_fp, &size, ed)) < 0)
     return status;
 
+  if ((status = init_stdio (ed)) < 0)
+    return status;
   return 0;
 }
 
@@ -464,8 +271,8 @@ push_stack_frame (ed_buffer_t *ed)
 #else
   ed->core->stack_frame[ed->core->sp]->fp = stdin;
 #endif
-  ed->core->stack_frame[ed->core->sp]->size = 0;
   ed->core->stack_frame[ed->core->sp]->addr = 0;
+  ed->core->stack_frame[ed->core->sp]->size = 0;
   if (ed->core->sp || ed->exec->opt & FSCRIPT)
     {
       if ((ed->core->stack_frame[ed->core->sp]->addr =
@@ -566,7 +373,7 @@ unwind_stack_frame (int status, ed_buffer_t *ed)
   return status;
 }
 
-#else
+#else  /* !WANT_ED_MACRO */
 int
 unwind_stack_frame (int status, ed_buffer_t *ed)
 {

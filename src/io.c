@@ -911,3 +911,248 @@ is_fifo (const char *fn, ed_buffer_t *ed)
       }
     return S_ISFIFO (sb.st_mode);
   }
+
+
+#ifdef WANT_ED_REGISTER
+/*
+ * append_from_register: Append lines from register to buffer after given
+ *   address.
+ */
+int
+append_from_register (off_t addr, ed_buffer_t *ed)
+{
+  int read_idx = ed->core->regbuf->read_idx;
+  FILE *read_fp = ed->core->regbuf->fp[read_idx];
+  off_t size = 0;
+  int status = 0;
+
+  /* Nothing to read. */
+  if (!read_fp)
+    return 0;
+  else if (FSEEK (read_fp, 0L, SEEK_SET) < 0)
+    {
+      fprintf (stderr, "%s\n", strerror (errno));
+      ed->exec->err = _("File seek error");
+      clearerr (read_fp);
+      return ERR;
+    }
+
+  if ((status = read_stream (read_fp, addr, &size, ed)) < 0)
+    return status;
+  if (size)
+    ed->state->is_modified = 1;
+  return 0;
+}
+
+
+/*
+ * append_to_register: Write addressed lines to given register. If
+ *   `append' is zero, any previous register contents are lost.
+ */
+int
+append_to_register (off_t from, off_t to, int append, ed_buffer_t *ed)
+{
+  int write_idx = ed->core->regbuf->write_idx;
+  FILE *write_fp = ed->core->regbuf->fp[write_idx];
+  ed_line_node_t *lp = get_line_node (from, ed);
+  off_t size = 0;
+  off_t n = from ? to - from + 1 : 0;
+  int status = 0;
+
+  /* Nothing to write. */
+  if (!n)
+    {
+      if (!append)
+        return reset_register_buffer (write_idx, ed);
+      return 0;
+
+    }
+  else if (!write_fp)
+    {
+      if ((status = init_register_buffer (write_idx, ed)) < 0)
+        return status;
+      write_fp = ed->core->regbuf->fp[write_idx];
+    }
+
+  if (append)
+    {
+      if (FSEEK (write_fp, 0L, SEEK_END) != 0)
+        {
+          fprintf (stderr, "%s\n", strerror (errno));
+          ed->exec->err = _("File seek error");
+          clearerr (write_fp);
+          return ERR;
+        }
+    }
+  else if ((status = reset_register_buffer (write_idx, ed) < 0))
+    return status;
+
+  if ((status = write_stream (write_fp, lp, n, &size, ed)) < 0)
+    return status;
+  return 0;
+}
+
+
+/*
+ * inter_register_copy: Write lines from one register to another. If
+ *   `append' is zero, any previous contents of target register are
+ *   lost.
+ */
+int
+inter_register_copy (int append, ed_buffer_t *ed)
+{
+  int read_idx = ed->core->regbuf->read_idx;
+  int write_idx = ed->core->regbuf->write_idx;
+  FILE *read_fp = ed->core->regbuf->fp[read_idx];
+  FILE *write_fp = ed->core->regbuf->fp[write_idx];
+  size_t size;
+  int status = 0;
+
+  /* Copying register to itself. */
+  if (read_idx == write_idx)
+    {
+      if (read_fp && append)
+        {
+          ed->exec->err = _("Cannot append register to itself.");
+          return ERR;
+        }
+      return 0;
+    }
+
+  /* Nothing to write. */
+  else if (!read_fp)
+    {
+      if (!append)
+        return reset_register_buffer (write_idx, ed);
+      return 0;
+
+    }
+  else if (!write_fp)
+    {
+      if ((status = init_register_buffer (write_idx, ed)) < 0)
+        return status;
+      write_fp = ed->core->regbuf->fp[write_idx];
+    }
+
+
+  if (FSEEK (read_fp, 0L, SEEK_SET) != 0)
+    {
+      fprintf (stderr, "%s\n", strerror (errno));
+      ed->exec->err = _("File seek error");
+      clearerr (read_fp);
+      return ERR;
+    }
+
+  if (append)
+    {
+      if (FSEEK (write_fp, 0L, SEEK_END) != 0)
+        {
+          fprintf (stderr, "%s\n", strerror (errno));
+          ed->exec->err = _("File seek error");
+          clearerr (write_fp);
+          return ERR;
+        }
+    }
+  else if ((status = reset_register_buffer (write_idx, ed) < 0))
+    return status;
+
+  if ((status = append_stream (write_fp, read_fp, &size, ed)) < 0)
+    return status;
+  return 0;
+}
+
+
+/*
+ * inter_register_move: Move lines from one register to another. If `append'
+ *   is zero, any previous contents of target register are lost.
+ */
+int
+inter_register_move (int append, ed_buffer_t *ed)
+{
+  int read_idx = ed->core->regbuf->read_idx;
+  int write_idx = ed->core->regbuf->write_idx;
+  FILE *read_fp = ed->core->regbuf->fp[read_idx];
+  FILE *write_fp = ed->core->regbuf->fp[write_idx];
+  size_t size = 0;
+  int status = 0;
+
+  /* Overwriting register with itself. */
+  if (read_idx == write_idx)
+    return 0;
+
+  /* Nothing to write. */
+  else if (!read_fp)
+    {
+      if (!append)
+        return reset_register_buffer (write_idx, ed);
+      return 0;
+    }
+  else if (!write_fp)
+    {
+      /* Swap registers. */
+      spl1 ();
+      ed->core->regbuf->fp[write_idx] = read_fp;
+      ed->core->regbuf->path[write_idx].name =
+        ed->core->regbuf->path[read_idx].name;
+      ed->core->regbuf->path[write_idx].size =
+        ed->core->regbuf->path[read_idx].size;
+
+      ed->core->regbuf->fp[read_idx] = NULL;
+      ed->core->regbuf->path[read_idx].name = NULL;
+      ed->core->regbuf->path[read_idx].size = 0;
+      spl0 ();
+      return 0;
+    }
+
+  if (FSEEK (read_fp, 0L, SEEK_SET) != 0)
+    {
+      fprintf (stderr, "%s\n", strerror (errno));
+      ed->exec->err = _("File seek error");
+      clearerr (read_fp);
+      return ERR;
+    }
+  if (append)
+    {
+      if (FSEEK (write_fp, 0L, SEEK_END) != 0)
+        {
+          fprintf (stderr, "%s\n", strerror (errno));
+          ed->exec->err = _("File seek error");
+          clearerr (write_fp);
+          return ERR;
+        }
+    }
+  else if ((status = reset_register_buffer (write_idx, ed)) < 0)
+    return status;
+
+  if ((status = append_stream (write_fp, read_fp, &size, ed)) < 0)
+    return status;
+  else if ((status = reset_register_buffer (read_idx, ed)) < 0)
+    return status;
+  return 0;
+}
+
+
+/* reset_register_buffer: Release nodes of given register. */
+int
+reset_register_buffer (int idx, ed_buffer_t *ed)
+{
+  FILE *fp = ed->core->regbuf->fp[idx];
+
+  if (!fp)
+    return 0;
+  else if (FSEEK (fp, 0L, SEEK_SET) != 0)
+    {
+      fprintf (stderr, "%s\n", strerror (errno));
+      ed->exec->err = _("File seek error");
+      clearerr (fp);
+      return ERR;
+    }
+  else if (fflush (fp) == EOF || ftruncate (fileno (fp), 0) == -1)
+    {
+      fprintf (stderr, "%s: %s\n", ed->file->name, strerror (errno));
+      ed->exec->err = _("File truncate error");
+      return ERR;
+    }
+  return 0;
+}
+#endif  /* WANT_ED_REGISTER */

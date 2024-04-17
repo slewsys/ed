@@ -1,0 +1,20 @@
+# proto.ok-xm-at.in: Autotest template for the ed testsuite.
+#
+# Process this file with autotest to create testsuite (see also Makefile.am).
+
+AT_SETUP([Script: @SCRIPT_NAME@.txm])
+
+cat >script-@SCRIPT_NAME@ <<_ATEOF_ED
+H
+~e @SCRIPT_SRC@.?.d
+$(test -s @SCRIPT_SRC@.txm &&
+cat @SCRIPT_SRC@.txm ||
+echo "w @SCRIPT_NAME@.o")
+wq @SCRIPT_NAME@.o
+_ATEOF_ED
+
+AT_SKIP_IF([! ed --version | grep -q 'ed-macro'])
+AT_CHECK([ed - <script-@SCRIPT_NAME@ &&
+diff -u @SCRIPT_SRC@.r @SCRIPT_NAME@.o],
+0, [ignore], [ignore], [], [])
+AT_CLEANUP()

@@ -142,7 +142,7 @@ exec_global (ed_buffer_t *ed)
           strcpy (gcb, ed->input);
           first_time = 0;
         }
-      for (ed->input = gcb; *ed->input;)
+      for (ed->input = gcb; ed->input && *ed->input;)
         if ((status = address_range (ed)) < 0
             || (status = exec_command (ed)) < 0
             || ((ed->display->io_f = status) > 0

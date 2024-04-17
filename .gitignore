@@ -83,7 +83,9 @@ Makefile
 /testsuite/ed
 /testsuite/package.m4
 /testsuite/proto.ok-so-at.in
-testsuite/testsuite.at
+/testsuite/testsuite
+/testsuite/testsuite.at
+/testsuite/testsuite.log
 /testsuite/*.ok-at
 /testsuite/*.err-at
 /testsuite/*.fail-at

@@ -13,11 +13,14 @@ ED_SCRIPTSdir = $(srcdir)
 AT_PROTO_OK    = $(ED_SCRIPTSdir)/proto.ok-at.in
 AT_PROTO_OK_SO = $(ED_SCRIPTSdir)/proto.ok-so-at.in
 AT_PROTO_OK_MF = $(ED_SCRIPTSdir)/proto.ok-mf-at.in
+AT_PROTO_OK_R  = $(ED_SCRIPTSdir)/proto.ok-r-at.in
+AT_PROTO_OK_XM = $(ED_SCRIPTSdir)/proto.ok-xm-at.in
 AT_PROTO_ERR   = $(ED_SCRIPTSdir)/proto.err-at.in
 AT_PROTO_FAIL  = $(ED_SCRIPTSdir)/proto.fail-at.in
 
 
-SUFFIXES = .t .tso .tmf .err .ok-at .ok-so-at .ok-mf-at .err-at .fail-at
+SUFFIXES = .t .tso .tmf .tr .txm .err .ok-at .ok-so-at .ok-mf-at \
+	   .ok-r-at .ok-xm-at .err-at .fail-at
 
 # The following GNU make rules generate a location-independent version
 # of testsuite which is invoked from $(top_builddir) via:
@@ -25,32 +28,44 @@ SUFFIXES = .t .tso .tmf .err .ok-at .ok-so-at .ok-mf-at .err-at .fail-at
 #     $ make check
 #
 .t.ok-at:
-	sed -e "s^@SCRIPT_NAME@^$*^g"                                         \
-	    -e "s^@SCRIPT_SRC@^$(abs_srcdir)/$*^g" "$(AT_PROTO_OK)"           \
+	sed -e "s^@SCRIPT_NAME@^$*^g"					      \
+	    -e "s^@SCRIPT_SRC@^$(abs_srcdir)/$*^g" "$(AT_PROTO_OK)"	      \
 	    >"$@".tmp
 	mv "$@".tmp "$@"
 
 .tso.ok-so-at:
-	sed -e "s^@SCRIPT_NAME@^$*^g"                                         \
-	    -e "s^@SCRIPT_SRC@^$(abs_srcdir)/$*^g" "$(AT_PROTO_OK_SO)"        \
+	sed -e "s^@SCRIPT_NAME@^$*^g"					      \
+	    -e "s^@SCRIPT_SRC@^$(abs_srcdir)/$*^g" "$(AT_PROTO_OK_SO)"	      \
 	    >"$@".tmp
 	mv "$@".tmp "$@"
 
 .tmf.ok-mf-at:
-	sed -e "s^@SCRIPT_NAME@^$*^g"                                         \
-	    -e "s^@SCRIPT_SRC@^$(abs_srcdir)/$*^g" "$(AT_PROTO_OK_MF)"        \
+	sed -e "s^@SCRIPT_NAME@^$*^g"					      \
+	    -e "s^@SCRIPT_SRC@^$(abs_srcdir)/$*^g" "$(AT_PROTO_OK_MF)"	      \
+	    >"$@".tmp
+	mv "$@".tmp "$@"
+
+.tr.ok-r-at:
+	sed -e "s^@SCRIPT_NAME@^$*^g"					      \
+	    -e "s^@SCRIPT_SRC@^$(abs_srcdir)/$*^g" "$(AT_PROTO_OK_R)"	      \
+	    >"$@".tmp
+	mv "$@".tmp "$@"
+
+.txm.ok-xm-at:
+	sed -e "s^@SCRIPT_NAME@^$*^g"					      \
+	    -e "s^@SCRIPT_SRC@^$(abs_srcdir)/$*^g" "$(AT_PROTO_OK_XM)"	      \
 	    >"$@".tmp
 	mv "$@".tmp "$@"
 
 .err.err-at:
-	sed -e "s^@SCRIPT_NAME@^$*^g"                                         \
-	    -e "s^@SCRIPT_SRC@^$(abs_srcdir)/$*^g" "$(AT_PROTO_ERR)"          \
+	sed -e "s^@SCRIPT_NAME@^$*^g"					      \
+	    -e "s^@SCRIPT_SRC@^$(abs_srcdir)/$*^g" "$(AT_PROTO_ERR)"	      \
 	    >"$@".tmp
 	mv "$@".tmp "$@"
 
 .err.fail-at:
-	sed -e "s^@SCRIPT_NAME@^$$(basename $*)^g"                            \
-	    -e "s^@SCRIPT_SRC@^$(abs_srcdir)/$*^g" "$(AT_PROTO_FAIL)"         \
+	sed -e "s^@SCRIPT_NAME@^$$(basename $*)^g"			      \
+	    -e "s^@SCRIPT_SRC@^$(abs_srcdir)/$*^g" "$(AT_PROTO_FAIL)"	      \
 	    >"$@".tmp
 	mv "$@".tmp "$@"
 
@@ -69,14 +84,22 @@ ED_SCRIPTS_OK_SO =							      \
 	zfh1.tso zfh2.tso zbh1.tso zbh2.tso
 
 # Ed scripts which should complete sucessfully if file globbing is available.
-ED_SCRIPTS_OK_MF =                                                            \
+ED_SCRIPTS_OK_MF =							      \
 	eg1.tmf eg2.tmf eg3.tmf
 
+# Ed scripts which should complete sucessfully if registers are available.
+ED_SCRIPTS_OK_R =							      \
+	rmt1.tr rmt2.tr rmt3.tr
+
+# Ed scripts which should complete sucessfully if registers are available.
+ED_SCRIPTS_OK_XM =							      \
+	mac1.txm mac2.txm mac3.txm
+
 # Ed scripts which should complete, but with non-zero exit status.
-ED_SCRIPTS_ERR =                                                              \
-	a2.err addr1.err addr2.err bang1.err c1.err d.err                     \
-	e1.err e2.err e3.err f1.err f2.err g1.err g2.err g3.err h.err         \
-	i2.err k2.err k3.err k4.err m.err q1.err r2.err s1.err s10.err        \
+ED_SCRIPTS_ERR =							      \
+	a2.err addr1.err addr2.err bang1.err c1.err d.err		      \
+	e1.err e2.err e3.err f1.err f2.err g1.err g2.err g3.err h.err	      \
+	i2.err k2.err k3.err k4.err m.err q1.err r2.err s1.err s10.err	      \
 	s3.err s4.err s5.err s6.err s7.err s8.err t1.err t2.err		      \
 	u.err w1.err w2.err w3.err z.err
 
@@ -96,15 +119,19 @@ ED_SCRIPTS_RESULTS_PIPED = $(wildcard *.rr)
 AT_SCRIPTS_OK	   = $(ED_SCRIPTS_OK:.t=.ok-at)
 AT_SCRIPTS_OK_SO   = $(ED_SCRIPTS_OK_SO:.tso=.ok-so-at)
 AT_SCRIPTS_OK_MF   = $(ED_SCRIPTS_OK_MF:.tmf=.ok-mf-at)
+AT_SCRIPTS_OK_R	   = $(ED_SCRIPTS_OK_R:.tr=.ok-r-at)
+AT_SCRIPTS_OK_XM   = $(ED_SCRIPTS_OK_XM:.txm=.ok-xm-at)
 AT_SCRIPTS_ERR	   = $(ED_SCRIPTS_ERR:.err=.err-at)
 AT_SCRIPTS_FAIL	   = $(ED_SCRIPTS_ERR:.err=.fail-at)
 
 EXTRA_DIST =								      \
-	$(AT_PROTO_OK) $(AT_PROTO_OK_SO).in $(AT_PROTO_OK_MF)                 \
-	$(AT_PROTO_ERR) $(AT_PROTO_FAIL)                                      \
-	$(ED_SCRIPTS_OK) $(ED_SCRIPTS_OK_SO) $(ED_SCRIPTS_OK_MF)              \
-	$(ED_SCRIPTS_ERR) $(ED_SCRIPTS_FAIL) $(ED_SCRIPTS_DATA)               \
-	$(ED_SCRIPTS_DATA_COMPRESSED) $(ED_SCRIPTS_RESULTS)                   \
+	$(AT_PROTO_OK) $(AT_PROTO_OK_SO).in $(AT_PROTO_OK_MF)		      \
+	$(AT_PROTO_OK_R) $(AT_PROTO_OK_XM)				      \
+	$(AT_PROTO_ERR) $(AT_PROTO_FAIL)				      \
+	$(ED_SCRIPTS_OK) $(ED_SCRIPTS_OK_SO) $(ED_SCRIPTS_OK_MF)	      \
+	$(ED_SCRIPTS_OK_R) $(ED_SCRIPTS_OK_XM)				      \
+	$(ED_SCRIPTS_ERR) $(ED_SCRIPTS_FAIL) $(ED_SCRIPTS_DATA)		      \
+	$(ED_SCRIPTS_DATA_COMPRESSED) $(ED_SCRIPTS_RESULTS)		      \
 	$(ED_SCRIPTS_RESULTS_PIPED)
 
 .PHONY: build-and-run-testsuite build-and-run-valgrind
@@ -140,7 +167,7 @@ build-and-run-valgrind: atconfig ed $(TESTSUITE)
 	$(SED) -i -e "/^exec/s;';'$(VALGRIND)' $(VALGRIND_memcheck_FLAGS) ';" \
 	    $(abs_builddir)/ed
 	$(abs_srcdir)/$(TESTSUITE) -d
-	find $(abs_builddir)/$(TESTSUITE).dir -name '*.log' \
+	find $(abs_builddir)/$(TESTSUITE).dir -name '*.log'		      \
 	    | xargs -n30 grep 'lost'
 
 $(TESTSUITE): $(TESTSUITE_AT) $(PACKAGE_M4)
@@ -148,25 +175,27 @@ $(TESTSUITE): $(TESTSUITE_AT) $(PACKAGE_M4)
 	mv "$@".tmp "$@"
 
 $(TESTSUITE_AT): $(AT_SCRIPTS_OK) $(AT_SCRIPTS_OK_SO) $(AT_SCRIPTS_OK_MF)     \
+		 $(AT_SCRIPTS_OK_R) $(AT_SCRIPTS_OK_XM)			      \
 		 $(AT_SCRIPTS_ERR) $(AT_SCRIPTS_FAIL)
-	{                                                                     \
-	  echo 'AT_INIT';                                                     \
-	  echo 'AT_TESTED([ed])';                                             \
+	{								      \
+	  echo 'AT_INIT';						      \
+	  echo 'AT_TESTED([ed])';					      \
 	} >"$@".tmp
-	for scpt in $(AT_SCRIPTS_OK) $(AT_SCRIPTS_OK_SO)                      \
-		    $(AT_SCRIPTS_OK_MF) $(AT_SCRIPTS_ERR)                     \
-		    $(AT_SCRIPTS_FAIL); do				      \
+	for scpt in $(AT_SCRIPTS_OK) $(AT_SCRIPTS_OK_SO)		      \
+		    $(AT_SCRIPTS_OK_MF) $(AT_SCRIPTS_OK_R)		      \
+		    $(AT_SCRIPTS_OK_XM)					      \
+		    $(AT_SCRIPTS_ERR) $(AT_SCRIPTS_FAIL); do		      \
 	  echo "m4_include([$$scpt])";					      \
 	done >>"$@".tmp
 	mv "$@".tmp "$@"
 
 $(PACKAGE_M4): $(top_srcdir)/configure.ac
-	{                                                                     \
-	  echo '# Signature of the current package.';                         \
-	  echo 'm4_define([AT_PACKAGE_NAME], [@PACKAGE_NAME@])';              \
-	  echo 'm4_define([AT_PACKAGE_TARNAME], [@PACKAGE_TARNAME@])';        \
-	  echo 'm4_define([AT_PACKAGE_VERSION], [@PACKAGE_VERSION@])';        \
-	  echo 'm4_define([AT_PACKAGE_STRING], [@PACKAGE_STRING@])';          \
+	{								      \
+	  echo '# Signature of the current package.';			      \
+	  echo 'm4_define([AT_PACKAGE_NAME], [@PACKAGE_NAME@])';	      \
+	  echo 'm4_define([AT_PACKAGE_TARNAME], [@PACKAGE_TARNAME@])';	      \
+	  echo 'm4_define([AT_PACKAGE_VERSION], [@PACKAGE_VERSION@])';	      \
+	  echo 'm4_define([AT_PACKAGE_STRING], [@PACKAGE_STRING@])';	      \
 	  echo 'm4_define([AT_PACKAGE_BUGREPORT], [@PACKAGE_BUGREPORT@])';    \
 	} >"$@".tmp
 	mv "$@".tmp "$@"
@@ -175,8 +204,9 @@ distclean-local:
 	rm -f atconfig proto.ok-so-at.in
 
 clean-local:
-	rm -f *.ok-at *.ok-so-at *.ok-mf-at *.fail-at *.err-at *.log
-	rm -rf  *.dir tmpwrk*
+	rm -f *.ok-at *.ok-so-at *.ok-mf-at *.ok-r-at \
+	      *.ok-xm-at *.fail-at *.err-at *.log
+	rm -rf	*.dir tmpwrk*
 	rm -f $(PACKAGE_M4) $(TESTSUITE_AT) $(TESTSUITE)
 
 install:

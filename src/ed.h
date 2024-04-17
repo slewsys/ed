@@ -342,6 +342,13 @@ struct ed_state
   int input_is_binary;          /* If set, binary data on input. */
 };
 
+typedef struct ed_path
+{
+  char *name;
+  size_t size;
+} ed_path_t;
+
+
 #ifdef WANT_ED_REGISTER
 /* Register I/O flags. */
 enum register_io_flags
@@ -355,7 +362,8 @@ enum register_io_flags
 /* Register buffers. */
 struct ed_register
 {
-  ed_line_node_t *lp[REGBUF_MAX];  /* Register buffers. */
+  FILE *fp[REGBUF_MAX];         /* Register buffers. */
+  ed_path_t path[REGBUF_MAX];   /* Register pathanmes. */
   int read_idx;                 /* Input register index. */
   int write_idx;                /* Output register index. */
   int io_f;                     /* Register I/O flags. */
@@ -924,7 +932,7 @@ void init_ed_command (int, ed_buffer_t *);
 void init_ed_state (off_t, struct ed_state *);
 void init_global_queue (ed_global_node_t **, ed_line_node_t **, ed_buffer_t *);
 #ifdef WANT_ED_REGISTER
-int init_register_queue (int, ed_buffer_t *);
+int init_register_buffer (int, ed_buffer_t *);
 #endif
 
 int init_script_buffer (ed_buffer_t *);
@@ -974,7 +982,7 @@ int reopen_ed_buffer (ed_buffer_t *);
 void reset_global_queue (ed_buffer_t *);
 
 #ifdef WANT_ED_REGISTER
-int reset_register_queue (int, ed_buffer_t *);
+int reset_register_buffer (int, ed_buffer_t *);
 #endif
 
 void reset_undo_queue (ed_buffer_t *);
