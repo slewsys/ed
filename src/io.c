@@ -176,6 +176,7 @@ read_pipe (const char *fn, off_t after, off_t *addr,
   return 0;
 }
 
+
 /* PUT_BUFFER_LINE: Add a line of text to the editor buffer. */
 #define PUT_BUFFER_LINE(lp, tb, len, up, addr)                                \
   do                                                                          \
@@ -195,7 +196,7 @@ read_pipe (const char *fn, off_t after, off_t *addr,
 
 /*
  * read_stream: Read a stream into the editor buffer after the given
- *   address. Return bytes read.
+ *   address. Parameter *size is set to bytes read.
  */
 static int
 read_stream (FILE *fp, off_t after, off_t *size, ed_buffer_t *ed)
@@ -600,8 +601,8 @@ write_file (const char *fn, int is_default, off_t from, off_t to,
           ed->exec->err = _("File seek error");
           return ERR;
         }
-      if (*mode == 'w' && (ftruncate (fileno (fp), 0) == -1
-                           || fflush (fp) == EOF))
+      if (*mode == 'w' && (fflush (fp) == EOF
+                           || ftruncate (fileno (fp), 0) == -1))
         {
           fprintf (stderr, "%s: %s\n", ed->file->name, strerror (errno));
           ed->exec->err = _("File truncate error");
@@ -773,6 +774,45 @@ put_stream_line (FILE *fp, const char *s, size_t len, ed_buffer_t *ed)
   return 0;
 }
 
+/* append_stream: Write stream src_fp to stream dest_fp. */
+int
+append_stream (FILE *dest_fp, FILE *src_fp, size_t *size, ed_buffer_t *ed)
+{
+  char buf[BUFSIZ];
+  size_t read_size;
+  size_t write_size;
+
+  for  (*size = 0; (read_size = fread(buf, 1, BUFSIZ, src_fp)) > 0; *size += write_size)
+    if ((write_size = fwrite (buf, 1, read_size, dest_fp)) != read_size)
+      {
+        fprintf (stderr, "%s\n", strerror (errno));
+        ed->exec->err = _("File write error");
+        clearerr (dest_fp);
+        return ERR;
+      }
+
+  if (feof (src_fp))
+    {
+      if (write_size && buf[write_size - 1] != '\n'
+          && (write_size = fwrite ("\n", 1, 1, dest_fp)) != 1)
+        {
+          fprintf (stderr, "%s\n", strerror (errno));
+          ed->exec->err = _("File write error");
+          clearerr (dest_fp);
+          return ERR;
+        }
+      fflush (dest_fp);
+      clearerr (src_fp);
+    }
+  else if (ferror (src_fp))
+    {
+      fprintf (stderr, "%s\n", strerror (errno));
+      ed->exec->err = _("File read error");
+      clearerr (src_fp);
+      return ERR;
+    }
+  return 0;
+}
 
 /* get_inode: Get file inode, return status. */
 static int

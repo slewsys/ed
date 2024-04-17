@@ -462,6 +462,7 @@ struct ed_execute
 
   FILE *fp;                     /* Command script file pointer. */
   char *file_script;            /* File argument of `-f script' option. */
+  size_t file_script_size;      /* Script filename size.  */
   char *pathname;               /* Concatenation of scripts. */
   size_t pathname_size;         /* Concatenation of scripts. */
   char *address;                /* Initial address command list. */
@@ -863,7 +864,7 @@ int append_from_register (off_t, ed_buffer_t *);
 #endif
 
 int append_lines (off_t, ed_buffer_t *);
-
+int append_stream (FILE *, FILE *, size_t *, ed_buffer_t *);
 #ifdef WANT_SCRIPT_FLAGS
 int append_script_expression (const char *, ed_buffer_t *);
 int append_script_file (char *, ed_buffer_t *);
@@ -877,14 +878,11 @@ int append_to_register (off_t, off_t, int, ed_buffer_t *);
 #endif
 
 ed_undo_node_t *append_undo_node (int, off_t, off_t, ed_buffer_t *);
-int close_ed_buffer (ed_buffer_t *);
 int copy_lines (off_t, off_t, off_t, ed_buffer_t *);
-int create_disk_buffer (FILE **, char **, size_t *, ed_buffer_t *);
 int decode_utf8_char (unsigned char **, int);
 void delete_global_nodes  (const ed_line_node_t *, const ed_line_node_t *,
                            ed_buffer_t *);
 int delete_lines (off_t, off_t, ed_buffer_t *);
-char **dup_argv (int, char **, ed_buffer_t *);
 int display_lines (off_t, off_t, ed_buffer_t *);
 int encode_utf8_char (char *, int *, unsigned int);
 int exec_command (ed_buffer_t *);
@@ -929,6 +927,7 @@ void init_global_queue (ed_global_node_t **, ed_line_node_t **, ed_buffer_t *);
 int init_register_queue (int, ed_buffer_t *);
 #endif
 
+int init_script_buffer (ed_buffer_t *);
 int init_signal_handler (ed_buffer_t *);
 int init_stdio (ed_buffer_t *);
 void init_substitute (regex_t **, unsigned *, off_t *, off_t *,

@@ -1736,10 +1736,10 @@ shell_cmd (ed_buffer_t *ed)
   if (!ed->exec->region->addrs)
     {
       /* system(3) blocks SIGCHLD. */
-      status = system(++fn);
+      (void) system(++fn);
 
       /*
-       * XXX: status always -1 on Linux.
+       * XXX: status == -1 (in this context)
        */
       /*
        * if ((status = system (++fn)) < 0

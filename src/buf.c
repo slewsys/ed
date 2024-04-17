@@ -17,6 +17,11 @@
 # define _PATH_TMP "/tmp/"
 #endif
 
+/* Static function declarations. */
+static int close_ed_buffer (ed_buffer_t *);
+static int create_disk_buffer (FILE **, char **, size_t *, ed_buffer_t *);
+static char **dup_argv (int, char **, ed_buffer_t *);
+static int init_core_buffer(ed_buffer_t *);
 
 /*
  * one_time_init: Open ed buffer file; initialize queues, I/O buffers
@@ -30,10 +35,7 @@ one_time_init (int argc, char *argv[], ed_buffer_t *ed)
   int status;
 
   if ((status = init_stdio (ed)) < 0
-      || (status = create_disk_buffer (&ed->core->fp,
-                                       &ed->core->pathname,
-                                       &ed->core->pathname_size,
-                                       ed)) < 0)
+      || (status = init_core_buffer (ed)) < 0)
     return status;
 
   /*
@@ -235,17 +237,14 @@ reopen_ed_buffer (ed_buffer_t *ed)
   int status;
 
   if ((status = close_ed_buffer (ed)) < 0
-      || (status = create_disk_buffer (&ed->core->fp,
-                                       &ed->core->pathname,
-                                       &ed->core->pathname_size,
-                                       ed)) < 0)
+      || (status = init_core_buffer (ed)) < 0)
     return status;
   return 0;
 }
 
 
 /* create_disk_buffer: Open an on-disk buffer. */
-int
+static int
 create_disk_buffer (FILE **fp, char **name, size_t *name_size, ed_buffer_t *ed)
 {
   STAT_T sb;
@@ -304,7 +303,7 @@ create_disk_buffer (FILE **fp, char **name, size_t *name_size, ed_buffer_t *ed)
 
 
 /* close_ed_buffer: Close on-disk buffer file. */
-int
+static int
 close_ed_buffer (ed_buffer_t *ed)
 {
   int status = 0;
@@ -524,7 +523,7 @@ quit (int n, ed_buffer_t *ed)
   _exit (n);
 }
 
-char **
+static char **
 dup_argv (int argc, char **argv, ed_buffer_t *ed)
 {
   static char **pathv_p = NULL;
@@ -585,12 +584,14 @@ realloc_buffer (void **b, size_t *n, size_t i, ed_buffer_t *ed)
 }
 
 
-/* init_global_queue: Initialize ed_core global queue. */
-void
-init_global_queue (ed_global_node_t **aq, ed_line_node_t **lq, ed_buffer_t *ed)
+/* init_core_buffer: Initialize ed core buffer. */
+static int
+init_core_buffer (ed_buffer_t *ed)
 {
-  *aq = ed->core->global_head;
-  *lq = ed->core->line_head;
+  return  create_disk_buffer (&ed->core->fp,
+                              &ed->core->pathname,
+                              &ed->core->pathname_size,
+                              ed);
 }
 
 #ifdef WANT_ED_REGISTER
@@ -608,13 +609,30 @@ init_register_queue (int idx, ed_buffer_t *ed)
       spl0 ();
       return ERR;
     }
-
   LINK_NODES (rq, rq);
   ed->core->regbuf->lp[idx] = rq;
   spl0 ();
   return 0;
 }
 #endif  /* WANT_ED_REGISTER */
+
+/* init_script_buffer: Initialize ed script buffer. */
+int
+init_script_buffer (ed_buffer_t *ed)
+{
+  return  create_disk_buffer (&ed->exec->fp,
+                              &ed->exec->pathname,
+                              &ed->exec->pathname_size,
+                              ed);
+}
+
+/* init_global_queue: Initialize ed_core global queue. */
+void
+init_global_queue (ed_global_node_t **aq, ed_line_node_t **lq, ed_buffer_t *ed)
+{
+  *aq = ed->core->global_head;
+  *lq = ed->core->line_head;
+}
 
 /* init_undo_queue: Initialize ed_core undo queue. */
 void
@@ -625,7 +643,8 @@ init_undo_queue (ed_undo_node_t **uq, ed_buffer_t *ed)
 
 
 /* init_text_deque: Initialize text deque and free any prior elements. */
-void init_text_deque (ed_text_node_t *th)
+void
+init_text_deque (ed_text_node_t *th)
 {
   char *t;
   size_t len;

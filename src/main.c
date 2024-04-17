@@ -720,27 +720,33 @@ append_script_expression (const char *s, ed_buffer_t *ed)
   size_t n;
   int status;
 
-  if (!ed->exec->fp
-      && (status = create_disk_buffer (&ed->exec->fp,
-                                       &ed->exec->pathname,
-                                       &ed->exec->pathname_size,
-                                       ed)) < 0)
-    return status;
-
-  /* Append string `s' to end of file `ed->exec->pathname'. */
-  if (FSEEK (ed->exec->fp, 0L, SEEK_END) == -1)
+  if (!ed->exec->fp)
     {
-      fprintf (stderr, "%s: %s\n", ed->exec->pathname, strerror (errno));
+      if (init_script_buffer (ed) < 0)
+        return status;
+    }
+  else if (FSEEK (ed->exec->fp, 0L, SEEK_END) == -1)
+    {
+      fprintf (stderr, "%s\n", strerror (errno));
       ed->exec->err = _("File seek error");
       clearerr (ed->exec->fp);
       return ERR;
     }
-  if (((n = strlen (s)) > 0
-      && (fwrite (s, 1, n, ed->exec->fp) != n
-          || (s[n - 1] != '\n' && fwrite ("\n", 1, 1, ed->exec->fp) != 1)))
-      || (n == 0 && fwrite ("\n", 1, 1, ed->exec->fp) != 1))
+
+  if ((n = strlen (s)) > 0)
     {
-          fprintf (stderr, "%s: %s\n", ed->exec->pathname, strerror (errno));
+      if (fwrite (s, 1, n, ed->exec->fp) != n
+          || s[n - 1] != '\n' && fwrite ("\n", 1, 1, ed->exec->fp) != 1)
+        {
+          fprintf (stderr, "%s\n", strerror (errno));
+          ed->exec->err = _("File write error");
+          clearerr (ed->exec->fp);
+          return ERR;
+        }
+    }
+  else if (fwrite ("\n", 1, 1, ed->exec->fp) != 1)
+    {
+          fprintf (stderr, "%s\n", strerror (errno));
           ed->exec->err = _("File write error");
           clearerr (ed->exec->fp);
           return ERR;
@@ -756,72 +762,45 @@ append_script_file (char *fn, ed_buffer_t *ed)
   FILE *fp;
   char *filename;
   char buf[BUFSIZ];
+  size_t fp_size = 0;
   size_t len;
   size_t n;
   size_t m = 0;
   int status;
 
-  filename = ((len = strlen (fn)) == 1 && *fn == '-' ? STDIN : fn);
+  filename = strlen (fn) == 1 && *fn == '-' ? STDIN : fn;
+  len = strlen (filename);
 
   /* Conditionally save filename of script. */
   if (len && !ed->exec->file_script)
       {
-        if (!(ed->exec->file_script = (char *) malloc (len + 1)))
-          {
-            fprintf (stderr, "%s\n", strerror (errno));
-            ed->exec->err = _("Memory exhausted");
-            return ERR;
-          }
+        REALLOC_THROW (ed->exec->file_script, ed->exec->file_script_size, len + 1, ERR, ed);
         strcpy (ed->exec->file_script, filename);
       }
 
-  /* Open script and create internal script file `ed->exec->pathname'. */
   if (!(fp = fopen (filename, "r")))
     {
       fprintf (stderr, "%s: %s\n", filename, strerror (errno));
       ed->exec->err = _("File open error");
       return ERR;
     }
-  if (!ed->exec->fp
-      && (status = create_disk_buffer (&ed->exec->fp,
-                                       &ed->exec->pathname,
-                                       &ed->exec->pathname_size,
-                                       ed)) < 0)
-    return status;
 
-  /* Append contents of script to end of internal script. */
-  if (FSEEK (ed->exec->fp, 0L, SEEK_END) == -1)
+  if (!ed->exec->fp)
     {
-      fprintf (stderr, "%s: %s\n", ed->exec->pathname, strerror (errno));
+      if (init_script_buffer (ed) < 0)
+        return status;
+    }
+  else if (FSEEK (ed->exec->fp, 0L, SEEK_END) == -1)
+    {
+      fprintf (stderr, "%s\n", strerror (errno));
       ed->exec->err = _("File seek error");
       clearerr (ed->exec->fp);
       return ERR;
     }
-  while ((n = fread (buf, 1, BUFSIZ, fp)) > 0
-         && (m = fwrite (buf, 1, n, ed->exec->fp)) == n)
-    ;
-  if (feof (fp))
-    {
-      if (!ferror (ed->exec->fp) && m && buf[m - 1] != '\n')
-        m = fwrite ("\n", 1, n = 1, ed->exec->fp);
-    }
-  else if (ferror (fp))
-    {
-      fprintf (stderr, "%s: %s\n", filename, strerror (errno));
-      ed->exec->err = _("File read error");
-      clearerr (fp);
-      fclose (fp);
-      return ERR;
-    }
-  fclose (fp);
-  if (ferror (ed->exec->fp))
-    {
-      fprintf (stderr, "%s: %s\n", ed->exec->pathname, strerror (errno));
-      ed->exec->err = _("File write error");
-      clearerr (ed->exec->fp);
-      return ERR;
-    }
 
+  if ((status = append_stream (ed->exec->fp, fp, &fp_size, ed)) < 0)
+    return status;
+  fclose (fp);
   return 0;
 }
 #endif  /* WANT_SCRIPT_FLAGS */
