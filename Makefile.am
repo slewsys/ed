@@ -81,8 +81,8 @@ update-po:
 	-$(MAKE) -C po $(AM_MAKEFLAGS) update-po
 
 distclean-local:
-	rm -f configure.orig
-	rm -rf GPATH GRTAGS GSYMS GTAGS
+	rm -f configure.orig  GPATH GRTAGS GSYMS GTAGS
+	rm -rf .cache
 	find . -name '[Tt][Aa][Gg][Ss]' -type f -delete
 	find . \( -name '*~' -or -name '#*#' \) -type f -delete
 	if test -f $(top_builddir)/testsuite/Makefile; then		      \

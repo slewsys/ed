@@ -79,6 +79,7 @@
 /iswxdigit.c
 /mbszero.c
 /setlocale_null-unlocked.c
+/stddef.h
 /stdckdint.in.h
 /wctype-impl.h
 /wctype.c
