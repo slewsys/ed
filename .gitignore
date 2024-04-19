@@ -69,6 +69,7 @@ Makefile
 /lib/malloc/dynarray-skeleton.gl.h
 /lib/malloc/dynarray.gl.h
 /lib/regex.h
+/lib/stdckdint.h
 /lib/stdlib.h
 /lib/sys/
 /lib/unistd.h

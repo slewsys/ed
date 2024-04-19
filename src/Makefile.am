@@ -61,6 +61,3 @@ endif LDADD_LIBBSD
 
 maintainer-clean-local:
 	rm -f .gdb_history
-
-check-syntax:
-	$(CC) -o /dev/null -S $(ed_SOURCES)

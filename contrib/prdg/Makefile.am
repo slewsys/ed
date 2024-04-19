@@ -1,0 +1,4 @@
+bin_PROGRAMS = prdg
+prdg_SOURCES = prdg.c
+
+AM_CPPFLAGS = -D_FORTIFY_SOURCE=3
