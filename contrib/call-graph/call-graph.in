@@ -1,0 +1,113 @@
+#!/usr/bin/env bash
+#
+# @(#) call-graph
+#
+# SYNOPSIS
+#
+#     call-graph SHELL-SCRIPT [...]
+#
+# DESCRIPTION
+#
+# This script generates a call graph for shell scripts on the command line that are
+# assumed to be structured as follows:
+#
+#     #!/usr/bin/env bash
+#     #
+#     func1 ()
+#     {
+#         ...
+#     }
+#
+#     func2 ()
+#     {
+#         ...
+#     }
+#
+#     ...
+#
+#     funcN ()
+#     {
+#         ...
+#     }
+#
+#     if test ."$0" = ."${BASH_SOURCE[0]}"; then
+#         ...
+#     fi
+#
+# In particular, the keyword "function" is omitted, and the function bodies'
+# enclosing curly braces ({}) are on a line by themselves, in the first column
+# of the script.
+#
+: ${CAT_CMD:='@CAT_CMD@'}
+: ${ED_CMD:='@ED_CMD@'}
+: ${FILE_CMD:='@FILE_CMD@'}
+: ${MKTEMP_CMD:='@MKTEMP_CMD@'}
+: ${PERL_CMD:='@PERL_CMD@'}
+: ${PRDG_CMD:='@PRDG_CMD@'}
+: ${RM_CMD:='@RM_CMD@'}
+: ${SED_CMD:='@SED_CMD@'}
+
+is-file-type ()
+{
+    file=$1
+    file_type=$2
+
+    if [[ ! ."$($FILE_CMD "$file")" =~ \..*$file_type ]]; then
+        echo "$file: Expected file of type: ${file_type}" >&2
+        return 1
+    fi
+}
+
+parse-shell-scripts ()
+{
+    local function_list_string=''
+    local -a function_list=()
+    local script=''
+
+    for script; do
+        is-file-type "$script" "shell script" || return $?
+        function_list_string+=$(
+            $ED_CMD -E -e 'g;^(\S+)\s+\(\).*;s;;\1;p' "$script"
+                             ) || return $?
+    done
+
+    mapfile -t function_list <<<"$function_list_string"
+
+    local funcall_alternates=$(IFS='|'; echo "${function_list[*]}")
+    local delim='[[:space:]()<>;|&\`]'
+    local funcall_regex='.*?'{$delim}'('$funcall_alternates')($|'${delim}')'
+    local ed_script=''
+
+    for script; do
+        ed_script='g/^\s*#/d
+g;^if.*$0.*;s;;_'${script##*/}'_ ()\
+{;
+g/^fi.*/s;;};
+g;^(\S+).*\(\);s;^(\S+).*;\1;p\
+s;$; { '${script}': };p\
+.=\
++,/^}/-w ! '${PERL_CMD}' -ne '\''print "  $1\n" if s/'$funcall_regex'/  \1/g'\'
+
+        $ED_CMD -E -e "$ed_script" "$script" || return $?
+    done
+}
+
+create-adjacency-list ()
+{
+    local tmpfile=$1
+
+    local ed_script='g/^[0-9]+/-,.j\
+s;( })(.*);\2\1;
+g;^\s+;-ka\
+?\{?-t'\''a
+g;.;s;$; ;\
+.,+j
+,p'
+
+    $ED_CMD -E -e "$ed_script" $tmpfile
+}
+
+if test ."$0" = ."${BASH_SOURCE[0]}"; then
+    create-adjacency-list  <(parse-shell-scripts "$@") |
+        $PRDG_CMD
+fi
