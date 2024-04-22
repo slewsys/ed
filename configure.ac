@@ -26,8 +26,8 @@ export CFLAGS
 #
 # Checks for various programs.
 #
-AC_ARG_VAR([ZCAT], [decompression filter])
-AC_PATH_PROGS([ZCAT], [gzcat zcat])
+AC_ARG_VAR([ZSTD_CMD], [decompression filter])
+AC_PATH_PROG([ZSTD_CMD], [zstd])
 
 AC_ARG_VAR([TROFF], [typesetting processor])
 AC_PATH_PROG([TROFF], [troff])

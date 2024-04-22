@@ -108,7 +108,7 @@ ED_SCRIPTS_FAIL = $(ED_SCRIPTS_ERR)
 
 ED_SCRIPTS_DATA = $(wildcard *.d)
 
-ED_SCRIPTS_DATA_COMPRESSED = $(wildcard *.d.gz)
+ED_SCRIPTS_DATA_COMPRESSED = $(wildcard *.d.zst)
 
 ED_SCRIPTS_RESULTS = $(wildcard *.r)
 
