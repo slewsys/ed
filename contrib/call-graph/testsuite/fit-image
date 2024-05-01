@@ -1,0 +1,443 @@
+#!/usr/bin/env bash
+#
+# @(#) fit-image
+#
+# SYNOPSIS
+#     fit-image -g GEOMETRY [-c CENTER] [-f IMG-FMT] image [...]
+#
+# DESCRIPTION
+#     This script crops and resizes its IMAGE arguments to fit the
+#     given GEOMETRY without distortion. The original image is not
+#     modified. The output image is named after the input image with
+#     `-WxH' appended, indicating the new dimensions. If optional
+#     image format, IMG-FMT, is specified and differs from the
+#     input image, then the output image is converted to the given
+#     format.
+#
+: ${AWK_CMD:='/usr/bin/gawk'}
+: ${CAT_CMD:='/usr/bin/cat'}
+: ${COLUMN_CMD:='/usr/bin/column'}
+: ${CONVERT_CMD:='/usr/bin/convert'}
+: ${CP_CMD:='/usr/bin/cp'}
+: ${GETOPT_CMD:='/usr/bin/getopt'}
+: ${GREP_CMD:='/usr/bin/grep'}
+: ${IDENTIFY_CMD:='/usr/bin/identify'}
+: ${READLINK_CMD:='/usr/bin/readlink'}
+: ${RM_CMD:='/usr/bin/rm'}
+: ${SED_CMD:='/usr/bin/sed'}
+: ${TR_CMD:='/usr/bin/tr'}
+
+usage ()
+{
+    local option=$1
+    local optarg=$2
+
+    if (( $# == 1 )); then
+        echo "${script_name}: $option: Unhandled option." >&2
+    elif (( $# == 2 )); then
+        echo "${script_name}: $optarg: Invalid option \`$option' arguemnt." >&2
+    fi
+
+    $CAT_CMD <<EOF
+Usage: ${script_name} -g GEOMETRY OPTIONS image [...]
+Options:
+  -c, --center=(C|N|E|S|W|NW|NE|SE|SW)
+           Nominal image center, relative to which the geometry
+           offsets (see parameters Xoff and Yoff of option \`-g'
+           below) are applied, where:
+
+               C  = center of image,
+               N  = center of top edge (i.e., North),
+               E  = center of right edge (i.e., East),
+               S  = center of bottom edge (i.e., South),
+               W  = center of left edge (i.e., West),
+               NW = upper-left corner (i.e., NorthWest),
+               NE = upper-right corner (i.e., NorthEast),
+               SE = lower-right corner (i.e., SouthEast),
+               SW = lower-left corner (i.e., SouthWest).
+
+           (Default value: C)
+  -f, --format=IMG-FMT
+           Convert image format to IMG-FMT. For a list of supported
+           formats, run:
+
+               ${script_name} -f list
+
+           (Default value: same as input image format)
+  -g, --geometry=WxH[(+|-)Xoff(+|-)Yoff]
+           Dimensions of output image, where:
+
+               W    = width in pixels,
+               H    = height in pixels,
+               Xoff = Horizontal offset (+ or -) of image center,
+               Yoff = Vertical offset (+ or -) of image center.
+
+           The original image is cropped and/or resized to fit the
+           output dimensions without distorting the original image,
+           i.e., circles in the input remain circles in the output.
+           When cropping, the offsets shift the image relative to the
+           nominal center set by option \`-c'.
+
+EOF
+}
+
+# OS-agnstoic readlink for existent files/directories.
+resolve-existing ()
+{
+    if $READLINK_CMD --version 2>&1 | $GREP_CMD -q 'coreutils'; then
+        $READLINK_CMD -e "$@"
+    else
+        $READLINK_CMD -f N "$@"
+    fi
+}
+
+assoc-list ()
+{
+    local -n _list=$1
+    local -n _assoc=$2
+
+    if (( ${#_list[*]} == 0 )); then
+        return
+    fi
+
+    local elm=''
+
+    for elm in "${_list[@]}"; do
+        _assoc[$elm]=1
+    done
+}
+
+is-element-of ()
+{
+    local -n list=$1
+    local element=$2
+
+    if test ."$element" = .''; then
+        return 1
+    fi
+
+    local -A assoc=()
+
+    assoc-list list assoc
+    (( assoc[${element}] ))
+}
+
+swap ()
+{
+    local -n r=$1
+    local -n s=$2
+
+    local t=$r
+    r=$s
+    s=$t
+}
+
+gcd ()
+{
+    local -i x=$1
+    local -i y=$2
+
+    if (( x < 0 )); then
+        (( x = -x ))
+    fi
+
+    if (( y < 0 )); then
+        (( y = -y ))
+    fi
+
+    if (( x < y )); then
+        swap x y
+    fi
+
+    while (( y > 0 )); do
+        (( x = x % y ))
+        if (( x < y )); then
+            swap x y
+        fi
+    done
+
+    echo $x
+}
+
+# aspect-dimensions: Try conditioning image's dimensions so that its
+#     aspect ratio can be aligned with target's using only integer
+#     arithmetic. The adjusted dimensions are keyed on `aspect-width'
+#     and `aspect-height'.
+aspect-dimensions ()
+{
+    local -n __params=$1
+
+    local -i gcd_target=$(gcd "${__params[target-width]}" "${__params[target-height]}")
+    local -i target_width_gcd_ratio=$(( __params[target-width] / gcd_target ))
+    local -i target_height_gcd_ratio=$(( __params[target-height] / gcd_target ))
+
+    if (( __params[width] > target_width_gcd_ratio )); then
+        __params[aspect-width]=$(( __params[width] / target_width_gcd_ratio * target_width_gcd_ratio ))
+    else
+        __params[aspect-width]=${__params[width]}
+    fi
+
+    if (( __params[height] > target_height_gcd_ratio )); then
+        __params[aspect-height]=$(( __params[height] / target_height_gcd_ratio * target_height_gcd_ratio ))
+    else
+        __params[aspect-height]=${__params[height]}
+    fi
+}
+
+# crop-to-aspect-ratio: Minimally crop image to target aspect ratio.
+crop-to-aspect-ratio ()
+{
+    local -n _params=$1
+
+    aspect-dimensions _params
+
+    # If aspect ratio of aspect-dimensions is smaller than target...
+    if (( _params[aspect-width] * _params[target-height] <= _params[aspect-height] * _params[target-width] )); then
+
+        # Retain aspect-dimension width and adjust height to match target aspect ratio.
+        _params[proportional-width]=${_params[aspect-width]}
+        _params[proportional-height]=$(( (_params[aspect-width] * _params[target-height] + _params[target-width] / 2) / _params[target-width] ))
+    else
+
+        # Retain aspect height and adjust width to target aspect ratio.
+        _params[proportional-width]=$(( (_params[aspect-height] * _params[target-width] + _params[target-height] / 2) / _params[target-height] ))
+        _params[proportional-height]=${_params[aspect-height]}
+    fi
+
+    local base_name=${_params[image]%.*}
+    local proportional_dimensions=${_params[proportional-width]}x${_params[proportional-height]}
+    local proportional_image=${base_name}-${_params[gravity]}_${proportional_dimensions}${_params[offsets]}.${_params[input-format]}
+
+    $CONVERT_CMD "$image"                                                       \
+             -gravity "${_params[center]}"                                      \
+             -crop "${proportional_dimensions}${_params[offsets]}"              \
+             +repage                                                            \
+             "$proportional_image" || return 1
+
+    _params[proportional-image]=$proportional_image
+}
+
+# scale-and-format: Resize image to target dimensions and adjust image
+#     format as needed.
+resize-and-convert-format ()
+{
+    local -n _params=$1
+
+    local base_name=${_params[proportional-image]%.*}
+    local resized_image=${base_name/-+([0-9])x+([0-9])[-+]+([0-9])[-+]+([0-9])}
+    resized_image+=-${_params[target-width]}x${_params[target-height]}
+
+    if test ."${_params[target-format]}" != .'' \
+            -a  ."${_params[target-format]}" != ."${_params[input-format]^^}"; then
+        resized_image+=.${_params[target-format],,}
+    else
+        resized_image+=.${_params[input-format]}
+    fi
+
+    if test ."${_params[proportional-image]}" != ."$resized_image"; then
+        $CONVERT_CMD "${_params[proportional-image]}"                           \
+                 -resize "${_params[target-width]}x${_params[target-height]}"   \
+                 "$resized_image" || return 1
+    fi
+
+    echo "$resized_image"
+}
+
+# convert-format: Convert image to target format.
+convert-format ()
+{
+    local -n _params=$1
+
+    local converted_image=${_params[proportional-image]%.*]}.${_params[target-format],,}
+
+    $CONVERT_CMD "${_params[proportional-image]}" "$converted_image"
+
+    echo "$converted_image"
+}
+
+scale-images ()
+{
+    local -n images=$1
+    local -n params=$2
+
+    local image
+
+    for image in "${images[@]}"; do
+        if test ! -f "$image"; then
+            echo "${script_name}: $image: No such file or directory" >&2
+            continue
+        fi
+
+        params[image]=$image
+        params[input-format]=${image##*.}
+        params[width]=$(
+            $IDENTIFY_CMD -ping -format '%[width]' "$image" 2>/dev/null
+              ) || continue
+        params[height]=$(
+            $IDENTIFY_CMD -ping -format '%[height]' "$image" 2>/dev/null
+              ) || continue
+
+        # If aspect ratio of original image differs from that of target...
+        if (( params[width] * params[target-height] != params[height] * params[target-width] )); then
+            crop-to-aspect-ratio params || continue
+        else
+            local base_name=${params[image]%.*}
+            local proportional_dimensions=${params[width]}x${params[height]}
+
+            params[proportional-width]=${params[width]}
+            params[proportional-height]=${params[height]}
+            params[proportional-image]=${base_name}-${params[gravity]}_${proportional_dimensions}${params[offsets]}.${params[input-format]}
+            $CP_CMD "${params[image]}" "${params[proportional-image]}" || continue
+        fi
+
+        trap '$RM_CMD -f "${params[proportional-image]}"; exit' 0 1 2 15
+
+        if (( params[proportional-width] != params[target-width] \
+                  || params[proportional-height] != params[target-height] )); then
+            params[target-image]=$(
+                resize-and-convert-format params
+                  ) || continue
+            if test ."${params[proportional-image]}" != ."$image"; then
+                $RM_CMD -f "${params[proportional-image]}"
+            fi
+        elif test ."${params[target-format]}" != .'' \
+            -a  ."${params[target-format]}" != ."${params[input-format]^^}"; then
+            params[target-image]=$(
+                convert-format params
+                  ) || continue
+            if test ."${params[proportional-image]}" != ."$image"; then
+                $RM_CMD -f "${params[proportional-image]}"
+            fi
+        else
+            params[target-image]=${params[proportional-image]}
+        fi
+
+        trap - 0 1 2 15
+
+        echo "${image##*/} => ${params[target-image]##*/}"
+    done
+}
+
+parse-command-line ()
+{
+    local -n images=$1
+    local -n params=$2
+
+    local args
+    local optarg
+    local -r shortopts=c:f:g:h
+    local -r longopts=center:,format:,geometry:,help
+
+    shift 2
+    args=$(
+        $GETOPT_CMD --shell bash --options "$shortopts"  \
+                --longoptions "$longopts" --name "$script_name" -- "$@"
+        ) || return 1
+
+    eval set -- "$args"
+    unset args
+
+    local -a magick_fmts
+    local geometry_rx='^\.([[:digit:]]+)x([[:digit:]]+)(([-+][[:digit:]]+){2})?$'
+    local -A gravity=(
+        [C]=Center
+        [N]=North
+        [E]=East
+        [S]=South
+        [W]=West
+        [NW]=NorthWest
+        [NE]=NorthEast
+        [SE]=SouthEast
+        [SW]=SouthWest
+    )
+
+    while true; do
+        case "$1" in
+            -c|--center)
+                optarg=${2:0:2}
+                case "${optarg^^}" in
+                    C|N|E|S|W|NW|NE|SE|SW)
+                        params[center]=${gravity["${optarg^^}"]}
+                        params[gravity]=${optarg,,}
+                        ;;
+                    *)
+                        usage -c "$2"
+                        return 1
+                        ;;
+                esac
+                ;;
+            -f|--format)
+                local -a magick_fmts=()
+                local fmts_string=''
+
+                fmts_string=$(
+                    $IDENTIFY_CMD -list format |
+                        $AWK_CMD  '/ [-r]w[-+] / { print gensub(/\*/, "", 1, $1) }'
+                           ) || return 1
+
+                case "$2" in
+                    list)
+                        $COLUMN_CMD <<<"$fmts_string"
+                        exit
+                        ;;
+                    *)
+                        local target_format=${2^^}
+
+                        mapfile -t magick_fmts <<<"$fmts_string"
+                        if ! is-element-of magick_fmts "$target_format"; then
+                            usage -f "$2"
+                            return 2
+                        fi
+                        ;;
+                esac
+                params[target-format]=$target_format
+                ;;
+            -g|--geometry)
+                if [[ ."$2" =~ $geometry_rx ]]; then
+                    params[target-width]=${BASH_REMATCH[1]}
+                    params[target-height]=${BASH_REMATCH[2]}
+                    params[offsets]=${BASH_REMATCH[3]:-'+0+0'}
+                else
+                    usage -g "$2"
+                    return 3
+                fi
+                ;;
+            -h|--help)
+                usage
+                exit
+                ;;
+            --)
+                shift
+                break
+                ;;
+            *)
+                usage "$1"
+                return 2
+                ;;
+        esac
+        shift 2
+    done
+
+    images=( "$@" )
+}
+
+if test ."$0" = ."${BASH_SOURCE[0]}"; then
+    shopt -s extglob
+    set -o pipefail
+
+    declare script=$(resolve-existing "$0")
+    declare script_name=${script##*/}
+
+    declare -a image_list=()
+    declare -A cli_params=(
+        [gravity]=c
+        [center]=Center
+        [target-width]=250
+        [target-height]=250
+        [offsets]=+0+0
+        [target-format]=''
+    )
+
+    parse-command-line image_list cli_params "$@" || exit $?
+    scale-images image_list cli_params
+fi

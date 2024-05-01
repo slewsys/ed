@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 #
+# SPDX-FileCopyrightText: 2024 Andrew L. Moore, SlewSys Research
+#
+# SPDX-License-Identifier: CCO
+#
 # @(#) call-graph
 #
 # SYNOPSIS
@@ -75,7 +79,7 @@ parse-shell-scripts ()
 
     local funcall_alternates=$(IFS='|'; echo "${function_list[*]}")
     local delim='[[:space:]()<>;|&\`]'
-    local funcall_regex='.*?'{$delim}'('$funcall_alternates')($|'${delim}')'
+    local funcall_regex='.*?(^|'"${delim}"')('"${funcall_alternates}"')($|'"${delim}"')'
     local ed_script=''
 
     for script; do
@@ -86,7 +90,7 @@ g/^fi.*/s;;};
 g;^(\S+).*\(\);s;^(\S+).*;\1;p\
 s;$; { '${script}': };p\
 .=\
-+,/^}/-w ! '${PERL_CMD}' -ne '\''print "  $1\n" if s/'$funcall_regex'/  \1/g'\'
++,/^}/-w ! '${PERL_CMD}' -ne '\''print "  $2\n" if s/'$funcall_regex'/  \1/g'\'
 
         $ED_CMD -E -e "$ed_script" "$script" || return $?
     done
@@ -109,5 +113,5 @@ g;.;s;$; ;\
 
 if test ."$0" = ."${BASH_SOURCE[0]}"; then
     create-adjacency-list  <(parse-shell-scripts "$@") |
-        $PRDG_CMD
+        $PRDG_CMD -m -r _${1##*/}_
 fi
