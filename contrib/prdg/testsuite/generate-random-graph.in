@@ -1,0 +1,253 @@
+#!/usr/bin/env bash
+#
+# SPDX-FileCopyrightText: 2024 Andrew L. Moore, SlewSys Research
+#
+# SPDX-License-Identifier: CCO
+#
+# @(#) generate-random-graph
+#
+# SYNOPSIS
+#
+#     generate-random-graph VERTICES ARCS [OUTPUT-FILE]
+#
+# DESCRIPTION
+#
+# This script takes three arguments on the command line to generate a
+# random adjacency list - both sorted and shuffled - as follows:
+#
+#     VERTICES    - Number of vertices in the graph.
+#     ARCS        - Number of arcs in the graph.
+#     OUTPUT-FILE - Output file name, or if `-', write to  standard output.
+#                   If not output file name is specified, the default is files
+#                   named `test-data.txt' and `shuffled-test-data.txt' in
+#                   same directory as this script.
+#
+: ${AWK_CMD:='@AWK_CMD@'}
+: ${GREP_CMD:='@GREP_CMD@'}
+: ${READLINK_CMD:='@READLINK_CMD@'}
+: ${SED_CMD:='@SED_CMD@'}
+: ${SORT_CMD:='@SORT_CMD@'}
+: ${TEE_CMD:='@TEE_CMD@'}
+
+usage ()
+{
+    echo "Usage: ${script_name} VERTICES ARCS [OUTPUT-FILE | -]" >&2
+}
+
+# OS-agnstoic readlink for existent files/directories.
+resolve-existing ()
+{
+    if $READLINK_CMD --version 2>&1 | $GREP_CMD -q 'coreutils'; then
+        $READLINK_CMD -e "$@"
+    else
+        $READLINK_CMD -f N "$@"
+    fi
+}
+
+assoc-list ()
+{
+    local -n _list=$1
+    local -n _assoc=$2
+
+    if (( ${#_list[*]} == 0 )); then
+        return
+    fi
+
+    local key=''
+
+    for key in ${!_list[@]}; do
+        _assoc[${_list[$key]}]=$key
+    done
+}
+
+index-of-element ()
+{
+    local element=$1
+    # local -n list=$2
+
+    # local -A assoc=()
+
+    # assoc-list list assoc
+    echo ${assoc[${element}]}
+}
+
+validate-arguments ()
+{
+    local vertices=$1
+    local arcs=$2
+    local output_file=$3
+
+    if [[ ! ."$vertices" =~ ^\.[1-9][0-9]*$ ]]; then
+        echo "${vertices}: Invalid value for number of vertices in graph." >&2
+        usage
+        return 1
+    fi
+    if [[ ! ."$arcs" =~ ^\.[1-9][0-9]+$ ]]; then
+        echo "${arcs}: Invalid value for number of arcs in graph." >&2
+        usage
+        return 1
+    fi
+    if test ."${output_file##*/}" = ."$script_name"; then
+        echo "${output_file}: Invalid output file name." >&2
+        usage
+        exit 1
+    fi
+}
+
+# calculate-name-and-alphabet-size: To produce names for vertices from
+#     given alphabet, calculate the name length and how many letters
+#     to use.
+calculate-name-and-alphabet-size ()
+{
+    local -i total_vertices=$1
+    local -n _alphabet=$2
+    local -n _alphabet_size=$3
+    local -n _name_size=$4
+
+    local -i nth_root=0
+
+    for nth_root in {1..10}; do
+        eval local vertices_r${nth_root}=$(
+            $AWK_CMD "{ print int(exp(log(\$1)/${nth_root}) + 0.5) }" <<<"$total_vertices"
+             )
+
+        # Ensure strictly less than so that an extra letter can be added to ensure that
+        #    _alphabet_size ** _name_size >= total_vertices
+        if (( vertices_r${nth_root} < ${#alphabet[*]} )); then
+            (( _name_size = nth_root ))
+            (( _alphabet_size = vertices_r${nth_root} + 1 ))
+            break
+        fi
+    done
+}
+
+# get-vertex-names: Create a list of names using Bash range expansion.
+#     For instance, to create  fifty names, expand the
+#     range {a..h}{a..h}:
+#         _vertex_list=$( echo {a..h}{a..h} ) => aa ab ac .. ah ba bb .. hg hh
+#     Then remove excess names.
+get-vertex-names ()
+{
+    local -i total_vertices=$1
+    local -n _vertex_list=$2
+
+    local -i alphabet_size=0
+    local -i name_size=0
+    local -a alphabet=( $(echo {a..z} ) )
+
+    calculate-name-and-alphabet-size "$total_vertices" alphabet alphabet_size name_size
+
+    local vertex_range={${alphabet[0]}..${alphabet[alphabet_size - 1]}}
+
+    while (( --name_size )); do
+        vertex_range+=$vertex_range
+    done
+
+    _vertex_list=( $(eval echo $vertex_range) )
+
+    if (( total_vertices < ${#_vertex_list[*]} )); then
+        local -a extra_names=$(
+            eval echo _vertex_list{${total_vertices}..$(( ${#_vertex_list[*]} - 1 ))}
+              )
+
+        # Expands to: _vertex_list[total_vertices] ... _vertex_list[${#_vertex_list[*]} - 1]
+        unset ${extra_names[@]//+([0-9])/[&]}
+    fi
+}
+
+get-random-name ()
+{
+    local -n __vertex_list=$1
+
+    local -i size=${#__vertex_list[*]}
+
+    echo "${__vertex_list[$(( size * RANDOM / 2**15 ))]}"
+}
+
+# generate-random-arc: Generated arcs are not unique, since prdg has
+#     an option (-m) to permit multiple instances of an arc.
+push-random-arc ()
+{
+    local -n _arc_list=$1
+    local -n _vertex_list=$2
+
+    local tail=$(get-random-name _vertex_list)
+    local head=$(get-random-name _vertex_list)
+    local -i index=0
+
+    while test ."$tail" = ."$head"; do
+        head=$(get-random-name _vertex_list)
+    done
+
+    _arc_list+=( "${tail}	${head}	{}" )
+}
+
+push-labels ()
+{
+    local -n _arc_list=$1
+    local -n _vertex_list=$2
+
+    local vertex_tail=''
+    local -i index=0
+    local -A labeled=()
+
+    for vertex_tail in ${_arc_list[@]%%[$' \t']*}; do
+        if (( ! labeled["$vertex_tail"] )); then
+           index=$(index-of-element "$vertex_tail" _vertex_list)
+           _arc_list+=( "${vertex_tail}	${vertex_tail}	{ ${output_file##*/}:${index} }" )
+           labeled["$vertex_tail"]=1
+        fi
+    done
+}
+
+if test ."$0" = ."${BASH_SOURCE[0]}"; then
+    shopt -s extglob patsub_replacement
+    set -o pipefail
+
+    declare script=''
+    declare script_name=''
+    declare script_dir=''
+
+    script=$(resolve-existing "$0") || exit $?
+    script_name=${script##*/}
+    script_dir=${script%/*}
+
+    declare total_vertices=${1:-100}
+    declare total_arcs=${2:-200}
+    declare output_file=${3:-"${script_dir}/test-data.txt"}
+
+    validate-arguments "$total_vertices" "$total_arcs" "$output_file" \
+        || exit $?
+
+    declare output_operator=''
+
+    if test ."$output_file" = .'-'; then
+        output_file=standard-output
+    else
+        output_operator=">${output_file}"
+    fi
+
+    declare -a vertex_list=()
+
+    get-vertex-names "$total_vertices" vertex_list
+
+    declare -a arc_list=()
+    declare -A label=()
+
+    for (( i = total_arcs; i > 0; --i )); do
+        push-random-arc arc_list vertex_list || exit $?
+    done
+
+    # assoc contains inverted vertex_list, used by index-of-elment.
+    declare -A assoc=()
+
+    assoc-list vertex_list assoc
+    push-labels arc_list vertex_list
+
+    for i in ${!arc_list[*]}; do
+        echo "${arc_list[i]}"
+    done |
+        $TEE_CMD "${script_dir}/shuffled-${output_file##*/}" |
+        eval $SORT_CMD -k1,1 -k3r -k2,2  "$output_operator" \
+            || exit $?
+fi
