@@ -1,4 +1,4 @@
-.! awk '{ print gensub(/([^7]*)7([^7]*)/, "\\18\\2", "g", $0) }'
+.! awk '{ n = gsub(/7/, "8"); print }'
 a
 Appended via macro invoked from global command.
 .

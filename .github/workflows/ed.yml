@@ -6,19 +6,37 @@ on:
     branches: [main]
 jobs:
   build:
-    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
     strategy:
       matrix:
         OS: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
-      - name: install autopoint & gettext
-        run: sudo apt install autopoint gettext
-      - name: run autoreconf
-        run: ./autogen.sh
-      - name: configure
-        run: ./configure --enable-all-extensions --with-included-regex
-      - name: make
-        run: make
-      - name: make check
-        run: make check
+      - name: Install autopoint, gettext, texinfo and cal for Linux.
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt install autopoint gettext texinfo ncal
+      - name: Install autotools, gettext, texinfo and libssl for macOS.
+        if: runner.os == 'macOS'
+        run: |
+          brew install m4 autoconf automake libtool gettext openssl texinfo
+          brew unlink openssl@1.1 &&  brew link --force --overwrite openssl@3
+      - name: Configure ed for Linux.
+        if: runner.os == 'Linux'
+        run: |
+         ./autogen.sh
+         ./configure --enable-all-extensions --with-included-regex
+      - name: Configure ed for macOS.
+        if: runner.os == 'macOS'
+        run: |
+         ./autogen.sh
+         ./configure --enable-all-extensions --with-included-regex LDFLAGS=-L/opt/homebrew/Cellar/openssl@3/3.3.0/lib
+      - name: Build ed.
+        run: |
+          make
+      - name: Build and run ed testsuite.
+        run: |
+          make check # || find testsuite/testsuite.dir -name '*.log' -exec cat {} \+

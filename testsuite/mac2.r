@@ -1,4 +1,4 @@
-     April 2024     
+     April 2024
 Su Mo Tu We Th Fr Sa
     1  2  3  4  5  6
  8  8  9 10 11 12 13
@@ -7,5 +7,5 @@ Appended via macro invoked from global command.
 Appended via macro invoked from global command.
 21 22 23 24 25 26 28
 Appended via macro invoked from global command.
-28 29 30            
-                    
+28 29 30
+

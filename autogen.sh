@@ -32,6 +32,10 @@ fi
 for cmd in aclocal autoheader autopoint automake autoreconf libtoolize; do
     eval ${cmd}_cmd='$(which '$cmd' 2>/dev/null)'
     exit_status=$?
+    if test $exit_status -ne 0 -a ."$cmd" = .'libtoolize'; then
+        libtoolize_cmd=$(which glibtoolize 2>/dev/null)
+        exit_status=$?
+    fi
     if test $exit_status -ne 0; then
         cat <<EOF
 $script_name: $cmd: Command not found

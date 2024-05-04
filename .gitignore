@@ -91,7 +91,9 @@ Makefile
 /testsuite/*.err-at
 /testsuite/*.fail-at
 /testsuite/*.ok-mf-at
+/testsuite/*.ok-r-at
 /testsuite/*.ok-so-at
+/testsuite/*.ok-xm-at
 **/.deps/**
 **/*.a
 **/*.o
