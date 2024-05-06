@@ -248,7 +248,7 @@ static int
 create_disk_buffer (FILE **fp, char **name, size_t *name_size, ed_buffer_t *ed)
 {
   STAT_T sb;
-  char template[] = "ed.XXXXXXXXXX";
+  char template[] = "ed.XXXXXX";
   char *s = NULL;
   size_t s_size = 0;
   size_t path_size = 0;
@@ -274,9 +274,8 @@ create_disk_buffer (FILE **fp, char **name, size_t *name_size, ed_buffer_t *ed)
   strcpy (*name + s_size + add_path_sep, template);
 
   /* NB: Don't unlink(2) buffer upon opening in case it resides on NFS. */
-  if (!mktemp (*name)
-      || (fd = open (*name, O_CREAT | O_EXCL | O_RDWR, 0600)) < 0
-      || FSTAT (fd, &sb) < 0
+  if ((fd = mkstemp (*name)) == -1
+      || FSTAT (fd, &sb) == -1
       || !(*fp = fdopen (fd, "w+")))
     {
       fprintf (stderr, "%s: %s\n", *name, strerror (errno));

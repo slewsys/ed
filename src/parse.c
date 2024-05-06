@@ -499,7 +499,7 @@ expand_glob (char *pattern, int append, glob_t *gp, ed_buffer_t *ed)
               /* Skip prior expansions in gl_pathv. */
               if (pathv - gp->gl_pathv < gloff)
                 continue;
-              else if (stat (*pathv, &sb) == -1)
+              else if (STAT (*pathv, &sb) == -1)
                 {
                   fprintf (stderr, "%s: %s\n", *pathv, strerror (errno));
                   ed->exec->err = _("File status error");
