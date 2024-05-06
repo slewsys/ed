@@ -3,50 +3,39 @@ Upstream-Name: ed
 Upstream-Contact: Andrew L. Moore <slewsys@gmail.com>
 Source: https://github.com/slewsys/ed
 
-Files: doc/bwk/intro/* doc/ed-intro.texi
+Files:
+  doc/bwk/adv/*
+  doc/bwk/intro/*
+  doc/ed-adv.texi
+  doc/ed-intro.texi
 Copyright: 1972 Brian W. Kernighan <bwk@princeton.edu>
 License: LPL-1.02
 
-Files: doc/bwk/adv/* doc/ed-adv.texi
-Copyright: 1972 Brian W. Kernighan <bwk@princeton.edu>
-License: LPL-1.02
-
-Files: lib/* doc/bwk/tmac/s.tmac
-Copyright: 1985-2024 Free Software Foundation, Inc. <https://fsf.org/>
-License: LGPL-2.0-or-later
-
-Files: include/*
-Copyright: 1985-2024 Free Software Foundation, Inc. <https://fsf.org/>
-License: LGPL-2.0-or-later
-
-Files: m4/*
-Copyright: 1985-2024 Free Software Foundation, Inc. <https://fsf.org/>
-License: LGPL-2.0-or-later
-
-Files: po/* doc/fdl.texi doc/gpl.texi INSTALL
-Copyright: 1985-2024 Free Software Foundation, Inc. <https://fsf.org/>
-License: LGPL-2.0-or-later
-
-Files: src/* autogen.sh configure.ac Makefile.am doc/Makefile.am doc/bwk/Makefile.am ChangeLog README.md
+Files:
+  autogen.sh
+  ChangeLog
+  doc/bsd-ed.1
+  doc/bwk/Makefile.am
+  doc/ed.1
+  doc/ed.texi
+  doc/gnu-ed.1
+  doc/Makefile.am
+  Makefile.am
+  README.md
+  testsuite/*
 Copyright: 1993-2024 Andrew L. Moore <slewsys@gmail.com>
 License: BSD-2-Clause OR GPL-2.0-or-later OR MIT
 
-Files: doc/ed.1 doc/bsd-ed.1 doc/gnu-ed.1 doc/ed.texi
-Copyright: 1993-2024 Andrew L. Moore <slewsys@gmail.com>
-License: BSD-2-Clause OR GPL-2.0-or-later OR MIT
-
-Files: testsuite/*
-Copyright: 1993-2024 Andrew L. Moore <slewsys@gmail.com>
-License: BSD-2-Clause OR GPL-2.0-or-later OR MIT
-
-Files: contrib/*
-Copyright: 1993-2024 Andrew L. Moore <slewsys@gmail.com>
-License: BSD-2-Clause OR GPL-2.0-or-later OR MIT
-
-Files: debian/* .github/* ABOUT-NLS AUTHORS BUGS COPYING NEWS THANKS TODO .gitignore
+Files:
+  ABOUT-NLS
+  AUTHORS
+  BUGS
+  COPYING
+  debian/*
+  .github/*
+  .gitignore
+  NEWS
+  THANKS
+  TODO
 Copyright: 1993-2024 Andrew L. Moore <slewsys@gmail.com>
 License: CC0-1.0
-
-Files: libbsd/*
-Copyright: 2000 The NetBSD Foundation, Inc.
-License: BSD-2-Clause

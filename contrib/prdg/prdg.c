@@ -2,7 +2,7 @@
  *
  * SPDX-FileCopyrightText: 1989,2024 Andrew L. Moore, SlewSys Research
  *
- * SPDX-License-Identifier: CCO
+ * SPDX-License-Identifier: CC0
  */
 #include "prdg.h"
 

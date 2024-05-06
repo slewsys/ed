@@ -38,3 +38,4 @@ Makefile
 /GPATH
 /GRTAGS
 /GTAGS
+/testsuite/generate-random-graph
