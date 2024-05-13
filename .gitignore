@@ -80,6 +80,7 @@ Makefile
 /po/POTFILES.in
 /po/stamp-po
 /po/*.gmo
+/po/remove-potcdate.sed
 /testsuite/atconfig
 /testsuite/ed
 /testsuite/package.m4

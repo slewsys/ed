@@ -109,7 +109,7 @@ filter_lines (off_t from, off_t to, const char *sc, ed_buffer_t *ed)
   close (op[1]);
 
   spl1 ();
-  if ((status = delete_lines (from, to, ed)) < 0)
+  if (ed->exec->region->addrs && (status = delete_lines (from, to, ed)) < 0)
     {
       kill (shell_pid, SIGINT);
       spl0 ();
@@ -142,7 +142,8 @@ filter_lines (off_t from, off_t to, const char *sc, ed_buffer_t *ed)
        */
       if (close (ip[0]) < 0 || close (op[0]) < 0
           || !(ipp = fdopen (ip[1], "w"))
-          || (status = write_stream (ipp, lp, n, &size, ed)) < 0
+          || (ed->exec->region->addrs
+              && (status = write_stream (ipp, lp, n, &size, ed)) < 0)
           || fclose (ipp) < 0)
         {
           fprintf (stderr, "%s\n", strerror (errno));

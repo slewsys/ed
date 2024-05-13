@@ -393,7 +393,7 @@ read_stream_r (FILE *fp, off_t after, off_t *size, ed_buffer_t *ed)
    * ed->state->is_empty = (ed->state->is_empty
    *                        ? *size == ed->state->newline_missing : 0);
    */
-  ed->state->is_empty = ed->state->is_empty && *size > 0;
+  ed->state->is_empty = ed->state->is_empty && !*size;
 
   /* If stream_appended, then nl_prev == 0  ==> nl_prev && binary_prev == 0. */
   newline_inserted = (stream_appended

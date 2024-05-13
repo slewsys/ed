@@ -1720,10 +1720,6 @@ shell_cmd (ed_buffer_t *ed)
   int status = 0;               /* Return status */
 
   /* case '!': */
-  if (ed->exec->region->addrs
-      && (status =
-          is_valid_range (ed->state->dot, ed->state->dot, ed)) < 0)
-    return status;
   --ed->input;
   FILE_NAME (fn, len, 0, 0, 0, ed);
   if (!ed->exec->region->addrs)
@@ -1759,6 +1755,25 @@ shell_cmd (ed_buffer_t *ed)
 #if defined (HAVE_FORK) && defined (WANT_EXTERNAL_FILTER)
     else
       {
+        /*
+         * Reset region->addrs to 0 when buffer empty to avoid
+         * subsequent calls to delete_lines/write_stream.
+         * When buffer not empty, then:
+         *   0! shell-cmd => 1! shell-cmd
+         *   0,0! shell-cmd => 1,1! shell-cmd
+         * per c_cmd, q.v..
+         */
+        if (ed->state->lines
+            || (ed->exec->region->addrs = !(ed->exec->region->start == 0
+                                            && ed->exec->region->end == 0)))
+          {
+            ed->exec->region->start += !ed->exec->region->start;
+            ed->exec->region->end += !ed->exec->region->end;
+            if ((status =
+                 is_valid_range (ed->state->dot, ed->state->dot, ed)) < 0)
+              return status;
+          }
+
         if (!ed->exec->global)
           reset_undo_queue (ed);
         addr = ed->state->lines;

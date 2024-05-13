@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: textutils 2.0.14\n"
 "Report-Msgid-Bugs-To: bug-gnulib@gnu.org\n"
-"POT-Creation-Date: 2024-04-09 21:57-0400\n"
+"POT-Creation-Date: 2024-05-14 00:47-0400\n"
 "PO-Revision-Date: 2001-06-08 22:10 +02:00\n"
 "Last-Translator: Stanislav Meduna <stano@trillian.eunet.sk>\n"
 "Language-Team: Slovak <sk-i18n@rak.isternet.sk>\n"
@@ -112,9 +112,9 @@ msgstr ""
 msgid "Invalid range end"
 msgstr "%s: chybný regulárny výraz: %s"
 
-#: lib/regcomp.c:158 src/aux.c:231 src/aux.c:444 src/buf.c:267 src/buf.c:436
-#: src/buf.c:574 src/buf.c:604 src/glbl.c:171 src/io.c:317 src/main.c:770
-#: src/page.c:858 src/parse.c:273 src/parse.c:518 src/re.c:157 src/undo.c:26
+#: lib/regcomp.c:158 src/aux.c:257 src/buf.c:437 src/buf.c:583 src/glbl.c:171
+#: src/io.c:318 src/page.c:858 src/parse.c:273 src/parse.c:518 src/re.c:157
+#: src/undo.c:26
 #, fuzzy
 msgid "Memory exhausted"
 msgstr "vyèerpaná pamä»"
@@ -143,8 +143,13 @@ msgstr ""
 msgid "No previous regular expression"
 msgstr "chyba pri vyhµadávaní pomocou regulárneho výrazu"
 
-#: src/aux.c:35
+#: src/aux.c:27
 msgid "Child process error"
+msgstr ""
+
+#: src/aux.c:32
+#, c-format
+msgid "Exit status: %#x"
 msgstr ""
 
 #: src/aux.c:60
@@ -153,7 +158,7 @@ msgstr ""
 msgid "Flush error"
 msgstr "chyba pri zápise"
 
-#: src/aux.c:71 src/aux.c:160
+#: src/aux.c:71 src/aux.c:161
 #, fuzzy
 #| msgid "write error"
 msgid "Pipe open error"
@@ -164,74 +169,72 @@ msgstr "chyba pri zápise"
 msgid "Fork error"
 msgstr "chyba pri èítaní"
 
-#: src/aux.c:174
+#: src/aux.c:175
 msgid "Pipe close error"
 msgstr ""
 
-#: src/aux.c:300 src/aux.c:342
-msgid "Cannot append register to itself."
-msgstr ""
-
-#: src/aux.c:406
+#: src/aux.c:202
 msgid "Exceeded maximum stack frame depth"
 msgstr ""
 
-#: src/aux.c:422 src/aux.c:473 src/aux.c:513 src/aux.c:552 src/io.c:58
-#: src/io.c:600 src/main.c:230 src/main.c:732 src/main.c:792
+#: src/aux.c:218 src/aux.c:232 src/aux.c:286 src/aux.c:326 src/aux.c:365
+#: src/io.c:58 src/io.c:601 src/io.c:935 src/io.c:982 src/io.c:1041
+#: src/io.c:1051 src/io.c:1110 src/io.c:1119 src/io.c:1146 src/main.c:230
+#: src/main.c:731 src/main.c:796
 #, fuzzy
 #| msgid "write error"
 msgid "File seek error"
 msgstr "chyba pri zápise"
 
-#: src/aux.c:455 src/aux.c:498 src/aux.c:537 src/buf.c:116
+#: src/aux.c:268 src/aux.c:311 src/aux.c:350 src/buf.c:120
 #, fuzzy
 msgid "dup2 error"
 msgstr "chyba pri èítaní"
 
-#: src/buf.c:128 src/buf.c:281 src/buf.c:296
+#: src/buf.c:132 src/buf.c:282 src/buf.c:297
 msgid "Buffer open error"
 msgstr ""
 
-#: src/buf.c:139 src/buf.c:347 src/buf.c:383
+#: src/buf.c:143 src/buf.c:348 src/buf.c:384
 msgid "Buffer seek error"
 msgstr ""
 
-#: src/buf.c:260 src/main.c:559 src/main.c:631
+#: src/buf.c:267 src/main.c:559 src/main.c:631
 msgid "File name too long"
 msgstr ""
 
-#: src/buf.c:261
+#: src/buf.c:268
 #, fuzzy
 #| msgid "invalid user"
 msgid "Invalid buffer name"
 msgstr "neplatný pou¾ívateµ"
 
-#: src/buf.c:312
+#: src/buf.c:313
 msgid "Buffer close error"
 msgstr ""
 
-#: src/buf.c:357
+#: src/buf.c:358
 #, fuzzy
 msgid "Buffer read error"
 msgstr "chyba pri èítaní"
 
-#: src/buf.c:397 src/buf.c:427
+#: src/buf.c:398 src/buf.c:428
 msgid "Buffer full"
 msgstr ""
 
-#: src/buf.c:404
+#: src/buf.c:405
 #, fuzzy
 #| msgid "write error"
 msgid "Buffer write error"
 msgstr "chyba pri zápise"
 
-#: src/buf.c:500 src/exec.c:100 src/exec.c:129 src/exec.c:1862 src/page.c:301
+#: src/buf.c:501 src/exec.c:100 src/exec.c:129 src/exec.c:1890 src/page.c:301
 #: src/parse.c:223
 #, fuzzy
 msgid "Address out of range"
 msgstr "U+%04X: znak je mimo rozsah"
 
-#: src/buf.c:567
+#: src/buf.c:576
 msgid "Memory request too big"
 msgstr ""
 
@@ -249,17 +252,17 @@ msgstr ""
 msgid "Decryption failed (incomplete block)."
 msgstr ""
 
-#: src/cbc.c:384 src/io.c:551 src/main.c:807
+#: src/cbc.c:384 src/io.c:552 src/io.c:810
 #, fuzzy
 #| msgid "write error"
 msgid "File read error"
 msgstr "chyba pri zápise"
 
-#: src/cmds.c:39 src/exec.c:609 src/io.c:479 src/main.c:366
+#: src/cmds.c:43 src/exec.c:606 src/io.c:480 src/main.c:366
 msgid "End-of-file unexpected"
 msgstr ""
 
-#: src/cmds.c:243 src/cmds.c:259
+#: src/cmds.c:251 src/cmds.c:267
 #, fuzzy
 msgid "Invalid address mark"
 msgstr "chybná trieda znaku `%s'"
@@ -269,13 +272,13 @@ msgstr "chybná trieda znaku `%s'"
 msgid "Unknown error"
 msgstr "Neznáma systémová chyba"
 
-#: src/ed.h:747 src/ed.h:782 src/ed.h:817
+#: src/ed.h:769 src/ed.h:804 src/ed.h:839
 #, fuzzy
 msgid "Numerical result out of range"
 msgstr "U+%04X: znak je mimo rozsah"
 
-#: src/exec.c:28 src/exec.c:504 src/exec.c:590 src/exec.c:654 src/exec.c:680
-#: src/exec.c:1032 src/exec.c:1392 src/exec.c:1404 src/exec.c:1412
+#: src/exec.c:28 src/exec.c:504 src/exec.c:586 src/exec.c:647 src/exec.c:673
+#: src/exec.c:1025 src/exec.c:1385 src/exec.c:1397 src/exec.c:1405
 msgid "Command suffix unexpected"
 msgstr ""
 
@@ -287,56 +290,56 @@ msgstr ""
 msgid "Command prefix unexpected"
 msgstr ""
 
-#: src/exec.c:495 src/exec.c:645 src/exec.c:749 src/exec.c:770 src/exec.c:969
-#: src/exec.c:1011 src/exec.c:1356 src/exec.c:1549 src/exec.c:1743
+#: src/exec.c:495 src/exec.c:638 src/exec.c:742 src/exec.c:763 src/exec.c:962
+#: src/exec.c:1004 src/exec.c:1349 src/exec.c:1542 src/exec.c:1752
 msgid "Address unexpected"
 msgstr ""
 
-#: src/exec.c:674
+#: src/exec.c:667
 #, fuzzy
 msgid "Invalid redirection"
 msgstr "%s: chybný regulárny výraz: %s"
 
-#: src/exec.c:711 src/main.c:626
+#: src/exec.c:704 src/main.c:626
 msgid "File name not set"
 msgstr ""
 
-#: src/exec.c:725
+#: src/exec.c:718
 msgid "Recursive global command"
 msgstr ""
 
-#: src/exec.c:780
+#: src/exec.c:773
 #, fuzzy
 msgid "No previous error"
 msgstr "chyba pri vyhµadávaní pomocou regulárneho výrazu"
 
-#: src/exec.c:890
+#: src/exec.c:883
 #, fuzzy
 msgid "Invalid destination address"
 msgstr "chybná trieda znaku `%s'"
 
-#: src/exec.c:931 src/exec.c:1342
+#: src/exec.c:924 src/exec.c:1335
 #, fuzzy
 #| msgid "invalid user"
 msgid "Invalid register"
 msgstr "neplatný pou¾ívateµ"
 
-#: src/exec.c:1187 src/exec.c:1250 src/exec.c:1568 src/exec.c:1627
-#: src/exec.c:1787 src/exec.c:1802
+#: src/exec.c:1180 src/exec.c:1243 src/exec.c:1561 src/exec.c:1620
+#: src/exec.c:1815 src/exec.c:1830
 #, fuzzy
 msgid "Unknown command"
 msgstr "Neznáma systémová chyba"
 
-#: src/exec.c:1802
+#: src/exec.c:1830
 #, fuzzy
 msgid "Invalid address"
 msgstr "%s: chybný regulárny výraz: %s"
 
-#: src/exec.c:1820
+#: src/exec.c:1848
 msgid "Command too long"
 msgstr ""
 
-#: src/exec.c:1867
+#: src/exec.c:1895
 #, fuzzy
 msgid "Invalid address range"
 msgstr "%s: chybný regulárny výraz: %s"
@@ -349,60 +352,64 @@ msgstr ""
 msgid "File does not exist"
 msgstr ""
 
-#: src/io.c:97 src/io.c:166 src/io.c:631 src/io.c:680 src/main.c:780
+#: src/io.c:97 src/io.c:166 src/io.c:632 src/io.c:681 src/main.c:784
 #, fuzzy
 #| msgid "write error"
 msgid "File open error"
 msgstr "chyba pri zápise"
 
-#: src/io.c:120 src/io.c:645
+#: src/io.c:120 src/io.c:646
 #, c-format
 msgid "%s: File already locked\n"
 msgstr ""
 
-#: src/io.c:144 src/io.c:622 src/io.c:660
+#: src/io.c:144 src/io.c:623 src/io.c:661
 msgid "File close error"
 msgstr ""
 
-#: src/io.c:291 src/io.c:427
+#: src/io.c:292 src/io.c:428
 #, c-format
 msgid "Newline inserted\n"
 msgstr ""
 
-#: src/io.c:296 src/io.c:432
+#: src/io.c:297 src/io.c:433
 #, c-format
 msgid "Newline appended\n"
 msgstr ""
 
-#: src/io.c:607
+#: src/io.c:608 src/io.c:1153
 #, fuzzy
 #| msgid "write error"
 msgid "File truncate error"
 msgstr "chyba pri zápise"
 
-#: src/io.c:721
+#: src/io.c:722
 msgid "File too big"
 msgstr ""
 
-#: src/io.c:768 src/main.c:742 src/main.c:816
+#: src/io.c:769 src/io.c:789 src/io.c:800 src/main.c:742 src/main.c:750
 #, fuzzy
 #| msgid "write error"
 msgid "File write error"
 msgstr "chyba pri zápise"
 
-#: src/io.c:793 src/parse.c:505
+#: src/io.c:833 src/parse.c:505
 msgid "File status error"
 msgstr ""
 
-#: src/io.c:800
+#: src/io.c:840
 msgid "Access restricted to regular files"
 msgstr ""
 
-#: src/io.c:869
+#: src/io.c:909
 #, fuzzy
 #| msgid "write error"
 msgid "File stat error"
 msgstr "chyba pri zápise"
+
+#: src/io.c:1016
+msgid "Cannot append register to itself."
+msgstr ""
 
 #: src/main.c:239
 msgid "Option '-i' requires '-e' or '-f'"
@@ -420,34 +427,34 @@ msgstr ""
 msgid "Argument list full"
 msgstr ""
 
-#: src/main.c:835
+#: src/main.c:818
 #, c-format
 msgid ""
 "Usage: %s [-] [-EGhirsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE...]\n"
 msgstr ""
 
-#: src/main.c:838
+#: src/main.c:821
 #, c-format
 msgid ""
 "Usage: %s [-] [-EGhirsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE]\n"
 msgstr ""
 
-#: src/main.c:842
+#: src/main.c:825
 #, c-format
 msgid "Usage: %s [-] [-EGhrsVvwx] [-p PROMPT] [FILE]\n"
 msgstr ""
 
-#: src/main.c:850
+#: src/main.c:833
 #, c-format
 msgid "Usage: %s [OPTION...] [FILE...]\n"
 msgstr ""
 
-#: src/main.c:853
+#: src/main.c:836
 #, c-format
 msgid "Usage: %s [OPTION...] [FILE]\n"
 msgstr ""
 
-#: src/main.c:859
+#: src/main.c:842
 #, c-format
 msgid ""
 "Options:\n"
@@ -475,7 +482,7 @@ msgid ""
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
 
-#: src/main.c:881
+#: src/main.c:864
 #, c-format
 msgid ""
 "Options:\n"
@@ -499,7 +506,7 @@ msgid ""
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
 
-#: src/main.c:912
+#: src/main.c:895
 msgid "script, line %"
 msgstr ""
 
