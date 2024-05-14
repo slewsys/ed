@@ -41,6 +41,9 @@ AC_PATH_PROG([GROFF], [groff])
 AC_ARG_VAR([PS2PDF], [PostScript to PDF filter])
 AC_PATH_PROGS([PS2PDF], [ps2pdf14 ps2pdf ps2pdfwr])
 
+AC_ARG_VAR([TEXI2ANY], [Texinfo translator])
+AC_PATH_PROGS([TEXI2ANY], [texi2any makeinfo])
+
 # Checks availability of GNU make
 AX_CHECK_GNU_MAKE()
 if test ."$_cv_gnu_make_command" != .''; then

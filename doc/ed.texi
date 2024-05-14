@@ -20,8 +20,9 @@
 @end direntry
 
 @copying
-Copyright @copyright{} 1993-2013 Andrew L. Moore <slewsys@gmail.com>, SlewSys Research
-
+@verbatim
+Copyright © 1993-2013 Andrew L. Moore <slewsys@gmail.com>, SlewSys Research
+@end verbatim
 @*
 @*
 @emph{A Tutorial Introduction  to the Unix Text Editor}

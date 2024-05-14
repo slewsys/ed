@@ -52,21 +52,23 @@ EXTRA_DIST = $(INTRO).pdf $(ADV).pdf $(INTRO_SRC) $(ADV_SRC) tmac/s.tmac
 all: $(INTRO).pdf $(ADV).pdf
 
 $(INTRO).ps: $(INTRO_SRC)
-	if test -n "$(GROFF)" && test -x $$(which $(GROFF)); then             \
-	  $(GROFF) -Tps -M$(tut_srcdir)/tmac -ms $(INTRO_SRC) >$@;            \
-	elif test -n "$(TROFF)" && test -x $$(which $(TROFF)); then           \
-	  if test -n "$(DPOST)" && test -x $$(which $(DPOST)); then           \
-	    $(TROFF) -Tpost -ms $(INTRO_SRC) | $(DPOST) >$@;                  \
-	  fi;                                                                 \
+	if test -n "$(GROFF)" && test -x $$(which $(GROFF)); then	      \
+	  $(GROFF) -Tps -M$(tut_srcdir)/tmac -ms $(INTRO_SRC) >$@;	      \
+	elif test -n "$(TROFF)" && test -x $$(which $(TROFF)); then	      \
+	  if test -n "$(DPOST)" && test -x $$(which $(DPOST)); then	      \
+	    $(TROFF) -Tpost -M$(tut_srcdir)/tmac -ms			      \
+	    $(INTRO_SRC) | $(DPOST) >$@;				      \
+	  fi;								      \
 	fi
 
 $(ADV).ps: $(ADV_SRC)
-	if test -n "$(GROFF)" && test -x $$(which $(GROFF)); then             \
-	  $(GROFF) -Tps -M$(tut_srcdir)/tmac -ms $(ADV_SRC) >$@;              \
-	elif test -n "$(TROFF)" && test -x $$(which $(TROFF)); then           \
-	  if test -n "$(DPOST)" && test -x $$(which $(DPOST)); then           \
-	    $(TROFF) -Tpost -ms $(ADV_SRC) | $(DPOST) >$@;                    \
-	  fi;                                                                 \
+	if test -n "$(GROFF)" && test -x $$(which $(GROFF)); then	      \
+	  $(GROFF) -Tps -M$(tut_srcdir)/tmac -ms $(ADV_SRC) >$@;	      \
+	elif test -n "$(TROFF)" && test -x $$(which $(TROFF)); then	      \
+	  if test -n "$(DPOST)" && test -x $$(which $(DPOST)); then	      \
+	    $(TROFF) -Tpost -M$(tut_srcdir)/tmac			      \
+	    -ms $(ADV_SRC) | $(DPOST) >$@;				      \
+	  fi;								      \
 	fi
 
 clean-local:

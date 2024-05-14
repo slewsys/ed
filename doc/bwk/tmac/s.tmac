@@ -1,54 +1,115 @@
-.\" -*- nroff -*-
 .ig
 
 s.tmac
 
-Copyright (C) 1989, 1990, 1991, 1992, 2001, 2002, 2003, 2004
-  Free Software Foundation, Inc.
+Copyright (C) 1989-2021 Free Software Foundation, Inc.
      Written by James Clark (jjc@jclark.com)
 
 This file is part of groff.
 
 groff is free software; you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free
-Software Foundation; either version 2, or (at your option) any later
-version.
+Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
 groff is distributed in the hope that it will be useful, but WITHOUT ANY
 WARRANTY; without even the implied warranty of MERCHANTABILITY or
 FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 for more details.
 
-You should have received a copy of the GNU General Public License along
-with groff; see the file COPYING.  If not, write to the Free Software
-Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ..
-.if !\n(.g .ab These ms macros require groff.
+.if !\n(.g \
+.  ab groff ms macros require groff extensions; aborting
+.
 .if \n(.C \
-.	ab The groff ms macros do not work in compatibility mode.
-.\" Enable warnings (only if none are given on the command line).
-.\" You can delete this if you want.
-.if (\n[.warn] == 65543) .warn
+.  ab groff ms macros do not work in compatibility mode; aborting
+.
 .\" See if already loaded.
 .if r GS .nx
 .nr GS 1
+.
+.mso devtag.tmac
+.nr s@devtag-needs-end-of-heading 0
+.nr s@devtag-needs-end-of-title 0
+.
+.\" Define a string for use in diagnostic messages.
+.ds @s s.tmac\"
+.
+.de @diag
+.	ds *file \" empty
+.	ds *line \" empty
+.	if !'\\n[.F]'' .ds *file \\n[.F]:\"
+.	if !'\\n[.c]'0' .ds *line \\n[.c]:\"
+.	tm \*[@s]:\\*[*file]\\*[*line] \\$*
+.	rm *file
+.	rm *line
+..
+.
 .de @error
-.tm \\n(.F:\\n(.c: macro error: \\$*
+.	@diag error: \\$*
 ..
+.
 .de @warning
-.tm \\n(.F:\\n(.c: macro warning: \\$*
+.	@diag warning: \\$*
 ..
-.de @fatal
-.ab \\n(.F:\\n(.c: fatal macro error: \\$*
-..
-.de @not-implemented
-.@error sorry, \\$0 not implemented
-.als \\$0 @nop
-..
-.als TM @not-implemented
-.als CT @not-implemented
+.
 .de @nop
 ..
+.
+.de @not-implemented
+.@error sorry, .\\$0 not implemented
+.als \\$0 @nop
+..
+.
+.\" documented Unix Version 7 ms macros that we don't implement
+.als EG @not-implemented \" engineer's notes
+.als IM @not-implemented \" internal memorandum
+.als MF @not-implemented \" memorandum for file
+.als MR @not-implemented \" memorandum for record
+.als TM @not-implemented \" technical memorandum
+.als TR @not-implemented \" technical report
+.als AT @not-implemented \" attachments
+.als CS @not-implemented \" cover sheet info for `TM` documents
+.als CT @not-implemented \" copies to
+.als OK @not-implemented \" "other keywords" for `TM` documents
+.als SG @not-implemented \" signatures for `TM` documents
+.als HO @not-implemented \" Holmdel
+.als IH @not-implemented \" Naperville (Indian Hill)
+.als MH @not-implemented \" Murray Hill
+.als PY @not-implemented \" Piscataway
+.als WH @not-implemented \" Whippany
+.als UX @not-implemented \" Unix w/ footnote trademark
+.
+.\" 4.2BSD ms macros documented by Tuthill 1983 that we don't implement
+.\"als TM @not-implemented \" thesis mode (already handled)
+.\"als CT @not-implemented \" chapter title for thesis (already handled)
+.
+.\" Wrap the .di request to save the name of the file being processed
+.\" when a diversion is started.  This aids diagnostics when diversions
+.\" are still open after input has been processed and \n[.F] is empty.
+.als @divert di
+.de di
+.	if \\n[.$] .ds @last-file-seen \\n[.F]\"
+.	@divert \\$*
+..
+.
+.\" Wrap the `bp` request so that we disregard the enablement of
+.\" no-space mode, which we enter after displays and equations to
+.\" prevent multiple sources of vertical space (like the DD and PD
+.\" registers) from incorrectly accumulating.  Thus, if the user
+.\" requests a page break, we honor it.  See Savannah #62688 & #64005.
+.als @break-page bp
+.de bp
+.	nr @saved-no-space-mode \\n[.ns]
+.	rs
+.	ie \\n[.br] '@break-page \\$1
+.	el          .@break-page \\$1
+.	if \\n[@saved-no-space-mode] .ns
+.	rr @saved-no-space-mode
+..
+.
 .de @init
 .if !rPO .nr PO \\n(.o
 .\" a non-empty environment
@@ -74,7 +135,7 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .ds MONTH10 October
 .ds MONTH11 November
 .ds MONTH12 December
-.ds MO \\*[MONTH\n[mo]]
+.ds MO \E*[MONTH\n[mo]]
 .ds DY \n[dy] \*[MO] \n[year]
 .de ND
 .if \\n[.$] .ds DY "\\$*
@@ -82,10 +143,6 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .de DA
 .if \\n[.$] .ds DY "\\$*
 .ds CF \\*[DY]
-..
-.\" indexing
-.de IX
-.tm \\$1\t\\$2\t\\$3\t\\$4 ... \\n[PN]
 ..
 .\" print an error message and then try to recover
 .de @error-recover
@@ -97,7 +154,7 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .	el .*div-end-default
 .	nr *pop-count +1
 .	\" ensure that we don't loop forever
-.	if \\n[*pop-count]>20 .@fatal recovery failed
+.	if \\n[*pop-count]>20 .ab \*[@s]: fatal error: recovery failed
 .\}
 .while !'\\n[.ev]'0' .ev
 .par@reset-env
@@ -116,26 +173,36 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .\" ****************************
 .\" Cover sheet and first page.
 .de cov*err-not-after-first-page
-.@error \\$0 is not allowed after the first page has started
+.@error .\\$0 is not allowed after the first page has started
 ..
 .de cov*err-not-before-tl
-.@error \\$0 is not allowed before TL
+.@error .\\$0 is not allowed before .TL
 ..
 .de cov*err-not-again
-.@error \\$0 is not allowed more than once
+.@error .\\$0 is not allowed more than once
 ..
 .de cov*err-not-after-ab
-.@error \\$0 is not allowed after first AB, LP, PP, IP, SH or NH
+.@error .\\$0 is not allowed after first .AB, .LP, .PP, .IP, .SH or .NH
 ..
 .als AU cov*err-not-before-tl
 .als AI cov*err-not-before-tl
 .als AB cov*err-not-before-tl
 .de cov*first-page-init
+.\" Invoked by '.wh 0' trap on first page.
+.\" We should not come here again, but at short page length,
+.\" recursion may occur; remove trap and macro to avoid it.
+.ch cov*first-page-init
 .rm cov*first-page-init
+.if !'\\n[.ev]'0' \{\
+.	ds cov*msg must be in top-level environment, not '\\n[.ev]',\"
+.	as cov*msg " when first page is started\"
+.	@error \\*[cov*msg]
+.	rm cov*msg
+.\}
 .par@init
 .als RP cov*err-not-after-first-page
 .@init
-.ie \\n[cov*rp-format] \{\
+.ie \\n[cov*use-rp-format] \{\
 .	pg@cs-top
 .	als FS cov*FS
 .	als FE cov*FE
@@ -154,14 +221,21 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .br
 \\*[FS]\\
 ..
-.nr cov*rp-format 0
-.nr cov*rp-no 0
-.\" released paper format
+.nr cov*use-rp-format 0
+.\" If we add more cover page formats, these behaviors and names could
+.\" be generalized.
+.nr cov*rp-no-repeat-info 0
+.nr cov*rp-no-renumber 0
+.\" report (AT&T: "released paper") document type
 .de RP
-.nr cov*rp-format 1
-.if \\n[.$] .if '\\$1'no' .nr cov*rp-no 1
+.nr cov*use-rp-format 1
+.while \\n[.$] \{\
+.	if '\\$1'no' .nr cov*rp-no-repeat-info 1
+.	if '\\$1'no-repeat-info' .nr cov*rp-no-repeat-info 1
+.	if '\\$1'no-renumber' .nr cov*rp-no-renumber 1
+.	shift
+.\}
 .if rPO .po \\n(POu
-.pn 0
 ..
 .de TL
 .br
@@ -169,14 +243,14 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .rn @AB AB
 .rn @AU AU
 .rn @AI AI
-.if !'\*(.T'html' .di cov*tl-div
+.di cov*tl-div
 .par@reset
 .ft B
 .ps +2
 .vs +3p
 .ll (u;\\n[LL]*5/6)
 .nr cov*n-au 0
-.HTML-TAG ".tl"
+.DEVTAG-TL
 ..
 .de @AU
 .par@reset
@@ -188,22 +262,29 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .di cov*au-div!\\n[cov*n-au]
 .nf
 .ft I
-.ps \\n[PS]
+.ie (\\n[PS] >= 1000) \
+.	ps (\\n[PS]z / 1000u)
+.el \
+.	ps \\n[PS]
 ..
 .de @AI
-.if !'\*(.T'html' .par@reset
+.par@reset
 .if !'\\n(.z'' \{\
 .	br
 .	di
 .\}
-.ie !\\n[cov*n-au] .@error AI before AU
+.ie !\\n[cov*n-au] .@error .AI before .AU
 .el \{\
 .	di cov*ai-div!\\n[cov*n-au]
 .	nf
 .	ft R
-.	ps \\n[PS]
+.	ie (\\n[PS] >= 1000) \
+.		ps (\\n[PS]z / 1000u)
+.	el \
+.		ps \\n[PS]
 .\}
 ..
+.
 .de LP
 .if !'\\n[.z]'' \{\
 .	br
@@ -212,8 +293,9 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .br
 .cov*ab-init
 .cov*print
-\\*[\\$0]\\
+.nop \\*[\\$0]\\
 ..
+.
 .als IP LP
 .als PP LP
 .als XP LP
@@ -224,6 +306,7 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .als MC LP
 .als RT LP
 .als XS LP
+.
 .de cov*ab-init
 .als cov*ab-init @nop
 .als LP @LP
@@ -242,22 +325,32 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .als MC @MC
 .als EQ @EQ
 .als EN @EN
+.als PS @PS
 .als TS @TS
 .als AB cov*err-not-after-ab
 .als AU par@AU
 .als AI par@AI
 .als TL par@TL
 ..
+.
 .de @AB
 .if !'\\n(.z'' \{\
 .	br
 .	di
 .\}
 .cov*ab-init
-.if !'\*(.T'html' .di cov*ab-div
+.ie '\*(.T'html' \{\
+.	cov*tl-au-print
+.	als cov*tl-au-print @nop
+.\}
+.el .di cov*ab-div
 .par@ab-indent
 .par@reset
 .if !'\\$1'no' \{\
+.	if '\*(.T'html' \{\
+.		nf
+.		sp
+.	\}
 .	ft I
 .	ce 1
 \\*[ABSTRACT]
@@ -288,22 +381,26 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .	par@reset
 .	cov*print
 .  \}
-.  el .@error AE without AB
+.  el .@error .AE without .AB
 .\}
 ..
 .de @div-end!cov*ab-div
 .AE
 ..
+.de cov*break-page
+.ie \\n[cov*rp-no-renumber] .@break-page
+.el .@break-page 1
+..
 .de cov*print
 .als cov*print @nop
 .ie d cov*tl-div \{\
-.	ie \\n[cov*rp-format] .cov*rp-print
+.	ie \\n[cov*use-rp-format] .cov*rp-print
 .	el .cov*draft-print
 .\}
 .el \{\
-.	if \\n[cov*rp-format] \{\
-.		@warning RP format but no TL
-.		bp 1
+.	if \\n[cov*use-rp-format] \{\
+.		@warning .RP format but no .TL
+.		.cov*break-page
 .		als FS @FS
 .		als FE @FE
 .		CHECK-FOOTER-AND-KEEP
@@ -317,8 +414,8 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .cov*tl-au-print
 .sp 3
 .if d cov*ab-div \{\
-.  if !'\*(.T'html'  .	nf
-.	cov*ab-div
+.  if !'\*(.T'html'  .nf
+.       cov*ab-div
 .\}
 .sp 3
 .par@reset
@@ -331,7 +428,7 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .	ev nf
 .	cov*fn-div
 .	ev
-.	ie \\n[cov*rp-no] .rm cov*fn-div
+.	ie \\n[cov*rp-no-repeat-info] .rm cov*fn-div
 .	el \{\
 .		rn cov*fn-div fn@overflow-div
 .		nr fn@have-overflow 1
@@ -340,12 +437,13 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .als FS @FS
 .als FE @FE
 .CHECK-FOOTER-AND-KEEP
-.\" If anything was printed below where the footer line is normally printed,
-.\" then that's an overflow.
-.if -\\n[FM]/2+1v+\\n[cov*page-length]<\\n[nl] .@error cover sheet overflow
+.\" If anything was printed below where the footer line is normally
+.\" printed, then that's an overflow.
+.if -\\n[FM]/2+1v+\\n[cov*page-length]<\\n[nl] \
+.	@error cover sheet overflow
 .pl \\n[cov*page-length]u
-.bp 1
-.if !\\n[cov*rp-no] .cov*tl-au-print
+.cov*break-page
+.if !\\n[cov*rp-no-repeat-info] .cov*tl-au-print
 .rs
 .sp 1
 ..
@@ -364,14 +462,18 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .rs
 .sp 3
 .ce 9999
-.if d cov*tl-div .cov*tl-div
+.if d cov*tl-div \{\
+.	cov*tl-div
+.	DEVTAG-EO-TL
+.\}
 .nr cov*i 1
 .nr cov*sp 1v
 .while \\n[cov*i]<=\\n[cov*n-au] \{\
-.	sp \\n[cov*sp]u
+.	ie '\*(.T'html' .br
+.	el .sp \\n[cov*sp]u
 .	cov*au-div!\\n[cov*i]
 .	ie d cov*ai-div!\\n[cov*i] \{\
-.		sp .5v	
+.		sp .5v
 .		cov*ai-div!\\n[cov*i]
 .		nr cov*sp 1v
 .	\}
@@ -385,7 +487,7 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .\" start of footnote on cover
 .de cov*FS
 .if \\n[cov*in-fn] \{\
-.	@error nested FS
+.	@error nested .FS
 .	FE
 .\}
 .nr cov*in-fn 1
@@ -408,7 +510,7 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .	nr cov*in-fn 0
 .	nr cov*fn-height +\\n[dn]
 .\}
-.el .@error FE without matching FS
+.el .@error .FE without matching .FS
 ..
 .\" ***************************
 .\" ******** module pg ********
@@ -424,26 +526,35 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .ds CF
 .ds RF
 .ds LH
-.ds CH -\\n[PN]-
+.ds CH -\En[%]-\"
 .ds RH
-.ds pg*OH '\\*[LH]'\\*[CH]'\\*[RH]'
-.ds pg*EH '\\*[LH]'\\*[CH]'\\*[RH]'
-.ds pg*OF '\\*[LF]'\\*[CF]'\\*[RF]'
-.ds pg*EF '\\*[LF]'\\*[CF]'\\*[RF]'
+.ds pg*OH '\E*[LH]'\E*[CH]'\E*[RH]'
+.ds pg*EH '\E*[LH]'\E*[CH]'\E*[RH]'
+.ds pg*OF '\E*[LF]'\E*[CF]'\E*[RF]'
+.ds pg*EF '\E*[LF]'\E*[CF]'\E*[RF]'
 .de OH
 .ds pg*\\$0 "\\$*
 ..
 .als EH OH
 .als OF OH
 .als EF OH
+.aln PN % \" Lesk 1978 documents PN.
 .de PT
-.ie \\n%=1 .if \\n[pg*P1] .tl \\*[pg*OH]
+.\" To compare the page number to 1, we need it in Arabic format.
+.ds pg*saved-page-number-format \\g%\"
+.af % 0
+.nr pg*page-number-in-decimal \\n%
+.af % \\*[pg*saved-page-number-format]
+.fam \\*[pg@titles-font-family]
+.ie \\n[pg*page-number-in-decimal]=1 .if \\n[pg*P1] .tl \\*[pg*OH]
 .el \{\
 .	ie o .tl \\*[pg*OH]
 .	el .tl \\*[pg*EH]
 .\}
+.rm pg*saved-page-number-format
 ..
 .de BT
+.fam \\*[pg@titles-font-family]
 .ie o .tl \\*[pg*OF]
 .el .tl \\*[pg*EF]
 ..
@@ -456,19 +567,19 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .nr MINGW 2n
 .nr pg@ncols 1
 .de @MC
-.if !'\\n(.z'' .error-recover MC while diversion open
+.if !'\\n(.z'' .@error-recover .MC while diversion open
 .br
 .ie \\n[pg@ncols]>1 .pg@super-eject
 .el \{\
 .	\" flush out any floating keeps
 .	while \\n[kp@tail]>\\n[kp@head] \{\
 .		rs
-.		bp
+.		@break-page
 .	\}
 .\}
 .ie !\\n(.$ \{\
-.	nr pg@colw \\n[LL]*7/15
-.	nr pg*gutw \\n[LL]-(2*\\n[pg@colw])
+.	nr pg*gutw \\n[MINGW]
+.	nr pg@colw \\n[LL]-\\n[pg*gutw]/2u
 .	nr pg@ncols 2
 .\}
 .el \{\
@@ -480,12 +591,12 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .		nr pg*gutw \\n[LL]-(\\n[pg@ncols]*\\n[pg@colw])/(\\n[pg@ncols]-1)
 .	el .nr pg*gutw 0
 .\}
-.HTML-TAG ".mc \\n[pg@ncols] \\n[pg@colw] \\n[pg*gutw]"
-.mk pg*col-top
-.ns
+.DEVTAG ".mc \\n[pg@ncols] \\n[pg@colw] \\n[pg*gutw]"
 .nr pg*col-num 0
-.nr pg@fn-colw \\n[pg@colw]*5/6
+.nr pg@fn-colw \\n[pg@colw]*\\*[FR]
 .par@reset
+.ns
+.mk pg*col-top
 ..
 .de 2C
 .MC
@@ -493,13 +604,19 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .de 1C
 .MC \\n[LL]u
 ..
-.\" top of page macro
 .de pg@top
+.\" invoked by '.wh 0' trap at the top of every page
+.\"
+.\" At short page lengths, footers may get truncated or recursion may
+.\" occur; ensure that the page length suffices to avoid these problems.
+.if (u;\\n[HM]+\\n[FM]+\n[.V]>=\\n[.p]) \{\
+.	@error insufficient page length; aborting\"
+.	pl \\n[nl]u
+.	ab
+.\}
 .ch pg*footer -\\n[FM]u/2u
-.nr PN \\n%
 .nr pg*col-num 0
 .nr pg@fn-bottom-margin 0
-.nr pg*saved-po \\n[PO]
 .po \\n[PO]u
 .ev h
 .par@reset
@@ -536,32 +653,34 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ..
 .de pg*end-col
 'sp |\\n[pg*col-top]u
-.po (u;\\n[pg*saved-po]+(\\n[pg@colw]+\\n[pg*gutw]*\\n[pg*col-num]))
+.po (u;\\n[PO]+(\\n[pg@colw]+\\n[pg*gutw]*\\n[pg*col-num]))
 .\"po +(u;\\n[pg@colw]+\\n[pg*gutw])
 .pg*start-col
 ..
 .de pg*end-page
-.po \\n[pg*saved-po]u
-.\" Make sure we don't exit if there are still floats or footnotes left-over.
+.po \\n[PO]u
+.\" Make sure we don't exit if there are still floats or footnotes
+.\" left-over.
 .ie \\n[kp@head]<\\n[kp@tail]:\\n[fn@have-overflow] \{\
 .	\" Switching environments ensures that we don't get an unnecessary
 .	\" blank line at the top of the page.
 .	ev ne
-'	bp
+'	@break-page
 .	ev
 .\}
 .el \{\
-.	\" If the text has ended and there are no more footnotes or keeps, exit.
+.	\" If the text has ended and there are no more footnotes or
+.	\" keeps, exit.
 .	if \\n[pg@text-ended] .ex
 .	if r pg*next-number \{\
 .		pn \\n[pg*next-number]
 .		rr pg*next-number
 .		if d pg*next-format \{\
-.			af PN \\*[pg*next-format]
+.			af % \\*[pg*next-format]
 .			rm pg*next-format
 .		\}
 .	\}
-'	bp
+'	@break-page
 .\}
 ..
 .\" pg@begin number format
@@ -584,14 +703,19 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .\" flush out any keeps or footnotes
 .de pg@super-eject
 .br
-.if !'\\n(.z'' .@error-recover diversion open while ejecting page
-.\" Make sure we stay in the end macro while there is still footnote overflow
-.\" left, or floating keeps.
+.if !'\\n(.z'' \{\
+.	ds @msg diversion open while ejecting page\"
+.	as @msg " (last file seen: \\*[@last-file-seen])\"
+.	@error-recover \\*[@msg]
+.	rm @msg
+.\}
+.\" Make sure we stay in the end macro while there is still footnote
+.\" overflow left, or floating keeps.
 .while \\n[kp@tail]>\\n[kp@head]:\\n[pg@fn-flag] \{\
 .	rs
-.	bp
+.	@break-page
 .\}
-.bp
+.@break-page
 ..
 .nr pg@text-ended 0
 .de pg@end-text
@@ -612,19 +736,34 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .ev
 .nr fn*text-num 0 1
 .nr fn*note-num 0 1
-.ds * \\*[par@sup-start]\En+[fn*text-num]\\*[par@sup-end]
 .nr fn*open 0
+.\" Handle initialition tasks deferred until par module is set up.
+.de fn@init
+.ie t .als fn@mark-start par@sup-start
+.el .ds fn@mark-start [
+.ie t .als fn@mark-end par@sup-end
+.el .ds fn@mark-end ]
+.ds * \E*[fn@mark-start]\En+[fn*text-num]\E*[fn@mark-end]
+..
 .\" normal FS
+.\" FS-MARK is a user definable hook, which may be used to perform
+.\" any set-up actions, (e.g. planting an HREF link as the footnote
+.\" mark, in the document text); passed the same arguments as have
+.\" been passed to FS itself, unless redefined, it is a no-op.
 .de @FS
+.FS-MARK \\$@
 .ie \\n[.$] .fn*do-FS "\\$1" no
 .el \{\
 .	ie \\n[fn*text-num]>\\n[fn*note-num] .fn*do-FS \\n+[fn*note-num]
 .	el .fn*do-FS
 .\}
 ..
-.\" Second argument of `no' means don't embellish the first argument.
+.\" Default no-op fallback for FS-MARK
+.de FS-MARK
+..
+.\" Second argument of 'no' means don't embellish the first argument.
 .de fn*do-FS
-.if \\n[fn*open] .@error-recover nested FS
+.if \\n[fn*open] .@error-recover nested .FS
 .nr fn*open 1
 .if \\n[.u] \{\
 .	\" Ensure that the first line of the footnote is on the same page
@@ -640,11 +779,12 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .par@reset-env
 .fn*start-div
 .par@reset
+.fam \\*[fn@font-family]
 .ie \\n[.$] .FP \\$@
 .el .@LP
 ..
 .de @FE
-.ie !\\n[fn*open] .@error FE without FS
+.ie !\\n[fn*open] .@error .FE without .FS
 .el \{\
 .	nr fn*open 0
 .	br
@@ -762,7 +902,8 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .\}
 .el \!.fn*embed-end
 ..
-.\" It's important that fn@print-sep use up exactly fn@sep-dist vertical space.
+.\" It's important that fn@print-sep use up exactly fn@sep-dist vertical
+.\" space.
 .de fn@print-sep
 .ev fn
 .in 0
@@ -777,26 +918,26 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .\" Keeps.
 .de KS
 .br
-.di kp*div
+.di kp@div
 ..
 .de KF
-.if !'\\n(.z'' .@error-recover KF while open diversion
-.di kp*fdiv
+.if !'\\n(.z'' .@error-recover .KF while diversion open
+.di kp@fdiv
 .ev k
 .par@reset-env
 .par@reset
 ..
 .de KE
-.ie '\\n(.z'kp*div' .kp*end
+.ie '\\n(.z'kp@div' .kp*end
 .el \{\
-.	ie '\\n(.z'kp*fdiv' .kp*fend
-.	el .@error KE without KS or KF
+.	ie '\\n(.z'kp@fdiv' .kp*fend
+.	el .@error .KE without .KS or .KF
 .\}
 ..
-.de @div-end!kp*div
+.de @div-end!kp@div
 .kp*end
 ..
-.de @div-end!kp*fdiv
+.de @div-end!kp@fdiv
 .kp*fend
 ..
 .de kp*need
@@ -809,9 +950,9 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .di
 .kp*need \\n[dn]
 .ev nf
-.kp*div
+.kp@div
 .ev
-.rm kp*div
+.rm kp@div
 ..
 .\" Floating keeps.
 .nr kp@head 0
@@ -824,12 +965,12 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .ie \\n[.t]-(\\n[.k]>0*1v)>\\n[dn] \{\
 .	br
 .	ev nf
-.	kp*fdiv
-.	rm kp*fdiv
+.	kp@fdiv
+.	rm kp@fdiv
 .	ev
 .\}
 .el \{\
-.	rn kp*fdiv kp*div!\\n[kp@tail]
+.	rn kp@fdiv kp@div!\\n[kp@tail]
 .	nr kp*ht!\\n[kp@tail] 0\\n[dn]
 .	nr kp@tail +1
 .\}
@@ -844,8 +985,8 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .\}
 ..
 .de kp*do-top
-.\" If the first keep won't fit, only force it out if we haven't had a footnote
-.\" and we're at the top of the page.
+.\" If the first keep won't fit, only force it out if we haven't had a
+.\" footnote and we're at the top of the page.
 .nr kp*force \\n[pg@fn-flag]=0&(\\n[nl]<=\\n[pg@header-bottom])
 .nr kp*fits 1
 .while \\n[kp@tail]>\\n[kp@head]&\\n[kp*fits] \{\
@@ -855,7 +996,7 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .		\" back the keep, so that if the last line of the
 .		\" last keep springs the bottom of page trap, a new
 .		\" page will not be started unnecessarily.
-.		rn kp*div!\\n[kp@head] kp*temp
+.		rn kp@div!\\n[kp@head] kp*temp
 .		nr kp@head +1
 .		ev nf
 .		kp*temp
@@ -872,8 +1013,8 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .de DE
 .ds*end!\\n[\\n[.ev]:ds-type]
 .nr \\n[.ev]:ds-type 0
+.ns
 ..
-.als De DE
 .de ds@auto-end
 .if \\n[\\n[.ev]:ds-type] \{\
 .	@error automatically terminating display
@@ -885,7 +1026,7 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .el .ds*end!2
 ..
 .de ds*end!0
-.@error DE without DS, ID, CD, LD or BD
+.@error .DE without .DS, .ID, .CD, .LD, .RD, or .BD
 ..
 .de LD
 .br
@@ -927,10 +1068,11 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .	rm ds*div
 .	ds*common-end
 .\}
-.el .@error-recover mismatched DE
+.el .@error-recover mismatched .DE
 ..
 .de DS
-.br
+.if '\\n(.z'ds*div' .@error-recover cannot begin display within display
+.nr ds*badarg 0
 .di ds*div
 .ie '\\$1'B' \{\
 .	LD
@@ -944,14 +1086,24 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .			ie '\\$1'R' .RD
 .			el \{\
 .				ie '\\$1'I' .ID \\$2
-.				el .ID \\$1
+.				el \{\
+.					ie '\\$1'' .ID
+.					el .nr ds*badarg 1
+.				\}
 .			\}
 .		\}
 .	\}
-.	nr \\n[.ev]:ds-type 3
+.	ie \\n[ds*badarg] \{\
+.		ds ds*msg unrecognized argument '\\$1' to .\\$0;\"
+.		as ds*msg " did you mean '.\\$0 I \\$1'?\"
+.		@error \\*[ds*msg]
+.		rm ds*msg
+.		di
+.	\}
+.	el .nr \\n[.ev]:ds-type 3
 .\}
+.rr ds*badarg
 ..
-.als Ds DS
 .de ds@need
 .if '\\n(.z'' \{\
 .	while \\n[.t]<=(\\$1)&(\\n[nl]>\\n[pg@header-bottom]) \{\
@@ -971,7 +1123,7 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .	rm ds*div
 .	ds*common-end
 .\}
-.el .@error-recover mismatched DE
+.el .@error-recover mismatched .DE
 ..
 .de ds*end!4
 .ie '\\n(.z'ds*div' \{\
@@ -984,7 +1136,7 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .	rm ds*div
 .	ds*common-end
 .\}
-.el .@error-recover mismatched DE
+.el .@error-recover mismatched .DE
 ..
 .\" ****************************
 .\" ******** module par ********
@@ -992,19 +1144,33 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .\" Paragraph-level formatting.
 .\" Load time initialization.
 .de par@load-init
-.\" PS and VS might have been set on the command-line
+.\" PS and VS might have been set on the command line
 .if !rPS .nr PS 10
-.if !rLL .nr LL 6i
+.if !rLL .nr LL 6.5i
 .ll \\n[LL]u
 .\" don't set LT so that it can be defaulted from LL
 .ie rLT .lt \\n[LT]u
 .el .lt \\n[LL]u
-.ps \\n[PS]
+.ie (\\n[PS] >= 1000) \
+.	ps (\\n[PS]z / 1000u)
+.el \
+.	ps \\n[PS]
 .\" don't set VS so that it can be defaulted from PS
-.ie rVS .par*vs \\n[VS]
-.el .par*vs \\n[PS]+2
+.\" Set vertical spacing defaults to 120% of type size.
+.ie rVS \{\
+.	ie (\\n[VS] >= 1000) \
+.		par*vs "(\\n[VS]p / 1000u)"
+.	el \
+.		par*vs \\n[VS]
+.\}
+.el \{\
+.	ie (\\n[PS] >= 1000) \
+.		par*vs "((\\n[PS]p / 1000u) * 120u / 100u)"
+.	el \
+.		par*vs "(\\n[PS] * 120u / 100u)"
+.\}
 .if dFAM .fam \\*[FAM]
-.if !rHY .nr HY 14
+.if !rHY .nr HY 6
 .hy \\n[HY]
 .TA
 .CHECK-FOOTER-AND-KEEP
@@ -1033,23 +1199,47 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .\" happens when the first page begins
 .de par@init
 .if !rLT .nr LT \\n[LL]
-.if !rFL .nr FL \\n[LL]*5/6
-.if !rVS .nr VS \\n[PS]+2
+.if !rFL .nr FL \\n[LL]*\\*[FR]
+.\" Set vertical spacing defaults to 120% of type size.
+.if !rVS \{\
+.	ie (\\n[PS] >= 1000) \
+.		nr VS (\\n[PS]p / 1000u * 120u / 100u)
+.	el \
+.		nr VS (\\n[PS] * 120u / 100u)
+.\}
 .if !rDI .nr DI .5i
-.if !rFPS .nr FPS \\n[PS]-2
-.if !rFVS .nr FVS \\n[FPS]+2
+.if !rFPS \{\
+.	ie (\\n[PS] >= 1000) \
+.		nr FPS (\\n[PS] - 2000)
+.	el \
+.		nr FPS (\\n[PS] - 2)
+.\}
+.if !rFVS \{\
+.	ie (\\n[FPS] >= 1000) \
+.		nr FVS (\\n[FPS]p / 1000u * 120u / 100u)
+.	el \
+.		nr FVS (\\n[FPS] * 120u / 100u)
+.\}
 .\" don't change environment 0
 .ev h
-.ps \\n[PS]
+.ie (\\n[PS] >= 1000) \
+.	ps (\\n[PS]z / 1000u)
+.el \
+.	ps \\n[PS]
 .if !rQI .nr QI 5n
 .if !rPI .nr PI 5n
-.par*vs \\n[VS]
+.ie (\\n[VS] >= 1000) \
+.	par*vs "(\\n[VS]p / 1000u)"
+.el \
+.	par*vs \\n[VS]
 .if !rPD .nr PD .3v>?\n(.V
 .if !rDD .nr DD .5v>?\n(.V
 .if !rFI .nr FI 2n
 .if !rFPD .nr FPD \\n[PD]/2
 .ev
 .if !dFAM .ds FAM \\n[.fam]
+.ds pg@titles-font-family \\*[FAM]
+.ds fn@font-family \\*[FAM]
 .nr par*adj \\n[.j]
 .par*env-init
 .ev h
@@ -1086,10 +1276,28 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .\" par@reset
 .de par@reset
 .br
+.if \\n[s@devtag-needs-end-of-title] .DEVTAG-EO-TL
+.nr s@devtag-needs-end-of-title 0
+.if \\n[s@devtag-needs-end-of-heading] .DEVTAG-EO-H
+.nr s@devtag-needs-end-of-heading 0
 .ce 0
 .rj 0
 .ul 0
 .fi
+.ft 1
+.ie '\\n[.ev]'fn' .fam \\*[fn@font-family]
+.el .fam \\*[FAM]
+.ie (\\n[\\n[.ev]:PS] >= 1000) \
+.	ps (\\n[\\n[.ev]:PS]z / 1000u)
+.el \
+.	ps \\n[\\n[.ev]:PS]
+.ie (\\n[\\n[.ev]:VS] >= 1000) \
+.	par*vs "(\\n[\\n[.ev]:VS]p / 1000u)"
+.el \
+.	par*vs \\n[\\n[.ev]:VS]
+.ls 1
+.if !'\\$1'' .nr \\n[.ev]:pli (n;\\$1)
+.if !'\\$2'' .nr \\n[.ev]:pri (n;\\$2)
 .ie \\n[pg@ncols]>1 \{\
 .	ll (u;\\n[\\n[.ev]:MCLL]-\\n[\\n[.ev]:ri]-\\n[\\n[.ev]:pri])
 .	lt \\n[\\n[.ev]:MCLT]u
@@ -1099,36 +1307,31 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .	lt \\n[\\n[.ev]:LT]u
 .\}
 .in (u;\\n[\\n[.ev]:li]+\\n[\\n[.ev]:pli])
-.ft 1
-.fam \\*[FAM]
-.ps \\n[\\n[.ev]:PS]
-.par*vs \\n[\\n[.ev]:VS]
-.ls 1
 .TA
 .hy \\n[HY]
-..
-.de @RT
-.nr \\n[.ev]:pli 0
-.nr \\n[.ev]:pri 0
-.par@reset
 ..
 .\" This can be redefined by the user.
 .de TA
 .ta T 5n
 ..
+.\" \n[PORPHANS] sets number of initial lines of any paragraph,
+.\" which must be kept together, without any included page break.
+.\" Initialise to reproduce original behaviour; user may adjust it.
+.if !rPORPHANS .nr PORPHANS 1
+.
 .de par*start
 .ds@auto-end
-.nr \\n[.ev]:pli \\$1
-.nr \\n[.ev]:pri \\$2
-.par@reset
+.par@reset \\$1 \\$2
 .sp \\n[\\n[.ev]:PD]u
-.ne 1v+\\n(.Vu
+.ne \\n[PORPHANS]v+\\n(.Vu
 ..
 .de par@finish
+.nr \\n[.ev]:ai \\n[\\n[.ev]:PI]
 .nr \\n[.ev]:pli 0
 .nr \\n[.ev]:pri 0
-.par@reset
+.par@reset 0 0
 ..
+.als @RT par@finish
 .\" normal LP
 .de @LP
 .par*start 0 0
@@ -1141,35 +1344,18 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ..
 .de @QP
 .nr \\n[.ev]:ai \\n[\\n[.ev]:PI]
-.par*start \\n[QI] \\n[QI]
+.par*start \\n[QI]u \\n[QI]u
 ..
 .de @XP
-.par*start \\n[\\n[.ev]:PI] 0
+.par*start \\n[\\n[.ev]:PI]u 0
 .ti -\\n[\\n[.ev]:PI]u
 ..
 .de @IP
-.if \\n[.$]>1 .nr \\n[.ev]:ai (n;\\$2)
-.par*start \\n[\\n[.ev]:ai] 0
-.if !'\\$1'' \{\
-.	\" Divert the label so as to freeze any spaces.
-.	di par*label
-.	par*push-tag-env
-\&\\$1
-.	par*pop-tag-env
-.	di
-.	chop par*label
-.	ti -\\n[\\n[.ev]:ai]u
-.	ie \\n[dl]+1n<=\\n[\\n[.ev]:ai] \\*[par*label]\h'|\\n[\\n[.ev]:ai]u'\c
-.	el \{\
-\\*[par*label]
-.		br
-.	\}
-.	rm par*label
+.ie \\n[.$]>1 \{\
+.par*start \\$2 0
+.nr \\n[.ev]:ai \\n[\\n[.ev]:pli]
 .\}
-..
-.de @IP-html
-.if \\n[.$]>1 .nr \\n[.ev]:ai (n;\\$2)
-.par*start \\n[\\n[.ev]:ai] 0
+.el .par*start \\n[\\n[.ev]:ai]u 0
 .if !'\\$1'' \{\
 .	\" Divert the label so as to freeze any spaces.
 .	di par*label
@@ -1180,12 +1366,14 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .	chop par*label
 .	ti -\\n[\\n[.ev]:ai]u
 .	ie \\n[dl]+1n<=\\n[\\n[.ev]:ai] \{\
-.		HTML-TAG-NS ".col 1"
-\\$1\h'|\\n[\\n[.ev]:ai]u'\c
-.		HTML-TAG-NS ".col 2"
+.		DEVTAG-COL 1
+\\*[par*label]\h'|\\n[\\n[.ev]:ai]u'\c
+.		DEVTAG-COL 2
 .       \}
 .	el \{\
-\\$1
+.		DEVTAG-COL 1
+\\*[par*label]
+.		DEVTAG-COL-NEXT 2
 .		br
 .	\}
 .	rm par*label
@@ -1199,13 +1387,14 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .nr par*saved-font \\n[.f]
 .nr par*saved-size \\n[.s]z
 .nr par*saved-ss \\n[.ss]
+.nr par*saved-sss \\n[.sss]
 .ds par*saved-fam \\n[.fam]
 .ev par
 .nf
 .TA
 .ft \\n[par*saved-font]
 .ps \\n[par*saved-size]u
-.ss \\n[par*saved-ss]
+.ss \\n[par*saved-ss] \\n[par*saved-sss]
 .fam \\*[par*saved-fam]
 ..
 .de par*pop-tag-env
@@ -1233,8 +1422,9 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .	nr \\n[.ev]:pli \\n[\\n[.ev]:pli!\\n[\\n[.ev]:il]]
 .	nr \\n[.ev]:pri \\n[\\n[.ev]:pri!\\n[\\n[.ev]:il]]
 .\}
-.el .@error unbalanced \\$0
-.par@reset
+.el .@error unbalanced .\\$0
+.ie '\\$0'QE' .par*start 0 0
+.el .par@reset
 ..
 .de @QS
 .br
@@ -1247,7 +1437,7 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .nr \\n[.ev]:li +\\n[QI]
 .nr \\n[.ev]:ri +\\n[QI]
 .nr \\n[.ev]:ai \\n[\\n[.ev]:PI]
-.par@reset
+.par*start 0 0
 ..
 .als @QE @RE
 .\" start boxed text
@@ -1269,8 +1459,8 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .B2
 ..
 .\" end boxed text
-.\" Postpone the drawing of the box until we're in the top-level diversion,
-.\" in case there's a footnote inside the box.
+.\" Postpone the drawing of the box until we're in the top-level
+.\" diversion, in case there's a footnote inside the box.
 .de B2
 .ie '\\n(.z'par*box-div' \{\
 .	br
@@ -1289,7 +1479,7 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .	lt +\\n[par*box-n]u
 .	par*box-draw \\n[.i]u \\n[.l]u-(\\n[.H]u==1n*1n)
 .\}
-.el .@error B2 without B1
+.el .@error .B2 without .B1
 .HTML-IMAGE-END
 ..
 .de par*box-mark-top
@@ -1323,16 +1513,43 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .\}
 .el \!.par*box-draw \\$1 \\$2
 ..
+.\" \n[HORPHANS] sets how many lines of the following paragraph must be
+.\" kept together, with a preceding section header.  Initialise it,
+.\" to reproduce original behaviour; user may change it.
+.if !rHORPHANS .nr HORPHANS 1
+.
+.\" \n[GROWPS] and \n[PSINCR] cause auto-increment of header point size.
+.\" Initialise them, so they have no effect, unless explicitly set by
+.\" the user.
+.if !rGROWPS .nr GROWPS 0
+.if !rPSINCR .nr PSINCR 1p
+.
 .de SH-NO-TAG
 .par@finish
-.\" Keep together the heading and the first two lines of the next paragraph.
-.ne 3v+\\n[\\n[.ev]:PD]u+\\n(.Vu
+.\" Keep the heading and the first few lines of the next paragraph
+.\" together.  (\n[HORPHANS] defines "first few" -- default = 1; user
+.\" may redefine it).
+.nr sh*minvs \\n[HORPHANS]v
+.if \\n[sh*psincr]<0 .nr sh*psincr 0
+.ie \\n(VS<1000 .par*vs \\n(VSp+\\n[sh*psincr]u
+.el .par*vs \\n(VSp/1000u+\\n[sh*psincr]u
+.ne 2v+\\n[sh*minvs]u+\\n[\\n[.ev]:PD]u+\\n(.Vu
+.\" Adjust point size for heading text, as specified by \n[GROWPS] and
+.\" \n[PSINCR].
+.ie \\n(PS<1000 .ps \\n(PS+\\n[sh*psincr]u
+.el .ps \\n(PSz/1000u+\\n[sh*psincr]u
 .sp 1
 .ft B
 ..
 .de @SH
+.\" Standard ms implementation does not expect an argument,
+.\" but allow ".SH n" to make heading point size match ".NH n",
+.\" for same "n", when \n[GROWPS] and \n[PSINCR] are set.
+.  nr sh*psincr 0
+.  if 0\\$1>0 .nr sh*psincr (\\n[GROWPS]-0\\$1)*\\n[PSINCR]
 .  SH-NO-TAG
-.  HTML-TAG ".SH 1"
+.  DEVTAG-SH 1
+.  if '\*(.T'html' .nr s@devtag-needs-end-of-heading 1
 ..
 .\" TL, AU, and AI are aliased to these in cov*ab-init.
 .de par@TL
@@ -1342,7 +1559,8 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .ps +2
 .vs +3p
 .ce 9999
-.HTML-TAG ".tl"
+.DEVTAG-TL
+.nr s@devtag-needs-end-of-title 1
 ..
 .de par@AU
 .par@finish
@@ -1357,61 +1575,83 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ..
 .\" In paragraph macros.
 .de NL
-.ps \\n[\\n[.ev]:PS]
+.if \En[.$] .@warning arguments to .NL ignored
+.ie (\\n[\\n[.ev]:PS] >= 1000) \
+.	ps (\\n[\\n[.ev]:PS]z / 1000u)
+.el \
+.	ps \\n[\\n[.ev]:PS]
 ..
 .de SM
+.if \En[.$] .@warning arguments to .SM ignored
 .ps -2
 ..
 .de LG
+.if \En[.$] .@warning arguments to .LG ignored
 .ps +2
 ..
-.de R
-.ft R
-..
-.\" par*define-font-macro macro font
+.\" par*define-font-macro macro font apply-italic-corrections
 .de par*define-font-macro
 .de \\$1
-.ie \\\\n[.$] \{\
-.	nr par*prev-font \\\\n[.f]
-\&\\\\$3\f[\\$2]\\\\$1\f[\\\\n[par*prev-font]]\\\\$2
+.ds par*lic \" empty
+.ds par*ic \" empty
+.if \\n[.$]>2 \{\
+.	as par*lic \,\"
+.	as par*ic \/\"
+.\}
+.if \En[.$]>3 .@warning excess arguments to .\\$1 ignored
+.ie \En[.$] \{\
+.	nr par*prev-font \En[.f]
+\&\E$3\E*[par*lic]\f[\\$2]\E$1\f[\En[par*prev-font]]\E*[par*ic]\E$2
 .\}
 .el .ft \\$2
 \\..
 ..
+.par*define-font-macro R R
 .par*define-font-macro B B
-.par*define-font-macro I I
-.par*define-font-macro BI BI
-.par*define-font-macro CW CR
+.par*define-font-macro I I yes
+.par*define-font-macro BI BI yes
+.ie n .par*define-font-macro CW R
+.el   .par*define-font-macro CW CR
 .\" underline a word
 .de UL
-\Z'\\$1'\v'.25m'\D'l \w'\\$1'u 0'\v'-.25m'\\$2
+.if \En[.$]>2 .@warning excess arguments to .UL ignored
+.	ie t .do nop \Z'\\$1'\v'.25m'\D'l \w'\\$1'u 0'\v'-.25m'\\$2
+.	el \(ul\\$1\(ul\\$2
 ..
 .\" box a word
 .de BX
-.nr par*bxw \w'\\$1'+.4m
-\Z'\v'.25m'\D'l 0 -1m'\D'l \\n[par*bxw]u 0'\D'l 0 1m'\D'l -\\n[par*bxw]u 0''\
-\Z'\h'.2m'\\$1'\
-\h'\\n[par*bxw]u'
+.if \En[.$]>1 .@warning excess arguments to .BX ignored
+.nr par*bxw \w'\\$1'
+.ie t \{\
+.nr par*bxw +.4m
+\Z'\v'.25m'\
+\D'l 0 -1m'\D'l \\n[par*bxw]u 0'\D'l 0 1m'\D'l -\\n[par*bxw]u 0''\
+\Z'\h'.2m'\\$1'\h'\\n[par*bxw]u'
+.\}
+.el \m[black]\M[white]\Z'\\$1'\h'\\n[par*bxw]u'\m[]\M[]
 ..
-.\" The first time UX is used, put a registered mark after it.
-.ds par*ux-rg \(rg
-.de UX
-\s[\\n[.s]*8u/10u]UNIX\s0\\$1\\*[par*ux-rg]
-.ds par*ux-rg
-..
+.\" superscript
 .ds par@sup-start \v'-.9m\s'\En[.s]*7u/10u'+.7m'
 .als { par@sup-start
 .ds par@sup-end \v'-.7m\s0+.9m'
 .als } par@sup-end
+.\" subscript
+.ds par@sub-start \v'+.3m\s'\En[.s]*7u/10u'-.1m'
+.als < par@sub-start
+.ds par@sub-end \v'+.1m\s0-.3m'
+.als > par@sub-end
 .\" footnote paragraphs
+.fn@init
+.\" FR is the ratio of footnote (horizontal) length to the line length
+.ds FR 11/12
 .\" FF is the footnote format
 .nr FF 0
-.\" This can be redefined. It gets a second argument of `no' if the first
-.\" argument was supplied by the user, rather than automatically.
+.\" This can be redefined. It gets a second argument of 'no' if the
+.\" first argument was supplied by the user, rather than automatically.
 .de FP
 .br
 .if !d par*fp!\\n[FF] \{\
-.	@error unknown footnote format `\\n[FF]'
+.	@error unknown footnote format '\\n[FF]'
 .	nr FF 0
 .\}
 .ie '\\$2'no' .par*fp!\\n[FF]-no "\\$1"
@@ -1419,7 +1659,7 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 ..
 .de par*fp!0
 .@PP
-\&\\*[par@sup-start]\\$1\\*[par@sup-end]\ \c
+\&\\*[fn@mark-start]\\$1\\*[fn@mark-end]\ \c
 ..
 .de par*fp!0-no
 .@PP
@@ -1453,6 +1693,16 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .\" Numbered headings.
 .\" nh*hl is the level of the last heading
 .nr nh*hl 0
+.\" SN-DOT and SN-NO-DOT represent the section number of
+.\" the current heading, with and without a terminating dot.
+.ds SN-DOT
+.ds SN-NO-DOT
+.\" SN-STYLE sets the statement numbering style used in headings
+.\" (either SN-DOT or SN-NO-DOT); for backward compatibility with
+.\" earlier ms versions, the default is SN-DOT
+.als SN-STYLE SN-DOT
+.\" Also for backward compatibility, let SN represent SN-DOT.
+.als SN SN-DOT
 .\" numbered heading
 .de @NH
 .ie '\\$1'S' \{\
@@ -1478,8 +1728,12 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .			nr nh*hl 1
 .		\}
 .		el \{\
-.			if \\n[nh*hl]-\\n[nh*ohl]>1 \
-.				@warning .NH \\n[nh*ohl] followed by .NH \\n[nh*hl]
+.			if \\n[nh*hl]-\\n[nh*ohl]>1 \{\
+.				ds nh*msg .NH \\n[nh*ohl] followed by\"
+.				as nh*msg " .NH \\n[nh*hl]\"
+.				@warning \\*[nh*msg]
+.				rm nh*msg
+.			\}
 .		\}
 .	\}
 .	el .nr nh*hl 1
@@ -1489,15 +1743,18 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .	\}
 .	nr H\\n[nh*hl] +1
 .\}
-.ds SN
-.nr nh*i 0
+.ds SN-NO-DOT \\n(H1
+.nr nh*i 1
 .while \\n[nh*i]<\\n[nh*hl] \{\
 .	nr nh*i +1
-.	as SN \\n[H\\n[nh*i]].
+.	as SN-NO-DOT .\\n[H\\n[nh*i]]
 .\}
+.ds SN-DOT \\*[SN-NO-DOT].
+.nr sh*psincr (\\n[GROWPS]-\\n[nh*hl])*\\n[PSINCR]
 .SH-NO-TAG
-.HTML-TAG ".NH \\$1"
-\\*[SN]
+.DEVTAG-NH "\\$1"
+.if '\*(.T'html' .nr s@devtag-needs-end-of-heading 1
+\\*[SN-STYLE]
 ..
 .\" ****************************
 .\" ******** module toc ********
@@ -1516,17 +1773,16 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .ie '\\n(.z'toc*div' \{\
 .	if d toc*num .toc*end-entry
 .	ie \\n[.$] \{\
-.		ie '\\$1'no' .ds toc*num
+.		ie '\\$1'no' .ds toc*num \" empty
 .		el .ds toc*num "\\$1
 .	\}
-.	el .ds toc*num \\n[PN]
+.	el .ds toc*num \\n[%]\"
 .	br
 .	par@reset
 .	na
-.	ll -8n
 .	in (n;0\\$2)
 .\}
-.el .@error XA without XS
+.el .@error .XA without .XS
 ..
 .de XE
 .ie '\\n(.z'toc*div' \{\
@@ -1534,10 +1790,60 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .	ev
 .	di
 .\}
-.el .@error XE without XS
+.el .@error .XE without .XS
+..
+.\" Rudimentary integration of TOC generation with SH and NH;
+.\" (called by XH and XN respectively, to capture heading text
+.\" for reuse as TOC entry); may be redefined, to achieve more
+.\" sophisticated TOC layout effects.
+.\"
+.\" No-op initializers are called by XH and XN respectively,
+.\" before XH-UPDATE-TOC is called; if XH-UPDATE-TOC has been
+.\" redefined, then it may also be necessary to redefine either,
+.\" or both of these, to perform any initialization specific
+.\" to use after SH and NH respectively.
+.de XH-INIT de
+.de XN-INIT
+..
+.de XH-UPDATE-TOC
+.\" .XH-UPDATE-TOC <outline-level> <text>
+.XS
+.in (\\$1u - 1u * 2n)
+.shift
+\&\\$*
+.XE
+..
+.\" Rudimentary integration hook, to be called (nominally)
+.\" after SH, but acceptable in any body-text context
+.de XH de
+.\" .XH <outline-level> <text>
+.rn XH-REPLACEMENT XH
+.XH \\$@
+.de XH-REPLACEMENT
+.XH-INIT
+.XH-UPDATE-TOC \\$@
+.shift
+\&\\$*
+..
+.\" Rudimentary integration hook, to be called after NH
+.de XN de
+.\" .XN <text>
+.ie \\n[nh*hl] .toc*xn-init \\$@
+.el \{\
+.	@error .XN is not allowed before .NH
+.	nop \&\\$*
+.\}
+.de toc*xn-init de
+.rn XN-REPLACEMENT XN
+.XN \\$@
+.rm \\$0
+.de XN-REPLACEMENT
+.XN-INIT
+.XH-UPDATE-TOC \\n[nh*hl] \\$@
+\&\\$*
 ..
 .de toc*end-entry
-\\a\\t\\*[toc*num]
+.if !'\\*[toc*num]'' \\a\\t\\*[toc*num]
 .br
 .rm toc*num
 ..
@@ -1545,16 +1851,20 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .1C
 .if !'\\$1'no' \{\
 .	ce 1
-.	ps \\n[PS]+2
+.	ie (\\n[PS] >= 1000) \
+.		ps ((\\n[PS]z / 1000u) + 2z)
+.	el \
+.		ps \\n[PS]+2
 .	ft B
 \\*[TOC]
 .	ft
 .	ps
 .\}
 .nf
-.char \[toc*leader-char] .\h'1m'
-.lc \[toc*leader-char]
-.ta (u;\\n[.l]-\\n[.i]-\w'000') (u;\\n[.l]-\\n[.i])R
+.if !r TC-MARGIN .nr TC-MARGIN \w'000'
+.if !c \[TC-LEADER] .char \[TC-LEADER] .\h'1m'
+.ta (u;\\n[.l]-\\n[.i]-\\n[TC-MARGIN]) (u;\\n[.l]-\\n[.i])R
+.lc \[TC-LEADER]
 .sp 2
 .toc*div
 .par@reset
@@ -1574,55 +1884,75 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .de EN
 ..
 .de @EQ
+.if \\n[tbl@within-table] \
+.	@error .EQ is not allowed within a .TS/.TE table
 .br
+.nr eqn*type 0
 .ds eqn*num "\\$2
-.ie '\\$1'L' .nr eqn*type 0
-.el \{\
-.	ie '\\$1'I' .nr eqn*type 1
-.	el \{\
-.		nr eqn*type 2
-.		if !'\\$1'C' .ds eqn*num "\\$1
+.if '\\$1'L' .nr eqn*type 1
+.if '\\$1'I' .nr eqn*type 2
+.if '\\$1'C' .nr eqn*type 3
+.if !\\n[eqn*type] \{\
+.	ds eqn*msg .EQ: unrecognized alignment '\\$1';
+.	ie (\\n[.$] = 1) \{\
+.		if !'\\$1'' \{\
+.			as eqn*msg " assuming it is an equation label
+.			@warning \\*[eqn*msg]
+.			ds eqn*num "\\$1
+.		\}
 .	\}
+.	el .if (\\n[.$] > 1) \{\
+.		if !'\\$1'' \{\
+.			as eqn*msg " centering equation
+.			@warning \\*[eqn*msg]
+.		\}
+.	\}
+.	rm eqn*msg
 .\}
 .di eqn*div
 .in 0
-.if \\n[eqn*type]=0 .HTML-IMAGE-LEFT
-.if \\n[eqn*type]=1 \{\
-.   if '\*(.T'html' .RS
-.   HTML-IMAGE-INLINE
+.if '\*(.T'html' \{\
+.	nr eqn*ll \\n[.l]
+.	ll 1000n
 .\}
-.if \\n[eqn*type]=2 .HTML-IMAGE
-.if !'\*(.T'html' .nf
+.if \\n[eqn*type]=1 .EQN-HTML-IMAGE-LEFT
+.if \\n[eqn*type]=2 \{\
+.   if '\*(.T'html' .RS
+.EQN-HTML-IMAGE-INLINE
+.\}
+.if \\n[eqn*type]=3 .EQN-HTML-IMAGE
+.nf
 ..
 .de @div-end!eqn*div
 .@EN
 ..
 .\" Note that geqn mark and lineup work correctly in centered equations.
 .de @EN
-.ie !'\\n(.z'eqn*div' .@error-recover mismatched EN
+.ie !'\\n(.z'eqn*div' .@error-recover mismatched .EN
 .el \{\
 .	br
 .	di
 .	nr eqn*have-num 0
 .	if !'\\*[eqn*num]'' .nr eqn*have-num 1
 .	ie \\n[dl]:\\n[eqn*have-num] \{\
-.               if !'\*(.T'html' .sp \\n[DD]u
+.		sp \\n[DD]u
+.		ns
 .		par@reset
 .		ds eqn*tabs \\n[.tabs]
 .		nf
 .		ie \\n[dl] \{\
-.\"                     --fixme-- this really should not be necessary
-.\"                     and indicates that there is extra space creeping into
-.\"                     an equation when ps4html is enabled..
-.                       ie r ps4html .ds@need \\n[dn]u-1v+\n[.V]u+1i
-.                       el .ds@need \\n[dn]u-1v+\n[.V]u
+.\"			XXX: This really should not be necessary and
+.\"			indicates that there is extra space creeping
+.\"			into an equation when ps4html is enabled.
+.			ie r ps4html .ds@need \\n[dn]u-1v+\n[.V]u+1i
+.			el .ds@need \\n[dn]u-1v+\n[.V]u
 .			chop eqn*div
-.			ie \\n[eqn*type]=0 \{\
+.			ie \\n[eqn*type]=1 \{\
 .				ta (u;\\n[.l]-\\n[.i])R
 \\*[eqn*div]\t\\*[eqn*num]
 .			\}
 .			el \{\
-.				ie \\n[eqn*type]=1 .ta \\n[DI]u \
+.				ie \\n[eqn*type]=2 .ta \\n[DI]u \
 (u;\\n[.l]-\\n[.i])R
 .				el .ta (u;\\n[.l]-\\n[.i]/2)C \
 (u;\\n[.l]-\\n[.i])R
@@ -1633,40 +1963,57 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .			ta (u;\\n[.l]-\\n[.i])R
 \t\\*[eqn*num]
 .		\}
-.               if !'\*(.T'html' .sp \\n[DD]u
+.\".		if !'\*(.T'html' .sp \\n[DD]u
+.		sp \\n[DD]u
+.		ns
 .		ta \\*[eqn*tabs]
 .	\}
-.	el \{
+.	el \{\
 .\" must terminate empty equations in html and ps4html as they contain
-.\" the HTML-IMAGE-END suppression nodes
+.\" the EQN-HTML-IMAGE-END suppression nodes
 .		if \\n[dl] .chop eqn*div
 .		if '\*(.T'html' \\*[eqn*div]
 .		if r ps4html    \\*[eqn*div]
 .	\}
 .       if !'\*(.T'html' .fi
-.	if \\n[eqn*type]=0 .HTML-IMAGE-END
-.	if \\n[eqn*type]=1 \{\
-.		HTML-IMAGE-END
+.	if \\n[eqn*type]=1 .EQN-HTML-IMAGE-END
+.	if \\n[eqn*type]=2 \{\
+.		EQN-HTML-IMAGE-END
 .		if '\*(.T'html' .RE
 .	\}
-.	if \\n[eqn*type]=2 .HTML-IMAGE-END
+.	if \\n[eqn*type]=3 .EQN-HTML-IMAGE-END
+.	if '\*(.T'html' \
+.		ll \\n[eqn*ll]u
 .\}
 ..
+.
 .\" ****************************
 .\" ******** module tbl ********
 .\" ****************************
 .\" Tbl support.
+.nr tbl@within-table 0
 .nr tbl*have-header 0
 .\" This gets called if TS occurs before the first paragraph.
 .de TS
 .LP
-.\" cov*ab-init aliases TS to @TS
+.\" cov*ab-init, called by LP, aliases TS to @TS.
 \\*[TS]\\
 ..
 .de @TS
+.nr tbl@within-table 1
 .sp \\n[DD]u
-.\" .if !'\*(.T'html' .sp \\n[DD]u
-.if '\\$1'H' .di tbl*header-div
+.if '\\$1'H' \{\
+.	ds tbl*stem .TS H table inside\"
+.	ie '\\n[.z]'kp@div' .@warning \\*[tbl*stem] .KS/.KE keep
+.	el .if '\\n[.z]'kp@fdiv' \
+.		@warning \\*[tbl*stem] .KF/.KE floating keep
+.	rm tbl*stem
+.	di tbl*header-div
+.\}
+.if '\*(.T'html' \{\
+.	nr tbl*ll \\n[.l]
+.	ll 1000n
+.\}
 .HTML-IMAGE
 ..
 .de tbl@top-hook
@@ -1687,8 +2034,13 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .	T#
 .	br
 .	di
-.	ie \\n[dn]+\\n[FM]+\\n[HM]+2v>=\\n[.p] \{\
-.		@error ridiculously long table header
+.	\" A table with repeating headings requires enough room for them
+.	\" and then at least one more vee for a row of data.
+.	ie \\n[dn]+1v>=(\\n[.p]-\\n[FM]-\\n[HM]) \{\
+.		ds tbl*err .TH repeating table heading(s) do not fit in
+.		as tbl*err " page area; formatting only once
+.		@error \\*[tbl*err]
+.		rm tbl*err
 .		ds@need \\n[dn]
 .		tbl*print-header
 .	\}
@@ -1709,11 +2061,17 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .ie '\\n(.z'tbl*header-div' .@error-recover .TS H but no .TH before .TE
 .el \{\
 .	nr tbl*have-header 0
-.       if !'\*(.T'html' .sp \\n[DD]u
+.	if !'\*(.T'html' \{\
+.		sp \\n[DD]u
+.		ns
+.	\}
 .\}
-.	HTML-IMAGE-END
+.HTML-IMAGE-END
+.if '\*(.T'html' \
+.	ll \\n[tbl*ll]u
 .\" reset tabs
 .TA
+.nr tbl@within-table 0
 ..
 .de tbl@bottom-hook
 .if \\n[tbl*have-header] \{\
@@ -1727,169 +2085,42 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .\" ******** module pic ********
 .\" ****************************
 .\" Pic support.
-.\" PS height width
+.\" This gets called if PS occurs before the first paragraph.
 .de PS
+.LP
+.\" cov*ab-init, called by LP, aliases PS to @PS.
+\\*[PS]\\
+..
+.\" @PS height width
+.de @PS
 .br
 .sp \\n[DD]u
-.ie \\n[.$]<2 .@error bad arguments to PS (not preprocessed with pic?)
+.ie \\n[.$]<2 \{\
+.	ds pic*msg .PS: expected 2 arguments, got \\n[.$]\"
+.	as pic*msg ; not preprocessed with pic?\"
+.	@error \\*[pic*msg]
+.	rm pic*msg
+.\}
 .el \{\
 .	ds@need (u;\\$1)+1v
 .	in +(u;\\n[.l]-\\n[.i]-\\$2/2>?0)
 .\}
 .HTML-IMAGE
 ..
-.de PE
+.de PF
 .HTML-IMAGE-END
 .par@reset
+..
+.de PE
+.PF
 .sp \\n[DD]u+.5m
+.ns
 ..
 .\" ****************************
 .\" ******** module ref ********
 .\" ****************************
 .\" Refer support.
-.de ]-
-.rm [A [B [C [D [E [G [I [J [N [O [P [Q [R [S [T [V
-.rm ref*string
-..
-.\" Other
-.ds ref*spec!0 Q A T1 S V N P I C D O
-.\" Journal article
-.ds ref*spec!1 Q A T2 J S V N P I C D O
-.\" Book
-.ds ref*spec!2 Q A T1 S V P I C D O
-.\" Article within book
-.ds ref*spec!3 Q A T2 B E S V P I C D O
-.\" Tech report
-.ds ref*spec!4 Q A T2 R G P I C D O
-.\" ][ type
-.de ][
-.if r [T \{\
-.	als [T1 [T
-.	als [T2 [T
-.\}
-.ie d ref*spec!\\$1 .ref*build \\*[ref*spec!\\$1]
-.el \{\
-.	@error unknown reference type `\\$1'
-.	ref*build \\*[ref*spec!0]
-.\}
-.ref*print
-.rm ref*string
-.rm [F [T1 [T2
-..
-.\" start of reference number
-.ds [. \\*[par@sup-start]
-.\" end of reference number
-.ds .] \\*[par@sup-end]
-.\" period before reference
-.ds <. .
-.\" period after reference
-.ds >. \" empty
-.\" comma before reference
-.ds <, ,
-.\" comma after reference
-.ds >, \" empty
-.\" start collected references
-.de ]<
-.als ref*print ref*end-print
-.SH
-\&\\*[REFERENCES]
-.par@reset
-..
-.\" end collected references
-.de ]>
-.par@finish
-.als ref*print ref*normal-print
-..
-.de ref*normal-print
-.ie d [F .FS "\\*([.\\*([F\\*(.]"
-.el .FS \&
-\\*[ref*string]
-.FE
-..
-.de ref*end-print
-.ie d [F .IP "\\*([F."
-.el .XP
-\\*[ref*string]
-..
-.als ref*print ref*normal-print
-.de ref*build
-.rm ref*string ref*post-punct
-.nr ref*suppress-period 1
-.while \\n[.$] \{\
-.	if d [\\$1 \{\
-.		ie d ref*add-\\$1 .ref*add-\\$1
-.		el .ref*add-dflt \\$1
-.	\}
-.	shift
-.\}
-.\" now add a final period
-.ie d ref*string \{\
-.	if !\\n[ref*suppress-period] .as ref*string .
-.	if d ref*post-punct \{\
-.		as ref*string "\\*[ref*post-punct]
-.		rm ref*post-punct
-.	\}
-.\}
-.el .ds ref*string
-..
-.de ref*add-T1
-.ref*field T , "\fI" "" "\fP"
-.if r [T .nr ref*suppress-period \\n([T
-..
-.de ref*add-T2
-.ref*field T , "\\*Q" "" "\\*U"
-.if r [T .nr ref*suppress-period \\n([T
-..
-.de ref*add-P
-.ie \\n([P>0 .ref*field P , "pp. "
-.el .ref*field P , "p. "
-..
-.de ref*add-J
-.ref*field J , \fI "" \fP
-..
-.de ref*add-D
-.ref*field D "" ( )
-..
-.de ref*add-E
-.ref*field E , "ed. "
-..
-.de ref*add-G
-.ref*field G "" ( )
-..
-.de ref*add-B
-.ref*field B "" "in \fI" "" \fP
-..
-.de ref*add-O
-.ref*field O .
-.ie r [O .nr ref*suppress-period \\n([O
-.el .nr ref*suppress-period 1
-..
-.de ref*add-A
-.ref*field A ,
-.if r [A .nr ref*suppress-period \\n([A
-..
-.de ref*add-dflt
-.ref*field \\$1 ,
-..
-.\" First argument is the field letter.
-.\" Second argument is the punctuation character to use to separate this field
-.\" from the previous field.
-.\" Third argument is a string with which to prefix this field.
-.\" Fourth argument is a string with which to postfix this field.
-.\" Fifth argument is a string to add after the punctuation character supplied
-.\" by the next field.
-.de ref*field
-.if d ref*string \{\
-.	ie d ref*post-punct \{\
-.		as ref*string "\\$2\\*[ref*post-punct] \"
-.		rm ref*post-punct
-.	\}
-.	el .as ref*string "\\$2 \"
-.\}
-.as ref*string "\\$3\\*([\\$1\\$4
-.if \\n[.$]>4 .ds ref*post-punct "\\$5
-.nr ref*suppress-period 0
-..
+.mso refer-ms.tmac
 .\" ****************************
 .\" ******** module acc ********
 .\" ****************************
@@ -1898,9 +2129,6 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .ds U \(rq
 .ds - \(em
 .\" Characters
-.\" The idea of this definition is for the top of the 3 to be at the x-height.
-.if !c\[yogh] .char \[yogh] \Z'\v'\w'x'*0-\En[rst]u'\s[\En[.s]*8u/10u]\
-\v'\w'3'*0+\En[rst]u'3\s0'\h'\w'\s[\En[.s]*8u/10u]3'u'
 .\" Accents
 .de acc*over-def
 .ds \\$1 \Z'\v'(u;\w'x'*0+\En[rst]-\En[.cht])'\
@@ -1936,8 +2164,12 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .acc*under-def . \s[\En[.s]*8u/10u]\v'.2m'.\v'-.2m'\s0
 .acc*under-def hook \(ho
 .acc*slash-def / /
-.char \[hooko] o\\\\*[hook]
+.char \[hooko] o\E*[hook]
 .ds q \[hooko]
+.\" The idea of this definition is for the top of the 3 to be at the
+.\" x-height.
+.if !c\[yogh] .char \[yogh] \Z'\v'\w'x'*0-\En[rst]u'\s[\En[.s]*8u/10u]\
+\v'\w'3'*0+\En[rst]u'3\s0'\h'\w'\s[\En[.s]*8u/10u]3'u'
 .ds 3 \[yogh]
 .ds D- \(-D\"			Icelandic uppercase eth
 .ds d- \(Sd\"			Icelandic lowercase eth
@@ -1952,39 +2184,25 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .ds ! \(r!\"			upside down !
 ..
 .de CHECK-FOOTER-AND-KEEP
-.\" it might be better to als FS -> B1 and FE -> B2
-.\" however this produced wierd results, so I've moved back to a more reliable
-.\" but less interesting solution --fixme--
-.   if '\*(.T'html' \{\
-.	rm KF
-.	als KF KS
-.	rm FS
-.	de FS
-.		br
-.		HTML-IMAGE
+.if '\*(.T'html' \{\
+.   rm KF
+.   als KF KS
+.
+.   rm FS
+.   de FS
+.      sp
+.      HTML-NS <cite>
 \\..
-.	rm FE
-.	de FE
-.		br
-.		HTML-IMAGE-END
+.   rm FE
+.   de FE
+.      HTML-NS </cite>
+.      sp
 \\..
-.   \}
-.   if r ps4html \{\
-.	rm FS
-.	de FS
-.		br
-.		HTML-IMAGE
-\\..
-.	rm FE
-.	de FE
-.		br
-.		HTML-IMAGE-END
-\\..
-.   \}
+.\}
 ..
 .par@load-init
-.if '\*(.T'html' \{\
-.  rm @IP
-.  als @IP @IP-html
-.\}
-.\" Make sure that no blank lines creep in at the end of this file.
+.\" Local Variables:
+.\" mode: nroff
+.\" fill-column: 72
+.\" End:
+.\" vim: set filetype=groff textwidth=72:

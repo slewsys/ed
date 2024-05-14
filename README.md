@@ -72,6 +72,7 @@ needed:
 Additional packages for generating PDFs of Brian W. Kernighan's
 `ed` tutorials are:
 
+ - **GNU** `texi2dvi`,
  - **GNU** `roff`, and
  - `ghostscript`.
 
@@ -105,7 +106,7 @@ commands:
 ```shell
 sudo dnf group install 'C Development Tools and Libraries'
 sudo dnf install -y gettext-devel ghostscript groff \
-    openssl-devel textinfo
+    openssl-devel textinfo texinfo-tex
 ```
 
 #### OpenSUSE

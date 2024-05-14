@@ -7,10 +7,9 @@ TEXI		= $(PROG:=.texi)
 INTRO_TEXI	= $(PROG:=-intro.texi)
 ADV_TEXI	= $(PROG:=-adv.texi)
 
-INTRO_PS	= $(PROG:=.ps)
-INTRO_PDF	= $(PROG:=.pdf)
-ADV_PS		= $(PROG:=.ps)
-ADV_PDF		= $(PROG:=.pdf)
+PDF		= $(PROG:=.pdf)
+INTRO_PDF	= $(PROG:=-intro.pdf)
+ADV_PDF		= $(PROG:=-adv.pdf)
 
 INFO		= $(PROG:=.info)
 INTRO_INFO	= $(PROG:=-intro.info)
@@ -49,7 +48,6 @@ ed_TEXINFOS =								      \
 	fdl.texi
 
 man_MANS = $(PROG:=.1)
-EXTRA_DIST = $(man_MANS) SUSv4.md
 
 SUBDIRS = bwk
 
@@ -59,7 +57,7 @@ SUBDIRS = bwk
 
 .PHONY: all-local
 
-all-local: $(INFO)
+all-local: $(INFO) $(PDF)
 
 commented:
 	for f in  $(TEXI)						      \
@@ -80,7 +78,6 @@ $(INTRO_INFO): $(INTRO_INFO_TEXI)
 $(ADV_INFO): $(ADV_INFO_TEXI)
 	$(MAKEINFO) -I . -o $@ $(ADV_INFO_TEXI)
 
-$(PS): $(TEXI) $(INTRO_PS) $(ADV_PS)
 $(PDF): $(TEXI) $(INTRO_PDF) $(ADV_PDF)
 
 # Substitute `Top' node pointers for inclusion in ed.info
@@ -119,23 +116,11 @@ $(ADV_INFO_TEXI): $(ADV_TEXI)
 	    $(srcdir)/$(ADV_TEXI) >$@.tmp
 	mv $@.tmp $@
 
-$(INTRO_PS):
 $(INTRO_PDF):
-$(ADV_PS):
+	ln -sf bwk/$(INTRO_PDF)	$(abs_top_builddir)/doc/$(INTRO_PDF)
+
 $(ADV_PDF):
-	if cd "$$builddir"/bwk && $(MAKE) $(AM_MAKEFLAGS); then		      \
-	    cd "$$builddir" &&						      \
-	    ln -sf bwk/$(INTRO_PS)					      \
-		   bwk/$(INTRO_PDF)					      \
-		   bwk/$(ADV_PS)					      \
-		   bwk/$(ADV_PDF)					      \
-		   .;							      \
-	else if test ."@TEXI2PDF@" != .''; then				      \
-	    $(TEXI2PDF) --build=tidy ed-intro.texi;			      \
-	    $(TEXI2PDF) --build=tidy ed-adv.texi;			      \
-	    $(TEXI2DVI) --build=tidy ed-intro.texi;			      \
-	    $(TEXI2DVI) --build=tidy ed-adv.texi;			      \
-	fi
+	ln -sf bwk/$(ADV_PDF)	$(abs_top_builddir)/doc/$(ADV_PDF)
 
 clean-local:
 	rm -f $(INTRO_INCL_TEXI) $(ADV_INCL_TEXI)			      \

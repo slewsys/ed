@@ -56,11 +56,17 @@ Makefile
 /config.rpath
 **/Makefile
 **/Makefile.in
+/doc/ed-adv.aux
+/doc/ed-adv.log
+/doc/ed-adv.toc
+/doc/ed-intro.aux
+/doc/ed-intro.log
 /doc/ed-adv-incl.texi
 /doc/ed-adv-info.texi
 /doc/ed-intro-incl.texi
 /doc/ed-intro-info.texi
 /doc/stamp-vti
+/doc/*.t2p
 /doc/version.texi
 /lib/inttypes.h
 /lib/langinfo.h
