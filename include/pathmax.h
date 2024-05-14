@@ -1,6 +1,6 @@
 /* pathmax.h: Pathname limits for ed line editor.
 
-   Copyright © 1993-2014 Andrew L. Moore, SlewSys Research
+   Copyright © 1993-2014 Andrew L. Moore <slewsys@gmail.com>, SlewSys Research
 
    This file is part of ed.
 

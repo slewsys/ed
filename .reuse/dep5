@@ -1,6 +1,6 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: ed
-Upstream-Contact: Andrew L. Moore <slewsys@gmail.com>
+Upstream-Contact: Andrew L. Moore <slewsys@gmail.com>, SlewSys Research
 Source: https://github.com/slewsys/ed
 
 Files:
@@ -23,7 +23,7 @@ Files:
   Makefile.am
   README.md
   testsuite/*
-Copyright: 1993-2024 Andrew L. Moore <slewsys@gmail.com>
+Copyright: 1993-2024 Andrew L. Moore <slewsys@gmail.com>, SlewSys Research
 License: BSD-2-Clause OR GPL-2.0-or-later OR MIT
 
 Files:
@@ -37,5 +37,5 @@ Files:
   NEWS
   THANKS
   TODO
-Copyright: 1993-2024 Andrew L. Moore <slewsys@gmail.com>
+Copyright: 1993-2024 Andrew L. Moore <slewsys@gmail.com>, SlewSys Research
 License: CC0-1.0

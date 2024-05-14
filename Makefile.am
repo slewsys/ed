@@ -21,8 +21,9 @@ HEAD_COMMIT = $(shell git rev-parse --short HEAD)
 .PHONY: maintainer-update-dist update-testsuite-dist update-po
 
 # dist:
-#	git archive --format=tar --prefix=$(PACKAGE)-$(VERSION)/ HEAD |	      \
-#		gzip >../ed-$(VERSION)~g$(HEAD_COMMIT).tgz
+#	git -C $(abs_top_srcdir) archive --format=tar			      \
+#		--prefix=$(PACKAGE)-$(VERSION)/ v$(VERSION) |		      \
+#		gzip >$(abs_top_builddir)/ed-$(VERSION)~g$(HEAD_COMMIT).tgz
 
 check-valgrind: clean
 	$(MAKE) $(AM_MAKEFLAGS) CFLAGS='-g -O0'				      \
@@ -30,6 +31,9 @@ check-valgrind: clean
 	$(MAKE) -C $(abs_top_srcdir)/testsuite check-valgrind
 
 maintainer-update-dist: update-gnulib update-po
+
+spdx-sbom:
+	reuse --suppress-deprecation spdx > $(PACKAGE)-$(VERSION).spdx
 
 update-gnulib:
 	@if test ! -x $(gnulib_srcdir)/gnulib-tool; then		      \

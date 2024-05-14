@@ -1,6 +1,6 @@
 The ed copyright is owned by Andrew L. Moore so that source and/or
 binaries may be distributed under any of BSD-2-Clause, GPL-2.0,
-GPL-3.0 or MIT license, the full text of which is listed below.
+GPL-3.0 or MIT license.
 
 The ed line editor is configured with and designed to link against
 software copyrighted by the Free Software Foundation. In particular,
@@ -12,4 +12,7 @@ Linking against any POSIX-compatible regular expression library and
 any GNU gettext-compatible libintl library is supported in order to
 build, e.g., an exclusively BSD-2-Clause implemenation of ed.
 
-See SPDX SBOM for full licensing information.
+For full licensing information, an SPDX SBOM can be generated
+from the ed source directory with the command:
+
+$ make spdx-sbom

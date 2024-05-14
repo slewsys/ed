@@ -1,6 +1,6 @@
 /* ed.h: Header for the ed line editor.
  *
- *  Copyright © 1993-2024 Andrew L. Moore, SlewSys Research
+ *  Copyright © 1993-2024 Andrew L. Moore <slewsys@gmail.com>, SlewSys Research
  *
  *  SPDX-License-Identifier:  BSD-2-Clause OR GPL-2.0-or-later OR MIT
  */

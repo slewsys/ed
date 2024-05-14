@@ -1,6 +1,6 @@
 /* prdcg.h: Structures and declarations for the directed graph printer.
  *
- * SPDX-FileCopyrightText: 1989,2024 Andrew L. Moore, SlewSys Research
+ * SPDX-FileCopyrightText: 1989,2024 Andrew L. Moore <slewsys@gmail.com>, SlewSys Research
  *
  * SPDX-License-Identifier: CC0
  */
