@@ -3,7 +3,6 @@ TODO: Possible improvements for the ed line editor.
 * Pre-release
 ** Sync man and info pages
 ** Update/expand testsuite
-** In scripting context, apply script to each file provided on command line.
 
 * File warnings
 ** Warn if disk file has changed since last write.

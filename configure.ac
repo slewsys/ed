@@ -228,13 +228,13 @@ AC_CHECK_FUNCS_ONCE([arc4random_buf dup2 flock ftruncate memmove pathconf \
 #
 # Checks feature requests.
 #
-AC_MSG_CHECKING([whether all ED extensions are requested])
+AC_MSG_CHECKING([whether all ed extensions are requested])
 AC_ARG_ENABLE([all-extensions],
   [AS_HELP_STRING([--enable-all-extensions],
-    [enable all ED extensions.])], [], [])
+    [enable all ed extensions.])], [], [])
 AC_MSG_RESULT([${enable_all_extensions:-no}])
 
-AC_MSG_CHECKING([whether ED command-line address argument support is requested])
+AC_MSG_CHECKING([whether ed command-line address argument support is requested])
 AC_ARG_ENABLE([address-arguments],
   [AS_HELP_STRING([--enable-address-arguments],
     [enable command-line address arguments])], [], [])
@@ -260,36 +260,36 @@ if test ."$enable_ed_envar" = .'yes' \
 fi
 AC_MSG_RESULT([${enable_ed_envar:-no}])
 
-AC_MSG_CHECKING([whether ED external filter support is requested])
+AC_MSG_CHECKING([whether ed external filter support is requested])
 AC_ARG_ENABLE([external-filter],
   [AS_HELP_STRING([--enable-external-filter],
-    [enable external filtering of ED buffer])], [], [])
+    [enable external filtering of ed's buffer])], [], [])
 if test ."$enable_external_filter" = .'yes' \
         || { test ! ."$enable_external_filter" = .'no' \
                   && test ."$enable_all_extensions" = .'yes'; }; then
     enable_external_filter=yes
     AC_DEFINE([WANT_EXTERNAL_FILTER], [1],
-      [Define to 1 to enable modifying ED buffer via external filters.])
+      [Define to 1 to enable modifying ed buffer via external filters.])
 fi
 AC_MSG_RESULT([${enable_external_filter:-no}])
 
-AC_MSG_CHECKING([whether ED file globbing support is requested])
+AC_MSG_CHECKING([whether ed file globbing support is requested])
 AC_ARG_ENABLE([file-glob],
   [AS_HELP_STRING([--enable-file-glob],
-    [enable ED file globbing and multi-file support])], [], [])
+    [enable ed file globbing and multi-file support])], [], [])
 if test ."$enable_file_glob" = .'yes' \
         || { test ! ."$enable_file_glob" = .'no' \
                   && test ."$enable_all_extensions" = .'yes'; }; then
     enable_file_glob=yes
     AC_DEFINE([WANT_FILE_GLOB], [1],
-      [Define to 1 to enable ED file glob and multi-file support.])
+      [Define to 1 to enable ed file glob and multi-file support.])
 fi
 AC_MSG_RESULT([${enable_file_glob:-no}])
 
-AC_MSG_CHECKING([whether ED file locking support is requested])
+AC_MSG_CHECKING([whether ed file locking support is requested])
 AC_ARG_ENABLE([file-lock],
   [AS_HELP_STRING([--enable-file-lock],
-    [enable ED file locking support])], [], [])
+    [enable ed file locking support])], [], [])
 
 # Enable file locking if requested, but only if available.
 if test ."$enable_file_lock" = .'yes' \
@@ -300,7 +300,7 @@ if test ."$enable_file_lock" = .'yes' \
              || test ! ."$ac_cv_have_decl_f_setlk" = .'no'],
          [enable_file_lock=yes
           AC_DEFINE([WANT_FILE_LOCK], [1],
-            [Define to 1 to enable ED file lock support.])],
+            [Define to 1 to enable ed file lock support.])],
        [test ."$ac_cv_func_flock" = .'no' \
           && test ."$ac_cv_have_decl_f_setlk" = .'no'],
          [enable_file_lock=no
@@ -308,23 +308,23 @@ if test ."$enable_file_lock" = .'yes' \
 fi
 AC_MSG_RESULT([${enable_file_lock:-no}])
 
-AC_MSG_CHECKING([whether ED macro support is requested])
+AC_MSG_CHECKING([whether ed macro support is requested])
 AC_ARG_ENABLE([ed-macro],
   [AS_HELP_STRING([--enable-ed-macro],
-    [enable ED macro support (implies register and  script flags)])], [], [])
+    [enable ed macro support (implies register and  script flags)])], [], [])
 if test ."$enable_ed_macro" = .'yes' \
         || { test ! ."$enable_ed_macro" = .'no' \
                   && test ."$enable_all_extensions" = .'yes'; }; then
     enable_ed_macro=yes
     AC_DEFINE([WANT_ED_MACRO], [1],
-      [Define to 1 to enable ED macro support.])
+      [Define to 1 to enable ed macro support.])
 fi
 AC_MSG_RESULT([${enable_ed_macro:-no}])
 
-AC_MSG_CHECKING([whether ED register support is requested])
+AC_MSG_CHECKING([whether ed register support is requested])
 AC_ARG_ENABLE([ed-register],
   [AS_HELP_STRING([--enable-ed-register],
-    [enable ED register support])], [] [])
+    [enable ed register support])], [] [])
 
 # Override --disable-ed-register if macro support requested.
 if test ! ."$enable_ed_register" = .'yes' \
@@ -338,14 +338,14 @@ if test ."$enable_ed_register" = .'yes' \
                   && test ."$enable_all_extensions" = .'yes'; }; then
     enable_ed_register=yes
     AC_DEFINE([WANT_ED_REGISTER], [1],
-      [Define to 1 to enable ED register support.])
+      [Define to 1 to enable ed register support.])
 fi
 AC_MSG_RESULT([${enable_ed_register:-no}])
 
-AC_MSG_CHECKING([whether ED script flags are requested])
+AC_MSG_CHECKING([whether ed script flags are requested])
 AC_ARG_ENABLE([script-flags],
   [AS_HELP_STRING([--enable-script-flags],
-    [enable ED command-line script flags])], [], [])
+    [enable ed command-line script flags])], [], [])
 
 # Override --disable-script-flags if macro support requested.
 if test ! ."$enable_script_flags" = .'yes' \
@@ -359,27 +359,27 @@ if test ."$enable_script_flags" = .'yes' \
                   && test ."$enable_all_extensions" = .'yes'; }; then
     enable_script_flags=yes
     AC_DEFINE([WANT_SCRIPT_FLAGS], [1],
-      [Define to 1 to enable ED command-line script flags.])
+      [Define to 1 to enable ed command-line script flags.])
 fi
 AC_MSG_RESULT([${enable_script_flags:-no}])
 
-AC_MSG_CHECKING([whether ED scrolling support is requested])
+AC_MSG_CHECKING([whether ed scrolling support is requested])
 AC_ARG_ENABLE([ed-scroll],
   [AS_HELP_STRING([--enable-ed-scroll],
-    [enable ED scrolling.])], [], [])
+    [enable ed scrolling.])], [], [])
 if test ."$enable_ed_scroll" = .'yes' \
         || { test ! ."$enable_ed_scroll" = .'no' \
                   && test ."$enable_all_extensions" = .'yes'; }; then
     enable_ed_scroll=yes
     AC_DEFINE([WANT_ED_SCROLL], [1],
-      [Define to 1 to enable ED scrolling support.])
+      [Define to 1 to enable ed scrolling support.])
 fi
 AC_MSG_RESULT([${enable_ed_scroll:-no}])
 
-AC_MSG_CHECKING([whether ED encryption support is requested])
+AC_MSG_CHECKING([whether ed encryption support is requested])
 AC_ARG_ENABLE([ed-encryption],
   [AS_HELP_STRING([--enable-ed-encryption],
-    [enable ED encryption/decryption of files.])], [], [])
+    [enable ed encryption/decryption of files.])], [], [])
 if test ."$enable_ed_encryption" = .'yes' \
         || { test ! ."$enable_ed_encryption" = .'no' \
                   && test ."$enable_all_extensions" = .'yes'; }; then
@@ -398,7 +398,7 @@ AM_CONDITIONAL([LDADD_LIBCRYPT], [test ."$enable_ed_encryption" = .'yes'])
 
 AM_COND_IF([LDADD_LIBCRYPT],
   [AC_DEFINE([WANT_ED_ENCRYPTION], [1],
-    [Define to 1 to enable ED encryption/decryption of files.])])
+    [Define to 1 to enable ed encryption/decryption of files.])])
 
 # Capture configured options for displaying in --version output.
 [configure_options='

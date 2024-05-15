@@ -189,13 +189,26 @@ fi
 if $verbose; then
     echo "$script_name:" >&2
     cat >&2 <<'EOF'
-========================================================================
+===============================================================================
 
      Autotools appears to have completed successfully. To continue,
-     optionally create and cd to a build directory, then run:
+     run:
 
-             $ $top_srcdir/configure
+             $ ./configure [--enable-EXTENSION ...|--enable-all-extensions]
              $ make
+
+     where available EXTENSIONs are
+
+             address-arguments - enable command-line address arguments.
+             ed-envar          - enable ED environment variable.
+             external-filter   - enable external filtering of ed's buffer.
+             file-glob         - enable file globbing and multi-file support.
+             file-lock         - enable file locking support.
+             ed-macro          - enable macro support.
+             ed-register       - enable register support.
+             script-flags      - enable command-line script flags.
+             ed-scroll         - enable scrolling.
+             ed-encryption     - enable encryption/decryption of files.
 
       The testsuite is generated with GNU AutoTest and requires
       GNU make. It is run as follows:
@@ -204,6 +217,6 @@ if $verbose; then
 
       Please submit issues or pull requests to: <https://github.com/slewsys/ed>
 
-------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 EOF
 fi

@@ -73,3 +73,5 @@ $(ADV).ps: $(ADV_SRC)
 
 clean-local:
 	-rm -f *.ps *.pdf
+
+distclean-local: clean-local

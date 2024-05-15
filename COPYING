@@ -12,7 +12,10 @@ Linking against any POSIX-compatible regular expression library and
 any GNU gettext-compatible libintl library is supported in order to
 build, e.g., an exclusively BSD-2-Clause implemenation of ed.
 
-For full licensing information, an SPDX SBOM can be generated
-from the ed source directory with the command:
+For full licensing information, from the ed source directory, run:
 
 $ make spdx-sbom
+
+This calls the REUSE SOFTWARE utility `reuse' which writes a Software
+Bill Of Materials (SBOM) following the SPDX specification to the file
+`ed-${version}.spdx'

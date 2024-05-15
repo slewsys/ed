@@ -2,12 +2,18 @@
 # Copyright © 2007-2013 Free Software Foundation, Inc.
 # This file is distributed under the same license as the ed package.
 # Andrew L. Moore <alm@gnu.org>, 2016
-#
 msgid ""
 msgstr ""
+"Project-Id-Version: ed\n"
 "Report-Msgid-Bugs-To: bug-gnulib@gnu.org\n"
-"POT-Creation-Date: 2024-05-14 00:47-0400\n"
+"POT-Creation-Date: 2024-05-15 05:18-0400\n"
+"PO-Revision-Date: 2024-05-15 09:12+0000\n"
+"Last-Translator: Andrew Moore <slewsys@gmail.com>\n"
+"Language-Team: Spanish  <translation-team-es@lists.sourceforge.net>\n"
 "Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 
 #: lib/getopt.c:282
 #, c-format
@@ -125,7 +131,7 @@ msgstr "Error de proceso hijo"
 #: src/aux.c:32
 #, c-format
 msgid "Exit status: %#x"
-msgstr ""
+msgstr "Estado de salido: %#x"
 
 #: src/aux.c:60
 msgid "Flush error"

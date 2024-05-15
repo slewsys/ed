@@ -14,16 +14,35 @@ endif LDADD_LIBGNU
 
 SUBDIRS += src po doc testsuite
 
-EXTRA_DIST = m4/gnulib-cache.m4 include/pathmax.h include/argmax.h
+EXTRA_DIST =								      \
+	autogen.sh							      \
+	m4/gnulib-cache.m4						      \
+	m4/gnulib-tool.m4						      \
+	include/pathmax.h						      \
+	include/argmax.h						      \
+	po/POTFILES-noregex.in						      \
+	po/POTFILES-regex.in						      \
+	testsuite/atlocal.in						      \
+	BUGS								      \
+	doc/ed.1							      \
+	doc/bwk/tmac/refer.tmac						      \
+	doc/bwk/tmac/refer-ms.tmac					      \
+	LICENSES							      \
+	.reuse								      \
+	lib/patch-Makefile.am.diff					      \
+	contrib
+
+dist-hook:
+	if test -f $(destdir)/contrib/prdg/Makefile; then		      \
+	    $(MAKE) -C $(destdir)/contrib/prdg distclean;		      \
+	fi
+	if test -f $(destdir)/contrib/call-graph/Makefile; then		      \
+	    $(MAKE) -C $(destdir)/contrib/call-graph  distclean;	      \
+	fi
 
 HEAD_COMMIT = $(shell git rev-parse --short HEAD)
 
 .PHONY: maintainer-update-dist update-testsuite-dist update-po
-
-# dist:
-#	git -C $(abs_top_srcdir) archive --format=tar			      \
-#		--prefix=$(PACKAGE)-$(VERSION)/ v$(VERSION) |		      \
-#		gzip >$(abs_top_builddir)/ed-$(VERSION)~g$(HEAD_COMMIT).tgz
 
 check-valgrind: clean
 	$(MAKE) $(AM_MAKEFLAGS) CFLAGS='-g -O0'				      \
