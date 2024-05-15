@@ -15,14 +15,16 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
-      - name: Install autopoint, gettext, texinfo and cal for Linux.
+      - name: Install autopoint, gettext, and cal for Linux (omit texinfo).
         if: runner.os == 'Linux'
         run: |
-          sudo apt install autopoint gettext texinfo ncal
-      - name: Install autotools, gettext, texinfo and libssl for macOS.
+          sudo apt install autopoint gettext ncal
+          sudo apt remove texinfo
+      - name: Install autotools, gettext, and libssl for macOS (omit texinfo).
         if: runner.os == 'macOS'
         run: |
-          brew install m4 autoconf automake libtool gettext openssl texinfo
+          brew install m4 autoconf automake libtool gettext openssl
+          brew list texinfo && brew uninstall texinfo || true
           brew unlink openssl@1.1 &&  brew link --force --overwrite openssl@3
       - name: Configure ed for Linux.
         if: runner.os == 'Linux'

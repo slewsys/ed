@@ -95,7 +95,7 @@ by running the command:
 ```shell
 sudo apt install -y build-essential autoconf automake \
     autopoint gettext ghostscript groff libssl-dev \
-    libtool texinfo
+    libtool texlive texinfo
 ```
 
 #### Fedora
@@ -106,7 +106,7 @@ commands:
 ```shell
 sudo dnf group install 'C Development Tools and Libraries'
 sudo dnf install -y gettext-devel ghostscript groff \
-    openssl-devel textinfo texinfo-tex
+    openssl-devel texinfo-tex textinfo
 ```
 
 #### OpenSUSE

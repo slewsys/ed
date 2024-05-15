@@ -1,6 +1,15 @@
 # Makefile.am: Doc subdirectory automake template for the ed line editor.
 #
 # Process this file with automake to create Makefile.in
+if !HAVE_MAKEINFO
+.texi.info:
+	@echo "*** Missing makeinfo ***: Cannot build $@ from $<." >&2
+endif
+
+if !HAVE_TEXI2DVI
+.texi.pdf:
+	@echo "*** Missing texi2dvi ***: Cannot build $@ from $<." >&2
+endif
 
 PROG		= ed
 TEXI		= $(PROG:=.texi)
@@ -59,6 +68,13 @@ SUBDIRS = bwk
 
 all-local: $(INFO) $(PDF)
 
+if !HAVE_MAKEINFO
+commented:
+$(ADV_INFO):
+$(INTRO_INFO):
+	@echo "*** Missing makeinfo ***: Cannot build $@ from $<." >&2
+
+else
 commented:
 	for f in  $(TEXI)						      \
 		  $(INTRO_TEXI)						      \
@@ -69,14 +85,12 @@ commented:
 	do test -f "$$f" || cp "$(srcdir)/$$f" .; done
 	$(MAKEINFO) $(INFO)
 
-# $(INFO): $(INTRO_INCL_TEXI) $(ADV_INCL_TEXI)
-#	$(MAKEINFO) -I . -o $@ $(TEXI) $(INTRO_INCL_TEXI) $(ADV_INCL_TEXI)
-
 $(INTRO_INFO): $(INTRO_INFO_TEXI)
 	$(MAKEINFO) -I . -o $@ $(INTRO_INFO_TEXI)
 
 $(ADV_INFO): $(ADV_INFO_TEXI)
 	$(MAKEINFO) -I . -o $@ $(ADV_INFO_TEXI)
+endif
 
 $(PDF): $(TEXI) $(INTRO_PDF) $(ADV_PDF)
 
