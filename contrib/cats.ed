@@ -1,4 +1,4 @@
-#!/usr/local/bin/ed -f
+#!/usr/bin/env -S ed -f
 #
 # @(#) cats.ed
 #
