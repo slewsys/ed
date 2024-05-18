@@ -486,7 +486,6 @@ E_cmd (ed_buffer_t *ed)
   char *fn = NULL;
   int cx = 0;
   int cy = 0;
-  int cz = 0;
   int is_default = 0;
   int status = 0;               /* Return status */
 

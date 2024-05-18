@@ -780,7 +780,7 @@ append_stream (FILE *dest_fp, FILE *src_fp, size_t *size, ed_buffer_t *ed)
 {
   char buf[BUFSIZ];
   size_t read_size;
-  size_t write_size;
+  size_t write_size = 0;
 
   for  (*size = 0; (read_size = fread(buf, 1, BUFSIZ, src_fp)) > 0; *size += write_size)
     if ((write_size = fwrite (buf, 1, read_size, dest_fp)) != read_size)

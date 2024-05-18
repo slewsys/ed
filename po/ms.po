@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  coreutils 5.0.90\n"
 "Report-Msgid-Bugs-To: bug-gnulib@gnu.org\n"
-"POT-Creation-Date: 2024-05-15 05:18-0400\n"
+"POT-Creation-Date: 2024-05-25 23:49-0400\n"
 "PO-Revision-Date: 2003-08-10 16:00+0800\n"
 "Last-Translator: Hasbullah Bin Pit <sebol@ikhlas.com>\n"
 "Language-Team: Malay <translation-team-ms@lists.sourceforge.net>\n"
@@ -112,7 +112,7 @@ msgstr ""
 msgid "Invalid range end"
 msgstr "%s: ungkapan biasa (regexp) tidak sah: %s"
 
-#: lib/regcomp.c:158 src/aux.c:257 src/buf.c:437 src/buf.c:583 src/glbl.c:171
+#: lib/regcomp.c:158 src/aux.c:257 src/buf.c:443 src/buf.c:589 src/glbl.c:171
 #: src/io.c:318 src/page.c:858 src/parse.c:273 src/parse.c:518 src/re.c:157
 #: src/undo.c:26
 #, fuzzy
@@ -180,7 +180,7 @@ msgstr ""
 #: src/aux.c:218 src/aux.c:232 src/aux.c:286 src/aux.c:326 src/aux.c:365
 #: src/io.c:58 src/io.c:601 src/io.c:935 src/io.c:982 src/io.c:1041
 #: src/io.c:1051 src/io.c:1110 src/io.c:1119 src/io.c:1146 src/main.c:230
-#: src/main.c:731 src/main.c:796
+#: src/main.c:731 src/main.c:793
 #, fuzzy
 #| msgid "write error"
 msgid "File seek error"
@@ -191,11 +191,11 @@ msgstr "ralat menulis"
 msgid "dup2 error"
 msgstr "ralat membaca"
 
-#: src/buf.c:132 src/buf.c:282 src/buf.c:297
+#: src/buf.c:132 src/buf.c:288 src/buf.c:303
 msgid "Buffer open error"
 msgstr ""
 
-#: src/buf.c:143 src/buf.c:348 src/buf.c:384
+#: src/buf.c:143 src/buf.c:354 src/buf.c:390
 msgid "Buffer seek error"
 msgstr ""
 
@@ -209,33 +209,33 @@ msgstr ""
 msgid "Invalid buffer name"
 msgstr "pengguna tidak sah"
 
-#: src/buf.c:313
+#: src/buf.c:319
 msgid "Buffer close error"
 msgstr ""
 
-#: src/buf.c:358
+#: src/buf.c:364
 #, fuzzy
 msgid "Buffer read error"
 msgstr "ralat membaca"
 
-#: src/buf.c:398 src/buf.c:428
+#: src/buf.c:404 src/buf.c:434
 msgid "Buffer full"
 msgstr ""
 
-#: src/buf.c:405
+#: src/buf.c:411
 #, fuzzy
 #| msgid "write error"
 msgid "Buffer write error"
 msgstr "ralat menulis"
 
-#: src/buf.c:501 src/exec.c:100 src/exec.c:129 src/exec.c:1890 src/page.c:301
+#: src/buf.c:507 src/exec.c:100 src/exec.c:129 src/exec.c:1889 src/page.c:301
 #: src/parse.c:223
 #, fuzzy
 #| msgid "character out of range"
 msgid "Address out of range"
 msgstr "aksara di luar julat"
 
-#: src/buf.c:576
+#: src/buf.c:582
 msgid "Memory request too big"
 msgstr ""
 
@@ -259,7 +259,7 @@ msgstr ""
 msgid "File read error"
 msgstr "ralat menulis"
 
-#: src/cmds.c:43 src/exec.c:606 src/io.c:480 src/main.c:366
+#: src/cmds.c:43 src/exec.c:605 src/io.c:480 src/main.c:366
 msgid "End-of-file unexpected"
 msgstr ""
 
@@ -279,8 +279,8 @@ msgstr "Ralat sistem yang tidak diketahui"
 msgid "Numerical result out of range"
 msgstr "aksara di luar julat"
 
-#: src/exec.c:28 src/exec.c:504 src/exec.c:586 src/exec.c:647 src/exec.c:673
-#: src/exec.c:1025 src/exec.c:1385 src/exec.c:1397 src/exec.c:1405
+#: src/exec.c:28 src/exec.c:503 src/exec.c:585 src/exec.c:646 src/exec.c:672
+#: src/exec.c:1024 src/exec.c:1384 src/exec.c:1396 src/exec.c:1404
 msgid "Command suffix unexpected"
 msgstr ""
 
@@ -292,56 +292,56 @@ msgstr ""
 msgid "Command prefix unexpected"
 msgstr ""
 
-#: src/exec.c:495 src/exec.c:638 src/exec.c:742 src/exec.c:763 src/exec.c:962
-#: src/exec.c:1004 src/exec.c:1349 src/exec.c:1542 src/exec.c:1752
+#: src/exec.c:494 src/exec.c:637 src/exec.c:741 src/exec.c:762 src/exec.c:961
+#: src/exec.c:1003 src/exec.c:1348 src/exec.c:1541 src/exec.c:1751
 msgid "Address unexpected"
 msgstr ""
 
-#: src/exec.c:667
+#: src/exec.c:666
 #, fuzzy
 msgid "Invalid redirection"
 msgstr "%s: ungkapan biasa (regexp) tidak sah: %s"
 
-#: src/exec.c:704 src/main.c:626
+#: src/exec.c:703 src/main.c:626
 msgid "File name not set"
 msgstr ""
 
-#: src/exec.c:718
+#: src/exec.c:717
 msgid "Recursive global command"
 msgstr ""
 
-#: src/exec.c:773
+#: src/exec.c:772
 #, fuzzy
 msgid "No previous error"
 msgstr "ralat pada carian ungkapan biasa (regexp)"
 
-#: src/exec.c:883
+#: src/exec.c:882
 #, fuzzy
 msgid "Invalid destination address"
 msgstr "aksara tidak sah pada %s pada rentetan mod %s"
 
-#: src/exec.c:924 src/exec.c:1335
+#: src/exec.c:923 src/exec.c:1334
 #, fuzzy
 #| msgid "invalid user"
 msgid "Invalid register"
 msgstr "pengguna tidak sah"
 
-#: src/exec.c:1180 src/exec.c:1243 src/exec.c:1561 src/exec.c:1620
-#: src/exec.c:1815 src/exec.c:1830
+#: src/exec.c:1179 src/exec.c:1242 src/exec.c:1560 src/exec.c:1619
+#: src/exec.c:1814 src/exec.c:1829
 #, fuzzy
 msgid "Unknown command"
 msgstr "Ralat sistem yang tidak diketahui"
 
-#: src/exec.c:1830
+#: src/exec.c:1829
 #, fuzzy
 msgid "Invalid address"
 msgstr "%s: ungkapan biasa (regexp) tidak sah: %s"
 
-#: src/exec.c:1848
+#: src/exec.c:1847
 msgid "Command too long"
 msgstr ""
 
-#: src/exec.c:1895
+#: src/exec.c:1894
 #, fuzzy
 msgid "Invalid address range"
 msgstr "%s: ungkapan biasa (regexp) tidak sah: %s"
@@ -354,7 +354,7 @@ msgstr ""
 msgid "File does not exist"
 msgstr ""
 
-#: src/io.c:97 src/io.c:166 src/io.c:632 src/io.c:681 src/main.c:784
+#: src/io.c:97 src/io.c:166 src/io.c:632 src/io.c:681 src/main.c:781
 #, fuzzy
 #| msgid "write error"
 msgid "File open error"
@@ -429,34 +429,34 @@ msgstr ""
 msgid "Argument list full"
 msgstr ""
 
-#: src/main.c:818
+#: src/main.c:815
 #, c-format
 msgid ""
 "Usage: %s [-] [-EGhirsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE...]\n"
 msgstr ""
 
-#: src/main.c:821
+#: src/main.c:818
 #, c-format
 msgid ""
 "Usage: %s [-] [-EGhirsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE]\n"
 msgstr ""
 
-#: src/main.c:825
+#: src/main.c:822
 #, c-format
 msgid "Usage: %s [-] [-EGhrsVvwx] [-p PROMPT] [FILE]\n"
 msgstr ""
 
-#: src/main.c:833
+#: src/main.c:830
 #, c-format
 msgid "Usage: %s [OPTION...] [FILE...]\n"
 msgstr ""
 
-#: src/main.c:836
+#: src/main.c:833
 #, c-format
 msgid "Usage: %s [OPTION...] [FILE]\n"
 msgstr ""
 
-#: src/main.c:842
+#: src/main.c:839
 #, c-format
 msgid ""
 "Options:\n"
@@ -484,7 +484,7 @@ msgid ""
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
 
-#: src/main.c:864
+#: src/main.c:861
 #, c-format
 msgid ""
 "Options:\n"
@@ -508,7 +508,7 @@ msgid ""
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
 
-#: src/main.c:895
+#: src/main.c:892
 msgid "script, line %"
 msgstr ""
 

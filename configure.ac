@@ -221,7 +221,7 @@ AC_DEFINE_UNQUOTED([RETSIGTYPE],[$ac_cv_type_signal],
   [Define as the return type of signal handlers (`int' or `void').])
 AC_REPLACE_FUNCS([memset strspn strtok])
 
-AC_CHECK_FUNCS_ONCE([arc4random_buf dup2 flock ftruncate memmove pathconf \
+AC_CHECK_FUNCS_ONCE([arc4random_buf dup2 flock ftruncate mkstemp memmove pathconf \
   sigaction siglongjmp setbuffer setlocale stat64 strchr strerror strtol \
   strtoul strtoll])
 

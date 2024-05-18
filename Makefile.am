@@ -30,6 +30,7 @@ EXTRA_DIST =								      \
 	LICENSES							      \
 	.reuse								      \
 	lib/patch-Makefile.am.diff					      \
+	ed.spec								      \
 	contrib
 
 dist-hook:

@@ -722,7 +722,7 @@ append_script_expression (const char *s, ed_buffer_t *ed)
 
   if (!ed->exec->fp)
     {
-      if (init_script_buffer (ed) < 0)
+      if ((status = init_script_buffer (ed)) < 0)
         return status;
     }
   else if (FSEEK (ed->exec->fp, 0L, SEEK_END) == -1)
@@ -736,7 +736,7 @@ append_script_expression (const char *s, ed_buffer_t *ed)
   if ((n = strlen (s)) > 0)
     {
       if (fwrite (s, 1, n, ed->exec->fp) != n
-          || s[n - 1] != '\n' && fwrite ("\n", 1, 1, ed->exec->fp) != 1)
+          || (s[n - 1] != '\n' && fwrite ("\n", 1, 1, ed->exec->fp) != 1))
         {
           fprintf (stderr, "%s\n", strerror (errno));
           ed->exec->err = _("File write error");
@@ -761,11 +761,8 @@ append_script_file (char *fn, ed_buffer_t *ed)
 {
   FILE *fp;
   char *filename;
-  char buf[BUFSIZ];
   size_t fp_size = 0;
   size_t len;
-  size_t n;
-  size_t m = 0;
   int status;
 
   filename = strlen (fn) == 1 && *fn == '-' ? STDIN : fn;
@@ -787,7 +784,7 @@ append_script_file (char *fn, ed_buffer_t *ed)
 
   if (!ed->exec->fp)
     {
-      if (init_script_buffer (ed) < 0)
+      if ((status = init_script_buffer (ed)) < 0)
         return status;
     }
   else if (FSEEK (ed->exec->fp, 0L, SEEK_END) == -1)
