@@ -300,3 +300,55 @@ unmark_line_node (const ed_line_node_t *lp, ed_buffer_t *ed)
         --ed->core->marks;
       }
 }
+
+#ifdef HAVE_VFORK
+int
+system_shell (const char *sc, ed_buffer_t *ed)
+{
+  static char exit_status[BUFSIZ];
+
+  int status = 0;
+  int wstatus;
+  pid_t shell_pid;
+
+  switch (shell_pid = vfork ())
+    {
+    case -1:
+      fprintf (stderr, "%s\n", strerror (errno));
+      ed->exec->err = _("Fork error");
+      status = ERR;
+      goto err;
+    case 0:
+      /* Reset signals for shell. */
+      signal (SIGINT, SIG_DFL);
+      signal (SIGQUIT, SIG_DFL);
+
+      if (execl ("/bin/sh", "sh", "-c", sc, NULL) < 0)
+        {
+          fprintf (stderr, "%s\n", strerror (errno));
+          _exit (127 << 8);
+        }
+
+      /* NOTREACHED */
+    }
+
+  while (waitpid (shell_pid, &wstatus, 0) < 0)
+    if (errno != EINTR)
+      {
+        fprintf (stderr, "%s\n", strerror (errno));
+        ed->exec->err = _("Child process error");
+        status = ERR;
+        goto err;
+      }
+
+  if (WIFEXITED (wstatus) && WEXITSTATUS (wstatus))
+    {
+      snprintf(exit_status, sizeof exit_status, _("Exit status: %#x"),
+               WEXITSTATUS(wstatus));
+      ed->exec->err = exit_status;
+    }
+
+ err:
+  return status;
+}
+#endif  /* HAVE_VFORK */

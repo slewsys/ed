@@ -14,25 +14,34 @@
       pid_t any_pid;                                                          \
       int pid_status = 0;                                                     \
       int saved_pid_status = 0;                                               \
-      int count = 0;                                                          \
-      while (shell_pid != -1 && write_pid != -1 && count < 2)                 \
-        {                                                                     \
-          if ((any_pid = waitpid (-1, &pid_status, 0)) == shell_pid)          \
-            saved_pid_status = pid_status;                                    \
-          count += 1;                                                         \
-        }                                                                     \
-      if (saved_pid_status && WIFEXITED (saved_pid_status)                    \
-          && WEXITSTATUS (saved_pid_status) == 127)                           \
-        {                                                                     \
-          ed->exec->err = _("Child process error");                           \
-          status = ERR;                                                       \
-        }                                                                     \
-      else if (saved_pid_status)                                              \
+      int waiting = write_pid == -1 ? 1 : 2;                                  \
+                                                                              \
+      while (waiting)                                                         \
+        if ((any_pid = waitpid (-1, &pid_status, 0)) < 0)                     \
+          {                                                                   \
+            if (errno != EINTR)                                               \
+              {                                                               \
+                fprintf (stderr, "%s\n", strerror (errno));                   \
+                ed->exec->err = _("Child process error");                     \
+                status = ERR;                                                 \
+                goto end;                                                     \
+              }                                                               \
+            errno = 0;                                                        \
+          }                                                                   \
+        else                                                                  \
+          {                                                                   \
+            if (any_pid == shell_pid)                                         \
+              saved_pid_status = pid_status;                                  \
+            --waiting;                                                        \
+          }                                                                   \
+                                                                              \
+      if (WIFEXITED (saved_pid_status) && WEXITSTATUS (saved_pid_status))     \
         {                                                                     \
           snprintf (exit_status, sizeof exit_status, _("Exit status: %#x"),   \
                     WEXITSTATUS (saved_pid_status));                          \
           ed->exec->err = exit_status;                                        \
         }                                                                     \
+    end:                                                                      \
     }                                                                         \
   while (0)
 
@@ -178,7 +187,8 @@ filter_lines (off_t from, off_t to, const char *sc, ed_buffer_t *ed)
     }
 
  err:
-  WAITPID ();
+  if (shell_pid != -1)
+    WAITPID ();
   return status;
 }
 #endif  /* defined (HAVE_FORK) && defined (WANT_EXTERNAL_FILTER) */

@@ -1721,26 +1721,10 @@ shell_cmd (ed_buffer_t *ed)
   /* case '!': */
   --ed->input;
   FILE_NAME (fn, len, 0, 0, 0, ed);
+  ed->exec->err = NULL;
   if (!ed->exec->region->addrs)
     {
-      /* system(3) blocks SIGCHLD. */
-      (void) system(++fn);
-
-      /*
-       * XXX: status == -1 (in this context)
-       */
-      /*
-       * if ((status = system (++fn)) < 0
-       *     || WIFEXITED (status) && WEXITSTATUS (status) == 127)
-       *   {
-       *     fprintf (stderr, "%s\n", strerror (errno));
-       *     ed->exec->err = _("Child process error");
-       *     return status;
-       *   }
-       * snprintf (exit_status, sizeof exit_status, _("Exit status: %#x"),
-       *           0xff & WEXITSTATUS (status));
-       * ed->exec->err = exit_status;
-       */
+      status = system_shell (++fn, ed);
       printf (ed->exec->opt & SCRIPTED ? "" : "!\n");
     }
   else
@@ -1783,7 +1767,7 @@ shell_cmd (ed_buffer_t *ed)
           ed->exec->region->end + ed->state->lines - addr;
       }
 #endif  /* defined HAVE_FORK && defined WANT_EXTERNAL_FILTER */
-  return 0;
+  return status;
 }
 
 static int

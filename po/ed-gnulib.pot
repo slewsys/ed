@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ed 2.1.0\n"
 "Report-Msgid-Bugs-To: bug-gnulib@gnu.org\n"
-"POT-Creation-Date: 2024-05-25 23:49-0400\n"
+"POT-Creation-Date: 2024-05-27 06:37-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -100,7 +100,7 @@ msgstr ""
 msgid "Invalid range end"
 msgstr ""
 
-#: lib/regcomp.c:158 src/aux.c:257 src/buf.c:443 src/buf.c:589 src/glbl.c:171
+#: lib/regcomp.c:158 src/aux.c:267 src/buf.c:443 src/buf.c:589 src/glbl.c:171
 #: src/io.c:318 src/page.c:858 src/parse.c:273 src/parse.c:518 src/re.c:157
 #: src/undo.c:26
 msgid "Memory exhausted"
@@ -126,43 +126,43 @@ msgstr ""
 msgid "No previous regular expression"
 msgstr ""
 
-#: src/aux.c:27
+#: src/aux.c:25 src/cmds.c:339
 msgid "Child process error"
 msgstr ""
 
-#: src/aux.c:32
+#: src/aux.c:40 src/cmds.c:346
 #, c-format
 msgid "Exit status: %#x"
 msgstr ""
 
-#: src/aux.c:60
+#: src/aux.c:69
 msgid "Flush error"
 msgstr ""
 
-#: src/aux.c:71 src/aux.c:161
+#: src/aux.c:80 src/aux.c:170
 msgid "Pipe open error"
 msgstr ""
 
-#: src/aux.c:80 src/aux.c:132
+#: src/aux.c:89 src/aux.c:141 src/cmds.c:318
 msgid "Fork error"
 msgstr ""
 
-#: src/aux.c:175
+#: src/aux.c:184
 msgid "Pipe close error"
 msgstr ""
 
-#: src/aux.c:202
+#: src/aux.c:212
 msgid "Exceeded maximum stack frame depth"
 msgstr ""
 
-#: src/aux.c:218 src/aux.c:232 src/aux.c:286 src/aux.c:326 src/aux.c:365
-#: src/io.c:58 src/io.c:601 src/io.c:935 src/io.c:982 src/io.c:1041
-#: src/io.c:1051 src/io.c:1110 src/io.c:1119 src/io.c:1146 src/main.c:230
+#: src/aux.c:228 src/aux.c:242 src/aux.c:296 src/aux.c:336 src/aux.c:375
+#: src/io.c:58 src/io.c:602 src/io.c:936 src/io.c:983 src/io.c:1042
+#: src/io.c:1052 src/io.c:1111 src/io.c:1120 src/io.c:1147 src/main.c:230
 #: src/main.c:731 src/main.c:793
 msgid "File seek error"
 msgstr ""
 
-#: src/aux.c:268 src/aux.c:311 src/aux.c:350 src/buf.c:120
+#: src/aux.c:278 src/aux.c:321 src/aux.c:360 src/buf.c:120
 msgid "dup2 error"
 msgstr ""
 
@@ -198,7 +198,7 @@ msgstr ""
 msgid "Buffer write error"
 msgstr ""
 
-#: src/buf.c:507 src/exec.c:100 src/exec.c:129 src/exec.c:1889 src/page.c:301
+#: src/buf.c:507 src/exec.c:100 src/exec.c:129 src/exec.c:1873 src/page.c:301
 #: src/parse.c:223
 msgid "Address out of range"
 msgstr ""
@@ -219,7 +219,7 @@ msgstr ""
 msgid "Decryption failed (incomplete block)."
 msgstr ""
 
-#: src/cbc.c:384 src/io.c:552 src/io.c:810
+#: src/cbc.c:384 src/io.c:553 src/io.c:811
 msgid "File read error"
 msgstr ""
 
@@ -253,7 +253,7 @@ msgid "Command prefix unexpected"
 msgstr ""
 
 #: src/exec.c:494 src/exec.c:637 src/exec.c:741 src/exec.c:762 src/exec.c:961
-#: src/exec.c:1003 src/exec.c:1348 src/exec.c:1541 src/exec.c:1751
+#: src/exec.c:1003 src/exec.c:1348 src/exec.c:1541 src/exec.c:1735
 msgid "Address unexpected"
 msgstr ""
 
@@ -282,19 +282,19 @@ msgid "Invalid register"
 msgstr ""
 
 #: src/exec.c:1179 src/exec.c:1242 src/exec.c:1560 src/exec.c:1619
-#: src/exec.c:1814 src/exec.c:1829
+#: src/exec.c:1798 src/exec.c:1813
 msgid "Unknown command"
 msgstr ""
 
-#: src/exec.c:1829
+#: src/exec.c:1813
 msgid "Invalid address"
 msgstr ""
 
-#: src/exec.c:1847
+#: src/exec.c:1831
 msgid "Command too long"
 msgstr ""
 
-#: src/exec.c:1894
+#: src/exec.c:1878
 msgid "Invalid address range"
 msgstr ""
 
@@ -306,16 +306,16 @@ msgstr ""
 msgid "File does not exist"
 msgstr ""
 
-#: src/io.c:97 src/io.c:166 src/io.c:632 src/io.c:681 src/main.c:781
+#: src/io.c:97 src/io.c:166 src/io.c:633 src/io.c:682 src/main.c:781
 msgid "File open error"
 msgstr ""
 
-#: src/io.c:120 src/io.c:646
+#: src/io.c:120 src/io.c:647
 #, c-format
 msgid "%s: File already locked\n"
 msgstr ""
 
-#: src/io.c:144 src/io.c:623 src/io.c:661
+#: src/io.c:144 src/io.c:624 src/io.c:662
 msgid "File close error"
 msgstr ""
 
@@ -329,31 +329,31 @@ msgstr ""
 msgid "Newline appended\n"
 msgstr ""
 
-#: src/io.c:608 src/io.c:1153
+#: src/io.c:609 src/io.c:1154
 msgid "File truncate error"
 msgstr ""
 
-#: src/io.c:722
+#: src/io.c:723
 msgid "File too big"
 msgstr ""
 
-#: src/io.c:769 src/io.c:789 src/io.c:800 src/main.c:742 src/main.c:750
+#: src/io.c:770 src/io.c:790 src/io.c:801 src/main.c:742 src/main.c:750
 msgid "File write error"
 msgstr ""
 
-#: src/io.c:833 src/parse.c:505
+#: src/io.c:834 src/parse.c:505
 msgid "File status error"
 msgstr ""
 
-#: src/io.c:840
+#: src/io.c:841
 msgid "Access restricted to regular files"
 msgstr ""
 
-#: src/io.c:909
+#: src/io.c:910
 msgid "File stat error"
 msgstr ""
 
-#: src/io.c:1016
+#: src/io.c:1017
 msgid "Cannot append register to itself."
 msgstr ""
 

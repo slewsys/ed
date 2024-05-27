@@ -123,7 +123,7 @@ init_signal_handler (ed_buffer_t *ed)
 #endif
 
   /* Register handlers of interest. */
-  if (reliable_signal (SIGCHLD, SIG_IGN) == SIG_ERR
+  if (reliable_signal (SIGCHLD, SIG_DFL) == SIG_ERR
       || reliable_signal (SIGHUP, signal_handler) == SIG_ERR
       || reliable_signal (SIGINT, signal_handler) == SIG_ERR
       || reliable_signal (SIGQUIT, SIG_IGN) == SIG_ERR

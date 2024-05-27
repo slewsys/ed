@@ -538,6 +538,7 @@ get_stream_line (FILE *fp, size_t *len, ed_buffer_t *ed)
       {
       case EINTR:
         clearerr (fp);
+        errno = 0;
         goto top;
       default:
 #ifdef F_GETPATH

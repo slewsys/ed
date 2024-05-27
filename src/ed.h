@@ -1009,6 +1009,11 @@ int substitute_lines (off_t, off_t, regex_t *, off_t, off_t, unsigned,
                       ed_buffer_t *);
 int substitution_lhs (regex_t **, unsigned *, ed_buffer_t *);
 int substitution_rhs (off_t *, off_t *, unsigned *, unsigned *, ed_buffer_t *);
+
+#ifdef HAVE_VFORK
+int system_shell (const char *, ed_buffer_t *);
+#endif
+
 int trailing_escapes (const char *, const char *);
 void transfer_marks (const ed_line_node_t *, const ed_line_node_t *,
                      ed_buffer_t *);
