@@ -1724,8 +1724,14 @@ shell_cmd (ed_buffer_t *ed)
   ed->exec->err = NULL;
   if (!ed->exec->region->addrs)
     {
+#ifdef HAVE_VFORK
       status = system_shell (++fn, ed);
       printf (ed->exec->opt & SCRIPTED ? "" : "!\n");
+#else
+      fprintf (stderr, "%s\n", _("Cannot fork shell"));
+      ed->exec->err = _("Fork error");
+      status = ERR;
+#endif
     }
   else
 #if defined (HAVE_FORK) && defined (WANT_EXTERNAL_FILTER)
