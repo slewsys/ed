@@ -10,7 +10,7 @@ script_name=$(basename $0)
 case "$1" in
     -h*|--h*)
         echo "Usage: $script_name [-h|--help] [-s|--silent] [maintainer-update-dist]"
-        exitn
+        exit
         ;;
 esac
 
