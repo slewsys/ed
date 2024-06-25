@@ -1014,7 +1014,7 @@ inter_register_copy (int append, ed_buffer_t *ed)
     {
       if (read_fp && append)
         {
-          ed->exec->err = _("Cannot append register to itself.");
+          ed->exec->err = _("Cannot append register to itself");
           return ERR;
         }
       return 0;

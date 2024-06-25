@@ -370,7 +370,7 @@ cbc_decode (unsigned char *msgbuf, FILE *fp, ed_buffer_t *ed)
           n = msgbuf[7];
           if (n < 0 || n > 7)
             {
-              ed->exec->err = _("Decryption failed (block corrupted).");
+              ed->exec->err = _("Decryption failed (block corrupted)");
               return EOF;
             }
         }
@@ -379,7 +379,7 @@ cbc_decode (unsigned char *msgbuf, FILE *fp, ed_buffer_t *ed)
       return n;
     }
   if (n > 0)
-    ed->exec->err = _("Decryption failed (incomplete block).");
+    ed->exec->err = _("Decryption failed (incomplete block)");
   else if (n < 0)
     ed->exec->err = _("File read error");
   return EOF;

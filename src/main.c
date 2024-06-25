@@ -812,14 +812,14 @@ ed_usage (int status, ed_buffer_t *ed)
   if (status)
 #ifdef WANT_SCRIPT_FLAGS
 # ifdef WANT_FILE_GLOB
-    printf (_("Usage: %s [-] [-EGhirsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE...]\n"),
+    printf (_("Usage: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE...]\n"),
             ed->exec->opt & RESTRICTED ? "red" : "ed");
 # else
-    printf (_("Usage: %s [-] [-EGhirsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE]\n"),
+    printf (_("Usage: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE]\n"),
             ed->exec->opt & RESTRICTED ? "red" : "ed");
 # endif /* !WANT_FILE_GLOB */
 #else
-    printf (_("Usage: %s [-] [-EGhrsVvwx] [-p PROMPT] [FILE]\n"),
+    printf (_("Usage: %s [-] [-EGhRrsVvwx] [-p PROMPT] [FILE]\n"),
             ed->exec->opt & RESTRICTED ? "red" : "ed");
 #endif  /* !WANT_SCRIPT_FLAGS */
   else if (ed->exec->opt & PRINT_VERSION)
@@ -841,16 +841,16 @@ ed_usage (int status, ed_buffer_t *ed)
   -e, --expression=COMMAND  Add COMMAND to scripted input - implies `-s'.\n\
   -f, --file=SCRIPT         Read commands from file SCRIPT - implies `-s'.\n\
   -G, --traditional         Enable backward compatibility.\n\
-  -h, --help                Dispaly (this) help, then exit.\n\
-  -i, --in-place[=SUFFIX]   Write file before closing, with optional backup.\n\
+  -h, --help                Display (this) help, then exit.\n\
+  -i, --in-place[=SUFFIX]   Write file before closing and optionally backup.\n\
   -p, --prompt=STRING       Prompt for commands with STRING.\n\
   -R, --ansi-color          Enable support for ANSI color codes.\n\
   -r, --regexp-extended     Enable extended regular expression syntax.\n\
   -s, --script              Suppress interactive diagnostics.\n\
-  -v, --verbose             Enable verbose error diagnostics.\n\
-  -V, --version             Print version information, then exit.\n\
-  -w, --write               Open file in write-only mode.\n\
-  -x, --crypt               Prompt for encryption key used for subsequent I/O.\n\
+  -v, --verbose             Enable verbose diagnostics.\n\
+  -V, --version             Display version information, then exit.\n\
+  -w, --write               Enable writing to process substitution.\n\
+  -x, --crypt               Enable I/O encryption.\n\
 \n\
 If FILE is given, read it for editing.  From within ed, run:\n\
   !info ed-intro RET\n\
@@ -866,10 +866,10 @@ Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"));
   -R, --ansi-color          Enable support for ANSI color codes.\n\
   -r, --regexp-extended     Enable extended regular expression syntax.\n\
   -s, --script              Suppress interactive diagnostics.\n\
-  -v, --verbose             Enable verbose error diagnostics.\n\
-  -V, --version             Print version information, then exit.\n\
-  -w, --write               Open file in write-only mode.\n\
-  -x, --crypt               Prompt for encryption key used for subsequent I/O.\n\
+  -v, --verbose             Enable verbose diagnostics.\n\
+  -V, --version             Display version information, then exit.\n\
+  -w, --write               Enable writing to process substitution.\n\
+  -x, --crypt               Enable I/O encryption.\n\
 \n\
 If FILE is given, read it for editing.  From within ed, run:\n\
   !info ed-intro RET\n\

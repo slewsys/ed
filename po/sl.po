@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnulib 3.0.0.6062.a6b16\n"
 "Report-Msgid-Bugs-To: bug-gnulib@gnu.org\n"
-"POT-Creation-Date: 2024-05-27 06:37-0400\n"
+"POT-Creation-Date: 2024-06-25 04:58-0400\n"
 "PO-Revision-Date: 2012-05-20 13:08+0200\n"
 "Last-Translator: Primož Peterlin <primozz.peterlin@gmail.com>\n"
 "Language-Team: Slovenian <translation-team-sl@lists.sourceforge.net>\n"
@@ -160,7 +160,7 @@ msgstr "Napaka vodila"
 msgid "Pipe open error"
 msgstr "napaka pri pisanju"
 
-#: src/aux.c:89 src/aux.c:141 src/cmds.c:318
+#: src/aux.c:89 src/aux.c:141 src/cmds.c:318 src/exec.c:1732
 #, fuzzy
 #| msgid "program error"
 msgid "Fork error"
@@ -233,7 +233,7 @@ msgstr ""
 msgid "Buffer write error"
 msgstr "napaka pri pisanju"
 
-#: src/buf.c:507 src/exec.c:100 src/exec.c:129 src/exec.c:1873 src/page.c:301
+#: src/buf.c:507 src/exec.c:100 src/exec.c:129 src/exec.c:1879 src/page.c:301
 #: src/parse.c:223
 #, fuzzy
 #| msgid "character out of range"
@@ -251,11 +251,11 @@ msgid "Invalid key"
 msgstr "neveljavno uporabniško ime"
 
 #: src/cbc.c:373
-msgid "Decryption failed (block corrupted)."
+msgid "Decryption failed (block corrupted)"
 msgstr ""
 
 #: src/cbc.c:382
-msgid "Decryption failed (incomplete block)."
+msgid "Decryption failed (incomplete block)"
 msgstr ""
 
 #: src/cbc.c:384 src/io.c:553 src/io.c:811
@@ -298,7 +298,7 @@ msgid "Command prefix unexpected"
 msgstr ""
 
 #: src/exec.c:494 src/exec.c:637 src/exec.c:741 src/exec.c:762 src/exec.c:961
-#: src/exec.c:1003 src/exec.c:1348 src/exec.c:1541 src/exec.c:1735
+#: src/exec.c:1003 src/exec.c:1348 src/exec.c:1541 src/exec.c:1741
 msgid "Address unexpected"
 msgstr ""
 
@@ -335,23 +335,27 @@ msgid "Invalid register"
 msgstr "neveljavno uporabniško ime"
 
 #: src/exec.c:1179 src/exec.c:1242 src/exec.c:1560 src/exec.c:1619
-#: src/exec.c:1798 src/exec.c:1813
+#: src/exec.c:1804 src/exec.c:1819
 #, fuzzy
 #| msgid "Unknown error"
 msgid "Unknown command"
 msgstr "Neznana napaka"
 
-#: src/exec.c:1813
+#: src/exec.c:1731
+msgid "Cannot fork shell"
+msgstr ""
+
+#: src/exec.c:1819
 #, fuzzy
 #| msgid "Invalid regular expression"
 msgid "Invalid address"
 msgstr "Neveljaven regularni izraz"
 
-#: src/exec.c:1831
+#: src/exec.c:1837
 msgid "Command too long"
 msgstr ""
 
-#: src/exec.c:1878
+#: src/exec.c:1884
 #, fuzzy
 #| msgid "Invalid range end"
 msgid "Invalid address range"
@@ -423,7 +427,7 @@ msgid "File stat error"
 msgstr "napaka pri pisanju"
 
 #: src/io.c:1017
-msgid "Cannot append register to itself."
+msgid "Cannot append register to itself"
 msgstr ""
 
 #: src/main.c:239
@@ -449,18 +453,18 @@ msgstr "Medpomnilnik za argumente premajhen"
 #: src/main.c:815
 #, c-format
 msgid ""
-"Usage: %s [-] [-EGhirsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE...]\n"
+"Usage: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE...]\n"
 msgstr ""
 
 #: src/main.c:818
 #, c-format
 msgid ""
-"Usage: %s [-] [-EGhirsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE]\n"
+"Usage: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE]\n"
 msgstr ""
 
 #: src/main.c:822
 #, c-format
-msgid "Usage: %s [-] [-EGhrsVvwx] [-p PROMPT] [FILE]\n"
+msgid "Usage: %s [-] [-EGhRrsVvwx] [-p PROMPT] [FILE]\n"
 msgstr ""
 
 #: src/main.c:830
@@ -481,18 +485,17 @@ msgid ""
 "  -e, --expression=COMMAND  Add COMMAND to scripted input - implies `-s'.\n"
 "  -f, --file=SCRIPT         Read commands from file SCRIPT - implies `-s'.\n"
 "  -G, --traditional         Enable backward compatibility.\n"
-"  -h, --help                Dispaly (this) help, then exit.\n"
-"  -i, --in-place[=SUFFIX]   Write file before closing, with optional "
+"  -h, --help                Display (this) help, then exit.\n"
+"  -i, --in-place[=SUFFIX]   Write file before closing and optionally "
 "backup.\n"
 "  -p, --prompt=STRING       Prompt for commands with STRING.\n"
 "  -R, --ansi-color          Enable support for ANSI color codes.\n"
 "  -r, --regexp-extended     Enable extended regular expression syntax.\n"
 "  -s, --script              Suppress interactive diagnostics.\n"
-"  -v, --verbose             Enable verbose error diagnostics.\n"
-"  -V, --version             Print version information, then exit.\n"
-"  -w, --write               Open file in write-only mode.\n"
-"  -x, --crypt               Prompt for encryption key used for subsequent I/"
-"O.\n"
+"  -v, --verbose             Enable verbose diagnostics.\n"
+"  -V, --version             Display version information, then exit.\n"
+"  -w, --write               Enable writing to process substitution.\n"
+"  -x, --crypt               Enable I/O encryption.\n"
 "\n"
 "If FILE is given, read it for editing.  From within ed, run:\n"
 "  !info ed-intro RET\n"
@@ -512,11 +515,10 @@ msgid ""
 "  -R, --ansi-color          Enable support for ANSI color codes.\n"
 "  -r, --regexp-extended     Enable extended regular expression syntax.\n"
 "  -s, --script              Suppress interactive diagnostics.\n"
-"  -v, --verbose             Enable verbose error diagnostics.\n"
-"  -V, --version             Print version information, then exit.\n"
-"  -w, --write               Open file in write-only mode.\n"
-"  -x, --crypt               Prompt for encryption key used for subsequent I/"
-"O.\n"
+"  -v, --verbose             Enable verbose diagnostics.\n"
+"  -V, --version             Display version information, then exit.\n"
+"  -w, --write               Enable writing to process substitution.\n"
+"  -x, --crypt               Enable I/O encryption.\n"
 "\n"
 "If FILE is given, read it for editing.  From within ed, run:\n"
 "  !info ed-intro RET\n"
