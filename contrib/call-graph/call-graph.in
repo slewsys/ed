@@ -71,7 +71,7 @@ parse-shell-scripts ()
     for script; do
         is-file-type "$script" "shell script" || return $?
         function_list_string+=$(
-            $ED_CMD -E -e 'g;^(\S+)\s+\(\).*;s;;\1;p' "$script"
+            $ED_CMD -E -e 'g;^(\S+)\s*\(\)\s*\{?;s;;\1;p' "$script"
                              ) || return $?
     done
 
