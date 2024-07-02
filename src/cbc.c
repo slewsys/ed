@@ -5,12 +5,11 @@
  *
  * SPDX-License-Identifier: BSD-2-Clause OR GPL-2.0-or-later OR MIT
  */
+#include "ed.h"
 
 #include <pwd.h>
 #include <signal.h>
 #include <termios.h>
-
-#include "ed.h"
 
 #ifdef WANT_ED_ENCRYPTION
 # include <openssl/des.h>
