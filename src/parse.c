@@ -140,15 +140,12 @@ line_address (off_t *addr, ed_buffer_t *ed)
       if ((status = check_address_bounds (*addr, ed)) < 0)
         return status;
       ed->state->dot = *addr;
-      spl1 ();
       if ((status =
            get_matching_node_address (get_compiled_regex (c, RE_SEARCH, ed),
                                       c == '/', addr, ed)) < 0)
         {
-          spl0 ();
           return status;
         }
-      spl0 ();
       if (*ed->input == c)
         ++ed->input;
       break;

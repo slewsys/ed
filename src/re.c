@@ -251,12 +251,16 @@ get_matching_node_address (const regex_t *re, int dir, off_t *addr,
     return ERR;
   do
     {
+      spl1 ();
       if ((*addr = (dir ? INC_MOD (*addr, ed->state->lines)
                     : DEC_MOD (*addr, ed->state->lines))))
         {
           lp = get_line_node (*addr, ed);
           if (!(s = get_buffer_line (lp, ed)))
-            return ERR;
+            {
+              spl0 ();
+              return ERR;
+            }
 #ifdef REG_STARTEND
           rm->rm_so = 0;
           rm->rm_eo = lp->len;
@@ -266,8 +270,12 @@ get_matching_node_address (const regex_t *re, int dir, off_t *addr,
             NUL_TO_NEWLINE (s, lp->len);
           if (!regexec (re, s, 0, NULL, 0))
 #endif  /* !defined (REG_STARTEND) */
-            return 0;
+            {
+              spl0 ();
+              return 0;
+            }
         }
+      spl0 ();
     }
   while (*addr != ed->state->dot);
   ed->exec->err = _("No match");
