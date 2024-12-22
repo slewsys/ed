@@ -7,6 +7,10 @@
 #
 script_name=$(basename $0)
 
+if set +o 2>/dev/null | grep -q 'pipefail$'; then
+    set -o pipefail
+fi
+
 case "$1" in
     -h*|--h*)
         echo "Usage: $script_name [-h|--help] [-s|--silent] [maintainer-update-dist]"
@@ -30,13 +34,13 @@ if [ ! -w "$abs_srcdir" ]; then
 fi
 
 for cmd in aclocal autoheader autopoint automake autoreconf libtoolize; do
-    eval ${cmd}_cmd='$(which '$cmd' 2>/dev/null)'
+    eval ${cmd}_cmd="\$(command -v '$cmd')"
     exit_status=$?
-    if test $exit_status -ne 0 -a ."$cmd" = .'libtoolize'; then
-        libtoolize_cmd=$(which glibtoolize 2>/dev/null)
+    if test $exit_status -ne 0 || eval test ."\$${cmd}_cmd" = .''; then
+        eval ${cmd}_cmd="\$(command -v 'g$cmd')"
         exit_status=$?
     fi
-    if test $exit_status -ne 0; then
+    if test $exit_status -ne 0 || eval test ."\$${cmd}_cmd" = .''; then
         cat <<EOF
 $script_name: $cmd: Command not found
 Please verify installation of GNU Autoconf, Automake, Autopoint,
