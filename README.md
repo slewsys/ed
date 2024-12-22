@@ -84,7 +84,7 @@ installed by running the commands:
 ```shell
 sudo dnf group install 'Development Tools'
 sudo dnf install -y gettext-devel ghostscript groff \
-    openssl-devel textinfo
+    openssl-devel textinfo zstd
 ```
 
 #### Debian/Ubuntu
@@ -93,9 +93,10 @@ On Debian/Ubuntu systems, the prerequisite packages can be installed
 by running the command:
 
 ```shell
+sudo apt update
 sudo apt install -y build-essential autoconf automake \
     autopoint gettext ghostscript groff libssl-dev \
-    libtool texlive texinfo
+    libtool ncal texlive texinfo zstd
 ```
 
 #### Fedora
@@ -104,9 +105,9 @@ On Fedora, the prerequisite packages can be installed by running the
 commands:
 
 ```shell
-sudo dnf group install 'C Development Tools and Libraries'
+sudo dnf group install c-development
 sudo dnf install -y gettext-devel ghostscript groff \
-    openssl-devel texinfo-tex textinfo
+    openssl-devel texinfo-tex texinfo zstd
 ```
 
 #### OpenSUSE
@@ -117,7 +118,7 @@ commands:
 ```shell
 sudo zypper --non-interactive install -t pattern devel_C_C++
 sudo zypper --non-interactive install -y gettext-tools ghostscript \
-    groff libopenssl-3-devel textinfo
+    groff libopenssl-3-devel texlive-textinfo zstd
 ```
 
 ### Building from source
@@ -188,7 +189,7 @@ git branch upstream
 gbp buildpackage --git-debian-branch=main --git-upstream-tree=branch
 ```
 
-`gbp` will fail with the error:
+`gbp` might fail with the error:
 
 > dpkg-source: info: local changes detected, the modified files are:
 > ed-2.0.13/Makefile.in
