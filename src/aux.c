@@ -95,6 +95,7 @@ filter_lines (off_t from, off_t to, const char *sc, ed_buffer_t *ed)
       /* Reset signals for shell. */
       signal (SIGINT, SIG_DFL);
       signal (SIGQUIT, SIG_DFL);
+      signal (SIGPIPE, SIG_DFL);
 
       /*
        * Redirect read/write pipes to command's standard I/O. Close

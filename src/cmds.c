@@ -322,6 +322,7 @@ system_shell (const char *sc, ed_buffer_t *ed)
       /* Reset signals for shell. */
       signal (SIGINT, SIG_DFL);
       signal (SIGQUIT, SIG_DFL);
+      signal (SIGPIPE, SIG_DFL);
 
       if (execl ("/bin/sh", "sh", "-c", sc, NULL) < 0)
         {

@@ -1,0 +1,2 @@
+w !sleep 1; exit
+!echo This should be reached!
