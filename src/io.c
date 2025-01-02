@@ -155,6 +155,8 @@ int
 read_pipe (const char *fn, off_t after, off_t *addr,
            off_t *size, ed_buffer_t *ed)
 {
+  static char exit_status[BUFSIZ];
+
   FILE *fp;
   int status;
 
@@ -171,8 +173,14 @@ read_pipe (const char *fn, off_t after, off_t *addr,
   *addr = ed->state->dot - after;
 
   /* Ignore "no child" error. */
-  pclose (fp);
+  if ((status = pclose (fp)) != 0) {
+    snprintf (exit_status, sizeof exit_status, _("Exit status: %#x"),
+              WEXITSTATUS(status));
+    ed->exec->err = exit_status;
+  }
   printf (ed->exec->opt & SCRIPTED ? "" : "!\n");
+
+  /* A shell command error is not an ed error, so always return 0. */
   return 0;
 }
 
@@ -540,6 +548,11 @@ get_stream_line (FILE *fp, size_t *len, ed_buffer_t *ed)
         clearerr (fp);
         errno = 0;
         goto top;
+      case EPIPE:
+        ed->exec->err = _("Broken pipe");
+
+        /* Propagate stream status - don't call clearerr(3). */
+        return NULL;
       default:
 #ifdef F_GETPATH
 
@@ -671,6 +684,8 @@ int
 write_pipe (const char *fn, off_t from, off_t to, off_t *addr,
             off_t *size, ed_buffer_t *ed)
 {
+  static char exit_status[BUFSIZ];
+
   FILE *fp;
   ed_line_node_t *lp = get_line_node (from, ed);
   off_t n = from ? to - from + 1 : 0;
@@ -689,8 +704,14 @@ write_pipe (const char *fn, off_t from, off_t to, off_t *addr,
   *addr = n;
 
   /* Ignore "no child" error. */
-  pclose (fp);
+  if ((status = pclose (fp)) != 0) {
+    snprintf (exit_status, sizeof exit_status, _("Exit status: %#x"),
+              WEXITSTATUS(status));
+    ed->exec->err = exit_status;
+  }
   printf (ed->exec->opt & SCRIPTED ? "" : "!\n");
+
+  /* A shell command error is not an ed error, so always return 0. */
   return 0;
 }
 
@@ -764,7 +785,13 @@ put_stream_line (FILE *fp, const char *s, size_t len, ed_buffer_t *ed)
       {
       case EINTR:
         clearerr (fp);
+        errno = 0;
         goto top;
+      case EPIPE:
+        ed->exec->err = _("Broken pipe");
+
+        /* Propagate stream status - don't call clearerr(3). */
+        return ERR;
       default:
         fprintf (stderr, "%s\n", strerror (errno));
         ed->exec->err = _("File write error");

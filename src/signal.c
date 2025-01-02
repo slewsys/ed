@@ -24,6 +24,7 @@ signal_t sighandler[NSIG];
 /* Static function declarations. */
 static void handle_hup (int);
 static void handle_int (int);
+static void handle_sigpipe (int);
 static void handle_winch (int);
 static signal_t reliable_signal (int, signal_t);
 
@@ -85,6 +86,19 @@ handle_int (int signo)
 
 
 static void
+handle_sigpipe (int signo)
+{
+  extern ed_buffer_t *ed;
+
+  if (!_sigactive)
+    quit (1, ed);
+  _sigflags &= ~(1 << (signo - 1));
+
+  /* Interrupted syscall should report broken pipe. */
+}
+
+
+static void
 handle_winch (int signo)
 {
   extern ed_buffer_t *ed;
@@ -117,6 +131,7 @@ init_signal_handler (ed_buffer_t *ed)
 {
   /* Override signo-indexed LUT for handlers of interest. */
   sighandler[SIGHUP - 1] = handle_hup;
+  sighandler[SIGPIPE - 1] = handle_sigpipe;
   sighandler[SIGINT - 1] = handle_int;
 #ifdef SIGWINCH
   sighandler[SIGWINCH - 1] = handle_winch;
@@ -126,6 +141,7 @@ init_signal_handler (ed_buffer_t *ed)
   if (reliable_signal (SIGCHLD, SIG_DFL) == SIG_ERR
       || reliable_signal (SIGHUP, signal_handler) == SIG_ERR
       || reliable_signal (SIGINT, signal_handler) == SIG_ERR
+      || reliable_signal (SIGPIPE, signal_handler) == SIG_ERR
       || reliable_signal (SIGQUIT, SIG_IGN) == SIG_ERR
 #ifdef SIGWINCH
       || (isatty (0) && reliable_signal (SIGWINCH, signal_handler) == SIG_ERR)
