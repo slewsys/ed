@@ -34,10 +34,10 @@ if [ ! -w "$abs_srcdir" ]; then
 fi
 
 for cmd in aclocal autoheader autopoint automake autoreconf libtoolize; do
-    eval ${cmd}_cmd="\$(type '$cmd' 2>/dev/null | sed -n '1s,.*is \(/.*\),\1,p')"
+    eval ${cmd}_cmd="\$(type '$cmd' 2>/dev/null | sed -n '1s,.* \(/.*\)$,\1,p')"
     exit_status=$?
     if test $exit_status -ne 0 || eval test ."\$${cmd}_cmd" = .''; then
-        eval ${cmd}_cmd="\$(type 'g$cmd' 2>/dev/null | sed -n '1s,.*is \(/.*\),\1,p')"
+        eval ${cmd}_cmd="\$(type 'g$cmd' 2>/dev/null | sed -n '1s,.* \(/.*\)$,\1,p')"
         exit_status=$?
     fi
     if test $exit_status -ne 0 || eval test ."\$${cmd}_cmd" = .''; then
