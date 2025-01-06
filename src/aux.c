@@ -42,6 +42,7 @@
           ed->exec->err = exit_status;                                        \
         }                                                                     \
     end:                                                                      \
+      ;                                                                       \
     }                                                                         \
   while (0)
 
