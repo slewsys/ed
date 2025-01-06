@@ -273,11 +273,19 @@ push_stack_frame (ed_buffer_t *ed)
 
   /* Push file pointer, input size and return address. */
 #if defined(__sun) || defined(__NetBSD__) || defined(__OpenBSD__)
-  if (dup2 (fileno (stdin),
-            fileno (ed->core->stack_frame[ed->core->sp]->fp)) < 0)
+  int fd;
+
+  if ((fd = dup(fileno(stdin))) < 0)
     {
       fprintf (stderr, "%s\n", strerror (errno));
-      ed->exec->err = _("dup2 error");
+      ed->exec->err = _("dup error");
+      spl0 ();
+      return ERR;
+    }
+  else if ((ed->core->stack_frame[ed->core->sp]->fp = fdopen (fd, "r")) == NULL)
+    {
+      fprintf (stderr, "%s\n", strerror (errno));
+      ed->exec->err = _("fdopen error");
       spl0 ();
       return ERR;
     }
