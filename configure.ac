@@ -46,7 +46,7 @@ AC_PATH_PROGS([MAKEINFO], [makeinfo texi2any])
 AM_CONDITIONAL([HAVE_MAKEINFO], [test ! ."$ac_cv_path_MAKEINFO" = .''])
 
 AC_ARG_VAR([TEXI2DVI], [Texinfo to PDF filter])
-AC_PATH_PROG([TEXI2DVI], [texi2dvi])
+AC_PATH_PROGS([TEXI2DVI], [texi2dvi texi2any])
 AM_CONDITIONAL([HAVE_TEXI2DVI], [test ! ."$ac_cv_path_TEXI2DVI" = .''])
 
 # Checks availability of GNU make
