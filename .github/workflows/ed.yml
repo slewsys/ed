@@ -23,9 +23,7 @@ jobs:
       - name: Install autotools, gettext, and libssl for macOS (omit texinfo).
         if: runner.os == 'macOS'
         run: |
-          brew install m4 autoconf automake libtool gettext openssl
-          brew list texinfo && brew uninstall texinfo || true
-          brew unlink openssl@1.1 &&  brew link --force --overwrite openssl@3
+          brew install autoconf automake libtool
       - name: Configure ed for Linux.
         if: runner.os == 'Linux'
         run: |

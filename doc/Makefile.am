@@ -137,9 +137,15 @@ $(ADV_PDF):
 
 # Provide explicit rule to work around OpenBSD (?) issue:
 #     texi2dvi: Can't use option `--output' with more than one argument.
+if !HAVE_TEXI2DVI
+$(ED_PDF):
+	@echo "*** Missing texi2dvi ***: Cannot build $@ from $<." >&2
+
+else
 $(ED_PDF): $(ED_TEXI) $(INTRO_PDF) $(ADV_PDF)
-	TEXINPUTS="..:$TEXINPUTS" MAKEINFO='/usr/bin/makeinfo   -I .'	     \
+	TEXINPUTS="..:$(TEXINPUTS)" MAKEINFO='/usr/bin/makeinfo   -I .'	     \
 	$(TEXI2DVI) --pdf --build-dir=ed.t2p $(ED_TEXI)
+endif
 
 clean-local:
 	rm -f $(INTRO_INCL_TEXI) $(ADV_INCL_TEXI)			     \
