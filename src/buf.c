@@ -57,8 +57,9 @@ one_time_init (int argc, char *argv[], ed_buffer_t *ed)
 
   /* Initialize buffer meta data deques. */
   INIT_DEQUE (ed->core->line_head);
-  INIT_DEQUE (ed->core->global_head);
   INIT_DEQUE (ed->core->undo_head);
+
+  init_global_buffer (ed);
 
   /* Sanity check values of environment vars */
   if ((ls = getenv ("LINES")))
@@ -630,16 +631,21 @@ init_script_buffer (ed_buffer_t *ed)
 }
 
 
-/* init_global_queue: Initialize ed_core global queue. */
+/* init_global_buffer: Initialize ed global command buffer. */
 void
-init_global_queue (ed_global_node_t **aq, ed_line_node_t **lq, ed_buffer_t *ed)
+init_global_buffer (ed_buffer_t *ed)
 {
-  *aq = ed->core->global_head;
-  *lq = ed->core->line_head;
+  ed_global_buffer_t *gb = ed->core->global_buffer;
+
+  gb->lbuf = NULL;
+  gb->size = 0;
+  gb->last = 0;
+  gb->ptr = 0;
+  gb->index = 0;
 }
 
 
-/* init_undo_queue: Initialize ed_core undo queue. */
+/* init_undo_queue: Initialize ed undo queue. */
 void
 init_undo_queue (ed_undo_node_t **uq, ed_buffer_t *ed)
 {
@@ -755,7 +761,7 @@ alloc_ed_buffer (void)
   ALLOC_ED_TYPE (ed_buffer->state, 2, struct ed_state);
   ALLOC_ED_TYPE (ed_buffer->core, 1, struct ed_core);
   ALLOC_ED_TYPE (ed_buffer->core->line_head, 1, ed_line_node_t);
-  ALLOC_ED_TYPE (ed_buffer->core->global_head, 1, ed_global_node_t);
+  ALLOC_ED_TYPE (ed_buffer->core->global_buffer, 1, ed_global_buffer_t);
 #if WANT_ED_REGISTER
   ALLOC_ED_TYPE (ed_buffer->core->regbuf, 1, struct ed_register);
 #endif

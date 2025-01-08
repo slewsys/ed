@@ -9,14 +9,16 @@
 
 
 /* Static function declarations. */
-static ed_global_node_t *append_global_node (const ed_line_node_t *,
-                                             ed_buffer_t *);
-static ed_line_node_t *next_global_node (ed_buffer_t *);
+static int append_global_line (const ed_line_node_t *, ed_buffer_t *);
+static ed_line_node_t *next_global_line (ed_buffer_t *);
 
 
-/* mark_global_nodes: Add lines matching a pattern to global queue. */
+/*
+ * set_global_lines: Add lines matching a pattern to global comand
+ *   buffer.
+ */
 int
-mark_global_nodes (int want_match, ed_buffer_t *ed)
+set_global_lines (int want_match, ed_buffer_t *ed)
 {
   regmatch_t rm[1];
   regex_t *re;
@@ -24,6 +26,7 @@ mark_global_nodes (int want_match, ed_buffer_t *ed)
   off_t from = ed->exec->region->start;
   off_t to = ed->exec->region->end;
   off_t n = from ? to - from + 1 : 0;
+  int status = 0;
   char dc = *ed->input;              /* pattern delimiting char */
   char *s;
 
@@ -36,7 +39,7 @@ mark_global_nodes (int want_match, ed_buffer_t *ed)
   if ((dc == '\\' ? *ed->input == dc && *(ed->input + 1) != dc
        : *ed->input == dc) && *ed->input != '\n')
     ++ed->input;
-  reset_global_queue (ed);
+  reset_global_buffer (ed);
   spl0 ();
   lp = get_line_node (from, ed);
   for (; n; --n, lp = lp->q_forw)
@@ -47,22 +50,22 @@ mark_global_nodes (int want_match, ed_buffer_t *ed)
       rm->rm_so = 0;
       rm->rm_eo = lp->len;
       if ((!regexec (re, s, 0, rm, REG_STARTEND)) == want_match
-          && !append_global_node (lp, ed))
+          && (status = append_global_line (lp, ed)) < 0)
 #else
       if (ed->state->is_binary)
         NUL_TO_NEWLINE (s, lp->len);
       if (!regexec (re, s, 0, NULL, 0) == want_match
-          && !append_global_node (lp, ed))
+          && (status = append_global_line (lp, ed)) < 0)
 #endif  /* !REG_STARTEND */
-        return ERR;
+        return status;
     }
   return 0;
 }
 
 
 /*
- * exec_global: Apply command list to lines in a range in global
- *   queue. Return command status.
+ * exec_global: Apply command list to lines in global command buffer.
+ *   Return command status.
  */
 int
 exec_global (ed_buffer_t *ed)
@@ -71,7 +74,7 @@ exec_global (ed_buffer_t *ed)
   static size_t gcb_size = 0;   /* buffer size */
 
   ed_line_node_t *lp = NULL;
-  size_t len;
+  size_t len = 0;
   int first_time = 1;
   int interactive = ed->exec->global & GLBI;
   int saved_io_f = ed->display->io_f;
@@ -94,7 +97,7 @@ exec_global (ed_buffer_t *ed)
   if (strlen (ed->input) == 1 && *ed->input == '\n')
     ed->input = "p\n";
 
-  for (ed->exec->first_pass = 1; (lp = next_global_node (ed));
+  for (ed->exec->first_pass = 1; (lp = next_global_line (ed));
        ed->input = gcb, ed->exec->first_pass = 0)
     {
       if ((status = get_line_node_address (lp, &ed->state->dot, ed)) < 0)
@@ -153,103 +156,75 @@ exec_global (ed_buffer_t *ed)
   return saved_io_f;
 }
 
+/*
+ * append_global_line: Append line node to end of global command buffer.
+ */
+static int
+append_global_line (const ed_line_node_t *lp, ed_buffer_t *ed)
+{
+  ed_global_buffer_t *gb = ed->core->global_buffer;
+
+  REALLOC_THROW (gb->lbuf, gb->size,
+                 (gb->last + 1) * sizeof (ed_line_node_t *),
+                 ERR, ed);
+  gb->lbuf[gb->last++] = (ed_line_node_t *) lp;
+  return 0;
+}
+
 
 /*
- * append_global_node: Append node to end of global queue. Return node
- *   pointer.
+ * clear_global_lines: Clear a range of lines from global command
+ *   buffer
  */
-static ed_global_node_t *
-append_global_node (const ed_line_node_t *lp, ed_buffer_t *ed)
+void
+clear_global_lines (ed_line_node_t *np, ed_line_node_t *mp,
+                    off_t count, ed_buffer_t *ed)
 {
-  ed_global_node_t *gp;
-  ed_global_node_t *tq = ed->core->global_head->q_back;
+  ed_global_buffer_t *gb = ed->core->global_buffer;
+  ed_line_node_t *lp;
+  size_t i;
+
+  for (lp = np; lp != mp; lp = lp->q_forw)
+    for (i = 0; i < gb->last; i++)
+      if (gb->lbuf[gb->index] == lp)
+        {
+          gb->lbuf[gb->index] = NULL;
+          gb->index = INC_MOD (gb->index, gb->last - 1);
+          break;
+        }
+      else
+        gb->index = INC_MOD (gb->index, gb->last - 1);
+}
+
+
+ /*
+  * next_global_line: Return the next line node in the global command
+  *   buffer.
+  */
+ed_line_node_t *
+next_global_line (ed_buffer_t *ed)
+{
+  ed_global_buffer_t *gb = ed->core->global_buffer;
+
+  while (gb->ptr < gb->last && gb->lbuf[gb->ptr] == NULL)
+    gb->ptr++;
+  return (gb->ptr < gb->last) ? gb->lbuf[gb->ptr++] : NULL;
+}
+
+
+/* reset_global_buffer: Reset the global command buffer. */
+void
+reset_global_buffer (ed_buffer_t *ed)
+{
+  ed_global_buffer_t *gb = ed->core->global_buffer;
 
   spl1 ();
-  if (!(gp = (ed_global_node_t *) malloc (ED_GLOBAL_NODE_T_SIZE)))
-    {
-      fprintf (stderr, "%s\n", strerror (errno));
-      ed->exec->err = _("Memory exhausted");
-      spl0 ();
-      return NULL;
-    }
-  gp->lp = (ed_line_node_t *) lp;
-
-  /* APPEND_NODE is macro, so tq is mandatory! */
-  APPEND_NODE (gp, tq);
+  if (gb->lbuf != NULL)
+    free (gb->lbuf);
+  gb->lbuf = NULL;
+  gb->size = 0;
+  gb->last = 0;
+  gb->ptr = 0;
+  gb->index = 0;
   spl0 ();
-  return gp;
-}
-
-
-/*
- * next_global_node: Pop node from top of global queue; return line
- *   node pointer.
- */
-static ed_line_node_t *
-next_global_node (ed_buffer_t *ed)
-{
-  ed_global_node_t *ap = ed->core->global_head->q_forw;
-  ed_line_node_t *lp = ap->lp;
-
-  if (ap != ed->core->global_head)
-    {
-      spl1 ();
-      UNLINK_NODE (ap);
-      free (ap);
-      spl0 ();
-    }
-  return lp;
-}
-
-
-/* reset_global_queue: Initialize and reset global queue. */
-void
-reset_global_queue (ed_buffer_t *ed)
-{
-  /* Assert: spl1 () */
-
-  delete_global_nodes (ed->core->global_head->q_forw->lp,
-                       ed->core->global_head->lp, ed);
-}
-
-
-/* SEEK_GLOBAL_LINE: Seek global line node between min and max. */
-#define SEEK_GLOBAL_LINE(global, head, min, max)                              \
-  do                                                                          \
-    {                                                                         \
-      global = head;                                                          \
-      while (global->lp != min                                                \
-             && (global = global->q_forw) != ed->core->global_head)           \
-        ;                                                                     \
-      if (global->lp == min || min == max)                                    \
-        break;                                                                \
-      min = min->q_forw;                                                      \
-    }                                                                         \
-  while (1)
-
-
-/* delete_global_nodes: Delete range of global nodes, excluding end. */
-void
-delete_global_nodes (const ed_line_node_t *begin, const ed_line_node_t *end,
-                     ed_buffer_t *ed)
-{
-  ed_line_node_t *first = (ed_line_node_t *) begin;
-  ed_line_node_t *last = (ed_line_node_t *) end;
-  ed_global_node_t *from, *to, *next;
-
-  /* Assert: get_line_node_address (first) <= get_line_node_address (last) */
-
-  SEEK_GLOBAL_LINE (from, ed->core->global_head, first, last);
-
-  if (first != last)
-    SEEK_GLOBAL_LINE (to, from->q_forw, last, ed->core->line_head);
-
-  /* Assert: spl1 () */
-
-  for (; from != ed->core->global_head && from->lp != last; from = next)
-    {
-      next = from->q_forw;
-      UNLINK_NODE (from);
-      free (from);
-    }
 }

@@ -90,7 +90,7 @@ undo_last_command (ed_buffer_t *ed)
   while ((up = next) != ed->core->undo_head);
 
   if (ed->exec->global)
-    reset_global_queue (ed);
+    reset_global_buffer (ed);
   ed->state[0] = ed->state[1], ed->state[1] = saved_buf;
   spl0 ();
   return 0;

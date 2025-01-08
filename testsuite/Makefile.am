@@ -80,9 +80,9 @@ SUFFIXES = .t .tco .tso .tmf .tr .txm .err .ok-at .ok-co-at \
 ED_SCRIPTS_OK =								      \
 	addr.t ascii.t a.t bang1.t bang2.t bang3.t bang4.t		      \
 	c1.t c2.t comment.t delim.t d.t e1.t e2.t e3.t e4.t e5.t	      \
-	g1.t g2.t g3.t g4.t g5.t i1.t i2.t j.t k.t m.t nl1.t nl2.t	      \
-	nl3.t nl4.t q2.t r1.t r2.t r3.t s1.t s2.t s3.t s4.t s5.t	      \
-	s6.t s7.t s8.t t1.t t2.t u.t v.t w.t
+	g1.t g2.t g3.t g4.t g5.t g6.t i1.t i2.t j.t k.t m.t nl1.t	      \
+	nl2.t nl3.t nl4.t q2.t r1.t r2.t r3.t s1.t s2.t s3.t s4.t	      \
+	s5.t s6.t s7.t s8.t t1.t t2.t u.t v1.t v2.t w.t
 
 # Ed scripts tested for expected standard output.
 ED_SCRIPTS_OK_CO =							      \
