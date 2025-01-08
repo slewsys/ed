@@ -548,7 +548,8 @@ dup_argv (int argc, char **argv, ed_buffer_t *ed)
   int i;
 
   REALLOC_THROW (pathv_p, pathv_p_size,
-                 (argc + 1) * sizeof (char *), NULL, ed);
+                 (argc + 1) * sizeof (char *),
+                 NULL, ed);
 
   for (i = 0, pathv_p[i] = NULL; i < argc; ++i, pathv_p[i] = NULL, len = 0)
     {

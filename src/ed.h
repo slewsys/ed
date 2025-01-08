@@ -242,7 +242,7 @@ enum utf8_char_constant
 # define STAT(x, y)  stat ((x), (y))
 #endif  /* !HAVE_STAT64 */
 
-/* In-core and hold node. */
+/* In-core line node. */
 typedef struct ed_line_node
 {
   struct ed_line_node *q_forw;
@@ -394,7 +394,7 @@ struct ed_core
 {
 
 #ifdef WANT_ED_REGISTER
-  /* Register buffers and line markers. */
+  /* Register buffer. */
   struct ed_register *regbuf;
 #endif
 
@@ -404,6 +404,7 @@ struct ed_core
   int sp;                       /* Script buffer stack pointer. */
 #endif
 
+  /*  Line markers */
   ed_line_node_t *mark[MARK_MAX];
   int marks;
 
@@ -705,7 +706,7 @@ enum search_type
   while (0)
 
 
-/* LINK_NODES: Link prev and next nodes. */
+/* LINK_NODES: Link nodes `prev' and `next'. */
 #define LINK_NODES(prev, next)                                                \
   ((prev)->q_forw = (next), (next)->q_back = (prev))
 
@@ -713,10 +714,10 @@ enum search_type
 #define INIT_DEQUE(node) LINK_NODES ((node), (node))
 
 /*
- * APPEND_NODE: Append node after prev.
- * CAVEAT UTILITOR: APPEND_NODE fails when `prev' of the form
- * p->q_back.  The workaround is to assign t = p->q_back and then
- * call APPEND_NODE(n, t).
+ * APPEND_NODE: Append node `node' after `prev'.
+ * Caveat: This fails when `prev' of the form `p->q_back'. The
+ *   workaround is to assign t = p->q_back and then call
+ *   APPEND_NODE(n, t).
  */
 #define APPEND_NODE(node, prev)                                               \
   do                                                                          \
@@ -726,7 +727,7 @@ enum search_type
     }                                                                         \
   while (0)
 
-/* UNLINK_NODE: Remove node from deque. */
+/* UNLINK_NODE: Remove node `node' from deque. */
 #define UNLINK_NODE(node)                                                     \
   LINK_NODES ((node)->q_back, (node)->q_forw)
 
@@ -741,7 +742,7 @@ enum search_type
     }                                                                         \
   while (0)
 
-/* REALLOC_THROW: Assure at least a minimum size for buffer b. */
+/* REALLOC_THROW: Assure minimum size `i' for buffer `b' with size `n'. */
 #define REALLOC_THROW(b, n, i, err, ed)                                       \
   do                                                                          \
     {                                                                         \
