@@ -285,15 +285,18 @@ typedef struct ed_frame_buffer
   int wraps;                    /* If set, text wraps around top of frame. */
 } ed_frame_buffer_t;
 
-/* Global mark node. */
-typedef struct ed_global_node
+/* Global command buffer. */
+typedef struct ed_global_buffer
 {
-  struct ed_global_node *q_forw;
-  struct ed_global_node *q_back;
-  ed_line_node_t *lp;           /* Marked node pointer. */
-} ed_global_node_t;
+  ed_line_node_t **lbuf;        /* Global command line buffer. */
+  size_t size;                  /* Line buffer size. */
+  size_t last;                  /* Index of last node in global line buffer. */
+  size_t ptr;                   /* Index of next node in global line buffer. */
+  size_t index;                 /* Index of next node to clear in
+                                   global line buffer. */
+} ed_global_buffer_t;
 
-#define ED_GLOBAL_NODE_T_SIZE (sizeof (ed_global_node_t))
+#define ED_GLOBAL_BUFFER_T_SIZE (sizeof (ed_global_buffer_t))
 
 /* In-core text node. */
 typedef struct ed_text_node
@@ -405,9 +408,9 @@ struct ed_core
   int marks;
 
   /* Edit-processing buffers. */
-  ed_line_node_t *line_head;     /* Head of line buffer. */
-  ed_global_node_t *global_head; /* Head of global line buffer. */
-  ed_undo_node_t *undo_head;     /* Head of undo buffer. */
+  ed_global_buffer_t *global_buffer; /* Global command buffer. */
+  ed_line_node_t *line_head;         /* Head of line buffer. */
+  ed_undo_node_t *undo_head;         /* Head of undo buffer. */
 
   /* Buffer storage */
   FILE *fp;                     /* Pointer to on-disk buffer. */
@@ -886,10 +889,10 @@ int append_to_register (off_t, off_t, int, ed_buffer_t *);
 #endif
 
 ed_undo_node_t *append_undo_node (int, off_t, off_t, ed_buffer_t *);
+void clear_global_lines (ed_line_node_t *, ed_line_node_t *, off_t,
+                         ed_buffer_t *);
 int copy_lines (off_t, off_t, off_t, ed_buffer_t *);
 int decode_utf8_char (unsigned char **, int);
-void delete_global_nodes  (const ed_line_node_t *, const ed_line_node_t *,
-                           ed_buffer_t *);
 int delete_lines (off_t, off_t, ed_buffer_t *);
 int display_lines (off_t, off_t, ed_buffer_t *);
 int encode_utf8_char (char *, int *, unsigned int);
@@ -930,7 +933,7 @@ void init_des_cipher (void);
 
 void init_ed_command (int, ed_buffer_t *);
 void init_ed_state (off_t, struct ed_state *);
-void init_global_queue (ed_global_node_t **, ed_line_node_t **, ed_buffer_t *);
+void init_global_buffer (ed_buffer_t *);
 #ifdef WANT_ED_REGISTER
 int init_register_buffer (int, ed_buffer_t *);
 #endif
@@ -951,7 +954,6 @@ int inter_register_move (int, ed_buffer_t *);
 int is_fifo (const char *, ed_buffer_t *);
 int is_utf8_str (const char *, size_t);
 int join_lines (off_t, off_t, ed_buffer_t *);
-int mark_global_nodes (int, ed_buffer_t *);
 int mark_line_node (const ed_line_node_t *, int, ed_buffer_t *);
 int move_lines (off_t, off_t, off_t, ed_buffer_t *);
 int next_address (off_t *, ed_buffer_t *);
@@ -979,7 +981,7 @@ int read_stream_r (FILE *, off_t, off_t *, ed_buffer_t *);
 void *realloc_buffer (void **, size_t *, size_t, ed_buffer_t *);
 char *regular_expression (unsigned, size_t *, ed_buffer_t *);
 int reopen_ed_buffer (ed_buffer_t *);
-void reset_global_queue (ed_buffer_t *);
+void reset_global_buffer (ed_buffer_t *);
 
 #ifdef WANT_ED_REGISTER
 int reset_register_buffer (int, ed_buffer_t *);
@@ -1001,6 +1003,7 @@ int scroll_lines (off_t, off_t, ed_buffer_t *);
 int set_file_lock (FILE *, int);
 #endif
 
+int set_global_lines (int, ed_buffer_t *);
 char *shift_text_node (ed_text_node_t *, size_t *);
 void signal_handler (int);
 void spl0 (void);

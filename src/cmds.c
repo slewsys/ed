@@ -132,7 +132,7 @@ delete_lines (off_t from, off_t to, ed_buffer_t *ed)
   /* This get_line_node last! */
   b = get_line_node (from - 1, ed);
   if (ed->exec->global)
-    delete_global_nodes (b->q_forw, a, ed);
+    clear_global_lines (b->q_forw, a, to - from + 1, ed);
   LINK_NODES (b, a);
   if (to == ed->state->lines)
     ed->state->newline_appended = 0;
@@ -235,7 +235,7 @@ move_lines (off_t from, off_t to, off_t after, ed_buffer_t *ed)
       ed->state->dot = after + (from > after ? to - from + 1 : 0);
     }
   if (ed->exec->global)
-    delete_global_nodes (b2->q_forw, a2, ed);
+    clear_global_lines (b2->q_forw, a2, to - from + 1, ed);
   ed->state->is_modified = 1;
   spl0 ();
   return 0;

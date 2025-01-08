@@ -515,7 +515,7 @@ E_cmd (ed_buffer_t *ed)
       return status;
     }
   reset_undo_queue (ed);
-  reset_global_queue (ed);
+  reset_global_buffer (ed);
   if (reopen_ed_buffer (ed) < 0)
     {
       spl0 ();
@@ -571,10 +571,14 @@ exec_macro (ed_buffer_t *ed)
 {
   size_t len;
   int status = 0;
+  int saved_global = ed->exec->global;
 
   /* case '@': */
-  if ((status = is_valid_range (ed->state->dot, ed->state->dot, ed)) < 0)
-    return status;
+  if (ed->exec->region->addrs)
+    {
+      ed->exec->err = _("Address unexpected");
+      return ERR;
+    }
 
   if (!ed->core->regbuf->io_f)
     GET_INPUT_REGISTER (ed);
@@ -607,6 +611,7 @@ exec_macro (ed_buffer_t *ed)
           clearerr (stdin);
           break;
         }
+      ed->exec->global = 0;
 
       if ((status = address_range (ed)) < 0
           || (status = exec_command (ed)) < 0
@@ -615,6 +620,8 @@ exec_macro (ed_buffer_t *ed)
                                           ed->state->dot, ed)) < 0))
         break;
     }
+
+  ed->exec->global = saved_global;
 
  err:
   /* Pop stack frame, or unwind on error. */
@@ -718,7 +725,7 @@ global_cmd (ed_buffer_t *ed)
       return ERR;
     }
   if ((status = is_valid_range (1, ed->state->lines, ed)) < 0
-      || (status = mark_global_nodes (c == 'g' || c == 'G', ed)) < 0)
+      || (status = set_global_lines (c == 'g' || c == 'G', ed)) < 0)
     return status;
   if (c == 'G' || c == 'V')
     {
