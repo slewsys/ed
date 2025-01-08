@@ -214,7 +214,7 @@ move_lines (off_t from, off_t to, off_t after, ed_buffer_t *ed)
   else
     {
       a1 = get_line_node (succ, ed);
-      if (from > after)
+      if (after < from)
         {
           b1 = get_line_node (prec, ed);
 
@@ -232,7 +232,7 @@ move_lines (off_t from, off_t to, off_t after, ed_buffer_t *ed)
       LINK_NODES (b2, b1->q_forw);
       LINK_NODES (a1->q_back, a2);
       LINK_NODES (b1, a1);
-      ed->state->dot = after + (from > after ? to - from + 1 : 0);
+      ed->state->dot = after + (after < from ? to - from + 1 : 0);
     }
   if (ed->exec->global)
     clear_global_lines (b2->q_forw, a2, to - from + 1, ed);

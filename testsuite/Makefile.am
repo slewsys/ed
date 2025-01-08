@@ -103,7 +103,7 @@ ED_SCRIPTS_OK_MF =							      \
 ED_SCRIPTS_OK_R =							      \
 	rmt1.tr rmt2.tr rmt3.tr
 
-# Ed scripts which should complete sucessfully if registers are available.
+# Ed scripts which should complete sucessfully if macros are available.
 ED_SCRIPTS_OK_XM =							      \
 	mac1.txm mac2.txm mac3.txm
 
