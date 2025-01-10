@@ -12,7 +12,7 @@
 #
 # DESCRIPTION
 #
-# This script generates a call graph for shell scripts on the command line that are
+# This script generates a call graph for shell scripts on its command line that are
 # assumed to be structured as follows:
 #
 #     #!/usr/bin/env bash
@@ -38,9 +38,13 @@
 #         ...
 #     fi
 #
-# In particular, the keyword "function" is omitted, and the function bodies'
-# enclosing curly braces ({}) are on a line by themselves, in the first column
-# of the script.
+# In particular:
+#     * keyword "function" is omitted,
+#     * statements within functions on lines by themselves,
+#     * function bodies' closing curly brace `}' on a line by itself,
+#     * `if' statement in column 1 referencing `$0',
+#     * statements within if on lines by themselves,
+#     * closing `fi' in column 1 as well.
 #
 : ${CAT_CMD:='@CAT_CMD@'}
 : ${ED_CMD:='@ED_CMD@'}
@@ -71,7 +75,7 @@ parse-shell-scripts ()
     for script; do
         is-file-type "$script" "shell script" || return $?
         function_list_string+=$(
-            $ED_CMD -E -e 'g;^(\S+)\s*\(\)\s*\{?;s;;\1;p' "$script"
+            $ED_CMD -E -e 'g;^([_[:alpha:]][-+_~!@%^:./?[:alnum:]]+)\s*\(\)\s*\{?;s;;\1;p' "$script"
                              ) || return $?
     done
 
@@ -90,7 +94,7 @@ g/^fi.*/s;;};
 g;^(\S+).*\(\);s;^(\S+).*;\1;p\
 s;$; { '${script}': };p\
 .=\
-+,/^}/-w ! '${PERL_CMD}' -ne '\''print "  $2\n" if s/'$funcall_regex'/  \1/g'\'
++,/^\s*}/-w ! '${PERL_CMD}' -ne '\''while (s/'$funcall_regex'/ \1/) { print "  $2\n"; }'\'
 
         $ED_CMD -E -e "$ed_script" "$script" || return $?
     done

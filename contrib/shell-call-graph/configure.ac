@@ -7,7 +7,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT([call-graph],[1.0.1],[https://github.com/slewsys/ed/contrib/call-graph])
+AC_INIT([shell-call-graph],[1.0.1],[https://github.com/slewsys/ed/contrib/shell-call-graph])
 AC_CONFIG_AUX_DIR([.])
 AM_INIT_AUTOMAKE([foreign])
 
@@ -38,6 +38,6 @@ fi
 AM_MISSING_PROG([AUTOM4TE], [autom4te])
 
 AC_CONFIG_FILES([Makefile])
-AC_CONFIG_FILES([call-graph], [chmod +x call-graph])
+AC_CONFIG_FILES([shell-call-graph], [chmod +x shell-call-graph])
 
 AC_OUTPUT
