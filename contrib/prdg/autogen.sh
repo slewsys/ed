@@ -10,18 +10,6 @@ if set +o 2>/dev/null | grep -q 'pipefail$'; then
     set -o pipefail
 fi
 
-which ()
-{
-    # Red Hat and OpenSUSE define `which' as an alias which isn't
-    # exported to sub-shells, and though functions are shadowed by
-    # aliases, at least sub-shells should see this. Since `type' is
-    # POSIX, and we can reasonably assume its argument (one of the
-    # autotools) is in the command path, hopefully this is portable
-    # enough for our purposes, sigh.
-    type "$1" 2>/dev/null |
-        sed -n '1s,.*is \(/.*\),\1,p' || return $?
-}
-
 case "$1" in
     -h*|--h*)
         echo "Usage: $script_name [-h|--help] [-s|--silent] [maintainer-update-dist]"
@@ -45,13 +33,13 @@ if [ ! -w "$abs_srcdir" ]; then
 fi
 
 for cmd in aclocal autoheader automake autoreconf; do
-    eval ${cmd}_cmd='$(which '$cmd' 2>/dev/null)'
+    eval ${cmd}_cmd="\$(type '$cmd' 2>/dev/null | sed -n '1s,.* \(/.*\)$,\1,p')"
     exit_status=$?
-    if test $exit_status -ne 0; then
+    if test $exit_status -ne 0 || eval test ."\$${cmd}_cmd" = .''; then
         cat <<EOF
 $script_name: $cmd: Command not found
-Please verify installation of GNU Autoconf, Automake, Autopoint,
-Libtool, Gettext and Texinfo before running this script.
+Please verify installation of GNU Autoconf and Automake before running
+this script.
 EOF
         exit $exit_status
     fi
