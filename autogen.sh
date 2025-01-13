@@ -199,7 +199,7 @@ if $verbose; then
      run:
 
              $ ./configure [--enable-EXTENSION ...|--enable-all-extensions]
-             $ make
+             $ gmake
 
      where available EXTENSIONs are
 
