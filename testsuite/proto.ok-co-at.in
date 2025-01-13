@@ -1,0 +1,32 @@
+# proto.ok-so-at.in: Autotest template for the ed testsuite.
+#
+# Process this file with autotest to create testsuite (see also Makefile.am).
+
+AT_SETUP([Script: @SCRIPT_NAME@.tco])
+
+[buf_size=$(
+    {
+        yes |
+            timeout -s INT 1 dd bs=1  |
+            sleep 2
+    } 2>&1 |
+        sed -nE -e '/^([0-9]+).*out$/s//\1/p'
+        )
+
+truncate -s $(( ++buf_size )) @SCRIPT_SRC@.d]
+
+cat >script-@SCRIPT_NAME@ <<_ATEOF_ED
+H
+r @SCRIPT_SRC@.d
+$(test -s @SCRIPT_SRC@.tco &&
+cat @SCRIPT_SRC@.tco ||
+echo "w @SCRIPT_NAME@.o")
+wq @SCRIPT_NAME@.o
+_ATEOF_ED
+
+AT_CHECK([ed - <script-@SCRIPT_NAME@],
+  0, [stdout], [ignore], [], [])
+AT_CHECK([diff -u @SCRIPT_SRC@.r stdout &&
+cmp @SCRIPT_SRC@.d @SCRIPT_NAME@.o],
+  0, [ignore], [ignore], [], [])
+AT_CLEANUP()
