@@ -1,5 +1,5 @@
-     April 2024
-Su Mo Tu We Th Fr Sa
+   April 2024
+ S  M Tu  W Th  F  S
     1  2  3  4  5  6
  8  8  9 10 11 12 13
 Appended via macro invoked from global command.
