@@ -6,7 +6,7 @@ AT_SETUP([Script: @SCRIPT_NAME@.tso])
 
 cat >script-@SCRIPT_NAME@ <<_ATEOF_ED
 H
-r !@ZSTD_CMD@ -dc @SCRIPT_SRC@.d.zst
+r !@ZSTD@ -dc @SCRIPT_SRC@.d.zst
 $(test -s @SCRIPT_SRC@.tso &&
 cat @SCRIPT_SRC@.tso ||
 echo "w @SCRIPT_NAME@.o")
