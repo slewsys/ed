@@ -76,13 +76,13 @@ AC_ARG_WITH([included-regex],
   [AS_HELP_STRING([--with-included-regex],
     [use GNU regex library included here])],
     [], [with_included_regex=check])
+AC_MSG_RESULT([$with_included_regex])
 if test ! ."$with_included_regex" = .'yes'; then
     AC_CHECK_FUNCS([regcomp],
       [with_included_regex=no],
       [with_included_regex=yes
        AC_MSG_WARN([System regex not found, falling back to included version])])
 fi
-AC_MSG_RESULT([$with_included_regex])
 if test ."$with_included_regex" = .'yes'; then
    ln -sf POTFILES-regex.in po/POTFILES.in
 else
@@ -449,6 +449,7 @@ AC_CONFIG_FILES([                                                             \
   po/Makefile.in                                                              \
   src/Makefile                                                                \
   testsuite/Makefile                                                          \
+  testsuite/proto.ok-at.in                                                    \
   testsuite/proto.ok-so-at.in])
 
 AC_OUTPUT

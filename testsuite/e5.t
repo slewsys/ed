@@ -1,3 +1,3 @@
 E script-e5
 r !echo %
-/H/;+d
+/H/;/^E/-d
