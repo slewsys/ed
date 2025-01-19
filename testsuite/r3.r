@@ -4,5 +4,5 @@ line 3
 line 4
 line5
 r script-r3
-/H/;+d
+/H/;?^r?-d
 wq r3.o

@@ -12,16 +12,18 @@ ED_SCRIPTSdir = $(srcdir)
 # Templates for generating autotest .at scripts.
 AT_PROTO_OK    = $(ED_SCRIPTSdir)/proto.ok-at.in
 AT_PROTO_OK_CO = $(ED_SCRIPTSdir)/proto.ok-co-at.in
-AT_PROTO_OK_SO = $(ED_SCRIPTSdir)/proto.ok-so-at.in
+AT_PROTO_OK_EF = $(ED_SCRIPTSdir)/proto.ok-ef-at.in
 AT_PROTO_OK_MF = $(ED_SCRIPTSdir)/proto.ok-mf-at.in
 AT_PROTO_OK_R  = $(ED_SCRIPTSdir)/proto.ok-r-at.in
+AT_PROTO_OK_SO = $(ED_SCRIPTSdir)/proto.ok-so-at.in
 AT_PROTO_OK_XM = $(ED_SCRIPTSdir)/proto.ok-xm-at.in
 AT_PROTO_ERR   = $(ED_SCRIPTSdir)/proto.err-at.in
 AT_PROTO_FAIL  = $(ED_SCRIPTSdir)/proto.fail-at.in
 
 
-SUFFIXES = .t .tco .tso .tmf .tr .txm .err .ok-at .ok-co-at \
-	    .ok-so-at .ok-mf-at .ok-r-at .ok-xm-at .err-at .fail-at
+SUFFIXES = .t .tco .tef .tmf .tr .tso .txm .err .ok-at .ok-co-at	\
+	   .ok-ef-at .ok-mf-at .ok-r-at .ok-so-at .ok-xm-at		\
+	   .err-at .fail-at
 
 # The following GNU make rules generate a location-independent version
 # of testsuite which is invoked from $(top_builddir) via:
@@ -40,9 +42,9 @@ SUFFIXES = .t .tco .tso .tmf .tr .txm .err .ok-at .ok-co-at \
 	    >"$@".tmp
 	mv "$@".tmp "$@"
 
-.tso.ok-so-at:
+.tef.ok-ef-at:
 	sed -e "s^@SCRIPT_NAME@^$*^g"					      \
-	    -e "s^@SCRIPT_SRC@^$(abs_srcdir)/$*^g" "$(AT_PROTO_OK_SO)"	      \
+	    -e "s^@SCRIPT_SRC@^$(abs_srcdir)/$*^g" "$(AT_PROTO_OK_EF)"	      \
 	    >"$@".tmp
 	mv "$@".tmp "$@"
 
@@ -55,6 +57,12 @@ SUFFIXES = .t .tco .tso .tmf .tr .txm .err .ok-at .ok-co-at \
 .tr.ok-r-at:
 	sed -e "s^@SCRIPT_NAME@^$*^g"					      \
 	    -e "s^@SCRIPT_SRC@^$(abs_srcdir)/$*^g" "$(AT_PROTO_OK_R)"	      \
+	    >"$@".tmp
+	mv "$@".tmp "$@"
+
+.tso.ok-so-at:
+	sed -e "s^@SCRIPT_NAME@^$*^g"					      \
+	    -e "s^@SCRIPT_SRC@^$(abs_srcdir)/$*^g" "$(AT_PROTO_OK_SO)"	      \
 	    >"$@".tmp
 	mv "$@".tmp "$@"
 
@@ -78,22 +86,19 @@ SUFFIXES = .t .tco .tso .tmf .tr .txm .err .ok-at .ok-co-at \
 
 # Ed scripts which should complete sucessfully.
 ED_SCRIPTS_OK =								      \
-	addr.t ascii.t a.t bang1.t bang2.t bang3.t bang4.t		      \
-	c1.t c2.t comment.t delim.t d.t e1.t e2.t e3.t e4.t e5.t	      \
-	g1.t g2.t g3.t g4.t g5.t g6.t i1.t i2.t j.t k.t m.t nl1.t	      \
-	nl2.t nl3.t nl4.t q2.t r1.t r2.t r3.t s1.t s2.t s3.t s4.t	      \
-	s5.t s6.t s7.t s8.t t1.t t2.t u.t v1.t v2.t w.t
+	addr.t ascii.t a.t bang1.t c1.t c2.t comment.t delim.t		      \
+	d.t e1.t e2.t e3.t e4.t e5.t g1.t g2.t g3.t g4.t g5.t g6.t	      \
+	i1.t i2.t j.t k.t m.t nl1.t nl2.t nl3.t nl4.t q2.t		      \
+	r1.t r2.t r3.t s1.t s2.t s3.t s4.t s5.t s6.t s7.t s8.t		      \
+	t1.t t2.t u.t v1.t v2.t w.t
 
 # Ed scripts tested for expected standard output.
 ED_SCRIPTS_OK_CO =							      \
 	sigpipe.tco
 
-# Ed scripts tested for expected standard output.
-ED_SCRIPTS_OK_SO =							      \
-	p1.tso l1.tso n1.tso						      \
-	zf1.tso zf2.tso zf3.tso zf4.tso zf5.tso zf6.tso zf7.tso		      \
-	zb1.tso zb2.tso zb3.tso zb4.tso	zb5.tso zb6.tso	zb7.tso		      \
-	zfh1.tso zfh2.tso zbh1.tso zbh2.tso
+# Ed scripts which should complete sucessfully if external filter is available.
+ED_SCRIPTS_OK_EF =							      \
+	ef1.tef ef2.tef ef3.tef
 
 # Ed scripts which should complete sucessfully if file globbing is available.
 ED_SCRIPTS_OK_MF =							      \
@@ -102,6 +107,13 @@ ED_SCRIPTS_OK_MF =							      \
 # Ed scripts which should complete sucessfully if registers are available.
 ED_SCRIPTS_OK_R =							      \
 	rmt1.tr rmt2.tr rmt3.tr
+
+# Ed scripts tested for expected standard output.
+ED_SCRIPTS_OK_SO =							      \
+	p1.tso l1.tso n1.tso						      \
+	zf1.tso zf2.tso zf3.tso zf4.tso zf5.tso zf6.tso zf7.tso		      \
+	zb1.tso zb2.tso zb3.tso zb4.tso	zb5.tso zb6.tso	zb7.tso		      \
+	zfh1.tso zfh2.tso zbh1.tso zbh2.tso
 
 # Ed scripts which should complete sucessfully if macros are available.
 ED_SCRIPTS_OK_XM =							      \
@@ -130,20 +142,22 @@ ED_SCRIPTS_RESULTS_PIPED = $(wildcard *.rr)
 # corresponding autotest template (cf. $(TESTSUITE_AT) rule below).
 AT_SCRIPTS_OK	   = $(ED_SCRIPTS_OK:.t=.ok-at)
 AT_SCRIPTS_OK_CO   = $(ED_SCRIPTS_OK_CO:.tco=.ok-co-at)
-AT_SCRIPTS_OK_SO   = $(ED_SCRIPTS_OK_SO:.tso=.ok-so-at)
+AT_SCRIPTS_OK_EF   = $(ED_SCRIPTS_OK_EF:.tef=.ok-ef-at)
 AT_SCRIPTS_OK_MF   = $(ED_SCRIPTS_OK_MF:.tmf=.ok-mf-at)
 AT_SCRIPTS_OK_R	   = $(ED_SCRIPTS_OK_R:.tr=.ok-r-at)
+AT_SCRIPTS_OK_SO   = $(ED_SCRIPTS_OK_SO:.tso=.ok-so-at)
 AT_SCRIPTS_OK_XM   = $(ED_SCRIPTS_OK_XM:.txm=.ok-xm-at)
 AT_SCRIPTS_ERR	   = $(ED_SCRIPTS_ERR:.err=.err-at)
 AT_SCRIPTS_FAIL	   = $(ED_SCRIPTS_ERR:.err=.fail-at)
 
 # Dynamically generated data.
 AT_SCRIPTS_OK_CO_D = $(ED_SCRIPTS_OK_CO:.tco=.d)
+AT_SCRIPTS_OK_SO_R = $(ED_SCRIPTS_OK_SO:.tso=.r)
 
 EXTRA_DIST =								      \
-	$(AT_PROTO_OK) $(AT_PROTO_OK_CO) $(AT_PROTO_OK_SO).in		      \
-	$(AT_PROTO_OK_MF) $(AT_PROTO_OK_R) $(AT_PROTO_OK_XM)		      \
-	$(AT_PROTO_ERR) $(AT_PROTO_FAIL)				      \
+	$(AT_PROTO_OK) $(AT_PROTO_OK_CO) $(AT_PROTO_OK_EF)		      \
+	$(AT_PROTO_OK_MF) $(AT_PROTO_OK_R) $(AT_PROTO_OK_SO).in		      \
+	$(AT_PROTO_OK_XM) $(AT_PROTO_ERR) $(AT_PROTO_FAIL)		      \
 	$(ED_SCRIPTS_OK) $(ED_SCRIPTS_OK_SO) $(ED_SCRIPTS_OK_MF)	      \
 	$(ED_SCRIPTS_OK_R) $(ED_SCRIPTS_OK_XM)				      \
 	$(ED_SCRIPTS_ERR) $(ED_SCRIPTS_FAIL) $(ED_SCRIPTS_DATA)		      \
@@ -190,17 +204,18 @@ $(TESTSUITE): $(TESTSUITE_AT) $(PACKAGE_M4)
 	$(AUTOTEST) -I $(ED_SCRIPTSdir) "$@".at -o "$@".tmp
 	mv "$@".tmp "$@"
 
-$(TESTSUITE_AT): $(AT_SCRIPTS_OK) $(AT_SCRIPTS_OK_CO) $(AT_SCRIPTS_OK_SO)     \
-		 $(AT_SCRIPTS_OK_MF) $(AT_SCRIPTS_OK_R) $(AT_SCRIPTS_OK_XM)   \
-		 $(AT_SCRIPTS_ERR) $(AT_SCRIPTS_FAIL)
+$(TESTSUITE_AT): $(AT_SCRIPTS_OK) $(AT_SCRIPTS_OK_CO) $(AT_SCRIPTS_OK_EF)     \
+		 $(AT_SCRIPTS_OK_MF) $(AT_SCRIPTS_OK_R) $(AT_SCRIPTS_OK_SO)   \
+		 $(AT_SCRIPTS_OK_XM) $(AT_SCRIPTS_ERR) $(AT_SCRIPTS_FAIL)
 	{								      \
 	  echo 'AT_INIT';						      \
 	  echo 'AT_TESTED([ed])';					      \
 	} >"$@".tmp
 	for scpt in $(AT_SCRIPTS_OK) $(AT_SCRIPTS_OK_CO)		      \
-		    $(AT_SCRIPTS_OK_SO) $(AT_SCRIPTS_OK_MF)		      \
-		     $(AT_SCRIPTS_OK_R)	$(AT_SCRIPTS_OK_XM)		      \
-		    $(AT_SCRIPTS_ERR) $(AT_SCRIPTS_FAIL); do		      \
+		    $(AT_SCRIPTS_OK_EF) $(AT_SCRIPTS_OK_MF)		      \
+		    $(AT_SCRIPTS_OK_R)	$(AT_SCRIPTS_OK_SO)		      \
+		    $(AT_SCRIPTS_OK_XM) $(AT_SCRIPTS_ERR)		      \
+		    $(AT_SCRIPTS_FAIL); do				      \
 	  echo "m4_include([$$scpt])";					      \
 	done >>"$@".tmp
 	mv "$@".tmp "$@"
@@ -217,13 +232,14 @@ $(PACKAGE_M4): $(top_srcdir)/configure.ac
 	mv "$@".tmp "$@"
 
 distclean-local:
-	rm -f atconfig proto.ok-so-at.in
+	rm -f atconfig proto.ok-at.in proto.ok-so-at.in
 
 clean-local:
-	rm -f *.ok-at *.ok-co-at *.ok-so-at *.ok-mf-at *.ok-r-at	     \
-	      *.ok-xm-at *.fail-at *.err-at *.log
+	rm -f *.ok-at *.ok-co-at *.ok-ef-at *.ok-mf-at *.ok-r-at	      \
+	      *.ok-so-at *.ok-xm-at *.fail-at *.err-at *.log
 	rm -rf	*.dir tmpwrk*
-	rm -f $(AT_SCRIPTS_OK_CO_D)
 	rm -f $(PACKAGE_M4) $(TESTSUITE_AT) $(TESTSUITE)
+	rm -f $(AT_SCRIPTS_OK_CO_D) $(AT_SCRIPTS_OK_SO_R)
+
 
 install:

@@ -1,3 +1,3 @@
 E script-e1
-/H/;+d
+/H/;/^E/-d
 wq e1.o
