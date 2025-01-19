@@ -16,6 +16,8 @@ _ATEOF_ED
 AT_SKIP_IF([! ed --version | grep -q 'ed-scroll'])
 AT_CHECK([ed - <script-@SCRIPT_NAME@],
   0, [stdout], [ignore], [], [])
-AT_CHECK([diff -u @SCRIPT_SRC@.r stdout],
+AT_CHECK([test -f @SCRIPT_SRC@.r.zst && @ZSTD@ -fd @SCRIPT_SRC@.r.zst
+  diff -u @SCRIPT_SRC@.r stdout],
   0, [ignore], [ignore], [], [])
+
 AT_CLEANUP()
