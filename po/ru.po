@@ -1,15 +1,15 @@
-# translation of gnulib-2.0.0.3462.e9796.ru.po to Russian
+# Russian translation for gnulib.
 # Copyright (C) 2005, 2010 Free Software Foundation, Inc.
 # This file is distributed under the same license as the gnulib package.
 #
 # Sergey Poznyakoff <gray@gnu.org>, 2003,2004,2005.
-# Yuri Kozlov <yuray@komyakino.ru>, 2010, 2011, 2019.
+# Yuri Kozlov <yuray@komyakino.ru>, 2010, 2011, 2019, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnulib 4.0.0.2567\n"
 "Report-Msgid-Bugs-To: bug-gnulib@gnu.org\n"
-"POT-Creation-Date: 2024-06-25 04:58-0400\n"
-"PO-Revision-Date: 2019-05-21 18:46+0300\n"
+"POT-Creation-Date: 2025-01-20 05:19-0500\n"
+"PO-Revision-Date: 2023-07-07 05:18+0300\n"
 "Last-Translator: Yuri Kozlov <yuray@komyakino.ru>\n"
 "Language-Team: Russian <gnu@d07.ru>\n"
 "Language: ru\n"
@@ -19,7 +19,7 @@ msgstr ""
 "X-Bugs: Report translation errors to the Language-Team address.\n"
 "Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Lokalize 2.0\n"
+"X-Generator: Lokalize 22.12.3\n"
 
 #: lib/getopt.c:282
 #, c-format
@@ -60,7 +60,7 @@ msgstr "%s: для параметра требуется аргумент -- «%
 msgid "Success"
 msgstr "Успешно"
 
-#: lib/regcomp.c:125 src/re.c:273 src/sub.c:427
+#: lib/regcomp.c:125 src/re.c:281 src/sub.c:427
 msgid "No match"
 msgstr "Нет совпадений"
 
@@ -104,9 +104,8 @@ msgstr "Недопустимое содержимое в \\{\\}"
 msgid "Invalid range end"
 msgstr "Неверный конец диапазона"
 
-#: lib/regcomp.c:158 src/aux.c:267 src/buf.c:443 src/buf.c:589 src/glbl.c:171
-#: src/io.c:318 src/page.c:858 src/parse.c:273 src/parse.c:518 src/re.c:157
-#: src/undo.c:26
+#: lib/regcomp.c:158 src/aux.c:269 src/buf.c:444 src/buf.c:591 src/io.c:326
+#: src/page.c:858 src/parse.c:270 src/parse.c:515 src/re.c:157 src/undo.c:26
 msgid "Memory exhausted"
 msgstr "Закончилась память"
 
@@ -130,134 +129,146 @@ msgstr "Непарная ) или \\)"
 msgid "No previous regular expression"
 msgstr "Отсутствует предыдущее регулярное выражение"
 
-#: src/aux.c:25 src/cmds.c:339
+#: src/aux.c:25 src/cmds.c:340
 #, fuzzy
 #| msgid "%s subprocess I/O error"
 msgid "Child process error"
 msgstr "ошибка вв/вывода подпроцесса %s"
 
-#: src/aux.c:40 src/cmds.c:346
+#: src/aux.c:40 src/cmds.c:347 src/io.c:177 src/io.c:708
 #, c-format
 msgid "Exit status: %#x"
 msgstr ""
 
-#: src/aux.c:69
+#: src/aux.c:70
 #, fuzzy
 #| msgid "Bus error"
 msgid "Flush error"
 msgstr "Ошибка шины"
 
-#: src/aux.c:80 src/aux.c:170
+#: src/aux.c:81 src/aux.c:172
 #, fuzzy
 #| msgid "write error"
 msgid "Pipe open error"
 msgstr "ошибка записи"
 
-#: src/aux.c:89 src/aux.c:141 src/cmds.c:318 src/exec.c:1732
+#: src/aux.c:90 src/aux.c:143 src/cmds.c:318 src/exec.c:1739
 #, fuzzy
 #| msgid "program error"
 msgid "Fork error"
 msgstr "программная ошибка"
 
-#: src/aux.c:184
+#: src/aux.c:186
 msgid "Pipe close error"
 msgstr ""
 
-#: src/aux.c:212
+#: src/aux.c:214
 msgid "Exceeded maximum stack frame depth"
 msgstr ""
 
-#: src/aux.c:228 src/aux.c:242 src/aux.c:296 src/aux.c:336 src/aux.c:375
-#: src/io.c:58 src/io.c:602 src/io.c:936 src/io.c:983 src/io.c:1042
-#: src/io.c:1052 src/io.c:1111 src/io.c:1120 src/io.c:1147 src/main.c:230
+#: src/aux.c:230 src/aux.c:244 src/aux.c:306 src/aux.c:346 src/aux.c:385
+#: src/io.c:58 src/io.c:615 src/io.c:963 src/io.c:1010 src/io.c:1069
+#: src/io.c:1079 src/io.c:1138 src/io.c:1147 src/io.c:1174 src/main.c:230
 #: src/main.c:731 src/main.c:793
 #, fuzzy
 #| msgid "write error"
 msgid "File seek error"
 msgstr "ошибка записи"
 
-#: src/aux.c:278 src/aux.c:321 src/aux.c:360 src/buf.c:120
+#: src/aux.c:281
+#, fuzzy
+#| msgid "Bus error"
+msgid "dup error"
+msgstr "Ошибка шины"
+
+#: src/aux.c:288
+#, fuzzy
+#| msgid "Unknown error"
+msgid "fdopen error"
+msgstr "Неизвестная ошибка"
+
+#: src/aux.c:331 src/aux.c:370 src/buf.c:121
 #, fuzzy
 #| msgid "Bus error"
 msgid "dup2 error"
 msgstr "Ошибка шины"
 
-#: src/buf.c:132 src/buf.c:288 src/buf.c:303
+#: src/buf.c:133 src/buf.c:289 src/buf.c:304
 #, fuzzy
 #| msgid "Bus error"
 msgid "Buffer open error"
 msgstr "Ошибка шины"
 
-#: src/buf.c:143 src/buf.c:354 src/buf.c:390
+#: src/buf.c:144 src/buf.c:355 src/buf.c:391
 #, fuzzy
 #| msgid "Bus error"
 msgid "Buffer seek error"
 msgstr "Ошибка шины"
 
-#: src/buf.c:267 src/main.c:559 src/main.c:631
+#: src/buf.c:268 src/main.c:559 src/main.c:631
 msgid "File name too long"
 msgstr ""
 
-#: src/buf.c:268
+#: src/buf.c:269
 #, fuzzy
 #| msgid "Invalid back reference"
 msgid "Invalid buffer name"
 msgstr "Неверная обратная ссылка"
 
-#: src/buf.c:319
+#: src/buf.c:320
 #, fuzzy
 #| msgid "Bus error"
 msgid "Buffer close error"
 msgstr "Ошибка шины"
 
-#: src/buf.c:364
+#: src/buf.c:365
 #, fuzzy
 #| msgid "Bus error"
 msgid "Buffer read error"
 msgstr "Ошибка шины"
 
-#: src/buf.c:404 src/buf.c:434
+#: src/buf.c:405 src/buf.c:435
 msgid "Buffer full"
 msgstr ""
 
-#: src/buf.c:411
+#: src/buf.c:412
 #, fuzzy
 #| msgid "write error"
 msgid "Buffer write error"
 msgstr "ошибка записи"
 
-#: src/buf.c:507 src/exec.c:100 src/exec.c:129 src/exec.c:1879 src/page.c:301
-#: src/parse.c:223
+#: src/buf.c:508 src/exec.c:100 src/exec.c:129 src/exec.c:1886 src/page.c:301
+#: src/parse.c:220
 #, fuzzy
 #| msgid "character out of range"
 msgid "Address out of range"
 msgstr "символ вне допустимого диапазона"
 
-#: src/buf.c:582
+#: src/buf.c:584
 msgid "Memory request too big"
 msgstr ""
 
-#: src/cbc.c:131 src/cbc.c:229 src/cbc.c:234 src/cbc.c:255 src/cbc.c:260
+#: src/cbc.c:130 src/cbc.c:228 src/cbc.c:233 src/cbc.c:254 src/cbc.c:259
 #, fuzzy
 #| msgid "invalid user"
 msgid "Invalid key"
 msgstr "неверный пользователь"
 
-#: src/cbc.c:373
+#: src/cbc.c:372
 msgid "Decryption failed (block corrupted)"
 msgstr ""
 
-#: src/cbc.c:382
+#: src/cbc.c:381
 msgid "Decryption failed (incomplete block)"
 msgstr ""
 
-#: src/cbc.c:384 src/io.c:553 src/io.c:811
+#: src/cbc.c:383 src/io.c:566 src/io.c:838
 #, fuzzy
 #| msgid "write error"
 msgid "File read error"
 msgstr "ошибка записи"
 
-#: src/cmds.c:43 src/exec.c:605 src/io.c:480 src/main.c:366
+#: src/cmds.c:43 src/exec.c:609 src/io.c:488 src/main.c:366
 msgid "End-of-file unexpected"
 msgstr ""
 
@@ -271,14 +282,14 @@ msgstr "Неверное имя класса символов"
 msgid "Unknown error"
 msgstr "Неизвестная ошибка"
 
-#: src/ed.h:769 src/ed.h:804 src/ed.h:839
+#: src/ed.h:773 src/ed.h:808 src/ed.h:843
 #, fuzzy
 #| msgid "character out of range"
 msgid "Numerical result out of range"
 msgstr "символ вне допустимого диапазона"
 
-#: src/exec.c:28 src/exec.c:503 src/exec.c:585 src/exec.c:646 src/exec.c:672
-#: src/exec.c:1024 src/exec.c:1384 src/exec.c:1396 src/exec.c:1404
+#: src/exec.c:28 src/exec.c:503 src/exec.c:589 src/exec.c:653 src/exec.c:679
+#: src/exec.c:1031 src/exec.c:1391 src/exec.c:1403 src/exec.c:1411
 msgid "Command suffix unexpected"
 msgstr ""
 
@@ -290,71 +301,72 @@ msgstr ""
 msgid "Command prefix unexpected"
 msgstr ""
 
-#: src/exec.c:494 src/exec.c:637 src/exec.c:741 src/exec.c:762 src/exec.c:961
-#: src/exec.c:1003 src/exec.c:1348 src/exec.c:1541 src/exec.c:1741
+#: src/exec.c:494 src/exec.c:579 src/exec.c:644 src/exec.c:748 src/exec.c:769
+#: src/exec.c:968 src/exec.c:1010 src/exec.c:1355 src/exec.c:1548
+#: src/exec.c:1748
 msgid "Address unexpected"
 msgstr ""
 
-#: src/exec.c:666
+#: src/exec.c:673
 #, fuzzy
 #| msgid "Invalid regular expression"
 msgid "Invalid redirection"
 msgstr "Неверное регулярное выражение"
 
-#: src/exec.c:703 src/main.c:626
+#: src/exec.c:710 src/main.c:626
 msgid "File name not set"
 msgstr ""
 
-#: src/exec.c:717
+#: src/exec.c:724
 msgid "Recursive global command"
 msgstr ""
 
-#: src/exec.c:772
+#: src/exec.c:779
 #, fuzzy
 #| msgid "No previous regular expression"
 msgid "No previous error"
 msgstr "Отсутствует предыдущее регулярное выражение"
 
-#: src/exec.c:882
+#: src/exec.c:889
 #, fuzzy
 #| msgid "Invalid collation character"
 msgid "Invalid destination address"
 msgstr "Неверный символ сравнения"
 
-#: src/exec.c:923 src/exec.c:1334
+#: src/exec.c:930 src/exec.c:1341
 #, fuzzy
 #| msgid "invalid user"
 msgid "Invalid register"
 msgstr "неверный пользователь"
 
-#: src/exec.c:1179 src/exec.c:1242 src/exec.c:1560 src/exec.c:1619
-#: src/exec.c:1804 src/exec.c:1819
+#: src/exec.c:1186 src/exec.c:1249 src/exec.c:1567 src/exec.c:1626
+#: src/exec.c:1811 src/exec.c:1826
 #, fuzzy
 #| msgid "Unknown error"
 msgid "Unknown command"
 msgstr "Неизвестная ошибка"
 
-#: src/exec.c:1731
+#: src/exec.c:1738
 msgid "Cannot fork shell"
 msgstr ""
 
-#: src/exec.c:1819
+#: src/exec.c:1826
 #, fuzzy
 #| msgid "Invalid regular expression"
 msgid "Invalid address"
 msgstr "Неверное регулярное выражение"
 
-#: src/exec.c:1837
+#: src/exec.c:1844
 msgid "Command too long"
 msgstr ""
 
-#: src/exec.c:1884
+#: src/exec.c:1891
 #, fuzzy
 #| msgid "Invalid range end"
 msgid "Invalid address range"
 msgstr "Неверный конец диапазона"
 
-#: src/glbl.c:132
+#: src/glbl.c:135
 msgid "No previous command"
 msgstr ""
 
@@ -362,64 +374,68 @@ msgstr ""
 msgid "File does not exist"
 msgstr ""
 
-#: src/io.c:97 src/io.c:166 src/io.c:633 src/io.c:682 src/main.c:781
+#: src/io.c:97 src/io.c:168 src/io.c:646 src/io.c:697 src/main.c:781
 #, fuzzy
 #| msgid "write error"
 msgid "File open error"
 msgstr "ошибка записи"
 
-#: src/io.c:120 src/io.c:647
+#: src/io.c:120 src/io.c:660
 #, c-format
 msgid "%s: File already locked\n"
 msgstr ""
 
-#: src/io.c:144 src/io.c:624 src/io.c:662
+#: src/io.c:144 src/io.c:637 src/io.c:675
 msgid "File close error"
 msgstr ""
 
-#: src/io.c:292 src/io.c:428
+#: src/io.c:300 src/io.c:436
 #, c-format
 msgid "Newline inserted\n"
 msgstr ""
 
-#: src/io.c:297 src/io.c:433
+#: src/io.c:305 src/io.c:441
 #, c-format
 msgid "Newline appended\n"
 msgstr ""
 
-#: src/io.c:609 src/io.c:1154
+#: src/io.c:552 src/io.c:791
+msgid "Broken pipe"
+msgstr "Обрыв канала"
+
+#: src/io.c:622 src/io.c:1181
 #, fuzzy
 #| msgid "write error"
 msgid "File truncate error"
 msgstr "ошибка записи"
 
-#: src/io.c:723
+#: src/io.c:744
 msgid "File too big"
 msgstr ""
 
-#: src/io.c:770 src/io.c:790 src/io.c:801 src/main.c:742 src/main.c:750
+#: src/io.c:797 src/io.c:817 src/io.c:828 src/main.c:742 src/main.c:750
 #, fuzzy
 #| msgid "write error"
 msgid "File write error"
 msgstr "ошибка записи"
 
-#: src/io.c:834 src/parse.c:505
+#: src/io.c:861 src/parse.c:502
 #, fuzzy
 #| msgid "Bus error"
 msgid "File status error"
 msgstr "Ошибка шины"
 
-#: src/io.c:841
+#: src/io.c:868
 msgid "Access restricted to regular files"
 msgstr ""
 
-#: src/io.c:910
+#: src/io.c:937
 #, fuzzy
 #| msgid "write error"
 msgid "File stat error"
 msgstr "ошибка записи"
 
-#: src/io.c:1017
+#: src/io.c:1044
 msgid "Cannot append register to itself"
 msgstr ""
 
@@ -441,7 +457,7 @@ msgstr ""
 #, fuzzy
 #| msgid "Argument buffer too small"
 msgid "Argument list full"
-msgstr "Слишком маленький буфер, указанный в аргументе"
+msgstr "Буфер аргументов слишком мал"
 
 #: src/main.c:815
 #, c-format
@@ -524,55 +540,55 @@ msgstr ""
 msgid "script, line %"
 msgstr ""
 
-#: src/parse.c:256 src/parse.c:602
+#: src/parse.c:253 src/parse.c:599
 #, fuzzy
 #| msgid "failed to return to initial working directory"
 msgid "Access restricted to working directory"
 msgstr "не удалось вернуться в первоначальный рабочий каталог"
 
-#: src/parse.c:323
+#: src/parse.c:320
 #, fuzzy
 #| msgid "%s: Too many arguments\n"
 msgid "Too many file names"
 msgstr "%s: слишком много аргументов\n"
 
-#: src/parse.c:338 src/parse.c:351 src/parse.c:378
+#: src/parse.c:335 src/parse.c:348 src/parse.c:375
 #, fuzzy
 #| msgid "named file"
 msgid "No more files"
 msgstr "именованный файл"
 
-#: src/parse.c:446
+#: src/parse.c:443
 msgid "File glob too long"
 msgstr ""
 
-#: src/parse.c:467 src/parse.c:471 src/parse.c:491
+#: src/parse.c:464 src/parse.c:468 src/parse.c:488
 msgid "Pathname expansion error"
 msgstr ""
 
-#: src/parse.c:487
+#: src/parse.c:484
 msgid "No such file or directory"
 msgstr ""
 
-#: src/parse.c:577
+#: src/parse.c:574
 #, fuzzy
 #| msgid "Invalid range end"
 msgid "Invalid file name"
 msgstr "Неверный конец диапазона"
 
-#: src/parse.c:632
+#: src/parse.c:629
 msgid "Brackets ([]) unbalanced"
 msgstr ""
 
-#: src/parse.c:639
+#: src/parse.c:636
 msgid "Backslash (\\) unexpected"
 msgstr ""
 
-#: src/parse.c:696
+#: src/parse.c:693
 msgid "Shell access restricted"
 msgstr ""
 
-#: src/parse.c:760
+#: src/parse.c:757
 #, fuzzy
 #| msgid "No previous regular expression"
 msgid "No previous shell command"
@@ -590,7 +606,7 @@ msgstr "Неверное имя класса символов"
 msgid "No previous pattern"
 msgstr "Отсутствует предыдущее регулярное выражение"
 
-#: src/signal.c:136
+#: src/signal.c:152
 #, fuzzy
 #| msgid "program error"
 msgid "Signal error"
@@ -1069,9 +1085,6 @@ msgstr ""
 
 #~ msgid "Segmentation fault"
 #~ msgstr "Нарушение сегментирования"
-
-#~ msgid "Broken pipe"
-#~ msgstr "Обрыв канала"
 
 #~ msgid "Alarm clock"
 #~ msgstr "Сигнал по таймеру"

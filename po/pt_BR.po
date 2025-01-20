@@ -1,17 +1,18 @@
 # Brazilian Portuguese translations for gnulib package
 # Traduções em português brasileiro para o pacote gnulib
-# Copyright (C) 2019 Free Software Foundation, Inc.
+# Copyright (C) 2024 Free Software Foundation, Inc.
 # This file is distributed under the same license as the gnulib package.
 # Cyro Mendes De Moraes Neto <neto@conectiva.com.br>, 1998.
 # Rodrigo Stulzer Lopes <rodrigo@conectiva.com.br>, 2001.
 # Juan Carlos Castro y Castro <jcastro@vialink.com.br>, 2003.
-# Rafael Fontenelle <rafaelff@gnome.org>, 2013, 2017, 2019.
+# Rafael Fontenelle <rafaelff@gnome.org>, 2013-2024.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: gnulib 4.0.0.2567\n"
+"Project-Id-Version: gnulib 20241209\n"
 "Report-Msgid-Bugs-To: bug-gnulib@gnu.org\n"
-"POT-Creation-Date: 2024-06-25 04:58-0400\n"
-"PO-Revision-Date: 2019-08-28 15:29-0300\n"
+"POT-Creation-Date: 2025-01-20 05:19-0500\n"
+"PO-Revision-Date: 2024-12-11 13:13-0300\n"
 "Last-Translator: Rafael Fontenelle <rafaelff@gnome.org>\n"
 "Language-Team: Brazilian Portuguese <ldpbr-translation@lists.sourceforge."
 "net>\n"
@@ -19,9 +20,9 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Virtaal 1.0.0-beta1\n"
+"Plural-Forms: nplurals=2; plural=(n > 1)\n"
 "X-Bugs: Report translation errors to the Language-Team address.\n"
+"X-Generator: Gtranslator 47.1\n"
 
 #: lib/getopt.c:282
 #, c-format
@@ -64,7 +65,7 @@ msgstr "%s: a opção exige um argumento -- \"%c\"\n"
 msgid "Success"
 msgstr "Sucesso"
 
-#: lib/regcomp.c:125 src/re.c:273 src/sub.c:427
+#: lib/regcomp.c:125 src/re.c:281 src/sub.c:427
 msgid "No match"
 msgstr "Nenhuma ocorrência do padrão"
 
@@ -112,9 +113,8 @@ msgstr "Conteúdo inválido de \\{\\}"
 msgid "Invalid range end"
 msgstr "Fim de intervalo inválido"
 
-#: lib/regcomp.c:158 src/aux.c:267 src/buf.c:443 src/buf.c:589 src/glbl.c:171
-#: src/io.c:318 src/page.c:858 src/parse.c:273 src/parse.c:518 src/re.c:157
-#: src/undo.c:26
+#: lib/regcomp.c:158 src/aux.c:269 src/buf.c:444 src/buf.c:591 src/io.c:326
+#: src/page.c:858 src/parse.c:270 src/parse.c:515 src/re.c:157 src/undo.c:26
 msgid "Memory exhausted"
 msgstr "Memória esgotada"
 
@@ -141,47 +141,47 @@ msgid "No previous regular expression"
 msgstr "Nenhuma expressão regular anterior"
 
 # , c-format
-#: src/aux.c:25 src/cmds.c:339
+#: src/aux.c:25 src/cmds.c:340
 #, fuzzy
 #| msgid "%s subprocess I/O error"
 msgid "Child process error"
 msgstr "erro de E/S no subprocesso %s"
 
-#: src/aux.c:40 src/cmds.c:346
+#: src/aux.c:40 src/cmds.c:347 src/io.c:177 src/io.c:708
 #, c-format
 msgid "Exit status: %#x"
 msgstr ""
 
 # Sinal SIGBUS
-#: src/aux.c:69
+#: src/aux.c:70
 #, fuzzy
 #| msgid "Bus error"
 msgid "Flush error"
 msgstr "Erro de barramento"
 
-#: src/aux.c:80 src/aux.c:170
+#: src/aux.c:81 src/aux.c:172
 #, fuzzy
 #| msgid "write error"
 msgid "Pipe open error"
 msgstr "erro de escrita"
 
-#: src/aux.c:89 src/aux.c:141 src/cmds.c:318 src/exec.c:1732
+#: src/aux.c:90 src/aux.c:143 src/cmds.c:318 src/exec.c:1739
 #, fuzzy
 #| msgid "program error"
 msgid "Fork error"
 msgstr "erro do programa"
 
-#: src/aux.c:184
+#: src/aux.c:186
 msgid "Pipe close error"
 msgstr ""
 
-#: src/aux.c:212
+#: src/aux.c:214
 msgid "Exceeded maximum stack frame depth"
 msgstr ""
 
-#: src/aux.c:228 src/aux.c:242 src/aux.c:296 src/aux.c:336 src/aux.c:375
-#: src/io.c:58 src/io.c:602 src/io.c:936 src/io.c:983 src/io.c:1042
-#: src/io.c:1052 src/io.c:1111 src/io.c:1120 src/io.c:1147 src/main.c:230
+#: src/aux.c:230 src/aux.c:244 src/aux.c:306 src/aux.c:346 src/aux.c:385
+#: src/io.c:58 src/io.c:615 src/io.c:963 src/io.c:1010 src/io.c:1069
+#: src/io.c:1079 src/io.c:1138 src/io.c:1147 src/io.c:1174 src/main.c:230
 #: src/main.c:731 src/main.c:793
 #, fuzzy
 #| msgid "write error"
@@ -189,93 +189,106 @@ msgid "File seek error"
 msgstr "erro de escrita"
 
 # Sinal SIGBUS
-#: src/aux.c:278 src/aux.c:321 src/aux.c:360 src/buf.c:120
+#: src/aux.c:281
+#, fuzzy
+#| msgid "Bus error"
+msgid "dup error"
+msgstr "Erro de barramento"
+
+#: src/aux.c:288
+#, fuzzy
+#| msgid "Unknown error"
+msgid "fdopen error"
+msgstr "Erro desconhecido"
+
+# Sinal SIGBUS
+#: src/aux.c:331 src/aux.c:370 src/buf.c:121
 #, fuzzy
 #| msgid "Bus error"
 msgid "dup2 error"
 msgstr "Erro de barramento"
 
 # Sinal SIGBUS
-#: src/buf.c:132 src/buf.c:288 src/buf.c:303
+#: src/buf.c:133 src/buf.c:289 src/buf.c:304
 #, fuzzy
 #| msgid "Bus error"
 msgid "Buffer open error"
 msgstr "Erro de barramento"
 
 # Sinal SIGBUS
-#: src/buf.c:143 src/buf.c:354 src/buf.c:390
+#: src/buf.c:144 src/buf.c:355 src/buf.c:391
 #, fuzzy
 #| msgid "Bus error"
 msgid "Buffer seek error"
 msgstr "Erro de barramento"
 
-#: src/buf.c:267 src/main.c:559 src/main.c:631
+#: src/buf.c:268 src/main.c:559 src/main.c:631
 msgid "File name too long"
 msgstr ""
 
-#: src/buf.c:268
+#: src/buf.c:269
 #, fuzzy
 #| msgid "Invalid back reference"
 msgid "Invalid buffer name"
 msgstr "Retrorreferência inválida"
 
 # Sinal SIGBUS
-#: src/buf.c:319
+#: src/buf.c:320
 #, fuzzy
 #| msgid "Bus error"
 msgid "Buffer close error"
 msgstr "Erro de barramento"
 
 # Sinal SIGBUS
-#: src/buf.c:364
+#: src/buf.c:365
 #, fuzzy
 #| msgid "Bus error"
 msgid "Buffer read error"
 msgstr "Erro de barramento"
 
-#: src/buf.c:404 src/buf.c:434
+#: src/buf.c:405 src/buf.c:435
 msgid "Buffer full"
 msgstr ""
 
-#: src/buf.c:411
+#: src/buf.c:412
 #, fuzzy
 #| msgid "write error"
 msgid "Buffer write error"
 msgstr "erro de escrita"
 
 # , c-format
-#: src/buf.c:507 src/exec.c:100 src/exec.c:129 src/exec.c:1879 src/page.c:301
-#: src/parse.c:223
+#: src/buf.c:508 src/exec.c:100 src/exec.c:129 src/exec.c:1886 src/page.c:301
+#: src/parse.c:220
 #, fuzzy
 #| msgid "character out of range"
 msgid "Address out of range"
 msgstr "caractere fora do intervalo"
 
-#: src/buf.c:582
+#: src/buf.c:584
 msgid "Memory request too big"
 msgstr ""
 
-#: src/cbc.c:131 src/cbc.c:229 src/cbc.c:234 src/cbc.c:255 src/cbc.c:260
+#: src/cbc.c:130 src/cbc.c:228 src/cbc.c:233 src/cbc.c:254 src/cbc.c:259
 #, fuzzy
-#| msgid "invalid user"
+#| msgid "invalid spec"
 msgid "Invalid key"
-msgstr "usuário inválido"
+msgstr "especificação inválida"
 
-#: src/cbc.c:373
+#: src/cbc.c:372
 msgid "Decryption failed (block corrupted)"
 msgstr ""
 
-#: src/cbc.c:382
+#: src/cbc.c:381
 msgid "Decryption failed (incomplete block)"
 msgstr ""
 
-#: src/cbc.c:384 src/io.c:553 src/io.c:811
+#: src/cbc.c:383 src/io.c:566 src/io.c:838
 #, fuzzy
 #| msgid "write error"
 msgid "File read error"
 msgstr "erro de escrita"
 
-#: src/cmds.c:43 src/exec.c:605 src/io.c:480 src/main.c:366
+#: src/cmds.c:43 src/exec.c:609 src/io.c:488 src/main.c:366
 msgid "End-of-file unexpected"
 msgstr ""
 
@@ -291,14 +304,14 @@ msgid "Unknown error"
 msgstr "Erro desconhecido"
 
 # , c-format
-#: src/ed.h:769 src/ed.h:804 src/ed.h:839
+#: src/ed.h:773 src/ed.h:808 src/ed.h:843
 #, fuzzy
 #| msgid "character out of range"
 msgid "Numerical result out of range"
 msgstr "caractere fora do intervalo"
 
-#: src/exec.c:28 src/exec.c:503 src/exec.c:585 src/exec.c:646 src/exec.c:672
-#: src/exec.c:1024 src/exec.c:1384 src/exec.c:1396 src/exec.c:1404
+#: src/exec.c:28 src/exec.c:503 src/exec.c:589 src/exec.c:653 src/exec.c:679
+#: src/exec.c:1031 src/exec.c:1391 src/exec.c:1403 src/exec.c:1411
 msgid "Command suffix unexpected"
 msgstr ""
 
@@ -310,75 +323,76 @@ msgstr ""
 msgid "Command prefix unexpected"
 msgstr ""
 
-#: src/exec.c:494 src/exec.c:637 src/exec.c:741 src/exec.c:762 src/exec.c:961
-#: src/exec.c:1003 src/exec.c:1348 src/exec.c:1541 src/exec.c:1741
+#: src/exec.c:494 src/exec.c:579 src/exec.c:644 src/exec.c:748 src/exec.c:769
+#: src/exec.c:968 src/exec.c:1010 src/exec.c:1355 src/exec.c:1548
+#: src/exec.c:1748
 msgid "Address unexpected"
 msgstr ""
 
 # , c-format
-#: src/exec.c:666
+#: src/exec.c:673
 #, fuzzy
 #| msgid "Invalid regular expression"
 msgid "Invalid redirection"
 msgstr "Expressão regular inválida"
 
-#: src/exec.c:703 src/main.c:626
+#: src/exec.c:710 src/main.c:626
 msgid "File name not set"
 msgstr ""
 
-#: src/exec.c:717
+#: src/exec.c:724
 msgid "Recursive global command"
 msgstr ""
 
-#: src/exec.c:772
+#: src/exec.c:779
 #, fuzzy
 #| msgid "No previous regular expression"
 msgid "No previous error"
 msgstr "Nenhuma expressão regular anterior"
 
 # , c-format
-#: src/exec.c:882
+#: src/exec.c:889
 #, fuzzy
 #| msgid "Invalid collation character"
 msgid "Invalid destination address"
 msgstr "Caractere de combinação inválido"
 
-#: src/exec.c:923 src/exec.c:1334
+#: src/exec.c:930 src/exec.c:1341
 #, fuzzy
 #| msgid "invalid user"
 msgid "Invalid register"
 msgstr "usuário inválido"
 
-#: src/exec.c:1179 src/exec.c:1242 src/exec.c:1560 src/exec.c:1619
-#: src/exec.c:1804 src/exec.c:1819
+#: src/exec.c:1186 src/exec.c:1249 src/exec.c:1567 src/exec.c:1626
+#: src/exec.c:1811 src/exec.c:1826
 #, fuzzy
 #| msgid "Unknown error"
 msgid "Unknown command"
 msgstr "Erro desconhecido"
 
-#: src/exec.c:1731
+#: src/exec.c:1738
 msgid "Cannot fork shell"
 msgstr ""
 
 # , c-format
-#: src/exec.c:1819
+#: src/exec.c:1826
 #, fuzzy
 #| msgid "Invalid regular expression"
 msgid "Invalid address"
 msgstr "Expressão regular inválida"
 
-#: src/exec.c:1837
+#: src/exec.c:1844
 msgid "Command too long"
 msgstr ""
 
 # , c-format
-#: src/exec.c:1884
+#: src/exec.c:1891
 #, fuzzy
 #| msgid "Invalid range end"
 msgid "Invalid address range"
 msgstr "Fim de intervalo inválido"
 
-#: src/glbl.c:132
+#: src/glbl.c:135
 msgid "No previous command"
 msgstr ""
 
@@ -386,65 +400,70 @@ msgstr ""
 msgid "File does not exist"
 msgstr ""
 
-#: src/io.c:97 src/io.c:166 src/io.c:633 src/io.c:682 src/main.c:781
+#: src/io.c:97 src/io.c:168 src/io.c:646 src/io.c:697 src/main.c:781
 #, fuzzy
 #| msgid "write error"
 msgid "File open error"
 msgstr "erro de escrita"
 
-#: src/io.c:120 src/io.c:647
+#: src/io.c:120 src/io.c:660
 #, c-format
 msgid "%s: File already locked\n"
 msgstr ""
 
-#: src/io.c:144 src/io.c:624 src/io.c:662
+#: src/io.c:144 src/io.c:637 src/io.c:675
 msgid "File close error"
 msgstr ""
 
-#: src/io.c:292 src/io.c:428
+#: src/io.c:300 src/io.c:436
 #, c-format
 msgid "Newline inserted\n"
 msgstr ""
 
-#: src/io.c:297 src/io.c:433
+#: src/io.c:305 src/io.c:441
 #, c-format
 msgid "Newline appended\n"
 msgstr ""
 
-#: src/io.c:609 src/io.c:1154
+# Sinal SIGPIPE
+#: src/io.c:552 src/io.c:791
+msgid "Broken pipe"
+msgstr "Conexão interrompida"
+
+#: src/io.c:622 src/io.c:1181
 #, fuzzy
 #| msgid "write error"
 msgid "File truncate error"
 msgstr "erro de escrita"
 
-#: src/io.c:723
+#: src/io.c:744
 msgid "File too big"
 msgstr ""
 
-#: src/io.c:770 src/io.c:790 src/io.c:801 src/main.c:742 src/main.c:750
+#: src/io.c:797 src/io.c:817 src/io.c:828 src/main.c:742 src/main.c:750
 #, fuzzy
 #| msgid "write error"
 msgid "File write error"
 msgstr "erro de escrita"
 
 # Sinal SIGBUS
-#: src/io.c:834 src/parse.c:505
+#: src/io.c:861 src/parse.c:502
 #, fuzzy
 #| msgid "Bus error"
 msgid "File status error"
 msgstr "Erro de barramento"
 
-#: src/io.c:841
+#: src/io.c:868
 msgid "Access restricted to regular files"
 msgstr ""
 
-#: src/io.c:910
+#: src/io.c:937
 #, fuzzy
 #| msgid "write error"
 msgid "File stat error"
 msgstr "erro de escrita"
 
-#: src/io.c:1017
+#: src/io.c:1044
 msgid "Cannot append register to itself"
 msgstr ""
 
@@ -551,59 +570,59 @@ msgid "script, line %"
 msgstr ""
 
 # , c-format
-#: src/parse.c:256 src/parse.c:602
+#: src/parse.c:253 src/parse.c:599
 #, fuzzy
 #| msgid "failed to return to initial working directory"
 msgid "Access restricted to working directory"
 msgstr "falha em retornar ao diretório de trabalho inicial"
 
-#: src/parse.c:323
+#: src/parse.c:320
 #, fuzzy
 #| msgid "%s: Too many arguments\n"
 msgid "Too many file names"
 msgstr "%s: Número excessivo de argumentos\n"
 
-#: src/parse.c:338 src/parse.c:351 src/parse.c:378
+#: src/parse.c:335 src/parse.c:348 src/parse.c:375
 #, fuzzy
 #| msgid "named file"
 msgid "No more files"
 msgstr "arquivo nomeado"
 
-#: src/parse.c:446
+#: src/parse.c:443
 msgid "File glob too long"
 msgstr ""
 
-#: src/parse.c:467 src/parse.c:471 src/parse.c:491
+#: src/parse.c:464 src/parse.c:468 src/parse.c:488
 msgid "Pathname expansion error"
 msgstr ""
 
 # , c-format
-#: src/parse.c:487
+#: src/parse.c:484
 #, fuzzy
 #| msgid "cannot chdir to directory %s"
 msgid "No such file or directory"
 msgstr "impossível mudar para diretório %s"
 
 # , c-format
-#: src/parse.c:577
+#: src/parse.c:574
 #, fuzzy
 #| msgid "Invalid range end"
 msgid "Invalid file name"
 msgstr "Fim de intervalo inválido"
 
-#: src/parse.c:632
+#: src/parse.c:629
 msgid "Brackets ([]) unbalanced"
 msgstr ""
 
-#: src/parse.c:639
+#: src/parse.c:636
 msgid "Backslash (\\) unexpected"
 msgstr ""
 
-#: src/parse.c:696
+#: src/parse.c:693
 msgid "Shell access restricted"
 msgstr ""
 
-#: src/parse.c:760
+#: src/parse.c:757
 #, fuzzy
 #| msgid "No previous regular expression"
 msgid "No previous shell command"
@@ -622,7 +641,7 @@ msgstr "Nome inválido de classe de caracteres"
 msgid "No previous pattern"
 msgstr "Nenhuma expressão regular anterior"
 
-#: src/signal.c:136
+#: src/signal.c:152
 #, fuzzy
 #| msgid "program error"
 msgid "Signal error"
@@ -750,34 +769,28 @@ msgstr ""
 #~ msgid "%u bitset_lists\n"
 #~ msgstr "%u bitset_lists\n"
 
-#~ msgid "count log histogram\n"
-#~ msgstr "histograma de log de contagem\n"
+#~ msgid "count log histogram"
+#~ msgstr "histograma de log de contagem"
 
-#~ msgid "size log histogram\n"
-#~ msgstr "histograma de log de tamanho\n"
+#~ msgid "size log histogram"
+#~ msgstr "histograma de log de tamanho"
 
-#~ msgid "density histogram\n"
-#~ msgstr "histograma de densidade\n"
+#~ msgid "density histogram"
+#~ msgstr "histograma de densidade"
 
-#, c-format
-#~ msgid ""
-#~ "Bitset statistics:\n"
-#~ "\n"
-#~ msgstr ""
-#~ "Estatística de bitset:\n"
-#~ "\n"
+#~ msgid "Bitset statistics:"
+#~ msgstr "Estatística de bitset:"
 
 #, c-format
-#~ msgid "Accumulated runs = %u\n"
-#~ msgstr "Execuções acumuladas = %u\n"
+#~ msgid "Accumulated runs = %u"
+#~ msgstr "Execuções acumuladas = %u"
 
 # , c-format
 #~ msgid "cannot read stats file"
 #~ msgstr "não foi possível ler o arquivo de estado"
 
-#, c-format
-#~ msgid "bad stats file size\n"
-#~ msgstr "tamanho inválido de arquivo de estado\n"
+#~ msgid "bad stats file size"
+#~ msgstr "tamanho inválido de arquivo de estado"
 
 # , c-format
 #~ msgid "cannot write stats file"
@@ -785,103 +798,6 @@ msgstr ""
 
 #~ msgid "cannot open stats file for writing"
 #~ msgstr "não foi possível abrir o arquivo de estado para escrita"
-
-#~ msgid "stack overflow"
-#~ msgstr "estouro de pilha"
-
-#~ msgid "cannot find a temporary directory, try setting $TMPDIR"
-#~ msgstr ""
-#~ "não foi possível localizar um diretório temporário, tente definir $TMPDIR"
-
-# , c-format
-#, c-format
-#~ msgid "cannot create a temporary directory using template \"%s\""
-#~ msgstr ""
-#~ "não foi possível criar um diretório temporário usando o modelo \"%s\""
-
-# , c-format
-#, c-format
-#~ msgid "cannot remove temporary file %s"
-#~ msgstr "não foi possível remover o arquivo temporário %s"
-
-# , c-format
-#, c-format
-#~ msgid "cannot remove temporary directory %s"
-#~ msgstr "não foi possível remover o diretório temporário %s"
-
-#~ msgid "error closing file"
-#~ msgstr "erro ao fechar o arquivo"
-
-# , c-format
-#, c-format
-#~ msgid "preserving permissions for %s"
-#~ msgstr "preservando permissões de %s"
-
-#, c-format
-#~ msgid "error while opening %s for reading"
-#~ msgstr "erro ao abrir %s para leitura"
-
-#, c-format
-#~ msgid "cannot open backup file %s for writing"
-#~ msgstr "não foi possível abrir o arquivo backup %s para escrita"
-
-# , c-format
-#, c-format
-#~ msgid "error reading %s"
-#~ msgstr "erro ao ler %s"
-
-# , c-format
-#, c-format
-#~ msgid "error writing %s"
-#~ msgstr "erro ao escrever %s"
-
-# , c-format
-#, c-format
-#~ msgid "error after reading %s"
-#~ msgstr "erro após leitura de %s"
-
-#~ msgid "fdopen() failed"
-#~ msgstr "fdopen() falhou"
-
-#~ msgid "C# compiler not found, try installing mono"
-#~ msgstr "O compilador C# não foi localizado, tente instalar mono"
-
-#~ msgid "C# virtual machine not found, try installing mono"
-#~ msgstr "A máquina virtual C# não foi localizada, tente instalar mono"
-
-#~ msgid "unbalanced ["
-#~ msgstr "[ não balanceado"
-
-# , c-format
-#~ msgid "invalid character class"
-#~ msgstr "classe de caracteres inválida"
-
-#~ msgid "character class syntax is [[:space:]], not [:space:]"
-#~ msgstr "a sintaxe da classe de caracteres é [[:space:]], não [:space:]"
-
-#~ msgid "unfinished \\ escape"
-#~ msgstr "escape \\ não finalizado"
-
-#~ msgid "invalid content of \\{\\}"
-#~ msgstr "conteúdo inválido de \\{\\}"
-
-# , c-format
-#~ msgid "regular expression too big"
-#~ msgstr "expressão regular grande demais"
-
-#~ msgid "unbalanced ("
-#~ msgstr "( não balanceado"
-
-#~ msgid "no syntax specified"
-#~ msgstr "nenhuma sintaxe especificada"
-
-#~ msgid "unbalanced )"
-#~ msgstr ") não balanceado"
-
-# , c-format
-#, c-format
-#~ msgid "%s subprocess failed"
-#~ msgstr "subprocesso %s falhou"
 
 #~ msgid "regular empty file"
 #~ msgstr "arquivo comum vazio"
@@ -916,7 +832,8 @@ msgstr ""
 #~ msgid "contiguous data"
 #~ msgstr "dados contíguos"
 
-# first-in, first-out; abreviação muito usada no meio computacional em português -- Rafael
+# first-in, first-out; abreviação muito usada no meio computacional em
+# português -- Rafael
 #~ msgid "fifo"
 #~ msgstr "fifo"
 
@@ -954,6 +871,166 @@ msgstr ""
 
 #~ msgid "weird file"
 #~ msgstr "arquivo estranho"
+
+#~ msgid "stack overflow"
+#~ msgstr "estouro de pilha"
+
+# , c-format
+#, c-format
+#~ msgid "cannot remove temporary file %s"
+#~ msgstr "não foi possível remover o arquivo temporário %s"
+
+#, c-format
+#~ msgid "cannot find a temporary directory, try setting $TMPDIR"
+#~ msgstr ""
+#~ "não foi possível localizar um diretório temporário, tente definir $TMPDIR"
+
+# , c-format
+#, c-format
+#~ msgid "cannot create a temporary directory using template \"%s\""
+#~ msgstr ""
+#~ "não foi possível criar um diretório temporário usando o modelo \"%s\""
+
+# , c-format
+#, c-format
+#~ msgid "cannot remove temporary directory %s"
+#~ msgstr "não foi possível remover o diretório temporário %s"
+
+#~ msgid "error closing file"
+#~ msgstr "erro ao fechar o arquivo"
+
+# , c-format
+#, c-format
+#~ msgid "preserving permissions for %s"
+#~ msgstr "preservando permissões de %s"
+
+#, c-format
+#~ msgid "error while opening %s for reading"
+#~ msgstr "erro ao abrir %s para leitura"
+
+#, c-format
+#~ msgid "cannot open backup file %s for writing"
+#~ msgstr "não foi possível abrir o arquivo backup %s para escrita"
+
+# , c-format
+#, c-format
+#~ msgid "error reading %s"
+#~ msgstr "erro ao ler %s"
+
+# , c-format
+#, c-format
+#~ msgid "error writing %s"
+#~ msgstr "erro ao escrever %s"
+
+# , c-format
+#, c-format
+#~ msgid "error after reading %s"
+#~ msgstr "erro após leitura de %s"
+
+#, c-format
+#~ msgid "fdopen() failed"
+#~ msgstr "fdopen() falhou"
+
+# , c-format
+#, c-format
+#~ msgid "%s subprocess failed"
+#~ msgstr "subprocesso %s falhou"
+
+#, c-format
+#~ msgid "C# compiler not found, try installing mono or dotnet"
+#~ msgstr "O compilador C# não foi localizado, tente instalar mono ou dotnet"
+
+#, c-format
+#~ msgid "failed to copy '%s' to '%s'"
+#~ msgstr "falha ao copiar \"%s\" para \"%s\""
+
+#, c-format
+#~ msgid "could not determine %s version"
+#~ msgstr "não foi possível determinar a versão de %s"
+
+#, c-format
+#~ msgid "failed to create \"%s\""
+#~ msgstr "falha ao criar \"%s\""
+
+# , c-format
+#, c-format
+#~ msgid "error while writing \"%s\" file"
+#~ msgstr "erro ao escrever o arquivo \"%s\""
+
+#, c-format
+#~ msgid "C# virtual machine not found, try installing mono or dotnet"
+#~ msgstr ""
+#~ "a máquina virtual C# não foi localizada, tente instalar mono ou dotnet"
+
+#, c-format
+#~ msgid "cannot convert file name '%s' to Windows syntax"
+#~ msgstr ""
+#~ "não foi possível converter o nome de arquivo \"%s\" para a sintaxe Windows"
+
+#, c-format
+#~ msgid "cygwin_conv_path failed"
+#~ msgstr "cygwin_conv_path falhou"
+
+#, c-format
+#~ msgid "%s invocation failed"
+#~ msgstr "invocação de %s falhou"
+
+#~ msgid "unbalanced ["
+#~ msgstr "[ não balanceado"
+
+# , c-format
+#~ msgid "invalid character class"
+#~ msgstr "classe de caracteres inválida"
+
+#~ msgid "character class syntax is [[:space:]], not [:space:]"
+#~ msgstr "a sintaxe da classe de caracteres é [[:space:]], não [:space:]"
+
+#~ msgid "unfinished \\ escape"
+#~ msgstr "escape \\ não finalizado"
+
+# , c-format
+#~ msgid "? at start of expression"
+#~ msgstr "? no início da expressão"
+
+# , c-format
+#~ msgid "* at start of expression"
+#~ msgstr "* no início da expressão"
+
+# , c-format
+#~ msgid "+ at start of expression"
+#~ msgstr "+ no início da expressão"
+
+#~ msgid "{...} at start of expression"
+#~ msgstr "{...} no início da expressão"
+
+#~ msgid "invalid content of \\{\\}"
+#~ msgstr "conteúdo inválido de \\{\\}"
+
+# , c-format
+#~ msgid "regular expression too big"
+#~ msgstr "expressão regular grande demais"
+
+#~ msgid "stray \\ before unprintable character"
+#~ msgstr "\\ perdida antes de caractere não imprimível"
+
+#~ msgid "stray \\ before white space"
+#~ msgstr "\\ perdida antes de espaço"
+
+#, c-format
+#~ msgid "stray \\ before %s"
+#~ msgstr "\\ perdida antes de %s"
+
+#~ msgid "stray \\"
+#~ msgstr "\\ perdida"
+
+#~ msgid "unbalanced ("
+#~ msgstr "( não balanceado"
+
+#~ msgid "no syntax specified"
+#~ msgstr "nenhuma sintaxe especificada"
+
+#~ msgid "unbalanced )"
+#~ msgstr ") não balanceado"
 
 #~ msgid "Address family for hostname not supported"
 #~ msgstr "Não há suporte para família de endereços para nome de máquina"
@@ -1006,30 +1083,32 @@ msgstr ""
 #~ msgid "Parameter string not correctly encoded"
 #~ msgstr "Texto do parâmetro codificado incorretamente"
 
+#, c-format
+#~ msgid ""
+#~ "The java program is too old. Cannot compile Java code for this old "
+#~ "version any more."
+#~ msgstr ""
+#~ "O programa java é antigo demais. Não é possível compilar código Java para "
+#~ "esta versão antiga mais."
+
+#, c-format
 #~ msgid "invalid source_version argument to compile_java_class"
 #~ msgstr "argumento source_version inválido para compile_java_class"
 
+#, c-format
 #~ msgid "invalid target_version argument to compile_java_class"
 #~ msgstr "argumento target_version inválido para compile_java_class"
 
 #, c-format
-#~ msgid "failed to create \"%s\""
-#~ msgstr "falha ao criar \"%s\""
+#~ msgid "Java compiler not found, try setting $JAVAC"
+#~ msgstr ""
+#~ "o compilador Java não foi localizado, tente instalar gcj ou definir $JAVAC"
 
-# , c-format
 #, c-format
-#~ msgid "error while writing \"%s\" file"
-#~ msgstr "erro ao escrever o arquivo \"%s\""
-
-#~ msgid "Java compiler not found, try installing gcj or set $JAVAC"
+#~ msgid "Java virtual machine not found, try setting $JAVA"
 #~ msgstr ""
-#~ "O compilador de Java não foi localizado, tente instalar gcj ou definir "
-#~ "$JAVAC"
-
-#~ msgid "Java virtual machine not found, try installing gij or set $JAVA"
-#~ msgstr ""
-#~ "A máquina virtual de Java não foi localizada, tente instalar gij ou "
-#~ "definir $JAVA"
+#~ "a máquina virtual Java não foi localizada, tente instalar gij ou definir "
+#~ "$JAVA"
 
 # , c-format
 #, c-format
@@ -1046,17 +1125,312 @@ msgstr ""
 #~ msgid "cannot create directory %s"
 #~ msgstr "não foi possível criar o diretório %s"
 
+#, c-format
 #~ msgid "memory exhausted"
 #~ msgstr "memória esgotada"
 
 # , c-format
+#, c-format
 #~ msgid "unable to record current working directory"
 #~ msgstr "não foi possível registrar o diretório de trabalho atual"
 
+#, c-format
+#~ msgid "_open_osfhandle failed"
+#~ msgstr "_open_osfhandle falhou"
+
+#, c-format
+#~ msgid "cannot restore fd %d: dup2 failed"
+#~ msgstr "não foi possível restaurar descritor de arquivo %d: dup2 falhou"
+
 # , c-format
+#, c-format
 #~ msgid "Failed to open /dev/zero for read"
 #~ msgstr "Falha ao abrir /dev/zero para leitura"
 
+#, c-format
+#~ msgid "parsed %s part: "
+#~ msgstr "analisada parte de %s: "
+
+#, c-format
+#~ msgid "year: %04<PRIdMAX>"
+#~ msgstr "ano: %04<PRIdMAX>"
+
+#, c-format
+#~ msgid "%s (day ordinal=%<PRIdMAX> number=%d)"
+#~ msgstr "%s (dia ordinal=%<PRIdMAX> número=%d)"
+
+#, c-format
+#~ msgid "number of seconds: %<PRIdMAX>"
+#~ msgstr "número de segundos: %<PRIdMAX>"
+
+#~ msgid "today/this/now\n"
+#~ msgstr "hoje/isso/agora\n"
+
+#~ msgid "number of seconds"
+#~ msgstr "número de segundos"
+
+#~ msgid "datetime"
+#~ msgstr "datetime"
+
+#~ msgid "time"
+#~ msgstr "horário"
+
+#~ msgid "local_zone"
+#~ msgstr "zona local"
+
+#~ msgid "zone"
+#~ msgstr "zona"
+
+#~ msgid "date"
+#~ msgstr "data"
+
+#~ msgid "day"
+#~ msgstr "dia"
+
+#~ msgid "relative"
+#~ msgstr "relativa"
+
+#~ msgid "number"
+#~ msgstr "número"
+
+#~ msgid "hybrid"
+#~ msgstr "híbrida"
+
+#, c-format
+#~ msgid ""
+#~ "warning: value %<PRIdMAX> has %<PRIdMAX> digits. Assuming YYYY/MM/DD\n"
+#~ msgstr ""
+#~ "aviso: o valor %<PRIdMAX> tem %<PRIdMAX> dígitos. Presumindo AAAA/MM/DD\n"
+
+#, c-format
+#~ msgid ""
+#~ "warning: value %<PRIdMAX> has less than 4 digits. Assuming MM/DD/YY[YY]\n"
+#~ msgstr ""
+#~ "aviso: o valor %<PRIdMAX> tem menos de 4 dígitos. Presumindo MM/DD/"
+#~ "AA[AA]\n"
+
+#, c-format
+#~ msgid "warning: adjusting year value %<PRIdMAX> to %<PRIdMAX>\n"
+#~ msgstr "aviso: ajustando o valor de ano %<PRIdMAX> para %<PRIdMAX>\n"
+
+#, c-format
+#~ msgid "error: out-of-range year %<PRIdMAX>\n"
+#~ msgstr "erro: ano %<PRIdMAX> fora do intervalo\n"
+
+#, c-format
+#~ msgid "error: unknown word '%s'\n"
+#~ msgstr "erro: palavra desconhecida \"%s\"\n"
+
+#~ msgid "error: invalid date/time value:\n"
+#~ msgstr "erro: valor de data/horário inválido:\n"
+
+#, c-format
+#~ msgid "    user provided time: '%s'\n"
+#~ msgstr "    horário fornecido pelo usuário: \"%s\"\n"
+
+#, c-format
+#~ msgid "       normalized time: '%s'\n"
+#~ msgstr "       horário normalizado: \"%s\"\n"
+
+#~ msgid "     possible reasons:\n"
+#~ msgstr "     motivos possíveis:\n"
+
+#~ msgid "       nonexistent due to daylight-saving time;\n"
+#~ msgstr "       não existente por causa do horário de verão;\n"
+
+#~ msgid "       invalid day/month combination;\n"
+#~ msgstr "       combinação de dia/mês inválida;\n"
+
+#~ msgid "       numeric values overflow;\n"
+#~ msgstr "       estouro de valores numéricos;\n"
+
+#~ msgid "incorrect timezone"
+#~ msgstr "fuso horário incorreto"
+
+#~ msgid "missing timezone"
+#~ msgstr "faltando fuso horário"
+
+# , c-format
+#~ msgid "error: initial year out of range\n"
+#~ msgstr "erro: ano inicial fora do intervalo\n"
+
+#~ msgid "error: parsing failed\n"
+#~ msgstr "erro: análise falhou\n"
+
+#, c-format
+#~ msgid "error: parsing failed, stopped at '%s'\n"
+#~ msgstr "erro: análise falhou, parou em \"%s\"\n"
+
+#~ msgid "input timezone: "
+#~ msgstr "fuso horário de entrada: "
+
+#, c-format
+#~ msgid "'@timespec' - always UTC"
+#~ msgstr "\"@timespec\" - sempre UTC"
+
+#, c-format
+#~ msgid "parsed date/time string"
+#~ msgstr "string de data/horário analisada"
+
+#, c-format
+#~ msgid "TZ=\"%s\" in date string"
+#~ msgstr "TZ=\"%s\" em string de data"
+
+#, c-format
+#~ msgid "TZ=\"UTC0\" environment value or -u"
+#~ msgstr "valor de ambiente TZ=\"UTC0\" ou -u"
+
+#, c-format
+#~ msgid "TZ=\"%s\" environment value"
+#~ msgstr "valor de ambiente TZ=\"%s\""
+
+#, c-format
+#~ msgid "system default"
+#~ msgstr "padrão do sistema"
+
+#~ msgid "error: year, month, or day overflow\n"
+#~ msgstr "erro: estouro de ano, mês ou dia\n"
+
+#, c-format
+#~ msgid "error: invalid hour %<PRIdMAX>%s\n"
+#~ msgstr "erro: hora %<PRIdMAX>%s inválido\n"
+
+#, c-format
+#~ msgid "using specified time as starting value: '%s'\n"
+#~ msgstr "usando horário especificado como valor inicial: \"%s\"\n"
+
+#, c-format
+#~ msgid "using current time as starting value: '%s'\n"
+#~ msgstr "usando horário atual como valor inicial: \"%s\"\n"
+
+#, c-format
+#~ msgid "error: tzalloc (\"%s\") failed\n"
+#~ msgstr "erro: tzalloc (\"%s\") falhou\n"
+
+#, c-format
+#~ msgid ""
+#~ "error: day '%s' (day ordinal=%<PRIdMAX> number=%d) resulted in an invalid "
+#~ "date: '%s'\n"
+#~ msgstr ""
+#~ "erro: o dia \"%s\" (dia ordinal=%<PRIdMAX> número=%d) resultou em uma "
+#~ "data inválida: \"%s\"\n"
+
+#, c-format
+#~ msgid "new start date: '%s' is '%s'\n"
+#~ msgstr "nova data inicial: \"%s\" é \"%s\"\n"
+
+#, c-format
+#~ msgid "using current date as starting value: '%s'\n"
+#~ msgstr "usando data atual como valor inicial: \"%s\"\n"
+
+#, c-format
+#~ msgid "warning: day (%s) ignored when explicit dates are given\n"
+#~ msgstr "aviso: dia (%s) ignorado quando datas explícitas são dadas\n"
+
+#, c-format
+#~ msgid "starting date/time: '%s'\n"
+#~ msgstr "data/horário inicial: \"%s\"\n"
+
+#~ msgid ""
+#~ "warning: when adding relative months/years, it is recommended to specify "
+#~ "the 15th of the months\n"
+#~ msgstr ""
+#~ "aviso: ao adicionar meses/anos relativos, é recomendado especificar o 15º "
+#~ "dos meses\n"
+
+#~ msgid ""
+#~ "warning: when adding relative days, it is recommended to specify noon\n"
+#~ msgstr ""
+#~ "aviso: ao adicionar dias relativos, é recomendado especificar meio-dia\n"
+
+#, c-format
+#~ msgid "error: %s:%d\n"
+#~ msgstr "erro: %s:%d\n"
+
+#, c-format
+#~ msgid "error: adding relative date resulted in an invalid date: '%s'\n"
+#~ msgstr ""
+#~ "erro: a adição de data relativa resultou em uma data inválida: \"%s\"\n"
+
+#, c-format
+#~ msgid ""
+#~ "after date adjustment (%+<PRIdMAX> years, %+<PRIdMAX> months, %+<PRIdMAX> "
+#~ "days),\n"
+#~ msgstr ""
+#~ "após o ajuste de data (%+<PRIdMAX> anos, %+<PRIdMAX> meses, %+<PRIdMAX> "
+#~ "dias),\n"
+
+#, c-format
+#~ msgid "    new date/time = '%s'\n"
+#~ msgstr "    nova/o data/horário = \"%s\"\n"
+
+#~ msgid "warning: daylight saving time changed after date adjustment\n"
+#~ msgstr "aviso: horário de verão alterado após o ajuste da data\n"
+
+#~ msgid "warning: month/year adjustment resulted in shifted dates:\n"
+#~ msgstr "aviso: o ajuste de mês/ano resultou em datas deslocadas:\n"
+
+#, c-format
+#~ msgid "     adjusted Y M D: %s %02d %02d\n"
+#~ msgstr "      A M D ajustados: %s %02d %02d\n"
+
+#, c-format
+#~ msgid "   normalized Y M D: %s %02d %02d\n"
+#~ msgstr "   A M D normalizados: %s %02d %02d\n"
+
+#, c-format
+#~ msgid "error: timezone %d caused time_t overflow\n"
+#~ msgstr "erro: fuso horário %d causou estouro em time_t\n"
+
+#, c-format
+#~ msgid "'%s' = %<PRIdMAX> epoch-seconds\n"
+#~ msgstr "\"%s\" = %<PRIdMAX> segundos desde o epoch\n"
+
+#~ msgid "error: adding relative time caused an overflow\n"
+#~ msgstr "erro: a adição de horário relativo causou um estouro\n"
+
+#, c-format
+#~ msgid ""
+#~ "after time adjustment (%+<PRIdMAX> hours, %+<PRIdMAX> minutes, "
+#~ "%+<PRIdMAX> seconds, %+d ns),\n"
+#~ msgstr ""
+#~ "após o ajuste de horário (%+<PRIdMAX> horas, %+<PRIdMAX> minutos, "
+#~ "%+<PRIdMAX> segundos, %+d ns),\n"
+
+#, c-format
+#~ msgid "    new time = %<PRIdMAX> epoch-seconds\n"
+#~ msgstr "    novo horário = %<PRIdMAX> segundos desde o epoch\n"
+
+#~ msgid "warning: daylight saving time changed after time adjustment\n"
+#~ msgstr "aviso: horário de verão alterado após o ajuste do horário\n"
+
+#~ msgid "timezone: system default\n"
+#~ msgstr "fuso horário: padrão do sistema\n"
+
+#~ msgid "timezone: Universal Time\n"
+#~ msgstr "fuso horário: Tempo Universal\n"
+
+#, c-format
+#~ msgid "timezone: TZ=\"%s\" environment value\n"
+#~ msgstr "fuso horário: valor ambiente TZ=\"%s\"\n"
+
+#, c-format
+#~ msgid "final: %<PRIdMAX>.%09d (epoch-seconds)\n"
+#~ msgstr "final: %<PRIdMAX>.%09d (segundos desde epoch)\n"
+
+#, c-format
+#~ msgid "final: %s (UTC)\n"
+#~ msgstr "final: %s (UTC)\n"
+
+#, c-format
+#~ msgid "final: %s (UTC%s)\n"
+#~ msgstr "final: %s (UTC%s)\n"
+
+#, c-format
+#~ msgid "final: %s (unknown time zone offset)\n"
+#~ msgstr "final: %s (posição de fuso horário desconhecida)\n"
+
+#, c-format
 #~ msgid "creation of reading thread failed"
 #~ msgstr "a criação da thread de leitura falhou"
 
@@ -1083,6 +1457,7 @@ msgstr ""
 #~ msgid "subprocess %s terminated with exit code %d"
 #~ msgstr "o subprocesso %s terminou com o código de saída %d"
 
+#, c-format
 #~ msgid "creation of threads failed"
 #~ msgstr "a criação das threads falhou"
 
@@ -1141,10 +1516,6 @@ msgstr ""
 # Sinal SIGSEGV
 #~ msgid "Segmentation fault"
 #~ msgstr "Falha de segmentação"
-
-# Sinal SIGPIPE
-#~ msgid "Broken pipe"
-#~ msgstr "Conexão interrompida"
 
 # Sinal SIGALRM
 #~ msgid "Alarm clock"
@@ -1233,6 +1604,7 @@ msgstr ""
 #~ msgstr "erro de escrita para um redirecionamento (pipe) ou soquete fechado"
 
 # , c-format
+#, c-format
 #~ msgid "cannot create pipe"
 #~ msgstr "não foi possível criar redirecionamento"
 
@@ -1276,11 +1648,8 @@ msgstr ""
 #~ msgid "invalid group"
 #~ msgstr "grupo inválido"
 
-#~ msgid "invalid spec"
-#~ msgstr "especificação inválida"
-
-#~ msgid "unable to display error message"
-#~ msgstr "não foi possível exibir a mensagem de erro"
+#~ msgid "warning: '.' should be ':'"
+#~ msgstr "aviso: \".\" deve ser \":\""
 
 #, c-format
 #~ msgid "Packaged by %s (%s)\n"
@@ -1377,7 +1746,8 @@ msgstr ""
 #~ "%s, %s, %s, %s,\n"
 #~ "%s, %s e outros.\n"
 
-# Adicionado endereço de email da equipe, conforme solicitação do desenvolvedor -- Rafael
+# Adicionado endereço de email da equipe, conforme solicitação do
+# desenvolvedor -- Rafael
 #, c-format
 #~ msgid "Report bugs to: %s\n"
 #~ msgstr ""
@@ -1397,13 +1767,6 @@ msgstr ""
 #~ msgid "General help using GNU software: <%s>\n"
 #~ msgstr "Ajuda para uso de softwares GNU: <%s>\n"
 
-#~ msgid "_open_osfhandle failed"
-#~ msgstr "_open_osfhandle falhou"
-
-#, c-format
-#~ msgid "cannot restore fd %d: dup2 failed"
-#~ msgstr "não foi possível restaurar descritor de arquivo %d: dup2 falhou"
-
 # , c-format
 #, c-format
 #~ msgid "%s subprocess"
@@ -1414,6 +1777,7 @@ msgstr ""
 #~ msgid "%s subprocess got fatal signal %d"
 #~ msgstr "o subprocesso %s recebeu sinal fatal %d"
 
+#, c-format
 #~ msgid "failed to set file descriptor text/binary mode"
 #~ msgstr "falha ao definir modo texto/binário do descritor de arquivo"
 
@@ -1433,9 +1797,11 @@ msgstr ""
 #~ msgid "failed to reopen %s with mode %s"
 #~ msgstr "falha ao reabrir %s com modo %s"
 
+#, c-format
 #~ msgid "string comparison failed"
 #~ msgstr "a comparação de textos falhou"
 
+#, c-format
 #~ msgid "Set LC_ALL='C' to work around the problem."
 #~ msgstr "Defina LC_ALL='C' para contornar o problema."
 
@@ -1443,11 +1809,17 @@ msgstr ""
 #~ msgid "The strings compared were %s and %s."
 #~ msgstr "Os textos comparados foram %s e %s."
 
+#, c-format
 #~ msgid "cannot perform formatted output"
 #~ msgstr "não foi possível fazer a saída formatada"
 
+#, c-format
 #~ msgid "standard file descriptors"
 #~ msgstr "descritores de arquivo padrão"
+
+#, c-format
+#~ msgid "%s: %s"
+#~ msgstr "%s: %s"
 
 # %s%s é hífen e opção, `%s' é o argumento da opção
 # , c-format
@@ -1465,6 +1837,9 @@ msgstr ""
 #, c-format
 #~ msgid "%s%s argument '%s' too large"
 #~ msgstr "argumento para %s%s \"%s\" é grande demais"
+
+#~ msgid "unable to display error message"
+#~ msgstr "não foi possível exibir a mensagem de erro"
 
 #~ msgid "%s home page: <https://www.gnu.org/software/%s/>\n"
 #~ msgstr "Página do %s: <https://www.gnu.org/software/%s/>\n"

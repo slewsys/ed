@@ -1,9 +1,12 @@
-# Mesajele în limba română pentru pachetul mailutils.
-# Copyright (C) 2003 Free Software Foundation, Inc.
+# Mesajele în limba română pentru pachetul gnulib.
+# Copyright (C) 2003, 2022, 2024 Free Software Foundation, Inc.
 # This file is distributed under the same license as the gnulib package.
 #
 # Eugen Hoanca <eugenh@urban-grafx.ro>, 2003.
-# Traducere făcută de EH, pentru versiunea mailutis 0.4/coreutils  5.2.1.
+# Remus-Gabriel Chelu <remusgabriel.chelu@disroot.org>, 2022, 2024.
+#
+# Cronologia traducerii fișierului „trader”:
+# Traducere inițială, făcută de EH, pentru versiunea mailutis 0.4/coreutils  5.2.1.
 # Notă, R-GC: se pare că în perioada 2000-2005 a făcut parte din suita altor
 # pachete, înainte de-a deveni un pachet de sine stătător.
 # Actualizare a mesajelor, de la fișierul „gnulib-4.0.0.2567.pot”.
@@ -13,14 +16,16 @@
 # NU și a mesajelor traduse (acestea au rămas neschimbate).
 # Eliminare a mesajelor ce-au dispărut în ultima versiune.
 # Actualizări realizate de Remus-Gabriel Chelu <remusgabriel.chelu@disroot.org>, 15.01.2022.
-# Remus-Gabriel Chelu <remusgabriel.chelu@disroot.org>, 2022.
+# Actualizare a traducerii pentru versiunea 4.0.0.2567, făcută de R-GC, feb-2022.
+# Actualizare a traducerii pentru versiunea 20241209, făcută de R-GC, dec-2024.
+# Actualizare a traducerii pentru versiunea Y, făcută de X, Z(luna-anul).
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: gnulib-4.0.0.2567\n"
+"Project-Id-Version: gnulib 20241209\n"
 "Report-Msgid-Bugs-To: bug-gnulib@gnu.org\n"
-"POT-Creation-Date: 2024-06-25 04:58-0400\n"
-"PO-Revision-Date: 2022-02-19 23:11+0100\n"
+"POT-Creation-Date: 2025-01-20 05:19-0500\n"
+"PO-Revision-Date: 2024-12-11 14:19+0100\n"
 "Last-Translator: Remus-Gabriel Chelu <remusgabriel.chelu@disroot.org>\n"
 "Language-Team: Romanian <translation-team-ro@lists.sourceforge.net>\n"
 "Language: ro\n"
@@ -30,7 +35,7 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
 "20)) ? 1 : 2);\n"
 "X-Bugs: Report translation errors to the Language-Team address.\n"
-"X-Generator: Poedit 3.0.1\n"
+"X-Generator: Poedit 3.5\n"
 
 #: lib/getopt.c:282
 #, c-format
@@ -71,7 +76,7 @@ msgstr "%s: opțiunea necesită un argument -- „%c”\n"
 msgid "Success"
 msgstr "Succes"
 
-#: lib/regcomp.c:125 src/re.c:273 src/sub.c:427
+#: lib/regcomp.c:125 src/re.c:281 src/sub.c:427
 msgid "No match"
 msgstr "Nicio potrivire"
 
@@ -115,9 +120,8 @@ msgstr "Conținut nevalid al \\{\\}"
 msgid "Invalid range end"
 msgstr "Sfârșit de interval nevalid"
 
-#: lib/regcomp.c:158 src/aux.c:267 src/buf.c:443 src/buf.c:589 src/glbl.c:171
-#: src/io.c:318 src/page.c:858 src/parse.c:273 src/parse.c:518 src/re.c:157
-#: src/undo.c:26
+#: lib/regcomp.c:158 src/aux.c:269 src/buf.c:444 src/buf.c:591 src/io.c:326
+#: src/page.c:858 src/parse.c:270 src/parse.c:515 src/re.c:157 src/undo.c:26
 msgid "Memory exhausted"
 msgstr "Memorie epuizată"
 
@@ -141,134 +145,146 @@ msgstr ") sau \\) fără pereche"
 msgid "No previous regular expression"
 msgstr "Nu există o expresie regulată precedentă"
 
-#: src/aux.c:25 src/cmds.c:339
+#: src/aux.c:25 src/cmds.c:340
 #, fuzzy
 #| msgid "%s subprocess I/O error"
 msgid "Child process error"
 msgstr "eroare de In/Ieș a subprocesului %s"
 
-#: src/aux.c:40 src/cmds.c:346
+#: src/aux.c:40 src/cmds.c:347 src/io.c:177 src/io.c:708
 #, c-format
 msgid "Exit status: %#x"
 msgstr ""
 
-#: src/aux.c:69
+#: src/aux.c:70
 #, fuzzy
 #| msgid "Bus error"
 msgid "Flush error"
 msgstr "Eroare de magistrală de date(bus)"
 
-#: src/aux.c:80 src/aux.c:170
+#: src/aux.c:81 src/aux.c:172
 #, fuzzy
 #| msgid "write error"
 msgid "Pipe open error"
 msgstr "eroare de scriere"
 
-#: src/aux.c:89 src/aux.c:141 src/cmds.c:318 src/exec.c:1732
+#: src/aux.c:90 src/aux.c:143 src/cmds.c:318 src/exec.c:1739
 #, fuzzy
 #| msgid "program error"
 msgid "Fork error"
 msgstr "eroare de program"
 
-#: src/aux.c:184
+#: src/aux.c:186
 msgid "Pipe close error"
 msgstr ""
 
-#: src/aux.c:212
+#: src/aux.c:214
 msgid "Exceeded maximum stack frame depth"
 msgstr ""
 
-#: src/aux.c:228 src/aux.c:242 src/aux.c:296 src/aux.c:336 src/aux.c:375
-#: src/io.c:58 src/io.c:602 src/io.c:936 src/io.c:983 src/io.c:1042
-#: src/io.c:1052 src/io.c:1111 src/io.c:1120 src/io.c:1147 src/main.c:230
+#: src/aux.c:230 src/aux.c:244 src/aux.c:306 src/aux.c:346 src/aux.c:385
+#: src/io.c:58 src/io.c:615 src/io.c:963 src/io.c:1010 src/io.c:1069
+#: src/io.c:1079 src/io.c:1138 src/io.c:1147 src/io.c:1174 src/main.c:230
 #: src/main.c:731 src/main.c:793
 #, fuzzy
 #| msgid "write error"
 msgid "File seek error"
 msgstr "eroare de scriere"
 
-#: src/aux.c:278 src/aux.c:321 src/aux.c:360 src/buf.c:120
+#: src/aux.c:281
+#, fuzzy
+#| msgid "Bus error"
+msgid "dup error"
+msgstr "Eroare de magistrală de date(bus)"
+
+#: src/aux.c:288
+#, fuzzy
+#| msgid "Unknown error"
+msgid "fdopen error"
+msgstr "Eroare necunoscută"
+
+#: src/aux.c:331 src/aux.c:370 src/buf.c:121
 #, fuzzy
 #| msgid "Bus error"
 msgid "dup2 error"
 msgstr "Eroare de magistrală de date(bus)"
 
-#: src/buf.c:132 src/buf.c:288 src/buf.c:303
+#: src/buf.c:133 src/buf.c:289 src/buf.c:304
 #, fuzzy
 #| msgid "Bus error"
 msgid "Buffer open error"
 msgstr "Eroare de magistrală de date(bus)"
 
-#: src/buf.c:143 src/buf.c:354 src/buf.c:390
+#: src/buf.c:144 src/buf.c:355 src/buf.c:391
 #, fuzzy
 #| msgid "Bus error"
 msgid "Buffer seek error"
 msgstr "Eroare de magistrală de date(bus)"
 
-#: src/buf.c:267 src/main.c:559 src/main.c:631
+#: src/buf.c:268 src/main.c:559 src/main.c:631
 msgid "File name too long"
 msgstr ""
 
-#: src/buf.c:268
+#: src/buf.c:269
 #, fuzzy
 #| msgid "Invalid back reference"
 msgid "Invalid buffer name"
 msgstr "Referință anterioară nevalidă"
 
-#: src/buf.c:319
+#: src/buf.c:320
 #, fuzzy
 #| msgid "Bus error"
 msgid "Buffer close error"
 msgstr "Eroare de magistrală de date(bus)"
 
-#: src/buf.c:364
+#: src/buf.c:365
 #, fuzzy
 #| msgid "Bus error"
 msgid "Buffer read error"
 msgstr "Eroare de magistrală de date(bus)"
 
-#: src/buf.c:404 src/buf.c:434
+#: src/buf.c:405 src/buf.c:435
 msgid "Buffer full"
 msgstr ""
 
-#: src/buf.c:411
+#: src/buf.c:412
 #, fuzzy
 #| msgid "write error"
 msgid "Buffer write error"
 msgstr "eroare de scriere"
 
-#: src/buf.c:507 src/exec.c:100 src/exec.c:129 src/exec.c:1879 src/page.c:301
-#: src/parse.c:223
+#: src/buf.c:508 src/exec.c:100 src/exec.c:129 src/exec.c:1886 src/page.c:301
+#: src/parse.c:220
 #, fuzzy
 #| msgid "character out of range"
 msgid "Address out of range"
 msgstr "caracter în afara intervalului"
 
-#: src/buf.c:582
+#: src/buf.c:584
 msgid "Memory request too big"
 msgstr ""
 
-#: src/cbc.c:131 src/cbc.c:229 src/cbc.c:234 src/cbc.c:255 src/cbc.c:260
+#: src/cbc.c:130 src/cbc.c:228 src/cbc.c:233 src/cbc.c:254 src/cbc.c:259
 #, fuzzy
-#| msgid "invalid user"
+#| msgid "invalid spec"
 msgid "Invalid key"
-msgstr "utilizator nevalid"
+msgstr "specificație nevalidă"
 
-#: src/cbc.c:373
+#: src/cbc.c:372
 msgid "Decryption failed (block corrupted)"
 msgstr ""
 
-#: src/cbc.c:382
+#: src/cbc.c:381
 msgid "Decryption failed (incomplete block)"
 msgstr ""
 
-#: src/cbc.c:384 src/io.c:553 src/io.c:811
+#: src/cbc.c:383 src/io.c:566 src/io.c:838
 #, fuzzy
 #| msgid "write error"
 msgid "File read error"
 msgstr "eroare de scriere"
 
-#: src/cmds.c:43 src/exec.c:605 src/io.c:480 src/main.c:366
+#: src/cmds.c:43 src/exec.c:609 src/io.c:488 src/main.c:366
 msgid "End-of-file unexpected"
 msgstr ""
 
@@ -282,14 +298,14 @@ msgstr "Nume de clasă de caracter nevalid"
 msgid "Unknown error"
 msgstr "Eroare necunoscută"
 
-#: src/ed.h:769 src/ed.h:804 src/ed.h:839
+#: src/ed.h:773 src/ed.h:808 src/ed.h:843
 #, fuzzy
 #| msgid "character out of range"
 msgid "Numerical result out of range"
 msgstr "caracter în afara intervalului"
 
-#: src/exec.c:28 src/exec.c:503 src/exec.c:585 src/exec.c:646 src/exec.c:672
-#: src/exec.c:1024 src/exec.c:1384 src/exec.c:1396 src/exec.c:1404
+#: src/exec.c:28 src/exec.c:503 src/exec.c:589 src/exec.c:653 src/exec.c:679
+#: src/exec.c:1031 src/exec.c:1391 src/exec.c:1403 src/exec.c:1411
 msgid "Command suffix unexpected"
 msgstr ""
 
@@ -301,71 +317,72 @@ msgstr ""
 msgid "Command prefix unexpected"
 msgstr ""
 
-#: src/exec.c:494 src/exec.c:637 src/exec.c:741 src/exec.c:762 src/exec.c:961
-#: src/exec.c:1003 src/exec.c:1348 src/exec.c:1541 src/exec.c:1741
+#: src/exec.c:494 src/exec.c:579 src/exec.c:644 src/exec.c:748 src/exec.c:769
+#: src/exec.c:968 src/exec.c:1010 src/exec.c:1355 src/exec.c:1548
+#: src/exec.c:1748
 msgid "Address unexpected"
 msgstr ""
 
-#: src/exec.c:666
+#: src/exec.c:673
 #, fuzzy
 #| msgid "Invalid regular expression"
 msgid "Invalid redirection"
 msgstr "Expresie regulată nevalidă"
 
-#: src/exec.c:703 src/main.c:626
+#: src/exec.c:710 src/main.c:626
 msgid "File name not set"
 msgstr ""
 
-#: src/exec.c:717
+#: src/exec.c:724
 msgid "Recursive global command"
 msgstr ""
 
-#: src/exec.c:772
+#: src/exec.c:779
 #, fuzzy
 #| msgid "No previous regular expression"
 msgid "No previous error"
 msgstr "Nu există o expresie regulată precedentă"
 
-#: src/exec.c:882
+#: src/exec.c:889
 #, fuzzy
 #| msgid "Invalid collation character"
 msgid "Invalid destination address"
 msgstr "Caracter de colaționare nevalid"
 
-#: src/exec.c:923 src/exec.c:1334
+#: src/exec.c:930 src/exec.c:1341
 #, fuzzy
 #| msgid "invalid user"
 msgid "Invalid register"
 msgstr "utilizator nevalid"
 
-#: src/exec.c:1179 src/exec.c:1242 src/exec.c:1560 src/exec.c:1619
-#: src/exec.c:1804 src/exec.c:1819
+#: src/exec.c:1186 src/exec.c:1249 src/exec.c:1567 src/exec.c:1626
+#: src/exec.c:1811 src/exec.c:1826
 #, fuzzy
 #| msgid "Unknown error"
 msgid "Unknown command"
 msgstr "Eroare necunoscută"
 
-#: src/exec.c:1731
+#: src/exec.c:1738
 msgid "Cannot fork shell"
 msgstr ""
 
-#: src/exec.c:1819
+#: src/exec.c:1826
 #, fuzzy
 #| msgid "Invalid regular expression"
 msgid "Invalid address"
 msgstr "Expresie regulată nevalidă"
 
-#: src/exec.c:1837
+#: src/exec.c:1844
 msgid "Command too long"
 msgstr ""
 
-#: src/exec.c:1884
+#: src/exec.c:1891
 #, fuzzy
 #| msgid "Invalid range end"
 msgid "Invalid address range"
 msgstr "Sfârșit de interval nevalid"
 
-#: src/glbl.c:132
+#: src/glbl.c:135
 msgid "No previous command"
 msgstr ""
 
@@ -373,64 +390,72 @@ msgstr ""
 msgid "File does not exist"
 msgstr ""
 
-#: src/io.c:97 src/io.c:166 src/io.c:633 src/io.c:682 src/main.c:781
+#: src/io.c:97 src/io.c:168 src/io.c:646 src/io.c:697 src/main.c:781
 #, fuzzy
 #| msgid "write error"
 msgid "File open error"
 msgstr "eroare de scriere"
 
-#: src/io.c:120 src/io.c:647
+#: src/io.c:120 src/io.c:660
 #, c-format
 msgid "%s: File already locked\n"
 msgstr ""
 
-#: src/io.c:144 src/io.c:624 src/io.c:662
+#: src/io.c:144 src/io.c:637 src/io.c:675
 msgid "File close error"
 msgstr ""
 
-#: src/io.c:292 src/io.c:428
+#: src/io.c:300 src/io.c:436
 #, c-format
 msgid "Newline inserted\n"
 msgstr ""
 
-#: src/io.c:297 src/io.c:433
+#: src/io.c:305 src/io.c:441
 #, c-format
 msgid "Newline appended\n"
 msgstr ""
 
-#: src/io.c:609 src/io.c:1154
+# R-GC, scrie:
+# mi s-a părut cea mai bună descriere a
+# termenilor din mesaj.
+# - Idei?
+#: src/io.c:552 src/io.c:791
+msgid "Broken pipe"
+msgstr "Linie de conectare întreruptă"
+
+#: src/io.c:622 src/io.c:1181
 #, fuzzy
 #| msgid "write error"
 msgid "File truncate error"
 msgstr "eroare de scriere"
 
-#: src/io.c:723
+#: src/io.c:744
 msgid "File too big"
 msgstr ""
 
-#: src/io.c:770 src/io.c:790 src/io.c:801 src/main.c:742 src/main.c:750
+#: src/io.c:797 src/io.c:817 src/io.c:828 src/main.c:742 src/main.c:750
 #, fuzzy
 #| msgid "write error"
 msgid "File write error"
 msgstr "eroare de scriere"
 
-#: src/io.c:834 src/parse.c:505
+#: src/io.c:861 src/parse.c:502
 #, fuzzy
 #| msgid "Bus error"
 msgid "File status error"
 msgstr "Eroare de magistrală de date(bus)"
 
-#: src/io.c:841
+#: src/io.c:868
 msgid "Access restricted to regular files"
 msgstr ""
 
-#: src/io.c:910
+#: src/io.c:937
 #, fuzzy
 #| msgid "write error"
 msgid "File stat error"
 msgstr "eroare de scriere"
 
-#: src/io.c:1017
+#: src/io.c:1044
 msgid "Cannot append register to itself"
 msgstr ""
 
@@ -535,55 +560,55 @@ msgstr ""
 msgid "script, line %"
 msgstr ""
 
-#: src/parse.c:256 src/parse.c:602
+#: src/parse.c:253 src/parse.c:599
 #, fuzzy
 #| msgid "failed to return to initial working directory"
 msgid "Access restricted to working directory"
 msgstr "întoarcerea la directorul de lucru inițial a eșuat"
 
-#: src/parse.c:323
+#: src/parse.c:320
 #, fuzzy
 #| msgid "%s: Too many arguments\n"
 msgid "Too many file names"
 msgstr "%s: Prea multe argumente\n"
 
-#: src/parse.c:338 src/parse.c:351 src/parse.c:378
+#: src/parse.c:335 src/parse.c:348 src/parse.c:375
 #, fuzzy
 #| msgid "named file"
 msgid "No more files"
 msgstr "fișier numit"
 
-#: src/parse.c:446
+#: src/parse.c:443
 msgid "File glob too long"
 msgstr ""
 
-#: src/parse.c:467 src/parse.c:471 src/parse.c:491
+#: src/parse.c:464 src/parse.c:468 src/parse.c:488
 msgid "Pathname expansion error"
 msgstr ""
 
-#: src/parse.c:487
+#: src/parse.c:484
 msgid "No such file or directory"
 msgstr ""
 
-#: src/parse.c:577
+#: src/parse.c:574
 #, fuzzy
 #| msgid "Invalid range end"
 msgid "Invalid file name"
 msgstr "Sfârșit de interval nevalid"
 
-#: src/parse.c:632
+#: src/parse.c:629
 msgid "Brackets ([]) unbalanced"
 msgstr ""
 
-#: src/parse.c:639
+#: src/parse.c:636
 msgid "Backslash (\\) unexpected"
 msgstr ""
 
-#: src/parse.c:696
+#: src/parse.c:693
 msgid "Shell access restricted"
 msgstr ""
 
-#: src/parse.c:760
+#: src/parse.c:757
 #, fuzzy
 #| msgid "No previous regular expression"
 msgid "No previous shell command"
@@ -601,7 +626,7 @@ msgstr "Nume de clasă de caracter nevalid"
 msgid "No previous pattern"
 msgstr "Nu există o expresie regulată precedentă"
 
-#: src/signal.c:136
+#: src/signal.c:152
 #, fuzzy
 #| msgid "program error"
 msgid "Signal error"
@@ -740,132 +765,33 @@ msgstr ""
 # făcută de Benno Schulenberg din echipa
 # olandeză:
 # „histogram van aantal gezette bits”
-#~ msgid "count log histogram\n"
-#~ msgstr "histograma numărului seturilor de biți»bitset«\n"
+#~ msgid "count log histogram"
+#~ msgstr "histograma numărului seturilor de biți»bitset«"
 
-#~ msgid "size log histogram\n"
-#~ msgstr "histograma dimensiunilor seturilor de biți»bitset«\n"
+#~ msgid "size log histogram"
+#~ msgstr "histograma dimensiunilor seturilor de biți»bitset«"
 
-#~ msgid "density histogram\n"
-#~ msgstr "histograma densității seturilor de biți»bitset«\n"
+#~ msgid "density histogram"
+#~ msgstr "histograma densității seturilor de biți»bitset«"
 
-#, c-format
-#~ msgid ""
-#~ "Bitset statistics:\n"
-#~ "\n"
-#~ msgstr ""
-#~ "Statistici set de biți»bitset«:\n"
-#~ "\n"
+#~ msgid "Bitset statistics:"
+#~ msgstr "Statistici set de biți»bitset«:"
 
 #, c-format
-#~ msgid "Accumulated runs = %u\n"
-#~ msgstr "Cantitatea de execuții = %u\n"
+#~ msgid "Accumulated runs = %u"
+#~ msgstr "Cantitatea de execuții = %u"
 
 #~ msgid "cannot read stats file"
 #~ msgstr "nu se poate citi fișierul cu statistici"
 
-#, c-format
-#~ msgid "bad stats file size\n"
-#~ msgstr "dimensiunea fișierului cu statistici, este necorespunzătoare\n"
+#~ msgid "bad stats file size"
+#~ msgstr "dimensiunea fișierului cu statistici, este necorespunzătoare"
 
 #~ msgid "cannot write stats file"
 #~ msgstr "nu se poate scrie fișierul cu statistici"
 
 #~ msgid "cannot open stats file for writing"
 #~ msgstr "nu se poate deschide fișierul cu statistici pentru scriere"
-
-#~ msgid "stack overflow"
-#~ msgstr "debordare de stivă"
-
-#~ msgid "cannot find a temporary directory, try setting $TMPDIR"
-#~ msgstr ""
-#~ "nu se poate găsi un director temporar, încercați să stabiliți variabila "
-#~ "$TMPDIR"
-
-# R-GC, scrie:
-# după ce-a revizat fișierul, DȘ îmi spune:
-# «→ aici parcă lipsește un „se”, și ar deveni „nu se poate crea...”»
-# îmi pare rău, mi se făcuse foame de cuvinte..
-# :)
-# - corectare aplicată!
-#, c-format
-#~ msgid "cannot create a temporary directory using template \"%s\""
-#~ msgstr "nu se poate crea un director temporar utilizând șablonul „%s”"
-
-#, c-format
-#~ msgid "cannot remove temporary file %s"
-#~ msgstr "nu se poate elimina fișierul temporar %s"
-
-#, c-format
-#~ msgid "cannot remove temporary directory %s"
-#~ msgstr "nu se poate elimina directorul temporar %s"
-
-#~ msgid "error closing file"
-#~ msgstr "eroare la închiderea fișierului"
-
-#, c-format
-#~ msgid "preserving permissions for %s"
-#~ msgstr "se păstrează permisiunile pentru %s"
-
-#, c-format
-#~ msgid "error while opening %s for reading"
-#~ msgstr "eroare la deschiderea lui %s pentru citire"
-
-#, c-format
-#~ msgid "cannot open backup file %s for writing"
-#~ msgstr "nu se poate deschide fișierul de copie de rezervă %s pentru scriere"
-
-#, c-format
-#~ msgid "error reading %s"
-#~ msgstr "eroare la citirea din %s"
-
-#, c-format
-#~ msgid "error writing %s"
-#~ msgstr "eroare la scrierea în %s"
-
-#, c-format
-#~ msgid "error after reading %s"
-#~ msgstr "eroare după citirea %s"
-
-#~ msgid "fdopen() failed"
-#~ msgstr "fdopen() a eșuat"
-
-#~ msgid "C# compiler not found, try installing mono"
-#~ msgstr "Nu a fost găsit compilatorul C#, încercați să instalați mono"
-
-#~ msgid "C# virtual machine not found, try installing mono"
-#~ msgstr "Nu a fost găsită mașina virtuală C#, încercați să instalați mono"
-
-#~ msgid "unbalanced ["
-#~ msgstr "„[” fără pereche"
-
-#~ msgid "invalid character class"
-#~ msgstr "clasă de caractere nevalidă"
-
-#~ msgid "character class syntax is [[:space:]], not [:space:]"
-#~ msgstr "sintaxa de clasă de caractere este [[:spațiu:]], nu [:spațiu]"
-
-#~ msgid "unfinished \\ escape"
-#~ msgstr "eludare » \\ « neterminată"
-
-#~ msgid "invalid content of \\{\\}"
-#~ msgstr "conținut nevalid al \\{\\}"
-
-#~ msgid "regular expression too big"
-#~ msgstr "expresia regulată este prea lungă"
-
-#~ msgid "unbalanced ("
-#~ msgstr "„(” fără pereche"
-
-#~ msgid "no syntax specified"
-#~ msgstr "nu s-a specificat nicio sintaxă"
-
-#~ msgid "unbalanced )"
-#~ msgstr "„)” fără pereche"
-
-#, c-format
-#~ msgid "%s subprocess failed"
-#~ msgstr "subprocesul %s a eșuat"
 
 #~ msgid "regular empty file"
 #~ msgstr "fișier gol obișnuit"
@@ -959,6 +885,159 @@ msgstr ""
 #~ msgid "weird file"
 #~ msgstr "fișier ciudat"
 
+#~ msgid "stack overflow"
+#~ msgstr "debordare de stivă"
+
+#, c-format
+#~ msgid "cannot remove temporary file %s"
+#~ msgstr "nu se poate elimina fișierul temporar %s"
+
+#, c-format
+#~ msgid "cannot find a temporary directory, try setting $TMPDIR"
+#~ msgstr ""
+#~ "nu se poate găsi un director temporar, încercați să stabiliți variabila "
+#~ "$TMPDIR"
+
+# R-GC, scrie:
+# după ce-a revizat fișierul, DȘ îmi spune:
+# «→ aici parcă lipsește un „se”, și ar deveni „nu se poate crea...”»
+# îmi pare rău, mi se făcuse foame de cuvinte..
+# :)
+# - corectare aplicată!
+#, c-format
+#~ msgid "cannot create a temporary directory using template \"%s\""
+#~ msgstr "nu se poate crea un director temporar utilizând șablonul „%s”"
+
+#, c-format
+#~ msgid "cannot remove temporary directory %s"
+#~ msgstr "nu se poate elimina directorul temporar %s"
+
+#~ msgid "error closing file"
+#~ msgstr "eroare la închiderea fișierului"
+
+#, c-format
+#~ msgid "preserving permissions for %s"
+#~ msgstr "se păstrează permisiunile pentru %s"
+
+#, c-format
+#~ msgid "error while opening %s for reading"
+#~ msgstr "eroare la deschiderea lui %s pentru citire"
+
+#, c-format
+#~ msgid "cannot open backup file %s for writing"
+#~ msgstr "nu se poate deschide fișierul de copie de rezervă %s pentru scriere"
+
+#, c-format
+#~ msgid "error reading %s"
+#~ msgstr "eroare la citirea din %s"
+
+#, c-format
+#~ msgid "error writing %s"
+#~ msgstr "eroare la scrierea în %s"
+
+#, c-format
+#~ msgid "error after reading %s"
+#~ msgstr "eroare după citirea %s"
+
+#, c-format
+#~ msgid "fdopen() failed"
+#~ msgstr "fdopen() a eșuat"
+
+#, c-format
+#~ msgid "%s subprocess failed"
+#~ msgstr "subprocesul %s a eșuat"
+
+#, c-format
+#~ msgid "C# compiler not found, try installing mono or dotnet"
+#~ msgstr ""
+#~ "Nu a fost găsit compilatorul C#, încercați să instalați mono sau dotnet"
+
+#, c-format
+#~ msgid "failed to copy '%s' to '%s'"
+#~ msgstr "nu s-a putut copia „%s” la „%s”"
+
+#, c-format
+#~ msgid "could not determine %s version"
+#~ msgstr "nu s-a putut determina versiunea %s"
+
+#, c-format
+#~ msgid "failed to create \"%s\""
+#~ msgstr "nu s-a putut crea „%s”"
+
+#, c-format
+#~ msgid "error while writing \"%s\" file"
+#~ msgstr "eroare în timpul scrierii fișierului „%s”"
+
+#, c-format
+#~ msgid "C# virtual machine not found, try installing mono or dotnet"
+#~ msgstr ""
+#~ "Nu a fost găsită mașina virtuală C#, încercați să instalați mono sau "
+#~ "dotnet"
+
+#, c-format
+#~ msgid "cannot convert file name '%s' to Windows syntax"
+#~ msgstr "nu se poate converti numele de fișier „%s” în sintaxa Windows"
+
+#, c-format
+#~ msgid "cygwin_conv_path failed"
+#~ msgstr "funcția cygwin_conv_path() a eșuat"
+
+#, c-format
+#~ msgid "%s invocation failed"
+#~ msgstr "invocarea %s a eșuat"
+
+#~ msgid "unbalanced ["
+#~ msgstr "„[” fără pereche"
+
+#~ msgid "invalid character class"
+#~ msgstr "clasă de caractere nevalidă"
+
+#~ msgid "character class syntax is [[:space:]], not [:space:]"
+#~ msgstr "sintaxa de clasă de caractere este [[:spațiu:]], nu [:spațiu]"
+
+#~ msgid "unfinished \\ escape"
+#~ msgstr "eludare » \\ « neterminată"
+
+#~ msgid "? at start of expression"
+#~ msgstr "? la începutul expresiei"
+
+#~ msgid "* at start of expression"
+#~ msgstr "* la începutul expresiei"
+
+#~ msgid "+ at start of expression"
+#~ msgstr "+ la începutul expresiei"
+
+#~ msgid "{...} at start of expression"
+#~ msgstr "{...} la începutul expresiei"
+
+#~ msgid "invalid content of \\{\\}"
+#~ msgstr "conținut nevalid al \\{\\}"
+
+#~ msgid "regular expression too big"
+#~ msgstr "expresia regulată este prea lungă"
+
+#~ msgid "stray \\ before unprintable character"
+#~ msgstr "caracter în plus „\\”, înainte de caracter neimprimabil"
+
+#~ msgid "stray \\ before white space"
+#~ msgstr "caracter în plus „\\”, înainte de un spațiu în alb"
+
+#, c-format
+#~ msgid "stray \\ before %s"
+#~ msgstr "caracter în plus „\\”, înainte de „%s”"
+
+#~ msgid "stray \\"
+#~ msgstr "caracter în plus „\\”"
+
+#~ msgid "unbalanced ("
+#~ msgstr "„(” fără pereche"
+
+#~ msgid "no syntax specified"
+#~ msgstr "nu s-a specificat nicio sintaxă"
+
+#~ msgid "unbalanced )"
+#~ msgstr "„)” fără pereche"
+
 #~ msgid "Address family for hostname not supported"
 #~ msgstr "Familia de adrese pentru numele de gazdă nu este suportată"
 
@@ -1021,29 +1100,32 @@ msgstr ""
 #~ msgid "Parameter string not correctly encoded"
 #~ msgstr "Șirul parametrului este codificat greșit"
 
+#, c-format
+#~ msgid ""
+#~ "The java program is too old. Cannot compile Java code for this old "
+#~ "version any more."
+#~ msgstr ""
+#~ "Programul java este prea vechi. Nu se mai poate compila codul Java pentru "
+#~ "această versiune veche."
+
+#, c-format
 #~ msgid "invalid source_version argument to compile_java_class"
 #~ msgstr "argumentul source_version nu este valid pentru compile_java_class"
 
+#, c-format
 #~ msgid "invalid target_version argument to compile_java_class"
 #~ msgstr "argumentul target_version nu este valid pentru compile_java_class"
 
 #, c-format
-#~ msgid "failed to create \"%s\""
-#~ msgstr "nu s-a putut crea \"%s\""
+#~ msgid "Java compiler not found, try setting $JAVAC"
+#~ msgstr ""
+#~ "Nu a fost găsit compilatorul Java, încercați să definiți variabila $JAVAC"
 
 #, c-format
-#~ msgid "error while writing \"%s\" file"
-#~ msgstr "eroare în timpul scrierii fișierului „%s”"
-
-#~ msgid "Java compiler not found, try installing gcj or set $JAVAC"
+#~ msgid "Java virtual machine not found, try setting $JAVA"
 #~ msgstr ""
-#~ "Nu a fost găsit compilatorul Java, încercați să instalați gcj sau "
-#~ "stabiliți variabila $JAVAC"
-
-#~ msgid "Java virtual machine not found, try installing gij or set $JAVA"
-#~ msgstr ""
-#~ "Nu a fost găsită mașina virtuală Java, încercați să instalați gij sau "
-#~ "stabiliți variabila $JAVA"
+#~ "Nu a fost găsită mașina virtuală Java, încercați să definiți variabila "
+#~ "$JAVA"
 
 #, c-format
 #~ msgid "cannot stat %s"
@@ -1057,15 +1139,314 @@ msgstr ""
 #~ msgid "cannot create directory %s"
 #~ msgstr "nu se poate crea directorul %s"
 
+#, c-format
 #~ msgid "memory exhausted"
 #~ msgstr "memorie epuizată"
 
+#, c-format
 #~ msgid "unable to record current working directory"
 #~ msgstr "nu s-a putut înregistra directorul de lucru curent"
 
+#, c-format
+#~ msgid "_open_osfhandle failed"
+#~ msgstr "_open_osfhandle a eșuat"
+
+#, c-format
+#~ msgid "cannot restore fd %d: dup2 failed"
+#~ msgstr "nu se poate restaura fd %d: dup2 a eșuat"
+
+#, c-format
 #~ msgid "Failed to open /dev/zero for read"
 #~ msgstr "Nu s-a putut deschide „/dev/zero” pentru citire"
 
+#, c-format
+#~ msgid "parsed %s part: "
+#~ msgstr "partea %s analizată: "
+
+#, c-format
+#~ msgid "year: %04<PRIdMAX>"
+#~ msgstr "anul: %04<PRIdMAX>"
+
+#, c-format
+#~ msgid "%s (day ordinal=%<PRIdMAX> number=%d)"
+#~ msgstr "%s (zi ordinală=%<PRIdMAX> număr=%d)"
+
+#, c-format
+#~ msgid "number of seconds: %<PRIdMAX>"
+#~ msgstr "număr de secunde: %<PRIdMAX>"
+
+#~ msgid "today/this/now\n"
+#~ msgstr "azi/asta/acum\n"
+
+#~ msgid "number of seconds"
+#~ msgstr "număr de secunde"
+
+#~ msgid "datetime"
+#~ msgstr "data/ora"
+
+#~ msgid "time"
+#~ msgstr "timp"
+
+#~ msgid "local_zone"
+#~ msgstr "fus_orar"
+
+#~ msgid "zone"
+#~ msgstr "zona"
+
+#~ msgid "date"
+#~ msgstr "data"
+
+#~ msgid "day"
+#~ msgstr "zi"
+
+#~ msgid "relative"
+#~ msgstr "relativ"
+
+#~ msgid "number"
+#~ msgstr "număr"
+
+#~ msgid "hybrid"
+#~ msgstr "hibrid"
+
+#, c-format
+#~ msgid ""
+#~ "warning: value %<PRIdMAX> has %<PRIdMAX> digits. Assuming YYYY/MM/DD\n"
+#~ msgstr ""
+#~ "avertisment: valoarea %<PRIdMAX> are %<PRIdMAX> cifre. Presupunând AAAA/"
+#~ "LL/ZZ\n"
+
+#, c-format
+#~ msgid ""
+#~ "warning: value %<PRIdMAX> has less than 4 digits. Assuming MM/DD/YY[YY]\n"
+#~ msgstr ""
+#~ "avertisment: valoarea %<PRIdMAX> are mai puțin de 4 cifre. Presupunând LL/"
+#~ "ZZ/AA[AA]\n"
+
+#, c-format
+#~ msgid "warning: adjusting year value %<PRIdMAX> to %<PRIdMAX>\n"
+#~ msgstr ""
+#~ "avertisment: se ajustează valoarea anului %<PRIdMAX> la %<PRIdMAX>.\n"
+
+#, c-format
+#~ msgid "error: out-of-range year %<PRIdMAX>\n"
+#~ msgstr "eroare: an în afara intervalului %<PRIdMAX>\n"
+
+#, c-format
+#~ msgid "error: unknown word '%s'\n"
+#~ msgstr "eroare: cuvânt necunoscut „%s”\n"
+
+#~ msgid "error: invalid date/time value:\n"
+#~ msgstr "eroare: valoare de dată/oră nevalidă:\n"
+
+#, c-format
+#~ msgid "    user provided time: '%s'\n"
+#~ msgstr "    ora furnizată de utilizator: „%s”\n"
+
+#, c-format
+#~ msgid "       normalized time: '%s'\n"
+#~ msgstr "       ora normalizată: „%s”\n"
+
+#~ msgid "     possible reasons:\n"
+#~ msgstr "     motive posibile:\n"
+
+#~ msgid "       nonexistent due to daylight-saving time;\n"
+#~ msgstr "       inexistent datorită orei de vară;\n"
+
+#~ msgid "       invalid day/month combination;\n"
+#~ msgstr "       combinație zi/lună nevalidă;\n"
+
+#~ msgid "       numeric values overflow;\n"
+#~ msgstr "       depășirea valorilor numerice;\n"
+
+#~ msgid "incorrect timezone"
+#~ msgstr "fus orar incorect"
+
+#~ msgid "missing timezone"
+#~ msgstr "lipsește fusul orar"
+
+#~ msgid "error: initial year out of range\n"
+#~ msgstr "eroare: anul inițial în afara intervalului\n"
+
+#~ msgid "error: parsing failed\n"
+#~ msgstr "eroare: analizarea a eșuat\n"
+
+#, c-format
+#~ msgid "error: parsing failed, stopped at '%s'\n"
+#~ msgstr "eroare: analizarea a eșuat, oprită la „%s”\n"
+
+#~ msgid "input timezone: "
+#~ msgstr "introduceți fusul orar: "
+
+#, c-format
+#~ msgid "'@timespec' - always UTC"
+#~ msgstr "„@timespec” - întotdeauna UTC"
+
+#, c-format
+#~ msgid "parsed date/time string"
+#~ msgstr "șir de dată/oră analizat"
+
+#, c-format
+#~ msgid "TZ=\"%s\" in date string"
+#~ msgstr "TZ=\"%s\" în șirul de date"
+
+#, c-format
+#~ msgid "TZ=\"UTC0\" environment value or -u"
+#~ msgstr "TZ=\"UTC0\" valoare de mediu sau „-u”"
+
+#, c-format
+#~ msgid "TZ=\"%s\" environment value"
+#~ msgstr "TZ=\"%s\" valoare de mediu"
+
+#, c-format
+#~ msgid "system default"
+#~ msgstr "valoarea implicită a sistemului"
+
+#~ msgid "error: year, month, or day overflow\n"
+#~ msgstr "eroare: depășirea anului, a lunii sau a zilei\n"
+
+#, c-format
+#~ msgid "error: invalid hour %<PRIdMAX>%s\n"
+#~ msgstr "eroare: oră nevalidă %<PRIdMAX>%s\n"
+
+#, c-format
+#~ msgid "using specified time as starting value: '%s'\n"
+#~ msgstr "folosind ora specificată ca valoare de pornire: „%s”\n"
+
+#, c-format
+#~ msgid "using current time as starting value: '%s'\n"
+#~ msgstr "folosind ora curentă ca valoare de pornire: „%s”\n"
+
+#, c-format
+#~ msgid "error: tzalloc (\"%s\") failed\n"
+#~ msgstr "eroare: tzalloc (\"%s\") a eșuat\n"
+
+#, c-format
+#~ msgid ""
+#~ "error: day '%s' (day ordinal=%<PRIdMAX> number=%d) resulted in an invalid "
+#~ "date: '%s'\n"
+#~ msgstr ""
+#~ "eroare: ziua „%s” (zi ordinală=%<PRIdMAX> număr=%d) a avut ca rezultat o "
+#~ "dată nevalidă: „%s”\n"
+
+#, c-format
+#~ msgid "new start date: '%s' is '%s'\n"
+#~ msgstr "noua dată de începere: „%s” este „%s”\n"
+
+#, c-format
+#~ msgid "using current date as starting value: '%s'\n"
+#~ msgstr "folosind data curentă ca valoare de pornire: „%s”\n"
+
+#, c-format
+#~ msgid "warning: day (%s) ignored when explicit dates are given\n"
+#~ msgstr ""
+#~ "avertisment: ziua (%s) este ignorată atunci când se dau date explicite\n"
+
+#, c-format
+#~ msgid "starting date/time: '%s'\n"
+#~ msgstr "data/ora de începere: „%s”\n"
+
+#~ msgid ""
+#~ "warning: when adding relative months/years, it is recommended to specify "
+#~ "the 15th of the months\n"
+#~ msgstr ""
+#~ "avertisment: atunci când se adaugă lunile/anii relativi, se recomandă să "
+#~ "se precizeze data de 15 a lunilor.\n"
+
+#~ msgid ""
+#~ "warning: when adding relative days, it is recommended to specify noon\n"
+#~ msgstr ""
+#~ "avertisment: atunci când se adaugă zile relative, se recomandă să se "
+#~ "precizeze ora prânzului\n"
+
+#, c-format
+#~ msgid "error: %s:%d\n"
+#~ msgstr "eroare: %s:%d\n"
+
+#, c-format
+#~ msgid "error: adding relative date resulted in an invalid date: '%s'\n"
+#~ msgstr ""
+#~ "eroare: adăugarea unei date relative a avut ca rezultat o dată nevalidă: "
+#~ "„%s”\n"
+
+#, c-format
+#~ msgid ""
+#~ "after date adjustment (%+<PRIdMAX> years, %+<PRIdMAX> months, %+<PRIdMAX> "
+#~ "days),\n"
+#~ msgstr ""
+#~ "după ajustarea datei (%+<PRIdMAX> ani, %+<PRIdMAX> luni, %+<PRIdMAX> "
+#~ "zile),\n"
+
+#, c-format
+#~ msgid "    new date/time = '%s'\n"
+#~ msgstr "    noua dată/oră = „%s”\n"
+
+#~ msgid "warning: daylight saving time changed after date adjustment\n"
+#~ msgstr "avertisment: ora de vară a fost modificată după ajustarea datei\n"
+
+#~ msgid "warning: month/year adjustment resulted in shifted dates:\n"
+#~ msgstr "avertisment: ajustarea lunii/anului a dus la decalarea datelor:\n"
+
+#, c-format
+#~ msgid "     adjusted Y M D: %s %02d %02d\n"
+#~ msgstr "     ajustat A L Z: %s %02d %02d\n"
+
+#, c-format
+#~ msgid "   normalized Y M D: %s %02d %02d\n"
+#~ msgstr "   normalizat A L Z: %s %02d %02d\n"
+
+#, c-format
+#~ msgid "error: timezone %d caused time_t overflow\n"
+#~ msgstr "eroare: fusul orar %d a cauzat depășirea time_t\n"
+
+#, c-format
+#~ msgid "'%s' = %<PRIdMAX> epoch-seconds\n"
+#~ msgstr "„%s” = %<PRIdMAX> secunde-epocă\n"
+
+#~ msgid "error: adding relative time caused an overflow\n"
+#~ msgstr "eroare: adăugarea timpului relativ a cauzat o depășire\n"
+
+#, c-format
+#~ msgid ""
+#~ "after time adjustment (%+<PRIdMAX> hours, %+<PRIdMAX> minutes, "
+#~ "%+<PRIdMAX> seconds, %+d ns),\n"
+#~ msgstr ""
+#~ "după ajustarea timpului (%+<PRIdMAX> ore, %+<PRIdMAX> minute, %+<PRIdMAX> "
+#~ "secunde, %+d ns),\n"
+
+#, c-format
+#~ msgid "    new time = %<PRIdMAX> epoch-seconds\n"
+#~ msgstr "    nou timp = %<PRIdMAX> epocă-secunde\n"
+
+#~ msgid "warning: daylight saving time changed after time adjustment\n"
+#~ msgstr "avertisment: ora de vară a fost modificată după ajustarea orei\n"
+
+#~ msgid "timezone: system default\n"
+#~ msgstr "fusul orar: implicit al sistemului\n"
+
+#~ msgid "timezone: Universal Time\n"
+#~ msgstr "fusul orar: Timp universal\n"
+
+#, c-format
+#~ msgid "timezone: TZ=\"%s\" environment value\n"
+#~ msgstr "fusul orar: TZ=\"%s\" valoarea de mediu\n"
+
+#, c-format
+#~ msgid "final: %<PRIdMAX>.%09d (epoch-seconds)\n"
+#~ msgstr "final: %<PRIdMAX>.%09d (secunde-epocă)\n"
+
+#, c-format
+#~ msgid "final: %s (UTC)\n"
+#~ msgstr "final: %s (UTC)\n"
+
+#, c-format
+#~ msgid "final: %s (UTC%s)\n"
+#~ msgstr "final: %s (UTC%s)\n"
+
+#, c-format
+#~ msgid "final: %s (unknown time zone offset)\n"
+#~ msgstr "final: %s (decalaj de fus orar necunoscut)\n"
+
+#, c-format
 #~ msgid "creation of reading thread failed"
 #~ msgstr "crearea firului de citire a eșuat"
 
@@ -1089,6 +1470,7 @@ msgstr ""
 #~ msgid "subprocess %s terminated with exit code %d"
 #~ msgstr "subprocesul %s a terminat cu codul de ieșire %d"
 
+#, c-format
 #~ msgid "creation of threads failed"
 #~ msgstr "crearea firelor a eșuat"
 
@@ -1139,13 +1521,6 @@ msgstr ""
 
 #~ msgid "Segmentation fault"
 #~ msgstr "Eroare de segmentare"
-
-# R-GC, scrie:
-# mi s-a părut cea mai bună descriere a
-# termenilor din mesaj.
-# - Idei?
-#~ msgid "Broken pipe"
-#~ msgstr "Linie de conectare întreruptă"
 
 #~ msgid "Alarm clock"
 #~ msgstr "Ceas cu alarmă"
@@ -1225,6 +1600,7 @@ msgstr ""
 #~ "eroare de scriere într-o linie de conectare închisă sau într-un soclu "
 #~ "închis"
 
+#, c-format
 #~ msgid "cannot create pipe"
 #~ msgstr "nu se poate crea linia de conectare"
 
@@ -1275,11 +1651,8 @@ msgstr ""
 #~ msgid "invalid group"
 #~ msgstr "grup nevalid"
 
-#~ msgid "invalid spec"
-#~ msgstr "specificație nevalidă"
-
-#~ msgid "unable to display error message"
-#~ msgstr "imposibil de afișat mesajul de eroare"
+#~ msgid "warning: '.' should be ':'"
+#~ msgstr "avertisment: în loc de „.\" trebuie sa fie \":\""
 
 #, c-format
 #~ msgid "Packaged by %s (%s)\n"
@@ -1393,13 +1766,6 @@ msgstr ""
 #~ msgid "General help using GNU software: <%s>\n"
 #~ msgstr "Ajutor general utilizând software GNU: <%s>\n"
 
-#~ msgid "_open_osfhandle failed"
-#~ msgstr "_open_osfhandle a eșuat"
-
-#, c-format
-#~ msgid "cannot restore fd %d: dup2 failed"
-#~ msgstr "nu se poate restaura fd %d: dup2 a eșuat"
-
 #, c-format
 #~ msgid "%s subprocess"
 #~ msgstr "subprocesul %s"
@@ -1417,6 +1783,7 @@ msgstr ""
 # fișierului, a rămas mesaj valabil, traducerea
 # inițială a mesajului:
 # „nu s-a putut stabili descriptorul de fișier în modul text/binar”
+#, c-format
 #~ msgid "failed to set file descriptor text/binary mode"
 #~ msgstr "nu s-a putut stabili descriptorul de fișier în modul text/binar"
 
@@ -1436,9 +1803,11 @@ msgstr ""
 #~ msgid "failed to reopen %s with mode %s"
 #~ msgstr "nu s-a putut redeschide %s în modul %s"
 
+#, c-format
 #~ msgid "string comparison failed"
 #~ msgstr "compararea șirurilor a eșuat"
 
+#, c-format
 #~ msgid "Set LC_ALL='C' to work around the problem."
 #~ msgstr "Stabiliți LC_ALL='C' pentru a rezolva problema."
 
@@ -1446,11 +1815,17 @@ msgstr ""
 #~ msgid "The strings compared were %s and %s."
 #~ msgstr "Șirurile comparate au fost %s și %s."
 
+#, c-format
 #~ msgid "cannot perform formatted output"
 #~ msgstr "nu se poate afișa ieșirea formatată"
 
+#, c-format
 #~ msgid "standard file descriptors"
 #~ msgstr "descriptoare de fișier standard"
+
+#, c-format
+#~ msgid "%s: %s"
+#~ msgstr "%s: %s"
 
 # R-GC, scrie:
 # traducerea acestui mesaj, și a celor două
@@ -1480,3 +1855,6 @@ msgstr ""
 #, c-format
 #~ msgid "%s%s argument '%s' too large"
 #~ msgstr "argumentul „%3$s” al %1$s%2$s este prea lung"
+
+#~ msgid "unable to display error message"
+#~ msgstr "imposibil de afișat mesajul de eroare"

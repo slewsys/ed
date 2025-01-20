@@ -431,6 +431,12 @@ else
       [Options with which "${top_srcdir}/configure" was invoked.])
 fi
 
+dnl AS_MKDIR_P([doc])
+dnl AS_MKDIR_P([lib])
+dnl AS_MKDIR_P([po])
+dnl AS_MKDIR_P([src])
+dnl AS_MKDIR_P([testsuite])
+
 # Generate autotest helpers.
 AC_CONFIG_TESTDIR([testsuite])
 AC_CONFIG_FILES([testsuite/ed], [chmod 755 testsuite/ed])

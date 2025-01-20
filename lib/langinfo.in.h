@@ -1,5 +1,5 @@
 /* Substitute for and wrapper around <langinfo.h>.
-   Copyright (C) 2009-2024 Free Software Foundation, Inc.
+   Copyright (C) 2009-2025 Free Software Foundation, Inc.
 
    This file is free software: you can redistribute it and/or modify
    it under the terms of the GNU Lesser General Public License as
@@ -205,11 +205,11 @@ typedef int nl_item;
 #   undef nl_langinfo
 #   define nl_langinfo rpl_nl_langinfo
 #  endif
-_GL_FUNCDECL_RPL (nl_langinfo, char *, (nl_item item));
+_GL_FUNCDECL_RPL (nl_langinfo, char *, (nl_item item), );
 _GL_CXXALIAS_RPL (nl_langinfo, char *, (nl_item item));
 # else
 #  if !@HAVE_NL_LANGINFO@
-_GL_FUNCDECL_SYS (nl_langinfo, char *, (nl_item item));
+_GL_FUNCDECL_SYS (nl_langinfo, char *, (nl_item item), );
 #  endif
 _GL_CXXALIAS_SYS (nl_langinfo, char *, (nl_item item));
 # endif
