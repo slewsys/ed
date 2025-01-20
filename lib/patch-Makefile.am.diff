@@ -1,6 +1,6 @@
---- Makefile.am.orig	2023-01-16 07:29:33.636868594 -0500
-+++ Makefile.am	2023-01-16 07:34:25.670173989 -0500
-@@ -489,11 +489,23 @@
+--- Makefile.am.orig	2025-01-20 07:16:23.264463456 -0500
++++ Makefile.am	2025-01-20 07:17:00.344479132 -0500
+@@ -744,11 +744,23 @@
  
  ## begin gnulib module regex
  
@@ -26,3 +26,19 @@
  
  EXTRA_libgnu_a_SOURCES += regcomp.c regex_internal.c regexec.c
  
+@@ -1762,7 +1762,11 @@
+ 	  fi; \
+ 	done; \
+ 	:
+-distclean-local: distclean-gnulib-libobjs
+-distclean-gnulib-libobjs:
+-	-rm -f @gl_LIBOBJDEPS@
+-maintainer-clean-local: distclean-gnulib-libobjs
++
++clean-local:
++	rm -f @gl_LIBOBJDEPS@
++
++distclean-local: clean-local
++	-rm -f Makefile
++
++maintainer-clean-local: distclean-local

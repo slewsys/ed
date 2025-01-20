@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: standard-unix-text-editor\n"
 "Report-Msgid-Bugs-To: bug-gnulib@gnu.org\n"
-"POT-Creation-Date: 2024-06-25 04:58-0400\n"
+"POT-Creation-Date: 2025-01-20 05:19-0500\n"
 "PO-Revision-Date: 2024-06-26 23:39\n"
 "Last-Translator: Stéphane Aulery <lkppo@free.fr>\n"
 "Language-Team: French\n"
@@ -67,7 +67,7 @@ msgstr "%s : l'option nécessite un argument -- « %c »\n"
 msgid "Success"
 msgstr "Succès"
 
-#: lib/regcomp.c:125 src/re.c:273 src/sub.c:427
+#: lib/regcomp.c:125 src/re.c:281 src/sub.c:427
 msgid "No match"
 msgstr "Pas de correspondance"
 
@@ -111,9 +111,8 @@ msgstr "Le contenu de \\{\\} n'est pas valable"
 msgid "Invalid range end"
 msgstr "Borne finale de l'intervalle non valable"
 
-#: lib/regcomp.c:158 src/aux.c:267 src/buf.c:443 src/buf.c:589 src/glbl.c:171
-#: src/io.c:318 src/page.c:858 src/parse.c:273 src/parse.c:518 src/re.c:157
-#: src/undo.c:26
+#: lib/regcomp.c:158 src/aux.c:269 src/buf.c:444 src/buf.c:591 src/io.c:326
+#: src/page.c:858 src/parse.c:270 src/parse.c:515 src/re.c:157 src/undo.c:26
 msgid "Memory exhausted"
 msgstr "Mémoire épuisée"
 
@@ -137,104 +136,116 @@ msgstr ") ou \\) non apparié"
 msgid "No previous regular expression"
 msgstr "Pas d'expression rationnelle précédente"
 
-#: src/aux.c:25 src/cmds.c:339
+#: src/aux.c:25 src/cmds.c:340
 msgid "Child process error"
 msgstr "Erreur de sous-processus"
 
-#: src/aux.c:40 src/cmds.c:346
+#: src/aux.c:40 src/cmds.c:347 src/io.c:177 src/io.c:708
 #, c-format
 msgid "Exit status: %#x"
 msgstr "État de sortie : %#x"
 
-#: src/aux.c:69
+#: src/aux.c:70
 msgid "Flush error"
 msgstr "Erreur lors du vidage du tampon"
 
-#: src/aux.c:80 src/aux.c:170
+#: src/aux.c:81 src/aux.c:172
 msgid "Pipe open error"
 msgstr "Erreur d'ouverture du tuyau"
 
-#: src/aux.c:89 src/aux.c:141 src/cmds.c:318 src/exec.c:1732
+#: src/aux.c:90 src/aux.c:143 src/cmds.c:318 src/exec.c:1739
 msgid "Fork error"
 msgstr "Erreur de fork"
 
-#: src/aux.c:184
+#: src/aux.c:186
 msgid "Pipe close error"
 msgstr "Erreur de fermeture du tuyau"
 
-#: src/aux.c:212
+#: src/aux.c:214
 msgid "Exceeded maximum stack frame depth"
 msgstr "Profondeur maximale du cadre de pile est dépassée"
 
-#: src/aux.c:228 src/aux.c:242 src/aux.c:296 src/aux.c:336 src/aux.c:375
-#: src/io.c:58 src/io.c:602 src/io.c:936 src/io.c:983 src/io.c:1042
-#: src/io.c:1052 src/io.c:1111 src/io.c:1120 src/io.c:1147 src/main.c:230
+#: src/aux.c:230 src/aux.c:244 src/aux.c:306 src/aux.c:346 src/aux.c:385
+#: src/io.c:58 src/io.c:615 src/io.c:963 src/io.c:1010 src/io.c:1069
+#: src/io.c:1079 src/io.c:1138 src/io.c:1147 src/io.c:1174 src/main.c:230
 #: src/main.c:731 src/main.c:793
 msgid "File seek error"
 msgstr "Erreur de recherche de fichier"
 
-#: src/aux.c:278 src/aux.c:321 src/aux.c:360 src/buf.c:120
+#: src/aux.c:281
+#, fuzzy
+#| msgid "dup2 error"
+msgid "dup error"
+msgstr "Erreur du dup2"
+
+#: src/aux.c:288
+#, fuzzy
+#| msgid "Buffer open error"
+msgid "fdopen error"
+msgstr "Erreur d'ouverture du tampon"
+
+#: src/aux.c:331 src/aux.c:370 src/buf.c:121
 msgid "dup2 error"
 msgstr "Erreur du dup2"
 
-#: src/buf.c:132 src/buf.c:288 src/buf.c:303
+#: src/buf.c:133 src/buf.c:289 src/buf.c:304
 msgid "Buffer open error"
 msgstr "Erreur d'ouverture du tampon"
 
-#: src/buf.c:143 src/buf.c:354 src/buf.c:390
+#: src/buf.c:144 src/buf.c:355 src/buf.c:391
 msgid "Buffer seek error"
 msgstr "Erreur de recherche du tampon"
 
-#: src/buf.c:267 src/main.c:559 src/main.c:631
+#: src/buf.c:268 src/main.c:559 src/main.c:631
 msgid "File name too long"
 msgstr "Nom de fichier trop long"
 
-#: src/buf.c:268
+#: src/buf.c:269
 msgid "Invalid buffer name"
 msgstr "Nom de tampon non valable"
 
-#: src/buf.c:319
+#: src/buf.c:320
 msgid "Buffer close error"
 msgstr "Erreur de fermeture du tampon"
 
-#: src/buf.c:364
+#: src/buf.c:365
 msgid "Buffer read error"
 msgstr "Erreur de lecture du tampon"
 
-#: src/buf.c:404 src/buf.c:434
+#: src/buf.c:405 src/buf.c:435
 msgid "Buffer full"
 msgstr "Tampon plein"
 
-#: src/buf.c:411
+#: src/buf.c:412
 msgid "Buffer write error"
 msgstr "Erreur d'écriture du tampon"
 
-#: src/buf.c:507 src/exec.c:100 src/exec.c:129 src/exec.c:1879 src/page.c:301
-#: src/parse.c:223
+#: src/buf.c:508 src/exec.c:100 src/exec.c:129 src/exec.c:1886 src/page.c:301
+#: src/parse.c:220
 msgid "Address out of range"
 msgstr "Adresse hors limites"
 
-#: src/buf.c:582
+#: src/buf.c:584
 msgid "Memory request too big"
 msgstr "Requête de mémoire trop grande"
 
-#: src/cbc.c:131 src/cbc.c:229 src/cbc.c:234 src/cbc.c:255 src/cbc.c:260
+#: src/cbc.c:130 src/cbc.c:228 src/cbc.c:233 src/cbc.c:254 src/cbc.c:259
 msgid "Invalid key"
 msgstr "Clé non valable"
 
-#: src/cbc.c:373
+#: src/cbc.c:372
 msgid "Decryption failed (block corrupted)"
 msgstr "Le déchiffrement a échoué (bloc corrompu)"
 
-#: src/cbc.c:382
+#: src/cbc.c:381
 msgid "Decryption failed (incomplete block)"
 msgstr "Le déchiffrement a échoué (bloc incomplet)"
 
-#: src/cbc.c:384 src/io.c:553 src/io.c:811
+#: src/cbc.c:383 src/io.c:566 src/io.c:838
 msgid "File read error"
 msgstr "Erreur de lecture du fichier"
 
-#: src/cmds.c:43 src/exec.c:605 src/io.c:480 src/main.c:366
+#: src/cmds.c:43 src/exec.c:609 src/io.c:488 src/main.c:366
 msgid "End-of-file unexpected"
 msgstr "Fin de fichier inattendu"
 
@@ -246,12 +257,12 @@ msgstr "Marque d'adresse non valable"
 msgid "Unknown error"
 msgstr "Erreur inconnue"
 
-#: src/ed.h:769 src/ed.h:804 src/ed.h:839
+#: src/ed.h:773 src/ed.h:808 src/ed.h:843
 msgid "Numerical result out of range"
 msgstr "Résultat numérique hors limites"
 
-#: src/exec.c:28 src/exec.c:503 src/exec.c:585 src/exec.c:646 src/exec.c:672
-#: src/exec.c:1024 src/exec.c:1384 src/exec.c:1396 src/exec.c:1404
+#: src/exec.c:28 src/exec.c:503 src/exec.c:589 src/exec.c:653 src/exec.c:679
+#: src/exec.c:1031 src/exec.c:1391 src/exec.c:1403 src/exec.c:1411
 msgid "Command suffix unexpected"
 msgstr "Suffixe de commande inattendu"
 
@@ -263,57 +274,58 @@ msgstr "L'adresse de destination est requise"
 msgid "Command prefix unexpected"
 msgstr "Préfixe de commande inattendu"
 
-#: src/exec.c:494 src/exec.c:637 src/exec.c:741 src/exec.c:762 src/exec.c:961
-#: src/exec.c:1003 src/exec.c:1348 src/exec.c:1541 src/exec.c:1741
+#: src/exec.c:494 src/exec.c:579 src/exec.c:644 src/exec.c:748 src/exec.c:769
+#: src/exec.c:968 src/exec.c:1010 src/exec.c:1355 src/exec.c:1548
+#: src/exec.c:1748
 msgid "Address unexpected"
 msgstr "Adresse inattendue"
 
-#: src/exec.c:666
+#: src/exec.c:673
 msgid "Invalid redirection"
 msgstr "Redirection non valable"
 
-#: src/exec.c:703 src/main.c:626
+#: src/exec.c:710 src/main.c:626
 msgid "File name not set"
 msgstr "Nom du fichier non défini"
 
-#: src/exec.c:717
+#: src/exec.c:724
 msgid "Recursive global command"
 msgstr "Commande globale récursive"
 
-#: src/exec.c:772
+#: src/exec.c:779
 msgid "No previous error"
 msgstr "Aucune erreur précédente"
 
-#: src/exec.c:882
+#: src/exec.c:889
 msgid "Invalid destination address"
 msgstr "Adresse de destination non valable"
 
-#: src/exec.c:923 src/exec.c:1334
+#: src/exec.c:930 src/exec.c:1341
 msgid "Invalid register"
 msgstr "Registre non valable"
 
-#: src/exec.c:1179 src/exec.c:1242 src/exec.c:1560 src/exec.c:1619
-#: src/exec.c:1804 src/exec.c:1819
+#: src/exec.c:1186 src/exec.c:1249 src/exec.c:1567 src/exec.c:1626
+#: src/exec.c:1811 src/exec.c:1826
 msgid "Unknown command"
 msgstr "Commande inconnue"
 
-#: src/exec.c:1731
+#: src/exec.c:1738
 msgid "Cannot fork shell"
 msgstr "Impossible de bifurquer le shell"
 
-#: src/exec.c:1819
+#: src/exec.c:1826
 msgid "Invalid address"
 msgstr "Adresse non valable"
 
-#: src/exec.c:1837
+#: src/exec.c:1844
 msgid "Command too long"
 msgstr "Commande trop longue"
 
-#: src/exec.c:1884
+#: src/exec.c:1891
 msgid "Invalid address range"
 msgstr "Intervalle d'adresses non valable"
 
-#: src/glbl.c:132
+#: src/glbl.c:135
 msgid "No previous command"
 msgstr "Aucune commande précédente"
 
@@ -321,54 +333,58 @@ msgstr "Aucune commande précédente"
 msgid "File does not exist"
 msgstr "Fichier n'existe pas"
 
-#: src/io.c:97 src/io.c:166 src/io.c:633 src/io.c:682 src/main.c:781
+#: src/io.c:97 src/io.c:168 src/io.c:646 src/io.c:697 src/main.c:781
 msgid "File open error"
 msgstr "Erreur d'ouverture de fichier"
 
-#: src/io.c:120 src/io.c:647
+#: src/io.c:120 src/io.c:660
 #, c-format
 msgid "%s: File already locked\n"
 msgstr "%s: Fichier déjà verrouillé\n"
 
-#: src/io.c:144 src/io.c:624 src/io.c:662
+#: src/io.c:144 src/io.c:637 src/io.c:675
 msgid "File close error"
 msgstr "Erreur de fermeture du fichier"
 
-#: src/io.c:292 src/io.c:428
+#: src/io.c:300 src/io.c:436
 #, c-format
 msgid "Newline inserted\n"
 msgstr "Nouvelle ligne insérée\n"
 
-#: src/io.c:297 src/io.c:433
+#: src/io.c:305 src/io.c:441
 #, c-format
 msgid "Newline appended\n"
 msgstr "Nouvelle ligne ajoutée\n"
 
-#: src/io.c:609 src/io.c:1154
+#: src/io.c:552 src/io.c:791
+msgid "Broken pipe"
+msgstr ""
+
+#: src/io.c:622 src/io.c:1181
 msgid "File truncate error"
 msgstr "Erreur de tronquage du fichier"
 
-#: src/io.c:723
+#: src/io.c:744
 msgid "File too big"
 msgstr "Fichier trop gros"
 
-#: src/io.c:770 src/io.c:790 src/io.c:801 src/main.c:742 src/main.c:750
+#: src/io.c:797 src/io.c:817 src/io.c:828 src/main.c:742 src/main.c:750
 msgid "File write error"
 msgstr "Erreur d'écriture du fichier"
 
-#: src/io.c:834 src/parse.c:505
+#: src/io.c:861 src/parse.c:502
 msgid "File status error"
 msgstr "Erreur d'état du fichier"
 
-#: src/io.c:841
+#: src/io.c:868
 msgid "Access restricted to regular files"
 msgstr "Accès restreint aux fichiers réguliers"
 
-#: src/io.c:910
+#: src/io.c:937
 msgid "File stat error"
 msgstr "Erreur de stat de fichier"
 
-#: src/io.c:1017
+#: src/io.c:1044
 msgid "Cannot append register to itself"
 msgstr "Impossible d'ajouter le registre à lui-même"
 
@@ -390,13 +406,19 @@ msgstr "Liste d'arguments pleine"
 
 #: src/main.c:815
 #, c-format
-msgid "Usage: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE...]\n"
-msgstr "Utilisation : %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE...]\n"
+msgid ""
+"Usage: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE...]\n"
+msgstr ""
+"Utilisation : %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] "
+"[FILE...]\n"
 
 #: src/main.c:818
 #, c-format
-msgid "Usage: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE]\n"
-msgstr "Utilisation : %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE]\n"
+msgid ""
+"Usage: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE]\n"
+msgstr ""
+"Utilisation : %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] "
+"[FILE]\n"
 
 #: src/main.c:822
 #, c-format
@@ -415,13 +437,15 @@ msgstr "Utilisation : %s [OPTION...] [FICHIER]\n"
 
 #: src/main.c:839
 #, c-format
-msgid "Options:\n"
+msgid ""
+"Options:\n"
 "  -E, --regexp-extended     Enable extended regular expression syntax.\n"
 "  -e, --expression=COMMAND  Add COMMAND to scripted input - implies `-s'.\n"
 "  -f, --file=SCRIPT         Read commands from file SCRIPT - implies `-s'.\n"
 "  -G, --traditional         Enable backward compatibility.\n"
 "  -h, --help                Display (this) help, then exit.\n"
-"  -i, --in-place[=SUFFIX]   Write file before closing and optionally backup.\n"
+"  -i, --in-place[=SUFFIX]   Write file before closing and optionally "
+"backup.\n"
 "  -p, --prompt=STRING       Prompt for commands with STRING.\n"
 "  -R, --ansi-color          Enable support for ANSI color codes.\n"
 "  -r, --regexp-extended     Enable extended regular expression syntax.\n"
@@ -436,19 +460,27 @@ msgid "Options:\n"
 "for a tutorial introduction to ed.\n"
 "\n"
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
-msgstr "Options :\n"
-"-E, --regexp-extended       Activer la syntaxe d'expression régulière étendue.\n"
-"-e, --expression=COMMAND    Ajouter la COMMANDE à l'entrée scriptée - implique `-s'.\n"
-"-f, --file=SCRIPT           Lire les commandes à partir du fichier SCRIPT - implique `-s'.\n"
+msgstr ""
+"Options :\n"
+"-E, --regexp-extended       Activer la syntaxe d'expression régulière "
+"étendue.\n"
+"-e, --expression=COMMAND    Ajouter la COMMANDE à l'entrée scriptée - "
+"implique `-s'.\n"
+"-f, --file=SCRIPT           Lire les commandes à partir du fichier SCRIPT - "
+"implique `-s'.\n"
 "-G, --traditional           Activer la compatibilité ascendante.\n"
 "-h, --help                  Afficher (cette) aide, puis quitter.\n"
-"-i, --in-place[=SUFFIXE]    Écrire le fichier avant de le fermer et éventuellement le sauvegarder.\n"
+"-i, --in-place[=SUFFIXE]    Écrire le fichier avant de le fermer et "
+"éventuellement le sauvegarder.\n"
 "-p, --prompt=STRING         Demander des commandes avec STRING.\n"
-"-R, --ansi-color            Activer la prise en charge des codes de couleur ANSI.\n"
-"-r, --regexp-extended       Activer la syntaxe d'expression régulière étendue.\n"
+"-R, --ansi-color            Activer la prise en charge des codes de couleur "
+"ANSI.\n"
+"-r, --regexp-extended       Activer la syntaxe d'expression régulière "
+"étendue.\n"
 "-s, --script                Supprimer les diagnostics interactifs.\n"
 "-v, --verbose               Activer les diagnostics détaillés.\n"
-"-V, --version               Affiche les informations de version, puis quitte.\n"
+"-V, --version               Affiche les informations de version, puis "
+"quitte.\n"
 "-w, --write                 Active l'écriture pour traiter la substitution.\n"
 "-x, --crypt                 Active le chiffrement des E/S.\n"
 "\n"
@@ -456,11 +488,13 @@ msgstr "Options :\n"
 "!info ed-intro RET\n"
 "pour une introduction didactique à ed.\n"
 "\n"
-"Veuillez soumettre des problèmes ou des demandes d'extraction à : <https://github.com/slewsys/ed>\n"
+"Veuillez soumettre des problèmes ou des demandes d'extraction à : <https://"
+"github.com/slewsys/ed>\n"
 
 #: src/main.c:861
 #, c-format
-msgid "Options:\n"
+msgid ""
+"Options:\n"
 "  -E, --regexp-extended     Enable extended regular expression syntax.\n"
 "  -G, --traditional         Enable backward compatibility.\n"
 "  -h, --help                Dispaly (this) help, then exit.\n"
@@ -478,70 +512,77 @@ msgid "Options:\n"
 "for a tutorial introduction to ed.\n"
 "\n"
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
-msgstr "Options :\n"
-"-E, --regexp-extended       Activer la syntaxe d'expression régulière étendue.\n"
+msgstr ""
+"Options :\n"
+"-E, --regexp-extended       Activer la syntaxe d'expression régulière "
+"étendue.\n"
 "-G, --traditional           Activer la compatibilité ascendante.\n"
 "-h, --help                  Afficher (cette) aide, puis quitter.\n"
 "-p, --prompt=STRING         Demander des commandes avec STRING.\n"
-"-R, --ansi-color            Activer la prise en charge des codes de couleur ANSI.\n"
-"-r, --regexp-extended       Activer la syntaxe d'expression régulière étendue.\n"
+"-R, --ansi-color            Activer la prise en charge des codes de couleur "
+"ANSI.\n"
+"-r, --regexp-extended       Activer la syntaxe d'expression régulière "
+"étendue.\n"
 "-s, --script                Supprimer les diagnostics interactifs.\n"
 "-v, --verbose               Activer les diagnostics détaillés.\n"
-"-V, --version               Afficher les informations de version, puis quitter.\n"
-"-w, --write                 Activer l'écriture pour traiter la substitution.\n"
+"-V, --version               Afficher les informations de version, puis "
+"quitter.\n"
+"-w, --write                 Activer l'écriture pour traiter la "
+"substitution.\n"
 "-x, --crypt                 Activer le chiffrement des E/S.\n"
 "\n"
 "Si FILE est donné, lisez-le pour l'éditer. Depuis ed, exécutez :\n"
 "  !info ed-intro RET\n"
 "pour une introduction didactique à ed.\n"
 "\n"
-"Veuillez soumettre des problèmes ou des demandes d'extraction à : <https://github.com/slewsys/ed>\n"
+"Veuillez soumettre des problèmes ou des demandes d'extraction à : <https://"
+"github.com/slewsys/ed>\n"
 
 #: src/main.c:892
 msgid "script, line %"
 msgstr "script, ligne %"
 
-#: src/parse.c:256 src/parse.c:602
+#: src/parse.c:253 src/parse.c:599
 msgid "Access restricted to working directory"
 msgstr "Accès restreint au répertoire de travail"
 
-#: src/parse.c:323
+#: src/parse.c:320
 msgid "Too many file names"
 msgstr "Trop de noms de fichiers"
 
-#: src/parse.c:338 src/parse.c:351 src/parse.c:378
+#: src/parse.c:335 src/parse.c:348 src/parse.c:375
 msgid "No more files"
 msgstr "Plus aucun fichier"
 
-#: src/parse.c:446
+#: src/parse.c:443
 msgid "File glob too long"
 msgstr "Fichier glob trop long"
 
-#: src/parse.c:467 src/parse.c:471 src/parse.c:491
+#: src/parse.c:464 src/parse.c:468 src/parse.c:488
 msgid "Pathname expansion error"
 msgstr "Erreur d'expansion du chemin d'accès"
 
-#: src/parse.c:487
+#: src/parse.c:484
 msgid "No such file or directory"
 msgstr "Aucun fichier ou répertoire"
 
-#: src/parse.c:577
+#: src/parse.c:574
 msgid "Invalid file name"
 msgstr "Nom de fichier non valable"
 
-#: src/parse.c:632
+#: src/parse.c:629
 msgid "Brackets ([]) unbalanced"
 msgstr "Crochets ([]) déséquilibrées"
 
-#: src/parse.c:639
+#: src/parse.c:636
 msgid "Backslash (\\) unexpected"
 msgstr "Antislash (\\) inattendu"
 
-#: src/parse.c:696
+#: src/parse.c:693
 msgid "Shell access restricted"
 msgstr "Accès restreint au shell"
 
-#: src/parse.c:760
+#: src/parse.c:757
 msgid "No previous shell command"
 msgstr "Aucune commande précédente du shell"
 
@@ -553,7 +594,7 @@ msgstr "Délimiteur de modèle non valable"
 msgid "No previous pattern"
 msgstr "Aucun modèle précédent"
 
-#: src/signal.c:136
+#: src/signal.c:152
 msgid "Signal error"
 msgstr "Erreur de signal"
 
