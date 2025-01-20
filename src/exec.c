@@ -441,7 +441,7 @@ d_cmd (ed_buffer_t *ed)
   if ((status = is_valid_range (ed->state->dot, ed->state->dot, ed)) < 0)
     return status;
 
-#ifdef WANT_ED_REGISTER
+#ifdef WANT_ED_REGISTER_DELETE
   /* Save deleted lines in default register. */
   ed->core->regbuf->io_f |= REGISTER_WRITE;
   ed->core->regbuf->write_idx = REGBUF_MAX - 1;
@@ -449,7 +449,7 @@ d_cmd (ed_buffer_t *ed)
   COMMAND_SUFFIX (ed->display->io_f, ed);
   if (!ed->exec->global)
     reset_undo_queue (ed);
-#ifdef WANT_ED_REGISTER
+#ifdef WANT_ED_REGISTER_DELETE
   if ((status = append_to_register (ed->exec->region->start,
                                    ed->exec->region->end, 0, ed)) < 0)
     return status;
