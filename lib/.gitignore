@@ -1,4 +1,3 @@
-/Makefile.am
 /_Noreturn.h
 /arg-nonnull.h
 #/assert.in.h
@@ -77,9 +76,16 @@
 /iswdigit.c
 /iswpunct.c
 /iswxdigit.c
+#/malloc.c
 /mbszero.c
 /setlocale_null-unlocked.c
 /stddef.h
 /stdckdint.in.h
 /wctype-impl.h
 /wctype.c
+/pthread-once.c
+#/pthread.in.h
+#/sched.in.h
+#/stdlib.c
+#/time.in.h
+/Makefile.am

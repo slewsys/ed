@@ -7,17 +7,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnulib 4.0.0.2567\n"
 "Report-Msgid-Bugs-To: bug-gnulib@gnu.org\n"
-"POT-Creation-Date: 2024-06-25 04:58-0400\n"
-"PO-Revision-Date: 2022-12-23 14:32+0100\n"
+"POT-Creation-Date: 2025-01-20 05:19-0500\n"
+"PO-Revision-Date: 2024-12-11 12:33+0100\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <(nothing)>\n"
 "Language: ka\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Bugs: Report translation errors to the Language-Team address.\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.2.2\n"
+"X-Bugs: Report translation errors to the Language-Team address.\n"
+"X-Generator: Poedit 3.5\n"
 
 #: lib/getopt.c:282
 #, c-format
@@ -58,7 +58,7 @@ msgstr "%s: პარამეტრს ესაჭიროება არგ
 msgid "Success"
 msgstr "წარმატება"
 
-#: lib/regcomp.c:125 src/re.c:273 src/sub.c:427
+#: lib/regcomp.c:125 src/re.c:281 src/sub.c:427
 msgid "No match"
 msgstr "არ ემთხვევა"
 
@@ -102,9 +102,8 @@ msgstr "\\{\\}-ის არასწორი შემცელობა"
 msgid "Invalid range end"
 msgstr "დიაპაზონის არასწორი დასასრული"
 
-#: lib/regcomp.c:158 src/aux.c:267 src/buf.c:443 src/buf.c:589 src/glbl.c:171
-#: src/io.c:318 src/page.c:858 src/parse.c:273 src/parse.c:518 src/re.c:157
-#: src/undo.c:26
+#: lib/regcomp.c:158 src/aux.c:269 src/buf.c:444 src/buf.c:591 src/io.c:326
+#: src/page.c:858 src/parse.c:270 src/parse.c:515 src/re.c:157 src/undo.c:26
 msgid "Memory exhausted"
 msgstr "მეხსიერება გადავსებულია"
 
@@ -128,132 +127,146 @@ msgstr "არ ემთხვევა ) ან \\)"
 msgid "No previous regular expression"
 msgstr "წინა რეგულარული გამოსახულება არ არსებობს"
 
-#: src/aux.c:25 src/cmds.c:339
+#: src/aux.c:25 src/cmds.c:340
+#, fuzzy
+#| msgid "%s subprocess I/O error"
 msgid "Child process error"
-msgstr ""
+msgstr "%s ქვეპროცესის შეტ/გამოტ შეცდომა"
 
-#: src/aux.c:40 src/cmds.c:346
+#: src/aux.c:40 src/cmds.c:347 src/io.c:177 src/io.c:708
 #, c-format
 msgid "Exit status: %#x"
 msgstr ""
 
-#: src/aux.c:69
+#: src/aux.c:70
 #, fuzzy
 #| msgid "Bus error"
 msgid "Flush error"
 msgstr "მატარებლის შეცდომა"
 
-#: src/aux.c:80 src/aux.c:170
+#: src/aux.c:81 src/aux.c:172
 #, fuzzy
 #| msgid "write error"
 msgid "Pipe open error"
 msgstr "ჩაწერის შეცდომა"
 
-#: src/aux.c:89 src/aux.c:141 src/cmds.c:318 src/exec.c:1732
+#: src/aux.c:90 src/aux.c:143 src/cmds.c:318 src/exec.c:1739
 #, fuzzy
 #| msgid "program error"
 msgid "Fork error"
 msgstr "პროგრამის შეცდომა"
 
-#: src/aux.c:184
+#: src/aux.c:186
 msgid "Pipe close error"
 msgstr ""
 
-#: src/aux.c:212
+#: src/aux.c:214
 msgid "Exceeded maximum stack frame depth"
 msgstr ""
 
-#: src/aux.c:228 src/aux.c:242 src/aux.c:296 src/aux.c:336 src/aux.c:375
-#: src/io.c:58 src/io.c:602 src/io.c:936 src/io.c:983 src/io.c:1042
-#: src/io.c:1052 src/io.c:1111 src/io.c:1120 src/io.c:1147 src/main.c:230
+#: src/aux.c:230 src/aux.c:244 src/aux.c:306 src/aux.c:346 src/aux.c:385
+#: src/io.c:58 src/io.c:615 src/io.c:963 src/io.c:1010 src/io.c:1069
+#: src/io.c:1079 src/io.c:1138 src/io.c:1147 src/io.c:1174 src/main.c:230
 #: src/main.c:731 src/main.c:793
 #, fuzzy
 #| msgid "write error"
 msgid "File seek error"
 msgstr "ჩაწერის შეცდომა"
 
-#: src/aux.c:278 src/aux.c:321 src/aux.c:360 src/buf.c:120
+#: src/aux.c:281
+#, fuzzy
+#| msgid "Bus error"
+msgid "dup error"
+msgstr "მატარებლის შეცდომა"
+
+#: src/aux.c:288
+#, fuzzy
+#| msgid "Unknown error"
+msgid "fdopen error"
+msgstr "უცნობი შეცდომა"
+
+#: src/aux.c:331 src/aux.c:370 src/buf.c:121
 #, fuzzy
 #| msgid "Bus error"
 msgid "dup2 error"
 msgstr "მატარებლის შეცდომა"
 
-#: src/buf.c:132 src/buf.c:288 src/buf.c:303
+#: src/buf.c:133 src/buf.c:289 src/buf.c:304
 #, fuzzy
 #| msgid "Bus error"
 msgid "Buffer open error"
 msgstr "მატარებლის შეცდომა"
 
-#: src/buf.c:143 src/buf.c:354 src/buf.c:390
+#: src/buf.c:144 src/buf.c:355 src/buf.c:391
 #, fuzzy
 #| msgid "Bus error"
 msgid "Buffer seek error"
 msgstr "მატარებლის შეცდომა"
 
-#: src/buf.c:267 src/main.c:559 src/main.c:631
+#: src/buf.c:268 src/main.c:559 src/main.c:631
 msgid "File name too long"
 msgstr ""
 
-#: src/buf.c:268
+#: src/buf.c:269
 #, fuzzy
 #| msgid "Invalid back reference"
 msgid "Invalid buffer name"
 msgstr "არასწორი უკუბმა"
 
-#: src/buf.c:319
+#: src/buf.c:320
 #, fuzzy
 #| msgid "Bus error"
 msgid "Buffer close error"
 msgstr "მატარებლის შეცდომა"
 
-#: src/buf.c:364
+#: src/buf.c:365
 #, fuzzy
 #| msgid "Bus error"
 msgid "Buffer read error"
 msgstr "მატარებლის შეცდომა"
 
-#: src/buf.c:404 src/buf.c:434
+#: src/buf.c:405 src/buf.c:435
 msgid "Buffer full"
 msgstr ""
 
-#: src/buf.c:411
+#: src/buf.c:412
 #, fuzzy
 #| msgid "write error"
 msgid "Buffer write error"
 msgstr "ჩაწერის შეცდომა"
 
-#: src/buf.c:507 src/exec.c:100 src/exec.c:129 src/exec.c:1879 src/page.c:301
-#: src/parse.c:223
+#: src/buf.c:508 src/exec.c:100 src/exec.c:129 src/exec.c:1886 src/page.c:301
+#: src/parse.c:220
 #, fuzzy
 #| msgid "character out of range"
 msgid "Address out of range"
 msgstr "სიმბოლო დიაპაზონს გარეთაა"
 
-#: src/buf.c:582
+#: src/buf.c:584
 msgid "Memory request too big"
 msgstr ""
 
-#: src/cbc.c:131 src/cbc.c:229 src/cbc.c:234 src/cbc.c:255 src/cbc.c:260
+#: src/cbc.c:130 src/cbc.c:228 src/cbc.c:233 src/cbc.c:254 src/cbc.c:259
 #, fuzzy
 #| msgid "invalid user"
 msgid "Invalid key"
 msgstr "არასწორი მომხმარებელი"
 
-#: src/cbc.c:373
+#: src/cbc.c:372
 msgid "Decryption failed (block corrupted)"
 msgstr ""
 
-#: src/cbc.c:382
+#: src/cbc.c:381
 msgid "Decryption failed (incomplete block)"
 msgstr ""
 
-#: src/cbc.c:384 src/io.c:553 src/io.c:811
+#: src/cbc.c:383 src/io.c:566 src/io.c:838
 #, fuzzy
 #| msgid "write error"
 msgid "File read error"
 msgstr "ჩაწერის შეცდომა"
 
-#: src/cmds.c:43 src/exec.c:605 src/io.c:480 src/main.c:366
+#: src/cmds.c:43 src/exec.c:609 src/io.c:488 src/main.c:366
 msgid "End-of-file unexpected"
 msgstr ""
 
@@ -267,14 +280,14 @@ msgstr "სიმბოლოების არასწორი კლას�
 msgid "Unknown error"
 msgstr "უცნობი შეცდომა"
 
-#: src/ed.h:769 src/ed.h:804 src/ed.h:839
+#: src/ed.h:773 src/ed.h:808 src/ed.h:843
 #, fuzzy
 #| msgid "character out of range"
 msgid "Numerical result out of range"
 msgstr "სიმბოლო დიაპაზონს გარეთაა"
 
-#: src/exec.c:28 src/exec.c:503 src/exec.c:585 src/exec.c:646 src/exec.c:672
-#: src/exec.c:1024 src/exec.c:1384 src/exec.c:1396 src/exec.c:1404
+#: src/exec.c:28 src/exec.c:503 src/exec.c:589 src/exec.c:653 src/exec.c:679
+#: src/exec.c:1031 src/exec.c:1391 src/exec.c:1403 src/exec.c:1411
 msgid "Command suffix unexpected"
 msgstr ""
 
@@ -286,71 +299,72 @@ msgstr ""
 msgid "Command prefix unexpected"
 msgstr ""
 
-#: src/exec.c:494 src/exec.c:637 src/exec.c:741 src/exec.c:762 src/exec.c:961
-#: src/exec.c:1003 src/exec.c:1348 src/exec.c:1541 src/exec.c:1741
+#: src/exec.c:494 src/exec.c:579 src/exec.c:644 src/exec.c:748 src/exec.c:769
+#: src/exec.c:968 src/exec.c:1010 src/exec.c:1355 src/exec.c:1548
+#: src/exec.c:1748
 msgid "Address unexpected"
 msgstr ""
 
-#: src/exec.c:666
+#: src/exec.c:673
 #, fuzzy
 #| msgid "Invalid regular expression"
 msgid "Invalid redirection"
 msgstr "არასწორი რეგულარული გამოსახულება"
 
-#: src/exec.c:703 src/main.c:626
+#: src/exec.c:710 src/main.c:626
 msgid "File name not set"
 msgstr ""
 
-#: src/exec.c:717
+#: src/exec.c:724
 msgid "Recursive global command"
 msgstr ""
 
-#: src/exec.c:772
+#: src/exec.c:779
 #, fuzzy
 #| msgid "No previous regular expression"
 msgid "No previous error"
 msgstr "წინა რეგულარული გამოსახულება არ არსებობს"
 
-#: src/exec.c:882
+#: src/exec.c:889
 #, fuzzy
 #| msgid "Invalid collation character"
 msgid "Invalid destination address"
 msgstr "კოლაციის არასწორი სიმბოლო"
 
-#: src/exec.c:923 src/exec.c:1334
+#: src/exec.c:930 src/exec.c:1341
 #, fuzzy
 #| msgid "invalid user"
 msgid "Invalid register"
 msgstr "არასწორი მომხმარებელი"
 
-#: src/exec.c:1179 src/exec.c:1242 src/exec.c:1560 src/exec.c:1619
-#: src/exec.c:1804 src/exec.c:1819
+#: src/exec.c:1186 src/exec.c:1249 src/exec.c:1567 src/exec.c:1626
+#: src/exec.c:1811 src/exec.c:1826
 #, fuzzy
 #| msgid "Unknown error"
 msgid "Unknown command"
 msgstr "უცნობი შეცდომა"
 
-#: src/exec.c:1731
+#: src/exec.c:1738
 msgid "Cannot fork shell"
 msgstr ""
 
-#: src/exec.c:1819
+#: src/exec.c:1826
 #, fuzzy
 #| msgid "Invalid regular expression"
 msgid "Invalid address"
 msgstr "არასწორი რეგულარული გამოსახულება"
 
-#: src/exec.c:1837
+#: src/exec.c:1844
 msgid "Command too long"
 msgstr ""
 
-#: src/exec.c:1884
+#: src/exec.c:1891
 #, fuzzy
 #| msgid "Invalid range end"
 msgid "Invalid address range"
 msgstr "დიაპაზონის არასწორი დასასრული"
 
-#: src/glbl.c:132
+#: src/glbl.c:135
 msgid "No previous command"
 msgstr ""
 
@@ -358,64 +372,68 @@ msgstr ""
 msgid "File does not exist"
 msgstr ""
 
-#: src/io.c:97 src/io.c:166 src/io.c:633 src/io.c:682 src/main.c:781
+#: src/io.c:97 src/io.c:168 src/io.c:646 src/io.c:697 src/main.c:781
 #, fuzzy
 #| msgid "write error"
 msgid "File open error"
 msgstr "ჩაწერის შეცდომა"
 
-#: src/io.c:120 src/io.c:647
+#: src/io.c:120 src/io.c:660
 #, c-format
 msgid "%s: File already locked\n"
 msgstr ""
 
-#: src/io.c:144 src/io.c:624 src/io.c:662
+#: src/io.c:144 src/io.c:637 src/io.c:675
 msgid "File close error"
 msgstr ""
 
-#: src/io.c:292 src/io.c:428
+#: src/io.c:300 src/io.c:436
 #, c-format
 msgid "Newline inserted\n"
 msgstr ""
 
-#: src/io.c:297 src/io.c:433
+#: src/io.c:305 src/io.c:441
 #, c-format
 msgid "Newline appended\n"
 msgstr ""
 
-#: src/io.c:609 src/io.c:1154
+#: src/io.c:552 src/io.c:791
+msgid "Broken pipe"
+msgstr "გაფუჭებული მილი"
+
+#: src/io.c:622 src/io.c:1181
 #, fuzzy
 #| msgid "write error"
 msgid "File truncate error"
 msgstr "ჩაწერის შეცდომა"
 
-#: src/io.c:723
+#: src/io.c:744
 msgid "File too big"
 msgstr ""
 
-#: src/io.c:770 src/io.c:790 src/io.c:801 src/main.c:742 src/main.c:750
+#: src/io.c:797 src/io.c:817 src/io.c:828 src/main.c:742 src/main.c:750
 #, fuzzy
 #| msgid "write error"
 msgid "File write error"
 msgstr "ჩაწერის შეცდომა"
 
-#: src/io.c:834 src/parse.c:505
+#: src/io.c:861 src/parse.c:502
 #, fuzzy
 #| msgid "Bus error"
 msgid "File status error"
 msgstr "მატარებლის შეცდომა"
 
-#: src/io.c:841
+#: src/io.c:868
 msgid "Access restricted to regular files"
 msgstr ""
 
-#: src/io.c:910
+#: src/io.c:937
 #, fuzzy
 #| msgid "write error"
 msgid "File stat error"
 msgstr "ჩაწერის შეცდომა"
 
-#: src/io.c:1017
+#: src/io.c:1044
 msgid "Cannot append register to itself"
 msgstr ""
 
@@ -520,55 +538,55 @@ msgstr ""
 msgid "script, line %"
 msgstr ""
 
-#: src/parse.c:256 src/parse.c:602
+#: src/parse.c:253 src/parse.c:599
 #, fuzzy
 #| msgid "failed to return to initial working directory"
 msgid "Access restricted to working directory"
 msgstr "საწყისი საქაღალდის დაბრუნების შეცდომა"
 
-#: src/parse.c:323
+#: src/parse.c:320
 #, fuzzy
 #| msgid "%s: Too many arguments\n"
 msgid "Too many file names"
 msgstr "%s: მეტისმეტად ბევრი არგუმენტი\n"
 
-#: src/parse.c:338 src/parse.c:351 src/parse.c:378
+#: src/parse.c:335 src/parse.c:348 src/parse.c:375
 #, fuzzy
 #| msgid "named file"
 msgid "No more files"
 msgstr "სახელიანი ფაილი"
 
-#: src/parse.c:446
+#: src/parse.c:443
 msgid "File glob too long"
 msgstr ""
 
-#: src/parse.c:467 src/parse.c:471 src/parse.c:491
+#: src/parse.c:464 src/parse.c:468 src/parse.c:488
 msgid "Pathname expansion error"
 msgstr ""
 
-#: src/parse.c:487
+#: src/parse.c:484
 msgid "No such file or directory"
 msgstr ""
 
-#: src/parse.c:577
+#: src/parse.c:574
 #, fuzzy
 #| msgid "Invalid range end"
 msgid "Invalid file name"
 msgstr "დიაპაზონის არასწორი დასასრული"
 
-#: src/parse.c:632
+#: src/parse.c:629
 msgid "Brackets ([]) unbalanced"
 msgstr ""
 
-#: src/parse.c:639
+#: src/parse.c:636
 msgid "Backslash (\\) unexpected"
 msgstr ""
 
-#: src/parse.c:696
+#: src/parse.c:693
 msgid "Shell access restricted"
 msgstr ""
 
-#: src/parse.c:760
+#: src/parse.c:757
 #, fuzzy
 #| msgid "No previous regular expression"
 msgid "No previous shell command"
@@ -586,7 +604,7 @@ msgstr "სიმბოლოების არასწორი კლას�
 msgid "No previous pattern"
 msgstr "წინა რეგულარული გამოსახულება არ არსებობს"
 
-#: src/signal.c:136
+#: src/signal.c:152
 #, fuzzy
 #| msgid "program error"
 msgid "Signal error"
@@ -712,6 +730,21 @@ msgstr ""
 #~ msgid "%u bitset_lists\n"
 #~ msgstr "%u bitset_lists\n"
 
+#, fuzzy
+#~| msgid "density histogram"
+#~ msgid "count log histogram\n"
+#~ msgstr "სიმკვრივის ჰისტოგრამა"
+
+#, fuzzy
+#~| msgid "density histogram"
+#~ msgid "size log histogram\n"
+#~ msgstr "სიმკვრივის ჰისტოგრამა"
+
+#, fuzzy
+#~| msgid "density histogram"
+#~ msgid "density histogram\n"
+#~ msgstr "სიმკვრივის ჰისტოგრამა"
+
 #~ msgid "stack overflow"
 #~ msgstr "სტეკის გადავსება"
 
@@ -738,12 +771,23 @@ msgstr ""
 #~ msgstr "%s-ის წვდომების შენახვა"
 
 #, c-format
+#~ msgid "error while opening %s for reading"
+#~ msgstr "შეცდომა '%s'-ის წასაკითხად გახნისას"
+
+#, c-format
 #~ msgid "error reading %s"
 #~ msgstr "შეცდომა '%s'-ის კითხვისას"
 
 #, c-format
 #~ msgid "error writing %s"
 #~ msgstr "შეცდომა '%s'-ის ჩაწერისას"
+
+#, c-format
+#~ msgid "error after reading %s"
+#~ msgstr "შეცდომა '%s'-ის წაკითხვის შემდეგ"
+
+#~ msgid "fdopen() failed"
+#~ msgstr "fdopen() -ის შეცდომა"
 
 #~ msgid "unbalanced ["
 #~ msgstr "დაუბალანსებელი ["
@@ -897,6 +941,14 @@ msgstr ""
 #~ msgstr "პარამეტრის სტრიქონი არასწორადაა კოდირებული"
 
 #, c-format
+#~ msgid "failed to create \"%s\""
+#~ msgstr "\"%s\"-ის შექმნის შეცდომა"
+
+#, c-format
+#~ msgid "error while writing \"%s\" file"
+#~ msgstr "შეცდომა \"%s\" ფაილის ჩაწერსას"
+
+#, c-format
 #~ msgid "cannot stat %s"
 #~ msgstr "%s-ის აღმოჩენის შეცდომა"
 
@@ -913,6 +965,9 @@ msgstr ""
 
 #~ msgid "unable to record current working directory"
 #~ msgstr "მიმდინარე საქაღალდის ჩაწერა შეუძლებელია"
+
+#~ msgid "creation of threads failed"
+#~ msgstr "ნაკადების შექმნა ჩავარდა"
 
 #~ msgid "`"
 #~ msgstr "`"
@@ -953,9 +1008,6 @@ msgstr ""
 
 #~ msgid "Segmentation fault"
 #~ msgstr "სეგმენტაციის შეცდომა"
-
-#~ msgid "Broken pipe"
-#~ msgstr "გაფუჭებული მილი"
 
 #~ msgid "Alarm clock"
 #~ msgstr "მაღვიძარა"
@@ -1162,6 +1214,10 @@ msgstr ""
 #~ "%s, %s და სხვ.\n"
 
 #, c-format
+#~ msgid "Report bugs to: %s\n"
+#~ msgstr "შეცდომების შესახებ მიწერეთ: %s\n"
+
+#, c-format
 #~ msgid "Report %s bugs to: %s\n"
 #~ msgstr "%s-ის შეცდომების შესახებ მისაწერი ელფოსტა: %s\n"
 
@@ -1197,7 +1253,7 @@ msgstr ""
 
 #, c-format
 #~ msgid "failed to reopen %s with mode %s"
-#~ msgstr "%s-ის %s რეჟიმში ხელახალი გახსნიშ ეცდომა"
+#~ msgstr "%s-ის %s რეჟიმში ხელახალი გახსნის შეცდომა"
 
 #~ msgid "string comparison failed"
 #~ msgstr "სტრიქონების შედარება შეუძლებელია"
@@ -1226,3 +1282,76 @@ msgstr ""
 #, c-format
 #~ msgid "%s%s argument '%s' too large"
 #~ msgstr "%s%s-ის არგუმენტი %s ძალიან დიდია"
+
+#, c-format
+#~ msgid "failed to copy '%s' to '%s'"
+#~ msgstr "%s-ის %s-ში კოპირება ჩავარდა"
+
+#, c-format
+#~ msgid "%s invocation failed"
+#~ msgstr "%s-ის ჩაწოდება ჩავარდა"
+
+#~ msgid "? at start of expression"
+#~ msgstr "? გამოსახულების დასაწყისში"
+
+#~ msgid "* at start of expression"
+#~ msgstr "* გამოსახულების დასაწყისში"
+
+#~ msgid "+ at start of expression"
+#~ msgstr "+ გამოსახულების დასაწყისში"
+
+#~ msgid "{...} at start of expression"
+#~ msgstr "{...} გამოსახულების დასაწყისში"
+
+#~ msgid "stray \\ before unprintable character"
+#~ msgstr "უცხო \\ დაუბეჭდავად  სიმბოლომდე"
+
+#~ msgid "stray \\ before white space"
+#~ msgstr "უცხო \\ თეთრ გამოტოვებამდე"
+
+#~ msgid "stray \\"
+#~ msgstr "უცხო \\"
+
+#~ msgid "datetime"
+#~ msgstr "თარიღი და დრო"
+
+#~ msgid "time"
+#~ msgstr "დრო"
+
+#~ msgid "zone"
+#~ msgstr "ზონა"
+
+#~ msgid "date"
+#~ msgstr "თარიღი"
+
+#~ msgid "day"
+#~ msgstr "დღე"
+
+#~ msgid "relative"
+#~ msgstr "ფარდობითი"
+
+#~ msgid "number"
+#~ msgstr "ნომერი"
+
+#~ msgid "hybrid"
+#~ msgstr "ჰიბრიდი"
+
+#~ msgid "incorrect timezone"
+#~ msgstr "არასწორი დროის სარტყელი"
+
+#~ msgid "error: initial year out of range\n"
+#~ msgstr "შეცდომა: საწყისი წელი შუალედს გარეთაა\n"
+
+#~ msgid "error: parsing failed\n"
+#~ msgstr "შეცდომა: დამუშავება ჩავარდა\n"
+
+#, c-format
+#~ msgid "system default"
+#~ msgstr "სისტემის ნაგულისხმევი"
+
+#~ msgid "warning: '.' should be ':'"
+#~ msgstr "გაფრთხილება: '.' უნდა იყოს \":\""
+
+#, c-format
+#~ msgid "%s: %s"
+#~ msgstr "%s: %s"

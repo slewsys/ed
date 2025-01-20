@@ -67,6 +67,12 @@ update-gnulib:
 	if test -f lib/regex.h; then					      \
 	  rm -f lib/regex.h;						      \
 	fi;								      \
+	if test -f lib/dynarray.h; then					      \
+	  rm -f lib/dynarray.h;						      \
+	fi;								      \
+	if test -f lib/malloc/dynarray.h; then				      \
+	  rm -f lib/malloc/dynarray.h;					      \
+	fi;								      \
 	"$(gnulib_srcdir)/gnulib-tool" --import				      \
 	  --dir=$($top_srcdir)                                                \
 	  --lib=libgnu							      \
