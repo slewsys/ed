@@ -209,9 +209,7 @@ AM_GNU_GETTEXT_VERSION([0.21])
 AX_CHECK_OPENSSL([ac_cv_have_openssl='yes'])
 
 AC_FUNC_FORK
-AC_FUNC_VFORK
 AC_FUNC_FSEEKO
-AC_PROG_GCC_TRADITIONAL
 
 # NB: malloc.c from GNU libc is problematic, e.g., for cross-compiling
 AC_FUNC_MALLOC
