@@ -39,3 +39,4 @@ Makefile
 /GRTAGS
 /GTAGS
 /testsuite/generate-random-graph
+/testsuite/*.txt

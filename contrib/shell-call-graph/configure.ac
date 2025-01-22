@@ -20,7 +20,7 @@ AC_PATH_PROGS([GREP_CMD], [ggrep grep])
 AC_PATH_PROGS([MKTEMP_CMD], [gmktemp mktemp])
 
 AC_PATH_PROG([PERL_CMD], [perl])
-AC_PATH_PROG([PRDG_CMD], [prdg])
+AC_PATH_PROG([PRDG_CMD], [prdg],             [], [${PATH}${PATH_SEPARATOR}../prdg])
 
 AC_PATH_PROGS([READLINK_CMD], [greadlink readlink])
 
