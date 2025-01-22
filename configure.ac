@@ -449,6 +449,7 @@ AM_MISSING_PROG([AUTOM4TE], [autom4te])
 # Generate Makefiles and conditional headers.
 AC_CONFIG_FILES([                                                             \
   Makefile                                                                    \
+  contrib/Makefile                                                            \
   doc/Makefile                                                                \
   doc/bwk/Makefile                                                            \
   lib/Makefile                                                                \
