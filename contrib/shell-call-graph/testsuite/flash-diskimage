@@ -1,0 +1,727 @@
+#!/usr/bin/env bash
+#
+# @(#) flash-diskimage
+#
+# Copyright © 2024 Revolution Robotics, Inc.
+#
+# This script is intended for flashing a USB drive with a bootable
+# image file.
+#
+# In addition to requiring a recent version of the Bash shell
+# interpreter, for identifying removable devices, it depends on
+# GNU/Linux sysfs, udisksctl and gdbus.
+#
+: ${AWK_CMD:='/usr/bin/gawk'}
+: ${BLOCKDEV_CMD:='/usr/sbin/blockdev'}
+: ${BZIP2_CMD:='/usr/bin/bzip2'}
+: ${CAT_CMD:='/usr/bin/cat'}
+: ${CMP_CMD:='/usr/bin/cmp'}
+: ${CUT_CMD:='/usr/bin/cut'}
+: ${DD_CMD:='/usr/bin/dd'}
+: ${FIND_CMD:='/usr/bin/find'}
+: ${FINDMNT_CMD:='/usr/bin/findmnt'}
+: ${GDBUS_CMD:='/usr/bin/gdbus'}
+: ${GETOPT_CMD:='/usr/bin/getopt'}
+: ${GREP_CMD:='/usr/bin/grep'}
+: ${GZIP_CMD:='/usr/bin/gzip'}
+: ${LS_CMD:='/usr/bin/ls'}
+: ${LZIP_CMD:='/usr/bin/lzip'}
+: ${LZMA_CMD:=''}
+: ${LZOP_CMD:='/usr/bin/lzop'}
+: ${MKTEMP_CMD:='/usr/bin/mktemp'}
+: ${MKUDFFS_CMD:='/usr/sbin/mkudffs'}
+: ${PERL_CMD:='/home/alm/.asdf/shims/perl'}
+: ${READLINK_CMD:='/usr/bin/readlink'}
+: ${REALPATH_CMD:='/usr/bin/realpath'}
+: ${RM_CMD:='/usr/bin/rm'}
+: ${SED_CMD:='/usr/bin/sed'}
+: ${STAT_CMD:='/usr/bin/stat'}
+: ${SUDO_CMD:='/usr/bin/sudo'}
+: ${TR_CMD:='/usr/bin/tr'}
+: ${UDISKSCTL_CMD:='/usr/bin/udisksctl'}
+: ${UMOUNT_CMD:='/usr/bin/umount'}
+: ${UNZIP_CMD:='/usr/bin/unzip'}
+: ${XARGS_CMD:='/usr/bin/xargs'}
+: ${XZ_CMD:='/usr/bin/xz'}
+: ${ZSTD_CMD:='/usr/bin/zstd'}
+
+usage ()
+{
+    $CAT_CMD <<EOF
+Usage: $script_name OPTIONS [IMAGE [DEVICE]]
+Options:
+  -h|--help   - Print this help, then exit.
+  -b|--block-device DEVICE
+              - Removable block DEVICE to flash to (e.g., /dev/sdh).
+  -d|--directory DIRECTORY
+              - Select IMAGE from DIRECTORY (default: $PWD).
+  -f|--file IMAGE
+              - IMAGE to flash from (see also option -d).
+  -l|--label LABEL
+              - Set LABEL of UDF-formatted device (default: UDFNNNNN).
+  -u|--udf    - Format with UDF filesystem only (see also option -l).
+  -v|--verbose
+              - Debug script.
+  -x|--ex-dos-mbr
+              - Include bootable ISO 9660 images in selection list.
+
+Examples:
+  To flash an image in the current directory to a removable block
+  device, use:
+
+    ${script_name}
+
+  To flash a specific image, \`/path/to/file.iso', to a specific block
+  device, \`/dev/sdh', use:
+
+    ${script_name} /path/to/file.iso /dev/sdh
+
+  When selecting from multiple images to flash, this script lists, by
+  default, only those that can produce a bootable USB drive. In
+  particular, ISO 9660 images that don't have a DOS/MBR boot sector
+  are omitted. To include these images in the selection list, invoke
+  the script with option \`-x', e.g.:
+
+    ${script_name} -x
+
+  Alternatively, any file can be flashed by providing its path as in
+  the example above.
+
+EOF
+}
+
+# OS-agnstoic readlink for existent files/directories.
+resolve-existing ()
+{
+    case $($READLINK_CMD --version 2>&1) in
+        *coreutils*)
+            $REALPATH_CMD -e "$@"
+            ;;
+        *)
+            $READLINK_CMD -f "$@"
+            ;;
+    esac
+}
+
+error ()
+{
+    echo "${script_name}: $@" >&2
+}
+
+inform ()
+{
+    echo "$@" >&2
+}
+
+get-range ()
+{
+    size=$1
+
+    if (( size > 9 )); then
+        echo "1-$size"
+    else
+        eval echo {1.."$size"} | $TR_CMD ' ' '|'
+    fi
+}
+
+select-from-list ()
+{
+    local -n choices=$1
+    local prompt=$2
+
+    local choice
+    local count=${#choices[*]}
+
+    case "$count" in
+        0)
+            error "Nothing to choose."
+            return 1
+            ;;
+        1)
+            choice=${choices[0]}
+            ;;
+        *)
+            echo "$prompt" >&2
+            PS3="Selection [$(get-range $count)]? "
+            select choice in "${choices[@]}"; do
+                case "$choice" in
+                    '')
+                        echo "$REPLY: Invalid choice - Please try again:" >&2
+                        ;;
+                    *)
+                        break
+                        ;;
+                esac
+            done
+    esac
+
+    echo "$choice"
+}
+
+get-decompressor ()
+{
+    local -n image_cat=$1
+
+    local image_file=$2
+
+    case $(file "$image_file") in
+        *bzip2*)
+            image_cat="$BZIP2_CMD -dc"
+            ;;
+        *lzip*)
+            image_cat="$LZIP_CMD -dc"
+            ;;
+        *LZMA*)
+            image_cat="$LZMA_CMD -dc"
+            ;;
+        *lzop*)
+            image_cat="$LZOP_CMD -dc"
+            ;;
+        *gzip*)
+            image_cat="$GZIP_CMD -dc"
+            ;;
+        *XZ*)
+            image_cat="$XZ_CMD -dc"
+            ;;
+        *Zip*)
+            image_cat="$UNZIP_CMD -p"
+            ;;
+        *Zstandard*)
+            image_cat="$ZSTD_CMD -T0 -dc"
+            ;;
+        *'ISO 9660'*|*'DOS/MBR boot sector'*)
+            image_cat=$CAT_CMD
+            ;;
+        *)
+            image_cat=unknown
+            ;;
+    esac
+
+    if test ."$image_cat" = .'unknown'; then
+        error "${image_file}: Unrecognized image."
+        return 1
+    fi
+}
+
+get-disk-images ()
+{
+    local image_directory=$1
+    local ex_dos_mbr=$2
+
+    local image_suffixes='{bz2,gz,img,iso,lz,lzma,lzo,xz,zip,zst}'
+
+    local -a archives=()
+    local archives_string=''
+    local archive=''
+    local decomp=''
+
+    archives_string=$(
+        eval $LS_CMD "${image_directory}/"*.${image_suffixes} 2>/dev/null
+                   ) || true
+
+    if test ."$archives_string" = .''; then
+        error "${image_directory}: No images found in directory."
+        return 1
+    fi
+
+    mapfile -t archives <<<"$archives_string"
+
+
+    for archive in "${archives[@]}"; do
+        get-decompressor decomp "$archive" || exit $?
+        case $($decomp "$archive" | file -) in
+            *'DOS/MBR boot sector'*)
+                echo "$archive"
+                ;;
+            *'ISO 9660'*'bootable'*)
+                if $ex_dos_mbr; then
+                    echo "$archive"
+                fi
+                ;;
+        esac
+    done
+}
+
+get-removable-devices ()
+{
+    local devices_string=''
+    local -a devices=()
+    local device=''
+    local vendor=''
+    local model=''
+    local name=''
+
+    devices_string=$(
+        # $GREP_CMD -lv '^0$' '/sys/block/'*'/removable' |
+        #     $SED_CMD -e 's;removable$;device/uevent;' |
+        $FIND_CMD -L /sys/block/*/device -mindepth 1 -maxdepth 1 -name uevent -print0 |
+            $XARGS_CMD -0 $GREP_CMD -El '^DRIVER=(sd|mmcblk)$' |
+            $SED_CMD -e 's;device/uevent;size;' |
+            $XARGS_CMD $GREP_CMD -lv '^0' |
+            $CUT_CMD -d/ -f4
+                  ) || return $?
+
+    if test ."$devices_string" = .''; then
+        error "No removable block devices found."
+        return 1
+    fi
+
+    mapfile -t devices <<<"$devices_string"
+
+    for device in "${devices[@]}"; do
+        if ! is-removable-device "$device" 2>/dev/null; then
+            continue
+        elif test -f "/sys/block/${device}/device/vendor"; then
+            vendor=$(< "/sys/block/${device}/device/vendor")
+            model=$(< "/sys/block/${device}/device/model")
+            echo "/dev/$device ($vendor $model)"
+        elif test -f "/sys/block/${device}/device/name"; then
+            name=$(< "/sys/block/${device}/device/name")
+            echo "/dev/$device ($name)"
+        else
+            echo "/dev/$device (Unknown)"
+        fi
+    done
+}
+
+select-disk-image ()
+{
+    local image_directory=$1
+    local ex_dos_mbr=$2
+
+    local -a disk_images=()
+    local disk_images_string=''
+
+    disk_images_string=$(
+        get-disk-images "$image_directory" "$ex_dos_mbr"
+                      ) || return $?
+
+    if test ."$disk_images_string" = .''; then
+        error "${image_directory}: No images found in directory."
+        return 1
+    fi
+
+    mapfile -t disk_images <<<"$disk_images_string"
+    select-from-list disk_images 'Please choose an image to flash from:'
+}
+
+select-removable-device ()
+{
+    local -a removable_devices=()
+    local removable_devices_string=''
+
+    removable_devices_string=$(get-removable-devices) || return $?
+
+    if test ."$removable_devices_string" = .''; then
+        error "No removable block devices found."
+        return 1
+    fi
+
+    mapfile -t removable_devices <<<"$removable_devices_string"
+    select-from-list removable_devices 'Please choose a device to flash to:'
+}
+
+is-removable-device ()
+{
+    local device=${1#/dev/}
+
+    local -i is_removable=0
+    local drive=''
+    local is_gdbus_removable=false
+
+    # Check that parameter is a valid block device
+    if test ! -b "/dev/$device"; then
+        error "/dev/$device: Invalid block device."
+        return 1
+    fi
+
+    # Check that /sys/block/$dev exists
+    if test ! -d "/sys/block/$device"; then
+        error "/sys/block/$device: No such file or directory."
+        return 2
+    fi
+
+    # Get device parameters
+    is_removable=$(< "/sys/block/${device}/removable")
+
+    # Non removable SD card readers require additional check
+    if (( is_removable != 1 )); then
+        drive=$($UDISKSCTL_CMD info -b "/dev/$device" |
+                    $AWK_CMD -F\' '/Drive:/ { print $2 }') || return $?
+        is_gdbus_removable=$(
+            $GDBUS_CMD call --system --dest org.freedesktop.UDisks2 \
+                  --object-path "$drive" \
+                  --method org.freedesktop.DBus.Properties.Get \
+                  org.freedesktop.UDisks2.Drive MediaRemovable 2>/dev/null
+                          ) || return $?
+        if [[ ."$is_gdbus_removable" =~ ^\..*true ]]; then
+            is_removable=1
+        fi
+    fi
+
+    # Device not removable
+    if (( is_removable != 1 )); then
+        error "/dev/$device: Device not removable."
+        return 3
+    fi
+}
+
+get-image-file ()
+{
+    local -n image_file=$1
+    local image_directory=$2
+    local ex_dos_mbr=$3
+
+    if test ! -f "$image_file"; then
+        if test -f "${image_directory}/${image_file}"; then
+            image_file=${image_directory}/${image_file}
+        else
+            image_file=$(select-disk-image "$image_directory" "$ex_dos_mbr") \
+                || return $?
+        fi
+
+        if test ! -f "$image_file"; then
+            error "${image_file}: No such file or directory."
+            return 1
+        fi
+    fi
+}
+
+get-block-device ()
+{
+    local -n block_device=$1
+
+    local device_name=${block_device##*/}
+
+    if is-removable-device "$block_device" >/dev/null 2>&1 \
+            && $GREP_CMD -Eq  '^DRIVER=(sd|mmcblk)$' "/sys/block/${device_name}/device/uevent" \
+            && $GREP_CMD -qv '^0' "/sys/block/${device_name}/size"; then
+        return 0
+    elif test ."$block_device" != .''; then
+        if test ! -b "$block_device"; then
+            error "$block_device: Invalid block device."
+            usage
+        else
+            error "$block_device: Unsupported block device."
+        fi
+        return 1
+    fi
+
+    block_device=$(
+        select-removable-device |
+            $AWK_CMD '{ print $1 }'
+                ) || return $?
+
+    if test ! -b "$block_device"; then
+        error "${block_device}: Invalid block device."
+        return 2
+    fi
+}
+
+verify-media ()
+{
+    local image_file=$1
+    local block_device=$2
+
+    local total_size_bytes=0
+    local total_size_gib=0
+
+    total_size_bytes=$($SUDO_CMD $BLOCKDEV_CMD --getsize64 "$block_device") \
+        || return $?
+    total_size_gib=$($PERL_CMD -e "printf '%.1f', $total_size_bytes / 1024 ** 3") \
+                  || return $?
+
+    echo '═════════════════════════════════════════════' >&2
+    inform "Image: ${image_file}"
+    inform "Device: ${block_device}, ${total_size_gib} GiB"
+    echo '─────────────────────────────────────────────' >&2
+    read -t 30 -n 1 -p "Press any key to continue... "
+    test ."$REPLY" = .'' || echo
+    local -i status=$?
+
+    if (( status != 0 )); then
+       echo >&2
+       error "No response."
+       return $status
+    fi
+}
+
+progress_bar ()
+{
+    local -i runtime=${1:-120}
+    local -i update_interval=${2:-5}
+
+    local dots=''
+    local -i dots_max=40
+    local -i i=0
+
+    for (( i = 0; i < 100; i += update_interval * 100 / runtime )); do
+        dots=$(eval printf ".%.0s" {0..$(( dots_max * i / 100 ))})
+        printf "\r%-${dots_max}s" "${dots%.}" >&2
+        sleep "$update_interval"
+    done
+
+    dots=$(eval printf ".%.0s" {0..$dots_max})
+    printf "\r%-${dots_max}s(100%%)" "${dots%.}" >&2
+}
+
+flash-image ()
+{
+    local image_file=$1
+    local image_cat=$2
+    local block_device=$3
+    local -n written=$4
+
+    inform "Flashing image to device..."
+
+    local -i i=0
+
+    for (( i=0; i < 10; i++ )); do
+        if test -n "$($FINDMNT_CMD -n "${block_device}${i}")"; then
+            $SUDO_CMD $UMOUNT_CMD -f "${block_device}${i}" || true
+        fi
+    done
+
+    if test -n "$($FINDMNT_CMD -n "$block_device")"; then
+        $SUDO_CMD $UMOUNT_CMD -f "$block_device" || true
+    fi
+
+    errfile=$($MKTEMP_CMD "/tmp/${script_name}.XXXXX") || return $?
+    trap '$RM_CMD -f "$errfile"; exit 1' 0 1 2 15 RETURN
+
+    local -i image_size=$($STAT_CMD -c %s "$image_file")
+    local -i run_time=$(( (200 * 1283092059) / image_size ))
+    local -i update_interval=5
+    local -i progress_bar_pid=0
+
+    progress_bar "$run_time" "$update_interval" &
+    progress_bar_pid=$!
+
+    if ! $image_cat "$image_file" |
+            $SUDO_CMD $DD_CMD of="$block_device" bs=1M 2>"$errfile"; then
+        { kill "$progress_bar_pid" && wait "$progress_bar_pid"; } 2>/dev/null
+        echo
+        error "Flash did not complete successfully."
+        echo "*** Please check media and try again! ***"
+        return 1
+    fi
+
+    { kill "$progress_bar_pid" && wait "$progress_bar_pid"; } 2>/dev/null
+    echo
+    written=$($AWK_CMD '/bytes/ { print $1 }' "$errfile") || return $?
+
+    $RM_CMD -f "$errfile"
+    trap - 0 1 2 15 RETURN
+}
+
+verify-diskimage ()
+{
+    local image_file=$1
+    local image_cat=$2
+    local block_device=$3
+    local -i bytes_written=$4
+
+    inform "Verifying device against image..."
+
+    errfile=$($MKTEMP_CMD "/tmp/${script_name}.XXXXX") || return $?
+    trap '$RM_CMD -f "$errfile"; exit 1' 0 1 2 15 RETURN
+
+    local -i image_size=$($STAT_CMD -c %s "$image_file")
+    local -i run_time=$(( (180 * 1283092059) / image_size ))
+    local -i update_interval=5
+    local -i progress_bar_pid=0
+
+    progress_bar "$run_time" "$update_interval" &
+    progress_bar_pid=$!
+
+    $image_cat "$image_file" |
+        $SUDO_CMD $CMP_CMD -n "$bytes_written" "$block_device" - \
+                  >"$errfile" 2>&1 || true
+
+    local bytes_verified=0
+
+    bytes_verified=$(
+        $SED_CMD -nr -e 's/.*differ: byte +([0-9]+).*$/\1/p' "$errfile"
+                  ) || return $?
+
+    { kill "$progress_bar_pid" && wait "$progress_bar_pid"; } 2>/dev/null
+    echo
+    if test -s "$errfile"; then
+        error "Device and image differ at byte: ${bytes_verified}"
+        return 1
+    fi
+
+    $RM_CMD -f "$errfile"
+    trap - 0 1 2 15 RETURN
+
+    inform "Compared: ${bytes_written} bytes"
+    inform 'Device successfully verified'
+}
+
+udf-format-only ()
+{
+    local device=$1
+    local label=$2
+
+    if test ."$label" = .''; then
+        label=UDF$(( (100000 * SRANDOM) / 2 ** 32 ))
+    fi
+
+    local -i i=0
+
+    for (( i=0; i < 10; i++ )); do
+        if test -n "$($FINDMNT_CMD -n "${device}${i}")"; then
+            $SUDO_CMD $UMOUNT_CMD -f "${device}${i}" || true
+        fi
+    done
+
+    if test -n "$($FINDMNT_CMD -n "$device")"; then
+        $SUDO_CMD $UMOUNT_CMD -f "$device" || true
+    fi
+
+    $SUDO_CMD $MKUDFFS_CMD --utf8 --blocksize=512 --media-type=hd --label="$label" "$device"
+}
+
+if test ."$0" = ."${BASH_SOURCE[0]}"; then
+    set -o pipefail
+
+    declare script=''
+    declare script_name=''
+
+    script=$(resolve-existing "$0") || exit $?
+    script_name=${script##*/}
+
+    declare device=''
+    declare ex_dos_mbr=false
+    declare image=''
+    declare image_directory=$PWD
+    declare label=''
+    declare udf=false
+    declare verbose=false
+
+    ## parse input arguments ##
+    declare -r short_opts=b:d:f:hl:uvx
+    declare -r long_opts=block-device:,directory:,file:,help,label,udf,verbose,ex-dos-mbr
+
+    declare args=''
+
+    if ! args=$(
+        $GETOPT_CMD -s bash --options "$short_opts"  \
+                    --longoptions "$long_opts" --name "$script_name" -- "$@"
+         ); then
+        usage
+        exit $?
+    fi
+
+    eval set -- "$args"
+    unset args
+
+    while true; do
+        case "$1" in
+            -b|--block-device) # flash disk block device
+                device=$2
+
+                if test ! -b "$device"; then
+                    error "${device}: Invalid block device."
+                    exit 1
+                fi
+                shift
+                ;;
+            -d|--directory) # image directory
+                image_directory=$2
+
+                if test ! -d "$image_directory"; then
+                    error "${image_directory}: No such file or directory."
+                    exit 1
+                fi
+                shift
+                ;;
+            -f|--file) # image file
+                image=$2
+
+                if test ! -f "$image"; then
+                    error "${image}: No such file or directory."
+                    exit 1
+                fi
+                shift
+                ;;
+            -h|--help) # get help
+                usage
+                exit 0
+                ;;
+            -l|--label)
+                label=$2
+                shift
+                ;;
+            -u|--udf)
+                udf=true
+                ;;
+            -v|--verbose)
+                verbose=true
+                ;;
+            -x|--ex-dos-mbr)
+                ex_dos_mbr=true
+                ;;
+            --)
+                shift
+                break
+                ;;
+            *) # Process non-option arguments below...
+                break
+                ;;
+        esac
+        shift
+    done
+
+    # enable trace option in debug mode
+    if $verbose; then
+        echo "Debug mode enabled!"
+        set -x
+    fi
+
+    if $udf; then
+        case $# in
+            0)
+                : Nothing to do
+                ;;
+            1)
+                device=$1
+                ;;
+            *)
+                device=$1
+                label=$2
+                ;;
+        esac
+
+        get-block-device device || exit $?
+        udf-format-only "$device" "$label" || exit $?
+        exit 0
+    fi
+
+    case $# in
+        0)
+            : Nothing to do
+            ;;
+        1)
+            image=$1
+            ;;
+        *)
+            image=$1
+            device=$2
+            ;;
+    esac
+
+    get-image-file image "$image_directory" "$ex_dos_mbr" || exit $?
+
+    declare decomp=''
+
+    get-decompressor decomp "$image" || exit $?
+    get-block-device device || exit $?
+    verify-media "$image" "$device" || exit $?
+
+    declare -i bytes_written=0
+
+    flash-image "$image" "$decomp" "$device" bytes_written || exit $?
+    verify-diskimage "$image" "$decomp" "$device" "$bytes_written" \
+        || exit $?
+fi
