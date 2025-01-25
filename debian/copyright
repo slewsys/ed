@@ -3,50 +3,26 @@ Upstream-Name: ed
 Upstream-Contact: Andrew L. Moore <slewsys@gmail.com>
 Source: https://github.com/slewsys/ed
 
-Files: doc/bwk/intro/* doc/ed-intro.texi
+Files: doc/bwk/adv/* doc/bwk/intro/* doc/ed-adv.texi doc/ed-intro.texi
 Copyright: 1972 Brian W. Kernighan <bwk@princeton.edu>
 License: LPL-1.02
 
-Files: doc/bwk/adv/* doc/ed-adv.texi
-Copyright: 1972 Brian W. Kernighan <bwk@princeton.edu>
-License: LPL-1.02
-
-Files: lib/* doc/bwk/tmac/s.tmac
-Copyright: 1985-2024 Free Software Foundation, Inc. <https://fsf.org/>
-License: LGPL-2.0-or-later
-
-Files: include/*
-Copyright: 1985-2024 Free Software Foundation, Inc. <https://fsf.org/>
-License: LGPL-2.0-or-later
-
-Files: m4/*
-Copyright: 1985-2024 Free Software Foundation, Inc. <https://fsf.org/>
-License: LGPL-2.0-or-later
-
-Files: po/* doc/fdl.texi doc/gpl.texi INSTALL
-Copyright: 1985-2024 Free Software Foundation, Inc. <https://fsf.org/>
-License: LGPL-2.0-or-later
-
-Files: src/* autogen.sh configure.ac Makefile.am doc/Makefile.am doc/bwk/Makefile.am ChangeLog README.md
-Copyright: 1993-2024 Andrew L. Moore <slewsys@gmail.com>
+Files: src/* autogen.sh ChangeLog doc/*.1 */Makefile.am pkgs/* README.md testsuite/*
+Copyright: 1993-2025 Andrew L. Moore <slewsys@gmail.com>
 License: BSD-2-Clause OR GPL-2.0-or-later OR MIT
 
-Files: doc/ed.1 doc/bsd-ed.1 doc/gnu-ed.1 doc/ed.texi
-Copyright: 1993-2024 Andrew L. Moore <slewsys@gmail.com>
-License: BSD-2-Clause OR GPL-2.0-or-later OR MIT
+Files: ABOUT-NLS COPYING INSTALL doc/fdl.texi doc/ed.texi
+Copyright: Copyright © 2025 Free Software Foundation, Inc.
+License: GFDL-1.2-only
 
-Files: testsuite/*
-Copyright: 1993-2024 Andrew L. Moore <slewsys@gmail.com>
-License: BSD-2-Clause OR GPL-2.0-or-later OR MIT
+Files: lib/* m4/* po/*
+Copyright: Copyright © 2019-2025 Free Software Foundation, Inc.
+License: LGPL-2.1-or-later
 
-Files: contrib/*
-Copyright: 1993-2024 Andrew L. Moore <slewsys@gmail.com>
-License: BSD-2-Clause OR GPL-2.0-or-later OR MIT
+Files: doc/bwk/tmac/* doc/gpl.texi
+Copyright: Copyright © 2025 Free Software Foundation, Inc. <https://fsf.org/>
+License: GPL-3.0-or-later
 
-Files: debian/* .github/* ABOUT-NLS AUTHORS BUGS COPYING NEWS THANKS TODO .gitignore
-Copyright: 1993-2024 Andrew L. Moore <slewsys@gmail.com>
+Files: AUTHORS BUGS contrib/* debian/* ed.spec .github/* */.gitignore NEWS THANKS TODO
+Copyright: 1993-2025 Andrew L. Moore <slewsys@gmail.com>, SlewSys Research
 License: CC0-1.0
-
-Files: libbsd/*
-Copyright: 2000 The NetBSD Foundation, Inc.
-License: BSD-2-Clause
