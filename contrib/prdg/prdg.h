@@ -2,7 +2,7 @@
  *
  * SPDX-FileCopyrightText: 1989,2024 Andrew L. Moore <slewsys@gmail.com>, SlewSys Research
  *
- * SPDX-License-Identifier: CC0
+ * SPDX-License-Identifier: CC0-1.0
  */
 #include "config.h"
 
