@@ -1,8 +1,8 @@
 /* utf8.c: UTF-8 routines for ed line editor.
  *
- *  Copyright © 1993-2022 Andrew L. Moore <slewsys@gmail.com>, SlewSys Research
+ * SPDX-FileCopyrightText: 1993-2025 Andrew L. Moore <slewsys@gmail.com>, SlewSys Research
  *
- *  This file is part of ed.
+ * SPDX-License-Identifier: BSD-2-Clause OR GPL-2.0-or-later OR MIT
  */
 
 #include "ed.h"

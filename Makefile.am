@@ -52,7 +52,13 @@ check-valgrind: clean
 
 maintainer-update-dist: update-gnulib update-po
 
-spdx-sbom:
+spdx-sbom: REUSE.toml
+	@if ! command -v reuse >/dev/null; then				      \
+	    echo 'reuse: Command not found' >&2;			      \
+	    echo 'Please verify installation of REUSE, e.g.:' >&2;	      \
+	    echo '    pip install -U reuse' >&2;			      \
+	    exit 1;							      \
+	fi
 	reuse --suppress-deprecation spdx > $(PACKAGE)-$(VERSION).spdx
 
 update-gnulib:

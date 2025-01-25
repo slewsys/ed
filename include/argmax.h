@@ -1,23 +1,9 @@
 /* argmax.h: ARGV limits for ed line editor.
-
-   Copyright © 1993-2014 Andrew L. Moore <slewsys@gmail.com>, SlewSys Research
-
-   This file is part of ed.
-
-   Ed is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2, or (at your option)
-   any later version.
-
-   Ed is distributed in the hope that it will be useful, but
-   WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-   General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with ed; if not, write to the Free Software
-   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  */
-
+ *
+ * SPDX-FileCopyrightText: 1993-2025 Andrew L. Moore <slewsys@gmail.com>, SlewSys Research
+ *
+ * SPDX-License-Identifier: BSD-2-Clause OR GPL-2.0-or-later OR MIT
+ */
 
 #include "config.h"
 

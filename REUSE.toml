@@ -1,0 +1,40 @@
+version = 1
+SPDX-PackageName = "ed"
+SPDX-PackageSupplier = "Andrew L. Moore <slewsys@gmail.com>, SlewSys Research"
+SPDX-PackageDownloadLocation = "https://github.com/slewsys/ed"
+
+[[annotations]]
+path = ["doc/bwk/adv/**", "doc/bwk/intro/**", "doc/ed-adv.texi", "doc/ed-intro.texi"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "1972 Brian W. Kernighan <bwk@princeton.edu>"
+SPDX-License-Identifier = "LPL-1.02"
+
+[[annotations]]
+path = ["autogen.sh", "ChangeLog", "doc/*.1", "**/Makefile.am", "pkgs/**", "README.md", "testsuite/**"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "1993-2025 Andrew L. Moore <slewsys@gmail.com>, SlewSys Research"
+SPDX-License-Identifier = "BSD-2-Clause OR GPL-2.0-or-later OR MIT"
+
+[[annotations]]
+path = ["ABOUT-NLS", "COPYING", "INSTALL", "doc/fdl.texi", "doc/ed.texi"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "Copyright © 2025 Free Software Foundation, Inc."
+SPDX-License-Identifier = "GFDL-1.2-only"
+
+[[annotations]]
+path = ["lib/**", "m4/*", "po/*"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "Copyright © 2019-2025 Free Software Foundation, Inc."
+SPDX-License-Identifier = "LGPL-2.1-or-later"
+
+[[annotations]]
+path = ["doc/bwk/tmac/*", "doc/gpl.texi"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "Copyright © 2025 Free Software Foundation, Inc. <https://fsf.org/>"
+SPDX-License-Identifier = "GPL-3.0-or-later"
+
+[[annotations]]
+path = ["AUTHORS", "BUGS", "contrib/**", "debian/**", "ed.spec", ".github/**", "**/.gitignore", "NEWS", "THANKS", "TODO"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "1993-2025 Andrew L. Moore <slewsys@gmail.com>, SlewSys Research"
+SPDX-License-Identifier = "CC0-1.0"
