@@ -6,13 +6,16 @@
 - [Installation](#installation)
    - [Binary Distributions](#binary-distributions)
    - [Prerequisites for building from source](#prerequisites-for-building-from-source)
-      - [CentOS/RHEL](#centosrhel)
-      - [Debian/Ubuntu](#debianubuntu)
+      - [AlmaLinux/RockyLinux](#almalinuxrockylinux)
       - [Fedora](#fedora)
+      - [RHEL](#rhel)
+      - [OmniOS](#omnios)
       - [OpenSUSE](#opensuse)
-   - [Building from source](#building-from-source)
+      - [Debian/Ubuntu](#debianubuntu)
+      - [FreeBSD](#freebsd)
+      - [OpenBSD](#openbsd)
    - [Building from Git](#building-from-git)
-   - [Building a Debian package](#building-a-debian-package)
+   - [Building RPM and Debian packages](#building-rpm-and-debian-packages)
 - [Tutorials](#tutorials)
 - [Extensions to the SUSv4 standard](#extensions-to-the-susv4-standard)
    - [Command-line address arguments](#command-line-address-arguments)
@@ -41,15 +44,11 @@
 
 ## Description
 
-Ed is an implementation of the Unix line editor. It is 100% POSIX
-compatible, 8-bit clean with 64-bit addressing. It includes the GNU
-regular expression library, but can be linked against any
-POSIX-compatilbe alternative.
-
-Several optional extensions to the SUSv4 standard are described
-[below](#extensions-to-the-susv4-standard).
-The extensions are careful not to alter `ed`'s standard behavior and
-so can be safely enabled by default.
+Ed is an implementation of the standard Unix editor. Several
+(optional) extensions to the SUSv4 standard are available as described
+[below](#extensions-to-the-susv4-standard). The extensions are careful
+not to alter `ed`'s traditional behavior and so can be safely enabled
+by default.
 
 ## Installation
 ### Binary Distributions
@@ -59,167 +58,205 @@ Some binary packages are available - see
 
 ### Prerequisites for building from source
 
-To build `ed` from source, the following prerequisite packages are
-needed:
+To build `ed` from source, the following packages are needed:
 
  - **GNU** `autoconf`,
  - **GNU** `automake`,
- - **GNU** `autopoint`,
+ - **GNU** `autopoint` (if not provided by gettext),
  - **GNU** `gettext`,
- - **GNU** `libtool`, and
- - **GNU** `texinfo`.
+ - **GNU** `libtool`,
+ - **GNU** `make`, and
+ - `openssl`.
 
-Additional packages for generating PDFs of Brian W. Kernighan's
-`ed` tutorials are:
+Additional packages used for testing and generating PDFs of Brian W.
+Kernighan's `ed` tutorials are:
 
- - **GNU** `texi2dvi`,
- - **GNU** `roff`, and
- - `ghostscript`.
+ - **GNU** `texinfo`,
+ - **TeXLive** or **MacTeX**,
+ - **GNU** `groff`,
+ - `ncal`,
+ - `valgrind`, and
+ - `zstd`.
 
-#### CentOS/RHEL
+#### AlmaLinux/RockyLinux
 
-On Red Hat and Red Hat-based systems, the prerequisite packages can be
-installed by running the commands:
+On Cenots-based systems, prerequisite packages can be installed by
+running (with root privileges):
 
 ```shell
-sudo dnf group install 'Development Tools'
-sudo dnf install -y gettext-devel ghostscript groff \
-    openssl-devel textinfo zstd
+dnf config-manager --set-enabled crb
+dnf install -y --refresh autoconf automake gcc gettext-devel git groff \
+    libtool openssl-devel texinfo texinfo-tex zstd
+```
+
+#### Fedora
+
+On Fedora, prerequisite packages can be installed by running (with
+root privileges):
+
+```shell
+dnf update --refresh
+dnf install -y autoconf automake gcc gettext-devel git \
+    glibc-gconv-extra groff libtool openssl-devel texinfo \
+    texinfo-tex
+```
+
+#### RHEL
+
+Red Hat Enterprise Linux 9 and 10 (beta) present hurdles due to a
+compromised perl binary and (presumably therefore) no texinfo package.
+Begin by installing what is available (with root privileges):
+
+```
+dnf install -y \
+    https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
+dnf install -y --refresh autoconf automake gcc gettext-devel git \
+    glibc-gconv-extra groff libtool ncurses-devel openssl-devel \
+    texlive-scheme-basic zstd
+```
+
+Now build perl and texinfo (preferably) as a non-privileged user:
+
+```
+git clone https://github.com/asdf-vm/asdf.git ~/.asdf
+source ~/.asdf/asdf.sh
+asdf plugin add perl
+latest=$(asdf latest perl)
+asdf install perl $latest
+asdf global perl $latest
+curl -sSLO https://ftp.gnu.org/gnu/texinfo/texinfo-7.2.tar.xz
+tar -C ~/ -Jxf ${PWD}/texinfo-7.2.tar.xz
+cd ~/texinfo-7.2
+./configure --prefix=/usr
+make -j$(nproc)
+```
+
+Finally, as user root, install texinfo:
+
+```
+make install
+```
+
+#### OmniOS
+
+On OmniOS, prerequisite packages can be installed by running (with root privileges):
+
+```shell
+pkg install \
+    developer/build/autoconf \
+    developer/build/automake \
+    developer/gcc14 \
+    developer/build/gnu-make \
+    developer/build/libtool \
+    text/gnu-gettext \
+    system/library/iconv/unicode \
+    system/library/iconv/extra \
+    library/security/openssl-3 \
+    text/groff \
+    ooce/text/texinfo \
+    ooce/application/texlive \
+    versioning/git \
+    compress/zstd
+```
+
+To expose TeX and texinfo binaries, extend PATH variable with, e.g.:
+
+```
+export PATH=${PATH}:/opt/ooce/bin:/opt/ooce/texlive/bin
+```
+
+#### OpenSUSE
+
+On OpenSUSE, the prerequisite packages can be installed by running (with root privileges):
+
+```shell
+zypper --non-interactive install -t pattern devel_C_C++
+zypper --non-interactive install -y gettext-tools  \
+    libopenssl-3-devel groff texlive-textinfo zstd
 ```
 
 #### Debian/Ubuntu
 
 On Debian/Ubuntu systems, the prerequisite packages can be installed
-by running the command:
+by running (with root privileges):
 
 ```shell
-sudo apt update
-sudo apt install -y build-essential autoconf automake \
-    autopoint gettext ghostscript groff libssl-dev \
-    libtool ncal texlive texinfo zstd
+apt update
+apt install -y  autoconf automake autopoint gcc gettext git \
+    groff libssl-dev libtool make ncal texinfo texlive-binaries zstd
 ```
 
-#### Fedora
+#### FreeBSD
 
-On Fedora, the prerequisite packages can be installed by running the
-commands:
+On FreeBSD, the prerequisite packages can be installed by running (with root privileges):
 
 ```shell
-sudo dnf group install c-development
-sudo dnf install -y gettext-devel ghostscript groff \
-    openssl-devel texinfo-tex texinfo zstd
+pkg install -y autoconf automake gmake libtool gettext-tools \
+    openssl groff texinfo texlive-full git
 ```
 
-#### OpenSUSE
+#### OpenBSD
 
-On OpenSUSE, the prerequisite packages can be installed by running the
-commands:
+On OpenBSD, the prerequisite packages can be installed by running (with root privileges):
 
 ```shell
-sudo zypper --non-interactive install -t pattern devel_C_C++
-sudo zypper --non-interactive install -y gettext-tools ghostscript \
-    groff libopenssl-3-devel texlive-textinfo zstd
+pkg_add autoconf automake gmake gettext-tools git libtool \
+    openssl  groff texinfo
 ```
 
-### Building from source
-The easiest way to build from source is to run:
+If autoconf, say, v2.72, and automake v1.16 were selected, run:
 
-```shell
-curl -L https://github.com/slewsys/ed/releases/download/v2.0.13/ed-2.0.13.tar.gz |
-    gzip -cd |
-    tar -xf -
-cd ./ed-2.0.13
-./configure --enable-all-extensions --with-included-regex
-make
-sudo make install
+```
+export AUTOCONF_VERSION=2.72
+export AUTOMAKE_VERSION=1.16
 ```
 
 ### Building from Git
-Updating Natural Language translation files requires:
 
- - **GNU** `gettext` tools.
-
-Generating documentation requires:
-
- - a typesetting system (e.g., `groff` or `troff`),
- - **GNU** `texinfo` and
- - additional tools for producing PDFs (.e.g, `texi2pdf` and `ps2pdf`).
-
-Ruunning tests requires:
-
- - **GNU** `make`
- - **GNU** `automake`,
- - **GNU** `autoconf` and
- - **GNU** `libtool`.
-
-Assuming these are available, run:
+With prerequisites installed per above, run:
 
 ```shell
-git clone https://github.com/slewsys/ed
+git clone https://github.com/slewsys/ed.git
 cd ./ed
 ./autogen.sh
-./configure --enable-all-extensions --with-included-regex
-make
-make check
-sudo make install
-```
-### Building a Debian package
-To build a Debian package with `gbp`:
-
-Install prerequisites on Debian/Ubuntu:
-
-```shell
-sudo apt build-dep ed
-sudo apt install git-buildpackage libssl-dev texinfo
+./configure --prefix=/usr --enable-all-extensions --with-included-regex
+gmake
+gmake check
 ```
 
-Create a destination directory for Debian build products:
+Install with root privileges:
 
-```shell
-mkdir build
-cd ./build
+```
+gmake install
 ```
 
-Clone **ed** repository into destination directory and run **Git Buildpackage** (`gbp`):
+### Building RPM and Debian packages
 
-```shell
-git clone https://github.com/slewsys/ed ed-2.0.13
-cd ./ed-2.0.13
-git branch upstream
-gbp buildpackage --git-debian-branch=main --git-upstream-tree=branch
+If the requisite OCI container infrastructure is available (currently
+`podman` and `buildah` are required), the top-level Makefile has
+targets for building RPM and Debian packages as follows. After
+configuring the source per above, specify the desired architecture and
+package type, e.g. for RPMs:
+
+```
+make amd64-rpm
 ```
 
-`gbp` might fail with the error:
+and for Debian packages:
 
-> dpkg-source: info: local changes detected, the modified files are:
-> ed-2.0.13/Makefile.in
-> ed-2.0.13/aclocal.m4
-> ed-2.0.13/config.h.in
-> ed-2.0.13/configure
-> ed-2.0.13/doc/Makefile.in
-> ed-2.0.13/doc/bwk/Makefile.in
-> ed-2.0.13/lib/Makefile.in
-> ed-2.0.13/src/Makefile.in
-> ed-2.0.13/testsuite/Makefile.in
-
-This reflects the fact that the **ed** repository does not contain
-generated files. To resolve this, add the missing files to the tar
-archive and run `gbp` again:
-
-```shell
-cd ..
-gunzip ./ed_2.0.13.orig.tar.gz
-tar --append -f ./ed_2.0.13.orig.tar \
-ed-2.0.13/{Makefile.in,aclocal.m4,config.h.in,configure,doc/Makefile.in,\
-doc/bwk/Makefile.in,lib/Makefile.in,src/Makefile.in,testsuite/Makefile.in,\
-po/stamp-po}
-gzip ed_2.0.13.orig.tar
-cd -
-gbp buildpackage --git-debian-branch=main --git-upstream-tree=branch
+```
+make amd64-deb
 ```
 
-The build products, Debian packages with *deb* suffix, should appear in
-the parent folder (*build*).
+RPMs can be built with architectures amd64 and arm46.
+
+Deb packages can be built for amd64, arm64 and arm.
+
+Build logs can be viewed under the *pkgs* subdirectory, e.g.,
+*pkgs/Fedora/linux-amd64-build.log*.
+
+Distribution packages are saved under the *pkgs* subdirectory, e.g.,
+*pkgs/Feodra/amd64*.
 
 ## Tutorials
 
@@ -228,7 +265,7 @@ documents and NROFF manuscripts. See _doc/bwk/_ or, from within `ed`,
 type:
 
 ```ed
-!info ed RET m tutorial RET
+! info ed <RET> m tutorial <RET>
 ```
 
 ## Extensions to the SUSv4 standard
@@ -240,8 +277,9 @@ with commnad-line option **-G**.
 
 None of the `ed` extensions discussed below are enabled by default.
 They can all be enabled with `configure` option
-**--enable-all-extensions**.  Alternatively, individual extensions can
-be enabled as described below.
+**--enable-all-extensions**. Alternatively, individual extensions can
+be enabled (or if preceded by **--enable-all-extensions**, disabled) as
+described below.
 
 ### Command-line address arguments
 
