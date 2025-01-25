@@ -1,0 +1,22 @@
+version = 1
+SPDX-PackageName = "ed"
+SPDX-PackageSupplier = "Andrew L. Moore <slewsys@gmail.com>, SlewSys Research"
+SPDX-PackageDownloadLocation = "https://github.com/slewsys/ed"
+
+[[annotations]]
+path = ["doc/bwk/adv/**", "doc/bwk/intro/**", "doc/ed-adv.texi", "doc/ed-intro.texi"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "1972 Brian W. Kernighan <bwk@princeton.edu>"
+SPDX-License-Identifier = "LPL-1.02"
+
+[[annotations]]
+path = ["autogen.sh", "ChangeLog", "doc/bsd-ed.1", "doc/bwk/Makefile.am", "doc/ed.1", "doc/ed.texi", "doc/gnu-ed.1", "doc/Makefile.am", "Makefile.am", "README.md", "testsuite/**"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "1993-2024 Andrew L. Moore <slewsys@gmail.com>, SlewSys Research"
+SPDX-License-Identifier = "BSD-2-Clause OR GPL-2.0-or-later OR MIT"
+
+[[annotations]]
+path = ["ABOUT-NLS", "AUTHORS", "BUGS", "COPYING", "debian/**", ".github/**", ".gitignore", "NEWS", "THANKS", "TODO"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "1993-2024 Andrew L. Moore <slewsys@gmail.com>, SlewSys Research"
+SPDX-License-Identifier = "CC0-1.0"
