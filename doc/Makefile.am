@@ -12,30 +12,31 @@ if !HAVE_TEXI2DVI
 endif
 
 PROG		= ed
-TEXI		= $(PROG:=.texi)
+ED_TEXI		= $(PROG:=.texi)
 INTRO_TEXI	= $(PROG:=-intro.texi)
 ADV_TEXI	= $(PROG:=-adv.texi)
 
-PDF		= $(PROG:=.pdf)
+ED_PDF		= $(PROG:=.pdf)
 INTRO_PDF	= $(PROG:=-intro.pdf)
 ADV_PDF		= $(PROG:=-adv.pdf)
 
-INFO		= $(PROG:=.info)
+ED_INFO		= $(PROG:=.info)
 INTRO_INFO	= $(PROG:=-intro.info)
 ADV_INFO	= $(PROG:=-adv.info)
 
-TEX_AUX		= $(PROG:=.aux)
-TEX_CP		= $(PROG:=.cp)
-TEX_FN		= $(PROG:=.fn)
-TEX_KY		= $(PROG:=.ky)
-TEX_LOG		= $(PROG:=.log)
-TEX_PG		= $(PROG:=.pg)
-TEX_TOC		= $(PROG:=.toc)
-TEX_TP		= $(PROG:=.tp)
-TEX_VR		= $(PROG:=.vr)
+ED_TEX_AUX		= $(PROG:=.aux)
+ED_TEX_CP		= $(PROG:=.cp)
+ED_TEX_FN		= $(PROG:=.fn)
+ED_TEX_KY		= $(PROG:=.ky)
+ED_TEX_LOG		= $(PROG:=.log)
+ED_TEX_PG		= $(PROG:=.pg)
+ED_TEX_TOC		= $(PROG:=.toc)
+ED_TEX_TP		= $(PROG:=.tp)
+ED_TEX_VR		= $(PROG:=.vr)
 
-TEX_EXTRA	= $(TEX_AUX) $(TEX_CP) $(TEX_FN) $(TEX_KY)		     \
-		  $(TEX_LOG) $(TEX_PG) $(TEX_TOC) $(TEX_TP) $(TEX_VR)
+ED_TEX_EXTRA	= $(ED_TEX_AUX) $(ED_TEX_CP) $(ED_TEX_FN) $(ED_TEX_KY)	     \
+		  $(ED_TEX_LOG) $(ED_TEX_PG) $(ED_TEX_TOC) $(ED_TEX_TP)      \
+		  $(ED_TEX_VR)
 
 
 # Munged versions ed-intro. and ed-adv.texi for inclusion in ed.info.
@@ -46,7 +47,7 @@ ADV_INFO_TEXI   = $(ADV_TEXI:.texi=-info.texi)
 
 # Automake doesn't like absolute paths in TEXINOFS decls.
 info_TEXINFOS =								      \
-	$(TEXI)								      \
+	$(ED_TEXI)							      \
 	$(INTRO_TEXI)							      \
 	$(ADV_TEXI)
 
@@ -66,7 +67,7 @@ SUBDIRS = bwk
 
 .PHONY: all-local
 
-all-local: $(INFO) $(PDF)
+all-local: $(ED_INFO) $(ED_PDF)
 
 if !HAVE_MAKEINFO
 commented:
@@ -76,14 +77,14 @@ $(INTRO_INFO):
 
 else
 commented:
-	for f in  $(TEXI)						      \
+	for f in  $(ED_TEXI)						      \
 		  $(INTRO_TEXI)						      \
 		  $(ADV_TEXI)						      \
 		  version.texi						      \
 		  gpl.texi						      \
 		  fdl.texi;						      \
 	do test -f "$$f" || cp "$(srcdir)/$$f" .; done
-	$(MAKEINFO) $(INFO)
+	$(MAKEINFO) $(ED_INFO)
 
 $(INTRO_INFO): $(INTRO_INFO_TEXI)
 	$(MAKEINFO) -I . -o $@ $(INTRO_INFO_TEXI)
@@ -91,8 +92,6 @@ $(INTRO_INFO): $(INTRO_INFO_TEXI)
 $(ADV_INFO): $(ADV_INFO_TEXI)
 	$(MAKEINFO) -I . -o $@ $(ADV_INFO_TEXI)
 endif
-
-$(PDF): $(TEXI) $(INTRO_PDF) $(ADV_PDF)
 
 # Substitute `Top' node pointers for inclusion in ed.info
 $(INTRO_INCL_TEXI): $(INTRO_INFO_TEXI)
@@ -136,10 +135,16 @@ $(INTRO_PDF):
 $(ADV_PDF):
 	ln -sf bwk/$(ADV_PDF)	$(abs_top_builddir)/doc/$(ADV_PDF)
 
+# Provide explicit rule to work around OpenBSD (?) issue:
+#     texi2dvi: Can't use option `--output' with more than one argument.
+$(ED_PDF): $(ED_TEXI) $(INTRO_PDF) $(ADV_PDF)
+	TEXINPUTS="..:$TEXINPUTS" MAKEINFO='/usr/bin/makeinfo   -I .'	     \
+	$(TEXI2DVI) --pdf --build-dir=ed.t2p $(ED_TEXI)
+
 clean-local:
-	rm -f $(INTRO_INCL_TEXI) $(ADV_INCL_TEXI)			      \
-	    $(INTRO_INFO_TEXI) $(ADV_INFO_TEXI)				      \
-	    $(TEX_EXTRA)
+	rm -f $(INTRO_INCL_TEXI) $(ADV_INCL_TEXI)			     \
+	    $(INTRO_INFO_TEXI) $(ADV_INFO_TEXI)				     \
+	    $(ED_TEX_EXTRA)
 
 distclean-local: clean-local
-	rm -f ed-adv.info ed-intro.info ed.info stamp-vti version.texi
+	rm -f $(ADV_INFO) $(INTRO_INFO) $(ED_INFO) stamp-vti version.texi
