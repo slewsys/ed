@@ -71,6 +71,8 @@ AX_VALGRIND_DFLT([helgrind], [off])
 AX_VALGRIND_DFLT([drd], [off])
 AX_VALGRIND_CHECK
 
+AX_FUNC_GETOPT_LONG
+
 AC_MSG_CHECKING([whether included regex is requested])
 AC_ARG_WITH([included-regex],
   [AS_HELP_STRING([--with-included-regex],
@@ -99,9 +101,9 @@ AM_COND_IF([LIBADD_REGEX],
 #include <regex.h>]])])
 
 gl_INIT
-AM_CONDITIONAL([LDADD_LIBGNU], [true])
-  dnl [test ."$with_included_regex" = .'yes' \
-  dnl   || test ."$ac_cv_func_getopt_long_only" = .'yes'])
+AM_CONDITIONAL([LDADD_GNULIB], dnl[yes])
+  [test ."$with_included_regex" = .'yes' \
+    -o ."$ac_cv_func_getopt_long" != .'yes'])
 
 #
 # Checks for libraries.
