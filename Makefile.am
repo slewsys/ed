@@ -15,35 +15,32 @@ endif LDADD_LIBGNU
 SUBDIRS += src po doc testsuite
 
 EXTRA_DIST =								      \
-	autogen.sh							      \
-	m4/gnulib-cache.m4						      \
-	m4/gnulib-tool.m4						      \
-	include/pathmax.h						      \
-	include/argmax.h						      \
-	po/POTFILES-noregex.in						      \
-	po/POTFILES-regex.in						      \
-	testsuite/atlocal.in						      \
 	BUGS								      \
+	LICENSES							      \
+	REUSE.toml							      \
+	autogen.sh							      \
+	contrib								      \
 	doc/ed.1							      \
 	doc/bwk/tmac/refer.tmac						      \
 	doc/bwk/tmac/refer-ms.tmac					      \
-	LICENSES							      \
-	.reuse								      \
-	lib/patch-Makefile.am.diff					      \
 	ed.spec								      \
-	contrib
-
-dist-hook:
-	if test -f $(destdir)/contrib/prdg/Makefile; then		      \
-	    $(MAKE) -C $(destdir)/contrib/prdg distclean;		      \
-	fi
-	if test -f $(destdir)/contrib/call-graph/Makefile; then		      \
-	    $(MAKE) -C $(destdir)/contrib/call-graph  distclean;	      \
-	fi
+	include/pathmax.h						      \
+	include/argmax.h						      \
+	lib/patch-Makefile.am.diff					      \
+	m4								      \
+	pkgs								      \
+	po/POTFILES-noregex.in						      \
+	po/POTFILES-regex.in
 
 HEAD_COMMIT = $(shell git rev-parse --short HEAD)
 
-.PHONY: maintainer-update-dist update-testsuite-dist update-po
+.PHONY: check-valgrind maintainer-update-dist update-testsuite-dist update-po
+
+%-deb:
+	$(MAKE) -C $(abs_top_srcdir)/pkgs $@
+
+%-rpm:
+	$(MAKE) -C $(abs_top_srcdir)/pkgs $@
 
 check-valgrind: clean
 	$(MAKE) $(AM_MAKEFLAGS) CFLAGS='-g -O0'				      \
