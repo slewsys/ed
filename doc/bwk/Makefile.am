@@ -7,7 +7,7 @@ SUFFIXES = .ps .pdf
 .ps.pdf:
 	if test -f $< &&                                                      \
 	   test -n "$(PS2PDF)" &&                                             \
-	   test -x "$$(which $(PS2PDF))"; then                                \
+	   test -x "$$(command -v $(PS2PDF))"; then                                \
 	    $(PS2PDF) $< $@;                                                  \
 	fi
 
@@ -47,25 +47,25 @@ ADV_SRC =								      \
     $(tut_srcdir)/adv/ae7						      \
     $(tut_srcdir)/adv/ae9
 
-EXTRA_DIST = $(INTRO).pdf $(ADV).pdf $(INTRO_SRC) $(ADV_SRC) tmac/s.tmac
+EXTRA_DIST = $(INTRO_SRC) $(ADV_SRC) tmac/s.tmac
 
 all: $(INTRO).pdf $(ADV).pdf
 
 $(INTRO).ps: $(INTRO_SRC)
-	if test -n "$(GROFF)" && test -x $$(which $(GROFF)); then	      \
+	if test -n "$(GROFF)" && test -x $$(command -v $(GROFF)); then	      \
 	  $(GROFF) -Tps -M$(tut_srcdir)/tmac -ms $(INTRO_SRC) >$@;	      \
-	elif test -n "$(TROFF)" && test -x $$(which $(TROFF)); then	      \
-	  if test -n "$(DPOST)" && test -x $$(which $(DPOST)); then	      \
+	elif test -n "$(TROFF)" && test -x $$(command -v $(TROFF)); then      \
+	  if test -n "$(DPOST)" && test -x $$(command -v $(DPOST)); then      \
 	    $(TROFF) -Tpost -M$(tut_srcdir)/tmac -ms			      \
 	    $(INTRO_SRC) | $(DPOST) >$@;				      \
 	  fi;								      \
 	fi
 
 $(ADV).ps: $(ADV_SRC)
-	if test -n "$(GROFF)" && test -x $$(which $(GROFF)); then	      \
+	if test -n "$(GROFF)" && test -x $$(command -v $(GROFF)); then	      \
 	  $(GROFF) -Tps -M$(tut_srcdir)/tmac -ms $(ADV_SRC) >$@;	      \
-	elif test -n "$(TROFF)" && test -x $$(which $(TROFF)); then	      \
-	  if test -n "$(DPOST)" && test -x $$(which $(DPOST)); then	      \
+	elif test -n "$(TROFF)" && test -x $$(command -v $(TROFF)); then      \
+	  if test -n "$(DPOST)" && test -x $$(command -v $(DPOST)); then      \
 	    $(TROFF) -Tpost -M$(tut_srcdir)/tmac			      \
 	    -ms $(ADV_SRC) | $(DPOST) >$@;				      \
 	  fi;								      \
@@ -75,3 +75,4 @@ clean-local:
 	-rm -f *.ps *.pdf
 
 distclean-local: clean-local
+	rm -f Makefile
