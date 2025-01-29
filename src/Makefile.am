@@ -35,9 +35,9 @@ AM_CPPFLAGS = -I$(top_srcdir)						\
 	      -DLOCALEDIR=\"$(localedir)\"				\
 	      -D_FORTIFY_SOURCE=3
 
-if LDADD_LIBGNU
+if LDADD_GNULIB
 ed_LDADD += ../lib/libgnu.a
-endif LDADD_LIBGNU
+endif LDADD_GNULIB
 
 if LIBADD_REGEX
 AM_CPPFLAGS += -DRE_ENABLE_I18N=1
@@ -59,5 +59,10 @@ if LDADD_LIBBSD
 ed_LDADD += -lbsd
 endif LDADD_LIBBSD
 
-maintainer-clean-local:
+clean-local:
 	rm -f .gdb_history
+
+distclean-local: clean-local
+	rm -f Makefile
+
+maintainer-clean-local: clean-local

@@ -59,3 +59,4 @@ distclean-local: clean-local
 	if test -f prdg/Makefile; then					\
 	    $(MAKE) -C prdg distclean;					\
 	fi
+	rm -f Makefile

@@ -24,15 +24,15 @@ ED_INFO		= $(PROG:=.info)
 INTRO_INFO	= $(PROG:=-intro.info)
 ADV_INFO	= $(PROG:=-adv.info)
 
-ED_TEX_AUX		= $(PROG:=.aux)
-ED_TEX_CP		= $(PROG:=.cp)
-ED_TEX_FN		= $(PROG:=.fn)
-ED_TEX_KY		= $(PROG:=.ky)
-ED_TEX_LOG		= $(PROG:=.log)
-ED_TEX_PG		= $(PROG:=.pg)
-ED_TEX_TOC		= $(PROG:=.toc)
-ED_TEX_TP		= $(PROG:=.tp)
-ED_TEX_VR		= $(PROG:=.vr)
+ED_TEX_AUX	= $(PROG:=.aux)
+ED_TEX_CP	= $(PROG:=.cp)
+ED_TEX_FN	= $(PROG:=.fn)
+ED_TEX_KY	= $(PROG:=.ky)
+ED_TEX_LOG	= $(PROG:=.log)
+ED_TEX_PG	= $(PROG:=.pg)
+ED_TEX_TOC	= $(PROG:=.toc)
+ED_TEX_TP	= $(PROG:=.tp)
+ED_TEX_VR	= $(PROG:=.vr)
 
 ED_TEX_EXTRA	= $(ED_TEX_AUX) $(ED_TEX_CP) $(ED_TEX_FN) $(ED_TEX_KY)	     \
 		  $(ED_TEX_LOG) $(ED_TEX_PG) $(ED_TEX_TOC) $(ED_TEX_TP)      \
@@ -65,7 +65,7 @@ SUBDIRS = bwk
 # variables (e.g., $<, $^, $?, ${.ALLSRC}, etc.), if not defining
 # implicit rules.
 
-.PHONY: all-local
+.PHONY: all-local check-local clean-local distclean-local
 
 all-local: $(ED_INFO) $(ED_PDF)
 
@@ -147,10 +147,20 @@ $(ED_PDF): $(ED_TEXI) $(INTRO_PDF) $(ADV_PDF)
 	$(TEXI2DVI) --pdf --build-dir=ed.t2p $(ED_TEXI)
 endif
 
+check-local:
+	@echo "Nothing to be done for 'check'"
+
 clean-local:
+	if test -f bwk/Makefile; then					     \
+	    $(MAKE) -C bwk clean;					     \
+	fi
 	rm -f $(INTRO_INCL_TEXI) $(ADV_INCL_TEXI)			     \
 	    $(INTRO_INFO_TEXI) $(ADV_INFO_TEXI)				     \
-	    $(ED_TEX_EXTRA)
+	    $(ED_TEX_EXTRA) $(ADV_INFO) $(INTRO_INFO)			     \
+	    $(ED_INFO) $(ED_PDF) $(INTRO_PDF) $(ADV_PDF)
 
 distclean-local: clean-local
-	rm -f $(ADV_INFO) $(INTRO_INFO) $(ED_INFO) stamp-vti version.texi
+	if test -f bwk/Makefile; then					     \
+	    $(MAKE) -C bwk distclean;					     \
+	fi
+	rm -f Makefile stamp-vti version.texi
