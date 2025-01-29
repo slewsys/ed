@@ -7,17 +7,15 @@ Summary:        The standard Unix text editor
 License:        BSD-2-Clause OR GPL-2.0-or-later OR MIT
 URL:            https://github.com/slewsys/%{name}
 Source:         https://github.com/slewsys/%{name}/releases/download/v%{version}/%{name}-%{version}.tar.zst
-BuildRequires:  m4
 BuildRequires:  automake
 BuildRequires:  autoconf
-BuildRequires:  make
 BuildRequires:  gcc
-BuildRequires:  gettext
 BuildRequires:  gettext-devel
-BuildRequires:  openssl-devel
-BuildRequires:  libtool
-BuildRequires:  ghostscript
+BuildRequires:  glibc-gconv-extra
 BuildRequires:  groff
+BuildRequires:  libtool
+BuildRequires:  make
+BuildRequires:  openssl-devel
 BuildRequires:  texinfo
 BuildRequires:  texinfo-tex
 
@@ -60,7 +58,6 @@ rm -f ${RPM_BUILD_ROOT}/%{_infodir}/dir
 %{_infodir}/ed-adv.info*
 
 %doc BUGS AUTHORS ChangeLog NEWS README.md THANKS TODO
-%doc doc/ed.pdf doc/bwk/ed-intro.pdf doc/bwk/ed-adv.pdf
 %doc contrib
 
 %license COPYING
