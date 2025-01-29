@@ -1,5 +1,4 @@
 ed (1:2.1.1-1) unstable; urgency=medium
-
   * Update README.
 
   * Update clean/distclean targets per GNU Coding Standards.
@@ -174,8 +173,11 @@ ed (1:2.1.0-1) unstable; urgency=medium
 ed (1:2.0.13-2) unstable; urgency=medium
 
   * Allow ed to read output of process substitution.
+
   * Support GNU regex operators in extended regular expressions.
+
   * Handle edge case where backslash is used as pattern delimiter.
+
   * Support command-line address arguments.
 
  -- Andrew L. Moore <slewsys@gmail.com>  Fri, 08 Sep 2023 01:40:08 +0000
