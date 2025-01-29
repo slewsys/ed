@@ -155,14 +155,14 @@ AT_SCRIPTS_OK_CO_D = $(ED_SCRIPTS_OK_CO:.tco=.d)
 AT_SCRIPTS_OK_SO_R = $(ED_SCRIPTS_OK_SO:.tso=.r)
 
 EXTRA_DIST =								      \
-	$(AT_PROTO_OK) $(AT_PROTO_OK_CO) $(AT_PROTO_OK_EF)		      \
+	$(AT_PROTO_OK).in $(AT_PROTO_OK_CO) $(AT_PROTO_OK_EF)		      \
 	$(AT_PROTO_OK_MF) $(AT_PROTO_OK_R) $(AT_PROTO_OK_SO).in		      \
 	$(AT_PROTO_OK_XM) $(AT_PROTO_ERR) $(AT_PROTO_FAIL)		      \
-	$(ED_SCRIPTS_OK) $(ED_SCRIPTS_OK_SO) $(ED_SCRIPTS_OK_MF)	      \
-	$(ED_SCRIPTS_OK_R) $(ED_SCRIPTS_OK_XM)				      \
-	$(ED_SCRIPTS_ERR) $(ED_SCRIPTS_FAIL) $(ED_SCRIPTS_DATA)		      \
-	$(ED_SCRIPTS_DATA_COMPRESSED) $(ED_SCRIPTS_RESULTS)		      \
-	$(ED_SCRIPTS_RESULTS_PIPED)
+	$(ED_SCRIPTS_OK) $(ED_SCRIPTS_OK_CO) $(ED_SCRIPTS_OK_EF)	      \
+	$(ED_SCRIPTS_OK_MF) $(ED_SCRIPTS_OK_R) $(ED_SCRIPTS_OK_SO)	      \
+	$(ED_SCRIPTS_OK_XM) $(ED_SCRIPTS_ERR) $(ED_SCRIPTS_FAIL)	      \
+	$(ED_SCRIPTS_DATA) $(ED_SCRIPTS_DATA_COMPRESSED)		      \
+	$(ED_SCRIPTS_RESULTS) $(ED_SCRIPTS_RESULTS_PIPED)
 
 .PHONY: build-and-run-testsuite build-and-run-valgrind
 
@@ -231,15 +231,11 @@ $(PACKAGE_M4): $(top_srcdir)/configure.ac
 	} >"$@".tmp
 	mv "$@".tmp "$@"
 
-distclean-local:
-	rm -f atconfig proto.ok-at.in proto.ok-so-at.in
-
 clean-local:
-	rm -f *.ok-at *.ok-co-at *.ok-ef-at *.ok-mf-at *.ok-r-at	      \
-	      *.ok-so-at *.ok-xm-at *.fail-at *.err-at *.log
-	rm -rf	*.dir tmpwrk*
+	rm -rf *.ok-at *.ok-co-at *.ok-ef-at *.ok-mf-at *.ok-r-at	      \
+	      *.ok-so-at *.ok-xm-at *.fail-at *.err-at *.log *.dir tmpwrk*
 	rm -f $(PACKAGE_M4) $(TESTSUITE_AT) $(TESTSUITE)
 	rm -f $(AT_SCRIPTS_OK_CO_D) $(AT_SCRIPTS_OK_SO_R)
 
-
-install:
+distclean-local: clean-local
+	rm -f Makefile atconfig ed proto.ok-at.in proto.ok-so-at.in

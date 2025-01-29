@@ -1762,7 +1762,11 @@ mostlyclean-local: mostlyclean-generic
 	  fi; \
 	done; \
 	:
-distclean-local: distclean-gnulib-libobjs
-distclean-gnulib-libobjs:
+
+clean-local:
+	rm -rf Makefile
+
+distclean-local: clean-local
 	-rm -f @gl_LIBOBJDEPS@
-maintainer-clean-local: distclean-gnulib-libobjs
+
+maintainer-clean-local: distclean-local

@@ -26,28 +26,34 @@ export CFLAGS
 #
 # Checks for various programs.
 #
-AC_ARG_VAR([ZSTD], [decompression filter])
-AC_PATH_PROG([ZSTD], [zstd])
-
-AC_ARG_VAR([TROFF], [typesetting processor])
-AC_PATH_PROG([TROFF], [troff])
+AC_ARG_VAR([CONTAINER_CLI], [OCI container manager])
+AC_PATH_PROGS([CONTAINER_CLI], [podman docker])
 
 AC_ARG_VAR([DPOST], [troff PostScript postprocessor])
 AC_PATH_PROG([DPOST], [dpost], [/usr/lib/lp/postscript/dpost])
 
+AC_ARG_VAR([FLOCK], [shell lock manager])
+AC_PATH_PROG([FLOCK], [flock])
+
 AC_ARG_VAR([GROFF], [GNU typesetting processor])
 AC_PATH_PROG([GROFF], [groff])
-
-AC_ARG_VAR([PS2PDF], [PostScript to PDF filter])
-AC_PATH_PROGS([PS2PDF], [ps2pdf14 ps2pdf ps2pdfwr])
 
 AC_ARG_VAR([MAKEINFO], [Texinfo translation filter])
 AC_PATH_PROGS([MAKEINFO], [makeinfo texi2any])
 AM_CONDITIONAL([HAVE_MAKEINFO], [test ! ."$ac_cv_path_MAKEINFO" = .''])
 
+AC_ARG_VAR([PS2PDF], [PostScript to PDF filter])
+AC_PATH_PROGS([PS2PDF], [ps2pdf14 ps2pdf ps2pdfwr])
+
 AC_ARG_VAR([TEXI2DVI], [Texinfo to PDF filter])
 AC_PATH_PROGS([TEXI2DVI], [texi2dvi texi2any])
 AM_CONDITIONAL([HAVE_TEXI2DVI], [test ! ."$ac_cv_path_TEXI2DVI" = .''])
+
+AC_ARG_VAR([TROFF], [typesetting processor])
+AC_PATH_PROG([TROFF], [troff])
+
+AC_ARG_VAR([ZSTD], [decompression filter])
+AC_PATH_PROG([ZSTD], [zstd])
 
 # Checks availability of GNU make
 AX_CHECK_GNU_MAKE()
