@@ -8,9 +8,9 @@ ACLOCAL_AMFLAGS = -I m4
 
 SUBDIRS =
 
-if LDADD_LIBGNU
+if LDADD_GNULIB
 SUBDIRS += lib
-endif LDADD_LIBGNU
+endif LDADD_GNULIB
 
 SUBDIRS += src po doc testsuite
 
@@ -60,65 +60,74 @@ spdx-sbom: REUSE.toml
 
 update-gnulib:
 	@if test ! -x $(gnulib_srcdir)/gnulib-tool; then		      \
-	  echo "gnulib-tool: No such file or directory.";		      \
-	  exit;								      \
+	    echo "gnulib-tool: No such file or directory.";		      \
+	    exit;							      \
 	else								      \
-	  echo "*** Refreshing gnulib sources ***";			      \
-	fi;								      \
-	git -C "$(gnulib_srcdir)" pull;					      \
-	echo "*** Importing gnulib modules ***";			      \
-	if test -f lib/regex.h; then					      \
-	  rm -f lib/regex.h;						      \
-	fi;								      \
-	if test -f lib/dynarray.h; then					      \
-	  rm -f lib/dynarray.h;						      \
-	fi;								      \
-	if test -f lib/malloc/dynarray.h; then				      \
-	  rm -f lib/malloc/dynarray.h;					      \
-	fi;								      \
-	"$(gnulib_srcdir)/gnulib-tool" --import				      \
-	  --dir=$($top_srcdir)                                                \
-	  --lib=libgnu							      \
-	  --source-base=lib						      \
-	  --m4-base=m4							      \
-	  --po-base=po                                                        \
-	  --doc-base=doc						      \
-	  --tests-base=tests						      \
-	  --aux-dir=$(top_srcdir)					      \
-	  --conditional-dependencies					      \
-	  --no-libtool							      \
-	  --macro-prefix=gl						      \
-	  --po-domain=ed                                                      \
-	  getopt-gnu							      \
-	  regex
+	    echo "*** Refreshing gnulib sources ***";			      \
+	fi
+	git -C "$(gnulib_srcdir)" pull
 	@if test -f lib/regex.h; then					      \
-	  echo "*** Moving lib/regex.h => lib/regex.h.in ***";		      \
-	  mv lib/regex.h lib/regex.h.in;				      \
-	fi;								      \
-	if test -f lib/dynarray.h; then					      \
-	  echo "*** Moving lib/dynarray.h => lib/dynarray.h.in ***";	      \
-	  mv lib/dynarray.h lib/dynarray.h.in;				      \
-	fi;								      \
-	if test -f lib/malloc/dynarray.h; then				      \
-	  echo "*** Moving lib/malloc/dynarray.h => lib/malloc/dynarray.h.in ***"; \
-	  mv lib/malloc/dynarray.h lib/malloc/dynarray.h.in;		      \
-	fi;								      \
-	if test -f lib/patch-Makefile.am.diff; then			      \
-	  echo "*** Patching refreshed lib/Makefile.am ***";		      \
-	  patch lib/Makefile.am lib/patch-Makefile.am.diff;		      \
-	fi;								      \
-	echo "*** Running autogen.sh ***";				      \
+	    rm -f lib/regex.h;						      \
+	fi
+	@if test -f lib/dynarray.h; then				      \
+	    rm -f lib/dynarray.h;					      \
+	fi
+	@if test -f lib/malloc/dynarray.h; then				      \
+	    rm -f lib/malloc/dynarray.h;				      \
+	fi
+	@echo "*** Importing gnulib modules ***";			      \
+	"$(gnulib_srcdir)/gnulib-tool" --import				      \
+	    --dir=$($top_srcdir)					      \
+	    --lib=libgnu						      \
+	    --source-base=lib						      \
+	    --m4-base=m4						      \
+	    --po-base=po						      \
+	    --doc-base=doc						      \
+	    --tests-base=tests						      \
+	    --aux-dir=$(top_srcdir)					      \
+	    --conditional-dependencies					      \
+	    --no-libtool						      \
+	    --macro-prefix=gl						      \
+	    --po-domain=ed						      \
+	    getopt-gnu							      \
+	    regex
+	@if test -f lib/regex.h; then					      \
+	    echo "*** Moving lib/regex.h => lib/regex.h.in ***";	      \
+	    mv lib/regex.h lib/regex.h.in;				      \
+	fi
+	@if test -f lib/dynarray.h; then				      \
+	    echo "*** Moving lib/dynarray.h => lib/dynarray.h.in ***";	      \
+	    mv lib/dynarray.h lib/dynarray.h.in;			      \
+	fi
+	@if test -f lib/malloc/dynarray.h; then				      \
+	    echo "*** Moving lib/malloc/dynarray.h => lib/malloc/dynarray.h.in ***";  \
+	    mv lib/malloc/dynarray.h lib/malloc/dynarray.h.in;		      \
+	fi
+	@if test -f lib/patch-Makefile.am.diff; then			      \
+	    echo "*** Patching refreshed lib/Makefile.am ***";		      \
+	    patch lib/Makefile.am lib/patch-Makefile.am.diff;		      \
+	fi
+	@echo "*** Running autogen.sh ***";				      \
 	./autogen.sh --silent
 
 update-po:
 	-$(MAKE) -C po $(AM_MAKEFLAGS) update-po
 
-distclean-local:
-	rm -f configure.orig  GPATH GRTAGS GSYMS GTAGS
-	rm -rf .cache
-	find . -name '[Tt][Aa][Gg][Ss]' -type f -delete
-	find . \( -name '*~' -or -name '#*#' \) -type f -delete
-	if test -f $(top_builddir)/testsuite/Makefile; then		      \
-		$(MAKE) -C $(top_builddir)/testsuite distclean;		      \
-	fi
-	rm -f po/POTFILES.in
+clean-local:
+	rm -f $(PACKAGE)-$(VERSION).spdx
+	find . \( -name GPATH -o -name GRTAGS -o -name GSYMS \
+	    -o -name GTAGS -o -name '[Tt][Aa][Gg][Ss]' \
+	    -o -name '*~' -o -name '#*#' \) \
+	    -type f -exec rm -f {} \+
+	find . -name '.deps' -type d -exec rm -rf {} \+
+	$(MAKE) -C contrib clean
+	$(MAKE) -C pkgs clean
+
+distclean-local: clean-local
+	$(MAKE) -C contrib distclean
+	$(MAKE) -C pkgs distclean
+	rm -rf Makefile config.h config.log config.status libtool \
+	    po/POTFILES.in stamp-h1
+
+am-refresh:
+	@./autogen.sh --silent
