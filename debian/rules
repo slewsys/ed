@@ -10,4 +10,4 @@ export DEB_LDFLAGS_MAINT_APPEND = -Wl,--as-needed
 override_dh_autoreconf:
 	dh_autoreconf -- ./autogen.sh
 override_dh_auto_configure:
-	dh_auto_configure -- --prefix=/usr --enable-all-extensions --with-included-regex
+	dh_auto_configure -- --prefix=/usr --enable-all-extensions

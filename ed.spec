@@ -1,7 +1,7 @@
 %define _fortify_level 3
 
 Name:           ed
-Version:        2.1.0
+Version:        2.1.1
 Release:        %autorelease
 Summary:        The standard Unix text editor
 License:        BSD-2-Clause OR GPL-2.0-or-later OR MIT
@@ -20,8 +20,9 @@ BuildRequires:  texinfo
 BuildRequires:  texinfo-tex
 
 %description
-Ed is a 100% POSIX compliant and 8-bit clean implementation of the
-Unix line editor with modern extensions.
+Ed is the standard Unix text editor. It is used create, display,
+modify and otherwise manipulate text files. When invoked as red, it is
+restricted to editing files in the working directory.
 
 %prep
 %autosetup
@@ -40,7 +41,7 @@ echo ====================TESTING END=====================
 %make_install
 
 # Adjust contrib sources to RPM specs.
-find %{_builddir} -name 'call-graph.in' -print | xargs sed -i -e '1{s|#!.*|#!/bin/bash|;q}'
+find %{_builddir} -name 'shell-call-graph.in' -print | xargs sed -i -e '1{s|#!.*|#!/bin/bash|;q}'
 find %{_builddir} -name 'generate-random-graph.in' -print | xargs sed -i -e '1{s|#!.*|#!/bin/bash|;q}'
 find %{_builddir} -name 'cats.ed' -print | xargs sed -i -e '1{s|#!.*|#!/bin/ed -f|;q}'
 find %{_builddir} -name 'import-gnulib.sh' -delete
