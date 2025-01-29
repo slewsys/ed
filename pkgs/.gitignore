@@ -1,0 +1,10 @@
+scripts/build-pkg
+scripts/deploy-pkg
+Debian/*.log
+Debian/amd64/ed*
+Debian/arm/ed*
+Debian/arm64/ed*
+Fedora/*.log
+Fedora/amd64/ed*
+Fedora/arm/ed*
+Fedora/arm64/ed*
