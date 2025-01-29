@@ -19,9 +19,14 @@ case "$1" in
 esac
 
 verbose='true'
+very_verbose='false'
 case "$1" in
     -s*|--s*)
         verbose='false'
+        shift
+        ;;
+    -v*|--v*)
+        very_verbose='true'
         shift
         ;;
 esac
@@ -68,6 +73,8 @@ $script_name:
 $aclocal_output
 EOF
     exit $exit_status
+elif $very_verbose; then
+    echo "$aclocal_output"
 fi
 
 $verbose && cat <<EOF
@@ -88,6 +95,8 @@ $script_name:
 $autoheader_output
 EOF
     exit $exit_status
+elif $very_verbose; then
+    echo "$autoheader_output"
 fi
 
 $verbose && cat <<EOF
@@ -108,6 +117,8 @@ $script_name:
 $autopoint_output
 EOF
     exit $exit_status
+elif $very_verbose; then
+    echo "$autopoint_output"
 fi
 
 $verbose && cat <<EOF
@@ -128,6 +139,8 @@ $script_name:
 $autoreconf_output
 EOF
     exit $exit_status
+elif $very_verbose; then
+    echo "$autoreconf_output"
 fi
 
 $verbose && cat <<EOF
@@ -148,6 +161,8 @@ $script_name:
 $automake_output
 EOF
     exit $exit_status
+elif $very_verbose; then
+    echo "$automake_output"
 fi
 
 $verbose && cat <<EOF
@@ -168,6 +183,8 @@ $script_name:
 $libtoolize_output
 EOF
     exit $exit_status
+elif $very_verbose; then
+    echo "$libtoolize_output"
 fi
 
 $verbose && cat <<EOF
@@ -188,6 +205,8 @@ $script_name:
 $autoreconf_output
 EOF
     exit $exit_status
+elif $very_verbose; then
+    echo "$autoreconf_output"
 fi
 
 if $verbose; then
