@@ -1,0 +1,63 @@
+ARG ARCH=amd64
+ARG DIST=debian
+FROM docker.io/${ARCH}/${DIST}:stable-slim
+ARG ED_VERSION=2.1.1
+ARG SIGNER_NAME='Andrew L. Moore'
+ARG SIGNER_EMAIL=slewsys@gmail.com
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV DEB_BUILD_OPTIONS='parallel=4'
+
+RUN <<INSTALL_BUILD_PREREQUISITES
+    apt update || exit $?
+    apt full-upgrade -y || exit $?
+    apt install -y  autoconf automake autopoint gcc gettext \
+        git groff libssl-dev libtool make ncal texinfo \
+        texlive-binaries zstd || exit $?
+INSTALL_BUILD_PREREQUISITES
+
+RUN <<CLONE_REPOSITORY
+    git config --global user.email "${SIGNER_EMAIL}" || exit $?
+    git config --global user.name "${SIGNER_NAME}" || exit $?
+    mkdir ~/build || exit $?
+    git clone https://github.com/slewsys/ed.git \
+        ~/build/ed-${ED_VERSION} || exit $?
+CLONE_REPOSITORY
+
+RUN <<COMPILE_TEST_INSTALL
+    cd ~/build/ed-${ED_VERSION} || exit $?
+    ./autogen.sh || exit $?
+    ./configure --prefix=/usr --enable-all-extensions \
+        --with-included-regex || exit $?
+    make -j$(nproc) || exit $?
+    make check || exit $?
+    make install || exit $?
+COMPILE_TEST_INSTALL
+
+RUN <<INSTALL_PACKAGING_PREREQUISITES
+    ed -i -e 'g/^Types:/s/$/ deb-src/' \
+        /etc/apt/sources.list.d/debian.sources || exit $?
+    apt update || exit $?
+    apt build-dep -y ed || exit $?
+    apt install -y git-buildpackage libssl-dev || exit $?
+INSTALL_PACKAGING_PREREQUISITES
+
+#RUN <<GENERATE_GPG_KEY
+#    gpg --batch \
+#        --pinentry-mode loopback \
+#        --passphrase '' \
+#        --quick-generate-key \
+#        --default-new-key-algo \
+#        'ed25519/cert,sign+cv25519/encr' \
+#        "${SIGNER_NAME} <${SIGNER_EMAIL}>" \
+#        default default 0 || exit $?
+#GENERATE_GPG_KEY
+
+RUN <<BUILD_AND_SIGN_PACKAGE
+    cd ~/build/ed-${ED_VERSION} \
+    && git branch upstream \
+    && git reset --hard v${ED_VERSION} \
+    && git clean -fdx \
+    && gbp buildpackage --git-debian-branch=main \
+        --git-upstream-tree=branch || exit $?
+BUILD_AND_SIGN_PACKAGE
