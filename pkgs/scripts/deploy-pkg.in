@@ -1,0 +1,94 @@
+#!/usr/bin/env bash
+#
+# @(#) deploy-pkg
+#
+#
+: ${CONTAINER_CLI:='@CONTAINER_CLI@'}
+: ${FLOCK:='@FLOCK@'}
+
+: ${EXEC_STATE:=''}
+
+mount-volume ()
+{
+    local -n _params=$1
+
+    _params[container]=$(
+        $CONTAINER_CLI create "${_params[image]}"
+           ) || return $?
+    _params[mountpoint]=$(
+        $CONTAINER_CLI mount "${_params[container]}"
+           ) || return $?
+}
+
+destroy-volume ()
+{
+    local -n _params=$1
+
+    $CONTAINER_CLI unmount "${_params[container]}" || return $?
+    $CONTAINER_CLI rm "${_params[container]}" || return $?
+}
+
+deploy-package ()
+{
+    local -n params=$1
+
+    if test ."${CONTAINER_CLI##*/}" = .'podman'; then
+        mount-volume params || return $?
+
+        trap 'destroy-volume params' 0 1 2 15 RETURN
+
+        case ${params[os]} in
+            Debian|Ubuntu)
+                cp ${params[mountpoint]}/root/build/ed{_,-dbg}* "${params[destdir]}/" \
+                    || return $?
+                ;;
+            AlmaLinux|Fedora|RHEL|RockyLinux)
+                cp ${params[mountpoint]}/root/rpmbuild/{S,}RPMS/* "${params[destdir]}/" \
+                    || return $?
+                ;;
+        esac
+        destroy-volume params || return $?
+
+        trap - 0 1 2 15 RETURN
+    fi
+}
+
+if test ."$0" = ."${BASH_SOURCE[0]}"; then
+    declare -A parameters=(
+        [image]=$1
+        [os]=${2:-'Debian'}
+        [platform]=${3:-'linux/amd64'}
+        [container]=''
+        [mountpoint]=''
+    )
+
+    parameters[destdir]=${parameters[os]}/${parameters[platform]##*/}
+    parameters[lockfile]=${parameters[destdir]}/.build-lock
+
+    trap 'rm -f "${parameters[lockfile]}"' 0 1 2 15
+
+    case $EXEC_STATE in
+        */*/*)
+            if test ! -f "${parameters[lockfile]}"; then
+                touch "${parameters[lockfile]}" || exit $?
+            fi
+
+            if test ."${CONTAINER_CLI##*/}" = .'podman'; then
+                exec env EXEC_STATE=_ $FLOCK -en ${parameters[lockfile]} \
+                     $CONTAINER_CLI unshare "$0" "$@" || exit $?
+            fi
+            ;;
+        _)
+            ;;
+        *)
+            exec env EXEC_STATE=${parameters[os]}/${parameters[platform]} \
+                 "$0" "$@" || exit $?
+            ;;
+    esac
+
+    trap - 0 1 2 15
+
+    deploy-package parameters || exit $?
+    $CONTAINER_CLI image rm "${parameters[image]}" || exit $?
+    rm -f "${parameters[lockfile]}"
+fi

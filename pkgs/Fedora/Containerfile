@@ -1,0 +1,44 @@
+ARG ARCH=amd64
+ARG DIST=fedora
+FROM docker.io/${ARCH}/${DIST}:latest
+ARG ED_VERSION=2.1.1
+# ARG SIGNER_NAME='Andrew L. Moore'
+# ARG SIGNER_EMAIL=slewsys@gmail.com
+
+RUN <<INSTALL_BUILD_PREREQUISITES
+    dnf upgrade -y --refresh || exit $?
+    dnf install -y autoconf automake gcc gettext-devel git \
+    glibc-gconv-extra groff libtool openssl-devel texinfo \
+    texinfo-tex || exit $?
+INSTALL_BUILD_PREREQUISITES
+
+RUN <<CLONE_REPOSITORY
+    # git config --global user.email "${SIGNER_EMAIL}" || exit $?
+    # git config --global user.name "${SIGNER_NAME}" || exit $?
+    git clone https://github.com/slewsys/ed.git \
+        ~/ed-${ED_VERSION} || exit $?
+CLONE_REPOSITORY
+
+RUN <<COMPILE_TEST_PREPARE_DIST
+    cd ~/ed-${ED_VERSION} || exit $?
+    ./autogen.sh || exit $?
+    ./configure --prefix=/usr --enable-all-extensions \
+        --with-included-regex || exit $?
+    make -j$(nproc) || exit $?
+    make check || exit $?
+    make dist-zstd || exit $?
+COMPILE_TEST_PREPARE_DIST
+
+RUN <<INSTALL_PACKAGING_PREREQUISITES
+    dnf config-manager setopt fedora-source.enabled=1 || exit $?
+    dnf builddep -y --refresh ed || exit $?
+    dnf install -y rpmdevtools || exit $?
+INSTALL_PACKAGING_PREREQUISITES
+
+RUN <<BUILD_PACKAGE
+    rpmdev-setuptree || exit $?
+    cp ~/ed-${ED_VERSION}/ed-${ED_VERSION}.tar.zst \
+        ~/rpmbuild/SOURCES/ || exit $?
+    cp ~/ed-${ED_VERSION}/ed.spec ~/rpmbuild/SPECS/ || exit $?
+    rpmbuild -ba ~/rpmbuild/SPECS/ed.spec || exit $?
+BUILD_PACKAGE

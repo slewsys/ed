@@ -1,0 +1,92 @@
+#!/usr/bin/env bash
+#
+# @(#) build-pkg
+#
+#
+: ${CONTAINER_CLI:='@CONTAINER_CLI@'}
+: ${FLOCK:='@FLOCK@'}
+
+: ${EXEC_STATE:=''}
+
+build-package ()
+{
+    local -n params=$1
+
+    local containerfile=${params[os]}/Containerfile
+    local logfile=${params[os]}/${params[platform]//\//-}-build.log
+
+    case ${params[platform]} in
+        */amd64)
+            docker_arch=amd64
+            ;;
+        */arm)
+            docker_arch=arm32v7
+            ;;
+        */arm64)
+            docker_arch=arm64v8
+            ;;
+    esac
+
+    cat >&2 <<EOF
+**************************************************
+To view build log, in a separate terminal run:
+
+    tail -f ${PWD}/${logfile}
+**************************************************
+EOF
+    params[imageid]=$(
+        $CONTAINER_CLI build --build-arg ARCH="$docker_arch" \
+                       --build-arg DIST="${params[os],,}" \
+                       --platform "${params[platform]}" \
+                    -v ~/.gnupg:/root/.gnupg:Z "${containerfile%/*}" 2>&1 |
+                tee "$logfile" |
+                tail -n 1
+         )
+
+    if (( (status = $?) != 0 )); then
+        echo "Build failed: See ${logfile} for details" >&2
+        return $status
+    fi
+}
+
+if test ."$0" = ."${BASH_SOURCE[0]}"; then
+    set -o pipefail
+
+    declare -A parameters=(
+        [os]=${1:-'Debian'}
+        [platform]=${2:-'linux/amd64'}
+        [imageid]=''
+    )
+
+    parameters[destdir]=${parameters[os]}/${parameters[platform]##*/}
+    parameters[lockfile]=${parameters[destdir]}/.build-lock
+
+    trap 'rm -f "${parameters[lockfile]}"' 0 1 2 15
+
+    case $EXEC_STATE in
+        */*/*)
+            if test ! -f "${parameters[lockfile]}"; then
+                install -d "${parameters[destdir]}"
+                touch "${parameters[lockfile]}"
+
+            fi
+
+            if test ."${CONTAINER_CLI##*/}" = .'podman'; then
+                exec env EXEC_STATE=_ $FLOCK -en ${parameters[lockfile]} \
+                     "$0" "$@" || exit $?
+            fi
+            ;;
+        _)
+            ;;
+        *)
+            exec env EXEC_STATE=${parameters[os]}/${parameters[platform]} \
+                 "$0" "$@" || exit $?
+            ;;
+    esac
+
+    build-package parameters || exit $?
+
+    trap - 0 1 2 15
+
+    echo "${parameters[imageid]}"
+fi
