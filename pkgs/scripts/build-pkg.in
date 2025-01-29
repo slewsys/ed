@@ -1,0 +1,96 @@
+#!/usr/bin/env bash
+#
+# @(#) build-pkg
+#
+#
+: ${CONTAINER_CLI:='@CONTAINER_CLI@'}
+: ${FLOCK:='@FLOCK@'}
+
+: ${EXEC_STATE:=''}
+
+build-package ()
+{
+    local -n params=$1
+    local -n dist=$2
+    local -n arch=$3
+
+    local containerfile=${dist[${params[os]}]}/Containerfile
+    local logfile=${params[os]}/${params[platform]//\//-}-build.log
+
+    cat >&2 <<EOF
+**************************************************
+To view build log, in a separate terminal run:
+
+    tail -f ${PWD}/${logfile}
+**************************************************
+EOF
+    params[imageid]=$(
+        $CONTAINER_CLI build \
+                       --pull="newer" \
+                       --build-arg ARCH="${arch[${params[platform]}]}" \
+                       --build-arg DIST="${params[os],,}" \
+                       --build-arg SIGNER_NAME="$$(git config user.name)" \
+                       --build-arg SIGNER_EMAIL="$$(git config user.email)" \
+                       --platform "${params[platform]}" \
+                       -v ~/.gnupg:/root/.gnupg:z "${containerfile%/*}" 2>&1 |
+                tee "$logfile" |
+                tail -n 1
+         )
+
+    if (( (status = $?) != 0 )); then
+        echo "Build failed: See ${logfile} for details" >&2
+        return $status
+    fi
+}
+
+if test ."$0" = ."${BASH_SOURCE[0]}"; then
+    set -o pipefail
+
+    declare -A parameters=(
+        [os]=${1:-'Debian'}
+        [platform]=${2:-'linux/amd64'}
+        [imageid]=''
+    )
+    declare -A dist_container=(
+        [AlmaLinux]='Fedora'
+        [Debian]='Debian'
+        [Fedora]='Fedora'
+        [Ubuntu]='Debian'
+    )
+    declare -A platform_arch=(
+        [linux/amd64]='amd64'
+        [linux/arm]='arm32v7'
+        [linux/arm64]='arm64v8'
+    )
+
+    parameters[destdir]=${parameters[os]}/${parameters[platform]##*/}
+    parameters[lockfile]=${parameters[destdir]}/.build-lock
+
+    case $EXEC_STATE in
+        */*/*)
+            if test ! -f "${parameters[lockfile]}"; then
+                install -d "${parameters[destdir]}"
+                touch "${parameters[lockfile]}"
+
+            fi
+
+            if test ."${CONTAINER_CLI##*/}" = .'podman'; then
+                exec env EXEC_STATE=_ $FLOCK -en ${parameters[lockfile]} \
+                     "$0" "$@" || exit $?
+            fi
+            ;;
+        _)
+            ;;
+        *)
+            exec env EXEC_STATE=${parameters[os]}/${parameters[platform]} \
+                 "$0" "$@" || exit $?
+            ;;
+    esac
+
+    trap 'rm -f "${parameters[lockfile]}"' 0 1 2 15
+
+    build-package parameters dist_container platform_arch || exit $?
+    echo "${parameters[imageid]}"
+
+    trap - 0 1 2 15
+fi

@@ -452,10 +452,16 @@ AC_CONFIG_FILES([                                                             \
   doc/Makefile                                                                \
   doc/bwk/Makefile                                                            \
   lib/Makefile                                                                \
+  pkgs/Makefile                                                               \
   po/Makefile.in                                                              \
   src/Makefile                                                                \
   testsuite/Makefile                                                          \
   testsuite/proto.ok-at.in                                                    \
   testsuite/proto.ok-so-at.in])
+
+AC_CONFIG_FILES([pkgs/scripts/build-pkg],
+  [chmod +x pkgs/scripts/build-pkg])
+AC_CONFIG_FILES([pkgs/scripts/deploy-pkg],
+  [chmod +x pkgs/scripts/deploy-pkg])
 
 AC_OUTPUT
