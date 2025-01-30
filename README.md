@@ -326,7 +326,7 @@ per recommendation of *Unicode technical report UAX #11*.
 
 ### Cut-and-Paste
 
-Cut-and-paste is enabled by `configure` option **--enable-ed-register**.
+Cut-and-paste is enabled by the `configure` option **--enable-ed-register**.
 
 It is implemented by means of `ed`'s move (**m**), copy (**t**) and
 delete (**d**) commands:
@@ -415,7 +415,7 @@ The new commands are summarized as follows:
                  that file.
     ~E file-glob [...]
                - Unconditionally edits the first file in the file
-                 list. Similar the **~e** command except that
+                 list. Similar to the **~e** command except that
                  unwritten changes are discarded without warning.
     ~en        - Edits the "next" file in the file list and prints
                  its name to standard output. Any previous buffer
@@ -503,7 +503,7 @@ HELLO, WORLD
 
 ### File Locking
 
-File locking is enabled by `configure` option **--enable-file-lock**.
+File locking is enabled by the `configure` option **--enable-file-lock**.
 Advisory locking is provided by _flock (2)_, if available, otherwise
 _fcntl (2)_. If help mode is enabled (i.e., if either `ed` is invoked
 with command-line option **-v** or, within `ed`, command **H** is
@@ -536,9 +536,9 @@ $
 ### Script Flags
 
 `ed` dropped the programming constructs of its ancestor, `QED`, that
-were later adopted by `sed`, but it's REPL interface and random access
+were later adopted by `sed`, but its REPL interface and random access
 addressing still prove useful on occasion. Additional command-line
-flags for scripting are enabled by `configure` option
+flags for scripting are enabled by the `configure` option
 ***--enable-script-flags***. These are summarized as follows:
 
     -i, --in-place[=SUFFIX]  Write file before closing, optionally
@@ -701,7 +701,7 @@ files (including here documents) or standard input.
 ### SunOS Dialect
 
 For SunOS `ed` compatibility, `ed` runs in restricted mode if
-invoked as red. This limits editing of files in the local directory
+invoked as `red`. This limits editing of files in the local directory
 only and prohibits shell commands.
 
 ## Deviations from the SUSv4 standard
