@@ -569,16 +569,21 @@ E_cmd (ed_buffer_t *ed)
 static int
 exec_macro (ed_buffer_t *ed)
 {
+  static char *saved_global_input = NULL;
+  static size_t saved_global_input_size = 0;
+
   size_t len;
   int status = 0;
   int saved_global = ed->exec->global;
 
   /* case '@': */
-  if (ed->exec->region->addrs)
-    {
-      ed->exec->err = _("Address unexpected");
-      return ERR;
-    }
+  /*
+   * if (ed->exec->region->addrs)
+   *   {
+   *     ed->exec->err = _("Address unexpected");
+   *     return ERR;
+   *   }
+   */
 
   if (!ed->core->regbuf->io_f)
     GET_INPUT_REGISTER (ed);
@@ -588,6 +593,12 @@ exec_macro (ed_buffer_t *ed)
     {
       ed->exec->err = _("Command suffix unexpected");
       return ERR;
+    }
+  else if (ed->exec->global && *(++ed->input) != '\0')
+    {
+      REALLOC_THROW (saved_global_input, saved_global_input_size,
+                     strlen (ed->input) + 1, ERR, ed);
+      strcpy (saved_global_input, ed->input);
     }
 
   if ((status = script_from_register (ed)) < 0 || !ed->exec->fp)
@@ -621,7 +632,10 @@ exec_macro (ed_buffer_t *ed)
         break;
     }
 
-  ed->exec->global = saved_global;
+  if ((ed->exec->global = saved_global))
+    {
+      ed->input = saved_global_input;
+    }
 
  err:
   /* Pop stack frame, or unwind on error. */
