@@ -376,7 +376,7 @@ top:
           && (status = exec_command (ed)) >= 0)
 
         /* ... */
-        if (!(ed->display->io_f = status)
+        if (!(ed->display->dio_f = status)
             || (status = display_lines (ed->state->dot,
                                         ed->state->dot, ed)) >= 0)
           continue;
