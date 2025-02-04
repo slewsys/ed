@@ -934,6 +934,10 @@ m_cmd (ed_buffer_t *ed)
           spl0 ();
           return status;
         }
+      if ((addr = INC_MOD (ed->state->dot, ed->state->lines)) != 0)
+        ed->state->dot = addr;
+      if ((ed->state->is_empty = !ed->state->lines))
+        ed->state->is_binary = 0;
       spl0 ();
       break;
     case REGISTER_READ | REGISTER_WRITE:
