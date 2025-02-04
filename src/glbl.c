@@ -77,7 +77,7 @@ exec_global (ed_buffer_t *ed)
   size_t len = 0;
   int first_time = 1;
   int interactive = ed->exec->global & GLBI;
-  int saved_io_f = ed->display->io_f;
+  int saved_dio_f = ed->display->dio_f;
   int status;
 
   reset_undo_queue (ed);
@@ -105,7 +105,7 @@ exec_global (ed_buffer_t *ed)
 
       else if (interactive)
         {
-          ed->display->io_f = PRNT;
+          ed->display->dio_f = PRNT;
           if ((status = display_lines (ed->state->dot,
                                        ed->state->dot, ed)) < 0)
             return status;
@@ -148,12 +148,12 @@ exec_global (ed_buffer_t *ed)
       for (ed->input = gcb; ed->input && *ed->input;)
         if ((status = address_range (ed)) < 0
             || (status = exec_command (ed)) < 0
-            || ((ed->display->io_f = status) > 0
+            || ((ed->display->dio_f = status) > 0
                 && (status = display_lines (ed->state->dot,
                                             ed->state->dot, ed)) < 0))
           return status;
     }
-  return saved_io_f;
+  return saved_dio_f;
 }
 
 /*
