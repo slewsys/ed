@@ -369,7 +369,7 @@ struct ed_register
   ed_path_t path[REGBUF_MAX];   /* Register pathanmes. */
   int read_idx;                 /* Input register index. */
   int write_idx;                /* Output register index. */
-  int io_f;                     /* Register I/O flags. */
+  int rio_f;                    /* Register I/O flags. */
 };
 #endif  /* WANT_ED_REGISTER */
 
@@ -439,7 +439,7 @@ struct ed_display
   int underflow;                /* If set, line truncated at top page. */
   int overflow;                 /* If set, line truncated at bottom of page. */
   int hidden;                   /* If set, do not print frame buffer. */
-  int io_f;                     /* Print and scroll flags. */
+  int dio_f;                    /* Print and scroll flags. */
 };
 
 /* Address range parameters. */
