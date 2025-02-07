@@ -173,7 +173,7 @@ static int l_cmd (ed_buffer_t *);
 static int m_cmd (ed_buffer_t *);
 
 #ifdef WANT_ED_MACRO
-static int exec_macro (ed_buffer_t *);
+static int macro_cmd (ed_buffer_t *);
 #endif
 
 static int n_cmd (ed_buffer_t *);
@@ -210,7 +210,7 @@ static const ed_command_t ed_cmd[] =
    invalid_cmd,
 
 #ifdef WANT_ED_MACRO
-   exec_macro,                  /* Bound to key `@'. */
+   macro_cmd,                   /* Bound to key `@'. */
 #else
    invalid_cmd,
 #endif
@@ -393,7 +393,7 @@ a_cmd (ed_buffer_t *ed)
   if (!ed->state->is_empty || !ed->state->lines)
     {
       COMMAND_SUFFIX (ed->display->dio_f, ed);
-      if (!ed->exec->global)
+      if (!(ed->exec->global || ed->core->sp))
         reset_undo_queue (ed);
       if ((status = append_lines (ed->exec->region->end, ed)) < 0)
         return status;
@@ -413,7 +413,7 @@ c_cmd (ed_buffer_t *ed)
   if ((status = is_valid_range (ed->state->dot, ed->state->dot, ed)) < 0)
     return status;
   COMMAND_SUFFIX (ed->display->dio_f, ed);
-  if (!ed->exec->global)
+  if (!(ed->exec->global || ed->core->sp))
     reset_undo_queue (ed);
   spl1 ();
   if ((status = delete_lines (ed->exec->region->start,
@@ -447,7 +447,7 @@ d_cmd (ed_buffer_t *ed)
   ed->core->regbuf->write_idx = REGBUF_MAX - 1;
 #endif
   COMMAND_SUFFIX (ed->display->dio_f, ed);
-  if (!ed->exec->global)
+  if (!(ed->exec->global || ed->core->sp))
     reset_undo_queue (ed);
 #ifdef WANT_ED_REGISTER_DELETE
   if ((status = append_to_register (ed->exec->region->start,
@@ -565,85 +565,6 @@ E_cmd (ed_buffer_t *ed)
   return 0;
 }
 
-#ifdef WANT_ED_MACRO
-static int
-exec_macro (ed_buffer_t *ed)
-{
-  static char *saved_global_input = NULL;
-  static size_t saved_global_input_size = 0;
-
-  size_t len;
-  int status = 0;
-  int saved_global = ed->exec->global;
-
-  /* case '@': */
-  /*
-   * if (ed->exec->region->addrs)
-   *   {
-   *     ed->exec->err = _("Address unexpected");
-   *     return ERR;
-   *   }
-   */
-
-  if (!ed->core->regbuf->rio_f)
-    GET_INPUT_REGISTER (ed);
-  else
-    SKIP_WHITESPACE (ed);
-  if (*ed->input != '\n')
-    {
-      ed->exec->err = _("Command suffix unexpected");
-      return ERR;
-    }
-  else if (ed->exec->global && *(++ed->input) != '\0')
-    {
-      REALLOC_THROW (saved_global_input, saved_global_input_size,
-                     strlen (ed->input) + 1, ERR, ed);
-      strcpy (saved_global_input, ed->input);
-    }
-
-  if ((status = script_from_register (ed)) < 0 || !ed->exec->fp)
-    goto err;
-
-  /* Execute script. */
-  for (ed->state->dot = ed->exec->region->end;;)
-    {
-      if (!(ed->input = get_stdin_line (&len, ed)))
-        {
-          status = feof (stdin) ? EOF : ERR;
-          clearerr (stdin);
-          break;
-        }
-
-      /* Input not newline ('\n') terminated. */
-      else if (*(ed->input + len - 1) != '\n')
-        {
-          ed->exec->err = _("End-of-file unexpected");
-          status = ERR;
-          clearerr (stdin);
-          break;
-        }
-      ed->exec->global = 0;
-
-      if ((status = address_range (ed)) < 0
-          || (status = exec_command (ed)) < 0
-          || ((ed->display->dio_f = status) > 0
-              && (status = display_lines (ed->state->dot,
-                                          ed->state->dot, ed)) < 0))
-        break;
-    }
-
-  if ((ed->exec->global = saved_global))
-    {
-      ed->input = saved_global_input;
-    }
-
- err:
-  /* Pop stack frame, or unwind on error. */
-  return (status < 0 && status != EOF ? unwind_stack_frame (status, ed)
-          : pop_stack_frame (ed));
-}
-#endif  /* WANT_ED_MACRO */
-
 static int
 f_cmd (ed_buffer_t *ed)
 {
@@ -747,9 +668,12 @@ global_cmd (ed_buffer_t *ed)
       COMMAND_SUFFIX (ed->display->dio_f, ed);
     }
   ed->exec->global |= GLBL;
-
   if ((status = exec_global (ed)) < 0)
-    return status;
+    {
+      ed->exec->global = 0;
+      return status;
+    }
+  ed->exec->global = 0;
   return c == 'G' || c == 'V' ? (ed->display->dio_f = status) : 0;
 }
 
@@ -802,7 +726,7 @@ i_cmd (ed_buffer_t *ed)
   /* Per SUSv4, 2013, 0i => 1i. */
   ed->exec->region->end += !ed->exec->region->end;
   COMMAND_SUFFIX (ed->display->dio_f, ed);
-  if (!ed->exec->global)
+  if (!(ed->exec->global || ed->core->sp))
     reset_undo_queue (ed);
   if ((status = append_lines (ed->exec->region->end - 1, ed)) < 0)
     return status;
@@ -831,7 +755,7 @@ j_cmd (ed_buffer_t *ed)
             is_valid_range (ed->state->dot, ed->state->dot + 1, ed)) < 0)
     return status;
   COMMAND_SUFFIX (ed->display->dio_f, ed);
-  if (!ed->exec->global)
+  if (!(ed->exec->global || ed->core->sp))
     reset_undo_queue (ed);
   if (ed->exec->region->start != ed->exec->region->end
       && (status = join_lines (ed->exec->region->start,
@@ -904,7 +828,7 @@ m_cmd (ed_buffer_t *ed)
       return ERR;
     }
   COMMAND_SUFFIX (ed->display->dio_f, ed);
-  if (!ed->exec->global)
+  if (!(ed->exec->global || ed->core->sp))
     reset_undo_queue (ed);
 #ifdef WANT_ED_REGISTER
   switch (ed->core->regbuf->rio_f)
@@ -936,7 +860,7 @@ m_cmd (ed_buffer_t *ed)
         }
       if ((addr = INC_MOD (ed->state->dot, ed->state->lines)) != 0)
         ed->state->dot = addr;
-      if ((ed->state->is_empty = !ed->state->lines))
+      else if ((ed->state->is_empty = !ed->state->lines))
         ed->state->is_binary = 0;
       spl0 ();
       break;
@@ -951,6 +875,42 @@ m_cmd (ed_buffer_t *ed)
 #endif
   return ed->display->dio_f;
 }
+
+#ifdef WANT_ED_MACRO
+static int
+macro_cmd (ed_buffer_t *ed)
+{
+  static char *saved_input = NULL;
+  static size_t saved_input_size = 0;
+
+  int status = 0;               /* Return status */
+
+  /* case '@': */
+  if ((status = is_valid_range (ed->state->dot, ed->state->dot, ed)) < 0)
+    return status;
+  if (!ed->core->regbuf->rio_f)
+    GET_INPUT_REGISTER (ed);
+  else
+    SKIP_WHITESPACE (ed);
+  if (*ed->input != '\n')
+    {
+      ed->exec->err = _("Command suffix unexpected");
+      return ERR;
+    }
+  else if (ed->exec->global && *(++ed->input) != '\0')
+    {
+      REALLOC_THROW (saved_input, saved_input_size,
+                     strlen (ed->input) + 1, ERR, ed);
+      strcpy (saved_input, ed->input);
+    }
+  if ((status = exec_macro (ed)) < 0)
+    return status;
+  else if (ed->exec->global)
+    ed->input = saved_input;
+
+  return status;
+}
+#endif  /* WANT_ED_MACRO */
 
 static int
 n_cmd (ed_buffer_t *ed)
@@ -1058,7 +1018,7 @@ r_cmd (ed_buffer_t *ed)
   FILE_NAME (fn, len, 0, !ed->file->name, 1, ed);
 
   spl1 ();
-  if (!ed->exec->global)
+  if (!(ed->exec->global || ed->core->sp))
     reset_undo_queue (ed);
 
   /*
@@ -1177,7 +1137,7 @@ s_cmd (ed_buffer_t *ed)
   else if ((status = substitution_rhs (&s_nth, &s_mod, &s_f, &sio_f, ed)) < 0)
     return status;
   COMMAND_SUFFIX (sio_f, ed);
-  if (!ed->exec->global)
+  if (!(ed->exec->global || ed->core->sp))
     reset_undo_queue (ed);
   save_substitute (lhs, s_f, s_nth, s_mod, sio_f, ed->exec->subst);
   if ((status = substitute_lines (ed->exec->region->start,
@@ -1330,7 +1290,7 @@ t_cmd (ed_buffer_t *ed)
     return status;
   DESTINATION_ADDRESS (addr, ed);
   COMMAND_SUFFIX (ed->display->dio_f, ed);
-  if (!ed->exec->global)
+  if (!(ed->exec->global || ed->core->sp))
     reset_undo_queue (ed);
 #ifdef WANT_ED_REGISTER
   switch (ed->core->regbuf->rio_f)
@@ -1788,7 +1748,7 @@ shell_cmd (ed_buffer_t *ed)
               return status;
           }
 
-        if (!ed->exec->global)
+        if (!(ed->exec->global || ed->core->sp))
           reset_undo_queue (ed);
         addr = ed->state->lines;
         if ((status = filter_lines (ed->exec->region->start,

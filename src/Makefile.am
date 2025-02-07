@@ -3,20 +3,21 @@
 # Process this file with automake to create Makefile.in
 
 bin_PROGRAMS = ed
-ed_SOURCES = aux.c							\
-	     buf.c							\
+ed_SOURCES = buffer.c							\
 	     cbc.c							\
 	     cmds.c							\
 	     ed.h							\
 	     exec.c							\
-	     glbl.c							\
+	     filter.c							\
+	     global.c							\
 	     io.c							\
 	     main.c							\
 	     page.c							\
 	     parse.c							\
-	     re.c							\
+	     regexp.c							\
+	     register.c							\
 	     signal.c							\
-	     sub.c							\
+	     subst.c							\
 	     undo.c							\
 	     utf8.c							\
 	     version.c

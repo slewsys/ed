@@ -899,6 +899,7 @@ int display_lines (off_t, off_t, ed_buffer_t *);
 int encode_utf8_char (char *, int *, unsigned int);
 int exec_command (ed_buffer_t *);
 int exec_global (ed_buffer_t *);
+int exec_macro (ed_buffer_t *);
 char *expand_shell_command (size_t *, int *, ed_buffer_t *);
 char *file_glob (size_t *, int, int, int, ed_buffer_t *);
 char *file_name (size_t *, ed_buffer_t *);
@@ -960,16 +961,8 @@ int move_lines (off_t, off_t, off_t, ed_buffer_t *);
 int next_address (off_t *, ed_buffer_t *);
 int one_time_init (int, char **, ed_buffer_t *);
 
-#ifdef WANT_ED_MACRO
-int pop_stack_frame (ed_buffer_t *);
-#endif
-
 char *pop_text_node (ed_text_node_t *, size_t *);
 char *put_buffer_line (const char *, size_t, ed_buffer_t *);
-
-#ifdef WANT_ED_MACRO
-int push_stack_frame (ed_buffer_t *);
-#endif
 
 #ifdef WANT_ED_ENCRYPTION
 int put_des_char (int, FILE *);
@@ -978,6 +971,7 @@ int put_des_char (int, FILE *);
 void quit (int, ed_buffer_t *);
 int read_file (const char *, off_t, off_t *, off_t *, int, ed_buffer_t *);
 int read_pipe (const char *, off_t, off_t *, off_t *, ed_buffer_t *);
+int read_stream (FILE *, off_t, off_t *, ed_buffer_t *);
 int read_stream_r (FILE *, off_t, off_t *, ed_buffer_t *);
 void *realloc_buffer (void **, size_t *, size_t, ed_buffer_t *);
 char *regular_expression (unsigned, size_t *, ed_buffer_t *);
@@ -992,10 +986,6 @@ void reset_undo_queue (ed_buffer_t *);
 int resubstitute (off_t *, off_t *, unsigned *, unsigned *, ed_buffer_t *);
 void save_substitute (regex_t *, unsigned, off_t, off_t, unsigned,
                       struct ed_substitute *);
-#ifdef WANT_ED_MACRO
-int script_from_register  (ed_buffer_t *);
-#endif
-
 #ifdef WANT_ED_SCROLL
 int scroll_lines (off_t, off_t, ed_buffer_t *);
 #endif

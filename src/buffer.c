@@ -1,4 +1,4 @@
-/* buf.c: Buffer routines for the ed line editor.
+/* buffer.c: Editing buffer interface for the ed line editor.
  *
  * SPDX-FileCopyrightText: 1993-2025 Andrew L. Moore <slewsys@gmail.com>, SlewSys Research
  *
@@ -130,21 +130,10 @@ init_stdio (ed_buffer_t *ed)
   else if (ed->exec->pathname && !freopen (ed->exec->pathname, "r+", stdin))
     {
       fprintf (stderr, "%s: %s\n", ed->exec->pathname, strerror (errno));
-      ed->exec->err = _("Buffer open error");
+      ed->exec->err = _("File open error");
       return FATAL;
     }
 
-  /* If in a macro, position stdin to beginning of script. */
-#ifdef WANT_ED_MACRO
-  if (ed->core->sp
-      && FSEEK (stdin,
-                ed->core->stack_frame[ed->core->sp - 1]->size, SEEK_SET) < 0)
-      {
-        fprintf (stderr, "%s: %s\n", ed->exec->pathname, strerror (errno));
-        ed->exec->err = _("Buffer seek error");
-        return ERR;
-      }
-#endif
   /*
    * Read stdin one character at a time to avoid I/O contention with
    * shell escapes invoked by nonterminal input, e.g.,

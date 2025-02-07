@@ -291,7 +291,7 @@ top:
 /*
  *  XXX: #ifdef here disables ed signal handlers. In particular,
  *       SIGINT causes ed to exit. Workaround by defining dummy
- *       unwind_stack_frame ().
+ *       unwind_stack_frame () in register.c.
  */
 /*
  * #ifdef WANT_ED_MACRO
@@ -369,7 +369,6 @@ top:
           goto error;
         }
       ++ed->exec->line_no;
-      ed->exec->global = 0;
 
       /* Execute one command. */
       if ((status = address_range (ed)) >= 0

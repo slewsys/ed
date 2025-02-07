@@ -1,4 +1,4 @@
-/* glbl.c: Global command implentation for the ed line editor.
+/* global.c: Global command implentation for the ed line editor.
  *
  * SPDX-FileCopyrightText: 1993-2025 Andrew L. Moore <slewsys@gmail.com>, SlewSys Research
  *
@@ -78,9 +78,10 @@ exec_global (ed_buffer_t *ed)
   int first_time = 1;
   int interactive = ed->exec->global & GLBI;
   int saved_dio_f = ed->display->dio_f;
-  int status;
+  int status = 0;
 
-  reset_undo_queue (ed);
+  if (!ed->core->sp)
+    reset_undo_queue (ed);
 
   /*
    * If non-interactive, read command before entering loop in the
@@ -88,9 +89,8 @@ exec_global (ed_buffer_t *ed)
    */
   if (!interactive && !(ed->input = get_extended_line (&len, 0, 1, ed)))
     {
-      status = ERR;
       clearerr (stdin);
-      return status;
+      return ERR;
     }
 
   /* Empty command list equivalent to `p' command per SUSv4. */

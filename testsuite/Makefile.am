@@ -117,7 +117,7 @@ ED_SCRIPTS_OK_SO =							      \
 
 # Ed scripts which should complete sucessfully if macros are available.
 ED_SCRIPTS_OK_XM =							      \
-	mac1.txm mac2.txm mac3.txm mac4.txm
+	mac1.txm mac2.txm mac3.txm mac4.txm mac5.txm mac6.txm mac7.txm
 
 # Ed scripts which should complete, but with non-zero exit status.
 ED_SCRIPTS_ERR =							      \

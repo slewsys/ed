@@ -1,4 +1,4 @@
-/* re.c: Regular expression interface for the ed line editor.
+/* regexp.c: Regular expression interface for the ed line editor.
  *
  * SPDX-FileCopyrightText: 1993-2025 Andrew L. Moore <slewsys@gmail.com>, SlewSys Research
  *
