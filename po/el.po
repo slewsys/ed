@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnulib 3.0.0.6062.a6b16\n"
 "Report-Msgid-Bugs-To: bug-gnulib@gnu.org\n"
-"POT-Creation-Date: 2025-01-20 05:19-0500\n"
+"POT-Creation-Date: 2025-02-09 06:33-0500\n"
 "PO-Revision-Date: 2012-03-11 11:25+0100\n"
 "Last-Translator: Simos Xenitellis <simos.lists@googlemail.com>\n"
 "Language-Team: Greek <team@lists.gnome.gr>\n"
@@ -63,7 +63,7 @@ msgstr "%s: η επιλογή απαιτεί ένα όρισμα -- %c\n"
 msgid "Success"
 msgstr ""
 
-#: lib/regcomp.c:125 src/re.c:281 src/sub.c:427
+#: lib/regcomp.c:125 src/regexp.c:287 src/subst.c:427
 msgid "No match"
 msgstr ""
 
@@ -119,8 +119,9 @@ msgid "Invalid range end"
 msgstr "%s: μη έγκυρη κανονική έκφραση: %s"
 
 #
-#: lib/regcomp.c:158 src/aux.c:269 src/buf.c:444 src/buf.c:591 src/io.c:326
-#: src/page.c:858 src/parse.c:270 src/parse.c:515 src/re.c:157 src/undo.c:26
+#: lib/regcomp.c:158 src/buffer.c:436 src/buffer.c:583 src/io.c:325
+#: src/page.c:858 src/parse.c:270 src/parse.c:515 src/regexp.c:163
+#: src/register.c:375 src/undo.c:26
 #, fuzzy
 msgid "Memory exhausted"
 msgstr "η μνήμη εξαντλήθηκε"
@@ -154,152 +155,99 @@ msgid "No previous regular expression"
 msgstr "σφάλμα στην ανεύρεση μέσω κανονικής έκφρασης"
 
 #
-#: src/aux.c:25 src/cmds.c:340
-#, fuzzy
-msgid "Child process error"
-msgstr "%s: μη έγκυρη μορφή"
-
-#: src/aux.c:40 src/cmds.c:347 src/io.c:177 src/io.c:708
-#, c-format
-msgid "Exit status: %#x"
-msgstr ""
-
-#
-#: src/aux.c:70
-#, fuzzy
-msgid "Flush error"
-msgstr "σφάλμα εγγραφής"
-
-#
-#: src/aux.c:81 src/aux.c:172
-#, fuzzy
-#| msgid "write error"
-msgid "Pipe open error"
-msgstr "σφάλμα εγγραφής"
-
-#
-#: src/aux.c:90 src/aux.c:143 src/cmds.c:318 src/exec.c:1739
-#, fuzzy
-#| msgid "program error"
-msgid "Fork error"
-msgstr "σφάλμα προγράμματος"
-
-#: src/aux.c:186
-msgid "Pipe close error"
-msgstr ""
-
-#: src/aux.c:214
-msgid "Exceeded maximum stack frame depth"
-msgstr ""
-
-#
-#: src/aux.c:230 src/aux.c:244 src/aux.c:306 src/aux.c:346 src/aux.c:385
-#: src/io.c:58 src/io.c:615 src/io.c:963 src/io.c:1010 src/io.c:1069
-#: src/io.c:1079 src/io.c:1138 src/io.c:1147 src/io.c:1174 src/main.c:230
-#: src/main.c:731 src/main.c:793
-#, fuzzy
-#| msgid "write error"
-msgid "File seek error"
-msgstr "σφάλμα εγγραφής"
-
-#
-#: src/aux.c:281
-#, fuzzy
-msgid "dup error"
-msgstr "σφάλμα εγγραφής"
-
-#
-#: src/aux.c:288
-#, fuzzy
-msgid "fdopen error"
-msgstr "σφάλμα εγγραφής"
-
-#
-#: src/aux.c:331 src/aux.c:370 src/buf.c:121
+#: src/buffer.c:122 src/register.c:438 src/register.c:477
 #, fuzzy
 msgid "dup2 error"
 msgstr "σφάλμα εγγραφής"
 
 #
-#: src/buf.c:133 src/buf.c:289 src/buf.c:304
+#: src/buffer.c:136 src/io.c:96 src/io.c:167 src/io.c:645 src/io.c:696
+#: src/main.c:783 src/register.c:395
 #, fuzzy
-msgid "Buffer open error"
+#| msgid "write error"
+msgid "File open error"
 msgstr "σφάλμα εγγραφής"
 
-#
-#: src/buf.c:144 src/buf.c:355 src/buf.c:391
-#, fuzzy
-msgid "Buffer seek error"
-msgstr "σφάλμα εγγραφής"
-
-#: src/buf.c:268 src/main.c:559 src/main.c:631
+#: src/buffer.c:260 src/main.c:560 src/main.c:632
 msgid "File name too long"
 msgstr ""
 
 #
-#: src/buf.c:269
+#: src/buffer.c:261
 #, fuzzy
 #| msgid "invalid user"
 msgid "Invalid buffer name"
 msgstr "μη έγκυρος χρήστης"
 
 #
-#: src/buf.c:320
+#: src/buffer.c:281 src/buffer.c:296
+#, fuzzy
+msgid "Buffer open error"
+msgstr "σφάλμα εγγραφής"
+
+#
+#: src/buffer.c:312
 #, fuzzy
 msgid "Buffer close error"
 msgstr "σφάλμα εγγραφής"
 
 #
-#: src/buf.c:365
+#: src/buffer.c:347 src/buffer.c:383
+#, fuzzy
+msgid "Buffer seek error"
+msgstr "σφάλμα εγγραφής"
+
+#
+#: src/buffer.c:357
 #, fuzzy
 msgid "Buffer read error"
 msgstr "σφάλμα εγγραφής"
 
-#: src/buf.c:405 src/buf.c:435
+#: src/buffer.c:397 src/buffer.c:427
 msgid "Buffer full"
 msgstr ""
 
 #
-#: src/buf.c:412
+#: src/buffer.c:404
 #, fuzzy
 #| msgid "write error"
 msgid "Buffer write error"
 msgstr "σφάλμα εγγραφής"
 
 #
-#: src/buf.c:508 src/exec.c:100 src/exec.c:129 src/exec.c:1886 src/page.c:301
-#: src/parse.c:220
+#: src/buffer.c:500 src/exec.c:100 src/exec.c:129 src/exec.c:1864
+#: src/page.c:301 src/parse.c:220
 #, fuzzy
 msgid "Address out of range"
 msgstr "%s: αριθμός γραμμής έξω από τα όρια"
 
-#: src/buf.c:584
+#: src/buffer.c:576
 msgid "Memory request too big"
 msgstr ""
 
 #
-#: src/cbc.c:130 src/cbc.c:228 src/cbc.c:233 src/cbc.c:254 src/cbc.c:259
+#: src/cbc.c:130 src/cbc.c:229 src/cbc.c:234 src/cbc.c:255 src/cbc.c:260
 #, fuzzy
 #| msgid "invalid user"
 msgid "Invalid key"
 msgstr "μη έγκυρος χρήστης"
 
-#: src/cbc.c:372
+#: src/cbc.c:373
 msgid "Decryption failed (block corrupted)"
 msgstr ""
 
-#: src/cbc.c:381
+#: src/cbc.c:382
 msgid "Decryption failed (incomplete block)"
 msgstr ""
 
 #
-#: src/cbc.c:383 src/io.c:566 src/io.c:838
+#: src/cbc.c:384 src/io.c:565 src/io.c:837
 #, fuzzy
 #| msgid "write error"
 msgid "File read error"
 msgstr "σφάλμα εγγραφής"
 
-#: src/cmds.c:43 src/exec.c:609 src/io.c:488 src/main.c:366
+#: src/cmds.c:43 src/io.c:487 src/main.c:368 src/register.c:302
 msgid "End-of-file unexpected"
 msgstr ""
 
@@ -308,6 +256,24 @@ msgstr ""
 #, fuzzy
 msgid "Invalid address mark"
 msgstr "μη έγκυρη τάξη χαρακτήρων `%s'"
+
+#
+#: src/cmds.c:318 src/exec.c:1717 src/filter.c:90 src/filter.c:143
+#, fuzzy
+#| msgid "program error"
+msgid "Fork error"
+msgstr "σφάλμα προγράμματος"
+
+#
+#: src/cmds.c:340 src/filter.c:25
+#, fuzzy
+msgid "Child process error"
+msgstr "%s: μη έγκυρη μορφή"
+
+#: src/cmds.c:347 src/filter.c:40 src/io.c:176 src/io.c:707
+#, c-format
+msgid "Exit status: %#x"
+msgstr ""
 
 #
 #: src/ed.h:101
@@ -321,8 +287,8 @@ msgstr "Άγνωστο σφάλμα συστήματος"
 msgid "Numerical result out of range"
 msgstr "%s: αριθμός γραμμής έξω από τα όρια"
 
-#: src/exec.c:28 src/exec.c:503 src/exec.c:589 src/exec.c:653 src/exec.c:679
-#: src/exec.c:1031 src/exec.c:1391 src/exec.c:1403 src/exec.c:1411
+#: src/exec.c:28 src/exec.c:503 src/exec.c:588 src/exec.c:614 src/exec.c:897
+#: src/exec.c:1009 src/exec.c:1369 src/exec.c:1381 src/exec.c:1389
 msgid "Command suffix unexpected"
 msgstr ""
 
@@ -334,166 +300,184 @@ msgstr ""
 msgid "Command prefix unexpected"
 msgstr ""
 
-#: src/exec.c:494 src/exec.c:579 src/exec.c:644 src/exec.c:748 src/exec.c:769
-#: src/exec.c:968 src/exec.c:1010 src/exec.c:1355 src/exec.c:1548
-#: src/exec.c:1748
+#: src/exec.c:494 src/exec.c:579 src/exec.c:686 src/exec.c:707 src/exec.c:946
+#: src/exec.c:988 src/exec.c:1333 src/exec.c:1526 src/exec.c:1726
 msgid "Address unexpected"
 msgstr ""
 
 #
-#: src/exec.c:673
+#: src/exec.c:608
 #, fuzzy
 msgid "Invalid redirection"
 msgstr "%s: μη έγκυρη κανονική έκφραση: %s"
 
-#: src/exec.c:710 src/main.c:626
+#: src/exec.c:645 src/main.c:627
 msgid "File name not set"
 msgstr ""
 
-#: src/exec.c:724
+#: src/exec.c:659
 msgid "Recursive global command"
 msgstr ""
 
 #
-#: src/exec.c:779
+#: src/exec.c:717
 #, fuzzy
 msgid "No previous error"
 msgstr "σφάλμα στην ανεύρεση μέσω κανονικής έκφρασης"
 
 #
-#: src/exec.c:889
+#: src/exec.c:827
 #, fuzzy
 msgid "Invalid destination address"
 msgstr "μη έγκυρη τάξη χαρακτήρων `%s'"
 
 #
-#: src/exec.c:930 src/exec.c:1341
+#: src/exec.c:872 src/exec.c:1319
 #, fuzzy
 #| msgid "invalid user"
 msgid "Invalid register"
 msgstr "μη έγκυρος χρήστης"
 
 #
-#: src/exec.c:1186 src/exec.c:1249 src/exec.c:1567 src/exec.c:1626
-#: src/exec.c:1811 src/exec.c:1826
+#: src/exec.c:1164 src/exec.c:1227 src/exec.c:1545 src/exec.c:1604
+#: src/exec.c:1789 src/exec.c:1804
 #, fuzzy
 msgid "Unknown command"
 msgstr "Άγνωστο σφάλμα συστήματος"
 
-#: src/exec.c:1738
+#: src/exec.c:1716
 msgid "Cannot fork shell"
 msgstr ""
 
 #
-#: src/exec.c:1826
+#: src/exec.c:1804
 #, fuzzy
 msgid "Invalid address"
 msgstr "%s: μη έγκυρη κανονική έκφραση: %s"
 
-#: src/exec.c:1844
+#: src/exec.c:1822
 msgid "Command too long"
 msgstr ""
 
 #
-#: src/exec.c:1891
+#: src/exec.c:1869
 #, fuzzy
 msgid "Invalid address range"
 msgstr "%s: μη έγκυρη κανονική έκφραση: %s"
 
-#: src/glbl.c:135
+#
+#: src/filter.c:70
+#, fuzzy
+msgid "Flush error"
+msgstr "σφάλμα εγγραφής"
+
+#
+#: src/filter.c:81 src/filter.c:172
+#, fuzzy
+#| msgid "write error"
+msgid "Pipe open error"
+msgstr "σφάλμα εγγραφής"
+
+#
+#: src/filter.c:186
+#, fuzzy
+#| msgid "write error"
+msgid "Pipe close error"
+msgstr "σφάλμα εγγραφής"
+
+#: src/global.c:135
 msgid "No previous command"
 msgstr ""
 
-#: src/io.c:71
+#
+#: src/io.c:57 src/io.c:614 src/main.c:232 src/main.c:732 src/main.c:795
+#: src/register.c:36 src/register.c:83 src/register.c:142 src/register.c:152
+#: src/register.c:211 src/register.c:220 src/register.c:247 src/register.c:286
+#: src/register.c:353 src/register.c:413 src/register.c:453 src/register.c:492
+#, fuzzy
+#| msgid "write error"
+msgid "File seek error"
+msgstr "σφάλμα εγγραφής"
+
+#: src/io.c:70
 msgid "File does not exist"
 msgstr ""
 
-#
-#: src/io.c:97 src/io.c:168 src/io.c:646 src/io.c:697 src/main.c:781
-#, fuzzy
-#| msgid "write error"
-msgid "File open error"
-msgstr "σφάλμα εγγραφής"
-
-#: src/io.c:120 src/io.c:660
+#: src/io.c:119 src/io.c:659
 #, c-format
 msgid "%s: File already locked\n"
 msgstr ""
 
-#: src/io.c:144 src/io.c:637 src/io.c:675
+#: src/io.c:143 src/io.c:636 src/io.c:674
 msgid "File close error"
 msgstr ""
 
-#: src/io.c:300 src/io.c:436
+#: src/io.c:299 src/io.c:435
 #, c-format
 msgid "Newline inserted\n"
 msgstr ""
 
-#: src/io.c:305 src/io.c:441
+#: src/io.c:304 src/io.c:440
 #, c-format
 msgid "Newline appended\n"
 msgstr ""
 
-#: src/io.c:552 src/io.c:791
+#: src/io.c:551 src/io.c:790
 msgid "Broken pipe"
 msgstr ""
 
 #
-#: src/io.c:622 src/io.c:1181
+#: src/io.c:621 src/register.c:254
 #, fuzzy
 #| msgid "write error"
 msgid "File truncate error"
 msgstr "σφάλμα εγγραφής"
 
-#: src/io.c:744
+#: src/io.c:743
 msgid "File too big"
 msgstr ""
 
 #
-#: src/io.c:797 src/io.c:817 src/io.c:828 src/main.c:742 src/main.c:750
+#: src/io.c:796 src/io.c:816 src/io.c:827 src/main.c:743 src/main.c:751
 #, fuzzy
 #| msgid "write error"
 msgid "File write error"
 msgstr "σφάλμα εγγραφής"
 
 #
-#: src/io.c:861 src/parse.c:502
+#: src/io.c:860 src/parse.c:502
 #, fuzzy
 msgid "File status error"
 msgstr "σφάλμα εγγραφής"
 
-#: src/io.c:868
+#: src/io.c:867
 msgid "Access restricted to regular files"
 msgstr ""
 
 #
-#: src/io.c:937
+#: src/io.c:936
 #, fuzzy
 #| msgid "write error"
 msgid "File stat error"
 msgstr "σφάλμα εγγραφής"
 
-#: src/io.c:1044
-msgid "Cannot append register to itself"
-msgstr ""
-
-#: src/main.c:239
+#: src/main.c:240
 msgid "Option '-i' requires '-e' or '-f'"
 msgstr ""
 
-#: src/main.c:304
+#: src/main.c:305
 msgid "Interrupted"
 msgstr ""
 
-#: src/main.c:422
+#: src/main.c:423
 msgid "WARNING: Buffer modified since last write"
 msgstr ""
 
-#: src/main.c:680
+#: src/main.c:681
 msgid "Argument list full"
 msgstr ""
 
-#: src/main.c:815
+#: src/main.c:816
 #, c-format
 msgid ""
 "Usage: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE...]\n"
@@ -505,22 +489,22 @@ msgid ""
 "Usage: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE]\n"
 msgstr ""
 
-#: src/main.c:822
+#: src/main.c:821
 #, c-format
 msgid "Usage: %s [-] [-EGhRrsVvwx] [-p PROMPT] [FILE]\n"
 msgstr ""
 
-#: src/main.c:830
+#: src/main.c:831
 #, c-format
 msgid "Usage: %s [OPTION...] [FILE...]\n"
 msgstr ""
 
-#: src/main.c:833
+#: src/main.c:834
 #, c-format
 msgid "Usage: %s [OPTION...] [FILE]\n"
 msgstr ""
 
-#: src/main.c:839
+#: src/main.c:840
 #, c-format
 msgid ""
 "Options:\n"
@@ -547,7 +531,7 @@ msgid ""
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
 
-#: src/main.c:861
+#: src/main.c:862
 #, c-format
 msgid ""
 "Options:\n"
@@ -570,7 +554,7 @@ msgid ""
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
 
-#: src/main.c:892
+#: src/main.c:893
 msgid "script, line %"
 msgstr ""
 
@@ -623,22 +607,42 @@ msgid "Shell access restricted"
 msgstr ""
 
 #
-#: src/parse.c:757
+#: src/parse.c:759
 #, fuzzy
 msgid "No previous shell command"
 msgstr "σφάλμα στην ανεύρεση μέσω κανονικής έκφρασης"
 
 #
-#: src/re.c:33
+#: src/regexp.c:33
 #, fuzzy
 msgid "Invalid pattern delimiter"
 msgstr "μη έγκυρη τάξη χαρακτήρων `%s'"
 
 #
-#: src/re.c:147
+#: src/regexp.c:147
 #, fuzzy
 msgid "No previous pattern"
 msgstr "σφάλμα στην ανεύρεση μέσω κανονικής έκφρασης"
+
+#
+#: src/regexp.c:156
+#, fuzzy
+msgid "Missing pattern delimiter"
+msgstr "μη έγκυρη τάξη χαρακτήρων `%s'"
+
+#: src/register.c:117
+msgid "Cannot append register to itself"
+msgstr ""
+
+#: src/register.c:337
+msgid "Exceeded maximum stack frame depth"
+msgstr ""
+
+#
+#: src/register.c:387
+#, fuzzy
+msgid "dup error"
+msgstr "σφάλμα εγγραφής"
 
 #
 #: src/signal.c:152
@@ -647,23 +651,28 @@ msgstr "σφάλμα στην ανεύρεση μέσω κανονικής έκ�
 msgid "Signal error"
 msgstr "σφάλμα προγράμματος"
 
-#: src/sub.c:129 src/sub.c:148
+#: src/subst.c:129 src/subst.c:148
 msgid "Unknown command suffix"
 msgstr ""
 
 #
-#: src/sub.c:167 src/sub.c:237
+#: src/subst.c:167 src/subst.c:237
 #, fuzzy
 msgid "No previous substitution"
 msgstr "σφάλμα στην ανεύρεση μέσω κανονικής έκφρασης"
 
-#: src/sub.c:463 src/sub.c:597
+#: src/subst.c:463 src/subst.c:597
 msgid "Too many regex subexpressions"
 msgstr ""
 
 #: src/undo.c:51
 msgid "Nothing to undo"
 msgstr ""
+
+#
+#, fuzzy
+#~ msgid "fdopen error"
+#~ msgstr "σφάλμα εγγραφής"
 
 #
 #, c-format
