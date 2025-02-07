@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnulib 4.0.0.2567\n"
 "Report-Msgid-Bugs-To: bug-gnulib@gnu.org\n"
-"POT-Creation-Date: 2025-02-09 06:33-0500\n"
-"PO-Revision-Date: 2023-07-07 05:18+0300\n"
+"POT-Creation-Date: 2025-02-12 00:55-0500\n"
+"PO-Revision-Date: 2025-02-12 05:55+0000\n"
 "Last-Translator: Yuri Kozlov <yuray@komyakino.ru>\n"
 "Language-Team: Russian <gnu@d07.ru>\n"
 "Language: ru\n"
@@ -20,6 +20,11 @@ msgstr ""
 "Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Lokalize 22.12.3\n"
+"X-Crowdin-Project: standard-unix-text-editor\n"
+"X-Crowdin-Project-ID: 688517\n"
+"X-Crowdin-Language: ru\n"
+"X-Crowdin-File: ru.po\n"
+"X-Crowdin-File-ID: 134\n"
 
 #: lib/getopt.c:282
 #, c-format
@@ -131,345 +136,285 @@ msgid "No previous regular expression"
 msgstr "Отсутствует предыдущее регулярное выражение"
 
 #: src/buffer.c:122 src/register.c:438 src/register.c:477
-#, fuzzy
-#| msgid "Bus error"
 msgid "dup2 error"
-msgstr "Ошибка шины"
+msgstr "dup2 error"
 
-#: src/buffer.c:136 src/io.c:96 src/io.c:167 src/io.c:645 src/io.c:696
-#: src/main.c:783 src/register.c:395
-#, fuzzy
-#| msgid "write error"
+#: src/buffer.c:136 src/io.c:96 src/io.c:167 src/io.c:650 src/io.c:701
+#: src/main.c:788 src/register.c:395
 msgid "File open error"
-msgstr "ошибка записи"
+msgstr "Ошибка открытия файла"
 
 #: src/buffer.c:260 src/main.c:560 src/main.c:632
 msgid "File name too long"
-msgstr ""
+msgstr "Слишком длинное имя файла"
 
 #: src/buffer.c:261
-#, fuzzy
-#| msgid "Invalid back reference"
 msgid "Invalid buffer name"
-msgstr "Неверная обратная ссылка"
+msgstr "Неверное имя буфера"
 
 #: src/buffer.c:281 src/buffer.c:296
-#, fuzzy
-#| msgid "Bus error"
 msgid "Buffer open error"
-msgstr "Ошибка шины"
+msgstr "Ошибка открытия буфера"
 
 #: src/buffer.c:312
-#, fuzzy
-#| msgid "Bus error"
 msgid "Buffer close error"
-msgstr "Ошибка шины"
+msgstr "Ошибка закрытия буфера"
 
 #: src/buffer.c:347 src/buffer.c:383
-#, fuzzy
-#| msgid "Bus error"
 msgid "Buffer seek error"
-msgstr "Ошибка шины"
+msgstr "Ошибка поиска буфера"
 
 #: src/buffer.c:357
-#, fuzzy
-#| msgid "Bus error"
 msgid "Buffer read error"
-msgstr "Ошибка шины"
+msgstr "Ошибка чтения буфера"
 
 #: src/buffer.c:397 src/buffer.c:427
 msgid "Buffer full"
-msgstr ""
+msgstr "Буфер заполнен"
 
 #: src/buffer.c:404
-#, fuzzy
-#| msgid "write error"
 msgid "Buffer write error"
-msgstr "ошибка записи"
+msgstr "Ошибка записи буфера"
 
 #: src/buffer.c:500 src/exec.c:100 src/exec.c:129 src/exec.c:1864
 #: src/page.c:301 src/parse.c:220
-#, fuzzy
-#| msgid "character out of range"
 msgid "Address out of range"
-msgstr "символ вне допустимого диапазона"
+msgstr "Адрес вне диапазона"
 
 #: src/buffer.c:576
 msgid "Memory request too big"
-msgstr ""
+msgstr "Слишком большой запрос памяти"
 
 #: src/cbc.c:130 src/cbc.c:229 src/cbc.c:234 src/cbc.c:255 src/cbc.c:260
-#, fuzzy
-#| msgid "invalid user"
 msgid "Invalid key"
-msgstr "неверный пользователь"
+msgstr "Неверный ключ"
 
 #: src/cbc.c:373
 msgid "Decryption failed (block corrupted)"
-msgstr ""
+msgstr "Расшифровка не удалась (блокировка повреждена)"
 
 #: src/cbc.c:382
 msgid "Decryption failed (incomplete block)"
-msgstr ""
+msgstr "Ошибка расшифровки (неполный блок)"
 
-#: src/cbc.c:384 src/io.c:565 src/io.c:837
-#, fuzzy
-#| msgid "write error"
+#: src/cbc.c:384 src/io.c:570 src/io.c:842
 msgid "File read error"
-msgstr "ошибка записи"
+msgstr "Ошибка чтения файла"
 
-#: src/cmds.c:43 src/io.c:487 src/main.c:368 src/register.c:302
+#: src/cmds.c:43 src/io.c:492 src/main.c:368 src/register.c:302
 msgid "End-of-file unexpected"
-msgstr ""
+msgstr "Конец файла неожиданно"
 
 #: src/cmds.c:251 src/cmds.c:267
-#, fuzzy
-#| msgid "Invalid character class name"
 msgid "Invalid address mark"
-msgstr "Неверное имя класса символов"
+msgstr "Неверное значение адреса"
 
 #: src/cmds.c:318 src/exec.c:1717 src/filter.c:90 src/filter.c:143
-#, fuzzy
-#| msgid "program error"
 msgid "Fork error"
-msgstr "программная ошибка"
+msgstr "Ошибка Fork"
 
 #: src/cmds.c:340 src/filter.c:25
-#, fuzzy
-#| msgid "%s subprocess I/O error"
 msgid "Child process error"
-msgstr "ошибка вв/вывода подпроцесса %s"
+msgstr "Ошибка дочернего процесса"
 
-#: src/cmds.c:347 src/filter.c:40 src/io.c:176 src/io.c:707
+#: src/cmds.c:347 src/filter.c:40 src/io.c:176 src/io.c:712
 #, c-format
 msgid "Exit status: %#x"
-msgstr ""
+msgstr "Статус выхода: %#x"
 
 #: src/ed.h:101
 msgid "Unknown error"
 msgstr "Неизвестная ошибка"
 
 #: src/ed.h:773 src/ed.h:808 src/ed.h:843
-#, fuzzy
-#| msgid "character out of range"
 msgid "Numerical result out of range"
-msgstr "символ вне допустимого диапазона"
+msgstr "Цифровой результат вне диапазона"
 
 #: src/exec.c:28 src/exec.c:503 src/exec.c:588 src/exec.c:614 src/exec.c:897
 #: src/exec.c:1009 src/exec.c:1369 src/exec.c:1381 src/exec.c:1389
 msgid "Command suffix unexpected"
-msgstr ""
+msgstr "Суффикс команды неожиданный"
 
 #: src/exec.c:95 src/exec.c:124
 msgid "Destination address required"
-msgstr ""
+msgstr "Требуется адрес назначения"
 
 #: src/exec.c:338 src/exec.c:351 src/exec.c:363
 msgid "Command prefix unexpected"
-msgstr ""
+msgstr "Неожиданный префикс команды"
 
 #: src/exec.c:494 src/exec.c:579 src/exec.c:686 src/exec.c:707 src/exec.c:946
 #: src/exec.c:988 src/exec.c:1333 src/exec.c:1526 src/exec.c:1726
 msgid "Address unexpected"
-msgstr ""
+msgstr "Непредвиденный адрес"
 
 #: src/exec.c:608
-#, fuzzy
-#| msgid "Invalid regular expression"
 msgid "Invalid redirection"
-msgstr "Неверное регулярное выражение"
+msgstr "Неверное перенаправление"
 
 #: src/exec.c:645 src/main.c:627
 msgid "File name not set"
-msgstr ""
+msgstr "Имя файла не задано"
 
 #: src/exec.c:659
 msgid "Recursive global command"
-msgstr ""
+msgstr "Рекурсивная глобальная команда"
 
 #: src/exec.c:717
-#, fuzzy
-#| msgid "No previous regular expression"
 msgid "No previous error"
-msgstr "Отсутствует предыдущее регулярное выражение"
+msgstr "Нет предыдущей ошибки"
 
 #: src/exec.c:827
-#, fuzzy
-#| msgid "Invalid collation character"
 msgid "Invalid destination address"
-msgstr "Неверный символ сравнения"
+msgstr "Неверный адрес назначения"
 
 #: src/exec.c:872 src/exec.c:1319
-#, fuzzy
-#| msgid "invalid user"
 msgid "Invalid register"
-msgstr "неверный пользователь"
+msgstr "Некорректный регистр"
 
 #: src/exec.c:1164 src/exec.c:1227 src/exec.c:1545 src/exec.c:1604
 #: src/exec.c:1789 src/exec.c:1804
-#, fuzzy
-#| msgid "Unknown error"
 msgid "Unknown command"
-msgstr "Неизвестная ошибка"
+msgstr "Неизвестная команда"
 
 #: src/exec.c:1716
 msgid "Cannot fork shell"
-msgstr ""
+msgstr "Нельзя форкнуть оболочку"
 
 #: src/exec.c:1804
-#, fuzzy
-#| msgid "Invalid regular expression"
 msgid "Invalid address"
-msgstr "Неверное регулярное выражение"
+msgstr "Неверный адрес"
 
 #: src/exec.c:1822
 msgid "Command too long"
-msgstr ""
+msgstr "Команда слишком длинная"
 
 #: src/exec.c:1869
-#, fuzzy
-#| msgid "Invalid range end"
 msgid "Invalid address range"
-msgstr "Неверный конец диапазона"
+msgstr "Неверный диапазон адресов"
 
 #: src/filter.c:70
-#, fuzzy
-#| msgid "Bus error"
 msgid "Flush error"
-msgstr "Ошибка шины"
+msgstr "Ошибка очистки"
 
 #: src/filter.c:81 src/filter.c:172
-#, fuzzy
-#| msgid "write error"
 msgid "Pipe open error"
-msgstr "ошибка записи"
+msgstr "Ошибка открытия трубы"
 
 #: src/filter.c:186
-#, fuzzy
-#| msgid "write error"
 msgid "Pipe close error"
-msgstr "ошибка записи"
+msgstr "Ошибка закрытия трубы"
 
 #: src/global.c:135
 msgid "No previous command"
-msgstr ""
+msgstr "Нет предыдущей команды"
 
-#: src/io.c:57 src/io.c:614 src/main.c:232 src/main.c:732 src/main.c:795
+#: src/io.c:57 src/io.c:619 src/main.c:232 src/main.c:737 src/main.c:804
 #: src/register.c:36 src/register.c:83 src/register.c:142 src/register.c:152
 #: src/register.c:211 src/register.c:220 src/register.c:247 src/register.c:286
 #: src/register.c:353 src/register.c:413 src/register.c:453 src/register.c:492
-#, fuzzy
-#| msgid "write error"
 msgid "File seek error"
-msgstr "ошибка записи"
+msgstr "Ошибка поиска файла"
 
 #: src/io.c:70
 msgid "File does not exist"
-msgstr ""
+msgstr "Файл не существует"
 
-#: src/io.c:119 src/io.c:659
+#: src/io.c:119 src/io.c:664
 #, c-format
 msgid "%s: File already locked\n"
-msgstr ""
+msgstr "%s: Файл уже заблокирован\n"
 
-#: src/io.c:143 src/io.c:636 src/io.c:674
+#: src/io.c:143 src/io.c:641 src/io.c:679
 msgid "File close error"
-msgstr ""
+msgstr "Ошибка закрытия файла"
 
 #: src/io.c:299 src/io.c:435
 #, c-format
 msgid "Newline inserted\n"
-msgstr ""
+msgstr "Новая строка добавлена\n"
 
 #: src/io.c:304 src/io.c:440
 #, c-format
 msgid "Newline appended\n"
-msgstr ""
+msgstr "Добавлена новая строка\n"
 
-#: src/io.c:551 src/io.c:790
+#: src/io.c:556 src/io.c:795
 msgid "Broken pipe"
-msgstr "Обрыв канала"
+msgstr "Сломанная труба"
 
-#: src/io.c:621 src/register.c:254
-#, fuzzy
-#| msgid "write error"
+#: src/io.c:626 src/register.c:254
 msgid "File truncate error"
-msgstr "ошибка записи"
+msgstr "Ошибка усечения файла"
 
-#: src/io.c:743
+#: src/io.c:748
 msgid "File too big"
-msgstr ""
+msgstr "Файл слишком большой"
 
-#: src/io.c:796 src/io.c:816 src/io.c:827 src/main.c:743 src/main.c:751
-#, fuzzy
-#| msgid "write error"
+#: src/io.c:801 src/io.c:821 src/io.c:832 src/main.c:748 src/main.c:756
 msgid "File write error"
-msgstr "ошибка записи"
+msgstr "Ошибка записи файла"
 
-#: src/io.c:860 src/parse.c:502
-#, fuzzy
-#| msgid "Bus error"
+#: src/io.c:865 src/parse.c:502
 msgid "File status error"
-msgstr "Ошибка шины"
+msgstr "Ошибка статуса файла"
 
-#: src/io.c:867
+#: src/io.c:872
 msgid "Access restricted to regular files"
-msgstr ""
+msgstr "Доступ ограничен обычными файлами"
 
-#: src/io.c:936
-#, fuzzy
-#| msgid "write error"
+#: src/io.c:941
 msgid "File stat error"
-msgstr "ошибка записи"
+msgstr "Ошибка статистики файла"
 
 #: src/main.c:240
 msgid "Option '-i' requires '-e' or '-f'"
-msgstr ""
+msgstr "Параметр '-i' требует '-e' или '-f'"
 
 #: src/main.c:305
-#, fuzzy
-#| msgid "Interrupt"
 msgid "Interrupted"
-msgstr "Прерывание"
+msgstr "Прервано"
 
 #: src/main.c:423
 msgid "WARNING: Buffer modified since last write"
-msgstr ""
+msgstr "ПРЕДУПРЕЖДЕНИЕ: Буфер изменен с момента последней записи"
 
 #: src/main.c:681
-#, fuzzy
-#| msgid "Argument buffer too small"
 msgid "Argument list full"
-msgstr "Буфер аргументов слишком мал"
+msgstr "Полный список аргументов"
 
-#: src/main.c:816
+#: src/main.c:825
 #, c-format
 msgid ""
 "Usage: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE...]\n"
 msgstr ""
+"Использование: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] "
+"[FILE...]\n"
 
-#: src/main.c:818
+#: src/main.c:827
 #, c-format
 msgid ""
 "Usage: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE]\n"
 msgstr ""
+"Использование: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] "
+"[FILE]\n"
 
-#: src/main.c:821
+#: src/main.c:830
 #, c-format
 msgid "Usage: %s [-] [-EGhRrsVvwx] [-p PROMPT] [FILE]\n"
-msgstr ""
-
-#: src/main.c:831
-#, c-format
-msgid "Usage: %s [OPTION...] [FILE...]\n"
-msgstr ""
-
-#: src/main.c:834
-#, c-format
-msgid "Usage: %s [OPTION...] [FILE]\n"
-msgstr ""
+msgstr "Использование: %s [-] [-EGhRrsVvwx] [-p PROMPT] [FILE]\n"
 
 #: src/main.c:840
+#, c-format
+msgid "Usage: %s [OPTION...] [FILE...]\n"
+msgstr "Используйте: %s [OPTION...] [FILE...]\n"
+
+#: src/main.c:843
+#, c-format
+msgid "Usage: %s [OPTION...] [FILE]\n"
+msgstr "Используйте: %s [OPTION...] [FILE]\n"
+
+#: src/main.c:849
 #, c-format
 msgid ""
 "Options:\n"
@@ -495,8 +440,31 @@ msgid ""
 "\n"
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
+"Опции:\n"
+"  -E, --regexp-extended Enable extended regular expression syntax.\n"
+"  -e, --expression=COMMAND Add COMMAND to scripted input - implies `-s'.\n"
+"  -f, --file=SCRIPT Read command of file SCRIPT - подразумевает `-s'.\n"
+"  -G, --traditional Включить обратную совместимость.\n"
+"  -h, --help Display (this) help, затем выйти.\n"
+"  -i, --in-place[=SUFFIX] Записать файл перед закрытием и опциональным "
+"резервным копированием.\n"
+"  -p, --prompt=STRING Prompt для команд с STRING.\n"
+"  -R, --ansi-color Включить поддержку кодов цветов ANSI.\n"
+"  -r, --regexp-extended Enable extended regular expression syntax.\n"
+"  -s, --script Отключить интерактивную диагностику.\n"
+"  -v, --verbose Включить подробную диагностику.\n"
+"  -V, --version Показать информацию о версии, а затем выйти.\n"
+"  -w, --write Включить запись для подстановки процессов.\n"
+"  -x, --crypt Включить шифрование ввода-вывода.\n"
+"\n"
+"Если ФАЙЛ задан, прочитайте его для редактирования. С этого момента:\n"
+"  !info ed-intro RET\n"
+"для введения в обучение.\n"
+"\n"
+"Пожалуйста, отправьте проблемы или запросы на слияние до: <https://github."
+"com/slewsys/ed>\n"
 
-#: src/main.c:862
+#: src/main.c:871
 #, c-format
 msgid ""
 "Options:\n"
@@ -518,891 +486,114 @@ msgid ""
 "\n"
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
+"Опции:\n"
+"  -E, --regexp-extended Enable extended regular expression syntax.\n"
+"  -G, --traditional Включить обратную совместимость.\n"
+"  -h, --help Dispaly (this) help, затем выйти.\n"
+"  -p, --prompt=STRING Prompt для команд с STRING.\n"
+"  -R, --ansi-color Включить поддержку кодов цветов ANSI.\n"
+"  -r, --regexp-extended Разрешить регулярное выражение синтаксиса.\n"
+"  -s, --script Отключить интерактивную диагностику.\n"
+"  -v, --verbose Включить подробную диагностику.\n"
+"  -V, --version Показать информацию о версии, а затем выйти.\n"
+"  -w, --write Включить запись для замены процессов.\n"
+"  -x, --crypt Включить шифрование ввода-вывода.\n"
+"\n"
+"Если ФАЙЛ задан, прочитайте его для редактирования. С этого момента:\n"
+"  !info ed-intro RET\n"
+"для ознакомления с уроком о себе.\n"
+"\n"
+"Пожалуйста, отправьте проблемы или запросы на слияние до: <https://github."
+"com/slewsys/ed>\n"
 
-#: src/main.c:893
+#: src/main.c:902
 msgid "script, line %"
-msgstr ""
+msgstr "скрипт, строка %"
 
 #: src/parse.c:253 src/parse.c:599
-#, fuzzy
-#| msgid "failed to return to initial working directory"
 msgid "Access restricted to working directory"
-msgstr "не удалось вернуться в первоначальный рабочий каталог"
+msgstr "Доступ к рабочей папке"
 
 #: src/parse.c:320
-#, fuzzy
-#| msgid "%s: Too many arguments\n"
 msgid "Too many file names"
-msgstr "%s: слишком много аргументов\n"
+msgstr "Слишком много имен файлов"
 
 #: src/parse.c:335 src/parse.c:348 src/parse.c:375
-#, fuzzy
-#| msgid "named file"
 msgid "No more files"
-msgstr "именованный файл"
+msgstr "Больше файлов нет"
 
 #: src/parse.c:443
 msgid "File glob too long"
-msgstr ""
+msgstr "Файл глотки слишком длинный"
 
 #: src/parse.c:464 src/parse.c:468 src/parse.c:488
 msgid "Pathname expansion error"
-msgstr ""
+msgstr "Ошибка расширения пути"
 
 #: src/parse.c:484
 msgid "No such file or directory"
-msgstr ""
+msgstr "Нет такого файла или каталога"
 
 #: src/parse.c:574
-#, fuzzy
-#| msgid "Invalid range end"
 msgid "Invalid file name"
-msgstr "Неверный конец диапазона"
+msgstr "Неверное имя файла"
 
 #: src/parse.c:629
 msgid "Brackets ([]) unbalanced"
-msgstr ""
+msgstr "Несбалансированные скобки ([])"
 
 #: src/parse.c:636
 msgid "Backslash (\\) unexpected"
-msgstr ""
+msgstr "Непредвиденная обратная слэш (\\)"
 
 #: src/parse.c:693
 msgid "Shell access restricted"
-msgstr ""
+msgstr "Доступ к оболочке ограничен"
 
 #: src/parse.c:759
-#, fuzzy
-#| msgid "No previous regular expression"
 msgid "No previous shell command"
-msgstr "Отсутствует предыдущее регулярное выражение"
+msgstr "Нет предыдущей команды оболочки"
 
 #: src/regexp.c:33
-#, fuzzy
-#| msgid "Invalid character class name"
 msgid "Invalid pattern delimiter"
-msgstr "Неверное имя класса символов"
+msgstr "Недопустимый разделитель шаблона"
 
 #: src/regexp.c:147
-#, fuzzy
-#| msgid "No previous regular expression"
 msgid "No previous pattern"
-msgstr "Отсутствует предыдущее регулярное выражение"
+msgstr "Нет предыдущего графического ключа"
 
 #: src/regexp.c:156
-#, fuzzy
-#| msgid "Invalid character class name"
 msgid "Missing pattern delimiter"
-msgstr "Неверное имя класса символов"
+msgstr "Отсутствует разделитель шаблона"
 
 #: src/register.c:117
 msgid "Cannot append register to itself"
-msgstr ""
+msgstr "Нельзя добавить регистрацию к себе"
 
 #: src/register.c:337
 msgid "Exceeded maximum stack frame depth"
-msgstr ""
+msgstr "Превышен максимальный предел глубины кадра стека"
 
 #: src/register.c:387
-#, fuzzy
-#| msgid "Bus error"
 msgid "dup error"
-msgstr "Ошибка шины"
+msgstr "dup error"
 
 #: src/signal.c:152
-#, fuzzy
-#| msgid "program error"
 msgid "Signal error"
-msgstr "программная ошибка"
+msgstr "Ошибка сигнала"
 
 #: src/subst.c:129 src/subst.c:148
 msgid "Unknown command suffix"
-msgstr ""
+msgstr "Неизвестный суффикс команды"
 
 #: src/subst.c:167 src/subst.c:237
-#, fuzzy
-#| msgid "No previous regular expression"
 msgid "No previous substitution"
-msgstr "Отсутствует предыдущее регулярное выражение"
+msgstr "Нет предыдущей замены"
 
 #: src/subst.c:463 src/subst.c:597
 msgid "Too many regex subexpressions"
-msgstr ""
+msgstr "Слишком много подвыражений регулярного выражения"
 
 #: src/undo.c:51
 msgid "Nothing to undo"
-msgstr ""
-
-#, fuzzy
-#~| msgid "Unknown error"
-#~ msgid "fdopen error"
-#~ msgstr "Неизвестная ошибка"
-
-#, c-format
-#~ msgid "invalid argument %s for %s"
-#~ msgstr "неверный аргумент %s для %s"
-
-#, c-format
-#~ msgid "ambiguous argument %s for %s"
-#~ msgstr "неоднозначный аргумент %s для %s"
-
-#~ msgid "Valid arguments are:"
-#~ msgstr "Верные аргументы:"
-
-#, c-format
-#~ msgid "ARGP_HELP_FMT: %s value is less than or equal to %s"
-#~ msgstr "ARGP_HELP_FMT: значение %s меньше или равно %s"
-
-#, c-format
-#~ msgid "%.*s: ARGP_HELP_FMT parameter requires a value"
-#~ msgstr "%.*s: параметр ARGP_HELP_FMT требует значения"
-
-#, c-format
-#~ msgid "%.*s: Unknown ARGP_HELP_FMT parameter"
-#~ msgstr "%.*s: неизвестный параметр ARGP_HELP_FMT"
-
-#, c-format
-#~ msgid "Garbage in ARGP_HELP_FMT: %s"
-#~ msgstr "Мусор в ARGP_HELP_FMT: %s"
-
-#~ msgid ""
-#~ "Mandatory or optional arguments to long options are also mandatory or "
-#~ "optional for any corresponding short options."
-#~ msgstr ""
-#~ "Обязательные или необязательные аргументы к длинным именам параметров "
-#~ "остаются таковыми и к соответствующим коротким параметрам."
-
-#~ msgid "Usage:"
-#~ msgstr "Использование:"
-
-#~ msgid "  or: "
-#~ msgstr "  или: "
-
-#~ msgid " [OPTION...]"
-#~ msgstr " [ПАРАМЕТР...]"
-
-#, c-format
-#~ msgid "Try '%s --help' or '%s --usage' for more information.\n"
-#~ msgstr ""
-#~ "Попробуйте «%s --help» или «%s --usage» для получения более подробного "
-#~ "описания.\n"
-
-#, c-format
-#~ msgid "Report bugs to %s.\n"
-#~ msgstr "Об ошибках сообщай по адресу %s.\n"
-
-#~ msgid "Unknown system error"
-#~ msgstr "Неизвестная системная ошибка"
-
-#~ msgid "give this help list"
-#~ msgstr "показать эту справку"
-
-#~ msgid "give a short usage message"
-#~ msgstr "показать короткую справку по использованию"
-
-#~ msgid "NAME"
-#~ msgstr "ИМЯ"
-
-#~ msgid "set the program name"
-#~ msgstr "задать имя программы"
-
-#~ msgid "SECS"
-#~ msgstr "СЕКУНД"
-
-#~ msgid "hang for SECS seconds (default 3600)"
-#~ msgstr "остановиться на заданное число СЕКУНД (по умолчанию 3600)"
-
-#~ msgid "print program version"
-#~ msgstr "показать номер версии программы"
-
-#~ msgid "(PROGRAM ERROR) No version known!?"
-#~ msgstr "(ОШИБКА ПРОГРАММЫ) Версия неизвестна!?"
-
-#~ msgid "(PROGRAM ERROR) Option should have been recognized!?"
-#~ msgstr "(ОШИБКА ПРОГРАММЫ) Параметр должен был быть распознан!?"
-
-#, c-format
-#~ msgid "%u bitset_allocs, %u freed (%.2f%%).\n"
-#~ msgstr "%u bitset_allocs, %u освобождено (%.2f%%).\n"
-
-#, c-format
-#~ msgid "%u bitset_sets, %u cached (%.2f%%)\n"
-#~ msgstr "%u bitset_sets, %u кэшировано (%.2f%%)\n"
-
-#, c-format
-#~ msgid "%u bitset_resets, %u cached (%.2f%%)\n"
-#~ msgstr "%u bitset_resets, %u кэшировано (%.2f%%)\n"
-
-#, c-format
-#~ msgid "%u bitset_tests, %u cached (%.2f%%)\n"
-#~ msgstr "%u bitset_tests, %u кэшировано (%.2f%%)\n"
-
-#, c-format
-#~ msgid "%u bitset_lists\n"
-#~ msgstr "%u bitset_lists\n"
-
-#~ msgid "count log histogram\n"
-#~ msgstr "количественная логарифмическая гистограмма\n"
-
-#~ msgid "size log histogram\n"
-#~ msgstr "размерная логарифмическая гистограмма\n"
-
-#~ msgid "density histogram\n"
-#~ msgstr "гистограмма плотности\n"
-
-#, c-format
-#~ msgid ""
-#~ "Bitset statistics:\n"
-#~ "\n"
-#~ msgstr ""
-#~ "Статистика bitset:\n"
-#~ "\n"
-
-#, c-format
-#~ msgid "Accumulated runs = %u\n"
-#~ msgstr "Накопленных запусков = %u\n"
-
-#~ msgid "cannot read stats file"
-#~ msgstr "невозможно прочитать файл stats"
-
-#, c-format
-#~ msgid "bad stats file size\n"
-#~ msgstr "некорректный размер файла stats\n"
-
-#~ msgid "cannot write stats file"
-#~ msgstr "невозможно записать файл stats"
-
-#~ msgid "cannot open stats file for writing"
-#~ msgstr "невозможно открыть файл stats для записи"
-
-#~ msgid "stack overflow"
-#~ msgstr "переполнение стека"
-
-#~ msgid "cannot find a temporary directory, try setting $TMPDIR"
-#~ msgstr "не удалось найти временный каталог, попробуйте задать $TMPDIR"
-
-#, c-format
-#~ msgid "cannot create a temporary directory using template \"%s\""
-#~ msgstr "не удалось создать временный каталог с помощью шаблона «%s»"
-
-#, c-format
-#~ msgid "cannot remove temporary file %s"
-#~ msgstr "не удалось удалить временный файл %s"
-
-#, c-format
-#~ msgid "cannot remove temporary directory %s"
-#~ msgstr "не удалось удалить временный каталог %s"
-
-#~ msgid "error closing file"
-#~ msgstr "ошибка закрытия файла"
-
-#, c-format
-#~ msgid "preserving permissions for %s"
-#~ msgstr "сохраняются права доступа для %s"
-
-#, c-format
-#~ msgid "error while opening %s for reading"
-#~ msgstr "ошибка при открытии файла %s для чтения"
-
-#, c-format
-#~ msgid "cannot open backup file %s for writing"
-#~ msgstr "не удалось открыть файл резервной копии %s для записи"
-
-#, c-format
-#~ msgid "error reading %s"
-#~ msgstr "ошибка чтения %s"
-
-#, c-format
-#~ msgid "error writing %s"
-#~ msgstr "ошибка записи %s"
-
-#, c-format
-#~ msgid "error after reading %s"
-#~ msgstr "ошибка после чтения %s"
-
-#~ msgid "fdopen() failed"
-#~ msgstr "ошибка при выполнении fdopen()"
-
-#~ msgid "C# compiler not found, try installing mono"
-#~ msgstr "Не найден компилятор C#, попробуйте установить mono"
-
-#~ msgid "C# virtual machine not found, try installing mono"
-#~ msgstr "Не найдена виртуальная машина C#, попробуйте установить mono"
-
-#~ msgid "unbalanced ["
-#~ msgstr "несбалансированная ["
-
-#~ msgid "invalid character class"
-#~ msgstr "неправильный класс символов"
-
-#~ msgid "character class syntax is [[:space:]], not [:space:]"
-#~ msgstr "синтаксис класса символов: [[:space:]], а не [:space:]"
-
-#~ msgid "unfinished \\ escape"
-#~ msgstr "незавершённая \\ экранирующая последовательность"
-
-#~ msgid "invalid content of \\{\\}"
-#~ msgstr "неправильное содержимое в \\{\\}"
-
-#~ msgid "regular expression too big"
-#~ msgstr "регулярное выражение слишком большое"
-
-#~ msgid "unbalanced ("
-#~ msgstr "несбалансированная ("
-
-#~ msgid "no syntax specified"
-#~ msgstr "не указан синтаксис"
-
-#~ msgid "unbalanced )"
-#~ msgstr "несбалансированная )"
-
-#, c-format
-#~ msgid "%s subprocess failed"
-#~ msgstr "подпроцесс %s завершился с ошибкой"
-
-#~ msgid "regular empty file"
-#~ msgstr "пустой обычный файл"
-
-#~ msgid "regular file"
-#~ msgstr "обычный файл"
-
-#~ msgid "directory"
-#~ msgstr "каталог"
-
-#~ msgid "symbolic link"
-#~ msgstr "символьная ссылка"
-
-#~ msgid "message queue"
-#~ msgstr "очередь сообщений"
-
-#~ msgid "semaphore"
-#~ msgstr "семафор"
-
-#~ msgid "shared memory object"
-#~ msgstr "объект общей памяти"
-
-#~ msgid "typed memory object"
-#~ msgstr "объект типизированной памяти"
-
-#~ msgid "block special file"
-#~ msgstr "блочный специальный файл"
-
-#~ msgid "character special file"
-#~ msgstr "символьный специальный файл"
-
-#~ msgid "contiguous data"
-#~ msgstr "непрерывные данные"
-
-#~ msgid "fifo"
-#~ msgstr "файл-очередь"
-
-#~ msgid "door"
-#~ msgstr "дверь"
-
-#~ msgid "multiplexed block special file"
-#~ msgstr "мультиплексный блочный специальный файл"
-
-#~ msgid "multiplexed character special file"
-#~ msgstr "мультиплексный символьный специальный файл"
-
-#~ msgid "multiplexed file"
-#~ msgstr "мультиплексный файл"
-
-#~ msgid "network special file"
-#~ msgstr "сетевой специальный файл"
-
-#~ msgid "migrated file with data"
-#~ msgstr "переносной файл с данными"
-
-#~ msgid "migrated file without data"
-#~ msgstr "переносной файл без данных"
-
-#~ msgid "port"
-#~ msgstr "порт"
-
-#~ msgid "socket"
-#~ msgstr "сокет"
-
-#~ msgid "whiteout"
-#~ msgstr "замазка"
-
-#~ msgid "weird file"
-#~ msgstr "странный файл"
-
-#~ msgid "Address family for hostname not supported"
-#~ msgstr "Адресное семейство не поддерживается для имени узла"
-
-#~ msgid "Temporary failure in name resolution"
-#~ msgstr "Временная ошибка при определении имени"
-
-#~ msgid "Bad value for ai_flags"
-#~ msgstr "Неверное значение для ai_flags"
-
-#~ msgid "Non-recoverable failure in name resolution"
-#~ msgstr "Невосстановимая ошибка при определении имени"
-
-#~ msgid "ai_family not supported"
-#~ msgstr "ai_family не поддерживается"
-
-#~ msgid "Memory allocation failure"
-#~ msgstr "Ошибка при выделении памяти"
-
-#~ msgid "No address associated with hostname"
-#~ msgstr "С именем узла не связано ни одного адреса"
-
-#~ msgid "Name or service not known"
-#~ msgstr "Неизвестное имя или служба"
-
-#~ msgid "Servname not supported for ai_socktype"
-#~ msgstr "Servname не поддерживается для ai_socktype"
-
-#~ msgid "ai_socktype not supported"
-#~ msgstr "ai_socktype не поддерживается"
-
-#~ msgid "System error"
-#~ msgstr "Системная ошибка"
-
-#~ msgid "Processing request in progress"
-#~ msgstr "Выполняется обработка запроса"
-
-#~ msgid "Request canceled"
-#~ msgstr "Запрос отменён"
-
-#~ msgid "Request not canceled"
-#~ msgstr "Запрос не отменён"
-
-#~ msgid "All requests done"
-#~ msgstr "Все запросы выполнены"
-
-#~ msgid "Interrupted by a signal"
-#~ msgstr "Прервано по сигналу"
-
-#~ msgid "Parameter string not correctly encoded"
-#~ msgstr "Строковый параметр неправильно закодирован"
-
-#~ msgid "invalid source_version argument to compile_java_class"
-#~ msgstr "неверный аргумент source_version для compile_java_class"
-
-#~ msgid "invalid target_version argument to compile_java_class"
-#~ msgstr "неверный аргумент target_version для compile_java_class"
-
-#, c-format
-#~ msgid "failed to create \"%s\""
-#~ msgstr "не удалось создать «%s»"
-
-#, c-format
-#~ msgid "error while writing \"%s\" file"
-#~ msgstr "ошибка записи в файл «%s»"
-
-#~ msgid "Java compiler not found, try installing gcj or set $JAVAC"
-#~ msgstr ""
-#~ "Не найден компилятор Java, попробуйте установить gcj или задать $JAVAC"
-
-#~ msgid "Java virtual machine not found, try installing gij or set $JAVA"
-#~ msgstr ""
-#~ "Не найдена виртуальная машина Java, попробуйте установить gcj или задать "
-#~ "$JAVA"
-
-#, c-format
-#~ msgid "cannot stat %s"
-#~ msgstr "не удалось выполнить stat для %s"
-
-#, c-format
-#~ msgid "cannot change permissions of %s"
-#~ msgstr "невозможно изменить права доступа %s"
-
-#, c-format
-#~ msgid "cannot create directory %s"
-#~ msgstr "невозможно создать каталог %s"
-
-#~ msgid "memory exhausted"
-#~ msgstr "закончилась память"
-
-#~ msgid "unable to record current working directory"
-#~ msgstr "не удалось запомнить текущий рабочий каталог"
-
-#~ msgid "Failed to open /dev/zero for read"
-#~ msgstr "Не удалось открыть /dev/zero на чтение"
-
-#~ msgid "creation of reading thread failed"
-#~ msgstr "не удалось создать нить для чтения"
-
-#, c-format
-#~ msgid "cannot set up nonblocking I/O to %s subprocess"
-#~ msgstr "не удалось настроить неблокированный ввод-вывод в подпроцессе %s"
-
-#, c-format
-#~ msgid "communication with %s subprocess failed"
-#~ msgstr "не удалось связаться с подпроцессом %s"
-
-#, c-format
-#~ msgid "write to %s subprocess failed"
-#~ msgstr "не удалось записать в подпроцесс %s"
-
-#, c-format
-#~ msgid "read from %s subprocess failed"
-#~ msgstr "не удалось прочитать из подпроцесса %s"
-
-#, c-format
-#~ msgid "subprocess %s terminated with exit code %d"
-#~ msgstr "подпроцесс %s завершился с кодом выхода %d"
-
-#~ msgid "creation of threads failed"
-#~ msgstr "не удалось создать нити"
-
-#, c-format
-#~ msgid "%s subprocess terminated with exit code %d"
-#~ msgstr "подпроцесс %s завершился с кодом выхода %d"
-
-#~ msgid "`"
-#~ msgstr "«"
-
-#~ msgid "'"
-#~ msgstr "»"
-
-#~ msgid "^[yY]"
-#~ msgstr "^[ДдYy]"
-
-#~ msgid "^[nN]"
-#~ msgstr "^[НнNn]"
-
-#, c-format
-#~ msgid "setting permissions for %s"
-#~ msgstr "задание прав доступа для %s"
-
-#~ msgid "Hangup"
-#~ msgstr "Обрыв терминальной линии"
-
-#~ msgid "Quit"
-#~ msgstr "Аварийное прерывание"
-
-#~ msgid "Illegal instruction"
-#~ msgstr "Недопустимая инструкция"
-
-#~ msgid "Trace/breakpoint trap"
-#~ msgstr "Прерывание на контрольной точке"
-
-#~ msgid "Aborted"
-#~ msgstr "Прервано"
-
-#~ msgid "Floating point exception"
-#~ msgstr "Ошибка операции с плавающей точкой"
-
-#~ msgid "Killed"
-#~ msgstr "Уничтожение"
-
-#~ msgid "Segmentation fault"
-#~ msgstr "Нарушение сегментирования"
-
-#~ msgid "Alarm clock"
-#~ msgstr "Сигнал по таймеру"
-
-#~ msgid "Terminated"
-#~ msgstr "Завершение"
-
-#~ msgid "Urgent I/O condition"
-#~ msgstr "Срочная операция ввода-вывода"
-
-#~ msgid "Stopped (signal)"
-#~ msgstr "Останов (сигнал)"
-
-#~ msgid "Stopped"
-#~ msgstr "Останов"
-
-#~ msgid "Continued"
-#~ msgstr "Возобновление"
-
-#~ msgid "Child exited"
-#~ msgstr "Потомок завершил работу"
-
-#~ msgid "Stopped (tty input)"
-#~ msgstr "Останов (ввод с терминала)"
-
-#~ msgid "Stopped (tty output)"
-#~ msgstr "Останов (вывод с терминала)"
-
-#~ msgid "I/O possible"
-#~ msgstr "Возможен ввод-вывод"
-
-#~ msgid "CPU time limit exceeded"
-#~ msgstr "Превышен предел по процессорному времени"
-
-#~ msgid "File size limit exceeded"
-#~ msgstr "Превышен предел размера файла"
-
-#~ msgid "Virtual timer expired"
-#~ msgstr "Виртуальное время истекло"
-
-#~ msgid "Profiling timer expired"
-#~ msgstr "Время профилирования истекло"
-
-#~ msgid "Window changed"
-#~ msgstr "Окно изменено"
-
-#~ msgid "User defined signal 1"
-#~ msgstr "Определяемый пользователем сигнал 1"
-
-#~ msgid "User defined signal 2"
-#~ msgstr "Определяемый пользователем сигнал 2"
-
-#~ msgid "EMT trap"
-#~ msgstr "Ловушка EMT"
-
-#~ msgid "Bad system call"
-#~ msgstr "Неправильный системный вызов"
-
-#~ msgid "Stack fault"
-#~ msgstr "Ошибка работы со стеком"
-
-#~ msgid "Information request"
-#~ msgstr "Запрос информации"
-
-#~ msgid "Power failure"
-#~ msgstr "Отказ питания"
-
-#~ msgid "Resource lost"
-#~ msgstr "Ресурс потерян"
-
-#~ msgid "error writing to a closed pipe or socket"
-#~ msgstr "ошибка записи в закрытый канал или сокет"
-
-#~ msgid "cannot create pipe"
-#~ msgstr "не удалось создать канал"
-
-#, c-format
-#~ msgid "Real-time signal %d"
-#~ msgstr "Сигнал реального времени %d"
-
-#, c-format
-#~ msgid "Unknown signal %d"
-#~ msgstr "Неизвестный сигнал %d"
-
-#~ msgid "Execution times (seconds)"
-#~ msgstr "Время выполнения (секунд)"
-
-#~ msgid "CPU user"
-#~ msgstr "пользовательское время на ЦП"
-
-#~ msgid "CPU system"
-#~ msgstr "системное время на ЦП"
-
-#~ msgid "wall clock"
-#~ msgstr "настенные часы"
-
-#~ msgid "iconv function not usable"
-#~ msgstr "функция iconv неприменима"
-
-#~ msgid "iconv function not available"
-#~ msgstr "функция iconv недоступна"
-
-#, c-format
-#~ msgid "cannot convert U+%04X to local character set"
-#~ msgstr "невозможно преобразовать U+%04X в локальную кодировку"
-
-#, c-format
-#~ msgid "cannot convert U+%04X to local character set: %s"
-#~ msgstr "невозможно преобразовать U+%04X в локальную кодировку: %s"
-
-#~ msgid "invalid group"
-#~ msgstr "неверная группа"
-
-#~ msgid "invalid spec"
-#~ msgstr "неверный spec"
-
-#~ msgid "unable to display error message"
-#~ msgstr "невозможно показать сообщение об ошибке"
-
-#, c-format
-#~ msgid "Packaged by %s (%s)\n"
-#~ msgstr "Упакован %s (%s)\n"
-
-#, c-format
-#~ msgid "Packaged by %s\n"
-#~ msgstr "Упакован %s\n"
-
-#~ msgid "(C)"
-#~ msgstr "©"
-
-#, c-format
-#~ msgid ""
-#~ "License GPLv3+: GNU GPL version 3 or later <%s>.\n"
-#~ "This is free software: you are free to change and redistribute it.\n"
-#~ "There is NO WARRANTY, to the extent permitted by law.\n"
-#~ msgstr ""
-#~ "Лицензия GPLv3+: GNU GPL версии 3 или новее <%s>.\n"
-#~ "Это свободное ПО: вы можете изменять и распространять его.\n"
-#~ "Нет НИКАКИХ ГАРАНТИЙ в пределах действующего законодательства.\n"
-
-#, c-format
-#~ msgid "Written by %s.\n"
-#~ msgstr "Автор программы: %s.\n"
-
-#, c-format
-#~ msgid "Written by %s and %s.\n"
-#~ msgstr "Авторы программы: %s и %s.\n"
-
-#, c-format
-#~ msgid "Written by %s, %s, and %s.\n"
-#~ msgstr "Авторы программы: %s, %s и %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "and %s.\n"
-#~ msgstr ""
-#~ "Авторы программы: %s, %s, %s\n"
-#~ "и %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, and %s.\n"
-#~ msgstr ""
-#~ "Авторы программы: %s, %s, %s,\n"
-#~ "%s и %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, %s, and %s.\n"
-#~ msgstr ""
-#~ "Авторы программы: %s, %s, %s,\n"
-#~ "%s, %s и %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, %s, %s, and %s.\n"
-#~ msgstr ""
-#~ "Авторы программы: %s, %s, %s,\n"
-#~ "%s, %s, %s и %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, %s, %s, %s,\n"
-#~ "and %s.\n"
-#~ msgstr ""
-#~ "Авторы программы: %s, %s, %s,\n"
-#~ "%s, %s, %s, %s\n"
-#~ "и %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, %s, %s, %s,\n"
-#~ "%s, and %s.\n"
-#~ msgstr ""
-#~ "Авторы программы:  %s, %s, %s,\n"
-#~ "%s, %s, %s, %s,\n"
-#~ "%s и %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, %s, %s, %s,\n"
-#~ "%s, %s, and others.\n"
-#~ msgstr ""
-#~ "Авторы программы: %s, %s, %s,\n"
-#~ "%s, %s, %s, %s,\n"
-#~ "%s, %s и другие.\n"
-
-#, c-format
-#~ msgid "Report bugs to: %s\n"
-#~ msgstr "Об ошибках сообщайте по адресу: %s\n"
-
-#, c-format
-#~ msgid "Report %s bugs to: %s\n"
-#~ msgstr "Об ошибках в %s сообщайте по адресу: %s\n"
-
-#, c-format
-#~ msgid "%s home page: <%s>\n"
-#~ msgstr "Домашняя страница %s: <%s>\n"
-
-#, c-format
-#~ msgid "General help using GNU software: <%s>\n"
-#~ msgstr "Справка по работе с программами GNU: <%s>\n"
-
-#~ msgid "_open_osfhandle failed"
-#~ msgstr "_open_osfhandle завершилась неудачно"
-
-#, c-format
-#~ msgid "cannot restore fd %d: dup2 failed"
-#~ msgstr "не удалось восстановить fd %d: dup2 завершилась неудачно"
-
-#, c-format
-#~ msgid "%s subprocess"
-#~ msgstr "подпроцесс %s"
-
-#, c-format
-#~ msgid "%s subprocess got fatal signal %d"
-#~ msgstr "подпроцесс %s получил сигнал завершения %d"
-
-#~ msgid "failed to set file descriptor text/binary mode"
-#~ msgstr ""
-#~ "не удалось изменить текстовый/двоичный режим у файлового дескриптора"
-
-#~ msgid "stdin"
-#~ msgstr "stdin"
-
-#~ msgid "stdout"
-#~ msgstr "stdout"
-
-#~ msgid "stderr"
-#~ msgstr "stderr"
-
-#~ msgid "unknown stream"
-#~ msgstr "неизвестный поток"
-
-#, c-format
-#~ msgid "failed to reopen %s with mode %s"
-#~ msgstr "не удалось повторно открыть %s в режиме %s"
-
-#~ msgid "string comparison failed"
-#~ msgstr "сравнение строк завершилось неудачно"
-
-#~ msgid "Set LC_ALL='C' to work around the problem."
-#~ msgstr "Чтобы обойти эту проблему, установите LC_ALL='C'."
-
-#, c-format
-#~ msgid "The strings compared were %s and %s."
-#~ msgstr "Сравнивались строки %s %s."
-
-#~ msgid "cannot perform formatted output"
-#~ msgstr "невозможно выполнить форматированный вывод"
-
-#~ msgid "standard file descriptors"
-#~ msgstr "стандартные файловые дескрипторы"
-
-#, c-format
-#~ msgid "invalid %s%s argument '%s'"
-#~ msgstr "неверный аргумент %s%s в «%s»"
-
-#, c-format
-#~ msgid "invalid suffix in %s%s argument '%s'"
-#~ msgstr "недопустимый суффикс в аргументе %s%s для «%s»"
-
-#, c-format
-#~ msgid "%s%s argument '%s' too large"
-#~ msgstr "аргумент %s%s слишком велик для «%s»"
-
-#~ msgid "%s home page: <https://www.gnu.org/software/%s/>\n"
-#~ msgstr "Домашняя страница %s: <https://www.gnu.org/software/%s/>\n"
-
-#~ msgid "%.*s: ARGP_HELP_FMT parameter must be positive"
-#~ msgstr "%.*s: значение параметра ARGP_HELP_FMT должно быть положительным"
-
-#~ msgid "%s: option '--%s' doesn't allow an argument\n"
-#~ msgstr "%s: для параметра «--%s» аргумент не разрешён\n"
-
-#~ msgid "%s: unrecognized option '--%s'\n"
-#~ msgstr "%s: нераспознанный параметр «--%s»\n"
-
-#~ msgid "%s: option '-W %s' doesn't allow an argument\n"
-#~ msgstr "%s: у параметра «-W %s» не может быть аргумента\n"
-
-#~ msgid "%s: option '-W %s' requires an argument\n"
-#~ msgstr "%s: для параметра «-W %s» требуется аргумент\n"
-
-#~ msgid "Franc,ois Pinard"
-#~ msgstr "Френсис Пинард (Franc,ois Pinard)"
+msgstr "Нечего отменить"

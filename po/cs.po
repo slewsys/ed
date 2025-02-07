@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnulib 3.0.0.6062.a6b16\n"
 "Report-Msgid-Bugs-To: bug-gnulib@gnu.org\n"
-"POT-Creation-Date: 2025-02-09 06:33-0500\n"
-"PO-Revision-Date: 2011-12-04 08:50+0100\n"
+"POT-Creation-Date: 2025-02-12 00:55-0500\n"
+"PO-Revision-Date: 2025-02-12 04:07+0000\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
 "Language: cs\n"
@@ -19,36 +19,36 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Bugs: Report translation errors to the Language-Team address.\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"X-Crowdin-Project: standard-unix-text-editor\n"
+"X-Crowdin-Project-ID: 688517\n"
+"X-Crowdin-Language: cs\n"
+"X-Crowdin-File: cs.po\n"
+"X-Crowdin-File-ID: 86\n"
 
 #: lib/getopt.c:282
-#, fuzzy, c-format
-#| msgid "%s: option '-W %s' is ambiguous\n"
+#, c-format
 msgid "%s: option '%s%s' is ambiguous\n"
-msgstr "%s: přepínač „-W %s“ není jednoznačný\n"
+msgstr "%s: možnost „%s%s“ je nejednoznačná\n"
 
 #: lib/getopt.c:288
-#, fuzzy, c-format
-#| msgid "%s: option '%s' is ambiguous; possibilities:"
+#, c-format
 msgid "%s: option '%s%s' is ambiguous; possibilities:"
-msgstr "%s: přepínač „%s“ není jednoznačný; možnosti:"
+msgstr "%s: možnost „%s%s“ je nejasnost; možnosti:"
 
 #: lib/getopt.c:322
-#, fuzzy, c-format
-#| msgid "%s: unrecognized option '%c%s'\n"
+#, c-format
 msgid "%s: unrecognized option '%s%s'\n"
-msgstr "%s: neznámý přepínač „%c%s“\n"
+msgstr "%s: nerozpoznaná volba „%s%s“\n"
 
 #: lib/getopt.c:348
-#, fuzzy, c-format
-#| msgid "%s: option '%c%s' doesn't allow an argument\n"
+#, c-format
 msgid "%s: option '%s%s' doesn't allow an argument\n"
-msgstr "%s: přepínač „%c%s“ musí být zadán bez argumentu\n"
+msgstr "\"%s: možnost „%s%s“ neumožňuje argument\n"
 
 #: lib/getopt.c:363
-#, fuzzy, c-format
-#| msgid "%s: option '--%s' requires an argument\n"
+#, c-format
 msgid "%s: option '%s%s' requires an argument\n"
-msgstr "%s: přepínač „--%s“ vyžaduje argument\n"
+msgstr "%s: možnost „%s%s“ vyžaduje argument\n"
 
 #: lib/getopt.c:624
 #, c-format
@@ -58,7 +58,7 @@ msgstr "%s: neplatný přepínač -- „%c“\n"
 #: lib/getopt.c:639 lib/getopt.c:685
 #, c-format
 msgid "%s: option requires an argument -- '%c'\n"
-msgstr "%s: přepínač vyžaduje argument -- „%c“\n"
+msgstr "%s: volba vyžaduje argument -- „%c“\n"
 
 #: lib/regcomp.c:122
 msgid "Success"
@@ -70,15 +70,15 @@ msgstr "Žádná shoda"
 
 #: lib/regcomp.c:128
 msgid "Invalid regular expression"
-msgstr "neplatný regulární výraz"
+msgstr "Neplatný regulární výraz"
 
 #: lib/regcomp.c:131
 msgid "Invalid collation character"
-msgstr "neplatný znak pro porovnávání"
+msgstr "Neplatný znak pro porovnávání"
 
 #: lib/regcomp.c:134
 msgid "Invalid character class name"
-msgstr "neplatný název třídy znaku"
+msgstr "Neplatný název třídy znaku"
 
 #: lib/regcomp.c:137
 msgid "Trailing backslash"
@@ -90,17 +90,16 @@ msgstr "Neplatný zpětný odkaz"
 
 #: lib/regcomp.c:143
 #, fuzzy
-#| msgid "Unmatched [ or [^"
 msgid "Unmatched [, [^, [:, [., or [="
-msgstr "Chybí odpovídající závorka k [ nebo [^"
+msgstr "Nesrovnaný [, [^, [:, [., nebo [="
 
 #: lib/regcomp.c:146
 msgid "Unmatched ( or \\("
-msgstr "Chybí odpovídající závorka k ( nebo \\("
+msgstr "Nesrovnáno ( nebo \\("
 
 #: lib/regcomp.c:149
 msgid "Unmatched \\{"
-msgstr "Chybí odpovídající závorka k \\{"
+msgstr "Nesrovnaný \\{"
 
 #: lib/regcomp.c:152
 msgid "Invalid content of \\{\\}"
@@ -114,7 +113,7 @@ msgstr "Neplatný konec rozsahu"
 #: src/page.c:858 src/parse.c:270 src/parse.c:515 src/regexp.c:163
 #: src/register.c:375 src/undo.c:26
 msgid "Memory exhausted"
-msgstr "Paměť byla vyčerpána"
+msgstr "Vyčerpaná paměť"
 
 #: lib/regcomp.c:161
 msgid "Invalid preceding regular expression"
@@ -130,352 +129,291 @@ msgstr "Regulární výraz je příliš velký"
 
 #: lib/regcomp.c:170
 msgid "Unmatched ) or \\)"
-msgstr "Chybí odpovídající závorka k ) nebo \\)"
+msgstr "Nesrovnaný ) nebo \\)"
 
 #: lib/regcomp.c:650
 msgid "No previous regular expression"
 msgstr "Žádný předchozí regulární výraz"
 
 #: src/buffer.c:122 src/register.c:438 src/register.c:477
-#, fuzzy
-#| msgid "Bus error"
 msgid "dup2 error"
-msgstr "Chyba sběrnice"
+msgstr "Chyba dup2"
 
-#: src/buffer.c:136 src/io.c:96 src/io.c:167 src/io.c:645 src/io.c:696
-#: src/main.c:783 src/register.c:395
-#, fuzzy
-#| msgid "write error"
+#: src/buffer.c:136 src/io.c:96 src/io.c:167 src/io.c:650 src/io.c:701
+#: src/main.c:788 src/register.c:395
 msgid "File open error"
-msgstr "chyba při zápisu"
+msgstr "Chyba otevření souboru"
 
 #: src/buffer.c:260 src/main.c:560 src/main.c:632
 msgid "File name too long"
-msgstr ""
+msgstr "Příliš dlouhý název souboru"
 
 #: src/buffer.c:261
-#, fuzzy
-#| msgid "Invalid back reference"
 msgid "Invalid buffer name"
-msgstr "Neplatný zpětný odkaz"
+msgstr "Neplatný název vyrovnávací paměti"
 
 #: src/buffer.c:281 src/buffer.c:296
-#, fuzzy
-#| msgid "Bus error"
 msgid "Buffer open error"
-msgstr "Chyba sběrnice"
+msgstr "Chyba otevření vyrovnávací paměti"
 
 #: src/buffer.c:312
-#, fuzzy
-#| msgid "Bus error"
 msgid "Buffer close error"
-msgstr "Chyba sběrnice"
+msgstr "Chyba uzavření vyrovnávací paměti"
 
 #: src/buffer.c:347 src/buffer.c:383
-#, fuzzy
-#| msgid "Bus error"
 msgid "Buffer seek error"
-msgstr "Chyba sběrnice"
+msgstr "Chyba hledání vyrovnávací paměti"
 
 #: src/buffer.c:357
-#, fuzzy
-#| msgid "Bus error"
 msgid "Buffer read error"
-msgstr "Chyba sběrnice"
+msgstr "Chyba čtení vyrovnávací paměti"
 
 #: src/buffer.c:397 src/buffer.c:427
 msgid "Buffer full"
-msgstr ""
+msgstr "Vyrovnávací paměť je plná"
 
 #: src/buffer.c:404
-#, fuzzy
-#| msgid "write error"
 msgid "Buffer write error"
-msgstr "chyba při zápisu"
+msgstr "Chyba zápisu do vyrovnávací paměti"
 
 #: src/buffer.c:500 src/exec.c:100 src/exec.c:129 src/exec.c:1864
 #: src/page.c:301 src/parse.c:220
-#, fuzzy
-#| msgid "character out of range"
 msgid "Address out of range"
 msgstr "znak je mimo rozsah"
 
 #: src/buffer.c:576
 msgid "Memory request too big"
-msgstr ""
+msgstr "Požadavek na paměť je příliš velký"
 
 #: src/cbc.c:130 src/cbc.c:229 src/cbc.c:234 src/cbc.c:255 src/cbc.c:260
-#, fuzzy
-#| msgid "invalid user"
 msgid "Invalid key"
-msgstr "neplatný uživatel"
+msgstr "Neplatný klíč"
 
 #: src/cbc.c:373
 msgid "Decryption failed (block corrupted)"
-msgstr ""
+msgstr "Dešifrování selhalo (blok poškozen)"
 
 #: src/cbc.c:382
 msgid "Decryption failed (incomplete block)"
-msgstr ""
+msgstr "Dešifrování se nezdařilo (neúplný blok)"
 
-#: src/cbc.c:384 src/io.c:565 src/io.c:837
-#, fuzzy
-#| msgid "write error"
+#: src/cbc.c:384 src/io.c:570 src/io.c:842
 msgid "File read error"
-msgstr "chyba při zápisu"
+msgstr "Chyba čtení souboru"
 
-#: src/cmds.c:43 src/io.c:487 src/main.c:368 src/register.c:302
+#: src/cmds.c:43 src/io.c:492 src/main.c:368 src/register.c:302
 msgid "End-of-file unexpected"
-msgstr ""
+msgstr "Ukončení souboru neočekáváno"
 
 #: src/cmds.c:251 src/cmds.c:267
-#, fuzzy
-#| msgid "Invalid character class name"
 msgid "Invalid address mark"
-msgstr "neplatný název třídy znaku"
+msgstr "Neplatná značka adresy"
 
 #: src/cmds.c:318 src/exec.c:1717 src/filter.c:90 src/filter.c:143
-#, fuzzy
-#| msgid "program error"
 msgid "Fork error"
-msgstr "chyba programu"
+msgstr "Chyba vidlice"
 
 #: src/cmds.c:340 src/filter.c:25
-#, fuzzy
-#| msgid "%s subprocess I/O error"
 msgid "Child process error"
-msgstr "V/V chyba podřízeného procesu %s"
+msgstr "Chyba podřízeného procesu"
 
-#: src/cmds.c:347 src/filter.c:40 src/io.c:176 src/io.c:707
+#: src/cmds.c:347 src/filter.c:40 src/io.c:176 src/io.c:712
 #, c-format
 msgid "Exit status: %#x"
-msgstr ""
+msgstr "Stav ukončení: %#x"
 
 #: src/ed.h:101
 msgid "Unknown error"
 msgstr "Neznámá chyba"
 
 #: src/ed.h:773 src/ed.h:808 src/ed.h:843
-#, fuzzy
-#| msgid "character out of range"
 msgid "Numerical result out of range"
-msgstr "znak je mimo rozsah"
+msgstr "Číselný výsledek mimo rozsah"
 
 #: src/exec.c:28 src/exec.c:503 src/exec.c:588 src/exec.c:614 src/exec.c:897
 #: src/exec.c:1009 src/exec.c:1369 src/exec.c:1381 src/exec.c:1389
 msgid "Command suffix unexpected"
-msgstr ""
+msgstr "Přípona příkazu neočekávaná"
 
 #: src/exec.c:95 src/exec.c:124
 msgid "Destination address required"
-msgstr ""
+msgstr "Cílová adresa je povinná"
 
 #: src/exec.c:338 src/exec.c:351 src/exec.c:363
 msgid "Command prefix unexpected"
-msgstr ""
+msgstr "Neočekávaný prefix příkazu"
 
 #: src/exec.c:494 src/exec.c:579 src/exec.c:686 src/exec.c:707 src/exec.c:946
 #: src/exec.c:988 src/exec.c:1333 src/exec.c:1526 src/exec.c:1726
 msgid "Address unexpected"
-msgstr ""
+msgstr "Neočekávaná adresa"
 
 #: src/exec.c:608
-#, fuzzy
-#| msgid "Invalid regular expression"
 msgid "Invalid redirection"
-msgstr "neplatný regulární výraz"
+msgstr "Neplatné přesměrování"
 
 #: src/exec.c:645 src/main.c:627
 msgid "File name not set"
-msgstr ""
+msgstr "Název souboru není nastaven"
 
 #: src/exec.c:659
 msgid "Recursive global command"
-msgstr ""
+msgstr "Rekurentní globální příkaz"
 
 #: src/exec.c:717
-#, fuzzy
-#| msgid "No previous regular expression"
 msgid "No previous error"
-msgstr "Žádný předchozí regulární výraz"
+msgstr "Žádná předchozí chyba"
 
 #: src/exec.c:827
-#, fuzzy
-#| msgid "Invalid collation character"
 msgid "Invalid destination address"
-msgstr "neplatný znak pro porovnávání"
+msgstr "Neplatná cílová adresa"
 
 #: src/exec.c:872 src/exec.c:1319
-#, fuzzy
-#| msgid "invalid user"
 msgid "Invalid register"
-msgstr "neplatný uživatel"
+msgstr "Neplatný registr"
 
 #: src/exec.c:1164 src/exec.c:1227 src/exec.c:1545 src/exec.c:1604
 #: src/exec.c:1789 src/exec.c:1804
-#, fuzzy
-#| msgid "Unknown error"
 msgid "Unknown command"
-msgstr "Neznámá chyba"
+msgstr "Neznámý příkaz"
 
 #: src/exec.c:1716
 msgid "Cannot fork shell"
-msgstr ""
+msgstr "Nelze rozštěpit shell"
 
 #: src/exec.c:1804
-#, fuzzy
-#| msgid "Invalid regular expression"
 msgid "Invalid address"
-msgstr "neplatný regulární výraz"
+msgstr "Neplatná adresa"
 
 #: src/exec.c:1822
 msgid "Command too long"
-msgstr ""
+msgstr "Příkaz je příliš dlouhý"
 
 #: src/exec.c:1869
-#, fuzzy
-#| msgid "Invalid range end"
 msgid "Invalid address range"
-msgstr "Neplatný konec rozsahu"
+msgstr "Neplatný rozsah adresy"
 
 #: src/filter.c:70
-#, fuzzy
-#| msgid "Bus error"
 msgid "Flush error"
-msgstr "Chyba sběrnice"
+msgstr "Chyba splachování"
 
 #: src/filter.c:81 src/filter.c:172
-#, fuzzy
-#| msgid "write error"
 msgid "Pipe open error"
-msgstr "chyba při zápisu"
+msgstr "Chyba otevřeného potrubí"
 
 #: src/filter.c:186
-#, fuzzy
-#| msgid "write error"
 msgid "Pipe close error"
-msgstr "chyba při zápisu"
+msgstr "Chyba uzavření potrubí"
 
 #: src/global.c:135
 msgid "No previous command"
-msgstr ""
+msgstr "Žádný předchozí příkaz"
 
-#: src/io.c:57 src/io.c:614 src/main.c:232 src/main.c:732 src/main.c:795
+#: src/io.c:57 src/io.c:619 src/main.c:232 src/main.c:737 src/main.c:804
 #: src/register.c:36 src/register.c:83 src/register.c:142 src/register.c:152
 #: src/register.c:211 src/register.c:220 src/register.c:247 src/register.c:286
 #: src/register.c:353 src/register.c:413 src/register.c:453 src/register.c:492
-#, fuzzy
-#| msgid "write error"
 msgid "File seek error"
-msgstr "chyba při zápisu"
+msgstr "Chyba hledání souboru"
 
 #: src/io.c:70
 msgid "File does not exist"
-msgstr ""
+msgstr "Soubor neexistuje"
 
-#: src/io.c:119 src/io.c:659
+#: src/io.c:119 src/io.c:664
 #, c-format
 msgid "%s: File already locked\n"
-msgstr ""
+msgstr "%s: Soubor je již uzamčen\n"
 
-#: src/io.c:143 src/io.c:636 src/io.c:674
+#: src/io.c:143 src/io.c:641 src/io.c:679
 msgid "File close error"
-msgstr ""
+msgstr "Chyba při zavření souboru"
 
 #: src/io.c:299 src/io.c:435
 #, c-format
 msgid "Newline inserted\n"
-msgstr ""
+msgstr "Byl vložen nový řádek\n"
 
 #: src/io.c:304 src/io.c:440
 #, c-format
 msgid "Newline appended\n"
-msgstr ""
+msgstr "Nová řádka připojená\n"
 
-#: src/io.c:551 src/io.c:790
+#: src/io.c:556 src/io.c:795
 msgid "Broken pipe"
-msgstr "Porušená roura"
+msgstr "Rozbitá trubka"
 
-#: src/io.c:621 src/register.c:254
-#, fuzzy
-#| msgid "write error"
+#: src/io.c:626 src/register.c:254
 msgid "File truncate error"
-msgstr "chyba při zápisu"
+msgstr "Chyba zkrácení souboru"
 
-#: src/io.c:743
+#: src/io.c:748
 msgid "File too big"
-msgstr ""
+msgstr "Soubor je příliš velký"
 
-#: src/io.c:796 src/io.c:816 src/io.c:827 src/main.c:743 src/main.c:751
-#, fuzzy
-#| msgid "write error"
+#: src/io.c:801 src/io.c:821 src/io.c:832 src/main.c:748 src/main.c:756
 msgid "File write error"
-msgstr "chyba při zápisu"
+msgstr "Chyba zápisu souboru"
 
-#: src/io.c:860 src/parse.c:502
-#, fuzzy
-#| msgid "Bus error"
+#: src/io.c:865 src/parse.c:502
 msgid "File status error"
-msgstr "Chyba sběrnice"
+msgstr "Chyba stavu souboru"
 
-#: src/io.c:867
+#: src/io.c:872
 msgid "Access restricted to regular files"
-msgstr ""
+msgstr "Přístup omezen na běžné soubory"
 
-#: src/io.c:936
-#, fuzzy
-#| msgid "write error"
+#: src/io.c:941
 msgid "File stat error"
-msgstr "chyba při zápisu"
+msgstr "Chyba statistiky souboru"
 
 #: src/main.c:240
 msgid "Option '-i' requires '-e' or '-f'"
-msgstr ""
+msgstr "Možnost ”„-i“ vyžaduje „-e“ nebo „-f“"
 
 #: src/main.c:305
-#, fuzzy
-#| msgid "Interrupt"
 msgid "Interrupted"
-msgstr "Přerušení"
+msgstr "Přerušeno"
 
 #: src/main.c:423
 msgid "WARNING: Buffer modified since last write"
-msgstr ""
+msgstr "VAROVÁNÍ: vyrovnávací paměť byla od posledního zápisu změněna"
 
 #: src/main.c:681
-#, fuzzy
-#| msgid "Argument buffer too small"
 msgid "Argument list full"
-msgstr "Vyrovnávací paměť argumentů je příliš malá"
+msgstr "Seznam argumentů je plný"
 
-#: src/main.c:816
+#: src/main.c:825
 #, c-format
 msgid ""
 "Usage: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE...]\n"
 msgstr ""
+"Použití: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] "
+"[FILE...]\n"
 
-#: src/main.c:818
+#: src/main.c:827
 #, c-format
 msgid ""
 "Usage: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE]\n"
 msgstr ""
+"Použití: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE]\n"
 
-#: src/main.c:821
+#: src/main.c:830
 #, c-format
 msgid "Usage: %s [-] [-EGhRrsVvwx] [-p PROMPT] [FILE]\n"
-msgstr ""
-
-#: src/main.c:831
-#, c-format
-msgid "Usage: %s [OPTION...] [FILE...]\n"
-msgstr ""
-
-#: src/main.c:834
-#, c-format
-msgid "Usage: %s [OPTION...] [FILE]\n"
-msgstr ""
+msgstr "Použití: %s [-] [-EGhRrsVvwx] [-p PROMPT] [FILE]\n"
 
 #: src/main.c:840
+#, c-format
+msgid "Usage: %s [OPTION...] [FILE...]\n"
+msgstr "Použití: %s [OPTION...] [FILE...]\n"
+
+#: src/main.c:843
+#, c-format
+msgid "Usage: %s [OPTION...] [FILE]\n"
+msgstr "Použití: %s [OPTION...] [FILE]\n"
+
+#: src/main.c:849
 #, c-format
 msgid ""
 "Options:\n"
@@ -501,8 +439,31 @@ msgid ""
 "\n"
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
+"Volby:\n"
+"  -E, --regexp-extended Povolit rozšířenou regulární syntaxi výrazů.\n"
+"  -e, --expression=COMMAND přidat do skriptovaného vstupu - znamená „-s“.\n"
+"  -f, --file=SCRIPT Číst příkazy ze souboru SCRIPT - znamená „-s“.\n"
+"  -G, --tradiční povolení zpětné kompatibility.\n"
+"  -h, --help Display (this) nápověda a ukončete.\n"
+"  -i, --in-place[=SUFFIX] Zápis souboru před zavřením a volitelně "
+"zálohováním.\n"
+"  -p, --prompt=STRING Prompt pro příkazy s STRINGem.\n"
+"  -R, --ansi-color Povolit podporu ANSI barevných kódů.\n"
+"  -r, --regexp-extended Povolit rozšířenou regulární syntaxi výrazů.\n"
+"  -s, --script Potpress interactive diagnostika.\n"
+"  -v, --verbose Povolit podrobnou diagnostiku.\n"
+"  -V, --version Zobrazit informace o verzi, poté skončit.\n"
+"  -w, --write povolit zápis pro zpracování substituce.\n"
+"  -x, --crypt Povolit I/O šifrování.\n"
+"\n"
+"Pokud je zadáno SOUBOR, přečtěte si jej pro úpravu. Od dovnitř běh:\n"
+"  !info ed-intro RET\n"
+"pro výukový kurz na ed.\n"
+"\n"
+"Prosím předložte problémy nebo požadavky na natažení do: <https://github.com/"
+"slewsys/ed>\n"
 
-#: src/main.c:862
+#: src/main.c:871
 #, c-format
 msgid ""
 "Options:\n"
@@ -524,789 +485,114 @@ msgid ""
 "\n"
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
+"Volby:\n"
+"  -E, --regexp-extended Povolit rozšířenou regulární syntaxi výrazů.\n"
+"  -G, --tradiční povolení zpětné kompatibility.\n"
+"  -h, --help Dispaly (this) help, poté skončit.\n"
+"  -p, --prompt=STRING Prompt pro příkazy s STRINGem.\n"
+"  -R, --ansi-color Povolit podporu ANSI barevných kódů.\n"
+"  -r, --regexp-extended Povolit rozšířenou regulární syntaxi výrazů.\n"
+"  -s, --script Potpress interactive diagnostika.\n"
+"  -v, --verbose Povolit podrobnou diagnostiku.\n"
+"  -V, --version Zobrazit informace o verzi, poté skončit.\n"
+"  -w, --write Povolit zápis pro zpracování substituce.\n"
+"  -x, --crypt Povolit I/O šifrování.\n"
+"\n"
+"Pokud je zadáno SOUBOR, přečtěte si jej pro úpravu. Od dovnitř běh:\n"
+"  !info ed-intro RET\n"
+"pro výukový kurz na ed.\n"
+"\n"
+"Prosím předložte problémy nebo požadavky na natažení: <https://github.com/"
+"slewsys/ed>\n"
 
-#: src/main.c:893
+#: src/main.c:902
 msgid "script, line %"
-msgstr ""
+msgstr "skript, řádek %"
 
 #: src/parse.c:253 src/parse.c:599
-#, fuzzy
-#| msgid "failed to return to initial working directory"
 msgid "Access restricted to working directory"
-msgstr "selhalo vrácení počáteční pracovní složky"
+msgstr "Přístup omezen na pracovní adresář"
 
 #: src/parse.c:320
-#, fuzzy
-#| msgid "%s: Too many arguments\n"
 msgid "Too many file names"
-msgstr "%s: Příliš mnoho argumentů\n"
+msgstr "Příliš mnoho názvů souborů"
 
 #: src/parse.c:335 src/parse.c:348 src/parse.c:375
 msgid "No more files"
-msgstr ""
+msgstr "Žádné další soubory"
 
 #: src/parse.c:443
 msgid "File glob too long"
-msgstr ""
+msgstr "Soubor je příliš dlouhý"
 
 #: src/parse.c:464 src/parse.c:468 src/parse.c:488
 msgid "Pathname expansion error"
-msgstr ""
+msgstr "Chyba při rozšíření trasy"
 
 #: src/parse.c:484
 msgid "No such file or directory"
-msgstr ""
+msgstr "Žádný soubor nebo adresář"
 
 #: src/parse.c:574
-#, fuzzy
-#| msgid "Invalid range end"
 msgid "Invalid file name"
-msgstr "Neplatný konec rozsahu"
+msgstr "Neplatný název souboru"
 
 #: src/parse.c:629
 msgid "Brackets ([]) unbalanced"
-msgstr ""
+msgstr "Nevyvážené závorky ([])"
 
 #: src/parse.c:636
 msgid "Backslash (\\) unexpected"
-msgstr ""
+msgstr "Zpětné lomítko (\\) neočekávané"
 
 #: src/parse.c:693
 msgid "Shell access restricted"
-msgstr ""
+msgstr "Shell přístup omezen"
 
 #: src/parse.c:759
-#, fuzzy
-#| msgid "No previous regular expression"
 msgid "No previous shell command"
-msgstr "Žádný předchozí regulární výraz"
+msgstr "Žádný předchozí příkaz shell"
 
 #: src/regexp.c:33
-#, fuzzy
-#| msgid "Invalid character class name"
 msgid "Invalid pattern delimiter"
-msgstr "neplatný název třídy znaku"
+msgstr "Neplatný oddělovač vzorů"
 
 #: src/regexp.c:147
-#, fuzzy
-#| msgid "No previous regular expression"
 msgid "No previous pattern"
-msgstr "Žádný předchozí regulární výraz"
+msgstr "Žádný předchozí vzor"
 
 #: src/regexp.c:156
-#, fuzzy
-#| msgid "Invalid character class name"
 msgid "Missing pattern delimiter"
-msgstr "neplatný název třídy znaku"
+msgstr "Chybějící oddělovač vzorů"
 
 #: src/register.c:117
 msgid "Cannot append register to itself"
-msgstr ""
+msgstr "Nelze připojit registraci k sobě"
 
 #: src/register.c:337
 msgid "Exceeded maximum stack frame depth"
-msgstr ""
+msgstr "Překročena maximální hloubka rámu zásobníku"
 
 #: src/register.c:387
-#, fuzzy
-#| msgid "Bus error"
 msgid "dup error"
-msgstr "Chyba sběrnice"
+msgstr "Chyba dup"
 
 #: src/signal.c:152
-#, fuzzy
-#| msgid "program error"
 msgid "Signal error"
-msgstr "chyba programu"
+msgstr "Chyba signálu"
 
 #: src/subst.c:129 src/subst.c:148
 msgid "Unknown command suffix"
-msgstr ""
+msgstr "Neznámá přípona příkazu"
 
 #: src/subst.c:167 src/subst.c:237
-#, fuzzy
-#| msgid "No previous regular expression"
 msgid "No previous substitution"
-msgstr "Žádný předchozí regulární výraz"
+msgstr "Žádné předchozí střídání"
 
 #: src/subst.c:463 src/subst.c:597
 msgid "Too many regex subexpressions"
-msgstr ""
+msgstr "Příliš mnoho výrazů regex"
 
 #: src/undo.c:51
 msgid "Nothing to undo"
-msgstr ""
-
-#, fuzzy
-#~| msgid "Unknown error"
-#~ msgid "fdopen error"
-#~ msgstr "Neznámá chyba"
-
-#, c-format
-#~ msgid "invalid argument %s for %s"
-#~ msgstr "argument %s je pro %s neplatný"
-
-#, c-format
-#~ msgid "ambiguous argument %s for %s"
-#~ msgstr "argument %s je pro %s nejednoznačný"
-
-#, c-format
-#~ msgid "Valid arguments are:"
-#~ msgstr "Platné argumenty jsou:"
-
-#, c-format
-#~ msgid "ARGP_HELP_FMT: %s value is less than or equal to %s"
-#~ msgstr "ARGP_HELP_FMT: hodnota %s je menší nebo rovna %s"
-
-#, c-format
-#~ msgid "%.*s: ARGP_HELP_FMT parameter requires a value"
-#~ msgstr "%.*s: Parametr ARGP_HELP_FMT vyžaduje hodnotu"
-
-#, c-format
-#~ msgid "%.*s: ARGP_HELP_FMT parameter must be positive"
-#~ msgstr "%.*s: Parametr ARGP_HELP_FMT musí být kladný"
-
-#, c-format
-#~ msgid "%.*s: Unknown ARGP_HELP_FMT parameter"
-#~ msgstr "%.*s: Neznámý parametr ARGP_HELP_FMT"
-
-#, c-format
-#~ msgid "Garbage in ARGP_HELP_FMT: %s"
-#~ msgstr "Nesmysly v ARGP_HELP_FMT: %s"
-
-#~ msgid ""
-#~ "Mandatory or optional arguments to long options are also mandatory or "
-#~ "optional for any corresponding short options."
-#~ msgstr ""
-#~ "Povinné či volitelné, argumenty pro dlouhé přepínače jsou povinné či "
-#~ "volitelné, i pro případné odpovídající krátké přepínače."
-
-#~ msgid "Usage:"
-#~ msgstr "Použití:"
-
-#~ msgid "  or: "
-#~ msgstr "  nebo:"
-
-#~ msgid " [OPTION...]"
-#~ msgstr " [PŘEPÍNAČ…]"
-
-#, c-format
-#~ msgid "Try `%s --help' or `%s --usage' for more information.\n"
-#~ msgstr "Více informací získáte příkazem „%s --help“ nebo „%s --usage“.\n"
-
-#, c-format
-#~ msgid "Report bugs to %s.\n"
-#~ msgstr "Chyby hlaste na %s.\n"
-
-#~ msgid "Unknown system error"
-#~ msgstr "Neznámá chyba systému"
-
-#~ msgid "give this help list"
-#~ msgstr "poskytne tuto přehledovou nápovědu"
-
-#~ msgid "give a short usage message"
-#~ msgstr "poskytne stručnou informaci o používání"
-
-#~ msgid "NAME"
-#~ msgstr "NÁZEV"
-
-#~ msgid "set the program name"
-#~ msgstr "nastavit název programu"
-
-#~ msgid "SECS"
-#~ msgstr "SEK"
-
-#~ msgid "hang for SECS seconds (default 3600)"
-#~ msgstr "zastavit na SEK sekund (výchozí je 3600)"
-
-#~ msgid "print program version"
-#~ msgstr "vypsat verzi programu"
-
-#~ msgid "(PROGRAM ERROR) No version known!?"
-#~ msgstr "(CHYBA PROGRAMU) Neznámá verze!?"
-
-#~ msgid "(PROGRAM ERROR) Option should have been recognized!?"
-#~ msgstr "(CHYBA PROGRAMU) Měl by být rozpoznán přepínač!?"
-
-#~ msgid "stack overflow"
-#~ msgstr "přetečení zásobníku"
-
-#, c-format
-#~ msgid "cannot find a temporary directory, try setting $TMPDIR"
-#~ msgstr "nelze najít dočasnou složku, zkusí se nastavit $TMPDIR"
-
-#, c-format
-#~ msgid "cannot create a temporary directory using template \"%s\""
-#~ msgstr "nelze vytvořit dočasnou složku pomocí šablony „%s“"
-
-#, c-format
-#~ msgid "cannot remove temporary file %s"
-#~ msgstr "nelze odstranit dočasný soubor %s"
-
-#, c-format
-#~ msgid "cannot remove temporary directory %s"
-#~ msgstr "nelze odstranit dočasnou složku %s"
-
-#~ msgid "error closing file"
-#~ msgstr "chyba při zavírání souboru"
-
-#, c-format
-#~ msgid "preserving permissions for %s"
-#~ msgstr "zachování práv k souboru %s"
-
-#, c-format
-#~ msgid "error while opening \"%s\" for reading"
-#~ msgstr "chyba při otevírání souboru „%s“ pro čtení"
-
-#, c-format
-#~ msgid "cannot open backup file \"%s\" for writing"
-#~ msgstr "nelze otevřít záložní soubor „%s“ pro zápis"
-
-#, c-format
-#~ msgid "error reading \"%s\""
-#~ msgstr "chyba při čtení souboru „%s“"
-
-#, c-format
-#~ msgid "error writing \"%s\""
-#~ msgstr "chyba při zápisu do souboru „%s“"
-
-#, c-format
-#~ msgid "error after reading \"%s\""
-#~ msgstr "chyba po přečtení souboru „%s“"
-
-#, c-format
-#~ msgid "fdopen() failed"
-#~ msgstr "selhala funkce fdopen()"
-
-#, c-format
-#~ msgid "C# compiler not found, try installing pnet"
-#~ msgstr "Překladač C# nebyl nalezen, zkuste nainstalovat pnet"
-
-#, c-format
-#~ msgid "C# virtual machine not found, try installing pnet"
-#~ msgstr "Virtuální stroj C# nebyl nalezen, zkuste nainstalovat pnet"
-
-#, c-format
-#~ msgid "%s subprocess failed"
-#~ msgstr "selhal podřízený proces %s"
-
-#~ msgid "regular empty file"
-#~ msgstr "prázdný běžný soubor"
-
-#~ msgid "regular file"
-#~ msgstr "běžný soubor"
-
-#~ msgid "directory"
-#~ msgstr "složka"
-
-#~ msgid "block special file"
-#~ msgstr "speciální soubor blokového zařízení"
-
-#~ msgid "character special file"
-#~ msgstr "speciální soubor znakového zařízení"
-
-#~ msgid "fifo"
-#~ msgstr "fronta fifo"
-
-#~ msgid "symbolic link"
-#~ msgstr "symbolický odkaz"
-
-#~ msgid "socket"
-#~ msgstr "soket"
-
-#~ msgid "message queue"
-#~ msgstr "fronta zpráv"
-
-#~ msgid "semaphore"
-#~ msgstr "semafor"
-
-#~ msgid "shared memory object"
-#~ msgstr "sdílený paměťový objekt"
-
-#~ msgid "typed memory object"
-#~ msgstr "typový paměťový objekt"
-
-#~ msgid "weird file"
-#~ msgstr "podivný soubor"
-
-#~ msgid "Address family for hostname not supported"
-#~ msgstr "Pro název počítače není rodina adres podporována"
-
-#~ msgid "Temporary failure in name resolution"
-#~ msgstr "Dočasné selhání při překladu názvu"
-
-#~ msgid "Bad value for ai_flags"
-#~ msgstr "Špatná hodnota pro příznaky ai_flags"
-
-#~ msgid "Non-recoverable failure in name resolution"
-#~ msgstr "Nenapravitelné selhání při překladu názvu"
-
-#~ msgid "ai_family not supported"
-#~ msgstr "ai_family není podporována"
-
-#~ msgid "Memory allocation failure"
-#~ msgstr "Selhalo přidělení paměti"
-
-#~ msgid "No address associated with hostname"
-#~ msgstr "K názvu počítače není přiřazena žádná adresa"
-
-#~ msgid "Name or service not known"
-#~ msgstr "Název nebo služba nejsou známy"
-
-#~ msgid "Servname not supported for ai_socktype"
-#~ msgstr "Název služby není podporován pro ai_socktype"
-
-#~ msgid "ai_socktype not supported"
-#~ msgstr "ai_socktype není podporován"
-
-#~ msgid "System error"
-#~ msgstr "Chyba systému"
-
-#~ msgid "Processing request in progress"
-#~ msgstr "Probíhá zpracování požadavku"
-
-#~ msgid "Request canceled"
-#~ msgstr "Požadavek byl zrušen"
-
-#~ msgid "Request not canceled"
-#~ msgstr "Požadavek nebyl zrušen"
-
-#~ msgid "All requests done"
-#~ msgstr "Všechny požadavky dokončeny"
-
-#~ msgid "Interrupted by a signal"
-#~ msgstr "Přerušeno signálem"
-
-#~ msgid "Parameter string not correctly encoded"
-#~ msgstr "Řetězec s parametry není správně kódován"
-
-#, c-format
-#~ msgid "%s: option '--%s' doesn't allow an argument\n"
-#~ msgstr "%s: přepínač „--%s“ musí být zadán bez argumentu\n"
-
-#, c-format
-#~ msgid "%s: unrecognized option '--%s'\n"
-#~ msgstr "%s: neznámý přepínač „--%s“\n"
-
-#, c-format
-#~ msgid "%s: option '-W %s' doesn't allow an argument\n"
-#~ msgstr "%s: přepínač „-W %s“ musí být zadán bez argumentu\n"
-
-#, c-format
-#~ msgid "%s: option '-W %s' requires an argument\n"
-#~ msgstr "%s: přepínač „-W %s“ vyžaduje argument\n"
-
-#, c-format
-#~ msgid "invalid source_version argument to compile_java_class"
-#~ msgstr "neplatný argument source_version pro compile_java_class"
-
-#, c-format
-#~ msgid "invalid target_version argument to compile_java_class"
-#~ msgstr "neplatný argument target_version pro compile_java_class"
-
-#, c-format
-#~ msgid "failed to create \"%s\""
-#~ msgstr "selhalo vytvoření „%s“"
-
-#, c-format
-#~ msgid "error while writing \"%s\" file"
-#~ msgstr "chyba při zápisu souboru „%s“"
-
-#, c-format
-#~ msgid "Java compiler not found, try installing gcj or set $JAVAC"
-#~ msgstr ""
-#~ "Překladač jazyka Java nebyl nalezen, zkuste nainstalovat gcj nebo "
-#~ "nastavit proměnnou $JAVAC"
-
-#, c-format
-#~ msgid "Java virtual machine not found, try installing gij or set $JAVA"
-#~ msgstr ""
-#~ "Virtuální stroj Java nebyl nalezen, zkuste nainstalovat gij nebo nastavit "
-#~ "proměnnou $JAVAC"
-
-#, c-format
-#~ msgid "cannot change permissions of %s"
-#~ msgstr "nelze změnit oprávnění k %s"
-
-#, c-format
-#~ msgid "cannot create directory %s"
-#~ msgstr "nelze vytvořit složku %s"
-
-#, c-format
-#~ msgid "memory exhausted"
-#~ msgstr "paměť byla vyčerpána"
-
-#, c-format
-#~ msgid "unable to record current working directory"
-#~ msgstr "nelze zaznamenat aktuální pracovní složku"
-
-#, c-format
-#~ msgid "Failed to open /dev/zero for read"
-#~ msgstr "Selhalo otevření /dev/zero pro čtení"
-
-#, c-format
-#~ msgid "creation of reading thread failed"
-#~ msgstr "vytvoření čtecího vlákna selhalo"
-
-#, c-format
-#~ msgid "cannot set up nonblocking I/O to %s subprocess"
-#~ msgstr "nelze nastavit neblokující V/V pro podřízený proces %s"
-
-#, c-format
-#~ msgid "communication with %s subprocess failed"
-#~ msgstr "komunikace s podřízeným procesem %s selhala"
-
-#, c-format
-#~ msgid "write to %s subprocess failed"
-#~ msgstr "zápis do podřízeného procesu %s selhal"
-
-#, c-format
-#~ msgid "read from %s subprocess failed"
-#~ msgstr "čtení z podřízeného procesu %s selhalo"
-
-#, c-format
-#~ msgid "subprocess %s terminated with exit code %d"
-#~ msgstr "podřízený proces %s byl ukončen s návratovým kódem %d"
-
-#, c-format
-#~ msgid "creation of threads failed"
-#~ msgstr "vytvoření vlákna selhalo"
-
-#, c-format
-#~ msgid "%s subprocess terminated with exit code %d"
-#~ msgstr "podřízený proces %s byl ukončen s návratovým kódem %d"
-
-#~ msgid "Franc,ois Pinard"
-#~ msgstr "Franc, ois Pinard"
-
-#~ msgid "`"
-#~ msgstr "„"
-
-#~ msgid "'"
-#~ msgstr "“"
-
-#~ msgid "^[yY]"
-#~ msgstr "^[aAyY]"
-
-#~ msgid "^[nN]"
-#~ msgstr "^[nN]"
-
-#, c-format
-#~ msgid "setting permissions for %s"
-#~ msgstr "nastavení oprávnění k %s"
-
-#~ msgid "Hangup"
-#~ msgstr "Zavěsit"
-
-#~ msgid "Quit"
-#~ msgstr "Ukončit"
-
-#~ msgid "Illegal instruction"
-#~ msgstr "Neplatná instrukce"
-
-#~ msgid "Trace/breakpoint trap"
-#~ msgstr "Krokování/bod přerušení"
-
-#~ msgid "Aborted"
-#~ msgstr "Přerušen"
-
-#~ msgid "Floating point exception"
-#~ msgstr "Výjimka ve výpočtu s plovoucí čárkou"
-
-#~ msgid "Killed"
-#~ msgstr "Zabit"
-
-#~ msgid "Segmentation fault"
-#~ msgstr "Porušení ochrany paměti"
-
-#~ msgid "Alarm clock"
-#~ msgstr "Alarm od hodin"
-
-#~ msgid "Terminated"
-#~ msgstr "Ukončen"
-
-#~ msgid "Urgent I/O condition"
-#~ msgstr "Urgentní stav V/V"
-
-#~ msgid "Stopped (signal)"
-#~ msgstr "Pozastavit (signál)"
-
-#~ msgid "Stopped"
-#~ msgstr "Pozastaven"
-
-#~ msgid "Continued"
-#~ msgstr "Pokračuje"
-
-#~ msgid "Child exited"
-#~ msgstr "Potomek skončil"
-
-#~ msgid "Stopped (tty input)"
-#~ msgstr "Pozastaven (vstup tty)"
-
-#~ msgid "Stopped (tty output)"
-#~ msgstr "Pozastaven (výstup tty)"
-
-#~ msgid "I/O possible"
-#~ msgstr "Možný V/V"
-
-#~ msgid "CPU time limit exceeded"
-#~ msgstr "Překročeno časové omezení procesoru"
-
-#~ msgid "File size limit exceeded"
-#~ msgstr "Překročeno omezení velikosti souboru"
-
-#~ msgid "Virtual timer expired"
-#~ msgstr "Virtuální časovač doběhl"
-
-#~ msgid "Profiling timer expired"
-#~ msgstr "Profilovací časovač doběhl"
-
-#~ msgid "Window changed"
-#~ msgstr "Změnilo se okno"
-
-#~ msgid "User defined signal 1"
-#~ msgstr "Uživatelsky definovaný signál 1"
-
-#~ msgid "User defined signal 2"
-#~ msgstr "Uživatelsky definovaný signál 2"
-
-#~ msgid "EMT trap"
-#~ msgstr "Krokování emulátoru (EMT)"
-
-#~ msgid "Bad system call"
-#~ msgstr "Chybné systémové volání"
-
-#~ msgid "Stack fault"
-#~ msgstr "Porušení zásobníku"
-
-#~ msgid "Information request"
-#~ msgstr "Žádost o informace"
-
-#~ msgid "Power failure"
-#~ msgstr "Selhalo napájení"
-
-#~ msgid "Resource lost"
-#~ msgstr "Prostředek přestal být k dispozici"
-
-#~ msgid "error writing to a closed pipe or socket"
-#~ msgstr "chyba zápisu do zavřené roury nebo soketu"
-
-#, c-format
-#~ msgid "cannot create pipe"
-#~ msgstr "nelze vytvořit rouru"
-
-#, c-format
-#~ msgid "Real-time signal %d"
-#~ msgstr "Signál reálného času %d"
-
-#, c-format
-#~ msgid "Unknown signal %d"
-#~ msgstr "Neznámý signál %d"
-
-#~ msgid "iconv function not usable"
-#~ msgstr "funkce iconv není použitelná"
-
-#~ msgid "iconv function not available"
-#~ msgstr "funkce iconv není dostupná"
-
-#, c-format
-#~ msgid "cannot convert U+%04X to local character set"
-#~ msgstr "znak U+%04X nelze převést do místní znakové sady"
-
-#, c-format
-#~ msgid "cannot convert U+%04X to local character set: %s"
-#~ msgstr "znak U+%04X nelze převést do místní znakové sady: %s"
-
-#~ msgid "invalid group"
-#~ msgstr "neplatná skupina"
-
-#~ msgid "invalid spec"
-#~ msgstr "neplatné zadání"
-
-#, c-format
-#~ msgid "unable to display error message"
-#~ msgstr "nelze zobrazit chybovou zprávu"
-
-#, c-format
-#~ msgid "Packaged by %s (%s)\n"
-#~ msgstr "Zabalil %s (%s)\n"
-
-#, c-format
-#~ msgid "Packaged by %s\n"
-#~ msgstr "Zabalil %s\n"
-
-#~ msgid "(C)"
-#~ msgstr "©"
-
-#~ msgid ""
-#~ "\n"
-#~ "License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl."
-#~ "html>.\n"
-#~ "This is free software: you are free to change and redistribute it.\n"
-#~ "There is NO WARRANTY, to the extent permitted by law.\n"
-#~ "\n"
-#~ msgstr ""
-#~ "\n"
-#~ "Licence GPLv3+: GNU GPL verze 3 nebo novější <http://gnu.org/licenses/gpl."
-#~ "html>.\n"
-#~ "Jde o svobodný software: můžete jej volně měnit a šířit.\n"
-#~ "Nejsou poskytovány ŽÁDNÉ ZÁRUKY, mimo těch daných zákonem.\n"
-#~ "\n"
-
-#, c-format
-#~ msgid "Written by %s.\n"
-#~ msgstr "Napsal %s.\n"
-
-#, c-format
-#~ msgid "Written by %s and %s.\n"
-#~ msgstr "Napsali %s a %s.\n"
-
-#, c-format
-#~ msgid "Written by %s, %s, and %s.\n"
-#~ msgstr "Napsali %s, %s a %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "and %s.\n"
-#~ msgstr ""
-#~ "Napsali %s, %s, %s\n"
-#~ "a %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, and %s.\n"
-#~ msgstr ""
-#~ "Napsali %s, %s, %s,\n"
-#~ "%s a %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, %s, and %s.\n"
-#~ msgstr ""
-#~ "Napsali %s, %s, %s,\n"
-#~ "%s, %s a %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, %s, %s, and %s.\n"
-#~ msgstr ""
-#~ "Napsali %s, %s, %s,\n"
-#~ "%s, %s, %s a %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, %s, %s, %s,\n"
-#~ "and %s.\n"
-#~ msgstr ""
-#~ "Napsali %s, %s, %s,\n"
-#~ "%s, %s, %s, %s\n"
-#~ "a %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, %s, %s, %s,\n"
-#~ "%s, and %s.\n"
-#~ msgstr ""
-#~ "Napsali %s, %s, %s,\n"
-#~ "%s, %s, %s, %s,\n"
-#~ "%s a %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, %s, %s, %s,\n"
-#~ "%s, %s, and others.\n"
-#~ msgstr ""
-#~ "Napsali %s, %s, %s,\n"
-#~ "%s, %s, %s, %s,\n"
-#~ "%s, %s a další.\n"
-
-#, c-format
-#~ msgid ""
-#~ "\n"
-#~ "Report bugs to: %s\n"
-#~ msgstr ""
-#~ "\n"
-#~ "Chyby hlaste na: %s\n"
-
-#, c-format
-#~ msgid "Report %s bugs to: %s\n"
-#~ msgstr "Chyby balíčku %s hlaste na: %s\n"
-
-#, c-format
-#~ msgid "%s home page: <%s>\n"
-#~ msgstr "Domovská stránka projektu %s: <%s>\n"
-
-#, c-format
-#~ msgid "%s home page: <http://www.gnu.org/software/%s/>\n"
-#~ msgstr "Domovská stránka projektu %s: <http://www.gnu.org/software/%s/>\n"
-
-#~ msgid "General help using GNU software: <http://www.gnu.org/gethelp/>\n"
-#~ msgstr ""
-#~ "Obecná nápověda k používání softwaru GNU: <http://www.gnu.org/gethelp/>\n"
-
-#, c-format
-#~ msgid "_open_osfhandle failed"
-#~ msgstr "selhala funkce _open_osfhandle"
-
-#, c-format
-#~ msgid "cannot restore fd %d: dup2 failed"
-#~ msgstr "nelze obnovit fd %d: selhala funkce dup2"
-
-#, c-format
-#~ msgid "%s subprocess"
-#~ msgstr "podřízený proces %s"
-
-#, c-format
-#~ msgid "%s subprocess got fatal signal %d"
-#~ msgstr "podřízený proces %s obdržel kritický signál %d"
-
-#~ msgid "stdin"
-#~ msgstr "standardní vstup"
-
-#~ msgid "stdout"
-#~ msgstr "standardní výstup"
-
-#~ msgid "stderr"
-#~ msgstr "standardní chybový výstup"
-
-#~ msgid "unknown stream"
-#~ msgstr "neznámý proud"
-
-#, c-format
-#~ msgid "failed to reopen %s with mode %s"
-#~ msgstr "selhalo opětovné otevření %s v režimu %s"
-
-#, c-format
-#~ msgid "string comparison failed"
-#~ msgstr "selhalo porovnání řetězců"
-
-#, c-format
-#~ msgid "Set LC_ALL='C' to work around the problem."
-#~ msgstr "Problém obejdete nastavením LC_ALL='C'."
-
-#, c-format
-#~ msgid "The strings compared were %s and %s."
-#~ msgstr "Porovnávané řetězce byly %s a %s."
-
-#, c-format
-#~ msgid "cannot perform formatted output"
-#~ msgstr "nelze provést formátovaný výstup"
-
-#, c-format
-#~ msgid "invalid %s%s argument `%s'"
-#~ msgstr "neplatný argument „%3$s“ pro %1$s%2$s"
-
-#, c-format
-#~ msgid "invalid suffix in %s%s argument `%s'"
-#~ msgstr "neplatná přípona v argumentu „%3$s“ pro %1$s%2$s"
-
-#, c-format
-#~ msgid "%s%s argument `%s' too large"
-#~ msgstr "argument „%3$s“ pro %1$s%2$s je příliš velký"
+msgstr "Nic k vrácení"

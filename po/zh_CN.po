@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnulib 4.0.0.2567\n"
 "Report-Msgid-Bugs-To: bug-gnulib@gnu.org\n"
-"POT-Creation-Date: 2025-02-09 06:33-0500\n"
+"POT-Creation-Date: 2025-02-12 00:55-0500\n"
 "PO-Revision-Date: 2024-09-03 15:45+0800\n"
 "Last-Translator: Mingye Wang (Artoria2e5) <arthur200126@gmail.com>\n"
 "Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
@@ -139,8 +139,8 @@ msgstr "没有前次正则表达式"
 msgid "dup2 error"
 msgstr "总线错误"
 
-#: src/buffer.c:136 src/io.c:96 src/io.c:167 src/io.c:645 src/io.c:696
-#: src/main.c:783 src/register.c:395
+#: src/buffer.c:136 src/io.c:96 src/io.c:167 src/io.c:650 src/io.c:701
+#: src/main.c:788 src/register.c:395
 #, fuzzy
 #| msgid "write error"
 msgid "File open error"
@@ -215,13 +215,13 @@ msgstr ""
 msgid "Decryption failed (incomplete block)"
 msgstr ""
 
-#: src/cbc.c:384 src/io.c:565 src/io.c:837
+#: src/cbc.c:384 src/io.c:570 src/io.c:842
 #, fuzzy
 #| msgid "write error"
 msgid "File read error"
 msgstr "写入错误"
 
-#: src/cmds.c:43 src/io.c:487 src/main.c:368 src/register.c:302
+#: src/cmds.c:43 src/io.c:492 src/main.c:368 src/register.c:302
 msgid "End-of-file unexpected"
 msgstr ""
 
@@ -243,7 +243,7 @@ msgstr "程序错误"
 msgid "Child process error"
 msgstr "%s 子进程输入/输出错误"
 
-#: src/cmds.c:347 src/filter.c:40 src/io.c:176 src/io.c:707
+#: src/cmds.c:347 src/filter.c:40 src/io.c:176 src/io.c:712
 #, c-format
 msgid "Exit status: %#x"
 msgstr ""
@@ -357,7 +357,7 @@ msgstr "写入错误"
 msgid "No previous command"
 msgstr ""
 
-#: src/io.c:57 src/io.c:614 src/main.c:232 src/main.c:732 src/main.c:795
+#: src/io.c:57 src/io.c:619 src/main.c:232 src/main.c:737 src/main.c:804
 #: src/register.c:36 src/register.c:83 src/register.c:142 src/register.c:152
 #: src/register.c:211 src/register.c:220 src/register.c:247 src/register.c:286
 #: src/register.c:353 src/register.c:413 src/register.c:453 src/register.c:492
@@ -370,12 +370,12 @@ msgstr "写入错误"
 msgid "File does not exist"
 msgstr ""
 
-#: src/io.c:119 src/io.c:659
+#: src/io.c:119 src/io.c:664
 #, c-format
 msgid "%s: File already locked\n"
 msgstr ""
 
-#: src/io.c:143 src/io.c:636 src/io.c:674
+#: src/io.c:143 src/io.c:641 src/io.c:679
 msgid "File close error"
 msgstr ""
 
@@ -389,37 +389,37 @@ msgstr ""
 msgid "Newline appended\n"
 msgstr ""
 
-#: src/io.c:551 src/io.c:790
+#: src/io.c:556 src/io.c:795
 msgid "Broken pipe"
 msgstr "管道断开"
 
-#: src/io.c:621 src/register.c:254
+#: src/io.c:626 src/register.c:254
 #, fuzzy
 #| msgid "write error"
 msgid "File truncate error"
 msgstr "写入错误"
 
-#: src/io.c:743
+#: src/io.c:748
 msgid "File too big"
 msgstr ""
 
-#: src/io.c:796 src/io.c:816 src/io.c:827 src/main.c:743 src/main.c:751
+#: src/io.c:801 src/io.c:821 src/io.c:832 src/main.c:748 src/main.c:756
 #, fuzzy
 #| msgid "write error"
 msgid "File write error"
 msgstr "写入错误"
 
-#: src/io.c:860 src/parse.c:502
+#: src/io.c:865 src/parse.c:502
 #, fuzzy
 #| msgid "Bus error"
 msgid "File status error"
 msgstr "总线错误"
 
-#: src/io.c:867
+#: src/io.c:872
 msgid "Access restricted to regular files"
 msgstr ""
 
-#: src/io.c:936
+#: src/io.c:941
 #, fuzzy
 #| msgid "write error"
 msgid "File stat error"
@@ -445,34 +445,34 @@ msgstr ""
 msgid "Argument list full"
 msgstr "参数缓冲区太小"
 
-#: src/main.c:816
+#: src/main.c:825
 #, c-format
 msgid ""
 "Usage: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE...]\n"
 msgstr ""
 
-#: src/main.c:818
+#: src/main.c:827
 #, c-format
 msgid ""
 "Usage: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE]\n"
 msgstr ""
 
-#: src/main.c:821
+#: src/main.c:830
 #, c-format
 msgid "Usage: %s [-] [-EGhRrsVvwx] [-p PROMPT] [FILE]\n"
 msgstr ""
 
-#: src/main.c:831
+#: src/main.c:840
 #, c-format
 msgid "Usage: %s [OPTION...] [FILE...]\n"
 msgstr ""
 
-#: src/main.c:834
+#: src/main.c:843
 #, c-format
 msgid "Usage: %s [OPTION...] [FILE]\n"
 msgstr ""
 
-#: src/main.c:840
+#: src/main.c:849
 #, c-format
 msgid ""
 "Options:\n"
@@ -499,7 +499,7 @@ msgid ""
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
 
-#: src/main.c:862
+#: src/main.c:871
 #, c-format
 msgid ""
 "Options:\n"
@@ -522,7 +522,7 @@ msgid ""
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
 
-#: src/main.c:893
+#: src/main.c:902
 msgid "script, line %"
 msgstr ""
 
@@ -637,787 +637,3 @@ msgstr ""
 #: src/undo.c:51
 msgid "Nothing to undo"
 msgstr ""
-
-#, fuzzy
-#~| msgid "Unknown error"
-#~ msgid "fdopen error"
-#~ msgstr "未知错误"
-
-#, c-format
-#~ msgid "invalid argument %s for %s"
-#~ msgstr "%2$s 的参数 %1$s 无效"
-
-#, c-format
-#~ msgid "ambiguous argument %s for %s"
-#~ msgstr "%2$s 的参数 %1$s 有歧义"
-
-#~ msgid "Valid arguments are:"
-#~ msgstr "有效的参数为："
-
-#, c-format
-#~ msgid "ARGP_HELP_FMT: %s value is less than or equal to %s"
-#~ msgstr "ARGP_HELP_FMT: %s 的值小于或等于 %s"
-
-#, c-format
-#~ msgid "%.*s: ARGP_HELP_FMT parameter requires a value"
-#~ msgstr "%.*s: ARGP_HELP_FMT 参数需要一个值"
-
-#, c-format
-#~ msgid "%.*s: Unknown ARGP_HELP_FMT parameter"
-#~ msgstr "%.*s: 未知的 ARGP_HELP_FMT 参数"
-
-#, c-format
-#~ msgid "Garbage in ARGP_HELP_FMT: %s"
-#~ msgstr "ARGP_HELP_FMT 中的无效参数: %s"
-
-#~ msgid ""
-#~ "Mandatory or optional arguments to long options are also mandatory or "
-#~ "optional for any corresponding short options."
-#~ msgstr ""
-#~ "选项完整形式所必须用的或是可选的参数，在使用选项缩写形式时也是必须的或是可"
-#~ "选的。"
-
-#~ msgid "Usage:"
-#~ msgstr "用法："
-
-#~ msgid "  or: "
-#~ msgstr "  或者： "
-
-#~ msgid " [OPTION...]"
-#~ msgstr "[选项...]"
-
-#, c-format
-#~ msgid "Try '%s --help' or '%s --usage' for more information.\n"
-#~ msgstr "请尝试执行“%s --help”或“%s --usage”来获取更多信息。\n"
-
-#, c-format
-#~ msgid "Report bugs to %s.\n"
-#~ msgstr "请向 %s 报告错误。\n"
-
-#~ msgid "Unknown system error"
-#~ msgstr "未知的系统错误"
-
-#~ msgid "give this help list"
-#~ msgstr "显示此帮助列表"
-
-#~ msgid "give a short usage message"
-#~ msgstr "显示一份简洁的用法信息"
-
-#~ msgid "NAME"
-#~ msgstr "名称"
-
-#~ msgid "set the program name"
-#~ msgstr "设定程序名称"
-
-#~ msgid "SECS"
-#~ msgstr "秒数"
-
-#~ msgid "hang for SECS seconds (default 3600)"
-#~ msgstr "挂起 <秒数> 秒（默认 3600 秒）"
-
-#~ msgid "print program version"
-#~ msgstr "打印程序版本"
-
-#~ msgid "(PROGRAM ERROR) No version known!?"
-#~ msgstr "（程序错误）未知版本！？"
-
-#~ msgid "(PROGRAM ERROR) Option should have been recognized!?"
-#~ msgstr "（程序错误）应该被识别但没有被的选项！？"
-
-#, c-format
-#~ msgid "%u bitset_allocs, %u freed (%.2f%%).\n"
-#~ msgstr "%u bitset_allocs 次分配, %u 已释放 (%.2f%%).\n"
-
-#, c-format
-#~ msgid "%u bitset_sets, %u cached (%.2f%%)\n"
-#~ msgstr "%u bitset_sets 次设置, %u 已缓存 (%.2f%%)\n"
-
-#, c-format
-#~ msgid "%u bitset_resets, %u cached (%.2f%%)\n"
-#~ msgstr "%u bitset_resets 次重置，%u 已缓存（%.2f%%）\n"
-
-#, c-format
-#~ msgid "%u bitset_tests, %u cached (%.2f%%)\n"
-#~ msgstr "%u bitset_tests 次读取, %u 已缓存 (%.2f%%)\n"
-
-#, c-format
-#~ msgid "%u bitset_lists\n"
-#~ msgstr "%u bitset_lists 个列表\n"
-
-#~ msgid "count log histogram\n"
-#~ msgstr "次数 log 直方图\n"
-
-#~ msgid "size log histogram\n"
-#~ msgstr "大小 log 直方图\n"
-
-#~ msgid "density histogram\n"
-#~ msgstr "密度直方图\n"
-
-#, c-format
-#~ msgid ""
-#~ "Bitset statistics:\n"
-#~ "\n"
-#~ msgstr ""
-#~ "Bitset 统计信息：\n"
-#~ "\n"
-
-#, c-format
-#~ msgid "Accumulated runs = %u\n"
-#~ msgstr "累计运行次数 = %u\n"
-
-#~ msgid "cannot read stats file"
-#~ msgstr "无法读取 stats 文件"
-
-#, c-format
-#~ msgid "bad stats file size\n"
-#~ msgstr "坏的 stats 文件大小\n"
-
-#~ msgid "cannot write stats file"
-#~ msgstr "无法写入 stats 文件"
-
-#~ msgid "cannot open stats file for writing"
-#~ msgstr "无法打开 stats 文件进行写入"
-
-#~ msgid "stack overflow"
-#~ msgstr "堆栈溢出"
-
-#~ msgid "cannot find a temporary directory, try setting $TMPDIR"
-#~ msgstr "无法找到一个临时目录，请尝试设置 $TMPDIR 环境变量"
-
-#, c-format
-#~ msgid "cannot create a temporary directory using template \"%s\""
-#~ msgstr "无法以模板“%s”创建一个临时目录"
-
-#, c-format
-#~ msgid "cannot remove temporary file %s"
-#~ msgstr "无法删除临时文件 %s"
-
-#, c-format
-#~ msgid "cannot remove temporary directory %s"
-#~ msgstr "无法删除临时目录 %s"
-
-#~ msgid "error closing file"
-#~ msgstr "关闭文件时发生错误"
-
-#, c-format
-#~ msgid "preserving permissions for %s"
-#~ msgstr "保留 %s 的权限"
-
-#, c-format
-#~ msgid "error while opening %s for reading"
-#~ msgstr "打开“%s”读取数据时发生错误"
-
-#, c-format
-#~ msgid "cannot open backup file %s for writing"
-#~ msgstr "无法打开备份文件“%s”写入数据"
-
-#, c-format
-#~ msgid "error reading %s"
-#~ msgstr "读入“%s”时错误"
-
-#, c-format
-#~ msgid "error writing %s"
-#~ msgstr "写入“%s”时错误"
-
-#, c-format
-#~ msgid "error after reading %s"
-#~ msgstr "读入“%s”后错误"
-
-#~ msgid "fdopen() failed"
-#~ msgstr "fdopen() 错误"
-
-#~ msgid "C# compiler not found, try installing mono"
-#~ msgstr "未找到 C# 编译器，请尝试安装 mono"
-
-#~ msgid "C# virtual machine not found, try installing mono"
-#~ msgstr "未找到 C# 虚拟机，请尝试安装 mono"
-
-#~ msgid "unbalanced ["
-#~ msgstr "[ 不匹配"
-
-#~ msgid "invalid character class"
-#~ msgstr "无效的字符类名"
-
-#~ msgid "character class syntax is [[:space:]], not [:space:]"
-#~ msgstr "字符类的语法是 [[:space:]]，而不是 [:space:]"
-
-#~ msgid "unfinished \\ escape"
-#~ msgstr "不完整的 \\ 转义"
-
-#~ msgid "invalid content of \\{\\}"
-#~ msgstr "\\{\\} 的内容无效"
-
-#~ msgid "regular expression too big"
-#~ msgstr "正则表达式太大"
-
-#~ msgid "unbalanced ("
-#~ msgstr "( 不匹配"
-
-#~ msgid "no syntax specified"
-#~ msgstr "没有指定语法"
-
-#~ msgid "unbalanced )"
-#~ msgstr ") 不匹配"
-
-#, c-format
-#~ msgid "%s subprocess failed"
-#~ msgstr "%s 子进程错误"
-
-#~ msgid "regular empty file"
-#~ msgstr "一般空文件"
-
-#~ msgid "regular file"
-#~ msgstr "一般文件"
-
-#~ msgid "directory"
-#~ msgstr "目录"
-
-#~ msgid "symbolic link"
-#~ msgstr "符号链接"
-
-#~ msgid "message queue"
-#~ msgstr "消息队列"
-
-#~ msgid "semaphore"
-#~ msgstr "信号量"
-
-#~ msgid "shared memory object"
-#~ msgstr "共享内存对象"
-
-#~ msgid "typed memory object"
-#~ msgstr "标准内存对象"
-
-#~ msgid "block special file"
-#~ msgstr "块特殊文件"
-
-#~ msgid "character special file"
-#~ msgstr "字符特殊文件"
-
-#~ msgid "contiguous data"
-#~ msgstr "连续数据"
-
-#~ msgid "fifo"
-#~ msgstr "先进先出"
-
-#~ msgid "door"
-#~ msgstr "门"
-
-#~ msgid "multiplexed block special file"
-#~ msgstr "多路复用块特殊文件"
-
-#~ msgid "multiplexed character special file"
-#~ msgstr "多路复用字符特殊文件"
-
-#~ msgid "multiplexed file"
-#~ msgstr "多路复用文件"
-
-#~ msgid "network special file"
-#~ msgstr "网络特殊文件"
-
-#~ msgid "migrated file with data"
-#~ msgstr "有数据的已迁移文件"
-
-#~ msgid "migrated file without data"
-#~ msgstr "无数据的已迁移文件"
-
-#~ msgid "port"
-#~ msgstr "端口"
-
-#~ msgid "socket"
-#~ msgstr "套接字"
-
-#~ msgid "weird file"
-#~ msgstr "古怪文件"
-
-#~ msgid "Address family for hostname not supported"
-#~ msgstr "不支持主机名的地址族"
-
-#~ msgid "Temporary failure in name resolution"
-#~ msgstr "名称解析时发生临时错误"
-
-#~ msgid "Bad value for ai_flags"
-#~ msgstr "ai_flags 的值错误"
-
-#~ msgid "Non-recoverable failure in name resolution"
-#~ msgstr "名称解析时发生不可恢复的错误"
-
-#~ msgid "ai_family not supported"
-#~ msgstr "不支持 ai_family"
-
-#~ msgid "Memory allocation failure"
-#~ msgstr "内存分配错误"
-
-#~ msgid "No address associated with hostname"
-#~ msgstr "主机名未分配到地址"
-
-#~ msgid "Name or service not known"
-#~ msgstr "未知的名称或服务"
-
-#~ msgid "Servname not supported for ai_socktype"
-#~ msgstr "ai_socktype 不支持的服务名"
-
-#~ msgid "ai_socktype not supported"
-#~ msgstr "不支持 ai_socktype"
-
-#~ msgid "System error"
-#~ msgstr "系统错误"
-
-#~ msgid "Processing request in progress"
-#~ msgstr "正在处理进程的请求"
-
-#~ msgid "Request canceled"
-#~ msgstr "请求已取消"
-
-#~ msgid "Request not canceled"
-#~ msgstr "请求未取消"
-
-#~ msgid "All requests done"
-#~ msgstr "已处理所有请求"
-
-#~ msgid "Interrupted by a signal"
-#~ msgstr "被一个信号中断"
-
-#~ msgid "Parameter string not correctly encoded"
-#~ msgstr "参数字符串未正确编码"
-
-#~ msgid "invalid source_version argument to compile_java_class"
-#~ msgstr "compile_java_class 的 source_version 参数无效"
-
-#~ msgid "invalid target_version argument to compile_java_class"
-#~ msgstr "compile_java_class 的 target_version 参数无效"
-
-#, c-format
-#~ msgid "failed to create \"%s\""
-#~ msgstr "无法创建“%s”"
-
-#, c-format
-#~ msgid "error while writing \"%s\" file"
-#~ msgstr "正在写入“%s”文件时发生错误"
-
-#~ msgid "Java compiler not found, try installing gcj or set $JAVAC"
-#~ msgstr "未找到 Java 编译器，尝试安装 gcj 或是设置 $JAVAC"
-
-#~ msgid "Java virtual machine not found, try installing gij or set $JAVA"
-#~ msgstr "未找到 Java 虚拟机，尝试安装 gij 或是设置 $JAVA"
-
-#, c-format
-#~ msgid "cannot stat %s"
-#~ msgstr "无法 stat %s"
-
-#, c-format
-#~ msgid "cannot change permissions of %s"
-#~ msgstr "无法更改 %s 的权限"
-
-#, c-format
-#~ msgid "cannot create directory %s"
-#~ msgstr "无法创建目录 %s"
-
-#~ msgid "memory exhausted"
-#~ msgstr "内存用尽"
-
-#~ msgid "unable to record current working directory"
-#~ msgstr "无法记录当前工作的目录"
-
-#~ msgid "Failed to open /dev/zero for read"
-#~ msgstr "无法以读方式打开 /dev/zero"
-
-#~ msgid "creation of reading thread failed"
-#~ msgstr "读线程创建错误"
-
-#, c-format
-#~ msgid "cannot set up nonblocking I/O to %s subprocess"
-#~ msgstr "无法为 %s 子进程设置非阻塞性 I/O"
-
-#, c-format
-#~ msgid "communication with %s subprocess failed"
-#~ msgstr "与 %s 子进程通讯错误"
-
-#, c-format
-#~ msgid "write to %s subprocess failed"
-#~ msgstr "写入 %s 子进程错误"
-
-#, c-format
-#~ msgid "read from %s subprocess failed"
-#~ msgstr "读取 %s 子进程错误"
-
-#, c-format
-#~ msgid "subprocess %s terminated with exit code %d"
-#~ msgstr "子进程 %s 由退出码 %d 终止"
-
-#~ msgid "creation of threads failed"
-#~ msgstr "线程创建失败"
-
-#, c-format
-#~ msgid "%s subprocess terminated with exit code %d"
-#~ msgstr "子进程 %s 由退出码 %d 终止"
-
-#~ msgid "`"
-#~ msgstr "“"
-
-#~ msgid "'"
-#~ msgstr "”"
-
-#~ msgid "^[yY]"
-#~ msgstr "^[yY]"
-
-#~ msgid "^[nN]"
-#~ msgstr "^[nN]"
-
-#, c-format
-#~ msgid "setting permissions for %s"
-#~ msgstr "设置 %s 的权限"
-
-#~ msgid "Hangup"
-#~ msgstr "挂起"
-
-#~ msgid "Quit"
-#~ msgstr "退出"
-
-#~ msgid "Illegal instruction"
-#~ msgstr "非法指令"
-
-#~ msgid "Trace/breakpoint trap"
-#~ msgstr "跟踪(断点)"
-
-#~ msgid "Aborted"
-#~ msgstr "取消"
-
-#~ msgid "Floating point exception"
-#~ msgstr "浮点溢出"
-
-#~ msgid "Killed"
-#~ msgstr "强行终止"
-
-#~ msgid "Segmentation fault"
-#~ msgstr "段错误"
-
-#~ msgid "Alarm clock"
-#~ msgstr "时钟警报"
-
-#~ msgid "Terminated"
-#~ msgstr "被终止"
-
-#~ msgid "Urgent I/O condition"
-#~ msgstr "I/O 条件不足"
-
-#~ msgid "Stopped (signal)"
-#~ msgstr "被停止(通过信号)"
-
-#~ msgid "Stopped"
-#~ msgstr "被停止"
-
-#~ msgid "Continued"
-#~ msgstr "继续"
-
-#~ msgid "Child exited"
-#~ msgstr "子进程退出"
-
-#~ msgid "Stopped (tty input)"
-#~ msgstr "被停止(tty 输入)"
-
-#~ msgid "Stopped (tty output)"
-#~ msgstr "被停止(tty 输出)"
-
-#~ msgid "I/O possible"
-#~ msgstr "I/O 可能"
-
-#~ msgid "CPU time limit exceeded"
-#~ msgstr "超出CPU 时间限制"
-
-#~ msgid "File size limit exceeded"
-#~ msgstr "超出文件大小限制"
-
-#~ msgid "Virtual timer expired"
-#~ msgstr "虚拟计时器过期"
-
-#~ msgid "Profiling timer expired"
-#~ msgstr "性能分析计时器已过期"
-
-#~ msgid "Window changed"
-#~ msgstr "窗口改变"
-
-#~ msgid "User defined signal 1"
-#~ msgstr "用户自定义信号 1"
-
-#~ msgid "User defined signal 2"
-#~ msgstr "用户自定义信号 2"
-
-#~ msgid "EMT trap"
-#~ msgstr "仿真程序陷阱"
-
-#~ msgid "Bad system call"
-#~ msgstr "错误的系统调用"
-
-#~ msgid "Stack fault"
-#~ msgstr "堆栈错误"
-
-#~ msgid "Information request"
-#~ msgstr "信息请求"
-
-#~ msgid "Power failure"
-#~ msgstr "电力问题"
-
-#~ msgid "Resource lost"
-#~ msgstr "资源丢失"
-
-#~ msgid "error writing to a closed pipe or socket"
-#~ msgstr "写入一个已关闭的管道或套接字时发生错误"
-
-#~ msgid "cannot create pipe"
-#~ msgstr "无法创建管道"
-
-#, c-format
-#~ msgid "Real-time signal %d"
-#~ msgstr "实时信号 %d"
-
-#, c-format
-#~ msgid "Unknown signal %d"
-#~ msgstr "未知信号 %d"
-
-#~ msgid "Execution times (seconds)"
-#~ msgstr "执行时间（秒）"
-
-#~ msgid "CPU user"
-#~ msgstr "CPU 用户"
-
-#~ msgid "CPU system"
-#~ msgstr "CPU 系统"
-
-#~ msgid "wall clock"
-#~ msgstr "墙钟（现实世界时间）"
-
-#~ msgid "iconv function not usable"
-#~ msgstr "iconv 函数无法使用"
-
-#~ msgid "iconv function not available"
-#~ msgstr "iconv 函数不存在"
-
-#, c-format
-#~ msgid "cannot convert U+%04X to local character set"
-#~ msgstr "无法将 U+%04X 转换至用户的字符集"
-
-#, c-format
-#~ msgid "cannot convert U+%04X to local character set: %s"
-#~ msgstr "无法将 U+%04X 转换至用户的字符集：%s"
-
-#~ msgid "invalid group"
-#~ msgstr "无效的组"
-
-#~ msgid "invalid spec"
-#~ msgstr "无效的 spec"
-
-#~ msgid "unable to display error message"
-#~ msgstr "无法显示错误信息"
-
-#, c-format
-#~ msgid "Packaged by %s (%s)\n"
-#~ msgstr "由 %s (%s) 打包\n"
-
-#, c-format
-#~ msgid "Packaged by %s\n"
-#~ msgstr "由 %s 打包\n"
-
-#~ msgid "(C)"
-#~ msgstr "(C)"
-
-#, c-format
-#~ msgid ""
-#~ "License GPLv3+: GNU GPL version 3 or later <%s>.\n"
-#~ "This is free software: you are free to change and redistribute it.\n"
-#~ "There is NO WARRANTY, to the extent permitted by law.\n"
-#~ msgstr ""
-#~ "授权协议 GPLv3+: GNU GPL 版本 3 或更新版本 <%s>\n"
-#~ "这是自由软件：您可以自由的更改并重新发布它。\n"
-#~ "在法律允许的范围内，没有任何担保。\n"
-
-#, c-format
-#~ msgid "Written by %s.\n"
-#~ msgstr "由 %s 编写。\n"
-
-#, c-format
-#~ msgid "Written by %s and %s.\n"
-#~ msgstr "由 %s 和 %s 编写。\n"
-
-#, c-format
-#~ msgid "Written by %s, %s, and %s.\n"
-#~ msgstr "由 %s、%s 和 %s 编写。\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "and %s.\n"
-#~ msgstr ""
-#~ "由 %s、%s、%s 和\n"
-#~ "%s 编写。\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, and %s.\n"
-#~ msgstr ""
-#~ "由 %s、%s、%s、\n"
-#~ "%s 和 %s 编写。\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, %s, and %s.\n"
-#~ msgstr ""
-#~ "由 %s、%s、%s、\n"
-#~ "%s、%s 和 %s 编写。\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, %s, %s, and %s.\n"
-#~ msgstr ""
-#~ "由 %s、%s、%s、\n"
-#~ "%s、%s、%s 和 %s 编写。\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, %s, %s, %s,\n"
-#~ "and %s.\n"
-#~ msgstr ""
-#~ "由 %s、%s、%s、\n"
-#~ "%s、%s、%s、%s\n"
-#~ "和 %s 编写。\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, %s, %s, %s,\n"
-#~ "%s, and %s.\n"
-#~ msgstr ""
-#~ "由 %s、%s、%s、\n"
-#~ "%s、%s、%s、%s、\n"
-#~ "%s、和 %s 编写。\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, %s, %s, %s,\n"
-#~ "%s, %s, and others.\n"
-#~ msgstr ""
-#~ "由 %s、%s、%s、\n"
-#~ "%s、%s、%s、%s、\n"
-#~ "%s、%s、和其他人编写。\n"
-
-#, c-format
-#~ msgid "Report bugs to: %s\n"
-#~ msgstr "请向 %s 报告错误。向 <i18n-zh@googlegroups.com> 报告翻译错误。\n"
-
-#, c-format
-#~ msgid "Report %s bugs to: %s\n"
-#~ msgstr "将 %s 错误报告给: %s\n"
-
-#, c-format
-#~ msgid "%s home page: <%s>\n"
-#~ msgstr "%s 主页: <%s>\n"
-
-#, c-format
-#~ msgid "General help using GNU software: <%s>\n"
-#~ msgstr "GNU 软件的通用帮助: <%s>\n"
-
-#~ msgid "_open_osfhandle failed"
-#~ msgstr "_open_osfhandle 失败"
-
-#, c-format
-#~ msgid "cannot restore fd %d: dup2 failed"
-#~ msgstr "无法恢复文件描述符 %d: dup2 失败"
-
-#, c-format
-#~ msgid "%s subprocess"
-#~ msgstr "%s 子进程"
-
-#, c-format
-#~ msgid "%s subprocess got fatal signal %d"
-#~ msgstr "%s 子进程获得终结信号 %d"
-
-#~ msgid "failed to set file descriptor text/binary mode"
-#~ msgstr "无法设置文件描述符的文本/二进制模式"
-
-#~ msgid "stdin"
-#~ msgstr "标准输入"
-
-#~ msgid "stdout"
-#~ msgstr "标准输出"
-
-#~ msgid "stderr"
-#~ msgstr "标准错误输出"
-
-#~ msgid "unknown stream"
-#~ msgstr "未知的流"
-
-#, c-format
-#~ msgid "failed to reopen %s with mode %s"
-#~ msgstr "无法以 %2$s 模式重新打开 %1$s"
-
-#~ msgid "string comparison failed"
-#~ msgstr "字符串比较出现错误"
-
-#~ msgid "Set LC_ALL='C' to work around the problem."
-#~ msgstr "请设定 LC_ALL='C' 避免问题出现。"
-
-#, c-format
-#~ msgid "The strings compared were %s and %s."
-#~ msgstr "要比较的字符串为 %s 和 %s。"
-
-#~ msgid "cannot perform formatted output"
-#~ msgstr "无法执行格式化输出"
-
-#~ msgid "standard file descriptors"
-#~ msgstr "标准文件描述符"
-
-#, c-format
-#~ msgid "invalid %s%s argument '%s'"
-#~ msgstr "%s%s 参数‘%s’无效"
-
-#, c-format
-#~ msgid "invalid suffix in %s%s argument '%s'"
-#~ msgstr "%s%s 参数‘%s’的后缀无效"
-
-#, c-format
-#~ msgid "%s%s argument '%s' too large"
-#~ msgstr "%s%s 参数‘%s’太长"
-
-#~ msgid "%.*s: ARGP_HELP_FMT parameter must be positive"
-#~ msgstr "%.*s: ARGP_HELP_FMT 参数必须为正值"
-
-#~ msgid "%s: option '--%s' doesn't allow an argument\n"
-#~ msgstr "%s: 选项\"--%s\"不要参数\n"
-
-#~ msgid "%s: unrecognized option '--%s'\n"
-#~ msgstr "%s: 无法识别的选项\"--%s\"\n"
-
-#~ msgid "%s: option '-W %s' is ambiguous\n"
-#~ msgstr "%s: 选项\"-W %s\"有歧义\n"
-
-#~ msgid "%s: option '-W %s' doesn't allow an argument\n"
-#~ msgstr "%s: 选项\"-W %s\"不要带参数\n"
-
-#~ msgid "%s home page: <http://www.gnu.org/software/%s/>\n"
-#~ msgstr "%s 主页: <http://www.gnu.org/software/%s/>\n"
-
-#~ msgid "%s: illegal option -- %c\n"
-#~ msgstr "%s：非法选项 -- %c\n"
-
-#~ msgid ""
-#~ "\n"
-#~ "Report bugs to <%s>.\n"
-#~ msgstr ""
-#~ "\n"
-#~ "请向 <%s> 报告错误。\n"
-
-#~ msgid "block size"
-#~ msgstr "块大小"
-
-#~ msgid "%s exists but is not a directory"
-#~ msgstr "%s 存在但并非目录"
-
-#~ msgid "cannot change owner and/or group of %s"
-#~ msgstr "无法更改 %s 的属主和/或组"
-
-#~ msgid "cannot get the login group of a numeric UID"
-#~ msgstr "无法取得 UID 数值所表示的用户的主组"
