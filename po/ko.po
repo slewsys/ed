@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GNU textutils 2.0.22\n"
 "Report-Msgid-Bugs-To: bug-gnulib@gnu.org\n"
-"POT-Creation-Date: 2025-02-09 06:33-0500\n"
+"POT-Creation-Date: 2025-02-12 00:55-0500\n"
 "PO-Revision-Date: 2002-07-22 20:02+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: Korean <translation-team-ko@lists.sourceforge.net>\n"
@@ -148,8 +148,8 @@ msgstr "정규식 탐색에 오류 발생"
 msgid "dup2 error"
 msgstr "프로그램 오류"
 
-#: src/buffer.c:136 src/io.c:96 src/io.c:167 src/io.c:645 src/io.c:696
-#: src/main.c:783 src/register.c:395
+#: src/buffer.c:136 src/io.c:96 src/io.c:167 src/io.c:650 src/io.c:701
+#: src/main.c:788 src/register.c:395
 #, fuzzy
 #| msgid "write error"
 msgid "File open error"
@@ -218,13 +218,13 @@ msgstr ""
 msgid "Decryption failed (incomplete block)"
 msgstr ""
 
-#: src/cbc.c:384 src/io.c:565 src/io.c:837
+#: src/cbc.c:384 src/io.c:570 src/io.c:842
 #, fuzzy
 #| msgid "write error"
 msgid "File read error"
 msgstr "쓰기 오류"
 
-#: src/cmds.c:43 src/io.c:487 src/main.c:368 src/register.c:302
+#: src/cmds.c:43 src/io.c:492 src/main.c:368 src/register.c:302
 msgid "End-of-file unexpected"
 msgstr ""
 
@@ -243,7 +243,7 @@ msgstr "프로그램 오류"
 msgid "Child process error"
 msgstr ""
 
-#: src/cmds.c:347 src/filter.c:40 src/io.c:176 src/io.c:707
+#: src/cmds.c:347 src/filter.c:40 src/io.c:176 src/io.c:712
 #, c-format
 msgid "Exit status: %#x"
 msgstr ""
@@ -350,7 +350,7 @@ msgstr "쓰기 오류"
 msgid "No previous command"
 msgstr ""
 
-#: src/io.c:57 src/io.c:614 src/main.c:232 src/main.c:732 src/main.c:795
+#: src/io.c:57 src/io.c:619 src/main.c:232 src/main.c:737 src/main.c:804
 #: src/register.c:36 src/register.c:83 src/register.c:142 src/register.c:152
 #: src/register.c:211 src/register.c:220 src/register.c:247 src/register.c:286
 #: src/register.c:353 src/register.c:413 src/register.c:453 src/register.c:492
@@ -363,12 +363,12 @@ msgstr "쓰기 오류"
 msgid "File does not exist"
 msgstr ""
 
-#: src/io.c:119 src/io.c:659
+#: src/io.c:119 src/io.c:664
 #, c-format
 msgid "%s: File already locked\n"
 msgstr ""
 
-#: src/io.c:143 src/io.c:636 src/io.c:674
+#: src/io.c:143 src/io.c:641 src/io.c:679
 msgid "File close error"
 msgstr ""
 
@@ -382,35 +382,35 @@ msgstr ""
 msgid "Newline appended\n"
 msgstr ""
 
-#: src/io.c:551 src/io.c:790
+#: src/io.c:556 src/io.c:795
 msgid "Broken pipe"
 msgstr ""
 
-#: src/io.c:621 src/register.c:254
+#: src/io.c:626 src/register.c:254
 #, fuzzy
 #| msgid "write error"
 msgid "File truncate error"
 msgstr "쓰기 오류"
 
-#: src/io.c:743
+#: src/io.c:748
 msgid "File too big"
 msgstr ""
 
-#: src/io.c:796 src/io.c:816 src/io.c:827 src/main.c:743 src/main.c:751
+#: src/io.c:801 src/io.c:821 src/io.c:832 src/main.c:748 src/main.c:756
 #, fuzzy
 #| msgid "write error"
 msgid "File write error"
 msgstr "쓰기 오류"
 
-#: src/io.c:860 src/parse.c:502
+#: src/io.c:865 src/parse.c:502
 msgid "File status error"
 msgstr ""
 
-#: src/io.c:867
+#: src/io.c:872
 msgid "Access restricted to regular files"
 msgstr ""
 
-#: src/io.c:936
+#: src/io.c:941
 #, fuzzy
 #| msgid "write error"
 msgid "File stat error"
@@ -432,34 +432,34 @@ msgstr ""
 msgid "Argument list full"
 msgstr ""
 
-#: src/main.c:816
+#: src/main.c:825
 #, c-format
 msgid ""
 "Usage: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE...]\n"
 msgstr ""
 
-#: src/main.c:818
+#: src/main.c:827
 #, c-format
 msgid ""
 "Usage: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE]\n"
 msgstr ""
 
-#: src/main.c:821
+#: src/main.c:830
 #, c-format
 msgid "Usage: %s [-] [-EGhRrsVvwx] [-p PROMPT] [FILE]\n"
 msgstr ""
 
-#: src/main.c:831
+#: src/main.c:840
 #, c-format
 msgid "Usage: %s [OPTION...] [FILE...]\n"
 msgstr ""
 
-#: src/main.c:834
+#: src/main.c:843
 #, c-format
 msgid "Usage: %s [OPTION...] [FILE]\n"
 msgstr ""
 
-#: src/main.c:840
+#: src/main.c:849
 #, c-format
 msgid ""
 "Options:\n"
@@ -486,7 +486,7 @@ msgid ""
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
 
-#: src/main.c:862
+#: src/main.c:871
 #, c-format
 msgid ""
 "Options:\n"
@@ -509,7 +509,7 @@ msgid ""
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
 
-#: src/main.c:893
+#: src/main.c:902
 msgid "script, line %"
 msgstr ""
 
@@ -614,261 +614,3 @@ msgstr ""
 #: src/undo.c:51
 msgid "Nothing to undo"
 msgstr ""
-
-#, fuzzy
-#~ msgid "fdopen error"
-#~ msgstr "알 수 없는 시스템 오류"
-
-#, c-format
-#~ msgid "invalid argument %s for %s"
-#~ msgstr "%2$s에 대해 부적절한 인자 %1$s"
-
-#, c-format
-#~ msgid "ambiguous argument %s for %s"
-#~ msgstr "%2$s에 대해 애매한 인자 %1$s"
-
-#, c-format
-#~ msgid "Valid arguments are:"
-#~ msgstr "올바른 인자는:"
-
-#, fuzzy
-#~ msgid ""
-#~ "Mandatory or optional arguments to long options are also mandatory or "
-#~ "optional for any corresponding short options."
-#~ msgstr "긴 옵션에서 꼭 필요한 인수는 짧은 옵션에도 꼭 필요합니다.\n"
-
-#, fuzzy
-#~ msgid " [OPTION...]"
-#~ msgstr "사용법: %s [<옵션>] [<파일>]...\n"
-
-#, fuzzy, c-format
-#~ msgid "Try `%s --help' or `%s --usage' for more information.\n"
-#~ msgstr "더 많은 정보를 보려면 `%s --help' 하십시오.\n"
-
-#, fuzzy, c-format
-#~ msgid "Report bugs to %s.\n"
-#~ msgstr ""
-#~ "\n"
-#~ "<%s>(으)로 버그를 알려 주십시오.\n"
-
-#~ msgid "Unknown system error"
-#~ msgstr "알 수 없는 시스템 오류"
-
-#, fuzzy
-#~ msgid "Print program version"
-#~ msgstr "프로그램 오류"
-
-#~ msgid "stack overflow"
-#~ msgstr "스택 오버플로우"
-
-#, fuzzy, c-format
-#~ msgid "error while opening \"%s\" for reading"
-#~ msgstr "`%s'를 `%s'로 이동할 수 없습니다"
-
-#, fuzzy, c-format
-#~ msgid "cannot open backup file \"%s\" for writing"
-#~ msgstr "`%s'를 `%s'로 이동할 수 없습니다"
-
-#, fuzzy, c-format
-#~ msgid "error reading \"%s\""
-#~ msgstr "%s을(를) 읽는 도중 오류 발생"
-
-#, fuzzy, c-format
-#~ msgid "error writing \"%s\""
-#~ msgstr "%s에 쓰는 도중 오류 발생"
-
-#, fuzzy, c-format
-#~ msgid "error after reading \"%s\""
-#~ msgstr "%s을(를) 읽는 도중 오류 발생"
-
-#, fuzzy
-#~ msgid "fdopen() failed"
-#~ msgstr "파일 열기 실패"
-
-#, fuzzy, c-format
-#~ msgid "%s subprocess failed"
-#~ msgstr "%s: 부적절한 패턴"
-
-#~ msgid "regular empty file"
-#~ msgstr "일반 빈 파일"
-
-#~ msgid "regular file"
-#~ msgstr "일반 파일"
-
-#~ msgid "directory"
-#~ msgstr "디렉토리"
-
-#~ msgid "block special file"
-#~ msgstr "블록 특수 파일"
-
-#~ msgid "character special file"
-#~ msgstr "문자 특수 파일"
-
-#~ msgid "fifo"
-#~ msgstr "FIFO"
-
-#~ msgid "symbolic link"
-#~ msgstr "심볼릭 링크"
-
-#~ msgid "socket"
-#~ msgstr "소켓"
-
-#~ msgid "message queue"
-#~ msgstr "메세지 큐"
-
-#~ msgid "semaphore"
-#~ msgstr "세마포어"
-
-#~ msgid "shared memory object"
-#~ msgstr "공유 메모리 오브젝트"
-
-#, fuzzy
-#~ msgid "typed memory object"
-#~ msgstr "공유 메모리 오브젝트"
-
-#~ msgid "weird file"
-#~ msgstr "괴상한 파일"
-
-#, fuzzy
-#~ msgid "Address family for hostname not supported"
-#~ msgstr "fifo파일은 지원하지 않습니다"
-
-#, fuzzy
-#~ msgid "ai_family not supported"
-#~ msgstr "fifo파일은 지원하지 않습니다"
-
-#, fuzzy
-#~ msgid "ai_socktype not supported"
-#~ msgstr "fifo파일은 지원하지 않습니다"
-
-#, c-format
-#~ msgid "%s: option `--%s' doesn't allow an argument\n"
-#~ msgstr "%s: `--%s' 옵션은 인수를 허용하지 않습니다\n"
-
-#, c-format
-#~ msgid "%s: unrecognized option `--%s'\n"
-#~ msgstr "%s: 인식할 수 없는 옵션 `--%s'\n"
-
-#, c-format
-#~ msgid "%s: illegal option -- %c\n"
-#~ msgstr "%s: 잘못된 옵션 -- %c\n"
-
-#, c-format
-#~ msgid "%s: option `-W %s' is ambiguous\n"
-#~ msgstr "%s: `-W %s'은(는) 모호한 옵션입니다\n"
-
-#, c-format
-#~ msgid "%s: option `-W %s' doesn't allow an argument\n"
-#~ msgstr "%s: `-W %s' 옵션은 인수를 허용하지 않습니다\n"
-
-#~ msgid "block size"
-#~ msgstr "블록 크기"
-
-#, c-format
-#~ msgid "%s exists but is not a directory"
-#~ msgstr "%s이(가) 존재하지만 디렉토리가 아닙니다"
-
-#, c-format
-#~ msgid "cannot change owner and/or group of %s"
-#~ msgstr "%s의 소유자 그리고/혹은 그룹을 바꿀 수 없습니다"
-
-#, c-format
-#~ msgid "cannot create directory %s"
-#~ msgstr "%s 디렉토리를 만들 수 없습니다"
-
-#, c-format
-#~ msgid "cannot change permissions of %s"
-#~ msgstr "%s의 허가를 바꿀 수 없습니다"
-
-#~ msgid "memory exhausted"
-#~ msgstr "메모리가 바닥남"
-
-#, fuzzy
-#~ msgid "Failed to open /dev/zero for read"
-#~ msgstr "%s의 허가를 바꿀 수 없습니다"
-
-#, fuzzy
-#~ msgid "cannot create pipe"
-#~ msgstr "%s 디렉토리를 만들 수 없습니다"
-
-#~ msgid "`"
-#~ msgstr "`"
-
-#~ msgid "'"
-#~ msgstr "'"
-
-#~ msgid "^[yY]"
-#~ msgstr "^[yY]"
-
-#~ msgid "^[nN]"
-#~ msgstr "^[nN]"
-
-#~ msgid "iconv function not usable"
-#~ msgstr "iconv 함수를 사용할 수 없습니다"
-
-# not usable과 not available의 차이는?
-#~ msgid "iconv function not available"
-#~ msgstr "iconv 함수를 사용할 수 없습니다"
-
-#, c-format
-#~ msgid "cannot convert U+%04X to local character set"
-#~ msgstr "U+%04X을(를) 로칼 문자셋으로 변환할 수 없습니다"
-
-#, c-format
-#~ msgid "cannot convert U+%04X to local character set: %s"
-#~ msgstr "U+%04X을(를) 로칼 문자셋으로 변환할 수 없습니다: %s"
-
-#~ msgid "invalid group"
-#~ msgstr "잘못된 그룹"
-
-#~ msgid "cannot get the login group of a numeric UID"
-#~ msgstr "UID의 로그인 그룹을 알아 낼 수 없습니다"
-
-#, fuzzy
-#~ msgid ""
-#~ "\n"
-#~ "This is free software.  You may redistribute copies of it under the terms "
-#~ "of\n"
-#~ "the GNU General Public License <http://www.gnu.org/licenses/gpl.html>.\n"
-#~ "There is NO WARRANTY, to the extent permitted by law.\n"
-#~ "\n"
-#~ msgstr ""
-#~ "이 프로그램은 자유 소프트웨어입니다. 소프트웨어의 피양도자는 자유 \n"
-#~ "소프트웨어 재단이 공표한 GNU General Public License 2판 (또는 그 이후 \n"
-#~ "판을 임의로 선택해서), 그 규정에 따라 프로그램을 개작하거나 재배포할 \n"
-#~ "수 있습니다.\n"
-#~ "\n"
-
-#, c-format
-#~ msgid "Written by %s.\n"
-#~ msgstr "%s이(가) 만들었습니다.\n"
-
-#, fuzzy, c-format
-#~ msgid "Written by %s and %s.\n"
-#~ msgstr "%s이(가) 만들었습니다.\n"
-
-#, fuzzy, c-format
-#~ msgid "Written by %s, %s, and %s.\n"
-#~ msgstr "%s이(가) 만들었습니다.\n"
-
-#, fuzzy, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "and %s.\n"
-#~ msgstr "%s이(가) 만들었습니다.\n"
-
-#, fuzzy, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, and %s.\n"
-#~ msgstr "%s이(가) 만들었습니다.\n"
-
-#~ msgid "string comparison failed"
-#~ msgstr "문자열 비교가 실패했습니다"
-
-#~ msgid "Set LC_ALL='C' to work around the problem."
-#~ msgstr "이 문제를 피해 가려면 LC_ALL='C'하십시오."
-
-#, c-format
-#~ msgid "The strings compared were %s and %s."
-#~ msgstr "비교한 문자열은 %s과(와) %s입니다."

@@ -5,13 +5,13 @@
 # Jakub Bogusz <qboosh@pld-linux.org>, 2007-2019.
 # based on translation for GNU Mailutils by:
 # Sergey Poznyakoff <gray@gnu.org>, 2003,2004,2005.
-# corrections: Wojciech Polak <polak@gnu.org>, 2003 
+# corrections: Wojciech Polak <polak@gnu.org>, 2003
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnulib 4.0.0.2567\n"
 "Report-Msgid-Bugs-To: bug-gnulib@gnu.org\n"
-"POT-Creation-Date: 2025-02-09 06:33-0500\n"
+"POT-Creation-Date: 2025-02-12 00:55-0500\n"
 "PO-Revision-Date: 2019-05-19 20:02+0200\n"
 "Last-Translator: Jakub Bogusz <qboosh@pld-linux.org>\n"
 "Language-Team: Polish <translation-team-pl@lists.sourceforge.net>\n"
@@ -138,8 +138,8 @@ msgstr "Brak poprzedniego wyrażenia regularnego"
 msgid "dup2 error"
 msgstr "Błąd szyny"
 
-#: src/buffer.c:136 src/io.c:96 src/io.c:167 src/io.c:645 src/io.c:696
-#: src/main.c:783 src/register.c:395
+#: src/buffer.c:136 src/io.c:96 src/io.c:167 src/io.c:650 src/io.c:701
+#: src/main.c:788 src/register.c:395
 #, fuzzy
 #| msgid "write error"
 msgid "File open error"
@@ -214,13 +214,13 @@ msgstr ""
 msgid "Decryption failed (incomplete block)"
 msgstr ""
 
-#: src/cbc.c:384 src/io.c:565 src/io.c:837
+#: src/cbc.c:384 src/io.c:570 src/io.c:842
 #, fuzzy
 #| msgid "write error"
 msgid "File read error"
 msgstr "błąd zapisu"
 
-#: src/cmds.c:43 src/io.c:487 src/main.c:368 src/register.c:302
+#: src/cmds.c:43 src/io.c:492 src/main.c:368 src/register.c:302
 msgid "End-of-file unexpected"
 msgstr ""
 
@@ -242,7 +242,7 @@ msgstr "błąd programu"
 msgid "Child process error"
 msgstr "błąd we/wy podprocesu %s"
 
-#: src/cmds.c:347 src/filter.c:40 src/io.c:176 src/io.c:707
+#: src/cmds.c:347 src/filter.c:40 src/io.c:176 src/io.c:712
 #, c-format
 msgid "Exit status: %#x"
 msgstr ""
@@ -356,7 +356,7 @@ msgstr "błąd zapisu"
 msgid "No previous command"
 msgstr ""
 
-#: src/io.c:57 src/io.c:614 src/main.c:232 src/main.c:732 src/main.c:795
+#: src/io.c:57 src/io.c:619 src/main.c:232 src/main.c:737 src/main.c:804
 #: src/register.c:36 src/register.c:83 src/register.c:142 src/register.c:152
 #: src/register.c:211 src/register.c:220 src/register.c:247 src/register.c:286
 #: src/register.c:353 src/register.c:413 src/register.c:453 src/register.c:492
@@ -369,12 +369,12 @@ msgstr "błąd zapisu"
 msgid "File does not exist"
 msgstr ""
 
-#: src/io.c:119 src/io.c:659
+#: src/io.c:119 src/io.c:664
 #, c-format
 msgid "%s: File already locked\n"
 msgstr ""
 
-#: src/io.c:143 src/io.c:636 src/io.c:674
+#: src/io.c:143 src/io.c:641 src/io.c:679
 msgid "File close error"
 msgstr ""
 
@@ -388,37 +388,37 @@ msgstr ""
 msgid "Newline appended\n"
 msgstr ""
 
-#: src/io.c:551 src/io.c:790
+#: src/io.c:556 src/io.c:795
 msgid "Broken pipe"
 msgstr "Przerwany potok"
 
-#: src/io.c:621 src/register.c:254
+#: src/io.c:626 src/register.c:254
 #, fuzzy
 #| msgid "write error"
 msgid "File truncate error"
 msgstr "błąd zapisu"
 
-#: src/io.c:743
+#: src/io.c:748
 msgid "File too big"
 msgstr ""
 
-#: src/io.c:796 src/io.c:816 src/io.c:827 src/main.c:743 src/main.c:751
+#: src/io.c:801 src/io.c:821 src/io.c:832 src/main.c:748 src/main.c:756
 #, fuzzy
 #| msgid "write error"
 msgid "File write error"
 msgstr "błąd zapisu"
 
-#: src/io.c:860 src/parse.c:502
+#: src/io.c:865 src/parse.c:502
 #, fuzzy
 #| msgid "Bus error"
 msgid "File status error"
 msgstr "Błąd szyny"
 
-#: src/io.c:867
+#: src/io.c:872
 msgid "Access restricted to regular files"
 msgstr ""
 
-#: src/io.c:936
+#: src/io.c:941
 #, fuzzy
 #| msgid "write error"
 msgid "File stat error"
@@ -444,34 +444,34 @@ msgstr ""
 msgid "Argument list full"
 msgstr "Bufor argumentu zbyt mały"
 
-#: src/main.c:816
+#: src/main.c:825
 #, c-format
 msgid ""
 "Usage: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE...]\n"
 msgstr ""
 
-#: src/main.c:818
+#: src/main.c:827
 #, c-format
 msgid ""
 "Usage: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE]\n"
 msgstr ""
 
-#: src/main.c:821
+#: src/main.c:830
 #, c-format
 msgid "Usage: %s [-] [-EGhRrsVvwx] [-p PROMPT] [FILE]\n"
 msgstr ""
 
-#: src/main.c:831
+#: src/main.c:840
 #, c-format
 msgid "Usage: %s [OPTION...] [FILE...]\n"
 msgstr ""
 
-#: src/main.c:834
+#: src/main.c:843
 #, c-format
 msgid "Usage: %s [OPTION...] [FILE]\n"
 msgstr ""
 
-#: src/main.c:840
+#: src/main.c:849
 #, c-format
 msgid ""
 "Options:\n"
@@ -498,7 +498,7 @@ msgid ""
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
 
-#: src/main.c:862
+#: src/main.c:871
 #, c-format
 msgid ""
 "Options:\n"
@@ -521,7 +521,7 @@ msgid ""
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
 
-#: src/main.c:893
+#: src/main.c:902
 msgid "script, line %"
 msgstr ""
 
@@ -634,763 +634,3 @@ msgstr ""
 #: src/undo.c:51
 msgid "Nothing to undo"
 msgstr ""
-
-#, fuzzy
-#~| msgid "Bus error"
-#~ msgid "fdopen error"
-#~ msgstr "Błąd szyny"
-
-#, c-format
-#~ msgid "invalid argument %s for %s"
-#~ msgstr "błędny argument %s opcji %s"
-
-#, c-format
-#~ msgid "ambiguous argument %s for %s"
-#~ msgstr "niejednoznaczny argument %s opcji %s"
-
-#~ msgid "Valid arguments are:"
-#~ msgstr "Prawidłowe argumenty to:"
-
-#, c-format
-#~ msgid "ARGP_HELP_FMT: %s value is less than or equal to %s"
-#~ msgstr "ARGP_HELP_FMT: wartość %s jest mniejsza lub równa %s"
-
-#, c-format
-#~ msgid "%.*s: ARGP_HELP_FMT parameter requires a value"
-#~ msgstr "%.*s: Parametr ARGP_HELP_FMT wymaga podania wartości"
-
-#, c-format
-#~ msgid "%.*s: Unknown ARGP_HELP_FMT parameter"
-#~ msgstr "%.*s: Nieznany parametr ARGP_HELP_FMT"
-
-#, c-format
-#~ msgid "Garbage in ARGP_HELP_FMT: %s"
-#~ msgstr "Błędne dane w ARGP_HELP_FMT: %s"
-
-#~ msgid ""
-#~ "Mandatory or optional arguments to long options are also mandatory or "
-#~ "optional for any corresponding short options."
-#~ msgstr ""
-#~ "Argumenty obowiązkowe lub opcjonalne dla długich opcji są również "
-#~ "obowiązkowe lub opcjonalne dla odpowiednich krótkich opcji."
-
-#~ msgid "Usage:"
-#~ msgstr "Składnia:"
-
-#~ msgid "  or: "
-#~ msgstr "    lub: "
-
-#~ msgid " [OPTION...]"
-#~ msgstr " [OPCJA...]"
-
-#, c-format
-#~ msgid "Try '%s --help' or '%s --usage' for more information.\n"
-#~ msgstr ""
-#~ "Polecenie '%s --help' lub '%s --usage' pozwoli uzyskać więcej "
-#~ "informacji.\n"
-
-#, c-format
-#~ msgid "Report bugs to %s.\n"
-#~ msgstr "Prosimy zgłaszać błędy na adres %s.\n"
-
-#~ msgid "Unknown system error"
-#~ msgstr "Nieznany błąd systemowy"
-
-#~ msgid "give this help list"
-#~ msgstr "wyświetlenie tego tekstu pomocy"
-
-#~ msgid "give a short usage message"
-#~ msgstr "wyświetlenie krótkiej informacji o składni polecenia"
-
-#~ msgid "NAME"
-#~ msgstr "NAZWA"
-
-#~ msgid "set the program name"
-#~ msgstr "określenie nazwy programu"
-
-#~ msgid "SECS"
-#~ msgstr "SEK"
-
-#~ msgid "hang for SECS seconds (default 3600)"
-#~ msgstr "zatrzymanie na SEK sekund (domyślnie 3600)"
-
-#~ msgid "print program version"
-#~ msgstr "wyświetlenie wersji programu"
-
-#~ msgid "(PROGRAM ERROR) No version known!?"
-#~ msgstr "(BŁĄD PROGRAMU) Nieznana wersja!?"
-
-#~ msgid "(PROGRAM ERROR) Option should have been recognized!?"
-#~ msgstr "(BŁĄD PROGRAMU) Opcja powinna zostać rozpoznana!?"
-
-#, c-format
-#~ msgid "%u bitset_allocs, %u freed (%.2f%%).\n"
-#~ msgstr "%u bitset_allocs, %u zwolniono (%.2f%%).\n"
-
-#, c-format
-#~ msgid "%u bitset_sets, %u cached (%.2f%%)\n"
-#~ msgstr "%u bitset_sets, %u w pamięci podręcznej (%.2f%%)\n"
-
-#, c-format
-#~ msgid "%u bitset_resets, %u cached (%.2f%%)\n"
-#~ msgstr "%u bitset_resets, %u w pamięci podręcznej (%.2f%%)\n"
-
-#, c-format
-#~ msgid "%u bitset_tests, %u cached (%.2f%%)\n"
-#~ msgstr "%u bitset_tests, %u w pamięci podręcznej (%.2f%%)\n"
-
-#, c-format
-#~ msgid "%u bitset_lists\n"
-#~ msgstr "%u bitset_lists\n"
-
-#~ msgid "count log histogram\n"
-#~ msgstr "histogram liczników\n"
-
-#~ msgid "size log histogram\n"
-#~ msgstr "histogram rozmiarów\n"
-
-#~ msgid "density histogram\n"
-#~ msgstr "histogram gęstości\n"
-
-#, c-format
-#~ msgid ""
-#~ "Bitset statistics:\n"
-#~ "\n"
-#~ msgstr ""
-#~ "Statystyki operacji bitset:\n"
-#~ "\n"
-
-#, c-format
-#~ msgid "Accumulated runs = %u\n"
-#~ msgstr "Uruchomień łącznie = %u\n"
-
-#~ msgid "cannot read stats file"
-#~ msgstr "nie można odczytać pliku statystyk"
-
-#, c-format
-#~ msgid "bad stats file size\n"
-#~ msgstr "błędny rozmiar pliku statystyk\n"
-
-#~ msgid "cannot write stats file"
-#~ msgstr "nie można zapisać pliku statystyk"
-
-#~ msgid "cannot open stats file for writing"
-#~ msgstr "nie można otworzyć pliku statystyk do zapisu"
-
-#~ msgid "stack overflow"
-#~ msgstr "przepełnienie stosu"
-
-#~ msgid "cannot find a temporary directory, try setting $TMPDIR"
-#~ msgstr ""
-#~ "nie można odnaleźć katalogu tymczasowego, można spróbować ustawić $TMPDIR"
-
-#, c-format
-#~ msgid "cannot create a temporary directory using template \"%s\""
-#~ msgstr "nie można utworzyć katalogu typczasowego z użyciem szablonu \"%s\""
-
-#, c-format
-#~ msgid "cannot remove temporary file %s"
-#~ msgstr "nie można usunąć pliku tymczasowego %s"
-
-#, c-format
-#~ msgid "cannot remove temporary directory %s"
-#~ msgstr "nie można usunąć katalogu tymczasowego %s"
-
-#~ msgid "error closing file"
-#~ msgstr "błąd podczas zamykania pliku"
-
-#, c-format
-#~ msgid "preserving permissions for %s"
-#~ msgstr "zachowywanie uprawnień do %s"
-
-#, c-format
-#~ msgid "error while opening %s for reading"
-#~ msgstr "błąd podczas otwierania %s do odczytu"
-
-#, c-format
-#~ msgid "cannot open backup file %s for writing"
-#~ msgstr "nie można otworzyć pliku zapasowego %s do zapisu"
-
-#, c-format
-#~ msgid "error reading %s"
-#~ msgstr "błąd odczytu %s"
-
-#, c-format
-#~ msgid "error writing %s"
-#~ msgstr "błąd zapisu %s"
-
-#, c-format
-#~ msgid "error after reading %s"
-#~ msgstr "błąd po odczycie %s"
-
-#~ msgid "fdopen() failed"
-#~ msgstr "fdopen() nie powiodło się"
-
-#~ msgid "C# compiler not found, try installing mono"
-#~ msgstr "Nie znaleziono kompilatora C#, proszę spróbować zainstalować mono"
-
-#~ msgid "C# virtual machine not found, try installing mono"
-#~ msgstr ""
-#~ "Nie znaleziono maszyny wirtualnej C#, proszę spróbować zainstalować mono"
-
-#~ msgid "unbalanced ["
-#~ msgstr "niesparowany ["
-
-#~ msgid "invalid character class"
-#~ msgstr "błędna klasa znaków"
-
-#~ msgid "character class syntax is [[:space:]], not [:space:]"
-#~ msgstr "składnia klasy znaków to [[:space:]], nie [:space:]"
-
-#~ msgid "unfinished \\ escape"
-#~ msgstr "niedokończona sekwencja \\"
-
-#~ msgid "invalid content of \\{\\}"
-#~ msgstr "błędna zawartość \\{\\}"
-
-#~ msgid "regular expression too big"
-#~ msgstr "wyrażenie regularne zbyt duże"
-
-#~ msgid "unbalanced ("
-#~ msgstr "niesparowany ("
-
-#~ msgid "no syntax specified"
-#~ msgstr "nie określono składni"
-
-#~ msgid "unbalanced )"
-#~ msgstr "niesparowany )"
-
-#, c-format
-#~ msgid "%s subprocess failed"
-#~ msgstr "podproces %s zawiódł"
-
-#~ msgid "regular empty file"
-#~ msgstr "pusty zwykły plik"
-
-#~ msgid "regular file"
-#~ msgstr "zwykły plik"
-
-#~ msgid "directory"
-#~ msgstr "katalog"
-
-#~ msgid "symbolic link"
-#~ msgstr "dowiązanie symboliczne"
-
-#~ msgid "message queue"
-#~ msgstr "kolejka komunikatów"
-
-#~ msgid "semaphore"
-#~ msgstr "semafor"
-
-#~ msgid "shared memory object"
-#~ msgstr "obiekt w pamięci współdzielonej"
-
-#~ msgid "typed memory object"
-#~ msgstr "obiekt z typem w pamięci"
-
-#~ msgid "block special file"
-#~ msgstr "blokowy plik specjalny"
-
-#~ msgid "character special file"
-#~ msgstr "znakowy plik specjalny"
-
-#~ msgid "contiguous data"
-#~ msgstr "dane ciągłe"
-
-#~ msgid "fifo"
-#~ msgstr "potok"
-
-#~ msgid "door"
-#~ msgstr "plik door"
-
-#~ msgid "multiplexed block special file"
-#~ msgstr "multipleksowany blokowy plik specjalny"
-
-#~ msgid "multiplexed character special file"
-#~ msgstr "multipleksowany znakowy plik specjalny"
-
-#~ msgid "multiplexed file"
-#~ msgstr "plik multipleksowany"
-
-#~ msgid "network special file"
-#~ msgstr "sieciowy plik specjalny"
-
-#~ msgid "migrated file with data"
-#~ msgstr "zmigrowany plik z danymi"
-
-#~ msgid "migrated file without data"
-#~ msgstr "zmigrowany plik bez danych"
-
-#~ msgid "port"
-#~ msgstr "port"
-
-#~ msgid "socket"
-#~ msgstr "gniazdo"
-
-#~ msgid "whiteout"
-#~ msgstr "plik whiteout"
-
-#~ msgid "weird file"
-#~ msgstr "dziwny plik"
-
-#~ msgid "Address family for hostname not supported"
-#~ msgstr "Rodzina adresów dla podanej nazwy hosta nie jest obsługiwana"
-
-#~ msgid "Temporary failure in name resolution"
-#~ msgstr "Tymczasowy błąd rozwiązywania nazw"
-
-#~ msgid "Bad value for ai_flags"
-#~ msgstr "Błędna wartość ai_flags"
-
-#~ msgid "Non-recoverable failure in name resolution"
-#~ msgstr "Nienaprawialny błąd w rozwiązywaniu nazw"
-
-#~ msgid "ai_family not supported"
-#~ msgstr "ai_family zawiera nie obsługiwaną rodzinę protokołów"
-
-#~ msgid "Memory allocation failure"
-#~ msgstr "Błąd przydzielania pamięci"
-
-#~ msgid "No address associated with hostname"
-#~ msgstr "Brak adresu związanego z nazwą hosta"
-
-#~ msgid "Name or service not known"
-#~ msgstr "Nieznana nazwa lub usługa"
-
-#~ msgid "Servname not supported for ai_socktype"
-#~ msgstr "Usługa nie obsługiwana dla danego ai_socktype"
-
-#~ msgid "ai_socktype not supported"
-#~ msgstr "ai_socktype zawiera nie obsługiwany typ gniazda"
-
-#~ msgid "System error"
-#~ msgstr "Błąd systemowy"
-
-#~ msgid "Processing request in progress"
-#~ msgstr "Przetwarzanie żądania jest w toku"
-
-#~ msgid "Request canceled"
-#~ msgstr "Żądanie anulowane"
-
-#~ msgid "Request not canceled"
-#~ msgstr "Żądanie nie anulowane"
-
-#~ msgid "All requests done"
-#~ msgstr "Wszystkie żądania wykonane"
-
-#~ msgid "Interrupted by a signal"
-#~ msgstr "Przerwane przez sygnał"
-
-#~ msgid "Parameter string not correctly encoded"
-#~ msgstr "Łańcuch parametru niepoprawnie zakodowany"
-
-#~ msgid "invalid source_version argument to compile_java_class"
-#~ msgstr "błędny argument source_version dla compile_java_class"
-
-#~ msgid "invalid target_version argument to compile_java_class"
-#~ msgstr "błędny argument target_version dla compile_java_class"
-
-#, c-format
-#~ msgid "failed to create \"%s\""
-#~ msgstr "nie udało się utworzyć \"%s\""
-
-#, c-format
-#~ msgid "error while writing \"%s\" file"
-#~ msgstr "błąd podczas zapisu pliku \"%s\""
-
-#~ msgid "Java compiler not found, try installing gcj or set $JAVAC"
-#~ msgstr ""
-#~ "Nie znaleziono kompilatora Javy, proszę spróbować zainstalować gcj lub "
-#~ "ustawić $JAVAC"
-
-#~ msgid "Java virtual machine not found, try installing gij or set $JAVA"
-#~ msgstr ""
-#~ "Nie znaleziono maszyny wirtualnej Javy, proszę spróbować zainstalować gij "
-#~ "lub ustawić $JAVA"
-
-#, c-format
-#~ msgid "cannot stat %s"
-#~ msgstr "nie można wykonać stat na %s"
-
-#, c-format
-#~ msgid "cannot change permissions of %s"
-#~ msgstr "nie można zmienić uprawnień do %s"
-
-#, c-format
-#~ msgid "cannot create directory %s"
-#~ msgstr "nie można utworzyć katalogu %s"
-
-#~ msgid "memory exhausted"
-#~ msgstr "pamięć wyczerpana"
-
-#~ msgid "unable to record current working directory"
-#~ msgstr "nie udało się zapisać bieżącego katalogu roboczego"
-
-#~ msgid "Failed to open /dev/zero for read"
-#~ msgstr "Nie udało się otworzyć /dev/zero do odczytu"
-
-#~ msgid "creation of reading thread failed"
-#~ msgstr "tworzenie wątku czytającego nie powiodło sie"
-
-#, c-format
-#~ msgid "cannot set up nonblocking I/O to %s subprocess"
-#~ msgstr "nie można ustawić nieblokującego we/wy dla podprocesu %s"
-
-#, c-format
-#~ msgid "communication with %s subprocess failed"
-#~ msgstr "komunikacja z podprocesem %s nie powiodła się"
-
-#, c-format
-#~ msgid "write to %s subprocess failed"
-#~ msgstr "zapis do podprocesu %s nie powiódł się"
-
-#, c-format
-#~ msgid "read from %s subprocess failed"
-#~ msgstr "odczyt z podprocesu %s nie powiódł się"
-
-#, c-format
-#~ msgid "subprocess %s terminated with exit code %d"
-#~ msgstr "podproces %s zakończył się z kodem wyjścia %d"
-
-#~ msgid "creation of threads failed"
-#~ msgstr "tworzenie wątków nie powiodło się"
-
-#, c-format
-#~ msgid "%s subprocess terminated with exit code %d"
-#~ msgstr "podproces %s zakończył się kodem wyjścia %d"
-
-#~ msgid "`"
-#~ msgstr "`"
-
-#~ msgid "'"
-#~ msgstr "'"
-
-#~ msgid "^[yY]"
-#~ msgstr "^[yYtT]"
-
-#~ msgid "^[nN]"
-#~ msgstr "^[nN]"
-
-#, c-format
-#~ msgid "setting permissions for %s"
-#~ msgstr "ustawianie uprawnień %s"
-
-#~ msgid "Hangup"
-#~ msgstr "Rozłączenie"
-
-#~ msgid "Quit"
-#~ msgstr "Wyjście"
-
-#~ msgid "Illegal instruction"
-#~ msgstr "Niedozwolona instrukcja"
-
-#~ msgid "Trace/breakpoint trap"
-#~ msgstr "Pułapka debuggera/breakpoint"
-
-#~ msgid "Aborted"
-#~ msgstr "Przerwano"
-
-#~ msgid "Floating point exception"
-#~ msgstr "Błąd w obliczeniach zmiennoprzecinkowych"
-
-#~ msgid "Killed"
-#~ msgstr "Unicestwiono"
-
-#~ msgid "Segmentation fault"
-#~ msgstr "Naruszenie ochrony pamięci"
-
-#~ msgid "Alarm clock"
-#~ msgstr "Budzik"
-
-#~ msgid "Terminated"
-#~ msgstr "Zakończono"
-
-#~ msgid "Urgent I/O condition"
-#~ msgstr "Nagły stan we/wy"
-
-#~ msgid "Stopped (signal)"
-#~ msgstr "Zatrzymano (sygnał)"
-
-#~ msgid "Stopped"
-#~ msgstr "Zatrzymano"
-
-#~ msgid "Continued"
-#~ msgstr "Kontynuacja"
-
-#~ msgid "Child exited"
-#~ msgstr "Zakończenie procesu potomnego"
-
-#~ msgid "Stopped (tty input)"
-#~ msgstr "Zatrzymano (wejście z tty)"
-
-#~ msgid "Stopped (tty output)"
-#~ msgstr "Zatrzymano (wyjście na tty)"
-
-#~ msgid "I/O possible"
-#~ msgstr "Możliwa operacja we/wy"
-
-#~ msgid "CPU time limit exceeded"
-#~ msgstr "Przekroczony limit czasu procesora"
-
-#~ msgid "File size limit exceeded"
-#~ msgstr "Przekroczony limit rozmiaru pliku"
-
-#~ msgid "Virtual timer expired"
-#~ msgstr "Upłynął czas stopera wirtualnego"
-
-#~ msgid "Profiling timer expired"
-#~ msgstr "Upłynął czas stopera profilującego"
-
-#~ msgid "Window changed"
-#~ msgstr "Okno zmienione"
-
-#~ msgid "User defined signal 1"
-#~ msgstr "Sygnał użytkownika 1"
-
-#~ msgid "User defined signal 2"
-#~ msgstr "Sygnał użytkownika 2"
-
-#~ msgid "EMT trap"
-#~ msgstr "Pułapka EMT"
-
-#~ msgid "Bad system call"
-#~ msgstr "Błędne wywołanie systemowe"
-
-#~ msgid "Stack fault"
-#~ msgstr "Błąd stosu"
-
-#~ msgid "Information request"
-#~ msgstr "Żądanie informacji"
-
-#~ msgid "Power failure"
-#~ msgstr "Awaria zasilania"
-
-#~ msgid "Resource lost"
-#~ msgstr "Utrata zasobów"
-
-#~ msgid "error writing to a closed pipe or socket"
-#~ msgstr "błąd zapisu do zamkniętego potoku lub gniazda"
-
-#~ msgid "cannot create pipe"
-#~ msgstr "nie można utworzyć potoku"
-
-#, c-format
-#~ msgid "Real-time signal %d"
-#~ msgstr "Sygnał czasu rzeczywistego %d"
-
-#, c-format
-#~ msgid "Unknown signal %d"
-#~ msgstr "Nieznany sygnał %d"
-
-#~ msgid "Execution times (seconds)"
-#~ msgstr "Czasy wykonywania (w sekundach)"
-
-#~ msgid "CPU user"
-#~ msgstr "CPU użytkownika"
-
-#~ msgid "CPU system"
-#~ msgstr "CPU systemu"
-
-#~ msgid "wall clock"
-#~ msgstr "zegarowo"
-
-#~ msgid "iconv function not usable"
-#~ msgstr "nie można użyć funkcji iconv"
-
-#~ msgid "iconv function not available"
-#~ msgstr "funkcja iconv nie jest dostępna"
-
-#, c-format
-#~ msgid "cannot convert U+%04X to local character set"
-#~ msgstr "nie można przekształcić U+%04X do lokalnego zestawu znaków"
-
-#, c-format
-#~ msgid "cannot convert U+%04X to local character set: %s"
-#~ msgstr "nie można przekształcić U+%04X do lokalnego zestawu znaków: %s"
-
-#~ msgid "invalid group"
-#~ msgstr "błędna grupa"
-
-#~ msgid "invalid spec"
-#~ msgstr "błędna specyfikacja"
-
-#~ msgid "unable to display error message"
-#~ msgstr "nie można wyświetlić komunikatu błędu"
-
-#, c-format
-#~ msgid "Packaged by %s (%s)\n"
-#~ msgstr "Pakietujący: %s (%s)\n"
-
-#, c-format
-#~ msgid "Packaged by %s\n"
-#~ msgstr "Pakietujący: %s\n"
-
-#~ msgid "(C)"
-#~ msgstr "(C)"
-
-#, c-format
-#~ msgid ""
-#~ "License GPLv3+: GNU GPL version 3 or later <%s>.\n"
-#~ "This is free software: you are free to change and redistribute it.\n"
-#~ "There is NO WARRANTY, to the extent permitted by law.\n"
-#~ msgstr ""
-#~ "Licencja GPLv3+: GNU GPL wersja 3 lub późniejsza:\n"
-#~ "<%s>.\n"
-#~ "To jest oprogramowanie wolnodostępne: można je modyfikować i "
-#~ "rozpowszechniać.\n"
-#~ "Nie ma ŻADNEJ GWARANCJI w zakresie dopuszczalnym przez prawo.\n"
-
-#, c-format
-#~ msgid "Written by %s.\n"
-#~ msgstr "Autor: %s.\n"
-
-#, c-format
-#~ msgid "Written by %s and %s.\n"
-#~ msgstr "Autorzy: %s i %s.\n"
-
-#, c-format
-#~ msgid "Written by %s, %s, and %s.\n"
-#~ msgstr "Autorzy: %s, %s i %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "and %s.\n"
-#~ msgstr ""
-#~ "Autorzy: %s, %s, %s\n"
-#~ "i %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, and %s.\n"
-#~ msgstr ""
-#~ "Autorzy: %s, %s, %s,\n"
-#~ "%s i %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, %s, and %s.\n"
-#~ msgstr ""
-#~ "Autorzy: %s, %s, %s,\n"
-#~ "%s, %s i %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, %s, %s, and %s.\n"
-#~ msgstr ""
-#~ "Autorzy: %s, %s, %s,\n"
-#~ "%s, %s, %s i %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, %s, %s, %s,\n"
-#~ "and %s.\n"
-#~ msgstr ""
-#~ "Autorzy: %s, %s, %s,\n"
-#~ "%s, %s, %s, %s\n"
-#~ "i %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, %s, %s, %s,\n"
-#~ "%s, and %s.\n"
-#~ msgstr ""
-#~ "Autorzy: %s, %s, %s,\n"
-#~ "%s, %s, %s, %s,\n"
-#~ "%s i %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, %s, %s, %s,\n"
-#~ "%s, %s, and others.\n"
-#~ msgstr ""
-#~ "Autorzy: %s, %s, %s,\n"
-#~ "%s, %s, %s, %s,\n"
-#~ "%s, %s i inni.\n"
-
-#, c-format
-#~ msgid "Report bugs to: %s\n"
-#~ msgstr ""
-#~ "Prosimy zgłaszać błędy na adres <%s>.\n"
-#~ "Błędy w tłumaczeniu prosimy zgłaszać na adres <translation-team-pl@lists."
-#~ "sourceforge.net>.\n"
-
-#, c-format
-#~ msgid "Report %s bugs to: %s\n"
-#~ msgstr "Błędy pakietującego (%s) prosimy zgłaszać na adres <%s>.\n"
-
-#, c-format
-#~ msgid "%s home page: <%s>\n"
-#~ msgstr "Strona domowa pakietu %s: <%s>\n"
-
-#, c-format
-#~ msgid "General help using GNU software: <%s>\n"
-#~ msgstr "Ogólna pomoc przy używaniu oprogramowania GNU: <%s>.\n"
-
-#~ msgid "_open_osfhandle failed"
-#~ msgstr "_open_osfhandle nie powiodło się"
-
-#, c-format
-#~ msgid "cannot restore fd %d: dup2 failed"
-#~ msgstr "nie można odtworzyć fd %d: dup2 nie powiodło się"
-
-#, c-format
-#~ msgid "%s subprocess"
-#~ msgstr "podproces %s"
-
-#, c-format
-#~ msgid "%s subprocess got fatal signal %d"
-#~ msgstr "podproces %s dostał krytyczny sygnał %d"
-
-#~ msgid "failed to set file descriptor text/binary mode"
-#~ msgstr "nie udało się ustawić deskryptora pliku w tryb tekstowy/binarny"
-
-#~ msgid "stdin"
-#~ msgstr "standardowego wejścia"
-
-#~ msgid "stdout"
-#~ msgstr "standardowego wyjścia"
-
-#~ msgid "stderr"
-#~ msgstr "standardowego wyjścia diagnostycznego"
-
-#~ msgid "unknown stream"
-#~ msgstr "nieznanego strumienia"
-
-#, c-format
-#~ msgid "failed to reopen %s with mode %s"
-#~ msgstr "nie udało się ponownie otworzyć %s w trybie %s"
-
-#~ msgid "string comparison failed"
-#~ msgstr "nie udało się porównanie łańcuchów znaków"
-
-#~ msgid "Set LC_ALL='C' to work around the problem."
-#~ msgstr "Ustaw LC_ALL='C' żeby obejść problem"
-
-#, c-format
-#~ msgid "The strings compared were %s and %s."
-#~ msgstr "Porównywane łańcuchy znaków do %s i %s."
-
-#~ msgid "cannot perform formatted output"
-#~ msgstr "nie można sformatować wyjścia"
-
-#~ msgid "standard file descriptors"
-#~ msgstr "standardowe deskryptory plików"
-
-#, c-format
-#~ msgid "invalid %s%s argument '%s'"
-#~ msgstr "błędny argument opcji %s%s '%s'"
-
-#, c-format
-#~ msgid "invalid suffix in %s%s argument '%s'"
-#~ msgstr "błędny przyrostek argumentu opcji %s%s '%s'"
-
-#, c-format
-#~ msgid "%s%s argument '%s' too large"
-#~ msgstr "argument opcji %s%s '%s' zbyt duży"

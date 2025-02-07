@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: coreutils 5.3.0\n"
 "Report-Msgid-Bugs-To: bug-gnulib@gnu.org\n"
-"POT-Creation-Date: 2025-02-09 06:33-0500\n"
+"POT-Creation-Date: 2025-02-12 00:55-0500\n"
 "PO-Revision-Date: 2005-03-14 04:17+0200\n"
 "Last-Translator: Deniz Akkus Kanca <deniz@arayan.com>\n"
 "Language-Team: Turkish <gnu-tr-u12a@lists.sourceforge.net>\n"
@@ -152,8 +152,8 @@ msgstr "düzenli ifade (regular expression) aramasında hata oluştu"
 msgid "dup2 error"
 msgstr "okuma hatası"
 
-#: src/buffer.c:136 src/io.c:96 src/io.c:167 src/io.c:645 src/io.c:696
-#: src/main.c:783 src/register.c:395
+#: src/buffer.c:136 src/io.c:96 src/io.c:167 src/io.c:650 src/io.c:701
+#: src/main.c:788 src/register.c:395
 #, fuzzy
 #| msgid "write error"
 msgid "File open error"
@@ -221,13 +221,13 @@ msgstr ""
 msgid "Decryption failed (incomplete block)"
 msgstr ""
 
-#: src/cbc.c:384 src/io.c:565 src/io.c:837
+#: src/cbc.c:384 src/io.c:570 src/io.c:842
 #, fuzzy
 #| msgid "write error"
 msgid "File read error"
 msgstr "yazma hatası"
 
-#: src/cmds.c:43 src/io.c:487 src/main.c:368 src/register.c:302
+#: src/cmds.c:43 src/io.c:492 src/main.c:368 src/register.c:302
 msgid "End-of-file unexpected"
 msgstr ""
 
@@ -245,7 +245,7 @@ msgstr "okuma hatası"
 msgid "Child process error"
 msgstr ""
 
-#: src/cmds.c:347 src/filter.c:40 src/io.c:176 src/io.c:707
+#: src/cmds.c:347 src/filter.c:40 src/io.c:176 src/io.c:712
 #, c-format
 msgid "Exit status: %#x"
 msgstr ""
@@ -352,7 +352,7 @@ msgstr "yazma hatası"
 msgid "No previous command"
 msgstr ""
 
-#: src/io.c:57 src/io.c:614 src/main.c:232 src/main.c:732 src/main.c:795
+#: src/io.c:57 src/io.c:619 src/main.c:232 src/main.c:737 src/main.c:804
 #: src/register.c:36 src/register.c:83 src/register.c:142 src/register.c:152
 #: src/register.c:211 src/register.c:220 src/register.c:247 src/register.c:286
 #: src/register.c:353 src/register.c:413 src/register.c:453 src/register.c:492
@@ -365,12 +365,12 @@ msgstr "yazma hatası"
 msgid "File does not exist"
 msgstr ""
 
-#: src/io.c:119 src/io.c:659
+#: src/io.c:119 src/io.c:664
 #, c-format
 msgid "%s: File already locked\n"
 msgstr ""
 
-#: src/io.c:143 src/io.c:636 src/io.c:674
+#: src/io.c:143 src/io.c:641 src/io.c:679
 msgid "File close error"
 msgstr ""
 
@@ -384,35 +384,35 @@ msgstr ""
 msgid "Newline appended\n"
 msgstr ""
 
-#: src/io.c:551 src/io.c:790
+#: src/io.c:556 src/io.c:795
 msgid "Broken pipe"
 msgstr ""
 
-#: src/io.c:621 src/register.c:254
+#: src/io.c:626 src/register.c:254
 #, fuzzy
 #| msgid "write error"
 msgid "File truncate error"
 msgstr "yazma hatası"
 
-#: src/io.c:743
+#: src/io.c:748
 msgid "File too big"
 msgstr ""
 
-#: src/io.c:796 src/io.c:816 src/io.c:827 src/main.c:743 src/main.c:751
+#: src/io.c:801 src/io.c:821 src/io.c:832 src/main.c:748 src/main.c:756
 #, fuzzy
 #| msgid "write error"
 msgid "File write error"
 msgstr "yazma hatası"
 
-#: src/io.c:860 src/parse.c:502
+#: src/io.c:865 src/parse.c:502
 msgid "File status error"
 msgstr ""
 
-#: src/io.c:867
+#: src/io.c:872
 msgid "Access restricted to regular files"
 msgstr ""
 
-#: src/io.c:936
+#: src/io.c:941
 #, fuzzy
 #| msgid "write error"
 msgid "File stat error"
@@ -434,34 +434,34 @@ msgstr ""
 msgid "Argument list full"
 msgstr ""
 
-#: src/main.c:816
+#: src/main.c:825
 #, c-format
 msgid ""
 "Usage: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE...]\n"
 msgstr ""
 
-#: src/main.c:818
+#: src/main.c:827
 #, c-format
 msgid ""
 "Usage: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE]\n"
 msgstr ""
 
-#: src/main.c:821
+#: src/main.c:830
 #, c-format
 msgid "Usage: %s [-] [-EGhRrsVvwx] [-p PROMPT] [FILE]\n"
 msgstr ""
 
-#: src/main.c:831
+#: src/main.c:840
 #, c-format
 msgid "Usage: %s [OPTION...] [FILE...]\n"
 msgstr ""
 
-#: src/main.c:834
+#: src/main.c:843
 #, c-format
 msgid "Usage: %s [OPTION...] [FILE]\n"
 msgstr ""
 
-#: src/main.c:840
+#: src/main.c:849
 #, c-format
 msgid ""
 "Options:\n"
@@ -488,7 +488,7 @@ msgid ""
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
 
-#: src/main.c:862
+#: src/main.c:871
 #, c-format
 msgid ""
 "Options:\n"
@@ -511,7 +511,7 @@ msgid ""
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
 
-#: src/main.c:893
+#: src/main.c:902
 msgid "script, line %"
 msgstr ""
 
@@ -615,326 +615,3 @@ msgstr ""
 #: src/undo.c:51
 msgid "Nothing to undo"
 msgstr ""
-
-#, fuzzy
-#~ msgid "fdopen error"
-#~ msgstr "Bilinmeyen sistem hatası"
-
-#, c-format
-#~ msgid "invalid argument %s for %s"
-#~ msgstr "%s argümanı `%s' için geçersiz"
-
-#, c-format
-#~ msgid "ambiguous argument %s for %s"
-#~ msgstr "%s argümanı `%s' için belirsiz"
-
-#, c-format
-#~ msgid "Valid arguments are:"
-#~ msgstr "Geçerli argümanlar:"
-
-#
-#, fuzzy
-#~ msgid ""
-#~ "Mandatory or optional arguments to long options are also mandatory or "
-#~ "optional for any corresponding short options."
-#~ msgstr ""
-#~ "Uzun seçenekler için zorunlu olan argümanlar kısa seçenekler için de "
-#~ "zorunludur.\n"
-
-#, fuzzy
-#~ msgid " [OPTION...]"
-#~ msgstr "Kullanım: %s [SEÇENEK]...\n"
-
-#, fuzzy, c-format
-#~ msgid "Try `%s --help' or `%s --usage' for more information.\n"
-#~ msgstr "Daha fazla bilgi için `%s --help' yazın.\n"
-
-#, fuzzy, c-format
-#~ msgid "Report bugs to %s.\n"
-#~ msgstr ""
-#~ "\n"
-#~ "Yazılım hatalarını <%s> adresine,\n"
-#~ "çeviri hatalarını <gnu-tr@belgeler.org> adresine bildirin.\n"
-
-#~ msgid "Unknown system error"
-#~ msgstr "Bilinmeyen sistem hatası"
-
-#~ msgid "NAME"
-#~ msgstr "İSİM"
-
-#, fuzzy, c-format
-#~ msgid "error while opening \"%s\" for reading"
-#~ msgstr "%s okumak için açılamadı"
-
-#, fuzzy, c-format
-#~ msgid "cannot open backup file \"%s\" for writing"
-#~ msgstr "%s yazmak için açılamadı"
-
-#, fuzzy, c-format
-#~ msgid "error reading \"%s\""
-#~ msgstr "%s'i okunurken hata"
-
-#, fuzzy, c-format
-#~ msgid "error writing \"%s\""
-#~ msgstr "%s'e yazarken hata"
-
-#, fuzzy, c-format
-#~ msgid "error after reading \"%s\""
-#~ msgstr "%s'i okunurken hata"
-
-#, fuzzy
-#~ msgid "fdopen() failed"
-#~ msgstr "açma işlemi başarısız"
-
-#, fuzzy, c-format
-#~ msgid "%s subprocess failed"
-#~ msgstr "%s: arama (seek) başarısız"
-
-#
-#~ msgid "regular empty file"
-#~ msgstr "normal boş dosya"
-
-#
-#~ msgid "regular file"
-#~ msgstr "normal dosya"
-
-#~ msgid "directory"
-#~ msgstr "dizin"
-
-#
-#~ msgid "block special file"
-#~ msgstr "blok özel dosyası"
-
-#
-#~ msgid "character special file"
-#~ msgstr "karakter özel dosyası"
-
-#
-#~ msgid "fifo"
-#~ msgstr "fifo"
-
-#~ msgid "symbolic link"
-#~ msgstr "sembolik bağ"
-
-#~ msgid "socket"
-#~ msgstr "soket"
-
-#~ msgid "message queue"
-#~ msgstr "ileti kuyruğu"
-
-#~ msgid "semaphore"
-#~ msgstr "semafor"
-
-#
-#~ msgid "shared memory object"
-#~ msgstr "paylaşımlı bellek nesnesi"
-
-#
-#~ msgid "typed memory object"
-#~ msgstr "türlenmiş bellek nesnesi"
-
-#
-#~ msgid "weird file"
-#~ msgstr "garip dosya"
-
-#, fuzzy
-#~ msgid "Address family for hostname not supported"
-#~ msgstr "fifo dosyaları desteklenmiyor"
-
-#, fuzzy
-#~ msgid "ai_family not supported"
-#~ msgstr "fifo dosyaları desteklenmiyor"
-
-#, fuzzy
-#~ msgid "ai_socktype not supported"
-#~ msgstr "fifo dosyaları desteklenmiyor"
-
-#, c-format
-#~ msgid "%s: option `--%s' doesn't allow an argument\n"
-#~ msgstr "%s: `--%s' seçeneği argümansız kullanılır\n"
-
-#, c-format
-#~ msgid "%s: unrecognized option `--%s'\n"
-#~ msgstr "%s: `--%s' seçeneği bilinmiyor\n"
-
-#, c-format
-#~ msgid "%s: illegal option -- %c\n"
-#~ msgstr "%s: kuraldışı seçenek -- %c\n"
-
-#, c-format
-#~ msgid "%s: option `-W %s' is ambiguous\n"
-#~ msgstr "%s: `-W %s' seçeneği belirsiz\n"
-
-#, c-format
-#~ msgid "%s: option `-W %s' doesn't allow an argument\n"
-#~ msgstr "%s: `-W %s' seçeneği argümansız kullanılır\n"
-
-#~ msgid "block size"
-#~ msgstr "blok uzunluğu"
-
-#, c-format
-#~ msgid "%s exists but is not a directory"
-#~ msgstr "%s var ama bir dizin değil"
-
-#, c-format
-#~ msgid "cannot change owner and/or group of %s"
-#~ msgstr "%s'in sahibi ve/veya grubu değiştirilemiyor"
-
-#, c-format
-#~ msgid "cannot create directory %s"
-#~ msgstr "%s dizini oluşturulamıyor"
-
-#, c-format
-#~ msgid "cannot change permissions of %s"
-#~ msgstr "%s'in erişim izinleri değiştirilemiyor"
-
-#~ msgid "memory exhausted"
-#~ msgstr "bellek tükendi"
-
-#, fuzzy
-#~ msgid "unable to record current working directory"
-#~ msgstr "openat: çalışılan dizini kaydedemedi"
-
-#, fuzzy
-#~ msgid "Failed to open /dev/zero for read"
-#~ msgstr "%s: yazmak için açılamadı"
-
-#, fuzzy
-#~ msgid "cannot create pipe"
-#~ msgstr "%s bağı oluşturulamadı"
-
-#~ msgid "`"
-#~ msgstr "`"
-
-#~ msgid "'"
-#~ msgstr "'"
-
-#~ msgid "^[yY]"
-#~ msgstr "^[eE]"
-
-#~ msgid "^[nN]"
-#~ msgstr "^[hH]"
-
-#
-#~ msgid "iconv function not usable"
-#~ msgstr "iconv işlevi kullanılabilir değil"
-
-#~ msgid "iconv function not available"
-#~ msgstr "iconv işlevi yok"
-
-#, c-format
-#~ msgid "cannot convert U+%04X to local character set"
-#~ msgstr "U+%04X yerel karakter kümesine dönüştürülemiyor"
-
-#, c-format
-#~ msgid "cannot convert U+%04X to local character set: %s"
-#~ msgstr "U+%04X yerel karakter kümesine dönüştürülemiyor: %s"
-
-#~ msgid "invalid group"
-#~ msgstr "grup geçersiz"
-
-#~ msgid "cannot get the login group of a numeric UID"
-#~ msgstr "bir sayısal kullanıcı-kimliğin grubu alınamıyor"
-
-#, fuzzy
-#~ msgid ""
-#~ "\n"
-#~ "This is free software.  You may redistribute copies of it under the terms "
-#~ "of\n"
-#~ "the GNU General Public License <http://www.gnu.org/licenses/gpl.html>.\n"
-#~ "There is NO WARRANTY, to the extent permitted by law.\n"
-#~ "\n"
-#~ msgstr ""
-#~ "Bu, bir serbest yazılımdır; Free Software Foundation tarafından "
-#~ "yayınlanan\n"
-#~ "GNU Genel Kamu Lisansı, 2. sürüm (veya sizin seçiminize bağlı olarak) "
-#~ "daha üst \n"
-#~ "sürüm koşulları altında değişiklik yapabilir ve/veya yeniden "
-#~ "dağıtabilirsiniz. \n"
-#~ "\n"
-
-#, c-format
-#~ msgid "Written by %s.\n"
-#~ msgstr "%s tarafından yazıldı.\n"
-
-#, c-format
-#~ msgid "Written by %s and %s.\n"
-#~ msgstr "%s ve %s tarafından yazıldı.\n"
-
-#, c-format
-#~ msgid "Written by %s, %s, and %s.\n"
-#~ msgstr "%s, %s ve %s tarafından yazıldı.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "and %s.\n"
-#~ msgstr ""
-#~ "%s, %s, %s \n"
-#~ "ve %s tarafından yazıldı.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, and %s.\n"
-#~ msgstr ""
-#~ "%s, %s, %s, %s \n"
-#~ "ve %s tarafından yazıldı.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, %s, and %s.\n"
-#~ msgstr ""
-#~ "%s, %s, %s, %s, \n"
-#~ "%s ve %s tarafından yazıldı.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, %s, %s, and %s.\n"
-#~ msgstr ""
-#~ "%s, %s, %s, %s, \n"
-#~ "%s, %s ve %s tarafından yazıldı.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, %s, %s, %s,\n"
-#~ "and %s.\n"
-#~ msgstr ""
-#~ "%s, %s, %s, \n"
-#~ "%s, %s, %s, \n"
-#~ "%s ve %s tarafından yazıldı.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, %s, %s, %s,\n"
-#~ "%s, and %s.\n"
-#~ msgstr ""
-#~ "%s, %s, %s, \n"
-#~ "%s, %s, %s, \n"
-#~ "%s, %s ve %s tarafından yazıldı.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, %s, %s, %s,\n"
-#~ "%s, %s, and others.\n"
-#~ msgstr ""
-#~ "%s, %s, %s, \n"
-#~ "%s, %s, %s, \n"
-#~ "%s, %s, %s ve başkaları tarafından yazıldı.\n"
-
-#
-#~ msgid "string comparison failed"
-#~ msgstr "dizge karşılaştırması başarısız"
-
-#
-#~ msgid "Set LC_ALL='C' to work around the problem."
-#~ msgstr "Problemi devre dışı bırakmak için LC_ALL='C' tanımlayın."
-
-#, c-format
-#~ msgid "The strings compared were %s and %s."
-#~ msgstr "Karşılaştırılan dizgeler %s ve %s idi."

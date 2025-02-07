@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: coreutils 5.0.91\n"
 "Report-Msgid-Bugs-To: bug-gnulib@gnu.org\n"
-"POT-Creation-Date: 2025-02-09 06:33-0500\n"
+"POT-Creation-Date: 2025-02-12 00:55-0500\n"
 "PO-Revision-Date: 2003-10-30 01:10+0200\n"
 "Last-Translator: Ales Nyakhaychyk <nab@mail.by>\n"
 "Language-Team: Belarusian <i18n@mova.org>\n"
@@ -150,8 +150,8 @@ msgstr "памылка ў пошуку звычайнага выразу"
 msgid "dup2 error"
 msgstr "памылка чытаньня"
 
-#: src/buffer.c:136 src/io.c:96 src/io.c:167 src/io.c:645 src/io.c:696
-#: src/main.c:783 src/register.c:395
+#: src/buffer.c:136 src/io.c:96 src/io.c:167 src/io.c:650 src/io.c:701
+#: src/main.c:788 src/register.c:395
 #, fuzzy
 #| msgid "write error"
 msgid "File open error"
@@ -219,13 +219,13 @@ msgstr ""
 msgid "Decryption failed (incomplete block)"
 msgstr ""
 
-#: src/cbc.c:384 src/io.c:565 src/io.c:837
+#: src/cbc.c:384 src/io.c:570 src/io.c:842
 #, fuzzy
 #| msgid "write error"
 msgid "File read error"
 msgstr "памылка запісу"
 
-#: src/cmds.c:43 src/io.c:487 src/main.c:368 src/register.c:302
+#: src/cmds.c:43 src/io.c:492 src/main.c:368 src/register.c:302
 msgid "End-of-file unexpected"
 msgstr ""
 
@@ -243,7 +243,7 @@ msgstr "памылка чытаньня"
 msgid "Child process error"
 msgstr ""
 
-#: src/cmds.c:347 src/filter.c:40 src/io.c:176 src/io.c:707
+#: src/cmds.c:347 src/filter.c:40 src/io.c:176 src/io.c:712
 #, c-format
 msgid "Exit status: %#x"
 msgstr ""
@@ -350,7 +350,7 @@ msgstr "памылка запісу"
 msgid "No previous command"
 msgstr ""
 
-#: src/io.c:57 src/io.c:614 src/main.c:232 src/main.c:732 src/main.c:795
+#: src/io.c:57 src/io.c:619 src/main.c:232 src/main.c:737 src/main.c:804
 #: src/register.c:36 src/register.c:83 src/register.c:142 src/register.c:152
 #: src/register.c:211 src/register.c:220 src/register.c:247 src/register.c:286
 #: src/register.c:353 src/register.c:413 src/register.c:453 src/register.c:492
@@ -363,12 +363,12 @@ msgstr "памылка запісу"
 msgid "File does not exist"
 msgstr ""
 
-#: src/io.c:119 src/io.c:659
+#: src/io.c:119 src/io.c:664
 #, c-format
 msgid "%s: File already locked\n"
 msgstr ""
 
-#: src/io.c:143 src/io.c:636 src/io.c:674
+#: src/io.c:143 src/io.c:641 src/io.c:679
 msgid "File close error"
 msgstr ""
 
@@ -382,35 +382,35 @@ msgstr ""
 msgid "Newline appended\n"
 msgstr ""
 
-#: src/io.c:551 src/io.c:790
+#: src/io.c:556 src/io.c:795
 msgid "Broken pipe"
 msgstr ""
 
-#: src/io.c:621 src/register.c:254
+#: src/io.c:626 src/register.c:254
 #, fuzzy
 #| msgid "write error"
 msgid "File truncate error"
 msgstr "памылка запісу"
 
-#: src/io.c:743
+#: src/io.c:748
 msgid "File too big"
 msgstr ""
 
-#: src/io.c:796 src/io.c:816 src/io.c:827 src/main.c:743 src/main.c:751
+#: src/io.c:801 src/io.c:821 src/io.c:832 src/main.c:748 src/main.c:756
 #, fuzzy
 #| msgid "write error"
 msgid "File write error"
 msgstr "памылка запісу"
 
-#: src/io.c:860 src/parse.c:502
+#: src/io.c:865 src/parse.c:502
 msgid "File status error"
 msgstr ""
 
-#: src/io.c:867
+#: src/io.c:872
 msgid "Access restricted to regular files"
 msgstr ""
 
-#: src/io.c:936
+#: src/io.c:941
 #, fuzzy
 #| msgid "write error"
 msgid "File stat error"
@@ -432,34 +432,34 @@ msgstr ""
 msgid "Argument list full"
 msgstr ""
 
-#: src/main.c:816
+#: src/main.c:825
 #, c-format
 msgid ""
 "Usage: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE...]\n"
 msgstr ""
 
-#: src/main.c:818
+#: src/main.c:827
 #, c-format
 msgid ""
 "Usage: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE]\n"
 msgstr ""
 
-#: src/main.c:821
+#: src/main.c:830
 #, c-format
 msgid "Usage: %s [-] [-EGhRrsVvwx] [-p PROMPT] [FILE]\n"
 msgstr ""
 
-#: src/main.c:831
+#: src/main.c:840
 #, c-format
 msgid "Usage: %s [OPTION...] [FILE...]\n"
 msgstr ""
 
-#: src/main.c:834
+#: src/main.c:843
 #, c-format
 msgid "Usage: %s [OPTION...] [FILE]\n"
 msgstr ""
 
-#: src/main.c:840
+#: src/main.c:849
 #, c-format
 msgid ""
 "Options:\n"
@@ -486,7 +486,7 @@ msgid ""
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
 
-#: src/main.c:862
+#: src/main.c:871
 #, c-format
 msgid ""
 "Options:\n"
@@ -509,7 +509,7 @@ msgid ""
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
 
-#: src/main.c:893
+#: src/main.c:902
 msgid "script, line %"
 msgstr ""
 
@@ -613,246 +613,3 @@ msgstr ""
 #: src/undo.c:51
 msgid "Nothing to undo"
 msgstr ""
-
-#, fuzzy
-#~ msgid "fdopen error"
-#~ msgstr "Невядомая сыстэмная памылка"
-
-#, c-format
-#~ msgid "invalid argument %s for %s"
-#~ msgstr "нерэчаісны довад %s для %s"
-
-#, c-format
-#~ msgid "ambiguous argument %s for %s"
-#~ msgstr "неадназначны довад %s для %s"
-
-#, c-format
-#~ msgid "Valid arguments are:"
-#~ msgstr "Рэчаісныя довады:"
-
-#, fuzzy
-#~ msgid ""
-#~ "Mandatory or optional arguments to long options are also mandatory or "
-#~ "optional for any corresponding short options."
-#~ msgstr ""
-#~ "Довады, абавязковыя для доўгіх выбараў, абавязковыя й для кароткіх.\n"
-
-#, fuzzy
-#~ msgid " [OPTION...]"
-#~ msgstr "Выкарыстаньне: %s [ВЫБАР]...\n"
-
-#, fuzzy, c-format
-#~ msgid "Try `%s --help' or `%s --usage' for more information.\n"
-#~ msgstr "Паспрабуйце \"%s --help\" для больш падрабязных зьвестак.\n"
-
-#, fuzzy, c-format
-#~ msgid "Report bugs to %s.\n"
-#~ msgstr ""
-#~ "\n"
-#~ "Паведамляйце пра памылкі на <%s>.\n"
-
-#~ msgid "Unknown system error"
-#~ msgstr "Невядомая сыстэмная памылка"
-
-#~ msgid "NAME"
-#~ msgstr "НАЗВА"
-
-#, fuzzy, c-format
-#~ msgid "error while opening \"%s\" for reading"
-#~ msgstr "немагыма адчыніць %s для чытаньня"
-
-#, fuzzy, c-format
-#~ msgid "cannot open backup file \"%s\" for writing"
-#~ msgstr "немагыма адчыніць %s для чытаньня"
-
-#, fuzzy, c-format
-#~ msgid "error reading \"%s\""
-#~ msgstr "памылка чытаньня %s"
-
-#, fuzzy, c-format
-#~ msgid "error writing \"%s\""
-#~ msgstr "памылка запісу %s"
-
-#, fuzzy, c-format
-#~ msgid "error after reading \"%s\""
-#~ msgstr "памылка чытаньня %s"
-
-#, fuzzy
-#~ msgid "fdopen() failed"
-#~ msgstr "памылка адкрыцьця"
-
-#, fuzzy, c-format
-#~ msgid "%s subprocess failed"
-#~ msgstr "%s: збой seek"
-
-#~ msgid "regular empty file"
-#~ msgstr "звычайны парожні файл"
-
-#~ msgid "regular file"
-#~ msgstr "звычайны файл"
-
-#~ msgid "directory"
-#~ msgstr "тэчка"
-
-#~ msgid "block special file"
-#~ msgstr "асаблівы кавалкавы файл"
-
-#~ msgid "character special file"
-#~ msgstr "асаблівы знакавы файл"
-
-#~ msgid "fifo"
-#~ msgstr "fifo"
-
-#~ msgid "symbolic link"
-#~ msgstr "знакавае лучыва"
-
-#~ msgid "socket"
-#~ msgstr "socket"
-
-#~ msgid "message queue"
-#~ msgstr "чарга паведамленьняў"
-
-#~ msgid "semaphore"
-#~ msgstr "сэмафор"
-
-#~ msgid "shared memory object"
-#~ msgstr "абьект з агульнай памяцьцю"
-
-#, fuzzy
-#~ msgid "typed memory object"
-#~ msgstr "абьект з агульнай памяцьцю"
-
-#~ msgid "weird file"
-#~ msgstr "лёсавы файл"
-
-#, fuzzy
-#~ msgid "Address family for hostname not supported"
-#~ msgstr "fifo файлы непадтрымліваюцца"
-
-#, fuzzy
-#~ msgid "ai_family not supported"
-#~ msgstr "fifo файлы непадтрымліваюцца"
-
-#, fuzzy
-#~ msgid "ai_socktype not supported"
-#~ msgstr "fifo файлы непадтрымліваюцца"
-
-#, c-format
-#~ msgid "%s: option `--%s' doesn't allow an argument\n"
-#~ msgstr "%s: выбар `--%s' не дазваляе довад\n"
-
-#, c-format
-#~ msgid "%s: unrecognized option `--%s'\n"
-#~ msgstr "%s: нераспазнаны выбар `--%s'\n"
-
-#, c-format
-#~ msgid "%s: illegal option -- %c\n"
-#~ msgstr "%s: недапушчальны выраб -- %c\n"
-
-#, c-format
-#~ msgid "%s: option `-W %s' is ambiguous\n"
-#~ msgstr "%s: выбар `-W %s' неадназначыны\n"
-
-#, c-format
-#~ msgid "%s: option `-W %s' doesn't allow an argument\n"
-#~ msgstr "%s: выбар `-W %s' не дазваляе довад\n"
-
-#~ msgid "block size"
-#~ msgstr "памер кавалку"
-
-#, c-format
-#~ msgid "%s exists but is not a directory"
-#~ msgstr "%s існуе, але гэта ня тэчка"
-
-#, c-format
-#~ msgid "cannot change owner and/or group of %s"
-#~ msgstr "немагчыма зьмяніць уладальніка й/ці групу %s"
-
-#, c-format
-#~ msgid "cannot create directory %s"
-#~ msgstr "немагчыма стварыць тэчку %s"
-
-#, c-format
-#~ msgid "cannot change permissions of %s"
-#~ msgstr "немагчыма зьмяніць правы %s"
-
-#~ msgid "memory exhausted"
-#~ msgstr "памяць вычарпана"
-
-#, fuzzy
-#~ msgid "unable to record current working directory"
-#~ msgstr "немагчыма вярнуцца ў пачатковую працоўную тэчку"
-
-#, fuzzy
-#~ msgid "Failed to open /dev/zero for read"
-#~ msgstr "збой пры захаваньні правоў для %s"
-
-#, fuzzy
-#~ msgid "cannot create pipe"
-#~ msgstr "немагчыма стварыць лучыва %s"
-
-#~ msgid "`"
-#~ msgstr "`"
-
-#~ msgid "'"
-#~ msgstr "'"
-
-#~ msgid "^[yY]"
-#~ msgstr "^[тТ]"
-
-#~ msgid "^[nN]"
-#~ msgstr "^[нН]"
-
-#~ msgid "iconv function not usable"
-#~ msgstr "функцыя iconv непрыгодна для выкарыстаньня"
-
-#~ msgid "iconv function not available"
-#~ msgstr "недаступна функцыя iconv"
-
-#, c-format
-#~ msgid "cannot convert U+%04X to local character set"
-#~ msgstr "немагчыма пераўтварыць U+%04X у мясцовы набор знакаў"
-
-#, c-format
-#~ msgid "cannot convert U+%04X to local character set: %s"
-#~ msgstr "немагчыма пераўтварыць U+%04X у мясцовы набор знакаў: %s"
-
-#~ msgid "invalid group"
-#~ msgstr "нерэчаісная група"
-
-#~ msgid "cannot get the login group of a numeric UID"
-#~ msgstr "немагчыма атрымаць уліковую групу лічбавага UID"
-
-#, c-format
-#~ msgid "Written by %s.\n"
-#~ msgstr "Стваральнік %s.\n"
-
-#, fuzzy, c-format
-#~ msgid "Written by %s and %s.\n"
-#~ msgstr "Стваральнік %s.\n"
-
-#, fuzzy, c-format
-#~ msgid "Written by %s, %s, and %s.\n"
-#~ msgstr "Стваральнік %s.\n"
-
-#, fuzzy, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "and %s.\n"
-#~ msgstr "Стваральнік %s.\n"
-
-#, fuzzy, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, and %s.\n"
-#~ msgstr "Стваральнік %s.\n"
-
-#~ msgid "string comparison failed"
-#~ msgstr "памылка параўнаньня радку"
-
-#~ msgid "Set LC_ALL='C' to work around the problem."
-#~ msgstr "Усталюйце LC_ALL='C' каб працаваць без пытаньняў."
-
-#, c-format
-#~ msgid "The strings compared were %s and %s."
-#~ msgstr "Радкі былі параўнаны тут %s і тут %s."
