@@ -450,15 +450,20 @@ read_stream_r (FILE *fp, off_t after, off_t *size, ed_buffer_t *ed)
  *   to static buffer.
  */
 char *
-get_extended_line (size_t *len, int nonl, int escape, ed_buffer_t *ed)
+get_extended_line (size_t *len, int nonl, int escape, int nt, ed_buffer_t *ed)
 {
   static char *xl = NULL;       /* extended line buffer */
   static size_t xl_size = 0;    /* buffer size */
 
   size_t n, p;
 
-  for (*len = 0; *(ed->input + (*len)++) != '\n';)
-    ;
+  /* If null-terminated (nt), allow embedded newlines in ed->input. */
+  if (nt)
+    for (*len = 0; *(ed->input + *len) != '\0';)
+      ++*len;
+  else
+    for (*len = 0; *(ed->input + (*len)++) != '\n';)
+      ;
   REALLOC_THROW (xl, xl_size, *len + 1, NULL, ed);
 
   /* NB: Don't assume that ed->input is NUL-terminated. */

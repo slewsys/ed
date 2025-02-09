@@ -920,7 +920,7 @@ int get_des_char (FILE *, ed_buffer_t *);
 int get_des_keyword (ed_buffer_t *);
 #endif
 
-char *get_extended_line (size_t *, int, int, ed_buffer_t *);
+char *get_extended_line (size_t *, int, int, int, ed_buffer_t *);
 ed_line_node_t *get_line_node (off_t, ed_buffer_t *);
 int get_line_node_address (const ed_line_node_t *, off_t *, ed_buffer_t *);
 int get_marked_node_address (int, off_t *, ed_buffer_t *);

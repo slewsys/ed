@@ -193,7 +193,7 @@ substitution_rhs (off_t *s_nth, off_t *s_mod, unsigned *s_f,
 
 
   /* Don't clobber command buffer if any ed->exec->global set. */
-  if (!ed->exec->global && !(ed->input = get_extended_line (&len, 0, 0, ed)))
+  if (!ed->exec->global && !(ed->input = get_extended_line (&len, 0, 0, 0, ed)))
     {
       /* EOF here always flags error. */
       status = ERR;
