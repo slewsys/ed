@@ -114,22 +114,25 @@ init_stdio (ed_buffer_t *ed)
 #else
   if (ed->exec->fp && !(ed->exec->opt & FSCRIPT))
 #endif
+    {
 #if defined(__sun) || defined(__NetBSD__) || defined(__OpenBSD__)
-    if (dup2 (fileno (ed->exec->fp), fileno (stdin)) < 0)
-      {
-        fprintf (stderr, "%s\n", strerror (errno));
-        ed->exec->err = _("dup2 error");
-        return ERR;
-      }
+      if (dup2 (fileno (ed->exec->fp), fileno (stdin)) < 0)
+        {
+          fprintf (stderr, "%s\n", strerror (errno));
+          ed->exec->err = _("dup2 error");
+          return ERR;
+        }
 #else
-    stdin = ed->exec->fp;
+      stdin = ed->exec->fp;
 #endif
+    }
 
   /* In case of option `-f', reopen script to allow shell escape
      access to I/O as described below. */
-  else if (ed->exec->pathname && !freopen (ed->exec->pathname, "r+", stdin))
+  else if (ed->exec->expr_pathname
+           && !freopen (ed->exec->expr_pathname, "r+", stdin))
     {
-      fprintf (stderr, "%s: %s\n", ed->exec->pathname, strerror (errno));
+      fprintf (stderr, "%s: %s\n", ed->exec->expr_pathname, strerror (errno));
       ed->exec->err = _("File open error");
       return FATAL;
     }
@@ -513,7 +516,7 @@ quit (int n, ed_buffer_t *ed)
   if (ed->exec->fp)
     {
       (void) fclose (ed->exec->fp);
-      unlink (ed->exec->pathname);
+      unlink (ed->exec->expr_pathname);
     }
 #ifdef WANT_ED_REGISTER
   for (int i = 0; i < REGBUF_MAX; ++i)
@@ -615,8 +618,8 @@ int
 init_script_buffer (ed_buffer_t *ed)
 {
   return  create_disk_buffer (&ed->exec->fp,
-                              &ed->exec->pathname,
-                              &ed->exec->pathname_size,
+                              &ed->exec->expr_pathname,
+                              &ed->exec->expr_pathname_size,
                               ed);
 }
 

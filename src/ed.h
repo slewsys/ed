@@ -384,7 +384,7 @@ typedef struct ed_stack_frame
 
 # define ED_STACK_FRAME_T_SIZE (sizeof (ed_stack_frame_t))
 
-# define STACK_FRAMES_MAX 50     /* Max stack frames in script buffer. */
+# define STACK_FRAMES_MAX 50    /* Max stack frames in script buffer. */
 #endif /* WANT_ED_MACRO */
 
 #define MARK_MAX 26             /* Max line markers. */
@@ -473,10 +473,10 @@ struct ed_execute
   struct ed_region *region;     /* Address range parameters. */
 
   FILE *fp;                     /* Command script file pointer. */
-  char *file_script;            /* File argument of `-f script' option. */
-  size_t file_script_size;      /* Script filename size.  */
-  char *pathname;               /* Concatenation of scripts. */
-  size_t pathname_size;         /* Concatenation of scripts. */
+  char *script_pathname;        /* File argument of `-f script' option. */
+  size_t script_pathname_size;  /* Script pathname size.  */
+  char *expr_pathname;          /* Concatenation of script expressions. */
+  size_t expr_pathname_size;    /* Expression pathname size. */
   char *address;                /* Initial address command list. */
   const char *err;              /* Error message. */
   char *prompt;                 /* Interactive command prompt. */

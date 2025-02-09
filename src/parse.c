@@ -727,15 +727,17 @@ expand_shell_command (size_t *len, int *subs, ed_buffer_t *ed)
         break;
       case '%':
 
-        /*  Substitute '%-' with ed->exec->file_script. */
+#ifdef WANT_SCRIPT_FLAGS
+        /*  Substitute ed->exec->script_pathname for '%-'. */
         if (*(xl + 1) == '-')
           {
-            fn = ed->exec->file_script ? ed->exec->file_script : "stdin";
+            fn = ed->exec->script_pathname ? ed->exec->script_pathname : "";
             ++xl;
           }
 
-        /*  Substitute '%' with ed->file_name. */
+        /* Substitute ed->file_name for '%'. */
         else
+#endif
           fn = ed->file->name ? ed->file->name : "";
         m = strlen (fn);
         REALLOC_THROW (sc, sc_size, *len + m + 1, NULL, ed);

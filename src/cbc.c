@@ -160,7 +160,8 @@ char_to_int (int c, int radix)
 
   s[0] = c;
   errno = 0;
-  return (n = strtol ((char *)s, NULL, radix)) == 0 && errno == EINVAL ? -1 : n;
+  return ((n = strtol ((char *)s, NULL, radix)) == 0
+          && errno == EINVAL) ? -1 : n;
 # else  /* !HAVE_STRTOL */
   switch (c)
     {

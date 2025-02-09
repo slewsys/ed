@@ -389,7 +389,7 @@ push_stack_frame (ed_buffer_t *ed)
             fdopen (fd, "r")) == NULL)
     {
       fprintf (stderr, "%s\n", strerror (errno));
-      ed->exec->err = _("fdopen error");
+      ed->exec->err = _("File open error");
       spl0 ();
       return ERR;
     }
