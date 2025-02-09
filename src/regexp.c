@@ -150,6 +150,12 @@ get_compiled_regex (unsigned dc, int re_type, ed_buffer_t *ed)
 
   if (!(pattern = regular_expression (dc, &len, ed)))
     return NULL;
+  else if (re_type == RE_SUBST && *ed->input == '\n'
+           && ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL))
+    {
+      ed->exec->err = _("Missing pattern delimiter");
+      return NULL;
+    }
 
   if (!(re = (regex_t *) malloc (sizeof (regex_t))))
     {
