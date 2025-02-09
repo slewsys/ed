@@ -242,7 +242,7 @@ file_glob (size_t *len, int cm, int replace, int uniquely, ed_buffer_t *ed)
   char *s;
   off_t offs = 0;
 
-  if (!(xl = get_extended_line (len, 1, 0, ed)))
+  if (!(xl = get_extended_line (len, 1, 0, 0, ed)))
 
     /* Propagate stream status. */
     return NULL;
@@ -588,7 +588,7 @@ file_name (size_t *len, ed_buffer_t *ed)
 
   char *xl;
 
-  if (!(xl = get_extended_line (len, 1, 0, ed)))
+  if (!(xl = get_extended_line (len, 1, 0, 1, ed)))
 
     /* Propagate stream status. */
     return NULL;
@@ -705,7 +705,7 @@ expand_shell_command (size_t *len, int *subs, ed_buffer_t *ed)
       *(gl + n) = '\0';
       xl = gl;
     }
-  else if (!(xl = get_extended_line (&n, 1, 0, ed)))
+  else if (!(xl = get_extended_line (&n, 1, 0, 0, ed)))
 
     /* Propagate stream status */
     return NULL;

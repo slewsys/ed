@@ -87,7 +87,7 @@ exec_global (ed_buffer_t *ed)
    * If non-interactive, read command before entering loop in the
    * event of empty global queue.
    */
-  if (!interactive && !(ed->input = get_extended_line (&len, 0, 1, ed)))
+  if (!interactive && !(ed->input = get_extended_line (&len, 0, 1, 0, ed)))
     {
       clearerr (stdin);
       return ERR;
@@ -110,7 +110,7 @@ exec_global (ed_buffer_t *ed)
                                        ed->state->dot, ed)) < 0)
             return status;
           else if (!(ed->input = get_stdin_line (&len, ed))
-                   || !(ed->input = get_extended_line (&len, 0, 1, ed)))
+                   || !(ed->input = get_extended_line (&len, 0, 1, 0, ed)))
             {
               /* For an interactive global command, permit EOF to cancel. */
               status = feof (stdin) ? 0 : ERR;
