@@ -48,7 +48,7 @@ static void script_die (int, ed_buffer_t *);
 int
 main (int argc, char **argv)
 {
-  struct option long_options[16] =
+  struct option long_opts[16] =
     {
       {"ansi-color",      no_argument,       NULL, 'R'},
 
@@ -65,8 +65,8 @@ main (int argc, char **argv)
 
       {"in-place",        optional_argument, NULL, 'i'},
       {"prompt",          required_argument, NULL, 'p'},
-      {"regexp-extended", no_argument,       NULL, 'E'}, /* BSD extended regexp */
-      {"regexp-extended", no_argument,       NULL, 'r'}, /* GNU extended regexp */
+      {"regexp-extended", no_argument,       NULL, 'E'},
+      {"regexp-extended", no_argument,       NULL, 'r'},
       {"scripted",        no_argument,       NULL, 's'},
       {"traditional",     no_argument,       NULL, 'G'},
       {"verbose",         no_argument,       NULL, 'v'},
@@ -74,7 +74,7 @@ main (int argc, char **argv)
       {"write",           no_argument,       NULL, 'w'},
       {0,                 0,                 0,    0}
     };
-  const char *short_options = "E"
+  const char *short_opts = "E"
 #ifdef WANT_SCRIPT_FLAGS
     "e:f:i::"
 #endif
@@ -114,7 +114,7 @@ main (int argc, char **argv)
 #endif
 
 top:
-  while ((c = getopt_long (argc, argv, short_options, long_options, NULL)) != -1)
+  while ((c = getopt_long (argc, argv, short_opts, long_opts, NULL)) != -1)
     switch (c)
       {
       default:
@@ -221,7 +221,9 @@ top:
   argv = collect_address_args (&argc, argv, ed);
 #endif
 
-  /* In case of option `-f' or `-e', rewind internal script file. */
+#ifdef WANT_SCRIPT_FLAGS
+
+  /* Rewind internal script, if any. */
   if (ed->exec->fp
       && (fflush (ed->exec->fp) == EOF
           || FSEEK (ed->exec->fp, 0L, SEEK_SET) == -1))
@@ -231,7 +233,6 @@ top:
       script_die (3, ed);
     }
 
-#ifdef WANT_SCRIPT_FLAGS
   if ((ed->exec->opt & IN_PLACE) && ! (ed->exec->opt & FSCRIPT))
     {
       fprintf (stderr, "%s: %s\n",
@@ -239,7 +240,7 @@ top:
                _("Option '-i' requires '-e' or '-f'"));
       ed_usage (1, ed);
     }
-#endif
+#endif  /* WANT_SCRIPT_FLAGS */
 
 #ifdef HAVE_LOCALE_H
 
@@ -345,7 +346,8 @@ top:
       if (ed->exec->address)
         {
           ed->input = ed->exec->address;
-          if (*(ed->exec->address = strchr (ed->exec->address, '\n') + 1) == '\0')
+          ed->exec->address = strchr (ed->exec->address, '\n') + 1;
+          if (*ed->exec->address == '\0')
             ed->exec->address = NULL;
         }
 
@@ -768,10 +770,11 @@ append_script_file (char *fn, ed_buffer_t *ed)
   len = strlen (filename);
 
   /* Conditionally save filename of script. */
-  if (len && !ed->exec->file_script)
+  if (len && !ed->exec->script_pathname)
       {
-        REALLOC_THROW (ed->exec->file_script, ed->exec->file_script_size, len + 1, ERR, ed);
-        strcpy (ed->exec->file_script, filename);
+        REALLOC_THROW (ed->exec->script_pathname,
+                       ed->exec->script_pathname_size, len + 1, ERR, ed);
+        strcpy (ed->exec->script_pathname, filename);
       }
 
   if (!(fp = fopen (filename, "r")))
@@ -807,30 +810,29 @@ static void
 ed_usage (int status, ed_buffer_t *ed)
 {
   extern char version_string[]; /* From version.c */
-
-  if (status)
+  char *err_usage =
 #ifdef WANT_SCRIPT_FLAGS
 # ifdef WANT_FILE_GLOB
-    printf (_("Usage: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE...]\n"),
-            ed->exec->opt & RESTRICTED ? "red" : "ed");
+    _("Usage: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE...]\n");
 # else
-    printf (_("Usage: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE]\n"),
-            ed->exec->opt & RESTRICTED ? "red" : "ed");
+    _("Usage: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE]\n");
 # endif /* !WANT_FILE_GLOB */
 #else
-    printf (_("Usage: %s [-] [-EGhRrsVvwx] [-p PROMPT] [FILE]\n"),
-            ed->exec->opt & RESTRICTED ? "red" : "ed");
+    _("Usage: %s [-] [-EGhRrsVvwx] [-p PROMPT] [FILE]\n");
 #endif  /* !WANT_SCRIPT_FLAGS */
+
+  if (status)
+    printf (err_usage, ed->exec->opt & RESTRICTED ? "red" : "ed");
   else if (ed->exec->opt & PRINT_VERSION)
     printf ("ed %s\n%s", version_string, CONFIGURE_ARGS);
   else if (ed->exec->opt & PRINT_HELP)
     {
 #ifdef WANT_FILE_GLOB
-      printf (_("Usage: %s [OPTION...] [FILE...]\n"), (ed->exec->opt & RESTRICTED
-                                                    ? "red" : "ed"));
+      printf (_("Usage: %s [OPTION...] [FILE...]\n"),
+              (ed->exec->opt & RESTRICTED ? "red" : "ed"));
 #else
-      printf (_("Usage: %s [OPTION...] [FILE]\n"), (ed->exec->opt & RESTRICTED
-                                                    ? "red" : "ed"));
+      printf (_("Usage: %s [OPTION...] [FILE]\n"),
+              (ed->exec->opt & RESTRICTED ? "red" : "ed"));
 #endif  /* !WANT_FILE_GLOB */
   /* TODO: Implement configured-feature-based help. Take all-or-none
      approach for now. */
@@ -886,13 +888,13 @@ static void
 script_die (int status, ed_buffer_t *ed)
 {
   if (ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL)
-      || !ed->exec->file_script)
+      || !ed->exec->script_pathname)
     fprintf (stderr, (ed->exec->opt & VERBOSE
                       ? _("script, line %" OFF_T_FORMAT_STRING ": %s\n") : ""),
              ed->exec->line_no, ed->exec->err);
   else
     fprintf (stderr, (ed->exec->opt & VERBOSE
                       ? "%s:%" OFF_T_FORMAT_STRING ": %s\n" : ""),
-             ed->exec->file_script, ed->exec->line_no, ed->exec->err);
+             ed->exec->script_pathname, ed->exec->line_no, ed->exec->err);
   quit (status, ed);
 }

@@ -806,11 +806,11 @@ int
 append_stream (FILE *dest_fp, FILE *src_fp, size_t *size, ed_buffer_t *ed)
 {
   char buf[BUFSIZ];
-  size_t read_size;
-  size_t write_size = 0;
+  size_t rsize;
+  size_t wsize = 0;
 
-  for  (*size = 0; (read_size = fread(buf, 1, BUFSIZ, src_fp)) > 0; *size += write_size)
-    if ((write_size = fwrite (buf, 1, read_size, dest_fp)) != read_size)
+  for  (*size = 0; (rsize = fread(buf, 1, BUFSIZ, src_fp)) > 0; *size += wsize)
+    if ((wsize = fwrite (buf, 1, rsize, dest_fp)) != rsize)
       {
         fprintf (stderr, "%s\n", strerror (errno));
         ed->exec->err = _("File write error");
@@ -820,8 +820,8 @@ append_stream (FILE *dest_fp, FILE *src_fp, size_t *size, ed_buffer_t *ed)
 
   if (feof (src_fp))
     {
-      if (write_size && buf[write_size - 1] != '\n'
-          && (write_size = fwrite ("\n", 1, 1, dest_fp)) != 1)
+      if (wsize && buf[wsize - 1] != '\n'
+          && (wsize = fwrite ("\n", 1, 1, dest_fp)) != 1)
         {
           fprintf (stderr, "%s\n", strerror (errno));
           ed->exec->err = _("File write error");
