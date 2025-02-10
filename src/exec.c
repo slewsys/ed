@@ -732,7 +732,7 @@ i_cmd (ed_buffer_t *ed)
     return status;
 
   /* Per SUSv4, 2013, empty insert sets dot to addressed line. */
-  if (ed->state->dot == ed->exec->region->end - 1)
+  if (ed->state->dot == ed->exec->region->end - 1 && ed->state->lines)
     ed->state->dot = ed->exec->region->end;
   return ed->display->dio_f;
 }
