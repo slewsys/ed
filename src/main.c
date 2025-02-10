@@ -718,12 +718,17 @@ append_address_command (const char *s, ed_buffer_t *ed)
 int
 append_script_expression (const char *s, ed_buffer_t *ed)
 {
+  size_t fp_size = 0;
   size_t n;
   int status;
 
   if (!ed->exec->fp)
     {
       if ((status = init_script_buffer (ed)) < 0)
+        return status;
+      else if (!isatty (0)
+               && (status = append_stream (ed->exec->fp,
+                                           stdin, &fp_size, ed)) < 0)
         return status;
     }
   else if (FSEEK (ed->exec->fp, 0L, SEEK_END) == -1)
@@ -787,6 +792,10 @@ append_script_file (char *fn, ed_buffer_t *ed)
   if (!ed->exec->fp)
     {
       if ((status = init_script_buffer (ed)) < 0)
+        return status;
+      else if (!isatty (0)
+               && (status = append_stream (ed->exec->fp,
+                                           stdin, &fp_size, ed)) < 0)
         return status;
     }
   else if (FSEEK (ed->exec->fp, 0L, SEEK_END) == -1)
