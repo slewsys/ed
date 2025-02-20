@@ -1,7 +1,8 @@
+#!/usr/bin/env bash
 %define _fortify_level 3
 
 Name:           ed
-Version:        2.1.0
+Version:        2.1.1
 Release:        1%{?dist}
 Summary:        The standard Unix text editor
 License:        BSD-2-Clause OR GPL-2.0-or-later OR MIT
@@ -20,8 +21,9 @@ BuildRequires:  texinfo
 BuildRequires:  texinfo-tex
 
 %description
-Ed is a 100% POSIX compliant and 8-bit clean implementation of the
-Unix line editor with modern extensions.
+Ed is the standard Unix text editor. It is used create, display,
+modify and otherwise manipulate text files. When invoked as red, it is
+restricted to editing files in the working directory.
 
 %prep
 %autosetup
@@ -40,7 +42,7 @@ echo ====================TESTING END=====================
 %make_install
 
 # Adjust contrib sources to RPM specs.
-find %{_builddir} -name 'call-graph.in' -print | xargs sed -i -e '1{s|#!.*|#!/bin/bash|;q}'
+find %{_builddir} -name 'shell-call-graph.in' -print | xargs sed -i -e '1{s|#!.*|#!/bin/bash|;q}'
 find %{_builddir} -name 'generate-random-graph.in' -print | xargs sed -i -e '1{s|#!.*|#!/bin/bash|;q}'
 find %{_builddir} -name 'cats.ed' -print | xargs sed -i -e '1{s|#!.*|#!/bin/ed -f|;q}'
 find %{_builddir} -name 'import-gnulib.sh' -delete
@@ -63,14 +65,35 @@ rm -f ${RPM_BUILD_ROOT}/%{_infodir}/dir
 %license COPYING
 
 %changelog
-* Sat Feb 01 2025 Andrew L. Moore <slewsys@gmail.com> - 2.1.1-1
+* Thu Feb 20 2025 Andrew L. Moore <slewsys@gmail.com> - 2.1.1-1
 - Update version to 2.1.1.
 
-* Sat Feb 01 2025 Jonathan Wakely <jwakely@redhat.com> - 2.1.0-33
-- Update README.md
+* Mon Feb 10 2025 Andrew L. Moore <slewsys@gmail.com> - 2.1.0-40
+- Handle empty insert in empty buffer.
 
-* Sat Feb 01 2025 Andrew L. Moore <slewsys@gmail.com> - 2.1.0-32
-- Update README.
+* Mon Feb 10 2025 Andrew L. Moore <slewsys@gmail.com> - 2.1.0-39
+- Prepend scripts from stdin before command line.
+
+* Sun Feb 09 2025 Andrew L. Moore <slewsys@gmail.com> - 2.1.0-38
+- Allow embedded newlines on command line.
+
+* Sun Feb 09 2025 Andrew L. Moore <slewsys@gmail.com> - 2.1.0-37
+- Minor code clean up.
+
+* Sun Feb 09 2025 Andrew L. Moore <slewsys@gmail.com> - 2.1.0-36
+- POSIX substitute requires closing pattern delimiter.
+
+* Fri Feb 07 2025 Andrew L. Moore <slewsys@gmail.com> - 2.1.0-35
+- Allow macros to operate over a range of addresses.
+
+* Tue Feb 04 2025 Andrew L. Moore <slewsys@gmail.com> - 2.1.0-34
+- Update dot after moving lines to register.
+
+* Tue Feb 04 2025 Andrew L. Moore <slewsys@gmail.com> - 2.1.0-33
+- Rename per structure I/O flags.
+
+* Sun Feb 02 2025 Andrew L. Moore <slewsys@gmail.com> - 2.1.0-32
+- Restore global-command context after macro.
 
 * Sat Feb 01 2025 Andrew L. Moore <slewsys@gmail.com> - 2.1.0-31
 - Update clean/distclean targets per GNU Coding Standards.

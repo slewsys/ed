@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnulib 4.0.0.2567\n"
 "Report-Msgid-Bugs-To: bug-gnulib@gnu.org\n"
-"POT-Creation-Date: 2025-02-09 06:33-0500\n"
+"POT-Creation-Date: 2025-02-12 00:55-0500\n"
 "PO-Revision-Date: 2024-12-11 12:33+0100\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <(nothing)>\n"
@@ -134,8 +134,8 @@ msgstr "წინა რეგულარული გამოსახულ�
 msgid "dup2 error"
 msgstr "მატარებლის შეცდომა"
 
-#: src/buffer.c:136 src/io.c:96 src/io.c:167 src/io.c:645 src/io.c:696
-#: src/main.c:783 src/register.c:395
+#: src/buffer.c:136 src/io.c:96 src/io.c:167 src/io.c:650 src/io.c:701
+#: src/main.c:788 src/register.c:395
 #, fuzzy
 #| msgid "write error"
 msgid "File open error"
@@ -210,13 +210,13 @@ msgstr ""
 msgid "Decryption failed (incomplete block)"
 msgstr ""
 
-#: src/cbc.c:384 src/io.c:565 src/io.c:837
+#: src/cbc.c:384 src/io.c:570 src/io.c:842
 #, fuzzy
 #| msgid "write error"
 msgid "File read error"
 msgstr "ჩაწერის შეცდომა"
 
-#: src/cmds.c:43 src/io.c:487 src/main.c:368 src/register.c:302
+#: src/cmds.c:43 src/io.c:492 src/main.c:368 src/register.c:302
 msgid "End-of-file unexpected"
 msgstr ""
 
@@ -238,7 +238,7 @@ msgstr "პროგრამის შეცდომა"
 msgid "Child process error"
 msgstr "%s ქვეპროცესის შეტ/გამოტ შეცდომა"
 
-#: src/cmds.c:347 src/filter.c:40 src/io.c:176 src/io.c:707
+#: src/cmds.c:347 src/filter.c:40 src/io.c:176 src/io.c:712
 #, c-format
 msgid "Exit status: %#x"
 msgstr ""
@@ -352,7 +352,7 @@ msgstr "ჩაწერის შეცდომა"
 msgid "No previous command"
 msgstr ""
 
-#: src/io.c:57 src/io.c:614 src/main.c:232 src/main.c:732 src/main.c:795
+#: src/io.c:57 src/io.c:619 src/main.c:232 src/main.c:737 src/main.c:804
 #: src/register.c:36 src/register.c:83 src/register.c:142 src/register.c:152
 #: src/register.c:211 src/register.c:220 src/register.c:247 src/register.c:286
 #: src/register.c:353 src/register.c:413 src/register.c:453 src/register.c:492
@@ -365,12 +365,12 @@ msgstr "ჩაწერის შეცდომა"
 msgid "File does not exist"
 msgstr ""
 
-#: src/io.c:119 src/io.c:659
+#: src/io.c:119 src/io.c:664
 #, c-format
 msgid "%s: File already locked\n"
 msgstr ""
 
-#: src/io.c:143 src/io.c:636 src/io.c:674
+#: src/io.c:143 src/io.c:641 src/io.c:679
 msgid "File close error"
 msgstr ""
 
@@ -384,37 +384,37 @@ msgstr ""
 msgid "Newline appended\n"
 msgstr ""
 
-#: src/io.c:551 src/io.c:790
+#: src/io.c:556 src/io.c:795
 msgid "Broken pipe"
 msgstr "გაფუჭებული მილი"
 
-#: src/io.c:621 src/register.c:254
+#: src/io.c:626 src/register.c:254
 #, fuzzy
 #| msgid "write error"
 msgid "File truncate error"
 msgstr "ჩაწერის შეცდომა"
 
-#: src/io.c:743
+#: src/io.c:748
 msgid "File too big"
 msgstr ""
 
-#: src/io.c:796 src/io.c:816 src/io.c:827 src/main.c:743 src/main.c:751
+#: src/io.c:801 src/io.c:821 src/io.c:832 src/main.c:748 src/main.c:756
 #, fuzzy
 #| msgid "write error"
 msgid "File write error"
 msgstr "ჩაწერის შეცდომა"
 
-#: src/io.c:860 src/parse.c:502
+#: src/io.c:865 src/parse.c:502
 #, fuzzy
 #| msgid "Bus error"
 msgid "File status error"
 msgstr "მატარებლის შეცდომა"
 
-#: src/io.c:867
+#: src/io.c:872
 msgid "Access restricted to regular files"
 msgstr ""
 
-#: src/io.c:936
+#: src/io.c:941
 #, fuzzy
 #| msgid "write error"
 msgid "File stat error"
@@ -440,34 +440,34 @@ msgstr ""
 msgid "Argument list full"
 msgstr "არგუმენტის ბუფერი მეტისმეტად პატარაა"
 
-#: src/main.c:816
+#: src/main.c:825
 #, c-format
 msgid ""
 "Usage: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE...]\n"
 msgstr ""
 
-#: src/main.c:818
+#: src/main.c:827
 #, c-format
 msgid ""
 "Usage: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE]\n"
 msgstr ""
 
-#: src/main.c:821
+#: src/main.c:830
 #, c-format
 msgid "Usage: %s [-] [-EGhRrsVvwx] [-p PROMPT] [FILE]\n"
 msgstr ""
 
-#: src/main.c:831
+#: src/main.c:840
 #, c-format
 msgid "Usage: %s [OPTION...] [FILE...]\n"
 msgstr ""
 
-#: src/main.c:834
+#: src/main.c:843
 #, c-format
 msgid "Usage: %s [OPTION...] [FILE]\n"
 msgstr ""
 
-#: src/main.c:840
+#: src/main.c:849
 #, c-format
 msgid ""
 "Options:\n"
@@ -494,7 +494,7 @@ msgid ""
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
 
-#: src/main.c:862
+#: src/main.c:871
 #, c-format
 msgid ""
 "Options:\n"
@@ -517,7 +517,7 @@ msgid ""
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
 
-#: src/main.c:893
+#: src/main.c:902
 msgid "script, line %"
 msgstr ""
 
@@ -630,736 +630,3 @@ msgstr ""
 #: src/undo.c:51
 msgid "Nothing to undo"
 msgstr ""
-
-#, fuzzy
-#~| msgid "Unknown error"
-#~ msgid "fdopen error"
-#~ msgstr "უცნობი შეცდომა"
-
-#, c-format
-#~ msgid "invalid argument %s for %s"
-#~ msgstr "%s არასწორი არგუმენტია %s-თვის"
-
-#, c-format
-#~ msgid "ambiguous argument %s for %s"
-#~ msgstr "%s გაურკვეველი არგუმენტია %s-თვის"
-
-#~ msgid "Valid arguments are:"
-#~ msgstr "სწორი არგუმენტებია:"
-
-#, c-format
-#~ msgid "ARGP_HELP_FMT: %s value is less than or equal to %s"
-#~ msgstr "ARGP_HELP_FMT: %s-ის მნიშვნელობა %s-ზე ნაკლები ან ტოლია"
-
-#, c-format
-#~ msgid "%.*s: ARGP_HELP_FMT parameter requires a value"
-#~ msgstr "%.*s: ARGP_HELP_FMT საჭიროა პარამეტრის მნიშვნელობა"
-
-#, c-format
-#~ msgid "%.*s: Unknown ARGP_HELP_FMT parameter"
-#~ msgstr "%.*s: ARGP_HELP_FMT-ის უცნობი პარამეტრი"
-
-#, c-format
-#~ msgid "Garbage in ARGP_HELP_FMT: %s"
-#~ msgstr "ნაგავი ARGP_HELP_FMT-ში: %s"
-
-#~ msgid ""
-#~ "Mandatory or optional arguments to long options are also mandatory or "
-#~ "optional for any corresponding short options."
-#~ msgstr ""
-#~ "გრძელი პარამეტრების აუცილებელი ან არასავალდებულო არგუმენტები ასევე "
-#~ "აუცილებელი ან არასავალდებულოა მათი მოკლე ვარიანტებისთვისაც."
-
-#~ msgid "Usage:"
-#~ msgstr "გამოყენება:"
-
-#~ msgid "  or: "
-#~ msgstr "  ან: "
-
-#~ msgid " [OPTION...]"
-#~ msgstr " [პარამეტრი..]"
-
-#, c-format
-#~ msgid "Try '%s --help' or '%s --usage' for more information.\n"
-#~ msgstr "მეტი ინფორმაციისთვის სცადეთ '%s --help' ან '%s --usage'.\n"
-
-#, c-format
-#~ msgid "Report bugs to %s.\n"
-#~ msgstr "შეცდომების შესახებ მიწერეთ: %s\n"
-
-#~ msgid "Unknown system error"
-#~ msgstr "სისტემის უცნობი შეცდომა"
-
-#~ msgid "give this help list"
-#~ msgstr "ამ დახმარების სიის მიღება"
-
-#~ msgid "give a short usage message"
-#~ msgstr "გამოყენების მოკლე შეტყობინების მიღება"
-
-#~ msgid "NAME"
-#~ msgstr "სახელი"
-
-#~ msgid "set the program name"
-#~ msgstr "პროგრამის სახელის დაყენება"
-
-#~ msgid "SECS"
-#~ msgstr "წამი"
-
-#~ msgid "hang for SECS seconds (default 3600)"
-#~ msgstr ""
-#~ "დაეკიდება მითითებული წამების რაოდენობის განმავლობაში (ნაგულისხმები: 3600)"
-
-#~ msgid "print program version"
-#~ msgstr "პროგრამის ვერსიის დაბეჭდვა"
-
-#~ msgid "(PROGRAM ERROR) No version known!?"
-#~ msgstr "(PROGRAM ERROR) ვერსია უცნობია!?"
-
-#~ msgid "(PROGRAM ERROR) Option should have been recognized!?"
-#~ msgstr "(PROGRAM ERROR) პარამეტრი ნაცნობი უნდა ყოფილიყო!?"
-
-#, c-format
-#~ msgid "%u bitset_allocs, %u freed (%.2f%%).\n"
-#~ msgstr "%u bitset_allocs, %u freed (%.2f%%).\n"
-
-#, c-format
-#~ msgid "%u bitset_sets, %u cached (%.2f%%)\n"
-#~ msgstr "%u bitset_sets, %u cached (%.2f%%)\n"
-
-#, c-format
-#~ msgid "%u bitset_resets, %u cached (%.2f%%)\n"
-#~ msgstr "%u bitset_resets, %u cached (%.2f%%)\n"
-
-#, c-format
-#~ msgid "%u bitset_tests, %u cached (%.2f%%)\n"
-#~ msgstr "%u bitset_tests, %u cached (%.2f%%)\n"
-
-#, c-format
-#~ msgid "%u bitset_lists\n"
-#~ msgstr "%u bitset_lists\n"
-
-#, fuzzy
-#~| msgid "density histogram"
-#~ msgid "count log histogram\n"
-#~ msgstr "სიმკვრივის ჰისტოგრამა"
-
-#, fuzzy
-#~| msgid "density histogram"
-#~ msgid "size log histogram\n"
-#~ msgstr "სიმკვრივის ჰისტოგრამა"
-
-#, fuzzy
-#~| msgid "density histogram"
-#~ msgid "density histogram\n"
-#~ msgstr "სიმკვრივის ჰისტოგრამა"
-
-#~ msgid "stack overflow"
-#~ msgstr "სტეკის გადავსება"
-
-#~ msgid "cannot find a temporary directory, try setting $TMPDIR"
-#~ msgstr "დროებითი საქაღალდე ვერ ვიპოვე. სცადეთ $TMPDIR-ის დაყენება"
-
-#, c-format
-#~ msgid "cannot create a temporary directory using template \"%s\""
-#~ msgstr "შაბლონის გამოყენებით დროებითი საქაღალდის შექმნის შეცდომა: %s"
-
-#, c-format
-#~ msgid "cannot remove temporary file %s"
-#~ msgstr "დროებითი ფაილის წაშლის შეცდომა: %s"
-
-#, c-format
-#~ msgid "cannot remove temporary directory %s"
-#~ msgstr "დროებითი საქაღალდის წაშლის შეცდომა: %s"
-
-#~ msgid "error closing file"
-#~ msgstr "ფაილის დახურვის შეცდომა"
-
-#, c-format
-#~ msgid "preserving permissions for %s"
-#~ msgstr "%s-ის წვდომების შენახვა"
-
-#, c-format
-#~ msgid "error while opening %s for reading"
-#~ msgstr "შეცდომა '%s'-ის წასაკითხად გახნისას"
-
-#, c-format
-#~ msgid "error reading %s"
-#~ msgstr "შეცდომა '%s'-ის კითხვისას"
-
-#, c-format
-#~ msgid "error writing %s"
-#~ msgstr "შეცდომა '%s'-ის ჩაწერისას"
-
-#, c-format
-#~ msgid "error after reading %s"
-#~ msgstr "შეცდომა '%s'-ის წაკითხვის შემდეგ"
-
-#~ msgid "fdopen() failed"
-#~ msgstr "fdopen() -ის შეცდომა"
-
-#~ msgid "unbalanced ["
-#~ msgstr "დაუბალანსებელი ["
-
-#~ msgid "invalid character class"
-#~ msgstr "სიმბოლოების არასწორი კლასი"
-
-#~ msgid "character class syntax is [[:space:]], not [:space:]"
-#~ msgstr "სიმბოლოების კლასის სწორი სინტაქსია [[:space:]] და არა [:space:]"
-
-#~ msgid "unfinished \\ escape"
-#~ msgstr "დაუსრულებელი დასრულების სიმბოლო \\"
-
-#~ msgid "invalid content of \\{\\}"
-#~ msgstr "\\{\\}-ის არასწორი შემცველობა"
-
-#~ msgid "regular expression too big"
-#~ msgstr "რეგულარული გამოსახულება ძალიან დიდია"
-
-#~ msgid "unbalanced ("
-#~ msgstr "დაუბალანსებელი ("
-
-#~ msgid "no syntax specified"
-#~ msgstr "სინტაქსი მითითებული არაა"
-
-#~ msgid "unbalanced )"
-#~ msgstr "დაუბალანსებელი )"
-
-#, c-format
-#~ msgid "%s subprocess failed"
-#~ msgstr "%s ქვეპროცესის შეცდომა"
-
-#~ msgid "regular empty file"
-#~ msgstr "ჩვეულებრივი ცარიელი ფაილი"
-
-#~ msgid "regular file"
-#~ msgstr "ჩვეულებრივი ფაილი"
-
-#~ msgid "directory"
-#~ msgstr "საქაღალდე"
-
-#~ msgid "symbolic link"
-#~ msgstr "სიმბმული"
-
-#~ msgid "message queue"
-#~ msgstr "შეტყობინებების რიგი"
-
-#~ msgid "semaphore"
-#~ msgstr "სემაფორა"
-
-#~ msgid "shared memory object"
-#~ msgstr "მეხსიერების გაზიარებული ობიექტი"
-
-#~ msgid "typed memory object"
-#~ msgstr "ტიპიზირებული მეხსიერების ობიექტი"
-
-#~ msgid "block special file"
-#~ msgstr "ბლოკური სპეციალური ფაილი"
-
-#~ msgid "character special file"
-#~ msgstr "სიმბოლური სპეციალური ფაილი"
-
-#~ msgid "contiguous data"
-#~ msgstr "განგრძობადი მონაცემები"
-
-#~ msgid "fifo"
-#~ msgstr "fifo"
-
-#~ msgid "door"
-#~ msgstr "კარი"
-
-#~ msgid "multiplexed block special file"
-#~ msgstr "მულტიპლექსირებული ბლოკური სპეციალური ფაილი"
-
-#~ msgid "multiplexed character special file"
-#~ msgstr "მულტიპლექსირებული სიმბოლური სპეციალური ფაილი"
-
-#~ msgid "multiplexed file"
-#~ msgstr "მულტიპლექსლური ფაილი"
-
-#~ msgid "network special file"
-#~ msgstr "ქსელური  სპეციალური ფაილი"
-
-#~ msgid "migrated file with data"
-#~ msgstr "მიგრირებული ფაილი მონაცემებით"
-
-#~ msgid "migrated file without data"
-#~ msgstr "მიგრირებული ფაილი მონაცემების გარეშე"
-
-#~ msgid "port"
-#~ msgstr "პორტი"
-
-#~ msgid "socket"
-#~ msgstr "სოკეტი"
-
-#~ msgid "whiteout"
-#~ msgstr "სიცარიელე"
-
-#~ msgid "weird file"
-#~ msgstr "უცნაური ფაილი"
-
-#~ msgid "Address family for hostname not supported"
-#~ msgstr "ამ ჰოსტის მისამართის ტიპი მხარდაუჭერელია"
-
-#~ msgid "Temporary failure in name resolution"
-#~ msgstr "სახელის გადაწყვეტის დროებითი შეცდომა"
-
-#~ msgid "Bad value for ai_flags"
-#~ msgstr "არასწორი მნიშვნელობა: ai_flags"
-
-#~ msgid "Non-recoverable failure in name resolution"
-#~ msgstr "სახელის გადაწყვეტის აღუდგენელი შეცდომა"
-
-#~ msgid "ai_family not supported"
-#~ msgstr "ai_family მხარდაუჭერელია"
-
-#~ msgid "Memory allocation failure"
-#~ msgstr "მეხსიერების გამოყოფის შეცდომა"
-
-#~ msgid "No address associated with hostname"
-#~ msgstr "ჰოსტის სახელზე მიბმული არაა"
-
-#~ msgid "Name or service not known"
-#~ msgstr "სახელი ან სერვისი უცნობია"
-
-#~ msgid "Servname not supported for ai_socktype"
-#~ msgstr "Ai_socktype-ის სერვერის სახელი მხარდაუჭერელია"
-
-#~ msgid "ai_socktype not supported"
-#~ msgstr "ai_socket-ი მხარდაუჭერელია"
-
-#~ msgid "System error"
-#~ msgstr "სისტემური შეცდომა"
-
-#~ msgid "Processing request in progress"
-#~ msgstr "მიმდინარეობს მოთხოვნის დამუშავება"
-
-#~ msgid "Request canceled"
-#~ msgstr "მოთხოვნა გაუქმებულია"
-
-#~ msgid "Request not canceled"
-#~ msgstr "მოთხოვნა არ გაუქმებულა"
-
-#~ msgid "All requests done"
-#~ msgstr "ყველა მოთხოვნა მზადაა"
-
-#~ msgid "Interrupted by a signal"
-#~ msgstr "შეწყვეტილია სიგნალის მიერ"
-
-#~ msgid "Parameter string not correctly encoded"
-#~ msgstr "პარამეტრის სტრიქონი არასწორადაა კოდირებული"
-
-#, c-format
-#~ msgid "failed to create \"%s\""
-#~ msgstr "\"%s\"-ის შექმნის შეცდომა"
-
-#, c-format
-#~ msgid "error while writing \"%s\" file"
-#~ msgstr "შეცდომა \"%s\" ფაილის ჩაწერსას"
-
-#, c-format
-#~ msgid "cannot stat %s"
-#~ msgstr "%s-ის აღმოჩენის შეცდომა"
-
-#, c-format
-#~ msgid "cannot change permissions of %s"
-#~ msgstr "%s-ის წვდომების შეცვლის შეცდომა"
-
-#, c-format
-#~ msgid "cannot create directory %s"
-#~ msgstr "საქაღალდის შექმნის შეცდომა: %s"
-
-#~ msgid "memory exhausted"
-#~ msgstr "მეხსიერება გადავსებულია"
-
-#~ msgid "unable to record current working directory"
-#~ msgstr "მიმდინარე საქაღალდის ჩაწერა შეუძლებელია"
-
-#~ msgid "creation of threads failed"
-#~ msgstr "ნაკადების შექმნა ჩავარდა"
-
-#~ msgid "`"
-#~ msgstr "`"
-
-#~ msgid "'"
-#~ msgstr "'"
-
-#~ msgid "^[yY]"
-#~ msgstr "^[yY]"
-
-#~ msgid "^[nN]"
-#~ msgstr "^[nN]"
-
-#, c-format
-#~ msgid "setting permissions for %s"
-#~ msgstr "%s-ის წვდომების დაყენება"
-
-#~ msgid "Hangup"
-#~ msgstr "დაკიდება"
-
-#~ msgid "Quit"
-#~ msgstr "გასვლა"
-
-#~ msgid "Illegal instruction"
-#~ msgstr "არასწორი ინსტრუქცია"
-
-#~ msgid "Trace/breakpoint trap"
-#~ msgstr "გამართვის წერტილები"
-
-#~ msgid "Aborted"
-#~ msgstr "შეწყვეტილია"
-
-#~ msgid "Floating point exception"
-#~ msgstr "წილადი რიცხვების ანგარიშის შეცდომა"
-
-#~ msgid "Killed"
-#~ msgstr "მოკვტა"
-
-#~ msgid "Segmentation fault"
-#~ msgstr "სეგმენტაციის შეცდომა"
-
-#~ msgid "Alarm clock"
-#~ msgstr "მაღვიძარა"
-
-#~ msgid "Terminated"
-#~ msgstr "დასრულებულია"
-
-#~ msgid "Urgent I/O condition"
-#~ msgstr "სასწრაფო I/O პირობა"
-
-#~ msgid "Stopped (signal)"
-#~ msgstr "შეჩერებულია (სიგნალით)"
-
-#~ msgid "Stopped"
-#~ msgstr "შეჩერებულია"
-
-#~ msgid "Continued"
-#~ msgstr "გაგრძელებულია"
-
-#~ msgid "Child exited"
-#~ msgstr "შვილი პროცესი უცაბედად გაითიშა"
-
-#~ msgid "Stopped (tty input)"
-#~ msgstr "გაჩერებულია (tty-ით შეყვანით)"
-
-#~ msgid "Stopped (tty output)"
-#~ msgstr "გაჩერებულია (tty-ით გამოტანით)"
-
-#~ msgid "I/O possible"
-#~ msgstr "შესაძლებელი I/O"
-
-#~ msgid "CPU time limit exceeded"
-#~ msgstr "CPU-ის დროის ლიმიტი გადაჭარბებულია"
-
-#~ msgid "File size limit exceeded"
-#~ msgstr "ფაილის ზომის ლიმიტი გადაჭარბებულია"
-
-#~ msgid "Virtual timer expired"
-#~ msgstr "ვირტუალური ტაიმერის ვადა გავიდა"
-
-#~ msgid "Profiling timer expired"
-#~ msgstr "პროფილირების ტაიმერის ვადა გავიდა"
-
-#~ msgid "Window changed"
-#~ msgstr "ფანჯარა შეიცვალა"
-
-#~ msgid "User defined signal 1"
-#~ msgstr "მომხმარებლის მიერ განსაზღვრული სიგნალი 1"
-
-#~ msgid "User defined signal 2"
-#~ msgstr "მომხმარებლის მიერ განსაზღვრული სიგნალი 2"
-
-#~ msgid "EMT trap"
-#~ msgstr "EMT-ის ხაფანგი"
-
-#~ msgid "Bad system call"
-#~ msgstr "ცუდი სისტემური გამოძახება"
-
-#~ msgid "Stack fault"
-#~ msgstr "სტეკის შეცდომა"
-
-#~ msgid "Information request"
-#~ msgstr "ინფორმაციის მოთხოვნა"
-
-#~ msgid "Power failure"
-#~ msgstr "კვების ჩავარდნა"
-
-#~ msgid "Resource lost"
-#~ msgstr "რესურსი დაკარგულია"
-
-#~ msgid "cannot create pipe"
-#~ msgstr "ფაიფის შექმნის შეცდომა"
-
-#, c-format
-#~ msgid "Real-time signal %d"
-#~ msgstr "რეალური-დროის სიგნალი %d"
-
-#, c-format
-#~ msgid "Unknown signal %d"
-#~ msgstr "უცნობი სიგნალი %d"
-
-#~ msgid "CPU user"
-#~ msgstr "CPU მომხმარებელი"
-
-#~ msgid "CPU system"
-#~ msgstr "CPU სისტემა"
-
-#~ msgid "iconv function not usable"
-#~ msgstr "ფუნქცია iconv-ის გამოყენება შეუძლებელია"
-
-#~ msgid "iconv function not available"
-#~ msgstr "ფუნქცია iconv-ი მიუწვდომელია"
-
-#, c-format
-#~ msgid "cannot convert U+%04X to local character set"
-#~ msgstr "u+%04X-ის ლოკალურ სიმბოლოებში გარდაქმნა შეუძლებელია"
-
-#, c-format
-#~ msgid "cannot convert U+%04X to local character set: %s"
-#~ msgstr "u+%04X-ის ლოკალურ სიმბოლოებში გარდაქმნა შეუძლებელია: %s"
-
-#~ msgid "invalid group"
-#~ msgstr "არასწორი ჯგუფი"
-
-#~ msgid "invalid spec"
-#~ msgstr "არასწორი სპეფიციკაცია"
-
-#~ msgid "unable to display error message"
-#~ msgstr "შეტყობინების გამოტანა შეუძლებელია"
-
-#, c-format
-#~ msgid "Packaged by %s (%s)\n"
-#~ msgstr "აწყობილია %s-ის მიერ (%s)\n"
-
-#, c-format
-#~ msgid "Packaged by %s\n"
-#~ msgstr "აწყობილია %s-ის მიერ\n"
-
-#~ msgid "(C)"
-#~ msgstr "(C)"
-
-#, c-format
-#~ msgid ""
-#~ "License GPLv3+: GNU GPL version 3 or later <%s>.\n"
-#~ "This is free software: you are free to change and redistribute it.\n"
-#~ "There is NO WARRANTY, to the extent permitted by law.\n"
-#~ msgstr ""
-#~ "License GPLv3+: GNU GPL version 3 or later <%s>.\n"
-#~ "This is free software: you are free to change and redistribute it.\n"
-#~ "There is NO WARRANTY, to the extent permitted by law.\n"
-
-#, c-format
-#~ msgid "Written by %s.\n"
-#~ msgstr "ავტორი: %s.\n"
-
-#, c-format
-#~ msgid "Written by %s and %s.\n"
-#~ msgstr "ავტორები: %s და %s.\n"
-
-#, c-format
-#~ msgid "Written by %s, %s, and %s.\n"
-#~ msgstr "ავტორები: %s, %s და %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "and %s.\n"
-#~ msgstr ""
-#~ "ავტორები: %s, %s, %s\n"
-#~ "და %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, and %s.\n"
-#~ msgstr ""
-#~ "ავტორები: %s, %s, %s,\n"
-#~ "%s და %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, %s, and %s.\n"
-#~ msgstr ""
-#~ "ავტორები: %s, %s, %s,\n"
-#~ "%s, %s და %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, %s, %s, and %s.\n"
-#~ msgstr ""
-#~ "ავტორები: %s, %s, %s,\n"
-#~ "%s, %s, %s და %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, %s, %s, %s,\n"
-#~ "and %s.\n"
-#~ msgstr ""
-#~ "ავტორები: %s, %s, %s,\n"
-#~ "%s, %s, %s, %s\n"
-#~ "და %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, %s, %s, %s,\n"
-#~ "%s, and %s.\n"
-#~ msgstr ""
-#~ "ავტორები: %s, %s, %s,\n"
-#~ "%s, %s, %s, %s\n"
-#~ "%s და %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, %s, %s, %s,\n"
-#~ "%s, %s, and others.\n"
-#~ msgstr ""
-#~ "ავტორები: %s, %s, %s,\n"
-#~ "%s, %s, %s, %s\n"
-#~ "%s, %s და სხვ.\n"
-
-#, c-format
-#~ msgid "Report bugs to: %s\n"
-#~ msgstr "შეცდომების შესახებ მიწერეთ: %s\n"
-
-#, c-format
-#~ msgid "Report %s bugs to: %s\n"
-#~ msgstr "%s-ის შეცდომების შესახებ მისაწერი ელფოსტა: %s\n"
-
-#, c-format
-#~ msgid "%s home page: <%s>\n"
-#~ msgstr "%s-ის საწყისი გვერდია: <%s>\n"
-
-#, c-format
-#~ msgid "General help using GNU software: <%s>\n"
-#~ msgstr "GNU-ის პროგრამული უზრუნველყოფის საერთო დახმარება: <%s >\n"
-
-#~ msgid "_open_osfhandle failed"
-#~ msgstr "_open_osfhandle -ის შეცდომა"
-
-#, c-format
-#~ msgid "%s subprocess"
-#~ msgstr "%s ქვეპროცესი"
-
-#~ msgid "failed to set file descriptor text/binary mode"
-#~ msgstr "ფაილის დესკრიპტორის ტექსტური/ბინარული რეჟიმის დაყენების შეცდომა"
-
-#~ msgid "stdin"
-#~ msgstr "stdin"
-
-#~ msgid "stdout"
-#~ msgstr "stdout"
-
-#~ msgid "stderr"
-#~ msgstr "stderr"
-
-#~ msgid "unknown stream"
-#~ msgstr "უცნობი ნაკადი"
-
-#, c-format
-#~ msgid "failed to reopen %s with mode %s"
-#~ msgstr "%s-ის %s რეჟიმში ხელახალი გახსნის შეცდომა"
-
-#~ msgid "string comparison failed"
-#~ msgstr "სტრიქონების შედარება შეუძლებელია"
-
-#~ msgid "Set LC_ALL='C' to work around the problem."
-#~ msgstr "პრობლემის მოსაცილებლად დააყენეთ LC_ALL='C'."
-
-#, c-format
-#~ msgid "The strings compared were %s and %s."
-#~ msgstr "შედარებული სტრიქონებია %s და %s."
-
-#~ msgid "cannot perform formatted output"
-#~ msgstr "ფორმატირებული გამოტანის შესრულება შეუძლებელია"
-
-#~ msgid "standard file descriptors"
-#~ msgstr "ფაილის სტანდარტული დესკტრიპტორები"
-
-#, c-format
-#~ msgid "invalid %s%s argument '%s'"
-#~ msgstr "არასწორი %s%s-ის არგუმენტი: '%s'"
-
-#, c-format
-#~ msgid "invalid suffix in %s%s argument '%s'"
-#~ msgstr "%s%s-ის არგუმენტის, '%s'-ის არასწორი სუფიქსი"
-
-#, c-format
-#~ msgid "%s%s argument '%s' too large"
-#~ msgstr "%s%s-ის არგუმენტი %s ძალიან დიდია"
-
-#, c-format
-#~ msgid "failed to copy '%s' to '%s'"
-#~ msgstr "%s-ის %s-ში კოპირება ჩავარდა"
-
-#, c-format
-#~ msgid "%s invocation failed"
-#~ msgstr "%s-ის ჩაწოდება ჩავარდა"
-
-#~ msgid "? at start of expression"
-#~ msgstr "? გამოსახულების დასაწყისში"
-
-#~ msgid "* at start of expression"
-#~ msgstr "* გამოსახულების დასაწყისში"
-
-#~ msgid "+ at start of expression"
-#~ msgstr "+ გამოსახულების დასაწყისში"
-
-#~ msgid "{...} at start of expression"
-#~ msgstr "{...} გამოსახულების დასაწყისში"
-
-#~ msgid "stray \\ before unprintable character"
-#~ msgstr "უცხო \\ დაუბეჭდავად  სიმბოლომდე"
-
-#~ msgid "stray \\ before white space"
-#~ msgstr "უცხო \\ თეთრ გამოტოვებამდე"
-
-#~ msgid "stray \\"
-#~ msgstr "უცხო \\"
-
-#~ msgid "datetime"
-#~ msgstr "თარიღი და დრო"
-
-#~ msgid "time"
-#~ msgstr "დრო"
-
-#~ msgid "zone"
-#~ msgstr "ზონა"
-
-#~ msgid "date"
-#~ msgstr "თარიღი"
-
-#~ msgid "day"
-#~ msgstr "დღე"
-
-#~ msgid "relative"
-#~ msgstr "ფარდობითი"
-
-#~ msgid "number"
-#~ msgstr "ნომერი"
-
-#~ msgid "hybrid"
-#~ msgstr "ჰიბრიდი"
-
-#~ msgid "incorrect timezone"
-#~ msgstr "არასწორი დროის სარტყელი"
-
-#~ msgid "error: initial year out of range\n"
-#~ msgstr "შეცდომა: საწყისი წელი შუალედს გარეთაა\n"
-
-#~ msgid "error: parsing failed\n"
-#~ msgstr "შეცდომა: დამუშავება ჩავარდა\n"
-
-#, c-format
-#~ msgid "system default"
-#~ msgstr "სისტემის ნაგულისხმევი"
-
-#~ msgid "warning: '.' should be ':'"
-#~ msgstr "გაფრთხილება: '.' უნდა იყოს \":\""
-
-#, c-format
-#~ msgid "%s: %s"
-#~ msgstr "%s: %s"

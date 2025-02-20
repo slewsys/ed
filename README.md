@@ -6,15 +6,19 @@
 - [Installation](#installation)
    - [Binary Distributions](#binary-distributions)
    - [Prerequisites for building from source](#prerequisites-for-building-from-source)
-      - [CentOS/RHEL](#centosrhel)
-      - [Debian/Ubuntu](#debianubuntu)
+      - [AlmaLinux/RockyLinux](#almalinuxrockylinux)
       - [Fedora](#fedora)
+      - [RHEL](#rhel)
+      - [OmniOS](#omnios)
       - [OpenSUSE](#opensuse)
-   - [Building from source](#building-from-source)
+      - [Debian/Ubuntu](#debianubuntu)
+      - [FreeBSD](#freebsd)
+      - [OpenBSD](#openbsd)
+   - [Building from Source](#building-from-source)
    - [Building from Git](#building-from-git)
-   - [Building a Debian package](#building-a-debian-package)
+   - [Building RPM and Debian packages](#building-rpm-and-debian-packages)
 - [Tutorials](#tutorials)
-- [Extensions to the SUSv4 standard](#extensions-to-the-susv4-standard)
+- [Extensions to the POSIX.1-2024 standard](#extensions-to-the-posix1-2024-standard)
    - [Command-line address arguments](#command-line-address-arguments)
    - [Scrolling](#scrolling)
    - [Cut-and-Paste](#cut-and-paste)
@@ -29,7 +33,7 @@
    - [Global Search](#global-search)
    - [Piped Input](#piped-input)
    - [SunOS Dialect](#sunos-dialect)
-- [Deviations from the SUSv4 standard](#deviations-from-the-susv4-standard)
+- [Deviations from the POSIX.1-2024 standard](#deviations-from-the-posix1-2024-standard)
    - [Extended Regular Expressions](#extended-regular-expressions)
    - [Pattern delimiters](#pattern-delimiters)
    - [Undo within global command](#undo-within-global-command)
@@ -37,19 +41,26 @@
    - [Shell command arguments](#shell-command-arguments)
 - [Examples](#examples)
    - [Repeated Substitution Modifiers](#repeated-substitution-modifiers)
+   - [Reworked Sed Examples](#reworked-sed-examples)
+      - [Joining Lines](#joining-lines)
+      - [Centering Lines](#centering-lines)
+      - [Incrementing Numbers](#incrementing-numbers)
+      - [Printing Bash Environment](#printing-bash-environment)
+      - [Reversing Characters of Lines](#reversing-characters-of-lines)
+      - [Adding Headers](#adding-headers)
+      - [Reversing Lines of Files](#reverse-lines-of-files)
+      - [Numbering Lines](#numbering-lines)
+      - [Squeezing Blank Lines](#squeezing-blank-lines)
+   - [Integrating Ed, Sed and Perl](#integrating-ed-sed-and-perl)
 - [References](#references)
 
 ## Description
 
-Ed is an implementation of the Unix line editor. It is 100% POSIX
-compatible, 8-bit clean with 64-bit addressing. It includes the GNU
-regular expression library, but can be linked against any
-POSIX-compatilbe alternative.
-
-Several optional extensions to the SUSv4 standard are described
-[below](#extensions-to-the-susv4-standard).
-The extensions are careful not to alter `ed`'s standard behavior and
-so can be safely enabled by default.
+Ed is an implementation of the standard Unix editor. Several
+(optional) extensions to the POSIX.1-2024 standard are available as described
+[below](#extensions-to-the-susv4-standard). The extensions are careful
+not to alter `ed`'s traditional behavior and so can be safely enabled
+by default.
 
 ## Installation
 ### Binary Distributions
@@ -59,167 +70,246 @@ Some binary packages are available - see
 
 ### Prerequisites for building from source
 
-To build `ed` from source, the following prerequisite packages are
-needed:
+To build `ed` from source, the following packages are needed:
 
  - **GNU** `autoconf`,
  - **GNU** `automake`,
- - **GNU** `autopoint`,
+ - **GNU** `autopoint` (if not provided by gettext),
  - **GNU** `gettext`,
- - **GNU** `libtool`, and
- - **GNU** `texinfo`.
+ - **GNU** `libtool`,
+ - **GNU** `make`, and
+ - `openssl`.
 
-Additional packages for generating PDFs of Brian W. Kernighan's
-`ed` tutorials are:
+Additional packages used for testing and generating PDFs of Brian W.
+Kernighan's `ed` tutorials are:
 
- - **GNU** `texi2dvi`,
- - **GNU** `roff`, and
- - `ghostscript`.
+ - **GNU** `Texinfo`,
+ - **TeXLive** or **MacTeX**,
+ - **GNU** `groff`,
+ - `ncal`,
+ - `valgrind`, and
+ - `zstd`.
 
-#### CentOS/RHEL
+#### AlmaLinux/RockyLinux
 
-On Red Hat and Red Hat-based systems, the prerequisite packages can be
-installed by running the commands:
+On Cenots-based systems, prerequisite packages can be installed by
+running (with root privileges):
 
 ```shell
-sudo dnf group install 'Development Tools'
-sudo dnf install -y gettext-devel ghostscript groff \
-    openssl-devel textinfo zstd
+dnf config-manager --set-enabled crb
+dnf install -y --refresh autoconf automake gcc gettext-devel git \
+    glibc-gconv-extra groff libtool openssl-devel texinfo \
+    texinfo-tex zstd
+```
+
+#### Fedora
+
+On Fedora, prerequisite packages can be installed by running (with
+root privileges):
+
+```shell
+dnf update --refresh
+dnf install -y autoconf automake gcc gettext-devel git \
+    glibc-gconv-extra groff libtool openssl-devel texinfo \
+    texinfo-tex
+```
+
+#### RHEL
+
+Red Hat Enterprise Linux 9 and 10 (beta) present hurdles due to a
+compromised `perl` binary and (presumably therefore) no `Texinfo` package.
+Begin by installing what is available (with root privileges):
+
+```
+dnf install -y \
+    https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
+dnf install -y --refresh autoconf automake gcc gettext-devel git \
+    glibc-gconv-extra groff libtool ncurses-devel openssl-devel \
+    texlive-scheme-basic zstd
+```
+
+Now build `perl` and `Texinfo` (preferably) as a non-privileged user:
+
+```
+git clone https://github.com/asdf-vm/asdf.git ~/.asdf
+source ~/.asdf/asdf.sh
+asdf plugin add perl
+latest=$(asdf latest perl)
+asdf install perl $latest
+asdf global perl $latest
+curl -sSLO https://ftp.gnu.org/gnu/texinfo/texinfo-7.2.tar.xz
+tar -C ~/ -Jxf ${PWD}/texinfo-7.2.tar.xz
+cd ~/texinfo-7.2
+./configure --prefix=/usr
+make -j$(nproc)
+```
+
+Finally, as user root, install `Texinfo`:
+
+```
+make install
+```
+
+#### OmniOS
+
+On OmniOS, prerequisite packages can be installed by running (with root privileges):
+
+```shell
+pkg install \
+    developer/build/autoconf \
+    developer/build/automake \
+    developer/gcc14 \
+    developer/build/gnu-make \
+    developer/build/libtool \
+    text/gnu-gettext \
+    system/library/iconv/unicode \
+    system/library/iconv/extra \
+    library/security/openssl-3 \
+    text/groff \
+    ooce/text/texinfo \
+    ooce/application/texlive \
+    versioning/git \
+    compress/zstd
+```
+
+To expose `TeX` and `Texinfo` binaries, extend PATH variable with, e.g.:
+
+```
+export PATH=${PATH}:/opt/ooce/bin:/opt/ooce/texlive/bin
+```
+
+#### OpenSUSE
+
+On OpenSUSE, the prerequisite packages can be installed by running (with root privileges):
+
+```shell
+zypper --non-interactive install -y autoconf automake gcc \
+    gettext-tools groff libopenssl-3-devel libtool make \
+    makeinfo texinfo texlive-texinfo zstd
 ```
 
 #### Debian/Ubuntu
 
 On Debian/Ubuntu systems, the prerequisite packages can be installed
-by running the command:
+by running (with root privileges):
 
 ```shell
-sudo apt update
-sudo apt install -y build-essential autoconf automake \
-    autopoint gettext ghostscript groff libssl-dev \
-    libtool ncal texlive texinfo zstd
+apt update
+apt install -y  autoconf automake autopoint gcc gettext git \
+    groff libssl-dev libtool make ncal texinfo texlive-binaries zstd
 ```
 
-#### Fedora
+#### FreeBSD
 
-On Fedora, the prerequisite packages can be installed by running the
-commands:
+On FreeBSD, the prerequisite packages can be installed by running (with root privileges):
 
 ```shell
-sudo dnf group install c-development
-sudo dnf install -y gettext-devel ghostscript groff \
-    openssl-devel texinfo-tex texinfo zstd
+pkg install -y autoconf automake gmake libtool gettext-tools \
+    openssl groff texinfo texlive-full git
 ```
 
-#### OpenSUSE
+#### OpenBSD
 
-On OpenSUSE, the prerequisite packages can be installed by running the
-commands:
+On OpenBSD, the prerequisite packages can be installed by running (with root privileges):
 
 ```shell
-sudo zypper --non-interactive install -t pattern devel_C_C++
-sudo zypper --non-interactive install -y gettext-tools ghostscript \
-    groff libopenssl-3-devel texlive-textinfo zstd
+pkg_add autoconf automake gmake gettext-tools git libtool \
+    openssl  groff texinfo
 ```
 
-### Building from source
-The easiest way to build from source is to run:
+If autoconf, say, v2.72, and automake v1.16 were selected, run:
 
-```shell
-curl -L https://github.com/slewsys/ed/releases/download/v2.0.13/ed-2.0.13.tar.gz |
-    gzip -cd |
-    tar -xf -
-cd ./ed-2.0.13
-./configure --enable-all-extensions --with-included-regex
-make
-sudo make install
+```
+export AUTOCONF_VERSION=2.72
+export AUTOMAKE_VERSION=1.16
+```
+
+### Building from Source
+
+GitHub's provided "Source code" downloads are missing the GNU
+Autotools-generated files. So with these, it's necessary to run
+`./autogen.sh` before `./configure`. If GNU Autotools is not
+available, then go with the `zstd` archive instead.
+
+With prerequisites installed per above, download and extract the `ed` source archive from
+[Releases](https://github.com/slewsys/ed/releases), e.g.:
+
+```
+curl -sSL https://github.com/slewsys/ed/releases/download/v2.1.1/ed-2.1.1.tar.zst |
+    tar --zstd -xf -
+```
+
+Then configure, compile and test, e.g.:
+
+```
+cd ./ed-2.1.1
+./configure --prefix=/usr --enable-all-extensions
+gmake
+gmake check
+```
+
+Extensions can be individually enabled or disabled. To enable all
+extensions except encryption, for example, run `configure` as follows:
+
+```
+./configure --prefix=/usr --enable-all-extensions \
+    --disable-ed-encryption
 ```
 
 ### Building from Git
-Updating Natural Language translation files requires:
 
- - **GNU** `gettext` tools.
-
-Generating documentation requires:
-
- - a typesetting system (e.g., `groff` or `troff`),
- - **GNU** `texinfo` and
- - additional tools for producing PDFs (.e.g, `texi2pdf` and `ps2pdf`).
-
-Ruunning tests requires:
-
- - **GNU** `make`
- - **GNU** `automake`,
- - **GNU** `autoconf` and
- - **GNU** `libtool`.
-
-Assuming these are available, run:
+With prerequisites installed per above, run:
 
 ```shell
-git clone https://github.com/slewsys/ed
+git clone https://github.com/slewsys/ed.git
 cd ./ed
 ./autogen.sh
-./configure --enable-all-extensions --with-included-regex
-make
-make check
-sudo make install
-```
-### Building a Debian package
-To build a Debian package with `gbp`:
-
-Install prerequisites on Debian/Ubuntu:
-
-```shell
-sudo apt build-dep ed
-sudo apt install git-buildpackage libssl-dev texinfo
+./configure --prefix=/usr --enable-all-extensions --with-included-regex
+gmake
+gmake check
 ```
 
-Create a destination directory for Debian build products:
+Install with root privileges:
 
-```shell
-mkdir build
-cd ./build
+```
+gmake install
 ```
 
-Clone **ed** repository into destination directory and run **Git Buildpackage** (`gbp`):
+### Building RPM and Debian packages
 
-```shell
-git clone https://github.com/slewsys/ed ed-2.0.13
-cd ./ed-2.0.13
-git branch upstream
-gbp buildpackage --git-debian-branch=main --git-upstream-tree=branch
+If the requisite OCI container infrastructure is available (currently,
+`podman` and `buildah` are required), the top-level Makefile has
+targets for building RPM and Debian packages as follows. After
+configuring the source per above, specify the desired architecture and
+package type, e.g. for RPMs:
+
+```
+make amd64-rpm
 ```
 
-`gbp` might fail with the error:
+and for Debian packages:
 
-> dpkg-source: info: local changes detected, the modified files are:
-> ed-2.0.13/Makefile.in
-> ed-2.0.13/aclocal.m4
-> ed-2.0.13/config.h.in
-> ed-2.0.13/configure
-> ed-2.0.13/doc/Makefile.in
-> ed-2.0.13/doc/bwk/Makefile.in
-> ed-2.0.13/lib/Makefile.in
-> ed-2.0.13/src/Makefile.in
-> ed-2.0.13/testsuite/Makefile.in
-
-This reflects the fact that the **ed** repository does not contain
-generated files. To resolve this, add the missing files to the tar
-archive and run `gbp` again:
-
-```shell
-cd ..
-gunzip ./ed_2.0.13.orig.tar.gz
-tar --append -f ./ed_2.0.13.orig.tar \
-ed-2.0.13/{Makefile.in,aclocal.m4,config.h.in,configure,doc/Makefile.in,\
-doc/bwk/Makefile.in,lib/Makefile.in,src/Makefile.in,testsuite/Makefile.in,\
-po/stamp-po}
-gzip ed_2.0.13.orig.tar
-cd -
-gbp buildpackage --git-debian-branch=main --git-upstream-tree=branch
+```
+make amd64-deb
 ```
 
-The build products, Debian packages with *deb* suffix, should appear in
-the parent folder (*build*).
+RPMs can be built with architectures *amd64* and *arm46*.
+
+Deb packages can be built for *amd64*, *arm64* and *arm*.
+
+Distribution packages are saved under the *pkgs* subdirectory, e.g.,
+*pkgs/Feodra/amd64*.
+
+Debian packages are signed with the host ${USER}'s GNU gpg secret.
+Name and email address, as provided by `git config get`, are passed as
+arguments to the build container.
+
+All [ed v2.1.1 GitHub assets](https://github.com/slewsys/ed/releases/tag/v2.1.1)
+are created using GNU `parallel`:
+
+```
+parallel make ::: {amd64,arm64}-{rpm,deb} arm-deb
+```
 
 ## Tutorials
 
@@ -228,10 +318,10 @@ documents and NROFF manuscripts. See _doc/bwk/_ or, from within `ed`,
 type:
 
 ```ed
-!info ed RET m tutorial RET
+! info ed <RET> m tutorial <RET>
 ```
 
-## Extensions to the SUSv4 standard
+## Extensions to the POSIX.1-2024 standard
 
 This implementation of `ed` scores 100% on *The Open Group Shell and
 Utilities Verification Suite of IEEE Std 1003.1-2017* when either the
@@ -240,8 +330,9 @@ with commnad-line option **-G**.
 
 None of the `ed` extensions discussed below are enabled by default.
 They can all be enabled with `configure` option
-**--enable-all-extensions**.  Alternatively, individual extensions can
-be enabled as described below.
+**--enable-all-extensions**. Alternatively, individual extensions can
+be enabled (or if preceded by **--enable-all-extensions**, disabled) as
+described below.
 
 ### Command-line address arguments
 
@@ -288,10 +379,10 @@ per recommendation of *Unicode technical report UAX #11*.
 
 ### Cut-and-Paste
 
-Cut-and-paste is enabled by `configure` option **--enable-ed-register**.
+Cut-and-paste is enabled by the `configure` option **--enable-ed-register**.
 
-It is implemented by means of `ed`'s move (**m**), copy (**t**) and
-delete (**d**) commands:
+It is implemented by means of `ed`'s move (**m**) and copy (**t**)
+commands:
 
      (.,.)m>  - Moves address range to unnamed register (overwriting
                 any previous contents).
@@ -306,31 +397,23 @@ copy commands:
      (.,.)m(.) - Moves address range to after given address.
      (.,.)t(.) - Copies address range to after given address.
 
-evidently the redirection operator **<** reads from the unnamed
-register and **>** writes to the unnamed register.
+evidently the redirection operator **<** reads from the default
+register and **>** writes to the default register.
 
-Deleted lines are automatically moved to - and overwrite the contents
-of - the unnamed register. So, for example, after deleting lines 1
-through 10, they can be restored from the unnamed register to the end
-of buffer via the `ed` command sequence:
-
-     1,10d
-     <m$
-
-Named registers are also supported: **<n** reads from register *n*,
+Numbered registers are also supported: **<n** reads from register *n*,
 where *n* is an integer in the range [**0** ... **9**], and **>n** writes to
 register *n*.
 
 Lines can be appended to registers using the syntax **>>n** or **>>**,
-in the case of the unnamed register.
+in the case of the default register.
 
 Finally, it's possible to move and copy the contents of registers
-directly to other registers. For instance, to expand on the example
-above, after deleting lines 1 through 10, let's move them from the
-unnamed register to register 5 and then later restore the lines from
+directly to other registers. For instance, after deleting lines 1
+through 10 by moving them to the default register, move them from the
+default register to register 5 and then later restore the lines from
 register 5 to the end of the buffer as follows:
 
-    1,10d
+    1,10m>
     <m>5
     ...
     <5m$
@@ -377,7 +460,7 @@ The new commands are summarized as follows:
                  that file.
     ~E file-glob [...]
                - Unconditionally edits the first file in the file
-                 list. Similar the **~e** command except that
+                 list. Similar to the **~e** command except that
                  unwritten changes are discarded without warning.
     ~en        - Edits the "next" file in the file list and prints
                  its name to standard output. Any previous buffer
@@ -425,7 +508,8 @@ diagnostic *Too many file names*.
 If the first character of a file argument is exclamation mark (**!**),
 then the rest of the line is interpreted as a shell command. In this
 case, backslash (**\\**) escape processing is limited to protecting
-percent signs (**%**) from being expanded to the default file name.
+percent signs (**%**) from being expanded to the default file name or
+script name (**%-**).
 
 In contrast, when opening a file, backslash escape processing is
 limited to protecting an initial exclamation mark (**!**), e.g., `ed
@@ -465,7 +549,7 @@ HELLO, WORLD
 
 ### File Locking
 
-File locking is enabled by `configure` option **--enable-file-lock**.
+File locking is enabled by the `configure` option **--enable-file-lock**.
 Advisory locking is provided by _flock (2)_, if available, otherwise
 _fcntl (2)_. If help mode is enabled (i.e., if either `ed` is invoked
 with command-line option **-v** or, within `ed`, command **H** is
@@ -475,72 +559,123 @@ standard error. For historical compatibility, no errors are flagged.
 ### Macros
 
 Macros are collections of `ed` scripts stored in _registers_ that can
-be run against the editor buffer using the syntax: **@n**
+be run against the editor buffer using the syntax: **(.,.)@n**
 where **n** is a register number. Macros are enabled with the
 `configure` option **--enable-ed-macro**.
 
-Here's an example session that loads and executes an ed script:
+Here's an ed session that loads a script, saves it to a register, and
+then runs the script as a macro:
 
 ```shell
-$ ed -p '*'          <-- Prompt for commands with '*'.
-*r contrib/cats.ed   <-- Read a script from the ./contrib directory.
-683
-*,m>1                <-- Move it to register 1.
-*r COPYING           <-- Read in another file with lots of blank lines.
-55935
-*@1                  <-- Run the script in register 1.
-...
-*wq COPYING          <-- A wq command alone would overwrite cats.ed!
-55932                <-- Saved file is smaller by three newlines.
+$ ed -p '*' src/main.c  <-- Prompt for commands with '*'.
+25901                   <-- Size of src/main.c in bytes.
+*kz                     <-- Mark end of file.
+*r contrib/cats.ed      <-- Read a script from the ./contrib directory.
+828
+*-2s/^/#/               <-- Comment out the script's print statement.
+*'z+,$m>                <-- Move script to the default register.
+*@                      <-- Run the script in the default register.
+898
+*wq /dev/null           <-- Save to /dev/null and quit.
+25894                   <-- Saved-file size reduced by seven bytes (newlines).
 $
 ```
 
+Macros can operate over a range of addresses, e.g.:
+
+```
+ed -e 'a' -e 's;_*;.;gp' -e . -e 'm>' -e ',@'  <(cal 1 395)
+```
+
+
+> <samp>. . . . .J.a.n.u.a.r.y. .0.3.9.5. . . . .</samp> \
+> <samp>.S.u. .M.o. .T.u. .W.e. .T.h. .F.r. .S.a.</samp> \
+> <samp>. . . . .1. . .2. . .3. . .4. . .5. . .6.</samp> \
+> <samp>. .7. . .8. . .9. .1.0. .1.1. .1.2. .1.3.</samp> \
+> <samp>.1.4. .1.5. .1.6. .1.7. .1.8. .1.9. .2.0.</samp> \
+> <samp>.2.1. .2.2. .2.3. .2.4. .2.5. .2.6. .2.7.</samp> \
+> <samp>.2.8. .2.9. .3.0. .3.1. . . . . . . . . .</samp> \
+> <samp>. . . . . . . . . . . . . . . . . . . . .</samp>
+
+This particular example is equivalent to the global command:
+
+```
+ed -e 'g;.;s;_*;.;gp'  <(cal 1 395)
+```
+
+However, global commands (`G`, `g`, `V`, or `v`) cannot be nested,
+whereas macros can. Global commands can call macros, though. See the
+[Examples](#examples) section for more demonstrations.
+
 ### Script Flags
 
-`ed` dropped the programming constructs of its ancestor, `QED`, that
-were later adopted by `sed`, but it's REPL interface and random access
-addressing still prove useful on occasion. Additional command-line
-flags for scripting are enabled by `configure` option
-***--enable-script-flags***. These are summarized as follows:
+Command-line flags adopted from `sed` for scripting are enabled by the
+`configure` option ***--enable-script-flags***. These are summarized
+as follows:
 
-    -i, --in-place[=SUFFIX]  Write file before closing, optionally
-                             back up the original.
-    -e, -expression=COMMAND  Add COMMAND to script input - implies -s.
-    -f, --file=SCRIPT        Read commands from file SCRIPT - implies -s.
+    --in-place, -i [SUFFIX]  Write file before closing, optionally
+                             back up the original if SUFFIX provided.
+    --expression, -e COMMAND Add COMMAND to script input - implies -s.
+    --file, -f SCRIPT        Read commands from file SCRIPT - implies -s.
 
 The flag **-f** enables stand-alone `ed` scripts.  For example:
 
 ```
-#!/bin/ed -f
+#!/usr/bin/ed -f
 #
-# @(#) cats.ed
-#
-# SYNOPSIS
-#   cats.ed file >new
+# @(#) tac.ed
 #
 # DESCRIPTION
-#   This script replaces a sequence of multiple newlines in a file with
-#   a single newline and prints the result to the standard output.
+#   Reverse the order of lines in given file(s) and print to standard output.
 #
-#
-# Append token (∴@∴) to end of each line.
-,s/$/∴@∴/
-# Join all lines
-,j
-# Substitue two newlines for sequences of multiple tokens not at EOF.
-s;\(∴@∴\)\{2,\}\([^∴]\);\
-\
-\2;g
-# Substitue one newline for sequences of one or more tokens.
-,s;\(∴@∴\)\{1,\};\
-;g
-# Print the result to standard output.
+g/./m0
 ,p
-# Avoid buffer-modified warning by quitting unconditionally.
 Q
 ```
 
-Flags **-i** and **-e** are also borrowed from  `sed`.  The `sed` command:
+If saved to a file, say *tac.ed*, and made executable, it can be
+used as a Unix command, e.g.:
+
+```
+./tac.ed tac.ed
+```
+
+> Q \
+> ,p \
+> g/./m0 \
+> \# \
+> \#   Reverse the order of lines in given file(s) and print to standard output. \
+> \# DESCRIPTION \
+> \# \
+> \# @(#) tac.ed \
+> \# \
+> \#!/usr/bin/ed -f
+
+Note that ed scripts are not Unix *filters*, e.g., the following does
+not work:
+
+```
+cat tac.ed | ./tac.ed
+```
+
+The reason is that `ed` interprets input from pipes as `ed` scripts,
+not text to edited (like `sed`).  In fact, the following are equivalent:
+
+```
+./tac.ed tac.ed
+cat tac.ed | ed - tac.ed
+ed -f tac.ed tac.ed
+```
+
+To run `ed` in a filter context, use process substitution instead, e.g.:
+
+```
+./tac.ed <(cat tac.ed)
+```
+
+
+The `ed` flags **-i** and **-e** are used in the same manner as with
+`sed`. The `sed` command:
 
 ```shell
 sed -i -e 's/old/new/' file
@@ -552,7 +687,7 @@ in `ed` dialect becomes:
 ed -i -e ',s/old/new/' file
 ```
 
-Note the difference here: `sed` commands are applied to every input
+Note the difference: `sed` commands are applied to every input
 line by default, whereas `ed` requires an explicit range.
 
 Each `ed` expression argument is placed on a line by itself. So the
@@ -563,27 +698,29 @@ a
 hello
 world
 .
-g/x*/s//!/gp
+g/./s//&\
+/g
+,p
 ```
 
 could be written on the command line as:
 
 ```shell
-ed -e 'a' -e 'hello' -e 'world' -e '.' -e 'g/x*/s//!/gp'
+ed -e 'a' -e 'hello' -e 'world' -e '.' -e 'g/./s//&\' -e '/g' -e ',p'
 ```
 
-or, using Bash shell construct $'string' to decode
+or, using the Bash shell construct $'string' to decode
 backslash-escaped characters in *string*:
 
 ```shell
-ed -e $'a\nhello\nworld\n.\ng/x*/s//!/gp'
+ed -e $'a\nhello\nworld\n.\ng/./s//&\\\n/g\n,p\n'
 ```
 
 Note that this last example is equivalent to the more traditional (and
 equally unreadable):
 
 ```shell
-printf 'a\nhello\nworld\n.\ng/x*/s//!/gp\n' | ed -
+printf 'a\nhello\nworld\n.\ng/./s//&\\\n/g\n,p\n' | ed -
 ```
 
 ### ED Environment Variable
@@ -633,8 +770,8 @@ $
 
 ### BSD Dialect
 
-BSD dialect has been implemented wherever it does not conflict
-with the SUSv4 standard. This includes the following commands:
+BSD dialect has been implemented wherever it does not conflict with
+the POSIX.1-2024 standard. This includes the following commands:
 
 ```shell
 (.,.)s[rgpn]     - to repeat a previous substitution,
@@ -648,25 +785,41 @@ BSD line-addressing syntax - i.e., **^** as synonym for **+** and
 
 ### Global Search
 
-The SUSv4 interactive global commands **G** and **V** are extended to
-support multiple commands, including **a**, **i** and **c**. The command
-format is the same as for the global commands **g** and **v**, i.e., one
-command per line with each line, except for the last, ending in
-backslash (**\\**).
+The POSIX.1-2024 interactive global commands **G** and **V** are
+extended to support multiple commands, including **a**, **i** and
+**c** as well as macros (i.e., **@n** for optional non-negative
+integer n < 10). The command format is the same as for the global
+commands **g** and **v**, i.e., one command per line with each line,
+except for the last, ending in backslash (**\\**).
 
 ### Piped Input
 
-For backward compatibility, errors in piped scripts do not force ed
-to exit. SUSv4 only specifies `ed`'s response for input via regular
+For backward compatibility, errors in piped scripts do not force `ed`
+to exit. POSIX.1-2024 only specifies `ed`'s response for input via regular
 files (including here documents) or standard input.
+
+### Named Pipes
+
+Ed reads the output of named pipes in read-only mode, e.g., the
+following session is valid:
+
+```shell
+ed -p '*' <(echo hello)
+6
+*p
+hello
+*f
+/dev/fd/63
+*
+```
 
 ### SunOS Dialect
 
 For SunOS `ed` compatibility, `ed` runs in restricted mode if
-invoked as red. This limits editing of files in the local directory
+invoked as `red`. This limits editing of files in the local directory
 only and prohibits shell commands.
 
-## Deviations from the SUSv4 standard
+## Deviations from the POSIX.1-2024 standard
 
 ### Extended Regular Expressions
 
@@ -679,13 +832,13 @@ To support the BSD **s** command (see
 [Repeated Substitution Modifiers](#repeated-substitution-modifiers)
 below), substitution
 patterns cannot be delimited by numbers or the characters **r**, **g**
-and **p**. In contrast, SUSv4 specifies that any character other than
+and **p**. In contrast, POSIX.1-2024 specifies that any character other than
 space or newline can used as a delimiter.
 
 ### Undo within global command
 
 Since the behavior of undo (**u**) within a global (**g**) command
-list is not specified by SUSv4, `ed` follows the behavior of the SunOS
+list is not specified by POSIX.1-2024, `ed` follows the behavior of the SunOS
 `ed`: undo forces a global command list to be executed only once,
 rather than for each line matching a global pattern. In addtion, each
 instance of **u** within a global command undoes all previous commands
@@ -713,7 +866,8 @@ hello world
 *
 ```
 
-In the previous example, note that the default file name is not set, i.e.,
+In the previous example, note that the default file name is not set,
+i.e.,
 
 ```shell
 *f
@@ -731,12 +885,13 @@ In the previous example, note that the default file name is not set, i.e.,
  | s        | s;b;y  |                                          |
 
 
-| Sequence | Effect | Explanation                           |
-| :--      |:--     |:--                                    |
-| s;a;x    |        | Intermediate search commands (**/b**) |
-| /b       |        | do not affect regexp of repeated      |
-| s        | s;a;x  | substitution command (**s**).         |
-
+| Sequence | Effect   | Explanation                           |
+| :--      |:--       |:--                                    |
+| s;a;x    |          | Intermediate search commands (**/b**) |
+| /b       |          | do not affect regexp of repeated      |
+| s        | s;a;x    | substitution command (**s**).         |
+| //s      | /b/s;a;x | Substitutions don't affect repeated   |
+|          |          | searches either.                      |
 
 | Sequence | Effect | Explanation                                |
 | :--      |:--     |:--                                         |
@@ -801,6 +956,313 @@ In the previous example, note that the default file name is not set, i.e.,
 | s;a;x;gl  |           | Print suffix (**l**) is toggled by repeated |
 | sp        | s;a;x;g   | substitution print modifier (**p**).        |
 | sp        | s;a;x;gl  |                                             |
+
+### Reworked Sed Examples
+
+The GNU `sed` manual provides examples of scripting with `sed`. This
+section reworks some of those in `ed`. Whereas the `sed` manual uses
+traditional syntax, the following `ed` scripts use many of the
+extensions described above. The intent of this section is to offer
+some justification of the extensions as well as illustrate their
+utility.
+
+#### Joining Lines
+
+Goal: Join the second and third lines of *lines.txt*.
+
+`cat lines.txt`
+
+> hello\
+> hel\
+> lo\
+> hello
+
+`ed -e '2,3j' -e ',p' lines.txt`
+
+> hello\
+> hello\
+> hello
+
+---
+
+Goal: For each line ending with a backslash, join it with all
+subsequent lines until one that does not end with a backslash. Then
+remove the backslashes.
+
+`cat 1.txt`
+
+> this \\\
+> is \\\
+> a \\\
+> long \\\
+> line \
+> and another \\\
+> line
+
+`ed -e 'g;\\$;.,/[^\]$/j\' -e 's;\\;;g' -e ',p' 1.txt`
+
+> this is a long line \
+> and another line
+
+To avoid removing backslashes within lines, ending backslashes can
+first be replaced with an arbitrary token, e.g., **<@>**.
+
+---
+
+Goal: For all lines beginning with the a space, join them to the
+previous line that does not begin with a space.
+
+`cat 2.txt`
+
+> Subject: Hello \
+>     World \
+> Content-Type: multipart/alternative; \
+>     boundary=94eb2c190cc6370f06054535da6a \
+> Date: Tue, 3 Jan 2017 19:41:16 +0000 (GMT) \
+> Authentication-Results: mx.gnu.org; \
+>        dkim=pass header.i=@gnu.org; \
+>        spf=pass \
+> Message-ID: <abcdef@gnu.org> \
+> From: John Doe <jdoe@gnu.org> \
+> To: Jane Smith <jsmith@gnu.org>
+
+`ed -e 'g;^  *;s;; ;\'  -e '-,.j' -e ',p' 2.txt `
+
+> Subject: Hello World \
+> Content-Type: multipart/alternative; boundary=94eb2c190cc6370f06054535da6a \
+> Date: Tue, 3 Jan 2017 19:41:16 +0000 (GMT) \
+> Authentication-Results: mx.gnu.org; dkim=pass header.i=@gnu.org; spf=pass \
+> Message-ID: <abcdef@gnu.org> \
+> From: John Doe <jdoe@gnu.org> \
+> To: Jane Smith <jsmith@gnu.org>
+
+#### Centering Lines
+
+Goal: Center lines in given files within 80-columns, i.e., prepend
+each line with a number of spaces given by:
+
+```
+(80 - strlen(line)) / 2
+```
+
+```
+#!/usr/bin/ed -f
+#
+# @(#) center-lines
+#
+# SYNOPSIS
+#   center-lines file [...]
+#
+# Mark end of file to be centered.
+kx
+#
+# Append an ed script to center a line of text.
+a
+#
+# Trim spaces; copy line, then replace first (-) copy with resulting length.
+s;^[[:space:]]*;;
+s;[[:space:]]*$;;
+t
+-! tr -d '\n' | wc -c
+#
+# Wrap length in printf command that generates spaces for centering.
+s;^;-r ! printf "\\%$(( (80 - ;
+s;$;) / 2 ))s\\n" ''
+#
+# Move printf command to register No. 1 and run it.
+m>1
+@1
+#
+# Join the line of spaces and trimmed text.
+.,+j
+#
+# End of line-centering script. Move it to register No. 2.
+.
+'x+,$m>2
+#
+# Run script in register No. 2 for each line in the file.
+,@2
+#
+# Save the result with suffix .centered
+w ! cat >%.centered
+```
+
+#### Incrementing Numbers
+
+Goal: Increment each number in given files.
+
+Command-line option -E is used to enable extended regular expression syntax.
+
+```
+#!/usr/bin/ed -Ef
+#
+# @(#) increment-numbers
+#
+# SYNOPSIS
+#     increment-numbers file [...]
+#
+# Isolate each number and wrap it in a command that increments it.
+g/([^0-9]*)([0-9]+([.][0-9]*)?|[.][0-9]+)/s//\1\
+-r ! bc -l <<<\2+1\
+/g
+#
+# For each command, move it to the default register, execute it, and
+# then join the lines above and below.
+g/^-r !/m>\
+@\
+-,+j
+# Save the result with suffix .incremented.
+w ! cat >%.incremented
+```
+
+#### Printing Shell Environment
+
+Goal: Remove function definitions in the output of the `set` command.
+
+`ed -e 'g/^[^ ]* () $/.,/^}/d' -e ',p' <(set)`
+
+The shell idiom `<(command)`, called process substitution, creates a
+named piped (i.e., */dev/fd/n*) that `ed` can open as a read-only
+file.
+
+#### Reversing Characters of Lines
+
+Goal: Reverse lines characterwise.
+
+```
+#!/usr/bin/ed -f
+,! rev >%.reversed
+```
+
+That's cheating, but it also happens to be three times faster
+than `sed`. Actually `ed` can reverse strings the "intuitive" way:
+
+```
+ed -e 's;.;&\' -e ';g' -e 'g/./m0' -e ',jp' <(echo 'hello, world!')
+```
+
+> !dlrow ,olleh
+
+but this is admittedly very slow compared to `sed`'s version.
+
+#### Adding Headers
+
+Like GNU `sed`, `ed` can be used to safely modify multiple files at
+once:
+
+```
+ed -i -e '1i' -e '/* Copyright © FOO BAR */ -e '.' *.c
+```
+
+To include multiple lines, either make each line a separate expression
+of use the shell's special string syntax $'any ANSI C escape'.  The
+following produce the same result:
+
+```
+ed -i -e '1i' -e '/*'  \
+              -e ' * Copyright © FOO BAR' \
+              -e ' * Created by ...' \
+              -e ' */' *.c
+```
+
+and
+
+```
+ed -i -e '1i' -e $'/*\n * Copyright (C) FOO BAR\n * Created by ...\n */' *.c
+```
+
+Similarly, to insert an existing text file, say, LICENSE.txt:
+
+```
+ed -i -e '0r LICENSE.txt' *.c *.h
+```
+
+#### Reversing Lines of Files
+
+Goal: Reverse the order of lines in given files.
+
+```
+#!/usr/bin/ed -f
+g/./m0
+w ! cat >%.tac
+```
+
+#### Numbering Lines
+
+Goal: Add line numbers to files.
+
+```
+#!/usr/bin/ed -f
+,n
+```
+
+To enumerate and view a file one page at a time in an interactive `ed`
+session, use the command `1zn` and then `zn` for each page thereafter.
+To go backward one page, use `Zn`. To scroll by half pages, use `]n`
+(forward) and `[n` (backward). To scroll forward a single line, use
+`+Zn`. To scroll backward a single line, use `-Zn`. And, of course,
+`+5Zn` scrolls down five lines, etc.
+
+#### Squeezing Blank Lines
+
+Goal: Replace sequences of blank lines files with a single blank.
+
+An `ed` implementation is provided in the source repository (cf.
+[cats.ed](https://github.com/slewsys/ed/blob/main/contrib/cats.ed)).
+It demonstrates the use of tokens in place of newlines when working
+with multi-line constructs.
+
+#### Integrating Ed, Sed and Perl
+
+Goal: Generate an adjacency list of shell function calls.
+
+An implementation is available as
+[shell-call-graph](https://github.com/slewsys/ed/blob/main/contrib/shell-call-graph/shell-call-graph.in).
+This script is demonstrates `ed` running shell one-liners and editing
+the intermediate results. Input scripts are assumed to be structured
+as follows:
+
+```
+#!/usr/bin/env bash
+#
+func1 ()
+{
+    ...
+}
+
+func2 ()
+{
+    ...
+}
+
+...
+
+funcN ()
+{
+    ...
+}
+
+if test ."$0" = ."${BASH_SOURCE[0]}"; then
+    ...
+fi
+```
+
+In particular:
+
+- The keyword `function` is omitted.
+- Function declarations are on lines by themselves.
+- Function-closing curly braces (`}`) are on lines by themselves.
+- An `if` statement in column 1 at the end of the file  referencing
+  `$0` serves as the script's "main" function.
+- Statements within the `if` statement are on lines by themselves.
+- The closing `fi` keyword is in column 1 as well.
+
+To see the script in action, from the source repository run:
+
+```
+make -C contrib
+make -C contrib check
+```
 
 ## References
 

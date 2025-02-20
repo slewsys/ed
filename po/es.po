@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ed\n"
 "Report-Msgid-Bugs-To: bug-gnulib@gnu.org\n"
-"POT-Creation-Date: 2025-02-09 06:33-0500\n"
+"POT-Creation-Date: 2025-02-12 00:55-0500\n"
 "PO-Revision-Date: 2025-02-09 11:45+0000\n"
 "Last-Translator: Andrew Moore <slewsys@gmail.com>\n"
 "Language-Team: Spanish  <translation-team-es@lists.sourceforge.net>\n"
@@ -128,8 +128,8 @@ msgstr "Ningún expresión regular previa"
 msgid "dup2 error"
 msgstr "Error de dup2"
 
-#: src/buffer.c:136 src/io.c:96 src/io.c:167 src/io.c:645 src/io.c:696
-#: src/main.c:783 src/register.c:395
+#: src/buffer.c:136 src/io.c:96 src/io.c:167 src/io.c:650 src/io.c:701
+#: src/main.c:788 src/register.c:395
 msgid "File open error"
 msgstr "Error de apertura de archivo"
 
@@ -186,11 +186,11 @@ msgstr "Error en el descifrado (bloque dañado)"
 msgid "Decryption failed (incomplete block)"
 msgstr "Error en el descifrado (bloque incompleto)"
 
-#: src/cbc.c:384 src/io.c:565 src/io.c:837
+#: src/cbc.c:384 src/io.c:570 src/io.c:842
 msgid "File read error"
 msgstr "Error de lectura de archivo"
 
-#: src/cmds.c:43 src/io.c:487 src/main.c:368 src/register.c:302
+#: src/cmds.c:43 src/io.c:492 src/main.c:368 src/register.c:302
 msgid "End-of-file unexpected"
 msgstr "Fin-de-archivo inesperado"
 
@@ -206,7 +206,7 @@ msgstr "Error de bifurcación"
 msgid "Child process error"
 msgstr "Error de proceso hijo"
 
-#: src/cmds.c:347 src/filter.c:40 src/io.c:176 src/io.c:707
+#: src/cmds.c:347 src/filter.c:40 src/io.c:176 src/io.c:712
 #, c-format
 msgid "Exit status: %#x"
 msgstr "Estado de salido: %#x"
@@ -298,7 +298,7 @@ msgstr "Error de cierre de tubería"
 msgid "No previous command"
 msgstr "Ningún comando previa"
 
-#: src/io.c:57 src/io.c:614 src/main.c:232 src/main.c:732 src/main.c:795
+#: src/io.c:57 src/io.c:619 src/main.c:232 src/main.c:737 src/main.c:804
 #: src/register.c:36 src/register.c:83 src/register.c:142 src/register.c:152
 #: src/register.c:211 src/register.c:220 src/register.c:247 src/register.c:286
 #: src/register.c:353 src/register.c:413 src/register.c:453 src/register.c:492
@@ -309,12 +309,12 @@ msgstr "Error de búsqueda de archivo"
 msgid "File does not exist"
 msgstr "Archivo no existe"
 
-#: src/io.c:119 src/io.c:659
+#: src/io.c:119 src/io.c:664
 #, c-format
 msgid "%s: File already locked\n"
 msgstr "%s: Archivo ya bloqueado\n"
 
-#: src/io.c:143 src/io.c:636 src/io.c:674
+#: src/io.c:143 src/io.c:641 src/io.c:679
 msgid "File close error"
 msgstr "Error de cierre de archivo"
 
@@ -328,31 +328,31 @@ msgstr "Nueva línea insertado\n"
 msgid "Newline appended\n"
 msgstr "Nueva línea añadida\n"
 
-#: src/io.c:551 src/io.c:790
+#: src/io.c:556 src/io.c:795
 msgid "Broken pipe"
 msgstr "Tubería rota"
 
-#: src/io.c:621 src/register.c:254
+#: src/io.c:626 src/register.c:254
 msgid "File truncate error"
 msgstr "Error de trunca de archivo"
 
-#: src/io.c:743
+#: src/io.c:748
 msgid "File too big"
 msgstr "Archivo demasiado grande"
 
-#: src/io.c:796 src/io.c:816 src/io.c:827 src/main.c:743 src/main.c:751
+#: src/io.c:801 src/io.c:821 src/io.c:832 src/main.c:748 src/main.c:756
 msgid "File write error"
 msgstr "Error de escritura de archivo"
 
-#: src/io.c:860 src/parse.c:502
+#: src/io.c:865 src/parse.c:502
 msgid "File status error"
 msgstr "Error de obtiene estado de archivo"
 
-#: src/io.c:867
+#: src/io.c:872
 msgid "Access restricted to regular files"
 msgstr "Acceso es restringido a archivos regulares"
 
-#: src/io.c:936
+#: src/io.c:941
 msgid "File stat error"
 msgstr "Error de estado de archivo"
 
@@ -372,36 +372,36 @@ msgstr "ADVERTENCIA: Búfer modificado desde la última escritura"
 msgid "Argument list full"
 msgstr "Lista de argumentos llena"
 
-#: src/main.c:816
+#: src/main.c:825
 #, c-format
 msgid ""
 "Usage: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE...]\n"
 msgstr ""
 "Uso: %s [-] [-EGhiRrsVvwx] [-e COMANDO] [-f SCRIPT] [-p AVISO] [ARCHIVO...]\n"
 
-#: src/main.c:818
+#: src/main.c:827
 #, c-format
 msgid ""
 "Usage: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE]\n"
 msgstr ""
 "Uso: %s [-] [-EGhiRrsVvwx] [-e COMANDO] [-f SCRIPT] [-p AVISO] [ARCHIVO]\n"
 
-#: src/main.c:821
+#: src/main.c:830
 #, c-format
 msgid "Usage: %s [-] [-EGhRrsVvwx] [-p PROMPT] [FILE]\n"
 msgstr "Uso: %s [-] [-EGhiRrsVvwx] [-p AVISO] [ARCHIVO]\n"
 
-#: src/main.c:831
+#: src/main.c:840
 #, c-format
 msgid "Usage: %s [OPTION...] [FILE...]\n"
 msgstr "Modo de empleo: %s [OPCIÓN...] [ARCHIVO...]\n"
 
-#: src/main.c:834
+#: src/main.c:843
 #, c-format
 msgid "Usage: %s [OPTION...] [FILE]\n"
 msgstr "Modo de empleo: %s [OPCIÓN...] [ARCHIVO]\n"
 
-#: src/main.c:840
+#: src/main.c:849
 #, c-format
 msgid ""
 "Options:\n"
@@ -458,7 +458,7 @@ msgstr ""
 "Enviar problemas y solicitudes de extracción a:\n"
 "  <https://github.com/slewsys/ed>\n"
 
-#: src/main.c:862
+#: src/main.c:871
 #, c-format
 msgid ""
 "Options:\n"
@@ -505,7 +505,7 @@ msgstr ""
 "Enviar problemas y solicitudes de extracción a:\n"
 "  <https://github.com/slewsys/ed>\n"
 
-#: src/main.c:893
+#: src/main.c:902
 msgid "script, line %"
 msgstr "script, línea %"
 
@@ -596,7 +596,3 @@ msgstr "Demasiadas subexpresiones regex"
 #: src/undo.c:51
 msgid "Nothing to undo"
 msgstr "Nada que deshacer"
-
-#, fuzzy
-#~ msgid "fdopen error"
-#~ msgstr ""

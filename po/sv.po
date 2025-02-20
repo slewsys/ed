@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnulib 20241209\n"
 "Report-Msgid-Bugs-To: bug-gnulib@gnu.org\n"
-"POT-Creation-Date: 2025-02-09 06:33-0500\n"
-"PO-Revision-Date: 2024-12-14 10:02+0100\n"
+"POT-Creation-Date: 2025-02-12 00:55-0500\n"
+"PO-Revision-Date: 2025-02-13 10:17+0000\n"
 "Last-Translator: Göran Uddeborg <goeran@uddeborg.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -22,6 +22,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Bugs: Report translation errors to the Language-Team address.\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Crowdin-Project: standard-unix-text-editor\n"
+"X-Crowdin-Project-ID: 688517\n"
+"X-Crowdin-Language: sv-SE\n"
+"X-Crowdin-File: sv.po\n"
+"X-Crowdin-File-ID: 144\n"
 
 #: lib/getopt.c:282
 #, c-format
@@ -133,345 +138,284 @@ msgid "No previous regular expression"
 msgstr "Inget föregående reguljärt uttryck"
 
 #: src/buffer.c:122 src/register.c:438 src/register.c:477
-#, fuzzy
-#| msgid "Bus error"
 msgid "dup2 error"
-msgstr "Bussfel"
+msgstr "dup2-fel"
 
-#: src/buffer.c:136 src/io.c:96 src/io.c:167 src/io.c:645 src/io.c:696
-#: src/main.c:783 src/register.c:395
-#, fuzzy
-#| msgid "write error"
+#: src/buffer.c:136 src/io.c:96 src/io.c:167 src/io.c:650 src/io.c:701
+#: src/main.c:788 src/register.c:395
 msgid "File open error"
-msgstr "skrivfel"
+msgstr "Filöppningsfel"
 
 #: src/buffer.c:260 src/main.c:560 src/main.c:632
 msgid "File name too long"
-msgstr ""
+msgstr "Filnamnet är för långt"
 
 #: src/buffer.c:261
-#, fuzzy
-#| msgid "Invalid back reference"
 msgid "Invalid buffer name"
-msgstr "Ogiltig bakåtreferens"
+msgstr "Ogiltigt buffertnamn"
 
 #: src/buffer.c:281 src/buffer.c:296
-#, fuzzy
-#| msgid "Bus error"
 msgid "Buffer open error"
-msgstr "Bussfel"
+msgstr "Buffertöppningsfel"
 
 #: src/buffer.c:312
-#, fuzzy
-#| msgid "Bus error"
 msgid "Buffer close error"
-msgstr "Bussfel"
+msgstr "Buffertstängningsfel"
 
 #: src/buffer.c:347 src/buffer.c:383
-#, fuzzy
-#| msgid "Bus error"
 msgid "Buffer seek error"
-msgstr "Bussfel"
+msgstr "Buffertsökningsfel"
 
 #: src/buffer.c:357
-#, fuzzy
-#| msgid "Bus error"
 msgid "Buffer read error"
-msgstr "Bussfel"
+msgstr "Buffertläsningsfel"
 
 #: src/buffer.c:397 src/buffer.c:427
 msgid "Buffer full"
-msgstr ""
+msgstr "Buffert full"
 
 #: src/buffer.c:404
-#, fuzzy
-#| msgid "write error"
 msgid "Buffer write error"
-msgstr "skrivfel"
+msgstr "Buffertskrivfel"
 
 #: src/buffer.c:500 src/exec.c:100 src/exec.c:129 src/exec.c:1864
 #: src/page.c:301 src/parse.c:220
-#, fuzzy
-#| msgid "character out of range"
 msgid "Address out of range"
-msgstr "tecken utanför intervall"
+msgstr "Adress utanför räckvidd"
 
 #: src/buffer.c:576
 msgid "Memory request too big"
-msgstr ""
+msgstr "Minnesbegäran för stor"
 
 #: src/cbc.c:130 src/cbc.c:229 src/cbc.c:234 src/cbc.c:255 src/cbc.c:260
-#, fuzzy
-#| msgid "invalid spec"
 msgid "Invalid key"
-msgstr "ogiltig specifikation"
+msgstr "Ogiltig nyckel"
 
 #: src/cbc.c:373
 msgid "Decryption failed (block corrupted)"
-msgstr ""
+msgstr "Dekryptering misslyckades (blocket skadat)"
 
 #: src/cbc.c:382
 msgid "Decryption failed (incomplete block)"
-msgstr ""
+msgstr "Dekryptering misslyckades (ofullständigt block)"
 
-#: src/cbc.c:384 src/io.c:565 src/io.c:837
-#, fuzzy
-#| msgid "write error"
+#: src/cbc.c:384 src/io.c:570 src/io.c:842
 msgid "File read error"
-msgstr "skrivfel"
+msgstr "Filläsfel"
 
-#: src/cmds.c:43 src/io.c:487 src/main.c:368 src/register.c:302
+#: src/cmds.c:43 src/io.c:492 src/main.c:368 src/register.c:302
 msgid "End-of-file unexpected"
-msgstr ""
+msgstr "Oväntad slutfil"
 
 #: src/cmds.c:251 src/cmds.c:267
-#, fuzzy
-#| msgid "Invalid character class name"
 msgid "Invalid address mark"
-msgstr "Ogiltigt teckenklassnamn"
+msgstr "Ogiltigt adressmärke"
 
 #: src/cmds.c:318 src/exec.c:1717 src/filter.c:90 src/filter.c:143
-#, fuzzy
-#| msgid "program error"
 msgid "Fork error"
-msgstr "programfel"
+msgstr "Gaffelfel"
 
 #: src/cmds.c:340 src/filter.c:25
-#, fuzzy
-#| msgid "%s subprocess I/O error"
 msgid "Child process error"
-msgstr "%s-underprocess I/O-fel"
+msgstr "Underordnad processfel"
 
-#: src/cmds.c:347 src/filter.c:40 src/io.c:176 src/io.c:707
+#: src/cmds.c:347 src/filter.c:40 src/io.c:176 src/io.c:712
 #, c-format
 msgid "Exit status: %#x"
-msgstr ""
+msgstr "Avsluta status: %#x"
 
 #: src/ed.h:101
 msgid "Unknown error"
 msgstr "Okänt fel"
 
 #: src/ed.h:773 src/ed.h:808 src/ed.h:843
-#, fuzzy
-#| msgid "character out of range"
 msgid "Numerical result out of range"
-msgstr "tecken utanför intervall"
+msgstr "Numeriskt resultat utanför intervallet"
 
 #: src/exec.c:28 src/exec.c:503 src/exec.c:588 src/exec.c:614 src/exec.c:897
 #: src/exec.c:1009 src/exec.c:1369 src/exec.c:1381 src/exec.c:1389
 msgid "Command suffix unexpected"
-msgstr ""
+msgstr "Oväntat kommandosuffix"
 
 #: src/exec.c:95 src/exec.c:124
 msgid "Destination address required"
-msgstr ""
+msgstr "Destinationsadress krävs"
 
 #: src/exec.c:338 src/exec.c:351 src/exec.c:363
 msgid "Command prefix unexpected"
-msgstr ""
+msgstr "Kommandoprefix oväntat"
 
 #: src/exec.c:494 src/exec.c:579 src/exec.c:686 src/exec.c:707 src/exec.c:946
 #: src/exec.c:988 src/exec.c:1333 src/exec.c:1526 src/exec.c:1726
 msgid "Address unexpected"
-msgstr ""
+msgstr "Adress oväntad"
 
 #: src/exec.c:608
-#, fuzzy
-#| msgid "Invalid regular expression"
 msgid "Invalid redirection"
-msgstr "Felaktigt reguljärt uttryck"
+msgstr "Ogiltig omdirigering"
 
 #: src/exec.c:645 src/main.c:627
 msgid "File name not set"
-msgstr ""
+msgstr "Filnamnet har inte angetts"
 
 #: src/exec.c:659
 msgid "Recursive global command"
-msgstr ""
+msgstr "Rekursivt globalt kommando"
 
 #: src/exec.c:717
-#, fuzzy
-#| msgid "No previous regular expression"
 msgid "No previous error"
-msgstr "Inget föregående reguljärt uttryck"
+msgstr "Inget tidigare fel"
 
 #: src/exec.c:827
-#, fuzzy
-#| msgid "Invalid collation character"
 msgid "Invalid destination address"
-msgstr "Ogiltigt sorteringstecken"
+msgstr "Ogiltig destinationsadress"
 
 #: src/exec.c:872 src/exec.c:1319
-#, fuzzy
-#| msgid "invalid user"
 msgid "Invalid register"
-msgstr "ogiltig användare"
+msgstr "Ogiltigt register"
 
 #: src/exec.c:1164 src/exec.c:1227 src/exec.c:1545 src/exec.c:1604
 #: src/exec.c:1789 src/exec.c:1804
-#, fuzzy
-#| msgid "Unknown error"
 msgid "Unknown command"
-msgstr "Okänt fel"
+msgstr "Okänt kommando"
 
 #: src/exec.c:1716
 msgid "Cannot fork shell"
-msgstr ""
+msgstr "Kan inte forka skal"
 
 #: src/exec.c:1804
-#, fuzzy
-#| msgid "Invalid regular expression"
 msgid "Invalid address"
-msgstr "Felaktigt reguljärt uttryck"
+msgstr "Ogiltig adress"
 
 #: src/exec.c:1822
 msgid "Command too long"
-msgstr ""
+msgstr "Kommandot för långt"
 
 #: src/exec.c:1869
-#, fuzzy
-#| msgid "Invalid range end"
 msgid "Invalid address range"
-msgstr "Ogiltigt intervallslut"
+msgstr "Ogiltigt adressintervall"
 
 #: src/filter.c:70
-#, fuzzy
-#| msgid "Bus error"
 msgid "Flush error"
-msgstr "Bussfel"
+msgstr "Spolningsfel"
 
 #: src/filter.c:81 src/filter.c:172
-#, fuzzy
-#| msgid "write error"
 msgid "Pipe open error"
-msgstr "skrivfel"
+msgstr "Röröppningsfel"
 
 #: src/filter.c:186
-#, fuzzy
-#| msgid "write error"
 msgid "Pipe close error"
-msgstr "skrivfel"
+msgstr "Rörstängningsfel"
 
 #: src/global.c:135
 msgid "No previous command"
-msgstr ""
+msgstr "Inget tidigare kommando"
 
-#: src/io.c:57 src/io.c:614 src/main.c:232 src/main.c:732 src/main.c:795
+#: src/io.c:57 src/io.c:619 src/main.c:232 src/main.c:737 src/main.c:804
 #: src/register.c:36 src/register.c:83 src/register.c:142 src/register.c:152
 #: src/register.c:211 src/register.c:220 src/register.c:247 src/register.c:286
 #: src/register.c:353 src/register.c:413 src/register.c:453 src/register.c:492
-#, fuzzy
-#| msgid "write error"
 msgid "File seek error"
-msgstr "skrivfel"
+msgstr "Filsökningsfel"
 
 #: src/io.c:70
 msgid "File does not exist"
-msgstr ""
+msgstr "Filen finns inte"
 
-#: src/io.c:119 src/io.c:659
+#: src/io.c:119 src/io.c:664
 #, c-format
 msgid "%s: File already locked\n"
-msgstr ""
+msgstr "%s: Filen är redan låst\n"
 
-#: src/io.c:143 src/io.c:636 src/io.c:674
+#: src/io.c:143 src/io.c:641 src/io.c:679
 msgid "File close error"
-msgstr ""
+msgstr "Fel vid stängning av fil"
 
 #: src/io.c:299 src/io.c:435
 #, c-format
 msgid "Newline inserted\n"
-msgstr ""
+msgstr "Newline infogad\n"
 
 #: src/io.c:304 src/io.c:440
 #, c-format
 msgid "Newline appended\n"
-msgstr ""
+msgstr "Newline bifogad\n"
 
-#: src/io.c:551 src/io.c:790
+#: src/io.c:556 src/io.c:795
 msgid "Broken pipe"
-msgstr "Brutet rör"
+msgstr "Trasigt rör"
 
-#: src/io.c:621 src/register.c:254
-#, fuzzy
-#| msgid "write error"
+#: src/io.c:626 src/register.c:254
 msgid "File truncate error"
-msgstr "skrivfel"
+msgstr "Filavkortningsfel"
 
-#: src/io.c:743
+#: src/io.c:748
 msgid "File too big"
-msgstr ""
+msgstr "Filen är för stor"
 
-#: src/io.c:796 src/io.c:816 src/io.c:827 src/main.c:743 src/main.c:751
-#, fuzzy
-#| msgid "write error"
+#: src/io.c:801 src/io.c:821 src/io.c:832 src/main.c:748 src/main.c:756
 msgid "File write error"
-msgstr "skrivfel"
+msgstr "Filskrivfel"
 
-#: src/io.c:860 src/parse.c:502
-#, fuzzy
-#| msgid "Bus error"
+#: src/io.c:865 src/parse.c:502
 msgid "File status error"
-msgstr "Bussfel"
+msgstr "Filstatusfel"
 
-#: src/io.c:867
+#: src/io.c:872
 msgid "Access restricted to regular files"
-msgstr ""
+msgstr "Åtkomst begränsad till vanliga filer"
 
-#: src/io.c:936
-#, fuzzy
-#| msgid "write error"
+#: src/io.c:941
 msgid "File stat error"
-msgstr "skrivfel"
+msgstr "Filstatsfel"
 
 #: src/main.c:240
 msgid "Option '-i' requires '-e' or '-f'"
-msgstr ""
+msgstr "Alternativ \"-i\" kräver \"-e\" eller \"-f\""
 
 #: src/main.c:305
-#, fuzzy
-#| msgid "Interrupt"
 msgid "Interrupted"
 msgstr "Avbruten"
 
 #: src/main.c:423
 msgid "WARNING: Buffer modified since last write"
-msgstr ""
+msgstr "VARNING: Buffert ändrad sedan senaste skrivning"
 
 #: src/main.c:681
-#, fuzzy
-#| msgid "Argument buffer too small"
 msgid "Argument list full"
-msgstr "Argumentbufferten för liten"
+msgstr "Argumentlistan full"
 
-#: src/main.c:816
+#: src/main.c:825
 #, c-format
 msgid ""
 "Usage: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE...]\n"
 msgstr ""
+"Användning: %s [-] [-EGhiRrsVvwx] [-e MMAND] [-f SCRIPT] [-p PROMPT] "
+"[FILE...]\n"
 
-#: src/main.c:818
+#: src/main.c:827
 #, c-format
 msgid ""
 "Usage: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE]\n"
 msgstr ""
+"Användning: %s [-] [-EGhiRrsVvwx] [-e MMAND] [-f SCRIPT] [-p PROMPT] [FILE]\n"
 
-#: src/main.c:821
+#: src/main.c:830
 #, c-format
 msgid "Usage: %s [-] [-EGhRrsVvwx] [-p PROMPT] [FILE]\n"
-msgstr ""
-
-#: src/main.c:831
-#, c-format
-msgid "Usage: %s [OPTION...] [FILE...]\n"
-msgstr ""
-
-#: src/main.c:834
-#, c-format
-msgid "Usage: %s [OPTION...] [FILE]\n"
-msgstr ""
+msgstr "Användning: %s [-] [-EGhRrsVvwx] [-p PROMPT] [FILE]\n"
 
 #: src/main.c:840
+#, c-format
+msgid "Usage: %s [OPTION...] [FILE...]\n"
+msgstr "Användning: %s [OPTION...] [FILE...]\n"
+
+#: src/main.c:843
+#, c-format
+msgid "Usage: %s [OPTION...] [FILE]\n"
+msgstr "Användning: %s [OPTION...] [FILE]\n"
+
+#: src/main.c:849
 #, c-format
 msgid ""
 "Options:\n"
@@ -497,8 +441,32 @@ msgid ""
 "\n"
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
+"Alternativ:\n"
+"  -E, --regexp-extended Aktivera utökad syntax för reguljära uttryck.\n"
+"  -e, --expression=KOMMAND Lägg till KOMMAND till skriptinmatning - innebär "
+"`-s'.\n"
+"  -f, --file=SCRIPT Läsa kommandon från filen SCRIPT - innebär '-s'.\n"
+"  -G, --traditional Aktivera bakåtkompatibilitet.\n"
+"  -h, --help Display (this) hjälp, avsluta sedan.\n"
+"  -i, --in-place[=SUFFIX] Skriv filen innan stängning och eventuellt "
+"säkerhetskopiering.\n"
+"  -p, --prompt=STRING Prompt för kommandon med STRING.\n"
+"  -R, --ansi-color Aktivera stöd för ANSI färgkoder.\n"
+"  -r, --regexp-extended Aktivera utökad syntax för reguljära uttryck.\n"
+"  -s, --script Undertrycka interaktiv diagnostik.\n"
+"  -v, --verbose Aktivera verbose diagnostik.\n"
+"  -V, --version Visa versionsinformation, avsluta sedan.\n"
+"  -w, --write Enable writing to process substitution.\n"
+"  -x, --crypt Aktivera I/O-kryptering.\n"
+"\n"
+"Om FIL ges, läs den för redigering. Från och med, kör:\n"
+"  !info ed-intro RET\n"
+"för en handledning introduktion till ed.\n"
+"\n"
+"Vänligen skicka problem eller pull-förfrågningar till: <https://github.com/"
+"slewsys/ed>\n"
 
-#: src/main.c:862
+#: src/main.c:871
 #, c-format
 msgid ""
 "Options:\n"
@@ -520,1225 +488,114 @@ msgid ""
 "\n"
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
+"Alternativ:\n"
+"  -E, --regexp-extended Aktivera utökad syntax för reguljära uttryck.\n"
+"  -G, --traditional Aktivera bakåtkompatibilitet.\n"
+"  -h, --help Dispaly (this) hjälp, avsluta sedan.\n"
+"  -p, --prompt=STRING Prompt för kommandon med STRING.\n"
+"  -R, --ansi-color Aktivera stöd för ANSI färgkoder.\n"
+"  -r, --regexp-extended Aktivera utökad syntax för reguljära uttryck.\n"
+"  -s, --script Undertrycka interaktiv diagnostik.\n"
+"  -v, --verbose Aktivera verbose diagnostik.\n"
+"  -V, --version Visa versionsinformation, avsluta sedan.\n"
+"  -w, --write Enable writing to process substitution.\n"
+"  -x, --crypt Aktivera I/O-kryptering.\n"
+"\n"
+"Om FIL ges, läs den för redigering. Från och med, kör:\n"
+"  !info ed-intro RET\n"
+"för en handledning introduktion till ed.\n"
+"\n"
+"Skicka problem eller pull-förfrågningar till: <https://github.com/slewsys/"
+"ed>\n"
 
-#: src/main.c:893
+#: src/main.c:902
 msgid "script, line %"
-msgstr ""
+msgstr "skript, rad %"
 
 #: src/parse.c:253 src/parse.c:599
-#, fuzzy
-#| msgid "failed to return to initial working directory"
 msgid "Access restricted to working directory"
-msgstr "kunde inte återvända till den ursprungliga arbetskatalogen"
+msgstr "Åtkomst begränsad till arbetskatalogen"
 
 #: src/parse.c:320
-#, fuzzy
-#| msgid "%s: Too many arguments\n"
 msgid "Too many file names"
-msgstr "%s: För många argument\n"
+msgstr "För många filnamn"
 
 #: src/parse.c:335 src/parse.c:348 src/parse.c:375
-#, fuzzy
-#| msgid "named file"
 msgid "No more files"
-msgstr "namngiven fil"
+msgstr "Inga fler filer"
 
 #: src/parse.c:443
 msgid "File glob too long"
-msgstr ""
+msgstr "Filglob är för lång"
 
 #: src/parse.c:464 src/parse.c:468 src/parse.c:488
 msgid "Pathname expansion error"
-msgstr ""
+msgstr "Fel vid utökning av söknamn"
 
 #: src/parse.c:484
 msgid "No such file or directory"
-msgstr ""
+msgstr "Ingen sådan fil eller katalog"
 
 #: src/parse.c:574
-#, fuzzy
-#| msgid "Invalid range end"
 msgid "Invalid file name"
-msgstr "Ogiltigt intervallslut"
+msgstr "Ogiltigt filnamn"
 
 #: src/parse.c:629
 msgid "Brackets ([]) unbalanced"
-msgstr ""
+msgstr "Konsoler ([]) obalanserade"
 
 #: src/parse.c:636
 msgid "Backslash (\\) unexpected"
-msgstr ""
+msgstr "Bakåtsnedstreck (\\) oväntat"
 
 #: src/parse.c:693
 msgid "Shell access restricted"
-msgstr ""
+msgstr "Åtkomst till Shell begränsad"
 
 #: src/parse.c:759
-#, fuzzy
-#| msgid "No previous regular expression"
 msgid "No previous shell command"
-msgstr "Inget föregående reguljärt uttryck"
+msgstr "Inget tidigare skalkommando"
 
 #: src/regexp.c:33
-#, fuzzy
-#| msgid "Invalid character class name"
 msgid "Invalid pattern delimiter"
-msgstr "Ogiltigt teckenklassnamn"
+msgstr "Ogiltig mönsteravgränsare"
 
 #: src/regexp.c:147
-#, fuzzy
-#| msgid "No previous regular expression"
 msgid "No previous pattern"
-msgstr "Inget föregående reguljärt uttryck"
+msgstr "Inget tidigare mönster"
 
 #: src/regexp.c:156
-#, fuzzy
-#| msgid "Invalid character class name"
 msgid "Missing pattern delimiter"
-msgstr "Ogiltigt teckenklassnamn"
+msgstr "Mönsteravgränsare saknas"
 
 #: src/register.c:117
 msgid "Cannot append register to itself"
-msgstr ""
+msgstr "Kan inte lägga till registret till sig själv"
 
 #: src/register.c:337
 msgid "Exceeded maximum stack frame depth"
-msgstr ""
+msgstr "Överskred maximal stapel ramdjup"
 
 #: src/register.c:387
-#, fuzzy
-#| msgid "Bus error"
 msgid "dup error"
-msgstr "Bussfel"
+msgstr "dup-fel"
 
 #: src/signal.c:152
-#, fuzzy
-#| msgid "program error"
 msgid "Signal error"
-msgstr "programfel"
+msgstr "Signalfel"
 
 #: src/subst.c:129 src/subst.c:148
 msgid "Unknown command suffix"
-msgstr ""
+msgstr "Okänt kommandosuffix"
 
 #: src/subst.c:167 src/subst.c:237
-#, fuzzy
-#| msgid "No previous regular expression"
 msgid "No previous substitution"
-msgstr "Inget föregående reguljärt uttryck"
+msgstr "Ingen tidigare byte"
 
 #: src/subst.c:463 src/subst.c:597
 msgid "Too many regex subexpressions"
-msgstr ""
+msgstr "För många regex subexpressions"
 
 #: src/undo.c:51
 msgid "Nothing to undo"
-msgstr ""
-
-#, fuzzy
-#~| msgid "Unknown error"
-#~ msgid "fdopen error"
-#~ msgstr "Okänt fel"
-
-#, c-format
-#~ msgid "invalid argument %s for %s"
-#~ msgstr "felaktigt argument %s till %s"
-
-#, c-format
-#~ msgid "ambiguous argument %s for %s"
-#~ msgstr "tvetydigt argument %s till %s"
-
-#~ msgid "Valid arguments are:"
-#~ msgstr "Giltiga argument är:"
-
-#, c-format
-#~ msgid "ARGP_HELP_FMT: %s value is less than or equal to %s"
-#~ msgstr "ARGP_HELP_FMT: värdet på %s är mindre än eller lika med %s"
-
-#, c-format
-#~ msgid "%.*s: ARGP_HELP_FMT parameter requires a value"
-#~ msgstr "%.*s: ARGP_HELP_FMT-parametern kräver ett värde"
-
-#, c-format
-#~ msgid "%.*s: Unknown ARGP_HELP_FMT parameter"
-#~ msgstr "%.*s: Okänd ARGP_HELP_FMT-parameter"
-
-#, c-format
-#~ msgid "Garbage in ARGP_HELP_FMT: %s"
-#~ msgstr "Skräp i ARGP_HELP_FMT: %s"
-
-#~ msgid ""
-#~ "Mandatory or optional arguments to long options are also mandatory or "
-#~ "optional for any corresponding short options."
-#~ msgstr ""
-#~ "Obligatoriska eller valfria argument till långa flaggor är obligatoriska "
-#~ "eller valfria även för motsvarande korta flaggor."
-
-#~ msgid "Usage:"
-#~ msgstr "Användning:"
-
-#~ msgid "  or: "
-#~ msgstr "   eller:  "
-
-#~ msgid " [OPTION...]"
-#~ msgstr " [FLAGGA...]"
-
-#, c-format
-#~ msgid "Try '%s --help' or '%s --usage' for more information.\n"
-#~ msgstr "Försök med ”%s --help” eller ”%s --usage” för mer information.\n"
-
-#, c-format
-#~ msgid "Report bugs to %s.\n"
-#~ msgstr ""
-#~ "Rapportera fel till %s.\n"
-#~ "Skicka synpunkter på översättningen till <tp-sv-list@lists.sourceforge."
-#~ "net>.\n"
-
-#~ msgid "Unknown system error"
-#~ msgstr "Okänt systemfel"
-
-#~ msgid "give this help list"
-#~ msgstr "ge denna hjälplista"
-
-#~ msgid "give a short usage message"
-#~ msgstr "ge ett kort användningsmeddelande"
-
-#~ msgid "NAME"
-#~ msgstr "NAMN"
-
-#~ msgid "set the program name"
-#~ msgstr "ange programnamnet"
-
-#~ msgid "SECS"
-#~ msgstr "S"
-
-#~ msgid "hang for SECS seconds (default 3600)"
-#~ msgstr "häng i S sekunder (3600 som standard)"
-
-#~ msgid "print program version"
-#~ msgstr "skriv ut programversion"
-
-#~ msgid "(PROGRAM ERROR) No version known!?"
-#~ msgstr "(PROGRAMFEL) Ingen version känd!?"
-
-#~ msgid "(PROGRAM ERROR) Option should have been recognized!?"
-#~ msgstr "(PROGRAMFEL) Flaggan borde ha känts igen!?"
-
-#, c-format
-#~ msgid "%u bitset_allocs, %u freed (%.2f%%).\n"
-#~ msgstr "%u bitset-allokeringar, %u frigjorda (%.2f %%).\n"
-
-#, c-format
-#~ msgid "%u bitset_sets, %u cached (%.2f%%)\n"
-#~ msgstr "%u bitset-mängder, %u cachade (%.2f %%)\n"
-
-#, c-format
-#~ msgid "%u bitset_resets, %u cached (%.2f%%)\n"
-#~ msgstr "%u bitset-återställningar, %u cachade (%.2f %%)\n"
-
-#, c-format
-#~ msgid "%u bitset_tests, %u cached (%.2f%%)\n"
-#~ msgstr "%u bitset-tester, %u cachade (%.2f %%)\n"
-
-#, c-format
-#~ msgid "%u bitset_lists\n"
-#~ msgstr "%u bitset-listor\n"
-
-#~ msgid "count log histogram"
-#~ msgstr "antalsloggshistogram"
-
-#~ msgid "size log histogram"
-#~ msgstr "storleksloggshistogram"
-
-#~ msgid "density histogram"
-#~ msgstr "densitetshistogram"
-
-#~ msgid "Bitset statistics:"
-#~ msgstr "Bitset-statistik:"
-
-#, c-format
-#~ msgid "Accumulated runs = %u"
-#~ msgstr "Ackumulerade körningar = %u"
-
-#~ msgid "cannot read stats file"
-#~ msgstr "kan inte läsa statistikfilen"
-
-#~ msgid "bad stats file size"
-#~ msgstr "felaktig storlek på statistikfil"
-
-#~ msgid "cannot write stats file"
-#~ msgstr "kan inte skriva statistikfilen"
-
-#~ msgid "cannot open stats file for writing"
-#~ msgstr "kan inte öppna statistikfilen för skrivning"
-
-#~ msgid "regular empty file"
-#~ msgstr "tom normal fil"
-
-#~ msgid "regular file"
-#~ msgstr "normal fil"
-
-#~ msgid "directory"
-#~ msgstr "katalog"
-
-#~ msgid "symbolic link"
-#~ msgstr "symbolisk länk"
-
-#~ msgid "message queue"
-#~ msgstr "meddelandekö"
-
-#~ msgid "semaphore"
-#~ msgstr "semafor"
-
-#~ msgid "shared memory object"
-#~ msgstr "objekt av delat minne"
-
-#~ msgid "typed memory object"
-#~ msgstr "objekt av typat minne"
-
-#~ msgid "block special file"
-#~ msgstr "blockspecialfil"
-
-#~ msgid "character special file"
-#~ msgstr "teckenspecialfil"
-
-#~ msgid "contiguous data"
-#~ msgstr "sammanhängande data"
-
-#~ msgid "fifo"
-#~ msgstr "fifo"
-
-#~ msgid "door"
-#~ msgstr "dörr"
-
-#~ msgid "multiplexed block special file"
-#~ msgstr "multiplexad blockspecialfil"
-
-#~ msgid "multiplexed character special file"
-#~ msgstr "multiplexad teckenspecialfil"
-
-#~ msgid "multiplexed file"
-#~ msgstr "multiplexad fil"
-
-#~ msgid "network special file"
-#~ msgstr "nätverksspecialfil"
-
-#~ msgid "migrated file with data"
-#~ msgstr "migrerad fil med data"
-
-#~ msgid "migrated file without data"
-#~ msgstr "migrerad fil utan data"
-
-#~ msgid "port"
-#~ msgstr "port"
-
-#~ msgid "socket"
-#~ msgstr "uttag (socket)"
-
-#~ msgid "whiteout"
-#~ msgstr "övertäckningsfil"
-
-#~ msgid "weird file"
-#~ msgstr "konstig fil"
-
-#~ msgid "stack overflow"
-#~ msgstr "stackspill"
-
-#, c-format
-#~ msgid "cannot remove temporary file %s"
-#~ msgstr "kan inte ta bort temporärfil %s"
-
-#, c-format
-#~ msgid "cannot find a temporary directory, try setting $TMPDIR"
-#~ msgstr "kan inte hitta en temporärkatalog, försök sätta $TMPDIR"
-
-#, c-format
-#~ msgid "cannot create a temporary directory using template \"%s\""
-#~ msgstr "kan inte skapa en temporärkatalog med användning av mallen ”%s”"
-
-#, c-format
-#~ msgid "cannot remove temporary directory %s"
-#~ msgstr "kan inte ta bort temporärkatalog %s"
-
-#~ msgid "error closing file"
-#~ msgstr "fel när fil stängdes"
-
-#, c-format
-#~ msgid "preserving permissions for %s"
-#~ msgstr "bevarar rättigheter på %s"
-
-#, c-format
-#~ msgid "error while opening %s for reading"
-#~ msgstr "fel när %s öppnades för läsning"
-
-#, c-format
-#~ msgid "cannot open backup file %s for writing"
-#~ msgstr "det går inte att öppna säkerhetskopiefilen %s för skrivning"
-
-#, c-format
-#~ msgid "error reading %s"
-#~ msgstr "fel vid läsning av %s"
-
-#, c-format
-#~ msgid "error writing %s"
-#~ msgstr "fel vid skrivning av %s"
-
-#, c-format
-#~ msgid "error after reading %s"
-#~ msgstr "fel efter läsning av %s"
-
-#, c-format
-#~ msgid "fdopen() failed"
-#~ msgstr "fdopen() misslyckades"
-
-#, c-format
-#~ msgid "%s subprocess failed"
-#~ msgstr "%s-underprocess misslyckades"
-
-#, c-format
-#~ msgid "C# compiler not found, try installing mono or dotnet"
-#~ msgstr "C#-kompilator hittades inte, försök installera mono eller dotnet"
-
-#, c-format
-#~ msgid "failed to copy '%s' to '%s'"
-#~ msgstr "kunde inte kopiera ”%s” till ”%s”"
-
-#, c-format
-#~ msgid "could not determine %s version"
-#~ msgstr "kunde inte avgöra %s-versionen"
-
-#, c-format
-#~ msgid "failed to create \"%s\""
-#~ msgstr "det gick inte att skapa ”%s”"
-
-#, c-format
-#~ msgid "error while writing \"%s\" file"
-#~ msgstr "fel vid skrivning av filen ”%s”"
-
-#, c-format
-#~ msgid "C# virtual machine not found, try installing mono or dotnet"
-#~ msgstr ""
-#~ "den virtuella C#-maskinen hittades inte, försök installera mono eller "
-#~ "dotnet"
-
-#, c-format
-#~ msgid "cannot convert file name '%s' to Windows syntax"
-#~ msgstr "kan inte konvertera filnamnet ”%s” till Windows syntax"
-
-#, c-format
-#~ msgid "cygwin_conv_path failed"
-#~ msgstr "cygwin_conv_path misslyckades"
-
-#, c-format
-#~ msgid "%s invocation failed"
-#~ msgstr "anrop av %s misslyckades"
-
-#~ msgid "unbalanced ["
-#~ msgstr "obalanserad ["
-
-#~ msgid "invalid character class"
-#~ msgstr "ogiltig teckenklass"
-
-#~ msgid "character class syntax is [[:space:]], not [:space:]"
-#~ msgstr "teckenklassyntaxen är [[:space:]], inte [:space:]"
-
-#~ msgid "unfinished \\ escape"
-#~ msgstr "oavslutad \\-sekvens"
-
-#~ msgid "? at start of expression"
-#~ msgstr "? i början av uttrycket"
-
-#~ msgid "* at start of expression"
-#~ msgstr "* i början av uttrycket"
-
-#~ msgid "+ at start of expression"
-#~ msgstr "+ i början av uttrycket"
-
-#~ msgid "{...} at start of expression"
-#~ msgstr "{...} vid början av uttrycket"
-
-#~ msgid "invalid content of \\{\\}"
-#~ msgstr "ogiltigt innehåll i \\{\\}"
-
-#~ msgid "regular expression too big"
-#~ msgstr "för stort reguljärt uttryck"
-
-#~ msgid "stray \\ before unprintable character"
-#~ msgstr "vilsekommet \\ före oskrivbart tecken"
-
-#~ msgid "stray \\ before white space"
-#~ msgstr "vilsekommet \\ före blanktecken"
-
-#, c-format
-#~ msgid "stray \\ before %s"
-#~ msgstr "vilsekommet \\ före %s"
-
-#~ msgid "stray \\"
-#~ msgstr "vilsekommet \\"
-
-#~ msgid "unbalanced ("
-#~ msgstr "obalanserad ("
-
-#~ msgid "no syntax specified"
-#~ msgstr "ingen syntax angiven"
-
-#~ msgid "unbalanced )"
-#~ msgstr "obalanserad )"
-
-#~ msgid "Address family for hostname not supported"
-#~ msgstr "Adressfamiljen för värdnamnet stöds inte"
-
-#~ msgid "Temporary failure in name resolution"
-#~ msgstr "Tillfälligt fel i namnuppslagning"
-
-#~ msgid "Bad value for ai_flags"
-#~ msgstr "Felaktigt värde för ai_flags"
-
-#~ msgid "Non-recoverable failure in name resolution"
-#~ msgstr "Oreparabelt fel i namnuppslagning"
-
-#~ msgid "ai_family not supported"
-#~ msgstr "ai_family stöds inte"
-
-#~ msgid "Memory allocation failure"
-#~ msgstr "Minnesallokeringsfel"
-
-#~ msgid "No address associated with hostname"
-#~ msgstr "Ingen adress associerad med värdnamnet"
-
-#~ msgid "Name or service not known"
-#~ msgstr "Namn eller tjänst inte känd"
-
-#~ msgid "Servname not supported for ai_socktype"
-#~ msgstr "Servname stöds inte för ai_socktype"
-
-#~ msgid "ai_socktype not supported"
-#~ msgstr "ai_socktype stöds inte"
-
-#~ msgid "System error"
-#~ msgstr "Systemfel"
-
-#~ msgid "Processing request in progress"
-#~ msgstr "Bearbetar pågående begäran"
-
-#~ msgid "Request canceled"
-#~ msgstr "Begäran annullerad"
-
-#~ msgid "Request not canceled"
-#~ msgstr "Begäran inte annullerad"
-
-#~ msgid "All requests done"
-#~ msgstr "Alla begäran utförda"
-
-#~ msgid "Interrupted by a signal"
-#~ msgstr "Avbruten av en signal"
-
-#~ msgid "Parameter string not correctly encoded"
-#~ msgstr "Parametersträng inte korrekt kodad"
-
-#, c-format
-#~ msgid ""
-#~ "The java program is too old. Cannot compile Java code for this old "
-#~ "version any more."
-#~ msgstr ""
-#~ "Javaprogrammet är för gammalt. Kan inte kompilera Javakod för denna gamla "
-#~ "version längre."
-
-#, c-format
-#~ msgid "invalid source_version argument to compile_java_class"
-#~ msgstr "ogiltigt source_version-argument till compile_java_class"
-
-#, c-format
-#~ msgid "invalid target_version argument to compile_java_class"
-#~ msgstr "ogiltigt target_version-argument till compile_java_class"
-
-#, c-format
-#~ msgid "Java compiler not found, try setting $JAVAC"
-#~ msgstr "Javakompilatorn hittades inte, försök at sätta $JAVAC"
-
-#, c-format
-#~ msgid "Java virtual machine not found, try setting $JAVA"
-#~ msgstr "Javas virtuella maskin hittades inte, försök att sätta $JAVA"
-
-#, c-format
-#~ msgid "cannot stat %s"
-#~ msgstr "kan inte ta status på %s"
-
-#, c-format
-#~ msgid "cannot change permissions of %s"
-#~ msgstr "kan inte ändra rättigheter på %s"
-
-#, c-format
-#~ msgid "cannot create directory %s"
-#~ msgstr "kan inte skapa katalogen %s"
-
-#, c-format
-#~ msgid "memory exhausted"
-#~ msgstr "minnet slut"
-
-#, c-format
-#~ msgid "unable to record current working directory"
-#~ msgstr "kan inte notera aktuell arbetskatalog"
-
-#, c-format
-#~ msgid "_open_osfhandle failed"
-#~ msgstr "_open_osfhandle misslyckades"
-
-#, c-format
-#~ msgid "cannot restore fd %d: dup2 failed"
-#~ msgstr "kan inte återställa fb %d: dup2 misslyckades"
-
-#, c-format
-#~ msgid "Failed to open /dev/zero for read"
-#~ msgstr "Misslyckades att öppna /dev/zero för läsning"
-
-#, c-format
-#~ msgid "parsed %s part: "
-#~ msgstr "tolkade %s-delen: "
-
-#, c-format
-#~ msgid "year: %04<PRIdMAX>"
-#~ msgstr "år: %04<PRIdMAX>"
-
-#, c-format
-#~ msgid "%s (day ordinal=%<PRIdMAX> number=%d)"
-#~ msgstr "%s (ordningsdag=%<PRIdMAX> nummer=%d)"
-
-#, c-format
-#~ msgid "number of seconds: %<PRIdMAX>"
-#~ msgstr "antal sekunder: %<PRIdMAX>"
-
-#~ msgid "today/this/now\n"
-#~ msgstr "idag/dennes/nu\n"
-
-#~ msgid "number of seconds"
-#~ msgstr "antal sekunder"
-
-#~ msgid "datetime"
-#~ msgstr "datumtid"
-
-#~ msgid "time"
-#~ msgstr "tid"
-
-#~ msgid "local_zone"
-#~ msgstr "lokal zon"
-
-#~ msgid "zone"
-#~ msgstr "zon"
-
-#~ msgid "date"
-#~ msgstr "datum"
-
-#~ msgid "day"
-#~ msgstr "dag"
-
-#~ msgid "relative"
-#~ msgstr "relativ"
-
-#~ msgid "number"
-#~ msgstr "nummer"
-
-#~ msgid "hybrid"
-#~ msgstr "hybrid"
-
-#, c-format
-#~ msgid ""
-#~ "warning: value %<PRIdMAX> has %<PRIdMAX> digits. Assuming YYYY/MM/DD\n"
-#~ msgstr ""
-#~ "varning: värdet %<PRIdMAX> har %<PRIdMAX> siffor.  Antar ÅÅÅÅ/MM/DD\n"
-
-#, c-format
-#~ msgid ""
-#~ "warning: value %<PRIdMAX> has less than 4 digits. Assuming MM/DD/YY[YY]\n"
-#~ msgstr ""
-#~ "varning: värdet %<PRIdMAX> har mindre än 4 siffror.  Antar MM/DD/ÅÅ[ÅÅ]\n"
-
-#, c-format
-#~ msgid "warning: adjusting year value %<PRIdMAX> to %<PRIdMAX>\n"
-#~ msgstr "varning: justerar årsvärdet %<PRIdMAX> till %<PRIdMAX>\n"
-
-#, c-format
-#~ msgid "error: out-of-range year %<PRIdMAX>\n"
-#~ msgstr "fel: årtal utanför intervallet %<PRIdMAX>\n"
-
-#, c-format
-#~ msgid "error: unknown word '%s'\n"
-#~ msgstr "fel: okänt ord ”%s”\n"
-
-#~ msgid "error: invalid date/time value:\n"
-#~ msgstr "fel: ogiltigt datum-/tidvärde:\n"
-
-#, c-format
-#~ msgid "    user provided time: '%s'\n"
-#~ msgstr "    användargiven tid: ”%s”\n"
-
-#, c-format
-#~ msgid "       normalized time: '%s'\n"
-#~ msgstr "       normaliserad tid: ”%s”\n"
-
-#~ msgid "     possible reasons:\n"
-#~ msgstr "     möjliga orsaker:\n"
-
-#~ msgid "       nonexistent due to daylight-saving time;\n"
-#~ msgstr "       finns inte på grund av byte till sommartid;\n"
-
-#~ msgid "       invalid day/month combination;\n"
-#~ msgstr "       felaktig dag/månad-kombination;\n"
-
-#~ msgid "       numeric values overflow;\n"
-#~ msgstr "       spill i numeriska värden;\n"
-
-#~ msgid "incorrect timezone"
-#~ msgstr "felaktig tidszon"
-
-#~ msgid "missing timezone"
-#~ msgstr "saknad tidszon"
-
-#~ msgid "error: initial year out of range\n"
-#~ msgstr "fel: startåret är utanför intervallet\n"
-
-#~ msgid "error: parsing failed\n"
-#~ msgstr "fel: tolkningen misslyckades\n"
-
-#, c-format
-#~ msgid "error: parsing failed, stopped at '%s'\n"
-#~ msgstr "fel: tolkningen misslyckades, avslutades vid ”%s”\n"
-
-#~ msgid "input timezone: "
-#~ msgstr "inmatad tidszon: "
-
-#, c-format
-#~ msgid "'@timespec' - always UTC"
-#~ msgstr "”@timespec” — alltid UTC"
-
-#, c-format
-#~ msgid "parsed date/time string"
-#~ msgstr "tolkad datum/tid-sträng"
-
-#, c-format
-#~ msgid "TZ=\"%s\" in date string"
-#~ msgstr "TZ=”%s” i datumsträng"
-
-#, c-format
-#~ msgid "TZ=\"UTC0\" environment value or -u"
-#~ msgstr "miljövariabelvärdet TZ=\"UTC0\" eller -u"
-
-#, c-format
-#~ msgid "TZ=\"%s\" environment value"
-#~ msgstr "TZ=”%s” miljövärde"
-
-#, c-format
-#~ msgid "system default"
-#~ msgstr "felaktigt systemanrop"
-
-#~ msgid "error: year, month, or day overflow\n"
-#~ msgstr "fel: år, månad eller dag spiller över\n"
-
-#, c-format
-#~ msgid "error: invalid hour %<PRIdMAX>%s\n"
-#~ msgstr "fel: felaktig timma %<PRIdMAX>%s\n"
-
-#, c-format
-#~ msgid "using specified time as starting value: '%s'\n"
-#~ msgstr "använder angiven tid som startvärde: ”%s”\n"
-
-#, c-format
-#~ msgid "using current time as starting value: '%s'\n"
-#~ msgstr "använder aktuell tid som startvärde: ”%s”\n"
-
-#, c-format
-#~ msgid "error: tzalloc (\"%s\") failed\n"
-#~ msgstr "fel: tzalloc (\"%s\") misslyckades\n"
-
-#, c-format
-#~ msgid ""
-#~ "error: day '%s' (day ordinal=%<PRIdMAX> number=%d) resulted in an invalid "
-#~ "date: '%s'\n"
-#~ msgstr ""
-#~ "fel: dag ”%s” (ordningsdag=%<PRIdMAX> nummer=%d) resulterade i ett "
-#~ "felaktigt datum: ”%s”\n"
-
-#, c-format
-#~ msgid "new start date: '%s' is '%s'\n"
-#~ msgstr "nytt startdatum: ”%s” är ”%s”\n"
-
-#, c-format
-#~ msgid "using current date as starting value: '%s'\n"
-#~ msgstr "använder aktuellt datum som startvärde: ”%s”\n"
-
-#, c-format
-#~ msgid "warning: day (%s) ignored when explicit dates are given\n"
-#~ msgstr "varning: dag (%s) ignoreras när explicita datum anges\n"
-
-#, c-format
-#~ msgid "starting date/time: '%s'\n"
-#~ msgstr "startdatum/-tid: ”%s”\n"
-
-#~ msgid ""
-#~ "warning: when adding relative months/years, it is recommended to specify "
-#~ "the 15th of the months\n"
-#~ msgstr ""
-#~ "varning: när relativa månader/år läggs till rekommenderas det att ange "
-#~ "den 15:e i månaden\n"
-
-#~ msgid ""
-#~ "warning: when adding relative days, it is recommended to specify noon\n"
-#~ msgstr ""
-#~ "varning: när relativa dagar läggs till rekommenderas det att ange "
-#~ "middagstid\n"
-
-#, c-format
-#~ msgid "error: %s:%d\n"
-#~ msgstr "fel: %s:%d\n"
-
-#, c-format
-#~ msgid "error: adding relative date resulted in an invalid date: '%s'\n"
-#~ msgstr ""
-#~ "fel: att lägga till ett relativt datum resulterade i ett felaktigt datum: "
-#~ "”%s”\n"
-
-#, c-format
-#~ msgid ""
-#~ "after date adjustment (%+<PRIdMAX> years, %+<PRIdMAX> months, %+<PRIdMAX> "
-#~ "days),\n"
-#~ msgstr ""
-#~ "efter datumjustering (%+<PRIdMAX> år, %+<PRIdMAX> månader, %+<PRIdMAX> "
-#~ "dagar),\n"
-
-#, c-format
-#~ msgid "    new date/time = '%s'\n"
-#~ msgstr "    nytt datum/tid = ”%s”\n"
-
-#~ msgid "warning: daylight saving time changed after date adjustment\n"
-#~ msgstr "varning: sommartid ändrades efter datumjusteringen\n"
-
-#~ msgid "warning: month/year adjustment resulted in shifted dates:\n"
-#~ msgstr "varning: månads-/årsjusteringen resulterade i skiftade datum:\n"
-
-#, c-format
-#~ msgid "     adjusted Y M D: %s %02d %02d\n"
-#~ msgstr "     justerade Å M D: %s %02d %02d\n"
-
-#, c-format
-#~ msgid "   normalized Y M D: %s %02d %02d\n"
-#~ msgstr "   normaliserade Å M D: %s %02d %02d\n"
-
-#, c-format
-#~ msgid "error: timezone %d caused time_t overflow\n"
-#~ msgstr "fel: tidszon %d orsakade spill i time_t\n"
-
-#, c-format
-#~ msgid "'%s' = %<PRIdMAX> epoch-seconds\n"
-#~ msgstr "”%s” = %<PRIdMAX> epoksekunder\n"
-
-#~ msgid "error: adding relative time caused an overflow\n"
-#~ msgstr "fel: att lägga till relativ tid orsakade spill\n"
-
-#, c-format
-#~ msgid ""
-#~ "after time adjustment (%+<PRIdMAX> hours, %+<PRIdMAX> minutes, "
-#~ "%+<PRIdMAX> seconds, %+d ns),\n"
-#~ msgstr ""
-#~ "efter tidsjustering (%+<PRIdMAX> timmar, %+<PRIdMAX> minuter, %+<PRIdMAX> "
-#~ "sekunder, %+d ns),\n"
-
-#, c-format
-#~ msgid "    new time = %<PRIdMAX> epoch-seconds\n"
-#~ msgstr "    ny tid = %<PRIdMAX> epoksekunder\n"
-
-#~ msgid "warning: daylight saving time changed after time adjustment\n"
-#~ msgstr "varning: sommartid ändrades efter tidsjusteringen\n"
-
-#~ msgid "timezone: system default\n"
-#~ msgstr "tidszon: systemstandard\n"
-
-#~ msgid "timezone: Universal Time\n"
-#~ msgstr "tidszon: universell tid\n"
-
-#, c-format
-#~ msgid "timezone: TZ=\"%s\" environment value\n"
-#~ msgstr "Tidszon: TZ=\"%s\" miljövärde\n"
-
-#, c-format
-#~ msgid "final: %<PRIdMAX>.%09d (epoch-seconds)\n"
-#~ msgstr "slutligt: %<PRIdMAX>.%09d (epoksekunder)\n"
-
-#, c-format
-#~ msgid "final: %s (UTC)\n"
-#~ msgstr "slutligt: %s (UTC)\n"
-
-#, c-format
-#~ msgid "final: %s (UTC%s)\n"
-#~ msgstr "slutligt: %s (UTC%s)\n"
-
-#, c-format
-#~ msgid "final: %s (unknown time zone offset)\n"
-#~ msgstr "slutligt: %s (okänd tidszonsavstånd)\n"
-
-#, c-format
-#~ msgid "creation of reading thread failed"
-#~ msgstr "att skapa lästråd misslyckades"
-
-#, c-format
-#~ msgid "cannot set up nonblocking I/O to %s subprocess"
-#~ msgstr ""
-#~ "det gick inte att sätta upp icke blockerande I/O till %s-underprocess"
-
-#, c-format
-#~ msgid "communication with %s subprocess failed"
-#~ msgstr "kommunikation med %s-underprocess misslyckades"
-
-#, c-format
-#~ msgid "write to %s subprocess failed"
-#~ msgstr "skrivning till %s-underprocess misslyckades"
-
-#, c-format
-#~ msgid "read from %s subprocess failed"
-#~ msgstr "läsning från %s-underprocess misslyckades"
-
-#, c-format
-#~ msgid "subprocess %s terminated with exit code %d"
-#~ msgstr "underprocess %s avslutad med slutstatus %d"
-
-#, c-format
-#~ msgid "creation of threads failed"
-#~ msgstr "att skapa trådar misslyckades"
-
-#, c-format
-#~ msgid "%s subprocess terminated with exit code %d"
-#~ msgstr "%s-underprocess avslutad med slutstatus %d"
-
-#~ msgid "`"
-#~ msgstr "”"
-
-#~ msgid "'"
-#~ msgstr "”"
-
-#~ msgid "^[yY]"
-#~ msgstr "^[yYjJ]"
-
-#~ msgid "^[nN]"
-#~ msgstr "^[nN]"
-
-#, c-format
-#~ msgid "setting permissions for %s"
-#~ msgstr "ändrar rättigheter på %s"
-
-#~ msgid "Hangup"
-#~ msgstr "Avringd"
-
-#~ msgid "Quit"
-#~ msgstr "Lämnad"
-
-#~ msgid "Illegal instruction"
-#~ msgstr "Otillåten instruktion"
-
-#~ msgid "Trace/breakpoint trap"
-#~ msgstr "Spårnings-/brytpunktsfälla"
-
-#~ msgid "Aborted"
-#~ msgstr "Avbruten (abort)"
-
-#~ msgid "Floating point exception"
-#~ msgstr "Flyttalsundantag"
-
-#~ msgid "Killed"
-#~ msgstr "Dödad"
-
-#~ msgid "Segmentation fault"
-#~ msgstr "Segmenteringsfel"
-
-#~ msgid "Alarm clock"
-#~ msgstr "Alarmklocka"
-
-#~ msgid "Terminated"
-#~ msgstr "Avslutad"
-
-#~ msgid "Urgent I/O condition"
-#~ msgstr "Brådskande I/O-situation"
-
-#~ msgid "Stopped (signal)"
-#~ msgstr "Stoppad (signal)"
-
-#~ msgid "Stopped"
-#~ msgstr "Stoppad"
-
-#~ msgid "Continued"
-#~ msgstr "Återupptagen"
-
-#~ msgid "Child exited"
-#~ msgstr "Barn avslutade"
-
-#~ msgid "Stopped (tty input)"
-#~ msgstr "Stoppad (terminalläsning)"
-
-#~ msgid "Stopped (tty output)"
-#~ msgstr "Stoppad (terminalskrivning)"
-
-#~ msgid "I/O possible"
-#~ msgstr "I/O möjligt"
-
-#~ msgid "CPU time limit exceeded"
-#~ msgstr "Begränsning av CPU-tid överskriden"
-
-#~ msgid "File size limit exceeded"
-#~ msgstr "Begränsning av filstorlek överskriden"
-
-#~ msgid "Virtual timer expired"
-#~ msgstr "Alarmklocka - virtuell tid gick ut"
-
-#~ msgid "Profiling timer expired"
-#~ msgstr "Profileringsklocka gick ut"
-
-#~ msgid "Window changed"
-#~ msgstr "Ändrat fönster"
-
-#~ msgid "User defined signal 1"
-#~ msgstr "Användarsignal 1"
-
-#~ msgid "User defined signal 2"
-#~ msgstr "Användarsignal 2"
-
-#~ msgid "EMT trap"
-#~ msgstr "Emulatorfälla"
-
-#~ msgid "Bad system call"
-#~ msgstr "Felaktigt systemanrop"
-
-#~ msgid "Stack fault"
-#~ msgstr "Stackfel"
-
-#~ msgid "Information request"
-#~ msgstr "Informationsbegäran"
-
-#~ msgid "Power failure"
-#~ msgstr "Strömavbrott"
-
-#~ msgid "Resource lost"
-#~ msgstr "Förlorad resurs"
-
-#~ msgid "error writing to a closed pipe or socket"
-#~ msgstr "fel vid skrivning till ett stängt rör eller uttag"
-
-#, c-format
-#~ msgid "cannot create pipe"
-#~ msgstr "kan inte skapa rör"
-
-#, c-format
-#~ msgid "Real-time signal %d"
-#~ msgstr "Realtidssignal %d"
-
-#, c-format
-#~ msgid "Unknown signal %d"
-#~ msgstr "Okänd signal %d"
-
-#~ msgid "Execution times (seconds)"
-#~ msgstr "Körtider (sekunder)"
-
-#~ msgid "CPU user"
-#~ msgstr "CPU användare"
-
-#~ msgid "CPU system"
-#~ msgstr "CPU system"
-
-#~ msgid "wall clock"
-#~ msgstr "väggklocka"
-
-#~ msgid "iconv function not usable"
-#~ msgstr "iconv-funktion inte användbar"
-
-#~ msgid "iconv function not available"
-#~ msgstr "iconv-funktion inte tillgänglig"
-
-#, c-format
-#~ msgid "cannot convert U+%04X to local character set"
-#~ msgstr "kan inte konvertera U+%04X till lokal teckenuppsättning"
-
-#, c-format
-#~ msgid "cannot convert U+%04X to local character set: %s"
-#~ msgstr "kan inte konvertera U+%04X till lokal teckenuppsättning: %s"
-
-#~ msgid "invalid group"
-#~ msgstr "ogiltig grupp"
-
-#~ msgid "warning: '.' should be ':'"
-#~ msgstr "varning: ”.” borde vara ”:”"
-
-#, c-format
-#~ msgid "Packaged by %s (%s)\n"
-#~ msgstr "Paketerat av %s (%s)\n"
-
-#, c-format
-#~ msgid "Packaged by %s\n"
-#~ msgstr "Paketerat av %s\n"
-
-#~ msgid "(C)"
-#~ msgstr "©"
-
-#, c-format
-#~ msgid ""
-#~ "License GPLv3+: GNU GPL version 3 or later <%s>.\n"
-#~ "This is free software: you are free to change and redistribute it.\n"
-#~ "There is NO WARRANTY, to the extent permitted by law.\n"
-#~ msgstr ""
-#~ "Licens GPLv3+: GNU GPL version 3 eller senare <%s>.\n"
-#~ "Detta är fri programvara: du får lov att ändra och vidaredistribuera "
-#~ "den.\n"
-#~ "Det finns INGEN GARANTI, så långt lagen tillåter.\n"
-
-#, c-format
-#~ msgid "Written by %s.\n"
-#~ msgstr "Skrivet av %s.\n"
-
-#, c-format
-#~ msgid "Written by %s and %s.\n"
-#~ msgstr "Skrivet av %s och %s.\n"
-
-#, c-format
-#~ msgid "Written by %s, %s, and %s.\n"
-#~ msgstr "Skrivet av %s, %s och %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "and %s.\n"
-#~ msgstr ""
-#~ "Skrivet av %s, %s, %s\n"
-#~ "och %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, and %s.\n"
-#~ msgstr ""
-#~ "Skrivet av %s, %s, %s,\n"
-#~ "%s och %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, %s, and %s.\n"
-#~ msgstr ""
-#~ "Skrivet av %s, %s, %s,\n"
-#~ "%s, %s och %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, %s, %s, and %s.\n"
-#~ msgstr ""
-#~ "Skrivet av %s, %s, %s,\n"
-#~ "%s, %s, %s och %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, %s, %s, %s,\n"
-#~ "and %s.\n"
-#~ msgstr ""
-#~ "Skrivet av %s, %s, %s,\n"
-#~ "%s, %s, %s, %s\n"
-#~ "och %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, %s, %s, %s,\n"
-#~ "%s, and %s.\n"
-#~ msgstr ""
-#~ "Skrivet av %s, %s, %s,\n"
-#~ "%s, %s, %s, %s,\n"
-#~ "%s och %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, %s, %s, %s,\n"
-#~ "%s, %s, and others.\n"
-#~ msgstr ""
-#~ "Skrivet av %s, %s, %s,\n"
-#~ "%s, %s, %s, %s,\n"
-#~ "%s, %s med flera.\n"
-
-#, c-format
-#~ msgid "Report bugs to: %s\n"
-#~ msgstr ""
-#~ "Rapportera fel till: %s\n"
-#~ "Skicka synpunkter på översättningen till: tp-sv-list@lists.sourceforg."
-#~ "net\n"
-
-#, c-format
-#~ msgid "Report %s bugs to: %s\n"
-#~ msgstr "Rapportera %s-fel till: %s\n"
-
-#, c-format
-#~ msgid "%s home page: <%s>\n"
-#~ msgstr "Webbsida för %s: <%s>\n"
-
-#, c-format
-#~ msgid "General help using GNU software: <%s>\n"
-#~ msgstr "Allmän hjälp med att använda GNU-program: <%s>\n"
-
-#, c-format
-#~ msgid "%s subprocess"
-#~ msgstr "%s-underprocess"
-
-#, c-format
-#~ msgid "%s subprocess got fatal signal %d"
-#~ msgstr "%s-underprocess fick ödesdiger signal %d"
-
-#, c-format
-#~ msgid "failed to set file descriptor text/binary mode"
-#~ msgstr "misslyckades att sätta filbeskrivaren i text-/binärt läge"
-
-#~ msgid "stdin"
-#~ msgstr "standard in"
-
-#~ msgid "stdout"
-#~ msgstr "standard ut"
-
-#~ msgid "stderr"
-#~ msgstr "standard fel"
-
-#~ msgid "unknown stream"
-#~ msgstr "okänd ström"
-
-#, c-format
-#~ msgid "failed to reopen %s with mode %s"
-#~ msgstr "det gick inte att öppna om %s i läget %s"
-
-#, c-format
-#~ msgid "string comparison failed"
-#~ msgstr "strängjämförelse misslyckades"
-
-#, c-format
-#~ msgid "Set LC_ALL='C' to work around the problem."
-#~ msgstr "Sätt LC_ALL='C' för att gå runt problemet."
-
-#, c-format
-#~ msgid "The strings compared were %s and %s."
-#~ msgstr "De jämförda strängarna var %s och %s."
-
-#, c-format
-#~ msgid "cannot perform formatted output"
-#~ msgstr "kan inte utföra formaterad utmatning"
-
-#, c-format
-#~ msgid "standard file descriptors"
-#~ msgstr "standard filbeskrivare"
-
-#, c-format
-#~ msgid "%s: %s"
-#~ msgstr "%s: %s"
-
-#, c-format
-#~ msgid "invalid %s%s argument '%s'"
-#~ msgstr "felaktigt %s%s-argument ”%s”"
-
-#, c-format
-#~ msgid "invalid suffix in %s%s argument '%s'"
-#~ msgstr "felaktigt suffix i %s%s-argument ”%s”"
-
-#, c-format
-#~ msgid "%s%s argument '%s' too large"
-#~ msgstr "%s%s-argumentet ”%s” är för stort"
+msgstr "Inget att ångra"

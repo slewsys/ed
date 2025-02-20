@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnulib 1.1\n"
 "Report-Msgid-Bugs-To: bug-gnulib@gnu.org\n"
-"POT-Creation-Date: 2025-02-09 06:33-0500\n"
+"POT-Creation-Date: 2025-02-12 00:55-0500\n"
 "PO-Revision-Date: 2007-07-20 12:24-0600\n"
 "Last-Translator: Kevin Scannell <kscanne@gmail.com>\n"
 "Language-Team: Irish <gaeilge-gnulinux@lists.sourceforge.net>\n"
@@ -143,8 +143,8 @@ msgstr "Níl aon slonn ionadaíochta roimhe seo"
 msgid "dup2 error"
 msgstr "earráid chláir"
 
-#: src/buffer.c:136 src/io.c:96 src/io.c:167 src/io.c:645 src/io.c:696
-#: src/main.c:783 src/register.c:395
+#: src/buffer.c:136 src/io.c:96 src/io.c:167 src/io.c:650 src/io.c:701
+#: src/main.c:788 src/register.c:395
 #, fuzzy
 #| msgid "write error"
 msgid "File open error"
@@ -213,13 +213,13 @@ msgstr ""
 msgid "Decryption failed (incomplete block)"
 msgstr ""
 
-#: src/cbc.c:384 src/io.c:565 src/io.c:837
+#: src/cbc.c:384 src/io.c:570 src/io.c:842
 #, fuzzy
 #| msgid "write error"
 msgid "File read error"
 msgstr "earráid sa scríobh"
 
-#: src/cmds.c:43 src/io.c:487 src/main.c:368 src/register.c:302
+#: src/cmds.c:43 src/io.c:492 src/main.c:368 src/register.c:302
 msgid "End-of-file unexpected"
 msgstr ""
 
@@ -240,7 +240,7 @@ msgstr "earráid chláir"
 msgid "Child process error"
 msgstr "fophróiseas %s"
 
-#: src/cmds.c:347 src/filter.c:40 src/io.c:176 src/io.c:707
+#: src/cmds.c:347 src/filter.c:40 src/io.c:176 src/io.c:712
 #, c-format
 msgid "Exit status: %#x"
 msgstr ""
@@ -354,7 +354,7 @@ msgstr "earráid sa scríobh"
 msgid "No previous command"
 msgstr ""
 
-#: src/io.c:57 src/io.c:614 src/main.c:232 src/main.c:732 src/main.c:795
+#: src/io.c:57 src/io.c:619 src/main.c:232 src/main.c:737 src/main.c:804
 #: src/register.c:36 src/register.c:83 src/register.c:142 src/register.c:152
 #: src/register.c:211 src/register.c:220 src/register.c:247 src/register.c:286
 #: src/register.c:353 src/register.c:413 src/register.c:453 src/register.c:492
@@ -367,12 +367,12 @@ msgstr "earráid sa scríobh"
 msgid "File does not exist"
 msgstr ""
 
-#: src/io.c:119 src/io.c:659
+#: src/io.c:119 src/io.c:664
 #, c-format
 msgid "%s: File already locked\n"
 msgstr ""
 
-#: src/io.c:143 src/io.c:636 src/io.c:674
+#: src/io.c:143 src/io.c:641 src/io.c:679
 msgid "File close error"
 msgstr ""
 
@@ -386,35 +386,35 @@ msgstr ""
 msgid "Newline appended\n"
 msgstr ""
 
-#: src/io.c:551 src/io.c:790
+#: src/io.c:556 src/io.c:795
 msgid "Broken pipe"
 msgstr ""
 
-#: src/io.c:621 src/register.c:254
+#: src/io.c:626 src/register.c:254
 #, fuzzy
 #| msgid "write error"
 msgid "File truncate error"
 msgstr "earráid sa scríobh"
 
-#: src/io.c:743
+#: src/io.c:748
 msgid "File too big"
 msgstr ""
 
-#: src/io.c:796 src/io.c:816 src/io.c:827 src/main.c:743 src/main.c:751
+#: src/io.c:801 src/io.c:821 src/io.c:832 src/main.c:748 src/main.c:756
 #, fuzzy
 #| msgid "write error"
 msgid "File write error"
 msgstr "earráid sa scríobh"
 
-#: src/io.c:860 src/parse.c:502
+#: src/io.c:865 src/parse.c:502
 msgid "File status error"
 msgstr ""
 
-#: src/io.c:867
+#: src/io.c:872
 msgid "Access restricted to regular files"
 msgstr ""
 
-#: src/io.c:936
+#: src/io.c:941
 #, fuzzy
 #| msgid "write error"
 msgid "File stat error"
@@ -440,34 +440,34 @@ msgstr ""
 msgid "Argument list full"
 msgstr "Tá an argóint mhaoláin róbheag"
 
-#: src/main.c:816
+#: src/main.c:825
 #, c-format
 msgid ""
 "Usage: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE...]\n"
 msgstr ""
 
-#: src/main.c:818
+#: src/main.c:827
 #, c-format
 msgid ""
 "Usage: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE]\n"
 msgstr ""
 
-#: src/main.c:821
+#: src/main.c:830
 #, c-format
 msgid "Usage: %s [-] [-EGhRrsVvwx] [-p PROMPT] [FILE]\n"
 msgstr ""
 
-#: src/main.c:831
+#: src/main.c:840
 #, c-format
 msgid "Usage: %s [OPTION...] [FILE...]\n"
 msgstr ""
 
-#: src/main.c:834
+#: src/main.c:843
 #, c-format
 msgid "Usage: %s [OPTION...] [FILE]\n"
 msgstr ""
 
-#: src/main.c:840
+#: src/main.c:849
 #, c-format
 msgid ""
 "Options:\n"
@@ -494,7 +494,7 @@ msgid ""
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
 
-#: src/main.c:862
+#: src/main.c:871
 #, c-format
 msgid ""
 "Options:\n"
@@ -517,7 +517,7 @@ msgid ""
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
 
-#: src/main.c:893
+#: src/main.c:902
 msgid "script, line %"
 msgstr ""
 
@@ -630,524 +630,3 @@ msgstr ""
 #: src/undo.c:51
 msgid "Nothing to undo"
 msgstr ""
-
-#, fuzzy
-#~| msgid "write error"
-#~ msgid "fdopen error"
-#~ msgstr "earráid sa scríobh"
-
-#, c-format
-#~ msgid "invalid argument %s for %s"
-#~ msgstr "argóint neamhbhailí %s chun %s"
-
-#, c-format
-#~ msgid "ambiguous argument %s for %s"
-#~ msgstr "argóint dhébhríoch %s chun %s"
-
-#, c-format
-#~ msgid "Valid arguments are:"
-#~ msgstr "Na hargóintí bailí:"
-
-#, c-format
-#~ msgid "ARGP_HELP_FMT: %s value is less than or equal to %s"
-#~ msgstr "ARGP_HELP_FMT: luach %s níos lú ná nó cothrom le %s"
-
-#, c-format
-#~ msgid "%.*s: ARGP_HELP_FMT parameter requires a value"
-#~ msgstr "%.*s: luach de dhíth ar pharaiméadar ARGP_HELP_FMT"
-
-#, c-format
-#~ msgid "%.*s: ARGP_HELP_FMT parameter must be positive"
-#~ msgstr "%.*s: luach deimhneach de dhíth ar pharaiméadar ARGP_HELP_FMT"
-
-#, c-format
-#~ msgid "%.*s: Unknown ARGP_HELP_FMT parameter"
-#~ msgstr "%.*s: Paraiméadar anaithnid ARGP_HELP_FMT"
-
-#, c-format
-#~ msgid "Garbage in ARGP_HELP_FMT: %s"
-#~ msgstr "Truflais i ARGP_HELP_FMT: %s"
-
-#~ msgid ""
-#~ "Mandatory or optional arguments to long options are also mandatory or "
-#~ "optional for any corresponding short options."
-#~ msgstr ""
-#~ "Is riachtanach/roghnach le rogha ghearr aon argóint atá riachtanach/"
-#~ "roghnach leis an rogha fhada."
-
-#~ msgid "Usage:"
-#~ msgstr "Úsáid:"
-
-#~ msgid "  or: "
-#~ msgstr "  nó: "
-
-#~ msgid " [OPTION...]"
-#~ msgstr " [ROGHA...]"
-
-#, c-format
-#~ msgid "Try `%s --help' or `%s --usage' for more information.\n"
-#~ msgstr ""
-#~ "Bain triail as `%s --help' nó `%s --usage' chun tuilleadh eolais a "
-#~ "fháil.\n"
-
-#, c-format
-#~ msgid "Report bugs to %s.\n"
-#~ msgstr "Seol tuairiscí fabhtanna chuig %s.\n"
-
-#~ msgid "Unknown system error"
-#~ msgstr "Earráid chórais anaithnid"
-
-#~ msgid "give this help list"
-#~ msgstr "taispeáin an chabhair seo"
-
-#~ msgid "give a short usage message"
-#~ msgstr "tabhair teachtaireacht bheag úsáide"
-
-#~ msgid "NAME"
-#~ msgstr "AINM"
-
-#~ msgid "set the program name"
-#~ msgstr "socraigh ainm an chláir"
-
-#~ msgid "SECS"
-#~ msgstr "SOIC"
-
-#~ msgid "hang for SECS seconds (default 3600)"
-#~ msgstr "déan moill SOIC soicind (réamhshocrú: 3600)"
-
-#~ msgid "print program version"
-#~ msgstr "taispeáin leagan an chláir"
-
-#, c-format
-#~ msgid "(PROGRAM ERROR) No version known!?"
-#~ msgstr "(EARRÁID CHLÁIR) Leagan anaithnid!?"
-
-#~ msgid "(PROGRAM ERROR) Option should have been recognized!?"
-#~ msgstr "(EARRÁID CHLÁIR) Ba chóir an rogha a aithint!?"
-
-#~ msgid "stack overflow"
-#~ msgstr "cruach thar maoil"
-
-#, fuzzy, c-format
-#~ msgid "cannot create a temporary directory using template \"%s\""
-#~ msgstr "ní féidir comhadlann %s a chruthú"
-
-#, fuzzy, c-format
-#~ msgid "cannot remove temporary file %s"
-#~ msgstr "ní féidir comhadlann %s a chruthú"
-
-#, fuzzy, c-format
-#~ msgid "cannot remove temporary directory %s"
-#~ msgstr "ní féidir comhadlann %s a chruthú"
-
-#, fuzzy
-#~ msgid "error closing file"
-#~ msgstr "earráid agus comhad \"%s\" á scríobh"
-
-#, c-format
-#~ msgid "error while opening \"%s\" for reading"
-#~ msgstr "earráid agus \"%s\" á oscailt chun é a léamh"
-
-#, c-format
-#~ msgid "cannot open backup file \"%s\" for writing"
-#~ msgstr "ní féidir comhad cúltaca \"%s\" a oscailt chun scríobh ann"
-
-#, c-format
-#~ msgid "error reading \"%s\""
-#~ msgstr "earráid agus \"%s\" á léamh"
-
-#, c-format
-#~ msgid "error writing \"%s\""
-#~ msgstr "earráid agus \"%s\" á scríobh"
-
-#, c-format
-#~ msgid "error after reading \"%s\""
-#~ msgstr "earráid tar éis \"%s\" á léamh"
-
-#, c-format
-#~ msgid "fdopen() failed"
-#~ msgstr "theip ar fdopen()"
-
-#, c-format
-#~ msgid "C# compiler not found, try installing pnet"
-#~ msgstr "Tiomsaitheoir C# gan aimsiú, bain triail as pnet"
-
-#, c-format
-#~ msgid "C# virtual machine not found, try installing pnet"
-#~ msgstr "Meaisín fíorúil C# gan aimsiú, bain triail as pnet"
-
-#, c-format
-#~ msgid "%s subprocess failed"
-#~ msgstr "theip ar fhophróiseas %s"
-
-#~ msgid "regular empty file"
-#~ msgstr "gnáthchomhad folamh"
-
-#~ msgid "regular file"
-#~ msgstr "gnáthchomhad"
-
-#~ msgid "directory"
-#~ msgstr "comhadlann"
-
-#~ msgid "block special file"
-#~ msgstr "comhad speisialta den chineál `bloc'"
-
-#~ msgid "character special file"
-#~ msgstr "comhad speisialta den chineál `carachtar'"
-
-# `TITA' ?! -KPS
-#~ msgid "fifo"
-#~ msgstr "fifo"
-
-#~ msgid "symbolic link"
-#~ msgstr "nasc siombalach"
-
-#~ msgid "socket"
-#~ msgstr "soicéad"
-
-#~ msgid "message queue"
-#~ msgstr "ciú teachtaireachta"
-
-#~ msgid "semaphore"
-#~ msgstr "séamafór"
-
-# FARF --KPS
-#~ msgid "shared memory object"
-#~ msgstr "comhad comhchuimhne"
-
-#~ msgid "typed memory object"
-#~ msgstr "comhad cuimhne le cineál"
-
-#~ msgid "weird file"
-#~ msgstr "comhad aisteach"
-
-#~ msgid "Address family for hostname not supported"
-#~ msgstr "Aicme sheolta d'óstainm gan tacaíocht"
-
-#~ msgid "Temporary failure in name resolution"
-#~ msgstr "Teip shealadach ar réiteach na n-ainmneacha"
-
-#~ msgid "Bad value for ai_flags"
-#~ msgstr "Luach neamhbhailí do 'ai_flags'"
-
-#~ msgid "Non-recoverable failure in name resolution"
-#~ msgstr "Teip dhocheartaithe ar réiteach na n-ainmneacha"
-
-#~ msgid "ai_family not supported"
-#~ msgstr "ní thacaítear le 'ai_family'"
-
-#~ msgid "Memory allocation failure"
-#~ msgstr "Theip ar dháil chuimhne"
-
-#~ msgid "No address associated with hostname"
-#~ msgstr "Níl seoladh ar bith ceangailte leis an óstainm"
-
-#~ msgid "Name or service not known"
-#~ msgstr "Ainm nó seirbhís anaithnid"
-
-#~ msgid "Servname not supported for ai_socktype"
-#~ msgstr "Ní thacaítear le hainm freastalaithe do 'ai_socktype'"
-
-#~ msgid "ai_socktype not supported"
-#~ msgstr "ní thacaítear le 'ai_socktype'"
-
-#~ msgid "System error"
-#~ msgstr "Earráid chórais"
-
-#~ msgid "Processing request in progress"
-#~ msgstr "Iarratas próiseála ar siúl"
-
-#~ msgid "Request canceled"
-#~ msgstr "Cealaíodh an t-iarratas"
-
-#~ msgid "Request not canceled"
-#~ msgstr "Níor cealaíodh an t-iarratas"
-
-#~ msgid "All requests done"
-#~ msgstr "Cuireadh gach iarratas i gcrích"
-
-#~ msgid "Parameter string not correctly encoded"
-#~ msgstr "Níl an teaghrán paraiméadair ionchódaithe i gceart"
-
-#, c-format
-#~ msgid "%s: option `--%s' doesn't allow an argument\n"
-#~ msgstr "%s: ní cheadaítear argóint i ndiaidh na rogha `--%s'\n"
-
-#, c-format
-#~ msgid "%s: unrecognized option `--%s'\n"
-#~ msgstr "%s: rogha anaithnid `--%s'\n"
-
-#, c-format
-#~ msgid "%s: illegal option -- %c\n"
-#~ msgstr "%s: rogha neamhcheadaithe -- %c\n"
-
-#, c-format
-#~ msgid "%s: option `-W %s' is ambiguous\n"
-#~ msgstr "%s: Tá an rogha `-W %s' débhríoch\n"
-
-#, c-format
-#~ msgid "%s: option `-W %s' doesn't allow an argument\n"
-#~ msgstr "%s: ní cheadaítear argóint i ndiaidh na rogha `-W %s'\n"
-
-#, c-format
-#~ msgid "invalid source_version argument to compile_java_class"
-#~ msgstr "argóint neamhbhailí \"source_version\" ar compile_java_class"
-
-#, c-format
-#~ msgid "invalid target_version argument to compile_java_class"
-#~ msgstr "argóint neamhbhailí \"target_version\" ar compile_java_class"
-
-#, c-format
-#~ msgid "failed to create \"%s\""
-#~ msgstr "theip ar chruthú \"%s\""
-
-#, c-format
-#~ msgid "error while writing \"%s\" file"
-#~ msgstr "earráid agus comhad \"%s\" á scríobh"
-
-#, c-format
-#~ msgid "Java compiler not found, try installing gcj or set $JAVAC"
-#~ msgstr ""
-#~ "Tiomsaitheoir Java gan aimsiú, bain triail as gcj, nó socraigh $JAVAC"
-
-#, c-format
-#~ msgid "Java virtual machine not found, try installing gij or set $JAVA"
-#~ msgstr ""
-#~ "Meaisín fíorúil Java gan aimsiú, bain triail as gij, nó socraigh $JAVA"
-
-#, c-format
-#~ msgid "cannot create pipe"
-#~ msgstr "ní féidir píopa a chruthú"
-
-#, c-format
-#~ msgid "unable to record current working directory"
-#~ msgstr "ní féidir an chomhadlann oibre a thaifead"
-
-#, c-format
-#~ msgid "cannot change permissions of %s"
-#~ msgstr "ní féidir na ceadanna de %s a athrú"
-
-#, c-format
-#~ msgid "cannot create directory %s"
-#~ msgstr "ní féidir comhadlann %s a chruthú"
-
-#, c-format
-#~ msgid "memory exhausted"
-#~ msgstr "cuimhne ídithe"
-
-#, c-format
-#~ msgid "Failed to open /dev/zero for read"
-#~ msgstr "Theip ar oscailt /dev/zero chun é a léamh"
-
-#~ msgid "`"
-#~ msgstr "`"
-
-#~ msgid "'"
-#~ msgstr "'"
-
-# #-#-#-#-#  findutils-4.1.7.ga.po (findutils 4.1.7)  #-#-#-#-#
-# allow yes, but also 'i' as in 'is sea' or 's' for 'sea' -- KPS
-# neither of these letters is near the 'N' on standard keyboard...
-# #-#-#-#-#  sh-utils-2.0.15.ga.po (sh-utils 2.0.15)  #-#-#-#-#
-# #-#-#-#-#  findutils-4.1.7.ga.po (findutils 4.1.7)  #-#-#-#-#
-# allow yes, but also 'i' as in 'is sea' or 's' for 'sea' -- KPS
-# neither of these letters is near the 'N' on standard keyboard...
-# #-#-#-#-#  textutils-2.1.ga.po (textutils 2.1)  #-#-#-#-#
-# #-#-#-#-#  findutils-4.1.7.ga.po (findutils 4.1.7)  #-#-#-#-#
-# allow yes, but also 'i' as in 'is sea' or 's' for 'sea' -- KPS
-# neither of these letters is near the 'N' on standard keyboard...
-#~ msgid "^[yY]"
-#~ msgstr "^[yYiIsS]"
-
-# #-#-#-#-#  findutils-4.1.7.ga.po (findutils 4.1.7)  #-#-#-#-#
-# fortunately, 'n' for 'no' or 'ní hea' - KPS
-# #-#-#-#-#  sh-utils-2.0.15.ga.po (sh-utils 2.0.15)  #-#-#-#-#
-# #-#-#-#-#  findutils-4.1.7.ga.po (findutils 4.1.7)  #-#-#-#-#
-# fortunately, 'n' for 'no' or 'ní hea' - KPS
-# #-#-#-#-#  textutils-2.1.ga.po (textutils 2.1)  #-#-#-#-#
-# #-#-#-#-#  findutils-4.1.7.ga.po (findutils 4.1.7)  #-#-#-#-#
-# fortunately, 'n' for 'no' or 'ní hea' - KPS
-#~ msgid "^[nN]"
-#~ msgstr "^[nN]"
-
-#~ msgid "iconv function not usable"
-#~ msgstr "ní féidir an fheidhm iconv a úsáid"
-
-#~ msgid "iconv function not available"
-#~ msgstr "níl an fheidhm iconv ar fáil"
-
-#, c-format
-#~ msgid "cannot convert U+%04X to local character set"
-#~ msgstr "ní féidir U+%04X a thiontú chuig an fhoireann carachtar logánta"
-
-#, c-format
-#~ msgid "cannot convert U+%04X to local character set: %s"
-#~ msgstr "ní féidir U+%04X a thiontú chuig an fhoireann carachtar logánta: %s"
-
-#~ msgid "invalid group"
-#~ msgstr "grúpa neamhbhailí"
-
-#~ msgid "invalid spec"
-#~ msgstr "sonrú neamhbhailí"
-
-#, fuzzy, c-format
-#~ msgid "preserving permissions for %s"
-#~ msgstr "ní féidir na ceadanna de %s a athrú"
-
-#, c-format
-#~ msgid "string comparison failed"
-#~ msgstr "theip ar chomparáid idir teaghráin"
-
-#, c-format
-#~ msgid "Set LC_ALL='C' to work around the problem."
-#~ msgstr "Cuir LC_ALL='C' ionas gur féidir an fhadhb seo a sheachaint."
-
-#, c-format
-#~ msgid "The strings compared were %s and %s."
-#~ msgstr "Rinneadh comparáid idir na teaghráin %s agus %s."
-
-#~ msgid "(C)"
-#~ msgstr "©"
-
-#, fuzzy
-#~ msgid ""
-#~ "\n"
-#~ "License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl."
-#~ "html>.\n"
-#~ "This is free software: you are free to change and redistribute it.\n"
-#~ "There is NO WARRANTY, to the extent permitted by law.\n"
-#~ "\n"
-#~ msgstr ""
-#~ "\n"
-#~ "Ceadúnas GPLv3+: GNU GPL leagan 3 nó níos nuaí <http://gnu.org/licenses/"
-#~ "gpl.html>\n"
-#~ "Is saorbhogearra é seo: ceadaítear duit é a athrú agus a athdháileadh.\n"
-#~ "Níl baránta AR BITH ann, an oiread atá ceadaithe de réir dlí.\n"
-#~ "\n"
-
-#, c-format
-#~ msgid "Written by %s.\n"
-#~ msgstr "Le %s.\n"
-
-#, c-format
-#~ msgid "Written by %s and %s.\n"
-#~ msgstr "Le %s agus %s.\n"
-
-#, c-format
-#~ msgid "Written by %s, %s, and %s.\n"
-#~ msgstr "Le %s, %s, agus %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "and %s.\n"
-#~ msgstr ""
-#~ "Le %s, %s, %s,\n"
-#~ "agus %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, and %s.\n"
-#~ msgstr ""
-#~ "Le %s, %s, %s,\n"
-#~ "%s, agus %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, %s, and %s.\n"
-#~ msgstr ""
-#~ "Le %s, %s, %s,\n"
-#~ "%s, %s, agus %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, %s, %s, and %s.\n"
-#~ msgstr ""
-#~ "Le %s, %s, %s,\n"
-#~ "%s, %s, %s, agus %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, %s, %s, %s,\n"
-#~ "and %s.\n"
-#~ msgstr ""
-#~ "Le %s, %s, %s,\n"
-#~ "%s, %s, %s, %s,\n"
-#~ "agus %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, %s, %s, %s,\n"
-#~ "%s, and %s.\n"
-#~ msgstr ""
-#~ "Le %s, %s, %s,\n"
-#~ "%s, %s, %s, %s,\n"
-#~ "%s, agus %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, %s, %s, %s,\n"
-#~ "%s, %s, and others.\n"
-#~ msgstr ""
-#~ "Le %s, %s, %s,\n"
-#~ "%s, %s, %s, %s,\n"
-#~ "%s, %s, agus daoine eile nach iad.\n"
-
-#, fuzzy, c-format
-#~ msgid ""
-#~ "\n"
-#~ "Report bugs to <%s>.\n"
-#~ msgstr "Seol tuairiscí fabhtanna chuig %s.\n"
-
-#, fuzzy, c-format
-#~ msgid "invalid %s%s argument `%s'"
-#~ msgstr "argóint neamhbhailí %s chun %s"
-
-#, fuzzy, c-format
-#~ msgid "invalid suffix in %s%s argument `%s'"
-#~ msgstr "argóint neamhbhailí %s chun %s"
-
-#, fuzzy, c-format
-#~ msgid "setting permissions for %s"
-#~ msgstr "ní féidir na ceadanna de %s a athrú"
-
-#, c-format
-#~ msgid "%s subprocess"
-#~ msgstr "fophróiseas %s"
-
-#, c-format
-#~ msgid "%s subprocess got fatal signal %d"
-#~ msgstr "fuair fophróiseas %s comhartha marfach %d"
-
-#~ msgid "block size"
-#~ msgstr "méid bloc"
-
-#~ msgid "%s exists but is not a directory"
-#~ msgstr "Tá %s ann cheana, ach ní comhadlann é"
-
-#~ msgid "cannot change owner and/or group of %s"
-#~ msgstr "ní féidir an t-úinéir agus/nó an grúpa de %s a athrú"
-
-#~ msgid "cannot get the login group of a numeric UID"
-#~ msgstr "níl aon fháil ar an ghrúpa don UID uimhriúil seo"
-
-#~ msgid ""
-#~ "\n"
-#~ "This is free software.  You may redistribute copies of it under the terms "
-#~ "of\n"
-#~ "the GNU General Public License <http://www.gnu.org/licenses/gpl.html>.\n"
-#~ "There is NO WARRANTY, to the extent permitted by law.\n"
-#~ "\n"
-#~ msgstr ""
-#~ "\n"
-#~ "Is saorbhogearra é seo.  Is féidir leat cóipeanna a scaipeadh de réir na\n"
-#~ "gcoinníollacha den GNU General Public License\n"
-#~ "<http://www.gnu.org/licenses/gpl.html>.\n"
-#~ "Níl baránta AR BITH ann, an oiread atá ceadaithe de réir dlí.\n"
-#~ "\n"

@@ -1,3 +1,139 @@
+ed (1:2.1.1-1) release; urgency=medium
+
+  * Update version to 2.1.1.
+
+  * Handle empty insert in empty buffer.
+
+  * Prepend scripts from stdin before command line.
+
+  * Allow embedded newlines on command line.
+
+  * Minor code clean up.
+
+  * POSIX substitute requires closing pattern delimiter.
+
+  * Allow macros to operate over a range of addresses.
+
+  * Update dot after moving lines to register.
+
+  * Rename per structure I/O flags.
+
+  * Restore global-command context after macro.
+
+  * Update clean/distclean targets per GNU Coding Standards.
+
+  * Add contrib Makefile.
+
+  * Update ed.spec.
+
+  * Add Makefile targets for RPM and Deb packages.
+
+  * Use system getopt_long if available.
+
+  * Switch to TOML syntax per REUSE Specification v3.3.
+
+  * Update Gnulib and lib/patch-Makefile.am.diff.
+
+  * Don't save deleted lines to (default) register.
+
+  * Enable compression of test suite data.
+
+  * Adjust testsuite for OmniOS.
+
+  * Rename environment variable ZSTD_CMD => ZSTD.
+
+  * Update shell-call-graph parsing regex.
+
+  * Fix some comments.
+
+  * Revert experimental global-command structure.
+
+  * CI: Update macOS actions.
+
+  * Fix Sun/BSD file-pointer assignment.
+
+  * Add NOP to avoid c2x-extension warning.
+
+  * Initial support for OpenBSD.
+
+  * Handle SIGPIPE.
+
+  * Don't use `which' - it may be an alias.
+
+  * Update test requirements to include zstd.
+
+  * Allow long searches to be interrupted.
+
+  * Fix compile error.
+
+  * call-graph: Loosen function syntax requirement.
+
+  * Add Crowdin translations to PO file fr.po.
+
+  * Fix a typo.
+
+  * Fix corrupted Spanish translation.
+
+  * If vfork not available, shell command reports error.
+
+ed (1:2.1.0-2) unstable; urgency=medium
+
+  * Don't ignore SIGCHLD.
+
+  * Fix uninitialized variables and remove unused ones.
+
+  * Add Fedora RPM spec.
+
+  * Add missing files to source distribution.
+
+  * Fail gracefully if missing makeinfo/texi2any and/or texi2dvi.
+
+  * Update s.tmac for generating tutorials.
+
+  * Add Makefile target spdx-sbom.
+
+  * When buffer empty, permit .! shell-cmd to append.
+
+  * License ID is CC0, not CCO.
+
+  * Replace deprecated mktemp.
+
+  * Fix testsuite for macOS (macOS awk != GNU awk).
+
+  * Merge branch 'main' into preorder-traversal
+
+  * Add testsuite for prdg.
+
+  * Adjust delimiters around regex.
+
+  * Refactor call-graph script; Add dependency prdg.
+
+  * Refactor call-graph script; Add dependency prdg.
+
+  * Switch to zstd.
+
+  * Switch to file-based registers.
+
+  * Add removal of clangd's .cache directory to distclean-local.
+
+  * Remove generated headers.
+
+  * Resolve more buffer overflows.
+
+  * Attempt to make WAITPID more resilient.
+
+  * Fix buffer overflows.
+
+  * Try to sanitize  Debian changelog.
+
+  * Sync with Gnulib.
+
+  * Sync ChangeLog with git log.
+
+  * Lower libtool prerequisite.
+
+  * Update Debian changelog
+
 ed (1:2.1.0-1) unstable; urgency=medium
 
   * Fix memory leaks flagged by valgrind.
@@ -56,8 +192,11 @@ ed (1:2.1.0-1) unstable; urgency=medium
 ed (1:2.0.13-2) unstable; urgency=medium
 
   * Allow ed to read output of process substitution.
+
   * Support GNU regex operators in extended regular expressions.
+
   * Handle edge case where backslash is used as pattern delimiter.
+
   * Support command-line address arguments.
 
  -- Andrew L. Moore <slewsys@gmail.com>  Fri, 08 Sep 2023 01:40:08 +0000

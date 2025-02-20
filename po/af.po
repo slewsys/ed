@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: coreutils 5.2.1\n"
 "Report-Msgid-Bugs-To: bug-gnulib@gnu.org\n"
-"POT-Creation-Date: 2025-02-09 06:33-0500\n"
+"POT-Creation-Date: 2025-02-12 00:55-0500\n"
 "PO-Revision-Date: 2004-03-17 11:58+0200\n"
 "Last-Translator: Petri Jooste <rkwjpj@puk.ac.za>\n"
 "Language-Team: Afrikaans <i18n@af.org.za>\n"
@@ -147,8 +147,8 @@ msgstr "fout in soektog met reëlmatige uitdrukking"
 msgid "dup2 error"
 msgstr "leesfout"
 
-#: src/buffer.c:136 src/io.c:96 src/io.c:167 src/io.c:645 src/io.c:696
-#: src/main.c:783 src/register.c:395
+#: src/buffer.c:136 src/io.c:96 src/io.c:167 src/io.c:650 src/io.c:701
+#: src/main.c:788 src/register.c:395
 #, fuzzy
 #| msgid "write error"
 msgid "File open error"
@@ -216,13 +216,13 @@ msgstr ""
 msgid "Decryption failed (incomplete block)"
 msgstr ""
 
-#: src/cbc.c:384 src/io.c:565 src/io.c:837
+#: src/cbc.c:384 src/io.c:570 src/io.c:842
 #, fuzzy
 #| msgid "write error"
 msgid "File read error"
 msgstr "skryffout"
 
-#: src/cmds.c:43 src/io.c:487 src/main.c:368 src/register.c:302
+#: src/cmds.c:43 src/io.c:492 src/main.c:368 src/register.c:302
 msgid "End-of-file unexpected"
 msgstr ""
 
@@ -240,7 +240,7 @@ msgstr "leesfout"
 msgid "Child process error"
 msgstr ""
 
-#: src/cmds.c:347 src/filter.c:40 src/io.c:176 src/io.c:707
+#: src/cmds.c:347 src/filter.c:40 src/io.c:176 src/io.c:712
 #, c-format
 msgid "Exit status: %#x"
 msgstr ""
@@ -347,7 +347,7 @@ msgstr "skryffout"
 msgid "No previous command"
 msgstr ""
 
-#: src/io.c:57 src/io.c:614 src/main.c:232 src/main.c:732 src/main.c:795
+#: src/io.c:57 src/io.c:619 src/main.c:232 src/main.c:737 src/main.c:804
 #: src/register.c:36 src/register.c:83 src/register.c:142 src/register.c:152
 #: src/register.c:211 src/register.c:220 src/register.c:247 src/register.c:286
 #: src/register.c:353 src/register.c:413 src/register.c:453 src/register.c:492
@@ -360,12 +360,12 @@ msgstr "skryffout"
 msgid "File does not exist"
 msgstr ""
 
-#: src/io.c:119 src/io.c:659
+#: src/io.c:119 src/io.c:664
 #, c-format
 msgid "%s: File already locked\n"
 msgstr ""
 
-#: src/io.c:143 src/io.c:636 src/io.c:674
+#: src/io.c:143 src/io.c:641 src/io.c:679
 msgid "File close error"
 msgstr ""
 
@@ -379,35 +379,35 @@ msgstr ""
 msgid "Newline appended\n"
 msgstr ""
 
-#: src/io.c:551 src/io.c:790
+#: src/io.c:556 src/io.c:795
 msgid "Broken pipe"
 msgstr ""
 
-#: src/io.c:621 src/register.c:254
+#: src/io.c:626 src/register.c:254
 #, fuzzy
 #| msgid "write error"
 msgid "File truncate error"
 msgstr "skryffout"
 
-#: src/io.c:743
+#: src/io.c:748
 msgid "File too big"
 msgstr ""
 
-#: src/io.c:796 src/io.c:816 src/io.c:827 src/main.c:743 src/main.c:751
+#: src/io.c:801 src/io.c:821 src/io.c:832 src/main.c:748 src/main.c:756
 #, fuzzy
 #| msgid "write error"
 msgid "File write error"
 msgstr "skryffout"
 
-#: src/io.c:860 src/parse.c:502
+#: src/io.c:865 src/parse.c:502
 msgid "File status error"
 msgstr ""
 
-#: src/io.c:867
+#: src/io.c:872
 msgid "Access restricted to regular files"
 msgstr ""
 
-#: src/io.c:936
+#: src/io.c:941
 #, fuzzy
 #| msgid "write error"
 msgid "File stat error"
@@ -429,34 +429,34 @@ msgstr ""
 msgid "Argument list full"
 msgstr ""
 
-#: src/main.c:816
+#: src/main.c:825
 #, c-format
 msgid ""
 "Usage: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE...]\n"
 msgstr ""
 
-#: src/main.c:818
+#: src/main.c:827
 #, c-format
 msgid ""
 "Usage: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE]\n"
 msgstr ""
 
-#: src/main.c:821
+#: src/main.c:830
 #, c-format
 msgid "Usage: %s [-] [-EGhRrsVvwx] [-p PROMPT] [FILE]\n"
 msgstr ""
 
-#: src/main.c:831
+#: src/main.c:840
 #, c-format
 msgid "Usage: %s [OPTION...] [FILE...]\n"
 msgstr ""
 
-#: src/main.c:834
+#: src/main.c:843
 #, c-format
 msgid "Usage: %s [OPTION...] [FILE]\n"
 msgstr ""
 
-#: src/main.c:840
+#: src/main.c:849
 #, c-format
 msgid ""
 "Options:\n"
@@ -483,7 +483,7 @@ msgid ""
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
 
-#: src/main.c:862
+#: src/main.c:871
 #, c-format
 msgid ""
 "Options:\n"
@@ -506,7 +506,7 @@ msgid ""
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
 
-#: src/main.c:893
+#: src/main.c:902
 msgid "script, line %"
 msgstr ""
 
@@ -610,305 +610,3 @@ msgstr ""
 #: src/undo.c:51
 msgid "Nothing to undo"
 msgstr ""
-
-#, fuzzy
-#~ msgid "fdopen error"
-#~ msgstr "Onbekende stelselfout"
-
-#, c-format
-#~ msgid "invalid argument %s for %s"
-#~ msgstr "ongeldige parameter %s vir %s"
-
-#, c-format
-#~ msgid "ambiguous argument %s for %s"
-#~ msgstr "dubbelsinnige parameter %s vir %s"
-
-#, c-format
-#~ msgid "Valid arguments are:"
-#~ msgstr "Geldige parameters is soos volg:"
-
-#, fuzzy
-#~ msgid ""
-#~ "Mandatory or optional arguments to long options are also mandatory or "
-#~ "optional for any corresponding short options."
-#~ msgstr ""
-#~ "Verpligte parameters vir langformaat opsies is ook verpligtend vir "
-#~ "kortformaat opsies.\n"
-
-#, fuzzy
-#~ msgid " [OPTION...]"
-#~ msgstr "Gebruik so:  %s [OPSIE]...\n"
-
-#, fuzzy, c-format
-#~ msgid "Try `%s --help' or `%s --usage' for more information.\n"
-#~ msgstr "Probeer `%s --help' vir meer inligting.\n"
-
-#, fuzzy, c-format
-#~ msgid "Report bugs to %s.\n"
-#~ msgstr ""
-#~ "\n"
-#~ "Rapporteer foute aan <%s>.\n"
-
-#~ msgid "Unknown system error"
-#~ msgstr "Onbekende stelselfout"
-
-#~ msgid "NAME"
-#~ msgstr "NAAM"
-
-#, fuzzy, c-format
-#~ msgid "error while opening \"%s\" for reading"
-#~ msgstr "kan nie %s oopmaak om te lees nie"
-
-#, fuzzy, c-format
-#~ msgid "cannot open backup file \"%s\" for writing"
-#~ msgstr "kan nie %s oopmaak om te lees nie"
-
-#, fuzzy, c-format
-#~ msgid "error reading \"%s\""
-#~ msgstr "fout met die les van %s"
-
-#, fuzzy, c-format
-#~ msgid "error writing \"%s\""
-#~ msgstr "fout met die skryf na %s"
-
-#, fuzzy, c-format
-#~ msgid "error after reading \"%s\""
-#~ msgstr "fout met die les van %s"
-
-#, fuzzy
-#~ msgid "fdopen() failed"
-#~ msgstr "'open' het gefaal"
-
-#, fuzzy, c-format
-#~ msgid "%s subprocess failed"
-#~ msgstr "%s: seek het misluk"
-
-#~ msgid "regular empty file"
-#~ msgstr "gewone leë lêer"
-
-#~ msgid "regular file"
-#~ msgstr "gewone lêer"
-
-#~ msgid "directory"
-#~ msgstr "lêergids"
-
-#~ msgid "block special file"
-#~ msgstr "spesiale bloklêer"
-
-#~ msgid "character special file"
-#~ msgstr "spesiale karakterlêer"
-
-#~ msgid "fifo"
-#~ msgstr "fifo"
-
-#~ msgid "symbolic link"
-#~ msgstr "simboliese skakel"
-
-#~ msgid "socket"
-#~ msgstr "sok"
-
-#~ msgid "message queue"
-#~ msgstr "boodskapwagtou"
-
-#~ msgid "semaphore"
-#~ msgstr "semafoor"
-
-#~ msgid "shared memory object"
-#~ msgstr "gedeeldegeheue-objek"
-
-#, fuzzy
-#~ msgid "typed memory object"
-#~ msgstr "gedeeldegeheue-objek"
-
-#~ msgid "weird file"
-#~ msgstr "vreemde lêer"
-
-#, fuzzy
-#~ msgid "Address family for hostname not supported"
-#~ msgstr "fifo-lêers word nie ondersteun nie"
-
-#, fuzzy
-#~ msgid "ai_family not supported"
-#~ msgstr "fifo-lêers word nie ondersteun nie"
-
-#, fuzzy
-#~ msgid "ai_socktype not supported"
-#~ msgstr "fifo-lêers word nie ondersteun nie"
-
-#, c-format
-#~ msgid "%s: option `--%s' doesn't allow an argument\n"
-#~ msgstr "%s: opsie `--%s' laat nie 'n parameter toe nie\n"
-
-#, c-format
-#~ msgid "%s: unrecognized option `--%s'\n"
-#~ msgstr "%s: onbekende opsie `--%s'\n"
-
-#, c-format
-#~ msgid "%s: illegal option -- %c\n"
-#~ msgstr "%s: onwettige opsie -- %c\n"
-
-#, c-format
-#~ msgid "%s: option `-W %s' is ambiguous\n"
-#~ msgstr "%s: opsie `-W %s' is dubbelsinnig\n"
-
-#, c-format
-#~ msgid "%s: option `-W %s' doesn't allow an argument\n"
-#~ msgstr "%s: opsie `-W %s' laat nie 'n parameter toe nie\n"
-
-#~ msgid "block size"
-#~ msgstr "blokgrootte"
-
-#, c-format
-#~ msgid "%s exists but is not a directory"
-#~ msgstr "%s bestaan maar is nie 'n lêergids nie"
-
-#, c-format
-#~ msgid "cannot change owner and/or group of %s"
-#~ msgstr "kan nie die eienaar en/of groep van %s verander nie"
-
-#, c-format
-#~ msgid "cannot create directory %s"
-#~ msgstr "Kan nie lêergids %s skep nie."
-
-#, c-format
-#~ msgid "cannot change permissions of %s"
-#~ msgstr "kan nie toegangsregte van %s verander nie"
-
-#~ msgid "memory exhausted"
-#~ msgstr "geheue uitgeput"
-
-#, fuzzy
-#~ msgid "unable to record current working directory"
-#~ msgstr "kon nie na aanvanklike werkgids terugkeer nie"
-
-#, fuzzy
-#~ msgid "Failed to open /dev/zero for read"
-#~ msgstr "magtigings vir %s kon nie behou word nie"
-
-#, fuzzy
-#~ msgid "cannot create pipe"
-#~ msgstr "kan nie die skakel %s skep nie"
-
-#~ msgid "`"
-#~ msgstr "`"
-
-#~ msgid "'"
-#~ msgstr "'"
-
-#~ msgid "^[yY]"
-#~ msgstr "^[jJ]"
-
-#~ msgid "^[nN]"
-#~ msgstr "^[nN]"
-
-#~ msgid "iconv function not usable"
-#~ msgstr "iconv-funksie onbruikbaar"
-
-#~ msgid "iconv function not available"
-#~ msgstr "iconv-funksie is nie beskikbaar nie"
-
-#, c-format
-#~ msgid "cannot convert U+%04X to local character set"
-#~ msgstr "kan nie U+%04X omskakel na 'n plaaslike karakterstel nie"
-
-#, c-format
-#~ msgid "cannot convert U+%04X to local character set: %s"
-#~ msgstr "kan nie U+%04X omskakel na 'n plaaslike karakterstel nie: %s"
-
-#~ msgid "invalid group"
-#~ msgstr "ongeldige groep "
-
-#~ msgid "cannot get the login group of a numeric UID"
-#~ msgstr "kan nie die aantekengroep van 'n numeriese UID verkry nie"
-
-#  TRANSLATORS: %s denotes an author name.
-#  TRANSLATORS: %s denotes an author name.
-#, c-format
-#~ msgid "Written by %s.\n"
-#~ msgstr "Geskryf deur %s.\n"
-
-#  TRANSLATORS: Each %s denotes an author name.
-#  TRANSLATORS: Each %s denotes an author name.
-#, c-format
-#~ msgid "Written by %s and %s.\n"
-#~ msgstr "Geskryf deur %s en %s.\n"
-
-#  TRANSLATORS: Each %s denotes an author name.
-#, c-format
-#~ msgid "Written by %s, %s, and %s.\n"
-#~ msgstr "Geskryf deur %s, %s en %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "and %s.\n"
-#~ msgstr ""
-#~ "Geskryf deur %s, %s, %s \n"
-#~ "en %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, and %s.\n"
-#~ msgstr ""
-#~ "Geskryf deur %s, %s, %s, \n"
-#~ "%s en %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, %s, and %s.\n"
-#~ msgstr ""
-#~ "Geskryf deur %s, %s, %s, \n"
-#~ "%s, %s en %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, %s, %s, and %s.\n"
-#~ msgstr ""
-#~ "Geskryf deur %s, %s, %s, \n"
-#~ "%s, %s, %s en %s.\n"
-
-#  TRANSLATORS: Each %s denotes an author name.
-#  You can use line breaks, estimating that each author name occupies
-#  ca. 16 screen columns and that a screen line has ca. 80 columns.
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, %s, %s, %s,\n"
-#~ "and %s.\n"
-#~ msgstr ""
-#~ "Geskryf deur %s, %s, %s, \n"
-#~ "%s, %s, %s, %s\n"
-#~ "en %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, %s, %s, %s,\n"
-#~ "%s, and %s.\n"
-#~ msgstr ""
-#~ "Geskryf deur %s, %s, %s, \n"
-#~ "%s, %s, %s, %s,\n"
-#~ "%s en %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, %s, %s, %s,\n"
-#~ "%s, %s, and others.\n"
-#~ msgstr ""
-#~ "Geskryf deur %s, %s, %s, \n"
-#~ "%s, %s, %s, %s\n"
-#~ "%s, %s en ander.\n"
-
-#~ msgid "string comparison failed"
-#~ msgstr "stringvergelyking het gefaal"
-
-#~ msgid "Set LC_ALL='C' to work around the problem."
-#~ msgstr "Stel  LC_ALL='C' om die probleem te systap"
-
-#, c-format
-#~ msgid "The strings compared were %s and %s."
-#~ msgstr "Die stringe wat vergelyk is, is %s en %s."

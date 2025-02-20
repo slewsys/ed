@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mailutils 0.6.90\n"
 "Report-Msgid-Bugs-To: bug-gnulib@gnu.org\n"
-"POT-Creation-Date: 2025-02-09 06:33-0500\n"
+"POT-Creation-Date: 2025-02-12 00:55-0500\n"
 "PO-Revision-Date: 2005-05-21 04:10+0200\n"
 "Last-Translator: Jordi Mallach <jordi@gnu.org>\n"
 "Language-Team: Catalan <ca@dodds.net>\n"
@@ -150,8 +150,8 @@ msgstr "error en la recerca de l'expressió regular"
 msgid "dup2 error"
 msgstr "error de lectura"
 
-#: src/buffer.c:136 src/io.c:96 src/io.c:167 src/io.c:645 src/io.c:696
-#: src/main.c:783 src/register.c:395
+#: src/buffer.c:136 src/io.c:96 src/io.c:167 src/io.c:650 src/io.c:701
+#: src/main.c:788 src/register.c:395
 #, fuzzy
 #| msgid "write error"
 msgid "File open error"
@@ -218,13 +218,13 @@ msgstr ""
 msgid "Decryption failed (incomplete block)"
 msgstr ""
 
-#: src/cbc.c:384 src/io.c:565 src/io.c:837
+#: src/cbc.c:384 src/io.c:570 src/io.c:842
 #, fuzzy
 #| msgid "write error"
 msgid "File read error"
 msgstr "error d'escriptura"
 
-#: src/cmds.c:43 src/io.c:487 src/main.c:368 src/register.c:302
+#: src/cmds.c:43 src/io.c:492 src/main.c:368 src/register.c:302
 msgid "End-of-file unexpected"
 msgstr ""
 
@@ -242,7 +242,7 @@ msgstr "error de lectura"
 msgid "Child process error"
 msgstr ""
 
-#: src/cmds.c:347 src/filter.c:40 src/io.c:176 src/io.c:707
+#: src/cmds.c:347 src/filter.c:40 src/io.c:176 src/io.c:712
 #, c-format
 msgid "Exit status: %#x"
 msgstr ""
@@ -349,7 +349,7 @@ msgstr "error d'escriptura"
 msgid "No previous command"
 msgstr ""
 
-#: src/io.c:57 src/io.c:614 src/main.c:232 src/main.c:732 src/main.c:795
+#: src/io.c:57 src/io.c:619 src/main.c:232 src/main.c:737 src/main.c:804
 #: src/register.c:36 src/register.c:83 src/register.c:142 src/register.c:152
 #: src/register.c:211 src/register.c:220 src/register.c:247 src/register.c:286
 #: src/register.c:353 src/register.c:413 src/register.c:453 src/register.c:492
@@ -362,12 +362,12 @@ msgstr "error d'escriptura"
 msgid "File does not exist"
 msgstr ""
 
-#: src/io.c:119 src/io.c:659
+#: src/io.c:119 src/io.c:664
 #, c-format
 msgid "%s: File already locked\n"
 msgstr ""
 
-#: src/io.c:143 src/io.c:636 src/io.c:674
+#: src/io.c:143 src/io.c:641 src/io.c:679
 msgid "File close error"
 msgstr ""
 
@@ -381,35 +381,35 @@ msgstr ""
 msgid "Newline appended\n"
 msgstr ""
 
-#: src/io.c:551 src/io.c:790
+#: src/io.c:556 src/io.c:795
 msgid "Broken pipe"
 msgstr ""
 
-#: src/io.c:621 src/register.c:254
+#: src/io.c:626 src/register.c:254
 #, fuzzy
 #| msgid "write error"
 msgid "File truncate error"
 msgstr "error d'escriptura"
 
-#: src/io.c:743
+#: src/io.c:748
 msgid "File too big"
 msgstr ""
 
-#: src/io.c:796 src/io.c:816 src/io.c:827 src/main.c:743 src/main.c:751
+#: src/io.c:801 src/io.c:821 src/io.c:832 src/main.c:748 src/main.c:756
 #, fuzzy
 #| msgid "write error"
 msgid "File write error"
 msgstr "error d'escriptura"
 
-#: src/io.c:860 src/parse.c:502
+#: src/io.c:865 src/parse.c:502
 msgid "File status error"
 msgstr ""
 
-#: src/io.c:867
+#: src/io.c:872
 msgid "Access restricted to regular files"
 msgstr ""
 
-#: src/io.c:936
+#: src/io.c:941
 #, fuzzy
 #| msgid "write error"
 msgid "File stat error"
@@ -431,34 +431,34 @@ msgstr ""
 msgid "Argument list full"
 msgstr ""
 
-#: src/main.c:816
+#: src/main.c:825
 #, c-format
 msgid ""
 "Usage: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE...]\n"
 msgstr ""
 
-#: src/main.c:818
+#: src/main.c:827
 #, c-format
 msgid ""
 "Usage: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE]\n"
 msgstr ""
 
-#: src/main.c:821
+#: src/main.c:830
 #, c-format
 msgid "Usage: %s [-] [-EGhRrsVvwx] [-p PROMPT] [FILE]\n"
 msgstr ""
 
-#: src/main.c:831
+#: src/main.c:840
 #, c-format
 msgid "Usage: %s [OPTION...] [FILE...]\n"
 msgstr ""
 
-#: src/main.c:834
+#: src/main.c:843
 #, c-format
 msgid "Usage: %s [OPTION...] [FILE]\n"
 msgstr ""
 
-#: src/main.c:840
+#: src/main.c:849
 #, c-format
 msgid ""
 "Options:\n"
@@ -485,7 +485,7 @@ msgid ""
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
 
-#: src/main.c:862
+#: src/main.c:871
 #, c-format
 msgid ""
 "Options:\n"
@@ -508,7 +508,7 @@ msgid ""
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
 
-#: src/main.c:893
+#: src/main.c:902
 msgid "script, line %"
 msgstr ""
 
@@ -614,381 +614,3 @@ msgstr ""
 #: src/undo.c:51
 msgid "Nothing to undo"
 msgstr ""
-
-#, fuzzy
-#~ msgid "fdopen error"
-#~ msgstr "S'ha produït un error desconegut del sistema"
-
-# Usa quote() en els 2 args.  ivb
-#, c-format
-#~ msgid "invalid argument %s for %s"
-#~ msgstr "l'argument %s no és vàlid per %s"
-
-# Usa quote() en els 2 args.  ivb
-#, c-format
-#~ msgid "ambiguous argument %s for %s"
-#~ msgstr "l'argument %s és ambigu per %s"
-
-#, c-format
-#~ msgid "Valid arguments are:"
-#~ msgstr "Els arguments vàlids són:"
-
-#, c-format
-#~ msgid "%.*s: ARGP_HELP_FMT parameter requires a value"
-#~ msgstr "%.*s: El paràmetre ARGP_HELP_FMT requereix un valor"
-
-#, c-format
-#~ msgid "%.*s: Unknown ARGP_HELP_FMT parameter"
-#~ msgstr "%.*s: El paràmetre d'ARGP_HELP_FMT és desconegut"
-
-# pfft, escombraries... jm
-#, c-format
-#~ msgid "Garbage in ARGP_HELP_FMT: %s"
-#~ msgstr "Hi ha escombraries en ARGP_HELP_FMT: %s"
-
-#~ msgid ""
-#~ "Mandatory or optional arguments to long options are also mandatory or "
-#~ "optional for any corresponding short options."
-#~ msgstr ""
-#~ "Els arguments necessaris o opcionals per a les opcions llargues també són "
-#~ "necessaris o opcionals per a qualsevol opció curta corresponent."
-
-#~ msgid "Usage:"
-#~ msgstr "Forma d'ús:"
-
-#~ msgid "  or: "
-#~ msgstr "  ó: "
-
-#~ msgid " [OPTION...]"
-#~ msgstr " [OPCIÓ...]"
-
-#, c-format
-#~ msgid "Try `%s --help' or `%s --usage' for more information.\n"
-#~ msgstr "Proveu «%s --help» o «%s --usage» per a obtindre més informació.\n"
-
-#, c-format
-#~ msgid "Report bugs to %s.\n"
-#~ msgstr "Informeu dels errors a %s.\n"
-
-#~ msgid "Unknown system error"
-#~ msgstr "S'ha produït un error desconegut del sistema"
-
-#~ msgid "Give this help list"
-#~ msgstr "Mostra aquesta llista d'ajuda"
-
-#~ msgid "Give a short usage message"
-#~ msgstr "Mostra un curt missatge sobre l'ús"
-
-#~ msgid "NAME"
-#~ msgstr "NOM"
-
-#~ msgid "Set the program name"
-#~ msgstr "Estableix el nom del programa"
-
-#, fuzzy
-#~ msgid "SECS"
-#~ msgstr "SEGONS"
-
-#~ msgid "Hang for SECS seconds (default 3600)"
-#~ msgstr "Penja durant SEGS segons (per defecte 3600)"
-
-#~ msgid "Print program version"
-#~ msgstr "Mostra la versió del programa"
-
-#~ msgid "(PROGRAM ERROR) No version known!?"
-#~ msgstr "(ERROR DEL PROGRAMA) Cap versió coneguda!?"
-
-#~ msgid "(PROGRAM ERROR) Option should have been recognized!?"
-#~ msgstr "(ERROR DEL PROGRAMA) L'opció s'hauria d'haver reconegut!?"
-
-# "underflow", bonico el paraulo.. jm
-#, fuzzy
-#~ msgid "stack overflow"
-#~ msgstr "pila buida"
-
-# Usa quote().  ivb
-#, fuzzy, c-format
-#~ msgid "error while opening \"%s\" for reading"
-#~ msgstr "no s'ha pogut obrir %s per llegir"
-
-# Usa quote().  ivb
-#, fuzzy, c-format
-#~ msgid "cannot open backup file \"%s\" for writing"
-#~ msgstr "no s'ha pogut obrir %s per a escriure"
-
-# uniq no usa quote().  ivb
-#, fuzzy, c-format
-#~ msgid "error reading \"%s\""
-#~ msgstr "error en llegir %s"
-
-# uniq no usa quote().  ivb
-#, fuzzy, c-format
-#~ msgid "error writing \"%s\""
-#~ msgstr "error en escriure %s"
-
-# uniq no usa quote().  ivb
-#, fuzzy, c-format
-#~ msgid "error after reading \"%s\""
-#~ msgstr "error en llegir %s"
-
-#, fuzzy
-#~ msgid "fdopen() failed"
-#~ msgstr "no s'ha pogut obrir"
-
-#, fuzzy, c-format
-#~ msgid "%s subprocess failed"
-#~ msgstr "%s: ha fallat el desplaçament"
-
-#~ msgid "regular empty file"
-#~ msgstr "fitxer ordinari buit"
-
-#~ msgid "regular file"
-#~ msgstr "fitxer ordinari"
-
-#~ msgid "directory"
-#~ msgstr "directori"
-
-#~ msgid "block special file"
-#~ msgstr "fitxer especial de blocs"
-
-#~ msgid "character special file"
-#~ msgstr "fitxer especial de caràcters"
-
-#~ msgid "fifo"
-#~ msgstr "cua FIFO"
-
-#~ msgid "symbolic link"
-#~ msgstr "enllaç simbòlic"
-
-#~ msgid "socket"
-#~ msgstr "connector"
-
-#~ msgid "message queue"
-#~ msgstr "cua de missatges"
-
-#~ msgid "semaphore"
-#~ msgstr "semàfor"
-
-#~ msgid "shared memory object"
-#~ msgstr "objecte de memòria compartida"
-
-#~ msgid "typed memory object"
-#~ msgstr "objecte de memòria amb tipus"
-
-#~ msgid "weird file"
-#~ msgstr "fitxer estrany"
-
-#, fuzzy
-#~ msgid "Address family for hostname not supported"
-#~ msgstr "els fitxers FIFO no són suportats"
-
-#, fuzzy
-#~ msgid "ai_family not supported"
-#~ msgstr "els fitxers FIFO no són suportats"
-
-#, fuzzy
-#~ msgid "Memory allocation failure"
-#~ msgstr "L'operació ha fallat"
-
-#, fuzzy
-#~ msgid "ai_socktype not supported"
-#~ msgstr "els fitxers FIFO no són suportats"
-
-#, fuzzy
-#~ msgid "Request not canceled"
-#~ msgstr "No es troba l'element sol·licitat"
-
-#, c-format
-#~ msgid "%s: option `--%s' doesn't allow an argument\n"
-#~ msgstr "%s: l'opció «--%s» no accepta arguments\n"
-
-#, c-format
-#~ msgid "%s: unrecognized option `--%s'\n"
-#~ msgstr "%s: l'opció «--%s» no es reconeix\n"
-
-#, c-format
-#~ msgid "%s: illegal option -- %c\n"
-#~ msgstr "%s: l'opció és il·legal -- %c\n"
-
-#, c-format
-#~ msgid "%s: option `-W %s' is ambiguous\n"
-#~ msgstr "%s: l'opció «-W %s» és ambigua\n"
-
-#, c-format
-#~ msgid "%s: option `-W %s' doesn't allow an argument\n"
-#~ msgstr "%s: l'opció «-W %s» no accepta arguments\n"
-
-# FIXME: xmalloc.h: _STRTOL_ERROR lacks i18n.  ivb
-# Açò quedarà com «invalid mida de bloc `MIDA'» mentre no ho facen.  ivb
-#~ msgid "block size"
-#~ msgstr "mida de bloc"
-
-# Els 4 usen quote().  ivb
-#, c-format
-#~ msgid "%s exists but is not a directory"
-#~ msgstr "%s existeix però no és un directori"
-
-# Els 3 usen quote().  ivb
-#, c-format
-#~ msgid "cannot change owner and/or group of %s"
-#~ msgstr "no s'ha pogut canviar el propietari o grup de %s"
-
-# Els 3 usen quote().  ivb
-#, c-format
-#~ msgid "cannot create directory %s"
-#~ msgstr "no s'ha pogut crear el directori %s"
-
-# Els 2 usen quote().  ivb
-#, c-format
-#~ msgid "cannot change permissions of %s"
-#~ msgstr "no s'han pogut canviar els permisos de %s"
-
-#~ msgid "memory exhausted"
-#~ msgstr "la memòria s'ha exhaurit"
-
-#, fuzzy
-#~ msgid "unable to record current working directory"
-#~ msgstr "openat: no s'ha pogut registrar el directori de treball actual"
-
-#, fuzzy
-#~ msgid "Failed to open /dev/zero for read"
-#~ msgstr "%s: no s'ha pogut obrir per a escriure"
-
-#, fuzzy
-#~ msgid "cannot create pipe"
-#~ msgstr "No es pot crear la llista"
-
-#~ msgid "`"
-#~ msgstr "«"
-
-#~ msgid "'"
-#~ msgstr "»"
-
-#~ msgid "^[yY]"
-#~ msgstr "^[sS]"
-
-#~ msgid "^[nN]"
-#~ msgstr "^[nN]"
-
-#~ msgid "iconv function not usable"
-#~ msgstr "la funció iconv() no és útil"
-
-#~ msgid "iconv function not available"
-#~ msgstr "la funció iconv() no es troba disponible"
-
-#, c-format
-#~ msgid "cannot convert U+%04X to local character set"
-#~ msgstr "no s'ha pogut convertir U+%04X al joc de caràcters local"
-
-#, c-format
-#~ msgid "cannot convert U+%04X to local character set: %s"
-#~ msgstr "no s'ha pogut convertir U+%04X al joc de caràcters local: %s"
-
-#~ msgid "invalid group"
-#~ msgstr "el grup no és vàlid"
-
-#~ msgid "cannot get the login group of a numeric UID"
-#~ msgstr "no s'ha pogut obtenir el grup d'entrada d'un UID numèric"
-
-#, fuzzy
-#~ msgid ""
-#~ "\n"
-#~ "This is free software.  You may redistribute copies of it under the terms "
-#~ "of\n"
-#~ "the GNU General Public License <http://www.gnu.org/licenses/gpl.html>.\n"
-#~ "There is NO WARRANTY, to the extent permitted by law.\n"
-#~ "\n"
-#~ msgstr ""
-#~ "Aquest és programari lliure; podeu redistribuir-lo i/o modificar-lo sota "
-#~ "els\n"
-#~ "termes de la Llicència Pública General GNU tal i com ha estat publicada "
-#~ "per la\n"
-#~ "Free Software Foundation; bé sota la versió 2 de la Llicència o bé (si "
-#~ "ho\n"
-#~ "preferiu) sota qualsevol versió posterior.\n"
-#~ "\n"
-
-#, c-format
-#~ msgid "Written by %s.\n"
-#~ msgstr "Escrit per %s.\n"
-
-#, c-format
-#~ msgid "Written by %s and %s.\n"
-#~ msgstr "Escrit per %s i %s.\n"
-
-#, c-format
-#~ msgid "Written by %s, %s, and %s.\n"
-#~ msgstr "Escrit per %s, %s i %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "and %s.\n"
-#~ msgstr ""
-#~ "Escrit per %s, %s, %s\n"
-#~ "i %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, and %s.\n"
-#~ msgstr ""
-#~ "Escrit per %s, %s, %s,\n"
-#~ "%s i %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, %s, and %s.\n"
-#~ msgstr ""
-#~ "Escrit per %s, %s, %s,\n"
-#~ "%s, %s i %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, %s, %s, and %s.\n"
-#~ msgstr ""
-#~ "Escrit per %s, %s, %s,\n"
-#~ "%s, %s, %s i %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, %s, %s, %s,\n"
-#~ "and %s.\n"
-#~ msgstr ""
-#~ "Escrit per %s, %s, %s,\n"
-#~ "%s, %s, %s, %s,\n"
-#~ "i %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, %s, %s, %s,\n"
-#~ "%s, and %s.\n"
-#~ msgstr ""
-#~ "Escrit per %s, %s, %s,\n"
-#~ "%s, %s, %s, %s,\n"
-#~ "%s i %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, %s, %s, %s,\n"
-#~ "%s, %s, and others.\n"
-#~ msgstr ""
-#~ "Escrit per %s, %s, %s,\n"
-#~ "%s, %s, %s, %s,\n"
-#~ "%s, %s i d'altres.\n"
-
-#~ msgid "string comparison failed"
-#~ msgstr "ha fallat la comparació de cadenes"
-
-#~ msgid "Set LC_ALL='C' to work around the problem."
-#~ msgstr "Establiu la variable LC_ALL a «C» per evitar el problema."
-
-# Usa quote() en les 2.  ivb
-#, c-format
-#~ msgid "The strings compared were %s and %s."
-#~ msgstr "Les cadenes comparades eren %s i %s."

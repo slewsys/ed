@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnulib 2.0.0.3462.e9796\n"
 "Report-Msgid-Bugs-To: bug-gnulib@gnu.org\n"
-"POT-Creation-Date: 2025-02-09 06:33-0500\n"
+"POT-Creation-Date: 2025-02-12 00:55-0500\n"
 "PO-Revision-Date: 2011-05-19 15:10+0300\n"
 "Last-Translator: Toomas Soome <Toomas.Soome@microlink.ee>\n"
 "Language-Team: Estonian <linux-ee@lists.eenet.ee>\n"
@@ -138,8 +138,8 @@ msgstr "Eelmist regulaaravaldist pole"
 msgid "dup2 error"
 msgstr "Siini viga"
 
-#: src/buffer.c:136 src/io.c:96 src/io.c:167 src/io.c:645 src/io.c:696
-#: src/main.c:783 src/register.c:395
+#: src/buffer.c:136 src/io.c:96 src/io.c:167 src/io.c:650 src/io.c:701
+#: src/main.c:788 src/register.c:395
 #, fuzzy
 #| msgid "write error"
 msgid "File open error"
@@ -214,13 +214,13 @@ msgstr ""
 msgid "Decryption failed (incomplete block)"
 msgstr ""
 
-#: src/cbc.c:384 src/io.c:565 src/io.c:837
+#: src/cbc.c:384 src/io.c:570 src/io.c:842
 #, fuzzy
 #| msgid "write error"
 msgid "File read error"
 msgstr "viga kirjutamisel"
 
-#: src/cmds.c:43 src/io.c:487 src/main.c:368 src/register.c:302
+#: src/cmds.c:43 src/io.c:492 src/main.c:368 src/register.c:302
 msgid "End-of-file unexpected"
 msgstr ""
 
@@ -242,7 +242,7 @@ msgstr "programmi viga"
 msgid "Child process error"
 msgstr "%s: alamprotsess sai S/V vea"
 
-#: src/cmds.c:347 src/filter.c:40 src/io.c:176 src/io.c:707
+#: src/cmds.c:347 src/filter.c:40 src/io.c:176 src/io.c:712
 #, c-format
 msgid "Exit status: %#x"
 msgstr ""
@@ -356,7 +356,7 @@ msgstr "viga kirjutamisel"
 msgid "No previous command"
 msgstr ""
 
-#: src/io.c:57 src/io.c:614 src/main.c:232 src/main.c:732 src/main.c:795
+#: src/io.c:57 src/io.c:619 src/main.c:232 src/main.c:737 src/main.c:804
 #: src/register.c:36 src/register.c:83 src/register.c:142 src/register.c:152
 #: src/register.c:211 src/register.c:220 src/register.c:247 src/register.c:286
 #: src/register.c:353 src/register.c:413 src/register.c:453 src/register.c:492
@@ -369,12 +369,12 @@ msgstr "viga kirjutamisel"
 msgid "File does not exist"
 msgstr ""
 
-#: src/io.c:119 src/io.c:659
+#: src/io.c:119 src/io.c:664
 #, c-format
 msgid "%s: File already locked\n"
 msgstr ""
 
-#: src/io.c:143 src/io.c:636 src/io.c:674
+#: src/io.c:143 src/io.c:641 src/io.c:679
 msgid "File close error"
 msgstr ""
 
@@ -388,37 +388,37 @@ msgstr ""
 msgid "Newline appended\n"
 msgstr ""
 
-#: src/io.c:551 src/io.c:790
+#: src/io.c:556 src/io.c:795
 msgid "Broken pipe"
 msgstr ""
 
-#: src/io.c:621 src/register.c:254
+#: src/io.c:626 src/register.c:254
 #, fuzzy
 #| msgid "write error"
 msgid "File truncate error"
 msgstr "viga kirjutamisel"
 
-#: src/io.c:743
+#: src/io.c:748
 msgid "File too big"
 msgstr ""
 
-#: src/io.c:796 src/io.c:816 src/io.c:827 src/main.c:743 src/main.c:751
+#: src/io.c:801 src/io.c:821 src/io.c:832 src/main.c:748 src/main.c:756
 #, fuzzy
 #| msgid "write error"
 msgid "File write error"
 msgstr "viga kirjutamisel"
 
-#: src/io.c:860 src/parse.c:502
+#: src/io.c:865 src/parse.c:502
 #, fuzzy
 #| msgid "Bus error"
 msgid "File status error"
 msgstr "Siini viga"
 
-#: src/io.c:867
+#: src/io.c:872
 msgid "Access restricted to regular files"
 msgstr ""
 
-#: src/io.c:936
+#: src/io.c:941
 #, fuzzy
 #| msgid "write error"
 msgid "File stat error"
@@ -444,34 +444,34 @@ msgstr ""
 msgid "Argument list full"
 msgstr "Argumentide puhver on liiga väike"
 
-#: src/main.c:816
+#: src/main.c:825
 #, c-format
 msgid ""
 "Usage: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE...]\n"
 msgstr ""
 
-#: src/main.c:818
+#: src/main.c:827
 #, c-format
 msgid ""
 "Usage: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE]\n"
 msgstr ""
 
-#: src/main.c:821
+#: src/main.c:830
 #, c-format
 msgid "Usage: %s [-] [-EGhRrsVvwx] [-p PROMPT] [FILE]\n"
 msgstr ""
 
-#: src/main.c:831
+#: src/main.c:840
 #, c-format
 msgid "Usage: %s [OPTION...] [FILE...]\n"
 msgstr ""
 
-#: src/main.c:834
+#: src/main.c:843
 #, c-format
 msgid "Usage: %s [OPTION...] [FILE]\n"
 msgstr ""
 
-#: src/main.c:840
+#: src/main.c:849
 #, c-format
 msgid ""
 "Options:\n"
@@ -498,7 +498,7 @@ msgid ""
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
 
-#: src/main.c:862
+#: src/main.c:871
 #, c-format
 msgid ""
 "Options:\n"
@@ -521,7 +521,7 @@ msgid ""
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
 
-#: src/main.c:893
+#: src/main.c:902
 msgid "script, line %"
 msgstr ""
 
@@ -632,527 +632,3 @@ msgstr ""
 #: src/undo.c:51
 msgid "Nothing to undo"
 msgstr ""
-
-#, fuzzy
-#~| msgid "Unknown error"
-#~ msgid "fdopen error"
-#~ msgstr "Tundmatu viga"
-
-#, c-format
-#~ msgid "invalid argument %s for %s"
-#~ msgstr "vigane argument %s võtmel `%s'"
-
-#, c-format
-#~ msgid "ambiguous argument %s for %s"
-#~ msgstr "segane argument %s võtmele `%s'"
-
-#, c-format
-#~ msgid "Valid arguments are:"
-#~ msgstr "Lubatud argumendid on:"
-
-#, c-format
-#~ msgid "ARGP_HELP_FMT: %s value is less than or equal to %s"
-#~ msgstr "ARGP_HELP_FMT: %s väärtus on väiksem või võrdne kui %s"
-
-#, c-format
-#~ msgid "%.*s: ARGP_HELP_FMT parameter requires a value"
-#~ msgstr "%.*s: ARGP_HELP_FMT parameeter nõuab väärtust"
-
-#, c-format
-#~ msgid "%.*s: ARGP_HELP_FMT parameter must be positive"
-#~ msgstr "%.*s: ARGP_HELP_FMT parameeter peab olema positiivne"
-
-#, c-format
-#~ msgid "%.*s: Unknown ARGP_HELP_FMT parameter"
-#~ msgstr "%.*s: Tundmatu ARGP_HELP_FMT parameeter"
-
-#, c-format
-#~ msgid "Garbage in ARGP_HELP_FMT: %s"
-#~ msgstr "Prügi ARGP_HELP_FMT sees: %s"
-
-#~ msgid ""
-#~ "Mandatory or optional arguments to long options are also mandatory or "
-#~ "optional for any corresponding short options."
-#~ msgstr ""
-#~ "Kohustuslikud argumendid pikkadele võtmetele on kohustuslikud ka "
-#~ "lühikestele."
-
-#~ msgid "Usage:"
-#~ msgstr "Kasutamine:"
-
-#~ msgid "  or: "
-#~ msgstr "  või: "
-
-#~ msgid " [OPTION...]"
-#~ msgstr " [VÕTI]..."
-
-#, c-format
-#~ msgid "Try `%s --help' or `%s --usage' for more information.\n"
-#~ msgstr "Lisainfo saamiseks proovige `%s --help' või `%s --usage'.\n"
-
-#, c-format
-#~ msgid "Report bugs to %s.\n"
-#~ msgstr "Vigadest teatage palun aadressil %s.\n"
-
-#~ msgid "Unknown system error"
-#~ msgstr "Tundmatu süsteemne viga"
-
-#~ msgid "give this help list"
-#~ msgstr "anna see abiinfo"
-
-#~ msgid "give a short usage message"
-#~ msgstr "anna kasutamise lühikirjeldus"
-
-#~ msgid "NAME"
-#~ msgstr "NIMI"
-
-#~ msgid "set the program name"
-#~ msgstr "sea programmi nimi"
-
-#~ msgid "SECS"
-#~ msgstr "SEK"
-
-#~ msgid "hang for SECS seconds (default 3600)"
-#~ msgstr "oota SEK sekundit (vaikimisi 3600)"
-
-#~ msgid "print program version"
-#~ msgstr "väljasta programmi versioon"
-
-#~ msgid "(PROGRAM ERROR) No version known!?"
-#~ msgstr "(PROGRAMMI VIGA) Versioon ei ole teada!?"
-
-#~ msgid "(PROGRAM ERROR) Option should have been recognized!?"
-#~ msgstr "(PROGRAMMI VIGA) Võti pidanuks olema teada!?"
-
-#~ msgid "stack overflow"
-#~ msgstr "pinu ületäitumine"
-
-#, c-format
-#~ msgid "cannot find a temporary directory, try setting $TMPDIR"
-#~ msgstr "ei leia ajutist kataloogi, proovige seada $TMPDIR"
-
-#, c-format
-#~ msgid "cannot create a temporary directory using template \"%s\""
-#~ msgstr "vormiga \"%s\" ei saa ajutist kataloogi luua"
-
-#, c-format
-#~ msgid "cannot remove temporary file %s"
-#~ msgstr "ajutist faili %s ei õnnestu kustutada"
-
-#, c-format
-#~ msgid "cannot remove temporary directory %s"
-#~ msgstr "ajutist kataloogi %s ei õnnestu kustutada"
-
-#~ msgid "error closing file"
-#~ msgstr "viga faili sulgemisel"
-
-#, c-format
-#~ msgid "preserving permissions for %s"
-#~ msgstr "säilitan %s õiguseid"
-
-#, c-format
-#~ msgid "error while opening \"%s\" for reading"
-#~ msgstr "viga \"%s\" lugemiseks avamisel"
-
-#, c-format
-#~ msgid "cannot open backup file \"%s\" for writing"
-#~ msgstr "Varukoopia faili \"%s\" ei õnnestu kirjutamiseks avada"
-
-#, c-format
-#~ msgid "error reading \"%s\""
-#~ msgstr "viga \"%s\" lugemisel"
-
-#, c-format
-#~ msgid "error writing \"%s\""
-#~ msgstr "viga \"%s\" kirjutamisel"
-
-#, c-format
-#~ msgid "error after reading \"%s\""
-#~ msgstr "viga peale \"%s\" lugemist"
-
-#, c-format
-#~ msgid "fdopen() failed"
-#~ msgstr "fdopen() ebaõnnestus"
-
-#, c-format
-#~ msgid "C# compiler not found, try installing pnet"
-#~ msgstr "C# kompilaatorit pole, proovige paigaldada pnet"
-
-#, c-format
-#~ msgid "C# virtual machine not found, try installing pnet"
-#~ msgstr "C# virtuaalmasinat pole, proovige paigaldada pnet"
-
-#, c-format
-#~ msgid "%s subprocess failed"
-#~ msgstr "%s: alamprotsess sai vea"
-
-#~ msgid "regular empty file"
-#~ msgstr "tavaline tühi fail"
-
-#~ msgid "regular file"
-#~ msgstr "tavaline fail"
-
-#~ msgid "directory"
-#~ msgstr "Kataloog"
-
-#~ msgid "block special file"
-#~ msgstr "blokkseadme fail"
-
-#~ msgid "character special file"
-#~ msgstr "sümbolseadme fail"
-
-#~ msgid "fifo"
-#~ msgstr "fifo"
-
-#~ msgid "symbolic link"
-#~ msgstr "nimeviide"
-
-#~ msgid "socket"
-#~ msgstr "sokkel"
-
-#~ msgid "message queue"
-#~ msgstr "teadete järjekord"
-
-#~ msgid "semaphore"
-#~ msgstr "semafor"
-
-#~ msgid "shared memory object"
-#~ msgstr "jagatud mälu objekt"
-
-#~ msgid "typed memory object"
-#~ msgstr "tüübitud mälu objekt"
-
-#~ msgid "weird file"
-#~ msgstr "veider fail"
-
-#~ msgid "Address family for hostname not supported"
-#~ msgstr "Aadressiperekonda või hostinime ei toetata"
-
-#~ msgid "Temporary failure in name resolution"
-#~ msgstr "Ajutine tõrge nime lahendamisel"
-
-#~ msgid "Bad value for ai_flags"
-#~ msgstr "Vigane ai_flags väärtus"
-
-#~ msgid "Non-recoverable failure in name resolution"
-#~ msgstr "nime lahendamisl tekkis taastumatu tõrge"
-
-#~ msgid "ai_family not supported"
-#~ msgstr "ai_family ei toetata"
-
-#~ msgid "Memory allocation failure"
-#~ msgstr "Tõrge mälu haaramisel"
-
-#~ msgid "No address associated with hostname"
-#~ msgstr "Hosti nimega ei ole aadresse seostatud"
-
-#~ msgid "Name or service not known"
-#~ msgstr "Nimi või teenus on tundmatu"
-
-#~ msgid "Servname not supported for ai_socktype"
-#~ msgstr "ai_socktype ei toeta teenuse nime"
-
-#~ msgid "ai_socktype not supported"
-#~ msgstr "ai_socktype ei toetata"
-
-#~ msgid "System error"
-#~ msgstr "Süsteemne viga"
-
-#~ msgid "Processing request in progress"
-#~ msgstr "Päringu töötlemine käib"
-
-#~ msgid "Request canceled"
-#~ msgstr "Päring katkestati"
-
-#~ msgid "Request not canceled"
-#~ msgstr "Päringut ei katkestatud"
-
-#~ msgid "All requests done"
-#~ msgstr "Kõik päringud täidetud"
-
-#~ msgid "Parameter string not correctly encoded"
-#~ msgstr "Parameetersõne ei ole korrektselt kodeeritud"
-
-#, c-format
-#~ msgid "%s: option '--%s' doesn't allow an argument\n"
-#~ msgstr "%s: võti '--%s' ei luba kasutada argumenti\n"
-
-#, c-format
-#~ msgid "%s: unrecognized option '--%s'\n"
-#~ msgstr "%s: tundmatu võti '--%s'\n"
-
-#, c-format
-#~ msgid "%s: option '-W %s' is ambiguous\n"
-#~ msgstr "%s: võti '-W %s' on segane\n"
-
-#, c-format
-#~ msgid "%s: option '-W %s' doesn't allow an argument\n"
-#~ msgstr "%s: võti '-W %s' ei luba kasutada argumenti\n"
-
-#, c-format
-#~ msgid "invalid source_version argument to compile_java_class"
-#~ msgstr "funktsiooni compile_java_class argument source_version on vigane"
-
-#, c-format
-#~ msgid "invalid target_version argument to compile_java_class"
-#~ msgstr "funktsiooni compile_java_class argument target_version on vigane"
-
-#, c-format
-#~ msgid "failed to create \"%s\""
-#~ msgstr "\"%s\" ei õnnestu luua"
-
-#, c-format
-#~ msgid "error while writing \"%s\" file"
-#~ msgstr "viga faili \"%s\" kirjutamisel"
-
-#, c-format
-#~ msgid "Java compiler not found, try installing gcj or set $JAVAC"
-#~ msgstr "Java kompilaatorit pole, proovige paigaldada gcj või seada $JAVAC"
-
-#, c-format
-#~ msgid "Java virtual machine not found, try installing gij or set $JAVA"
-#~ msgstr "Java virtuaalmasinat pole, proovige paigaldada gcj või seada $JAVAC"
-
-#, c-format
-#~ msgid "cannot change permissions of %s"
-#~ msgstr "ei õnnestu muuta %s õigusi"
-
-#, c-format
-#~ msgid "cannot create directory %s"
-#~ msgstr "kataloogi `%s' ei õnnestu luua"
-
-#, c-format
-#~ msgid "memory exhausted"
-#~ msgstr "mälu on otsas"
-
-#, c-format
-#~ msgid "unable to record current working directory"
-#~ msgstr "ei õnnestu registreerida jooksvat töökataloogi"
-
-#, c-format
-#~ msgid "Failed to open /dev/zero for read"
-#~ msgstr "Faili /dev/zero saa lugemiseks avada"
-
-#, c-format
-#~ msgid "creation of reading thread failed"
-#~ msgstr "lugemise lõime loomine ebaõnnestus"
-
-#, c-format
-#~ msgid "communication with %s subprocess failed"
-#~ msgstr "ühendus %s alamprotsessiga ebaõnnestus"
-
-#, c-format
-#~ msgid "write to %s subprocess failed"
-#~ msgstr "kirjutamine %s alamprotsessi sai vea"
-
-#, c-format
-#~ msgid "read from %s subprocess failed"
-#~ msgstr "lugemine %s alamprotsessist sai vea"
-
-#, c-format
-#~ msgid "creation of threads failed"
-#~ msgstr "lõimede loomine ebaõnnestus"
-
-#, c-format
-#~ msgid "cannot create pipe"
-#~ msgstr "ei õnnestu luua toru"
-
-#~ msgid "`"
-#~ msgstr "`"
-
-#~ msgid "'"
-#~ msgstr "'"
-
-#~ msgid "^[yY]"
-#~ msgstr "^[jJ]"
-
-#~ msgid "^[nN]"
-#~ msgstr "^[eE]"
-
-#, c-format
-#~ msgid "setting permissions for %s"
-#~ msgstr "ei õnnestu seada %s õigusi"
-
-#~ msgid "Power failure"
-#~ msgstr "Toite viga"
-
-#~ msgid "iconv function not usable"
-#~ msgstr "iconv funktsioon ei ole kasutatav"
-
-#~ msgid "iconv function not available"
-#~ msgstr "iconv funktsioon puudub"
-
-#, c-format
-#~ msgid "cannot convert U+%04X to local character set"
-#~ msgstr "U+%04X ei saa lokaalsesse kooditabelisse teisendada"
-
-#, c-format
-#~ msgid "cannot convert U+%04X to local character set: %s"
-#~ msgstr "U+%04X ei saa lokaalsesse kooditabelisse teisendada: %s"
-
-#~ msgid "invalid group"
-#~ msgstr "vigane grupp"
-
-#~ msgid "invalid spec"
-#~ msgstr "vigane spetsifikatsioon"
-
-#~ msgid "(C)"
-#~ msgstr "©"
-
-#, c-format
-#~ msgid "Written by %s.\n"
-#~ msgstr "Kirjutanud %s.\n"
-
-#, c-format
-#~ msgid "Written by %s and %s.\n"
-#~ msgstr "Kirjutanud %s ja %s.\n"
-
-#, c-format
-#~ msgid "Written by %s, %s, and %s.\n"
-#~ msgstr "Kirjutanud %s, %s ja %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "and %s.\n"
-#~ msgstr ""
-#~ "Kirjutanud %s, %s, %s\n"
-#~ "ja %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, and %s.\n"
-#~ msgstr ""
-#~ "Kirjutanud %s, %s, %s,\n"
-#~ "%s ja %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, %s, and %s.\n"
-#~ msgstr ""
-#~ "Kirjutanud %s, %s, %s,\n"
-#~ "%s, %s ja %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, %s, %s, and %s.\n"
-#~ msgstr ""
-#~ "Kirjutanud %s, %s, %s,\n"
-#~ "%s, %s, %s ja %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, %s, %s, %s,\n"
-#~ "and %s.\n"
-#~ msgstr ""
-#~ "Kirjutanud %s, %s, %s,\n"
-#~ "%s, %s, %s, %s,\n"
-#~ "ja %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, %s, %s, %s,\n"
-#~ "%s, and %s.\n"
-#~ msgstr ""
-#~ "Kirjutanud %s, %s, %s,\n"
-#~ "%s, %s, %s, %s,\n"
-#~ "%s ja %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, %s, %s, %s,\n"
-#~ "%s, %s, and others.\n"
-#~ msgstr ""
-#~ "Kirjutanud %s, %s, %s,\n"
-#~ "%s, %s, %s, %s,\n"
-#~ "%s, %s ja teised.\n"
-
-#, c-format
-#~ msgid ""
-#~ "\n"
-#~ "Report bugs to: %s\n"
-#~ msgstr ""
-#~ "\n"
-#~ "Vigadest teatage palun aadressil: %s.\n"
-
-#, c-format
-#~ msgid "Report %s bugs to: %s\n"
-#~ msgstr "%s vigadest teatage palun aadressil: %s\n"
-
-#, c-format
-#~ msgid "%s home page: <%s>\n"
-#~ msgstr "%s koduleht: <%s>\n"
-
-#, c-format
-#~ msgid "%s home page: <http://www.gnu.org/software/%s/>\n"
-#~ msgstr "%s koduleht: <http://www.gnu.org/software/%s/>\n"
-
-#~ msgid "General help using GNU software: <http://www.gnu.org/gethelp/>\n"
-#~ msgstr ""
-#~ "Üldine abiinfo GNU tarkvara kasutamisest: <http://www.gnu.org/gethelp/>\n"
-
-#, c-format
-#~ msgid "_open_osfhandle failed"
-#~ msgstr "_open_osfhandle ebaõnnestus"
-
-#, c-format
-#~ msgid "cannot restore fd %d: dup2 failed"
-#~ msgstr "failipidet %d ei õnnestu taastada: dup2 ebaõnnestus"
-
-#, c-format
-#~ msgid "%s subprocess"
-#~ msgstr "%s alamprotsess"
-
-#, c-format
-#~ msgid "%s subprocess got fatal signal %d"
-#~ msgstr "%s alamprotsess sai fataalse signaali %d"
-
-#~ msgid "stdin"
-#~ msgstr "standardsisend"
-
-#~ msgid "stdout"
-#~ msgstr "standardväljund"
-
-#~ msgid "stderr"
-#~ msgstr "standardvead"
-
-#~ msgid "unknown stream"
-#~ msgstr "undmatu voog"
-
-#, c-format
-#~ msgid "failed to reopen %s with mode %s"
-#~ msgstr "reopen %s moodiga %s ebaõnnestus"
-
-#, c-format
-#~ msgid "string comparison failed"
-#~ msgstr "sõnede võrdlus ebaõnnestus"
-
-#, c-format
-#~ msgid "Set LC_ALL='C' to work around the problem."
-#~ msgstr "Probleemi lahendamiseks seadke LC_ALL=C."
-
-#, c-format
-#~ msgid "The strings compared were %s and %s."
-#~ msgstr "Võrreldi sõnesid %s ja %s."
-
-#, c-format
-#~ msgid "cannot perform formatted output"
-#~ msgstr "ei õnnestu luua vormindatud väljundit"
-
-#, c-format
-#~ msgid "invalid %s%s argument `%s'"
-#~ msgstr "vigane %s%s argument `%s'"
-
-#, c-format
-#~ msgid "invalid suffix in %s%s argument `%s'"
-#~ msgstr "vigane sufiks %s%s argument `%s'"
-
-#, c-format
-#~ msgid "%s%s argument `%s' too large"
-#~ msgstr "%s%s argument `%s' on liiga suur"

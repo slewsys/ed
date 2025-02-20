@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnulib-3.0.0.6062.a6b16\n"
 "Report-Msgid-Bugs-To: bug-gnulib@gnu.org\n"
-"POT-Creation-Date: 2025-02-09 06:33-0500\n"
+"POT-Creation-Date: 2025-02-12 00:55-0500\n"
 "PO-Revision-Date: 2014-01-13 08:31+0700\n"
 "Last-Translator: Trần Ngọc Quân <vnwildman@gmail.com>\n"
 "Language-Team: Vietnamese <translation-team-vi@lists.sourceforge.net>\n"
@@ -144,8 +144,8 @@ msgstr "Không có biểu thức chính quy đi trước"
 msgid "dup2 error"
 msgstr "Lỗi bus"
 
-#: src/buffer.c:136 src/io.c:96 src/io.c:167 src/io.c:645 src/io.c:696
-#: src/main.c:783 src/register.c:395
+#: src/buffer.c:136 src/io.c:96 src/io.c:167 src/io.c:650 src/io.c:701
+#: src/main.c:788 src/register.c:395
 #, fuzzy
 #| msgid "write error"
 msgid "File open error"
@@ -220,13 +220,13 @@ msgstr ""
 msgid "Decryption failed (incomplete block)"
 msgstr ""
 
-#: src/cbc.c:384 src/io.c:565 src/io.c:837
+#: src/cbc.c:384 src/io.c:570 src/io.c:842
 #, fuzzy
 #| msgid "write error"
 msgid "File read error"
 msgstr "lỗi ghi"
 
-#: src/cmds.c:43 src/io.c:487 src/main.c:368 src/register.c:302
+#: src/cmds.c:43 src/io.c:492 src/main.c:368 src/register.c:302
 msgid "End-of-file unexpected"
 msgstr ""
 
@@ -248,7 +248,7 @@ msgstr "lỗi chương trình"
 msgid "Child process error"
 msgstr "Lỗi V/R tiến trình con %s"
 
-#: src/cmds.c:347 src/filter.c:40 src/io.c:176 src/io.c:707
+#: src/cmds.c:347 src/filter.c:40 src/io.c:176 src/io.c:712
 #, c-format
 msgid "Exit status: %#x"
 msgstr ""
@@ -362,7 +362,7 @@ msgstr "lỗi ghi"
 msgid "No previous command"
 msgstr ""
 
-#: src/io.c:57 src/io.c:614 src/main.c:232 src/main.c:732 src/main.c:795
+#: src/io.c:57 src/io.c:619 src/main.c:232 src/main.c:737 src/main.c:804
 #: src/register.c:36 src/register.c:83 src/register.c:142 src/register.c:152
 #: src/register.c:211 src/register.c:220 src/register.c:247 src/register.c:286
 #: src/register.c:353 src/register.c:413 src/register.c:453 src/register.c:492
@@ -375,12 +375,12 @@ msgstr "lỗi ghi"
 msgid "File does not exist"
 msgstr ""
 
-#: src/io.c:119 src/io.c:659
+#: src/io.c:119 src/io.c:664
 #, c-format
 msgid "%s: File already locked\n"
 msgstr ""
 
-#: src/io.c:143 src/io.c:636 src/io.c:674
+#: src/io.c:143 src/io.c:641 src/io.c:679
 msgid "File close error"
 msgstr ""
 
@@ -394,37 +394,37 @@ msgstr ""
 msgid "Newline appended\n"
 msgstr ""
 
-#: src/io.c:551 src/io.c:790
+#: src/io.c:556 src/io.c:795
 msgid "Broken pipe"
 msgstr "Ống dẫn bị hỏng"
 
-#: src/io.c:621 src/register.c:254
+#: src/io.c:626 src/register.c:254
 #, fuzzy
 #| msgid "write error"
 msgid "File truncate error"
 msgstr "lỗi ghi"
 
-#: src/io.c:743
+#: src/io.c:748
 msgid "File too big"
 msgstr ""
 
-#: src/io.c:796 src/io.c:816 src/io.c:827 src/main.c:743 src/main.c:751
+#: src/io.c:801 src/io.c:821 src/io.c:832 src/main.c:748 src/main.c:756
 #, fuzzy
 #| msgid "write error"
 msgid "File write error"
 msgstr "lỗi ghi"
 
-#: src/io.c:860 src/parse.c:502
+#: src/io.c:865 src/parse.c:502
 #, fuzzy
 #| msgid "Bus error"
 msgid "File status error"
 msgstr "Lỗi bus"
 
-#: src/io.c:867
+#: src/io.c:872
 msgid "Access restricted to regular files"
 msgstr ""
 
-#: src/io.c:936
+#: src/io.c:941
 #, fuzzy
 #| msgid "write error"
 msgid "File stat error"
@@ -450,34 +450,34 @@ msgstr ""
 msgid "Argument list full"
 msgstr "Vùng đệm đối số quá ngắn"
 
-#: src/main.c:816
+#: src/main.c:825
 #, c-format
 msgid ""
 "Usage: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE...]\n"
 msgstr ""
 
-#: src/main.c:818
+#: src/main.c:827
 #, c-format
 msgid ""
 "Usage: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE]\n"
 msgstr ""
 
-#: src/main.c:821
+#: src/main.c:830
 #, c-format
 msgid "Usage: %s [-] [-EGhRrsVvwx] [-p PROMPT] [FILE]\n"
 msgstr ""
 
-#: src/main.c:831
+#: src/main.c:840
 #, c-format
 msgid "Usage: %s [OPTION...] [FILE...]\n"
 msgstr ""
 
-#: src/main.c:834
+#: src/main.c:843
 #, c-format
 msgid "Usage: %s [OPTION...] [FILE]\n"
 msgstr ""
 
-#: src/main.c:840
+#: src/main.c:849
 #, c-format
 msgid ""
 "Options:\n"
@@ -504,7 +504,7 @@ msgid ""
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
 
-#: src/main.c:862
+#: src/main.c:871
 #, c-format
 msgid ""
 "Options:\n"
@@ -527,7 +527,7 @@ msgid ""
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
 
-#: src/main.c:893
+#: src/main.c:902
 msgid "script, line %"
 msgstr ""
 
@@ -638,688 +638,3 @@ msgstr ""
 #: src/undo.c:51
 msgid "Nothing to undo"
 msgstr ""
-
-#, fuzzy
-#~| msgid "Bus error"
-#~ msgid "fdopen error"
-#~ msgstr "Lỗi bus"
-
-#, c-format
-#~ msgid "invalid argument %s for %s"
-#~ msgstr "đối số không hợp lệ %s cho %s"
-
-#, c-format
-#~ msgid "ambiguous argument %s for %s"
-#~ msgstr "đối số chưa rõ ràng %s dành cho %s"
-
-#, c-format
-#~ msgid "Valid arguments are:"
-#~ msgstr "Các đối số hợp lệ:"
-
-#, c-format
-#~ msgid "ARGP_HELP_FMT: %s value is less than or equal to %s"
-#~ msgstr "ARGP_HELP_FMT: giá trị %s nhỏ hơn hoặc bằng %s"
-
-#, c-format
-#~ msgid "%.*s: ARGP_HELP_FMT parameter requires a value"
-#~ msgstr "%.*s: tham số “ARGP_HELP_FMT” cần được gán giá trị"
-
-#, c-format
-#~ msgid "%.*s: ARGP_HELP_FMT parameter must be positive"
-#~ msgstr "%.*s: tham số “ARGP_HELP_FMT” phải là số dương"
-
-#, c-format
-#~ msgid "%.*s: Unknown ARGP_HELP_FMT parameter"
-#~ msgstr "%.*s: Không biết tham số “ARGP_HELP_FMT”"
-
-#, c-format
-#~ msgid "Garbage in ARGP_HELP_FMT: %s"
-#~ msgstr "Gặp rác trong “ARGP_HELP_FMT”: %s"
-
-#~ msgid ""
-#~ "Mandatory or optional arguments to long options are also mandatory or "
-#~ "optional for any corresponding short options."
-#~ msgstr ""
-#~ "Các đối số là bắt buộc hay chỉ là tùy chọn khi dùng với tùy chọn dài thì "
-#~ "tùy chọn ngắn tương ứng cũng vậy."
-
-#~ msgid "Usage:"
-#~ msgstr "Cách dùng:"
-
-#~ msgid "  or: "
-#~ msgstr "     hoặc:"
-
-#~ msgid " [OPTION...]"
-#~ msgstr " [TÙY_CHỌN...]"
-
-#, c-format
-#~ msgid "Try `%s --help' or `%s --usage' for more information.\n"
-#~ msgstr ""
-#~ "Hãy chạy “%s --help” (trợ giúp) hay “%s --usage” (cách dùng) để xem thông "
-#~ "tin thêm.\n"
-
-#, c-format
-#~ msgid "Report bugs to %s.\n"
-#~ msgstr "Hãy thông báo lỗi cho %s.\n"
-
-#~ msgid "Unknown system error"
-#~ msgstr "Gặp lỗi hệ thống chưa biết"
-
-#~ msgid "give this help list"
-#~ msgstr "hiển thị trợ giúp này"
-
-#~ msgid "give a short usage message"
-#~ msgstr "hiển thị cách dùng dạng ngắn gọn"
-
-#~ msgid "NAME"
-#~ msgstr "TÊN"
-
-#~ msgid "set the program name"
-#~ msgstr "đặt tên chương trình"
-
-#~ msgid "SECS"
-#~ msgstr "GIÂY"
-
-#~ msgid "hang for SECS seconds (default 3600)"
-#~ msgstr "treo trong vòng GIÂY giây (mặc định là 3600)"
-
-#~ msgid "print program version"
-#~ msgstr "in ra phiên bản chương trình"
-
-#~ msgid "(PROGRAM ERROR) No version known!?"
-#~ msgstr "(LỖI CHƯƠNG TRÌNH) Không có phiên bản đã biết ?"
-
-#~ msgid "(PROGRAM ERROR) Option should have been recognized!?"
-#~ msgstr "(LỖI CHƯƠNG TRÌNH) Tùy chọn đáng ra nên được nhận diện!?"
-
-#~ msgid "stack overflow"
-#~ msgstr "tràn ngăn xếp"
-
-#, c-format
-#~ msgid "cannot find a temporary directory, try setting $TMPDIR"
-#~ msgstr ""
-#~ "không tìm thấy thư mục tạm thời, hãy thử đặt biến môi trường $TMPDIR"
-
-#, c-format
-#~ msgid "cannot create a temporary directory using template \"%s\""
-#~ msgstr "không thể tạo một thư mục tạm thời dùng mẫu “%s”"
-
-#, c-format
-#~ msgid "cannot remove temporary file %s"
-#~ msgstr "không thể gỡ bỏ tập tin tạm thời %s"
-
-#, c-format
-#~ msgid "cannot remove temporary directory %s"
-#~ msgstr "không thể gỡ bỏ thư mục tạm thời %s"
-
-#~ msgid "error closing file"
-#~ msgstr "lỗi đóng tập tin"
-
-#, c-format
-#~ msgid "preserving permissions for %s"
-#~ msgstr "đang bảo tồn quyền hạn cho %s"
-
-#, c-format
-#~ msgid "error while opening \"%s\" for reading"
-#~ msgstr "gặp lỗi khi mở “%s” để đọc"
-
-#, c-format
-#~ msgid "cannot open backup file \"%s\" for writing"
-#~ msgstr "không thể mở tập tin sao lưu dự phòng “%s” để ghi"
-
-#, c-format
-#~ msgid "error reading \"%s\""
-#~ msgstr "gặp lỗi khi đọc “%s”"
-
-#, c-format
-#~ msgid "error writing \"%s\""
-#~ msgstr "gặp lỗi khi ghi “%s”"
-
-#, c-format
-#~ msgid "error after reading \"%s\""
-#~ msgstr "gặp lỗi sau khi đọc “%s”"
-
-#, c-format
-#~ msgid "fdopen() failed"
-#~ msgstr "fdopen() bị lỗi"
-
-#, c-format
-#~ msgid "C# compiler not found, try installing pnet"
-#~ msgstr "Không tìm thấy trình biên dịch C# nên thử cài đặt pnet"
-
-#, c-format
-#~ msgid "C# virtual machine not found, try installing pnet"
-#~ msgstr "Không tìm thấy cơ chế ảo C# nên thử cài đặt pnet"
-
-#, c-format
-#~ msgid "%s subprocess failed"
-#~ msgstr "Tiến trình con %s bị lỗi"
-
-#~ msgid "regular empty file"
-#~ msgstr "tập tin rỗng kiểu thường"
-
-#~ msgid "regular file"
-#~ msgstr "tập tin thông thường"
-
-#~ msgid "directory"
-#~ msgstr "thư mục"
-
-#~ msgid "block special file"
-#~ msgstr "tập tin đặc biệt khối"
-
-#~ msgid "character special file"
-#~ msgstr "tập tin đặc biệt ký tự"
-
-#~ msgid "fifo"
-#~ msgstr "fifo (vào trước, ra trước)"
-
-#~ msgid "symbolic link"
-#~ msgstr "liên kết mềm"
-
-#~ msgid "socket"
-#~ msgstr "ổ cắm"
-
-#~ msgid "message queue"
-#~ msgstr "hàng đợi thông điệp"
-
-#~ msgid "semaphore"
-#~ msgstr "cờ hiệu"
-
-#~ msgid "shared memory object"
-#~ msgstr "đối tượng bộ nhớ dùng chung"
-
-#~ msgid "typed memory object"
-#~ msgstr "đốí tượng bộ nhớ đánh kiểu"
-
-#~ msgid "weird file"
-#~ msgstr "tập tin kỳ quặc"
-
-#~ msgid "Address family for hostname not supported"
-#~ msgstr "Họ địa chỉ dành cho tên máy không được hỗ trợ"
-
-#~ msgid "Temporary failure in name resolution"
-#~ msgstr "Tạm thời không thể quyết định tên"
-
-#~ msgid "Bad value for ai_flags"
-#~ msgstr "Giá trị sai đối với “ai_flags” (cờ)"
-
-#~ msgid "Non-recoverable failure in name resolution"
-#~ msgstr "Lỗi không thể phục hồi khi phân giải tên"
-
-#~ msgid "ai_family not supported"
-#~ msgstr "Không hỗ trợ “ai_family”"
-
-#~ msgid "Memory allocation failure"
-#~ msgstr "Lỗi cấp phát bộ nhớ"
-
-#~ msgid "No address associated with hostname"
-#~ msgstr "Không có địa chỉ liên quan đến tên máy"
-
-#~ msgid "Name or service not known"
-#~ msgstr "Không nhận ra tên hay dịch vụ"
-
-#~ msgid "Servname not supported for ai_socktype"
-#~ msgstr "Không hỗ trợ tên máy phục vụ đối với “ai_socktype” (kiểu ổ cắm)"
-
-#~ msgid "ai_socktype not supported"
-#~ msgstr "Không hỗ trợ “ai-socktype” (kiểu ổ cắm)"
-
-#~ msgid "System error"
-#~ msgstr "Lỗi hệ thống"
-
-#~ msgid "Processing request in progress"
-#~ msgstr "Yêu cầu xử lý đang chạy"
-
-#~ msgid "Request canceled"
-#~ msgstr "Yêu cầu bị hủy bỏ"
-
-#~ msgid "Request not canceled"
-#~ msgstr "Yêu cầu chưa bị hủy bỏ"
-
-#~ msgid "All requests done"
-#~ msgstr "Mọi yêu cầu hoàn tất"
-
-#~ msgid "Interrupted by a signal"
-#~ msgstr "bị tín hiệu gián đoạn"
-
-#~ msgid "Parameter string not correctly encoded"
-#~ msgstr "Chuỗi tham số không phải được mã hóa đúng"
-
-#, c-format
-#~ msgid "%s: option '--%s' doesn't allow an argument\n"
-#~ msgstr "%s: tùy chọn “--%s” không cho phép đối số\n"
-
-#, c-format
-#~ msgid "%s: unrecognized option '--%s'\n"
-#~ msgstr "%s: không nhận ra tùy chọn “--%s”\n"
-
-#, c-format
-#~ msgid "%s: option '-W %s' doesn't allow an argument\n"
-#~ msgstr "%s: tùy chọn “-W %s” không cho phép đối số\n"
-
-#, c-format
-#~ msgid "%s: option '-W %s' requires an argument\n"
-#~ msgstr "%s: tùy chọn “-W %s” yêu cầu một đối số\n"
-
-#, c-format
-#~ msgid "invalid source_version argument to compile_java_class"
-#~ msgstr ""
-#~ "đối số phiên bản nguồn “source_version” không hợp lệ đối với hạn Java "
-#~ "biên dịch “compile_java_class”"
-
-#, c-format
-#~ msgid "invalid target_version argument to compile_java_class"
-#~ msgstr ""
-#~ "đối số phiên bản đích “source_version” không hợp lệ đối với hạn Java biên "
-#~ "dịch “compile_java_class”"
-
-#, c-format
-#~ msgid "failed to create \"%s\""
-#~ msgstr "gặp lỗi khi tạo “%s”"
-
-#, c-format
-#~ msgid "error while writing \"%s\" file"
-#~ msgstr "gặp lỗi khi ghi tập tin “%s”"
-
-#, c-format
-#~ msgid "Java compiler not found, try installing gcj or set $JAVAC"
-#~ msgstr ""
-#~ "Không tìm thấy trình biên dịch Java nên thử cài đặt trình “gcj” hoặc đặt "
-#~ "biến môi trường “$JAVAC”."
-
-#, c-format
-#~ msgid "Java virtual machine not found, try installing gij or set $JAVA"
-#~ msgstr ""
-#~ "Không tìm thấy cơ chế ảo Java nên thử cài đặt trình “gcj” hoặc đặt biến "
-#~ "môi trường “$JAVAC”."
-
-#, c-format
-#~ msgid "cannot change permissions of %s"
-#~ msgstr "không thể thay đổi quyền hạn của %s"
-
-#, c-format
-#~ msgid "cannot create directory %s"
-#~ msgstr "không thể tạo thư mục %s"
-
-#, c-format
-#~ msgid "memory exhausted"
-#~ msgstr "hết bộ nhớ"
-
-#, c-format
-#~ msgid "unable to record current working directory"
-#~ msgstr "không thể ghi lại thư mục làm việc hiện thời"
-
-#, c-format
-#~ msgid "Failed to open /dev/zero for read"
-#~ msgstr "Gặp lỗi khi mở thiết bị “/dev/zero” để đọc"
-
-#, c-format
-#~ msgid "creation of reading thread failed"
-#~ msgstr "gặp lỗi khi tạo tuyến trình đọc"
-
-#, c-format
-#~ msgid "cannot set up nonblocking I/O to %s subprocess"
-#~ msgstr "không thể cài đặt V/R không chặn đối với tiến trình con %s"
-
-#, c-format
-#~ msgid "communication with %s subprocess failed"
-#~ msgstr "lỗi liên lạc với tiến trình con %s"
-
-#, c-format
-#~ msgid "write to %s subprocess failed"
-#~ msgstr "gặp lỗi khi ghi vào tiến trình con %s"
-
-#, c-format
-#~ msgid "read from %s subprocess failed"
-#~ msgstr "gặp lỗi khi đọc từ tiến trình con %s"
-
-#, c-format
-#~ msgid "subprocess %s terminated with exit code %d"
-#~ msgstr "tiến trình con %s đã kết thúc với mã thoát %d"
-
-#, c-format
-#~ msgid "creation of threads failed"
-#~ msgstr "gặp lỗi khi tạo tuyến trình"
-
-#, c-format
-#~ msgid "%s subprocess terminated with exit code %d"
-#~ msgstr "tiến trình con %s đã kết thúc với mã thoát %d"
-
-#~ msgid "Franc,ois Pinard"
-#~ msgstr "Franc,ois Pinard"
-
-#~ msgid "`"
-#~ msgstr "“"
-
-#~ msgid "'"
-#~ msgstr "”"
-
-#~ msgid "^[yY]"
-#~ msgstr "^[cC]"
-
-#~ msgid "^[nN]"
-#~ msgstr "^[kK]"
-
-#, c-format
-#~ msgid "setting permissions for %s"
-#~ msgstr "đang đặt quyền hạn cho %s"
-
-#~ msgid "Hangup"
-#~ msgstr "Ngưng"
-
-#~ msgid "Quit"
-#~ msgstr "Thoát"
-
-#~ msgid "Illegal instruction"
-#~ msgstr "Câu lệnh sai"
-
-#~ msgid "Trace/breakpoint trap"
-#~ msgstr "Bẫy vết/điểm ngắt"
-
-#~ msgid "Aborted"
-#~ msgstr "Bị hủy bỏ"
-
-#~ msgid "Floating point exception"
-#~ msgstr "Ngoại lệ số thực dấu chấm động"
-
-#~ msgid "Killed"
-#~ msgstr "Bị buộc kết thúc"
-
-#~ msgid "Segmentation fault"
-#~ msgstr "Lỗi phân đoạn"
-
-#~ msgid "Alarm clock"
-#~ msgstr "Đồng hồ báo động"
-
-#~ msgid "Terminated"
-#~ msgstr "Bị chấm dứt"
-
-#~ msgid "Urgent I/O condition"
-#~ msgstr "Điều kiện V/R khẩn"
-
-#~ msgid "Stopped (signal)"
-#~ msgstr "Bị ngừng (ký hiệu)"
-
-#~ msgid "Stopped"
-#~ msgstr "Bị ngừng"
-
-#~ msgid "Continued"
-#~ msgstr "Đã tiếp tục"
-
-#~ msgid "Child exited"
-#~ msgstr "Tiến trình con đã thoát"
-
-#~ msgid "Stopped (tty input)"
-#~ msgstr "Bị ngừng (đầu vào TTY)"
-
-#~ msgid "Stopped (tty output)"
-#~ msgstr "Bị ngừng (đầu ra TTY)"
-
-#~ msgid "I/O possible"
-#~ msgstr "Có thể V/R"
-
-#~ msgid "CPU time limit exceeded"
-#~ msgstr "Vượt quá thời hạn CPU"
-
-#~ msgid "File size limit exceeded"
-#~ msgstr "Vượt quá giới hạn kích cỡ tập tin"
-
-#~ msgid "Virtual timer expired"
-#~ msgstr "Hàm đếm thời gian ảo đã hết hạn"
-
-#~ msgid "Profiling timer expired"
-#~ msgstr "Hàm đếm thời gian đo hiệu năng sử dụng đã hết hạn"
-
-#~ msgid "Window changed"
-#~ msgstr "Cửa sổ bị thay đổi"
-
-#~ msgid "User defined signal 1"
-#~ msgstr "Tín hiệu do người dùng xác định 1"
-
-#~ msgid "User defined signal 2"
-#~ msgstr "Tín hiệu do người dùng xác định 2"
-
-#~ msgid "EMT trap"
-#~ msgstr "Bẫy EMT"
-
-#~ msgid "Bad system call"
-#~ msgstr "Cú gọi hệ thống sai"
-
-#~ msgid "Stack fault"
-#~ msgstr "Lỗi ngăn xếp"
-
-#~ msgid "Information request"
-#~ msgstr "Yêu cầu thông tin"
-
-#~ msgid "Power failure"
-#~ msgstr "Bị mất điện đột ngột"
-
-#~ msgid "Resource lost"
-#~ msgstr "Tài nguyên bị mất"
-
-#~ msgid "error writing to a closed pipe or socket"
-#~ msgstr "lỗi ghi vào một đường ống hay ổ cắm bị đóng"
-
-#, c-format
-#~ msgid "cannot create pipe"
-#~ msgstr "không thể tạo ống dẫn"
-
-#, c-format
-#~ msgid "Real-time signal %d"
-#~ msgstr "Tín hiệu thời gian thật %d"
-
-#, c-format
-#~ msgid "Unknown signal %d"
-#~ msgstr "Không rõ tín hiệu %d"
-
-#~ msgid "iconv function not usable"
-#~ msgstr "hàm iconv không khả dụng"
-
-#~ msgid "iconv function not available"
-#~ msgstr "không có hàm iconv"
-
-#, c-format
-#~ msgid "cannot convert U+%04X to local character set"
-#~ msgstr "không thể chuyển đổi U+%04X sang bộ ký tự địa phương"
-
-#, c-format
-#~ msgid "cannot convert U+%04X to local character set: %s"
-#~ msgstr "không thể chuyển đổi U+%04X sang bộ ký tự địa phương: %s"
-
-#~ msgid "invalid group"
-#~ msgstr "nhóm không hợp lệ"
-
-#~ msgid "invalid spec"
-#~ msgstr "đặc tả không hợp lệ"
-
-#, c-format
-#~ msgid "unable to display error message"
-#~ msgstr "không thể hiển thị thông điệp lỗi"
-
-#, c-format
-#~ msgid "Packaged by %s (%s)\n"
-#~ msgstr "Gói đóng bởi %s (%s)\n"
-
-#, c-format
-#~ msgid "Packaged by %s\n"
-#~ msgstr "Gói đóng bởi %s\n"
-
-#~ msgid "(C)"
-#~ msgstr "©"
-
-#~ msgid ""
-#~ "\n"
-#~ "License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl."
-#~ "html>.\n"
-#~ "This is free software: you are free to change and redistribute it.\n"
-#~ "There is NO WARRANTY, to the extent permitted by law.\n"
-#~ "\n"
-#~ msgstr ""
-#~ "\n"
-#~ "GPLv3+: Giấy Phép Công Cộng GNU, phiên bản 3 hay mới hơn <http://gnu.org/"
-#~ "licenses/gpl.html>\n"
-#~ "Đây là phần mềm tự do: bạn có quyền thay đổi và phát hành lại nó.\n"
-#~ "KHÔNG CÓ BẢO HÀNH GÌ CẢ, với điều kiện được pháp luật cho phép.\n"
-#~ "\n"
-
-#, c-format
-#~ msgid "Written by %s.\n"
-#~ msgstr "Tác giả: %s.\n"
-
-#, c-format
-#~ msgid "Written by %s and %s.\n"
-#~ msgstr "Tác giả: %s và %s.\n"
-
-#, c-format
-#~ msgid "Written by %s, %s, and %s.\n"
-#~ msgstr "Tác giả: %s, %s, và %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "and %s.\n"
-#~ msgstr ""
-#~ "Tác giả: %s, %s, %s,\n"
-#~ "và %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, and %s.\n"
-#~ msgstr ""
-#~ "Tác giả: %s, %s, %s,\n"
-#~ "%s, và %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, %s, and %s.\n"
-#~ msgstr ""
-#~ "Tác gia: %s, %s, %s,\n"
-#~ "%s, %s, và %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, %s, %s, and %s.\n"
-#~ msgstr ""
-#~ "Tác giả: %s, %s, %s,\n"
-#~ "%s, %s, %s, và %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, %s, %s, %s,\n"
-#~ "and %s.\n"
-#~ msgstr ""
-#~ "Tác giả: %s, %s, %s,\n"
-#~ "%s, %s, %s, %s,\n"
-#~ "và %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, %s, %s, %s,\n"
-#~ "%s, and %s.\n"
-#~ msgstr ""
-#~ "Tác giả: %s, %s, %s,\n"
-#~ "%s, %s, %s, %s,\n"
-#~ "%s, và %s.\n"
-
-#, c-format
-#~ msgid ""
-#~ "Written by %s, %s, %s,\n"
-#~ "%s, %s, %s, %s,\n"
-#~ "%s, %s, and others.\n"
-#~ msgstr ""
-#~ "Tác giả: %s, %s, %s,\n"
-#~ "%s, %s, %s, %s,\n"
-#~ "%s, %s, và các người khác.\n"
-
-#, c-format
-#~ msgid ""
-#~ "\n"
-#~ "Report bugs to: %s\n"
-#~ msgstr ""
-#~ "\n"
-#~ "Hãy thông báo lỗi cho: %s\n"
-#~ "Thông báo lỗi dịch cho: <http://translationproject.org/team/vi.html>.\n"
-
-#, c-format
-#~ msgid "Report %s bugs to: %s\n"
-#~ msgstr ""
-#~ "Hãy thông báo lỗi %s cho: %s\n"
-#~ "Thông báo lỗi dịch cho: <http://translationproject.org/team/vi.html>.\n"
-
-#, c-format
-#~ msgid "%s home page: <%s>\n"
-#~ msgstr "Trang chủ %s: <%s>\n"
-
-#, c-format
-#~ msgid "%s home page: <http://www.gnu.org/software/%s/>\n"
-#~ msgstr "Trang chủ %s: <http://www.gnu.org/software/%s/>\n"
-
-#~ msgid "General help using GNU software: <http://www.gnu.org/gethelp/>\n"
-#~ msgstr ""
-#~ "Trợ giúp chung về cách sử dụng phần mềm GNU: <http://www.gnu.org/gethelp/"
-#~ ">\n"
-
-#, c-format
-#~ msgid "_open_osfhandle failed"
-#~ msgstr "_open_osfhandle bị lỗi"
-
-#, c-format
-#~ msgid "cannot restore fd %d: dup2 failed"
-#~ msgstr "không thể phục hồi bộ mô tả tập tin %d: “dup2” bị lỗi"
-
-#, c-format
-#~ msgid "%s subprocess"
-#~ msgstr "Tiến trình con %s"
-
-#, c-format
-#~ msgid "%s subprocess got fatal signal %d"
-#~ msgstr "Tiến trình con %s đã nhận tín hiệu nghiêm trọng %d"
-
-#~ msgid "stdin"
-#~ msgstr "đầu vào tiêu chuẩn"
-
-#~ msgid "stdout"
-#~ msgstr "đầu ra tiêu chuẩn"
-
-#~ msgid "stderr"
-#~ msgstr "đầu ra lỗi tiêu chuẩn"
-
-#~ msgid "unknown stream"
-#~ msgstr "không hiểu luồng dữ liệu"
-
-#, c-format
-#~ msgid "failed to reopen %s with mode %s"
-#~ msgstr "gặp lỗi khi mở lại %s trong chế độ %s"
-
-#, c-format
-#~ msgid "string comparison failed"
-#~ msgstr "gặp lỗi khi so sánh chuỗi"
-
-#, c-format
-#~ msgid "Set LC_ALL='C' to work around the problem."
-#~ msgstr "Hãy đặt “LC_ALL='C'” để sửa chữa trục trặc này."
-
-#, c-format
-#~ msgid "The strings compared were %s and %s."
-#~ msgstr "Hai chuỗi được so sánh là %s và %s."
-
-#, c-format
-#~ msgid "cannot perform formatted output"
-#~ msgstr "không thể thực hiện kết xuất có định dạng"
-
-#, c-format
-#~ msgid "invalid %s%s argument `%s'"
-#~ msgstr "đối số %s%s không hợp lệ “%s”"
-
-#, c-format
-#~ msgid "invalid suffix in %s%s argument `%s'"
-#~ msgstr "hậu tố không hợp lệ trong đối số %s%s “%s”"
-
-#, c-format
-#~ msgid "%s%s argument `%s' too large"
-#~ msgstr "Đối số %s%s “%s” quá lớn"
