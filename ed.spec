@@ -2,7 +2,7 @@
 %define _fortify_level 3
 
 Name:           ed
-Version:        2.1.1
+Version:        2.1.99
 Release:        1%{?dist}
 Summary:        The standard Unix text editor
 License:        BSD-2-Clause OR GPL-2.0-or-later OR MIT
@@ -65,6 +65,9 @@ rm -f ${RPM_BUILD_ROOT}/%{_infodir}/dir
 %license COPYING
 
 %changelog
+* Fri Mar 7 2025 Andrew L. Moore <slewsys@gmail.com> - 2.1.99-1
+- Run update-po.
+
 * Thu Feb 20 2025 Andrew L. Moore <slewsys@gmail.com> - 2.1.1-1
 - Update version to 2.1.1.
 

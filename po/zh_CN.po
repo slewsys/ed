@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnulib 4.0.0.2567\n"
 "Report-Msgid-Bugs-To: bug-gnulib@gnu.org\n"
-"POT-Creation-Date: 2025-02-12 00:55-0500\n"
+"POT-Creation-Date: 2025-02-20 15:27-0500\n"
 "PO-Revision-Date: 2024-09-03 15:45+0800\n"
 "Last-Translator: Mingye Wang (Artoria2e5) <arthur200126@gmail.com>\n"
 "Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
@@ -109,7 +109,7 @@ msgstr "无效的范围结尾"
 
 #: lib/regcomp.c:158 src/buffer.c:436 src/buffer.c:583 src/io.c:325
 #: src/page.c:858 src/parse.c:270 src/parse.c:515 src/regexp.c:163
-#: src/register.c:375 src/undo.c:26
+#: src/register.c:372 src/undo.c:26
 msgid "Memory exhausted"
 msgstr "内存用尽"
 
@@ -133,14 +133,14 @@ msgstr ") 或 \\) 不匹配"
 msgid "No previous regular expression"
 msgstr "没有前次正则表达式"
 
-#: src/buffer.c:122 src/register.c:438 src/register.c:477
+#: src/buffer.c:122 src/register.c:435 src/register.c:474
 #, fuzzy
 #| msgid "Bus error"
 msgid "dup2 error"
 msgstr "总线错误"
 
 #: src/buffer.c:136 src/io.c:96 src/io.c:167 src/io.c:650 src/io.c:701
-#: src/main.c:788 src/register.c:395
+#: src/main.c:788 src/register.c:392
 #, fuzzy
 #| msgid "write error"
 msgid "File open error"
@@ -221,7 +221,7 @@ msgstr ""
 msgid "File read error"
 msgstr "写入错误"
 
-#: src/cmds.c:43 src/io.c:492 src/main.c:368 src/register.c:302
+#: src/cmds.c:43 src/io.c:492 src/main.c:368 src/register.c:299
 msgid "End-of-file unexpected"
 msgstr ""
 
@@ -359,8 +359,8 @@ msgstr ""
 
 #: src/io.c:57 src/io.c:619 src/main.c:232 src/main.c:737 src/main.c:804
 #: src/register.c:36 src/register.c:83 src/register.c:142 src/register.c:152
-#: src/register.c:211 src/register.c:220 src/register.c:247 src/register.c:286
-#: src/register.c:353 src/register.c:413 src/register.c:453 src/register.c:492
+#: src/register.c:211 src/register.c:220 src/register.c:247 src/register.c:283
+#: src/register.c:350 src/register.c:410 src/register.c:450 src/register.c:489
 #, fuzzy
 #| msgid "write error"
 msgid "File seek error"
@@ -604,11 +604,11 @@ msgstr "无效的字符类名"
 msgid "Cannot append register to itself"
 msgstr ""
 
-#: src/register.c:337
+#: src/register.c:334
 msgid "Exceeded maximum stack frame depth"
 msgstr ""
 
-#: src/register.c:387
+#: src/register.c:384
 #, fuzzy
 #| msgid "Bus error"
 msgid "dup error"

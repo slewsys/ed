@@ -35,7 +35,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GNU gnulib-20241209\n"
 "Report-Msgid-Bugs-To: bug-gnulib@gnu.org\n"
-"POT-Creation-Date: 2025-02-12 00:55-0500\n"
+"POT-Creation-Date: 2025-02-20 15:27-0500\n"
 "PO-Revision-Date: 2025-02-12 03:01+0000\n"
 "Last-Translator: Roland Illig <roland.illig@gmx.de>\n"
 "Language-Team: German <translation-team-de@lists.sourceforge.net>\n"
@@ -137,7 +137,7 @@ msgstr "Ungültiges Bereichsende"
 
 #: lib/regcomp.c:158 src/buffer.c:436 src/buffer.c:583 src/io.c:325
 #: src/page.c:858 src/parse.c:270 src/parse.c:515 src/regexp.c:163
-#: src/register.c:375 src/undo.c:26
+#: src/register.c:372 src/undo.c:26
 msgid "Memory exhausted"
 msgstr "Zu wenig Speicher vorhanden"
 
@@ -161,12 +161,12 @@ msgstr "Gegenstück zu ) oder \\) fehlt"
 msgid "No previous regular expression"
 msgstr "Kein vorhergehender regulärer Ausdruck"
 
-#: src/buffer.c:122 src/register.c:438 src/register.c:477
+#: src/buffer.c:122 src/register.c:435 src/register.c:474
 msgid "dup2 error"
 msgstr "dup2-Fehler"
 
 #: src/buffer.c:136 src/io.c:96 src/io.c:167 src/io.c:650 src/io.c:701
-#: src/main.c:788 src/register.c:395
+#: src/main.c:788 src/register.c:392
 msgid "File open error"
 msgstr "Fehler beim Öffnen der Datei"
 
@@ -227,7 +227,7 @@ msgstr "Entschlüsselung fehlgeschlagen (unvollständiger Block)"
 msgid "File read error"
 msgstr "Fehler beim Schreiben der Datei"
 
-#: src/cmds.c:43 src/io.c:492 src/main.c:368 src/register.c:302
+#: src/cmds.c:43 src/io.c:492 src/main.c:368 src/register.c:299
 msgid "End-of-file unexpected"
 msgstr "Ende der Datei unerwartet"
 
@@ -337,8 +337,8 @@ msgstr "Kein vorheriger Befehl"
 
 #: src/io.c:57 src/io.c:619 src/main.c:232 src/main.c:737 src/main.c:804
 #: src/register.c:36 src/register.c:83 src/register.c:142 src/register.c:152
-#: src/register.c:211 src/register.c:220 src/register.c:247 src/register.c:286
-#: src/register.c:353 src/register.c:413 src/register.c:453 src/register.c:492
+#: src/register.c:211 src/register.c:220 src/register.c:247 src/register.c:283
+#: src/register.c:350 src/register.c:410 src/register.c:450 src/register.c:489
 msgid "File seek error"
 msgstr "Fehler beim Suchen nach Datei"
 
@@ -600,11 +600,11 @@ msgstr "Fehlender Muster-Trennzeichen"
 msgid "Cannot append register to itself"
 msgstr "Registrierung kann sich nicht anhängen"
 
-#: src/register.c:337
+#: src/register.c:334
 msgid "Exceeded maximum stack frame depth"
 msgstr "Maximale Stack-Frame-Tiefe überschritten"
 
-#: src/register.c:387
+#: src/register.c:384
 msgid "dup error"
 msgstr "dup error"
 
