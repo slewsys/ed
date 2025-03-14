@@ -8,6 +8,26 @@
 
 : ${EXEC_STATE:=''}
 
+get-version ()
+{
+    local version=''
+
+    version=$(
+        if ! git describe 2>/dev/null; then
+            awk -F '\\[|\\]' '/^AC_INIT/ { print $4 }' ../configure.ac
+        fi
+              ) || return $?
+    case "${params[os]}" in
+        Debian|Ubuntu)
+            ;;
+        *)
+            version=${version//-/_}
+            ;;
+    esac
+
+    echo "${version#v}"
+}
+
 build-package ()
 {
     local -n params=$1
@@ -26,17 +46,13 @@ To view build log, in a separate terminal run:
 EOF
     local ed_version=''
 
-    ed_version=$(
-        if ! git describe 2>/dev/null; then
-            awk -F '\\[|\\]' '/^AC_INIT/ { print $4 }' ../configure.ac
-        fi
-              )
+    ed_version=$(get-version) || return $?
     params[imageid]=$(
         $CONTAINER_CLI build \
                        --pull="newer" \
                        --build-arg ARCH="${arch[${params[platform]}]}" \
                        --build-arg DIST="${params[os],,}" \
-                       --build-arg ED_VERSION="${ed_version#v}" \
+                       --build-arg ED_VERSION="${ed_version}" \
                        --build-arg SIGNER_NAME="$$(git config user.name)" \
                        --build-arg SIGNER_EMAIL="$$(git config user.email)" \
                        --platform "${params[platform]}" \

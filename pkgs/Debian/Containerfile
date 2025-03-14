@@ -26,6 +26,8 @@ CLONE_REPOSITORY
 
 RUN <<COMPILE_TEST_INSTALL
     cd ~/build/ed-${ED_VERSION} || exit $?
+    sed -i -e "/^AC_INIT/s/\\[ed\\],\\[[^]]*\\]/[ed],[${ED_VERSION}]/" \
+        configure.ac || exit $?
     ./autogen.sh || exit $?
     ./configure --prefix=/usr --enable-all-extensions \
         --with-included-regex || exit $?
@@ -54,10 +56,16 @@ INSTALL_PACKAGING_PREREQUISITES
 #GENERATE_GPG_KEY
 
 RUN <<BUILD_AND_SIGN_PACKAGE
-    cd ~/build/ed-${ED_VERSION} \
-    && git branch upstream \
-    && git reset --hard v${ED_VERSION} \
-    && git clean -fdx \
-    && gbp buildpackage --git-debian-branch=main \
-        --git-upstream-tree=branch || exit $?
+    cd ~/"build/ed-${ED_VERSION}" || exit $?
+    if test ! -f ".git/refs/tags/v${ED_VERSION}"; then
+        ed -i -e "/^ed (\\(.*\\):\\([0-9.]*\\)-[0-9]*)/s//ed (\\1:${ED_VERSION})/" \
+            debian/changelog
+        git commit -a -m "Update version to ${ED_VERSION}." \
+            && git tag -m "v${ED_VERSION}" "v${ED_VERSION}" || exit $?
+    fi
+    git reset --hard "v${ED_VERSION}" \
+        && git branch upstream \
+        && git clean -fdx \
+        && gbp buildpackage --git-debian-branch=main \
+            --git-upstream-tree=branch || exit $?
 BUILD_AND_SIGN_PACKAGE

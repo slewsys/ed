@@ -1,6 +1,8 @@
 ed (1:2.1.99-1) unstable; urgency=medium
 
-  * Run update-po.
+  * When building packages, update ed version.
+
+  * Update version to 2.1.99.
 
 ed (1:2.1.1-1) release; urgency=medium
 

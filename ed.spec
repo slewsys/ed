@@ -65,8 +65,11 @@ rm -f ${RPM_BUILD_ROOT}/%{_infodir}/dir
 %license COPYING
 
 %changelog
+* Fri Mar 14 2025 Andrew L. Moore <slewsys@gmail.com> - 2.1.99-2
+* When building packages, update ed version.
+
 * Fri Mar 7 2025 Andrew L. Moore <slewsys@gmail.com> - 2.1.99-1
-- Run update-po.
+- Update version to 2.1.99.
 
 * Thu Feb 20 2025 Andrew L. Moore <slewsys@gmail.com> - 2.1.1-1
 - Update version to 2.1.1.

@@ -17,8 +17,8 @@ RUN <<INSTALL_BUILD_PREREQUISITES
     esac
     dnf upgrade -y --refresh || exit $?
     dnf install -y autoconf automake gcc gettext-devel git \
-    glibc-gconv-extra groff libtool openssl-devel texinfo \
-    texinfo-tex zstd || exit $?
+        glibc-gconv-extra groff libtool openssl-devel \
+        texinfo texinfo-tex zstd || exit $?
 INSTALL_BUILD_PREREQUISITES
 
 RUN <<CLONE_REPOSITORY
@@ -28,6 +28,10 @@ CLONE_REPOSITORY
 
 RUN <<COMPILE_TEST_PREPARE_DIST
     cd ~/ed-${ED_VERSION} || exit $?
+    sed -i -e "/^AC_INIT/s/\\[ed\\],\\[[^]]*\\]/[ed],[${ED_VERSION}]/" \
+        configure.ac || exit $?
+    sed -i -Ee "/^(Version: +).*/s//\1${ED_VERSION}/" \
+        ed.spec || exit $?
     ./autogen.sh || exit $?
     ./configure --prefix=/usr --enable-all-extensions \
         --with-included-regex || exit $?
