@@ -26,6 +26,8 @@ CLONE_REPOSITORY
 
 RUN <<COMPILE_TEST_INSTALL
     cd ~/build/ed-${ED_VERSION} || exit $?
+    sed -i -e "/^AC_INIT/s/\\[ed\\],\\[[^]]*\\]/[ed],[${ED_VERSION}]/" \
+        configure.ac || exit $?
     ./autogen.sh || exit $?
     ./configure --prefix=/usr --enable-all-extensions \
         --with-included-regex || exit $?

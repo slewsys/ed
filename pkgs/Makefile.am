@@ -5,6 +5,7 @@ EXTRA_DIST =									\
 	scripts/build-pkg.in							\
 	scripts/deploy-pkg.in
 
+.PHONY: clean-local clean-containers distclean-local
 
 %-deb: Debian/Containerfile
 	@stem=$(@:-deb=);							\
@@ -38,6 +39,14 @@ EXTRA_DIST =									\
 clean-local:
 	find . \( -name 'ed_*' -o -name 'ed-*' -o -name '*.log' \
 		  -o -name '.build-lock' \) -delete
+
+clean-containers:
+	@CONTAINER_CLI@ container rm --force \
+	    $$(@CONTAINER_CLI@ container list --external --noheading | \
+	      awk '$$NF ~ /working-container/ { print $$1 }') || true; \
+	@CONTAINER_CLI@ image rm \
+	    $$(@CONTAINER_CLI@ image list --noheading | \
+	      awk '$$1 == "<none>" { print $$3 }') || true
 
 distclean-local: clean-local
 	rm -f Makefile scripts/build-pkg scripts/deploy-pkg
