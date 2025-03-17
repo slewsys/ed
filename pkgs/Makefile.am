@@ -42,7 +42,7 @@ clean-local:
 	find . -maxdepth 1 -name '[A-Z]*' -type d |			\
 	    while read dir; do						\
 		pushd "$$dir" || exit $?;				\
-		find . -maxdepth 1 -not -name Containerfile		\
+		find . -maxdepth 1 -not -name Containerfile.in		\
 		    -exec rm -rf {} \+;					\
 		popd;							\
 	    done
@@ -57,3 +57,4 @@ clean-containers:
 
 distclean-local: clean-local
 	rm -f Makefile scripts/build-pkg scripts/deploy-pkg
+	rm -f Debian/Containerfile Fedora/Containerfile

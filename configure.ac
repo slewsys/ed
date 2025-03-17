@@ -92,9 +92,9 @@ if test ! ."$with_included_regex" = .'yes'; then
        AC_MSG_WARN([System regex not found, falling back to included version])])
 fi
 if test ."$with_included_regex" = .'yes'; then
-   ln -sf POTFILES-regex.in po/POTFILES.in
+   ln -sf POTFILES-regex.in "${srcdir}/po/POTFILES.in"
 else
-   ln -sf POTFILES-noregex.in po/POTFILES.in
+   ln -sf POTFILES-noregex.in "${srcdir}/po/POTFILES.in"
 fi
 AM_CONDITIONAL([LIBADD_REGEX], [test ."$with_included_regex" = .'yes'])
 AM_COND_IF([LIBADD_REGEX],
@@ -439,12 +439,6 @@ else
       [Options with which "${top_srcdir}/configure" was invoked.])
 fi
 
-dnl AS_MKDIR_P([doc])
-dnl AS_MKDIR_P([lib])
-dnl AS_MKDIR_P([po])
-dnl AS_MKDIR_P([src])
-dnl AS_MKDIR_P([testsuite])
-
 # Generate autotest helpers.
 AC_CONFIG_TESTDIR([testsuite])
 AC_CONFIG_FILES([testsuite/ed], [chmod 755 testsuite/ed])
@@ -460,6 +454,8 @@ AC_CONFIG_FILES([                                                             \
   doc/bwk/Makefile                                                            \
   lib/Makefile                                                                \
   pkgs/Makefile                                                               \
+  pkgs/Debian/Containerfile                                                   \
+  pkgs/Fedora/Containerfile                                                   \
   po/Makefile.in                                                              \
   src/Makefile                                                                \
   testsuite/Makefile                                                          \
@@ -470,5 +466,13 @@ AC_CONFIG_FILES([pkgs/scripts/build-pkg],
   [chmod +x pkgs/scripts/build-pkg])
 AC_CONFIG_FILES([pkgs/scripts/deploy-pkg],
   [chmod +x pkgs/scripts/deploy-pkg])
+
+# If building outside source directory, symlink generated autotest files.
+if test ."$srcdir" != .'.'; then
+  ln -sf "${ac_pwd}/testsuite/proto.ok-at.in" \
+      "${srcdir}/testsuite/proto.ok-at.in"
+  ln -sf "${ac_pwd}/testsuite/proto.ok-so-at.in" \
+      "${srcdir}/testsuite/proto.ok-so-at.in"
+fi
 
 AC_OUTPUT

@@ -142,9 +142,9 @@ $(ED_PDF):
 	@echo "*** Missing texi2dvi ***: Cannot build $@ from $<." >&2
 
 else
-$(ED_PDF): $(ED_TEXI) $(INTRO_PDF) $(ADV_PDF)
+$(ED_PDF): $(srcdir)/$(ED_TEXI) $(INTRO_PDF) $(ADV_PDF)
 	TEXINPUTS="..:$(TEXINPUTS)" MAKEINFO='/usr/bin/makeinfo   -I .'	     \
-	$(TEXI2DVI) --pdf --build-dir=ed.t2p $(ED_TEXI)
+	$(TEXI2DVI) --pdf --build-dir=ed.t2p $(srcdir)/$(ED_TEXI)
 endif
 
 check-local:

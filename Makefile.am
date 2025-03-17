@@ -37,17 +37,15 @@ HEAD_COMMIT = $(shell git rev-parse --short HEAD)
 .PHONY: check-valgrind maintainer-update-dist update-testsuite-dist update-po
 
 %-deb:
-	$(MAKE) -C $(abs_top_srcdir)/pkgs $@
+	$(MAKE) -C $(builddir)/pkgs $@
 
 %-rpm:
-	$(MAKE) -C $(abs_top_srcdir)/pkgs $@
+	$(MAKE) -C $(builddir)/pkgs $@
 
 check-valgrind: clean
 	$(MAKE) $(AM_MAKEFLAGS) CFLAGS='-g -O0'				      \
-	    -C $(abs_top_builddir) all
-	$(MAKE) -C $(abs_top_srcdir)/testsuite check-valgrind
-
-maintainer-update-dist: update-gnulib update-po
+	    -C $(builddir) all
+	$(MAKE) -C $(builddir)/testsuite check-valgrind
 
 spdx-sbom: REUSE.toml
 	@if ! command -v reuse >/dev/null; then				      \
@@ -57,6 +55,8 @@ spdx-sbom: REUSE.toml
 	    exit 1;							      \
 	fi
 	reuse --suppress-deprecation spdx > $(PACKAGE)-$(VERSION).spdx
+
+maintainer-update-dist: update-gnulib update-po
 
 update-gnulib:
 	@if test ! -x $(gnulib_srcdir)/gnulib-tool; then		      \

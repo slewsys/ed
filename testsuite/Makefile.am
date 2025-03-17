@@ -26,7 +26,7 @@ SUFFIXES = .t .tco .tef .tmf .tr .tso .txm .err .ok-at .ok-co-at	      \
 	   .err-at .fail-at
 
 # The following GNU make rules generate a location-independent version
-# of testsuite which is invoked from $(top_builddir) via:
+# of testsuite which is invoked from $(builddir) via:
 #
 #     $ make check
 #
@@ -170,7 +170,7 @@ EXTRA_DIST =								      \
 .PHONY: build-and-run-testsuite build-and-run-valgrind
 
 check-local:
-	rm -f $(abs_builddir)/ed
+	rm -f $(builddir)/ed
 	if $(MAKE) --version 2>&1 | grep -q 'GNU Make'; then		      \
 	  $(MAKE) $(AM_MAKEFLAGS) build-and-run-testsuite;		      \
 	else								      \
@@ -182,7 +182,7 @@ check-local:
 	fi
 
 check-valgrind-local:
-	rm -f $(abs_builddir)/ed
+	rm -f $(builddir)/ed
 	if $(MAKE) --version 2>&1 | grep -q 'GNU Make'; then		      \
 	  $(MAKE) $(AM_MAKEFLAGS) build-and-run-valgrind;		      \
 	else								      \
@@ -194,13 +194,13 @@ check-valgrind-local:
 	fi
 
 build-and-run-testsuite: atconfig ed $(TESTSUITE)
-	$(abs_srcdir)/$(TESTSUITE)
+	$(builddir)/$(TESTSUITE)
 
 build-and-run-valgrind: atconfig ed $(TESTSUITE)
 	$(SED) -i -e "/^exec/s;';'$(VALGRIND)' $(VALGRIND_memcheck_FLAGS) ';" \
-	    $(abs_builddir)/ed
-	$(abs_srcdir)/$(TESTSUITE) -d
-	find $(abs_builddir)/$(TESTSUITE).dir -name '*.log'		      \
+	    $(builddir)/ed
+	$(builddir)/$(TESTSUITE) -d
+	find $(builddir)/$(TESTSUITE).dir -name '*.log'			      \
 	    | xargs -n30 grep 'lost'
 
 $(TESTSUITE): $(TESTSUITE_AT) $(PACKAGE_M4)
@@ -244,4 +244,6 @@ clean-local:
 	rm -f $(AT_SCRIPTS_OK_CO_D) $(AT_SCRIPTS_OK_SO_R)
 
 distclean-local: clean-local
-	rm -f Makefile atconfig ed proto.ok-at.in proto.ok-so-at.in
+	rm -f Makefile atconfig ed proto.ok-at.in proto.ok-so-at.in	      \
+	    "${top_srcdir}/testsuite/proto.ok-at.in"			      \
+	    "${top_srcdir}/testsuite/proto.ok-so-at.in"

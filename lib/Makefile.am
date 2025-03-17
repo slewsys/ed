@@ -751,13 +751,13 @@ BUILT_SOURCES += regex.h dynarray.h malloc/dynarray.h
 DISTCLEANFILES += regex.h dynarray.h malloc/dynarray.h
 AM_CPPFLAGS += -DRE_ENABLE_I18N=1
 regex.h: regex.h.in
-	$(LN_S) -f $@.in $@
+	$(LN_S) -sf regex.h.in $(srcdir)/$@
 
 dynarray.h: dynarray.h.in
-	$(LN_S) -f $@.in $@
+	$(LN_S) -sf dynarray.h.in $(srcdir)/$@
 
 malloc/dynarray.h: malloc/dynarray.h.in
-	$(LN_S) -f dynarray.h.in malloc/dynarray.h
+	$(LN_S) -sf dynarray.h.in $(srcdir)/$@
 endif
 
 EXTRA_DIST += dynarray.h.in malloc/dynarray.h.in regcomp.c regex.h.in regex_internal.c regex_internal.h regexec.c
@@ -1765,6 +1765,8 @@ mostlyclean-local: mostlyclean-generic
 
 clean-local:
 	rm -f @gl_LIBOBJDEPS@
+	rm -f $(srcdir)/regex.h $(srcdir)/dynarray.h \
+	      $(srcdir)/malloc/dynarray.h
 
 distclean-local: clean-local
 	-rm -f Makefile
