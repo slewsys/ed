@@ -60,9 +60,9 @@ AM_CFLAGS =
 noinst_LIBRARIES += libgnu.a
 
 libgnu_a_SOURCES =
-libgnu_a_CFLAGS = $(AM_CFLAGS) $(GL_CFLAG_GNULIB_WARNINGS)
-libgnu_a_LIBADD = $(gl_LIBOBJS)
-libgnu_a_DEPENDENCIES = $(gl_LIBOBJS)
+libgnu_a_CFLAGS = $(AM_CFLAGS) $(GL_CFLAG_GNULIB_WARNINGS) $(GL_CFLAG_ALLOW_WARNINGS)
+libgnu_a_LIBADD = $(gl_libgnu_LIBOBJS)
+libgnu_a_DEPENDENCIES = $(gl_libgnu_LIBOBJS)
 EXTRA_libgnu_a_SOURCES =
 
 AM_CPPFLAGS += -DDEFAULT_TEXT_DOMAIN=\"ed-gnulib\"
@@ -127,6 +127,43 @@ endif
 
 endif
 ## end   gnulib module btowc
+
+## begin gnulib module fcntl-h
+
+BUILT_SOURCES += fcntl.h
+
+# We need the following in order to create <fcntl.h> when the system
+# doesn't have one that works with the given compiler.
+fcntl.h: fcntl.in.h $(top_builddir)/config.status $(CXXDEFS_H) $(ARG_NONNULL_H) $(WARN_ON_USE_H)
+	$(gl_V_at)$(SED_HEADER_STDOUT) \
+	      -e 's|@''GUARD_PREFIX''@|GL|g' \
+	      -e 's|@''INCLUDE_NEXT''@|$(INCLUDE_NEXT)|g' \
+	      -e 's|@''PRAGMA_SYSTEM_HEADER''@|@PRAGMA_SYSTEM_HEADER@|g' \
+	      -e 's|@''PRAGMA_COLUMNS''@|@PRAGMA_COLUMNS@|g' \
+	      -e 's|@''NEXT_FCNTL_H''@|$(NEXT_FCNTL_H)|g' \
+	      -e 's/@''GNULIB_CREAT''@/$(GL_GNULIB_CREAT)/g' \
+	      -e 's/@''GNULIB_FCNTL''@/$(GL_GNULIB_FCNTL)/g' \
+	      -e 's/@''GNULIB_NONBLOCKING''@/$(GL_GNULIB_NONBLOCKING)/g' \
+	      -e 's/@''GNULIB_OPEN''@/$(GL_GNULIB_OPEN)/g' \
+	      -e 's/@''GNULIB_OPENAT''@/$(GL_GNULIB_OPENAT)/g' \
+	      -e 's/@''GNULIB_MDA_CREAT''@/$(GL_GNULIB_MDA_CREAT)/g' \
+	      -e 's/@''GNULIB_MDA_OPEN''@/$(GL_GNULIB_MDA_OPEN)/g' \
+	      -e 's|@''HAVE_FCNTL''@|$(HAVE_FCNTL)|g' \
+	      -e 's|@''HAVE_OPENAT''@|$(HAVE_OPENAT)|g' \
+	      -e 's|@''REPLACE_CREAT''@|$(REPLACE_CREAT)|g' \
+	      -e 's|@''REPLACE_FCNTL''@|$(REPLACE_FCNTL)|g' \
+	      -e 's|@''REPLACE_OPEN''@|$(REPLACE_OPEN)|g' \
+	      -e 's|@''REPLACE_OPENAT''@|$(REPLACE_OPENAT)|g' \
+	      -e '/definitions of _GL_FUNCDECL_RPL/r $(CXXDEFS_H)' \
+	      -e '/definition of _GL_ARG_NONNULL/r $(ARG_NONNULL_H)' \
+	      -e '/definition of _GL_WARN_ON_USE/r $(WARN_ON_USE_H)' \
+	      $(srcdir)/fcntl.in.h > $@-t
+	$(AM_V_at)mv $@-t $@
+MOSTLYCLEANFILES += fcntl.h fcntl.h-t
+
+EXTRA_DIST += fcntl.in.h
+
+## end   gnulib module fcntl-h
 
 ## begin gnulib module gen-header
 
@@ -370,6 +407,7 @@ langinfo.h: langinfo.in.h $(top_builddir)/config.status $(CXXDEFS_H) $(WARN_ON_U
 	      -e 's|@''HAVE_LANGINFO_CODESET''@|$(HAVE_LANGINFO_CODESET)|g' \
 	      -e 's|@''HAVE_LANGINFO_T_FMT_AMPM''@|$(HAVE_LANGINFO_T_FMT_AMPM)|g' \
 	      -e 's|@''HAVE_LANGINFO_ALTMON''@|$(HAVE_LANGINFO_ALTMON)|g' \
+	      -e 's|@''HAVE_LANGINFO_ABALTMON''@|$(HAVE_LANGINFO_ABALTMON)|g' \
 	      -e 's|@''HAVE_LANGINFO_ERA''@|$(HAVE_LANGINFO_ERA)|g' \
 	      -e 's|@''HAVE_LANGINFO_YESEXPR''@|$(HAVE_LANGINFO_YESEXPR)|g' \
 	      -e 's|@''HAVE_NL_LANGINFO''@|$(HAVE_NL_LANGINFO)|g' \
@@ -446,14 +484,21 @@ locale.h: locale.in.h $(top_builddir)/config.status $(CXXDEFS_H) $(ARG_NONNULL_H
 	      -e 's|@''PRAGMA_SYSTEM_HEADER''@|@PRAGMA_SYSTEM_HEADER@|g' \
 	      -e 's|@''PRAGMA_COLUMNS''@|@PRAGMA_COLUMNS@|g' \
 	      -e 's|@''NEXT_LOCALE_H''@|$(NEXT_LOCALE_H)|g' \
+	      -e 's|@''HAVE_LOCALE_T''@|$(HAVE_LOCALE_T)|g' \
+	      -e 's|@''HAVE_WINDOWS_LOCALE_T''@|$(HAVE_WINDOWS_LOCALE_T)|g' \
 	      -e 's/@''GNULIB_LOCALECONV''@/$(GL_GNULIB_LOCALECONV)/g' \
 	      -e 's/@''GNULIB_SETLOCALE''@/$(GL_GNULIB_SETLOCALE)/g' \
 	      -e 's/@''GNULIB_SETLOCALE_NULL''@/$(GL_GNULIB_SETLOCALE_NULL)/g' \
+	      -e 's/@''GNULIB_NEWLOCALE''@/$(GL_GNULIB_NEWLOCALE)/g' \
 	      -e 's/@''GNULIB_DUPLOCALE''@/$(GL_GNULIB_DUPLOCALE)/g' \
+	      -e 's/@''GNULIB_FREELOCALE''@/$(GL_GNULIB_FREELOCALE)/g' \
+	      -e 's/@''GNULIB_GETLOCALENAME_L''@/$(GL_GNULIB_GETLOCALENAME_L)/g' \
+	      -e 's/@''GNULIB_GETLOCALENAME_L_UNSAFE''@/$(GL_GNULIB_GETLOCALENAME_L_UNSAFE)/g' \
 	      -e 's/@''GNULIB_LOCALENAME_UNSAFE''@/$(GL_GNULIB_LOCALENAME_UNSAFE)/g' \
 	      -e 's|@''HAVE_NEWLOCALE''@|$(HAVE_NEWLOCALE)|g' \
 	      -e 's|@''HAVE_DUPLOCALE''@|$(HAVE_DUPLOCALE)|g' \
 	      -e 's|@''HAVE_FREELOCALE''@|$(HAVE_FREELOCALE)|g' \
+	      -e 's|@''HAVE_GETLOCALENAME_L''@|$(HAVE_GETLOCALENAME_L)|g' \
 	      -e 's|@''HAVE_XLOCALE_H''@|$(HAVE_XLOCALE_H)|g' \
 	      -e 's|@''REPLACE_LOCALECONV''@|$(REPLACE_LOCALECONV)|g' \
 	      -e 's|@''REPLACE_SETLOCALE''@|$(REPLACE_SETLOCALE)|g' \
@@ -1436,6 +1481,7 @@ unistd.h: unistd.in.h $(top_builddir)/config.status $(CXXDEFS_H) $(ARG_NONNULL_H
 	      -e 's|@''REPLACE_GETDOMAINNAME''@|$(REPLACE_GETDOMAINNAME)|g' \
 	      -e 's|@''REPLACE_GETDTABLESIZE''@|$(REPLACE_GETDTABLESIZE)|g' \
 	      -e 's|@''REPLACE_GETENTROPY''@|$(REPLACE_GETENTROPY)|g' \
+	      -e 's|@''REPLACE_GETLOGIN''@|$(REPLACE_GETLOGIN)|g' \
 	      -e 's|@''REPLACE_GETLOGIN_R''@|$(REPLACE_GETLOGIN_R)|g' \
 	      -e 's|@''REPLACE_GETGROUPS''@|$(REPLACE_GETGROUPS)|g' \
 	      -e 's|@''REPLACE_GETPAGESIZE''@|$(REPLACE_GETPAGESIZE)|g' \
@@ -1762,13 +1808,14 @@ mostlyclean-local: mostlyclean-generic
 	  fi; \
 	done; \
 	:
+distclean-gnulib-libobjs:
+	-rm -f @gl_libgnu_LIBOBJDEPS@
+maintainer-clean-local: distclean-gnulib-libobjs
 
 clean-local:
 	rm -f @gl_LIBOBJDEPS@
 	rm -f $(srcdir)/regex.h $(srcdir)/dynarray.h \
-	      $(srcdir)/malloc/dynarray.h
+	    $(srcdir)/malloc/dynarray.h
 
-distclean-local: clean-local
+distclean-local: clean-local distclean-gnulib-libobjs
 	-rm -f Makefile
-
-maintainer-clean-local: distclean-local

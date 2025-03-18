@@ -1,5 +1,5 @@
 /lock.c
 /lock.h
-/threadlib.c
 #/once.c
 #/once.h
+/threadlib.c

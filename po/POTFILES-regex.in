@@ -1,5 +1,5 @@
 ## DO NOT EDIT! GENERATED AUTOMATICALLY!
-# Copyright (C) 2002-2023 Free Software Foundation, Inc.
+# Copyright (C) 2002-2025 Free Software Foundation, Inc.
 #
 # This file is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -30,6 +30,7 @@ lib/btowc.c
 lib/c++defs.h
 lib/cdefs.h
 lib/dynarray.h
+lib/fcntl.in.h
 lib/getopt-cdefs.in.h
 lib/getopt-core.h
 lib/getopt-ext.h
@@ -42,12 +43,20 @@ lib/getopt_int.h
 lib/gettext.h
 lib/glthread/lock.c
 lib/glthread/lock.h
+lib/glthread/once.c
+lib/glthread/once.h
 lib/glthread/threadlib.c
 lib/hard-locale.c
 lib/hard-locale.h
 lib/intprops-internal.h
 lib/intprops.h
 lib/inttypes.in.h
+lib/iswblank.c
+lib/iswctype-impl.h
+lib/iswctype.c
+lib/iswdigit.c
+lib/iswpunct.c
+lib/iswxdigit.c
 lib/langinfo.in.h
 lib/lc-charset-dispatch.c
 lib/lc-charset-dispatch.h
@@ -57,6 +66,7 @@ lib/localcharset.c
 lib/localcharset.h
 lib/locale.in.h
 lib/localeconv.c
+lib/malloc.c
 lib/malloc/dynarray-skeleton.c
 lib/malloc/dynarray.h
 lib/malloc/dynarray_at_failure.c
@@ -68,26 +78,34 @@ lib/mbrtowc-impl-utf8.h
 lib/mbrtowc-impl.h
 lib/mbrtowc.c
 lib/mbsinit.c
+lib/mbszero.c
 lib/mbtowc-impl.h
 lib/mbtowc-lock.c
 lib/mbtowc-lock.h
 lib/mbtowc.c
 lib/nl_langinfo-lock.c
 lib/nl_langinfo.c
+lib/pthread-once.c
+lib/pthread.in.h
 lib/regcomp.c
 lib/regex.c
 lib/regex.h
 lib/regex_internal.c
 lib/regex_internal.h
 lib/regexec.c
+lib/sched.in.h
 lib/setlocale-lock.c
+lib/setlocale_null-unlocked.c
 lib/setlocale_null.c
 lib/setlocale_null.h
+lib/stdckdint.in.h
 lib/stddef.in.h
 lib/stdint.in.h
+lib/stdlib.c
 lib/stdlib.in.h
 lib/streq.h
 lib/sys_types.in.h
+lib/time.in.h
 lib/unistd.c
 lib/unistd.in.h
 lib/verify.h
@@ -95,6 +113,8 @@ lib/warn-on-use.h
 lib/wchar.in.h
 lib/wcrtomb.c
 lib/wctype-h.c
+lib/wctype-impl.h
+lib/wctype.c
 lib/wctype.in.h
 lib/windows-initguard.h
 lib/windows-mutex.c

@@ -56,8 +56,6 @@ spdx-sbom: REUSE.toml
 	fi
 	reuse --suppress-deprecation spdx > $(PACKAGE)-$(VERSION).spdx
 
-maintainer-update-dist: update-gnulib update-po
-
 update-gnulib:
 	@if test ! -x $(gnulib_srcdir)/gnulib-tool; then		      \
 	    echo "gnulib-tool: No such file or directory.";		      \
@@ -77,14 +75,14 @@ update-gnulib:
 	fi
 	@echo "*** Importing gnulib modules ***";			      \
 	"$(gnulib_srcdir)/gnulib-tool" --import				      \
-	    --dir=$($top_srcdir)					      \
+	    --dir=$(srcdir)						      \
 	    --lib=libgnu						      \
 	    --source-base=lib						      \
 	    --m4-base=m4						      \
 	    --po-base=po						      \
 	    --doc-base=doc						      \
 	    --tests-base=tests						      \
-	    --aux-dir=$(top_srcdir)					      \
+	    --aux-dir=$(srcdir)						      \
 	    --conditional-dependencies					      \
 	    --no-libtool						      \
 	    --macro-prefix=gl						      \
@@ -113,11 +111,13 @@ update-gnulib:
 update-po:
 	-$(MAKE) -C po $(AM_MAKEFLAGS) update-po
 
+maintainer-update-dist: update-gnulib update-po
+
 clean-local:
 	rm -f $(PACKAGE)-$(VERSION).spdx
-	find . \( -name GPATH -o -name GRTAGS -o -name GSYMS \
-	    -o -name GTAGS -o -name '[Tt][Aa][Gg][Ss]' \
-	    -o -name '*~' -o -name '#*#' \) \
+	find . \( -name GPATH -o -name GRTAGS -o -name GSYMS		      \
+	    -o -name GTAGS -o -name '[Tt][Aa][Gg][Ss]'			      \
+	    -o -name '*~' -o -name '#*#' \)				      \
 	    -type f -exec rm -f {} \+
 	find . -name '.deps' -type d -exec rm -rf {} \+
 	$(MAKE) -C contrib clean
@@ -126,8 +126,8 @@ clean-local:
 distclean-local: clean-local
 	$(MAKE) -C contrib distclean
 	$(MAKE) -C pkgs distclean
-	rm -rf Makefile config.h config.log config.status libtool \
-	    po/POTFILES.in stamp-h1
+	rm -rf Makefile config.h config.log config.status libtool	      \
+	    ${top_srcdir}/po/POTFILES.in ${top_srcdir}/po/*.gmo stamp-h1
 
 am-refresh:
 	@./autogen.sh --silent
