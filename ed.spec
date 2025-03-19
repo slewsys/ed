@@ -65,6 +65,15 @@ rm -f ${RPM_BUILD_ROOT}/%{_infodir}/dir
 %license COPYING
 
 %changelog
+* Web Mar 19 2025 Andrew L. Moore <slewsys@gmail.com> - 2.1.99-5
+* Update ed.spec and debian/changelog.
+
+* Tue Mar 18 2025 Andrew L. Moore <slewsys@gmail.com> - 2.1.99-4
+* Update Gnulib and lib/patch-Makefile.am.diff.
+
+* Mon Mar 17 2025 Andrew L. Moore <slewsys@gmail.com> - 2.1.99-3
+* Support building outside source directory.
+
 * Fri Mar 14 2025 Andrew L. Moore <slewsys@gmail.com> - 2.1.99-2
 * When building packages, update ed version.
 

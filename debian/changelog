@@ -1,5 +1,11 @@
 ed (1:2.1.99-1) unstable; urgency=medium
 
+  * Update ed.spec and debian/changelog.
+
+  * Update Gnulib and lib/patch-Makefile.am.diff.
+
+  * Support building outside source directory.
+
   * When building packages, update ed version.
 
   * Update version to 2.1.99.
