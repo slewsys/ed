@@ -401,8 +401,8 @@ struct ed_core
 #ifdef WANT_ED_MACRO
   /* Script buffer stack frame. */
   struct ed_stack_frame *stack_frame[STACK_FRAMES_MAX];
-  int sp;                       /* Script buffer stack pointer. */
 #endif
+  int sp;                       /* Script buffer stack pointer. */
 
   /*  Line markers */
   ed_line_node_t *mark[MARK_MAX];
