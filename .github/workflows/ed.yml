@@ -11,7 +11,8 @@ jobs:
         shell: bash
     strategy:
       matrix:
-        OS: [ubuntu-latest, macos-latest]
+        os: [ubuntu-latest, macos-latest]
+        config: [with-extensions, without-extensions]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
@@ -24,13 +25,23 @@ jobs:
         if: runner.os == 'macOS'
         run: |
           brew install autoconf automake libtool
-      - name: Configure ed for Linux.
-        if: runner.os == 'Linux'
+      - name: Configure ed for Linux without extensions.
+        if: runner.os == 'Linux' && matrix.config == 'without-extensions'
+        run: |
+         ./autogen.sh
+         ./configure
+      - name: Configure ed for Linux with extensions.
+        if: runner.os == 'Linux' && matrix.config == 'with-extensions'
         run: |
          ./autogen.sh
          ./configure --enable-all-extensions --with-included-regex
-      - name: Configure ed for macOS.
-        if: runner.os == 'macOS'
+      - name: Configure ed for macOS without extensions.
+        if: runner.os == 'macOS' && matrix.config == 'without-extensions'
+        run: |
+         ./autogen.sh
+         ./configure LDFLAGS=-L/opt/homebrew/Cellar/openssl@3/3.3.0/lib
+      - name: Configure ed for macOS with extensions.
+        if: runner.os == 'macOS'  && matrix.config == 'with-extensions'
         run: |
          ./autogen.sh
          ./configure --enable-all-extensions --with-included-regex LDFLAGS=-L/opt/homebrew/Cellar/openssl@3/3.3.0/lib
