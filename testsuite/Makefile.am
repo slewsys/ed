@@ -98,7 +98,7 @@ ED_SCRIPTS_OK_CO =							      \
 
 # Ed scripts which should complete sucessfully if external filter is available.
 ED_SCRIPTS_OK_EF =							      \
-	ef1.tef ef2.tef ef3.tef
+	ef1.tef ef2.tef ef3.tef ef4.tef
 
 # Ed scripts which should complete sucessfully if file globbing is available.
 ED_SCRIPTS_OK_MF =							      \

@@ -1754,8 +1754,8 @@ shell_cmd (ed_buffer_t *ed)
         if ((status = filter_lines (ed->exec->region->start,
                                     ed->exec->region->end, ++fn, ed)) < 0)
           return status;
-        ed->state->dot =
-          ed->exec->region->end + ed->state->lines - addr;
+        if (ed->state->dot < ed->exec->region->start)
+          ed->state->dot = min (ed->state->lines, ed->exec->region->start);
       }
 #endif  /* defined HAVE_FORK && defined WANT_EXTERNAL_FILTER */
   return status;

@@ -1,0 +1,8 @@
+1!a=1
+.!for i in 1 2 3; do \
+      j=$(expr $i - 1) \
+      eval a$i=$(eval expr \$a$j + 1) \
+  done
+.!!
+$!!
+.!!

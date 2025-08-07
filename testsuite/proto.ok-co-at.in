@@ -10,7 +10,7 @@ AT_SETUP([Script: @SCRIPT_NAME@.tco])
             timeout -s INT 1 dd bs=1  |
             sleep 2
     } 2>&1 |
-        sed -nE -e '/^([0-9]+).*out$/s//\1/p'
+        sed -ne '/^([0-9][0-9]*).*out$/s//\1/p'
         )
 
 truncate -s $(( ++buf_size )) @SCRIPT_SRC@.d]
