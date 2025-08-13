@@ -2,8 +2,9 @@
 #
 # @(#) cats.ed
 #
-# Given a file on the command line, this script writes to standard output the file with sequences of blank
-# lines replaced by a single blank line, in the manner of `cat -s'.
+# Given a file on the command line, this script writes the file to
+# standard output with sequences of blank lines replaced by a single
+# blank line, in the manner of `cat -s'.
 #
 # Enable diagnostics. Emacs compilation mode can parse ed errors.
 H

@@ -65,6 +65,18 @@ rm -f ${RPM_BUILD_ROOT}/%{_infodir}/dir
 %license COPYING
 
 %changelog
+* Thu Aug 12 2025 Andrew L. Moore <slewsys@gmail.com> - 2.1.99-9
+* Update ed.spec, debian/changelog and copyright.
+
+* Thu Aug 7 2025 Andrew L. Moore <slewsys@gmail.com> - 2.1.99-8
+* Conditionally adjust dot after filter. Add test.
+
+* Wed Jul 2 2025 Andrew L. Moore <slewsys@gmail.com> - 2.1.99-7
+* Test builds both with and without extensions.
+
+* Wed Jul 2 2025 Andrew L. Moore <slewsys@gmail.com> - 2.1.99-6
+* Declare ed->core->sp unconditionally.
+
 * Web Mar 19 2025 Andrew L. Moore <slewsys@gmail.com> - 2.1.99-5
 * Update ed.spec and debian/changelog.
 

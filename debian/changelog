@@ -1,5 +1,13 @@
 ed (1:2.1.99-1) unstable; urgency=medium
 
+  * Update ed.spec, debian/changelog and copyright.
+
+  * Conditionally adjust dot after filter. Add test.
+
+  * Test builds both with and without extensions.
+
+  * Declare ed->core->sp unconditionally.
+
   * Update ed.spec and debian/changelog.
 
   * Update Gnulib and lib/patch-Makefile.am.diff.

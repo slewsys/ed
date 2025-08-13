@@ -7,7 +7,7 @@ Files: doc/bwk/adv/* doc/bwk/intro/* doc/ed-adv.texi doc/ed-intro.texi
 Copyright: 1972 Brian W. Kernighan <bwk@princeton.edu>
 License: LPL-1.02
 
-Files: src/* autogen.sh ChangeLog doc/*.1 */Makefile.am pkgs/* README.md testsuite/*
+Files: include/* src/* autogen.sh ChangeLog doc/*.1 */Makefile.am pkgs/* README.md testsuite/*
 Copyright: 1993-2025 Andrew L. Moore <slewsys@gmail.com>
 License: BSD-2-Clause OR GPL-2.0-or-later OR MIT
 
