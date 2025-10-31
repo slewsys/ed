@@ -1,7 +1,7 @@
 ARG ARCH=amd64
 ARG DIST=debian
 FROM docker.io/${ARCH}/${DIST}:stable-slim
-ARG ED_VERSION=2.1.1
+ARG ED_VERSION=2.1.99
 ARG SIGNER_NAME='Andrew L. Moore'
 ARG SIGNER_EMAIL=slewsys@gmail.com
 
