@@ -29,7 +29,8 @@ RUN <<COMPILE_TEST_INSTALL
     sed -i -e "/^AC_INIT/s/\\[ed\\],\\[[^]]*\\]/[ed],[${ED_VERSION}]/" \
         configure.ac || exit $?
     ./autogen.sh || exit $?
-    ./configure --prefix=/usr --enable-all-extensions \
+    ./configure --prefix=/usr \
+        --enable-all-extensions \
         --with-included-regex || exit $?
     make -j$(nproc) || exit $?
     make check || exit $?
@@ -66,6 +67,9 @@ RUN <<BUILD_AND_SIGN_PACKAGE
     git reset --hard "v${ED_VERSION}" \
         && git branch upstream \
         && git clean -fdx \
-        && gbp buildpackage --git-debian-branch=main \
-            --git-upstream-tree=branch || exit $?
+        && gbp buildpackage \
+               --git-debian-branch=main \
+               --git-upstream-tree=branch \
+               --no-sign \
+         || exit $?
 BUILD_AND_SIGN_PACKAGE

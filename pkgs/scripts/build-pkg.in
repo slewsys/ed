@@ -56,7 +56,7 @@ EOF
                        --build-arg SIGNER_NAME="$$(git config user.name)" \
                        --build-arg SIGNER_EMAIL="$$(git config user.email)" \
                        --platform "${params[platform]}" \
-                       -v ~/.gnupg:/root/.gnupg:z "${containerfile%/*}" 2>&1 |
+                       "${containerfile%/*}" 2>&1 |
                 tee "$logfile" |
                 tail -n 1
          )
