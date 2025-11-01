@@ -42,7 +42,7 @@ clean-local:
 	find . -maxdepth 1 -name '[A-Z]*' -type d |			\
 	    while read dir; do						\
 		pushd "$$dir" || exit $?;				\
-		find . -maxdepth 1 -not -name Containerfile.in		\
+		find . -maxdepth 1 -not -name 'Containerfile*'		\
 		    -exec rm -rf {} \+;					\
 		popd;							\
 	    done
