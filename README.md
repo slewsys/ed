@@ -278,8 +278,9 @@ gmake install
 ### Building RPM and Debian packages
 
 If the requisite OCI container infrastructure is available (currently,
-`podman` and `buildah` are required), the top-level Makefile has
-targets for building RPM and Debian packages as follows. After
+`podman` and `buildah` are required along with `qemu-user-static` and
+`qemu-system` for non-native architectures), the top-level Makefile
+has targets for building RPM and Debian packages as follows. After
 configuring the source per above, specify the desired architecture and
 package type, e.g. for RPMs:
 
