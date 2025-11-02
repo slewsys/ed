@@ -45,10 +45,10 @@
       - [Joining Lines](#joining-lines)
       - [Centering Lines](#centering-lines)
       - [Incrementing Numbers](#incrementing-numbers)
-      - [Printing Bash Environment](#printing-bash-environment)
+      - [Printing Shell Environment](#printing-shell-environment)
       - [Reversing Characters of Lines](#reversing-characters-of-lines)
       - [Adding Headers](#adding-headers)
-      - [Reversing Lines of Files](#reverse-lines-of-files)
+      - [Reversing Lines of Files](#reversing-lines-of-files)
       - [Numbering Lines](#numbering-lines)
       - [Squeezing Blank Lines](#squeezing-blank-lines)
    - [Integrating Ed, Sed and Perl](#integrating-ed-sed-and-perl)
@@ -1122,7 +1122,7 @@ Goal: Remove function definitions in the output of the `set` command.
 
 `ed -e 'g/^[^ ]* () $/.,/^}/d' -e ',p' <(set)`
 
-The shell idiom `<(command)`, called process substitution, creates a
+The shell idiom `<(command)`, called *process substitution*, creates a
 named piped (i.e., */dev/fd/n*) that `ed` can open as a read-only
 file.
 
@@ -1132,7 +1132,7 @@ Goal: Reverse lines characterwise.
 
 ```
 #!/usr/bin/ed -f
-,! rev >%.reversed
+,! rev
 ```
 
 That's cheating, but it also happens to be three times faster
