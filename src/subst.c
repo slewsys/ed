@@ -21,7 +21,7 @@ static int substitution_modifiers (off_t *, off_t *, unsigned *,
 static int substitution_template (unsigned, ed_buffer_t *);
 
 
-#define SGPR_CHARS "\n$+-^gpr0123456789"
+#define SGPR_CHARS "\n$+-gpr0123456789"
 
 
 /* resubstitute: Get repeated substitution modifiers
@@ -55,6 +55,7 @@ resubstitute (off_t *s_nth, off_t *s_mod, unsigned *s_f,
           }
         else
           {
+            *s_nth = 0;
             *s_f |= SNLR;       /* Select (match_count - s_nth) match. */
             if ((status = address_offset (s_nth, ed)) < 0)
               return status;
@@ -62,7 +63,6 @@ resubstitute (off_t *s_nth, off_t *s_mod, unsigned *s_f,
         break;
       case '+':
       case '-':
-      case '^':
       case '0':
       case '1':
       case '2':

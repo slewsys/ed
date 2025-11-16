@@ -166,6 +166,7 @@ static int global_cmd (ed_buffer_t *);
 static int h_cmd (ed_buffer_t *);
 static int i_cmd (ed_buffer_t *);
 static int invalid_cmd (ed_buffer_t *);
+static int is_short_form_substitution (ed_buffer_t *);
 static int is_valid_range (off_t, off_t, ed_buffer_t *);
 static int j_cmd (ed_buffer_t *);
 static int k_cmd (ed_buffer_t *);
@@ -1107,7 +1108,8 @@ s_cmd (ed_buffer_t *ed)
 
   init_substitute (&lhs, &s_f, &s_nth, &s_mod, &sio_f, ed->exec->subst);
   if ((status = is_valid_range (ed->state->dot, ed->state->dot, ed)) < 0
-      || (status = resubstitute (&s_nth, &s_mod, &s_f, &sgpr_f, ed)) < 0
+      || (is_short_form_substitution (ed)
+          && (status = resubstitute (&s_nth, &s_mod, &s_f, &sgpr_f, ed)) < 0)
       || (status = substitution_lhs (&lhs, &sgpr_f, ed)) < 0)
     return status;
 
@@ -1872,6 +1874,41 @@ is_valid_range (off_t from, off_t to, ed_buffer_t *ed)
   return 0;
 }
 
+/*
+ * is_short_form_substitution: Return true if input only contains
+ *      substitution modifier flags.
+ */
+static int
+is_short_form_substitution (ed_buffer_t *ed)
+{
+  static regex_t *re = NULL;    /* Short-form modifiers regexp. */
+  static char re_err[BUFSIZ];   /* regex error message buffer */
+
+  int status = 0;
+  char *s = strdup (ed->input);
+  int l = strlen (s);
+
+  if (!re)
+    {
+      if (!(re = (regex_t *) malloc (sizeof (regex_t))))
+        {
+          fprintf (stderr, "%s\n", strerror (errno));
+          ed->exec->err = _("Memory exhausted");
+          return ERR;
+      }
+      else if ((status =
+                    regcomp(re, "^r?\\$?([-+]?[0-9])*g?([-+]?[0-9])*r?p?$",
+                            REG_EXTENDED)))
+        {
+          regerror (status, re, re_err, sizeof re_err);
+          ed->exec->err = re_err;
+          free (re);
+          return ERR;
+        }
+    }
+  s[l - 1] = '\0';              /* Remove trailing newline. */
+  return !regexec(re, s, 0, NULL, 0);
+}
 
 /*
  * get_path_max: Return PATH_MAX for given file name, which may be
