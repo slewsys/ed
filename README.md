@@ -301,9 +301,15 @@ Deb packages can be built for *amd64*, *arm64* and *arm*.
 Distribution packages are saved under the *pkgs* subdirectory, e.g.,
 *pkgs/Feodra/amd64*.
 
-Debian packages are signed with the host ${USER}'s GNU gpg secret.
-Name and email address, as provided by `git config get`, are passed as
-arguments to the build container.
+Debian packages ~~are signed with the host ${USER}'s GNU gpg secret~~
+are no longer signed by default since GNU gpg `keyboxd` blocks access
+to the host's ~/.gnupg inside a container. There is a workaround: export
+public keys, disable keyboxd and then import public keys (see:
+[no automatic migration](https://github.com/gpg/gnupg/blob/42ee84197695aca44f5f909a0b1eb59298497da0/README#L134C2-L145)
+for details). Then remove `gbp` argument `--no-sign` in
+*${top_srcdir}/pkgs/Debian/Containerfile.in*. Name and email address,
+as provided by `git config get`, are passed as arguments to the build
+container.
 
 All [ed v2.1.1 GitHub assets](https://github.com/slewsys/ed/releases/tag/v2.1.1)
 are created using GNU `parallel`:
@@ -827,16 +833,50 @@ only and prohibits shell commands.
 Extended regular expression syntax is available if `ed` is invoked
 with command-line flag `-E` or `-r`.
 
-### Pattern delimiters
+### Pattern Delimiters
 
-To support the BSD **s** command (see
+POSIX.1-2024 specifies that, in substitution commands, any character
+other than space or newline can used to delimit the pattern and
+replacement. To support the BSD **s** command (see
 [Repeated Substitution Modifiers](#repeated-substitution-modifiers)
-below), substitution
-patterns cannot be delimited by numbers or the characters **r**, **g**
-and **p**. In contrast, POSIX.1-2024 specifies that any character other than
-space or newline can used as a delimiter.
+below), substitution patterns ~~cannot~~ can be delimited by numbers
+and the characters **r**, **g** and **p**, with a few exceptions.
+Consider, for instance, the command:
 
-### Undo within global command
+```
+ed -e 's/1/_/g7p' -e 's2_202$p' -e 's2g' <(echo 1111111111111111111111)
+```
+> _111111_111111_111111_ \
+> _111111_111111_1111110 \
+> _111111011111101111110
+
+Here, the second expression, `s2_202$p`, is a normal substitution
+using `2` as delimiter. The third expression, `s2g`, on the other
+hand, is a repeated substitution which uses `2` as a match-selection
+modifier. It is equivalent to the expression: `s/_/0/2gp`, i.e.,
+replace every underscore (\_) after the second with zero (0), and
+print the result.
+
+There are still conflicts with POSIX where disambiguation is more
+difficult. For instance:
+
+```
+POSIXLY_CORRECT=1 ed -e 's2g2' <(echo abcdefg)
+```
+> abcdef
+
+whereas, without environment variable POSIXLY_CORRECT set, this
+produces an error because `s2g2` is interpreted as a repeated
+substitution:
+
+```
+ed -ve 's2g2' <(echo abcdefg)
+```
+> /dev/fd/63: File is read-only \
+> ? \
+> script, line 1: No previous substitution
+
+### Undo within Global Command
 
 Since the behavior of undo (**u**) within a global (**g**) command
 list is not specified by POSIX.1-2024, `ed` follows the behavior of the SunOS
@@ -846,13 +886,13 @@ instance of **u** within a global command undoes all previous commands
 (including undo's) in the command list. Alternative approaches seem
 either too complicated to implement or too confusing to use.
 
-### Move within global command
+### Move within Global Command
 
 The move (**m**) command within a global (**g**) command list also
 follows the SunOS `ed` implementation: any moved lines are removed
 from the global command's _active_ list.
 
-### Shell command arguments
+### Shell Command Arguments
 
 If `ed` is invoked with a name argument prefixed by exclamation mark
 (**!**), then the remainder of the argument is interpreted as a shell
@@ -879,84 +919,82 @@ i.e.,
 
 ### Repeated Substitution Modifiers
 
- | Sequence | Effect | Explanation                              |
- | :--      |:--     |:--                                       |
- | s;a;x    |        | Repeated substitution command (**s**)    |
- | s;b;y    |        | always repeats most recent substitution. |
- | s        | s;b;y  |                                          |
+| Sequence  | Effect     | Explanation                                   |
+| :--       |:--         |:--                                            |
+| s;a;x     |            | Repeated substitution command (**s**) always  |
+| s;b;y     |            | repeats most recent substitution.             |
+| s         | s;b;y      |                                               |
 
+| Sequence  | Effect     | Explanation                                   |
+| :--       |:--         |:--                                            |
+| s;a;x     |            | Intermediate search commands (**/b**) do not  |
+| /b        |            | affect regexp of repeated substitution        |
+| s         | s;a;x      | command (**s**). Substitutions don't affect   |
+| //s       | /b/s;a;x   | repeated searches either.                     |
 
-| Sequence | Effect   | Explanation                           |
-| :--      |:--       |:--                                    |
-| s;a;x    |          | Intermediate search commands (**/b**) |
-| /b       |          | do not affect regexp of repeated      |
-| s        | s;a;x    | substitution command (**s**).         |
-| //s      | /b/s;a;x | Substitutions don't affect repeated   |
-|          |          | searches either.                      |
+| Sequence  | Effect     | Explanation                                   |
+| :--       |:--         |:--                                            |
+| s;a;x     |            | Repeated substitution with regexp modifier    |
+| /b        |            | (**r**) uses most recent regexp, i.e., of     |
+| sr        | s;b;x      | intermediate search (**b**).                  |
 
-| Sequence | Effect | Explanation                                |
-| :--      |:--     |:--                                         |
-| s;a;x    |        | Repeated substitution with regexp modifier |
-| /b       |        | (**r**) uses most recent regexp, i.e., of  |
-| sr       | s;b;x  | intermediate search (**b**).               |
+| Sequence  | Effect     | Explanation                                   |
+| :--       |:--         |:--                                            |
+| /a        |            | Repeated substitution with regexp modifier    |
+| s;b;x     | s;b;x      | (**r**) uses most recent regexp, i.e., of     |
+| sr        | s;b;x      | last substitution (**b**).                    |
 
+| Sequence  | Effect     | Explanation                                   |
+| :--       |:--         |:--                                            |
+| s;a;x     |            | Repeated substitution with regexp modifier    |
+| s;b;%     | s;b;x      | (**r**) picks up regexp from last search      |
+| /c        |            | (**c**), not from repeated substitution       |
+| s         | s;b;x      | command (**s**). Effect of modifier preserved |
+| sr        | s;c;x      | by subsequent repeated substitution.          |
+| s         | s;c;x      |                                               |
 
-| Sequence | Effect | Explanation                                |
-| :--      |:--     |:--                                         |
-| /a       |        | Repeated substitution with regexp modifier |
-| s;b;x    | s;b;x  | (**r**) uses most recent regexp, i.e., of  |
-| sr       | s;b;x  | last substitution (**b**).                 |
+| Sequence  | Effect     | Explanation                                       |
+| :--       |:--         |:--                                                |
+| s;a;x;g   |            | Toggling effect of repeated substitution          |
+| s         | s;a;x;g    | modifier (**g**) on repeated substitution         |
+| sg        | s;a;x;     | command (**s**).                                  |
+| sg        | s;a;x;g    |                                                   |
 
+| Sequence  | Effect     | Explanation                                   |
+| :--       |:--         |:--                                            |
+| s;a;x;2   |            | Repeated substitution with match selection    |
+| s         | s;a;x;2    | modifier (**3**) overrides any previous       |
+| s3        | s;a;x;3    | match selection (**2**).                      |
 
-| Sequence | Effect | Explanation                                   |
-| :--      |:--     |:--                                            |
-| s;a;x    |        | Repeated substitution with regexp modifier    |
-| s;b;%    | s;b;x  | (**r**) picks up regexp from last search      |
-| /c       |        | (**c**), not from repeated substitution       |
-| s        | s;b;x  | command (**s**). Effect of modifier preserved |
-| sr       | s;c;x  | by subsequent repeated substitution.          |
-| s        | s;c;x  |                                               |
+| Sequence  | Effect     | Explanation                                   |
+| :--       |:--         |:--                                            |
+| s;a;x;2g  |            | Repeated substitution with global and match   |
+| sg        | s;a;x;2    | selection modifiers (**g** and **3**) operate |
+| sg        | s;a;x;2g   | independently of each other.                  |
+| s3        | s;a;x;3g   | NB: **s;a;x;2g** substitutes every match      |
+| s4g       | s;a;x;4    | after the second, whereas **s;a;x;g2**        |
+| sg        | s;a;x;4g   | substitutes every other match.                |
 
+| Sequence  | Effect     | Explanation                                      |
+| :--       |:--         |:--                                               |
+| s;a;x;$   |            | Match selection modifier (**$**) selects last    |
+| s$-3g     | s;a;x;$-3g | match. Repeated modifer (**$-3g**) selects       |
+|           |            | every match after the third from last.           |
 
-| Sequence | Effect    | Explanation                               |
-| :--      |:--        |:--                                        |
-| s;a;x;g  |           | Toggling effect of repeated substitution  |
-| s        | s;a;x;g   | modifier (**g**) on repeated substitution |
-| sg       | s;a;x;    | command (**s**).                          |
-| sg       | s;a;x;g   |                                           |
+| Sequence  | Effect     | Explanation                                   |
+| :--       |:--         |:--                                            |
+| s;a;x;4g3 |            | Match selection modifier (**4g3**) selects    |
+| sg        | s;a;x;4    | every third match after the fourth. Repeated  |
+| sg        | s;a;x;4g3  | substitution with global modifier (**g**)     |
+| sg2       | s;a;x;4g2  | toggles a global modulus (**g3**), but a new  |
+| s3        | s;a;x;3g2  | global modulus modifier (**g2**) overrides    |
+|           |            | the old (**g3**).                             |
 
-
-| Sequence  | Effect    | Explanation                                |
-| :--       |:--        |:--                                         |
-| s;a;x;2   |           | Repeated substitution with match selection |
-| s         | s;a;x;2   | modifier (**3**) overrides any previous    |
-| s3        | s;a;x;3   | match selection (**2**).                   |
-
-
-| Sequence  | Effect    | Explanation                                 |
-| :--       |:--        |:--                                          |
-| s;a;x;2g  |           | Repeated substitution with global and       |
-| sg        | s;a;x;2   | match selection modifiers (**g** and **3**) |
-| sg        | s;a;x;2g  | operate independently of each other.        |
-| s3        | s;a;x;3g  | NB: **s;a;x;2g** substitutes globally after |
-| s4g       | s;a;x;4   | the second match, whereas **s;a;x;g2**      |
-| sg        | s;a;x;4g  | substitutes every other match.              |
-
-
-| Sequence  | Effect    | Explanation                                 |
-| :--       |:--        |:--                                          |
-| s;a;x;4g3 |           | Repeated substitution with global modifier  |
-| sg        | s;a;x;4   | (**g**) toggles a global modulus (**g3**),  |
-| sg        | s;a;x;4g3 | but a new global modulus modifier (**g2**)  |
-| sg2       | s;a;x;4g2 | overrides the old (**g3**).                 |
-| s3        | s;a;x;3g2 |                                             |
-
-
-| Sequence  | Effect    | Explanation                                 |
-| :--       |:--        |:--                                          |
-| s;a;x;gl  |           | Print suffix (**l**) is toggled by repeated |
-| sp        | s;a;x;g   | substitution print modifier (**p**).        |
-| sp        | s;a;x;gl  |                                             |
+| Sequence  | Effect     | Explanation                                                      |
+| :--       |:--         |:--                                                               |
+| s;a;x;gl  |            | Print suffix (**l**) is toggled by repeated                      |
+| sp        | s;a;x;g    | substitution print modifier (**p**).                             |
+| sp        | s;a;x;gl   |                                                                  |
 
 ### Reworked Sed Examples
 
@@ -964,7 +1002,7 @@ The GNU `sed` manual provides examples of scripting with `sed`. This
 section reworks some of those in `ed`. Whereas the `sed` manual uses
 traditional syntax, the following `ed` scripts use many of the
 extensions described above. The intent of this section is to offer
-some justification of the extensions as well as illustrate their
+some justification for the extensions as well as to illustrate their
 utility.
 
 #### Joining Lines
@@ -973,15 +1011,15 @@ Goal: Join the second and third lines of *lines.txt*.
 
 `cat lines.txt`
 
-> hello\
-> hel\
-> lo\
+> hello \
+> hel \
+> lo \
 > hello
 
 `ed -e '2,3j' -e ',p' lines.txt`
 
-> hello\
-> hello\
+> hello \
+> hello \
 > hello
 
 ---
@@ -1144,7 +1182,7 @@ ed -e 's;.;&\' -e ';g' -e 'g/./m0' -e ',jp' <(echo 'hello, world!')
 
 > !dlrow ,olleh
 
-but this is admittedly very slow compared to `sed`'s version.
+but this is admittedly very slow even compared to `sed`'s version.
 
 #### Adding Headers
 
@@ -1156,7 +1194,7 @@ ed -i -e '1i' -e '/* Copyright © FOO BAR */ -e '.' *.c
 ```
 
 To include multiple lines, either make each line a separate expression
-of use the shell's special string syntax $'any ANSI C escape'.  The
+or use the shell's special string syntax $'any ANSI C escape'.  The
 following produce the same result:
 
 ```
@@ -1219,7 +1257,7 @@ Goal: Generate an adjacency list of shell function calls.
 
 An implementation is available as
 [shell-call-graph](https://github.com/slewsys/ed/blob/main/contrib/shell-call-graph/shell-call-graph.in).
-This script is demonstrates `ed` running shell one-liners and editing
+This script demonstrates `ed` running shell one-liners and editing
 the intermediate results. Input scripts are assumed to be structured
 as follows:
 
