@@ -26,7 +26,7 @@ static void handle_hup (int);
 static void handle_int (int);
 static void handle_sigpipe (int);
 static void handle_winch (int);
-static signal_t reliable_signal (int, signal_t);
+static signal_t reliable_signal (int, signal_t, void *);
 
 
 /* Global declarations */
@@ -39,6 +39,7 @@ activate_signals (void)
 {
   _sigactive = 1;
 }
+
 
 static void
 handle_hup (int signo)
@@ -129,6 +130,16 @@ handle_winch (int signo)
 int
 init_signal_handler (ed_buffer_t *ed)
 {
+#ifdef HAVE_SIGACTION
+  sigset_t mask;
+
+  sigemptyset (&mask);
+  sigaddset (&mask, SIGINT);
+  sigaddset (&mask, SIGQUIT);
+#else
+    int mask = 0;
+#endif  /* !HAVE_SIGACTION */
+
   /* Override signo-indexed LUT for handlers of interest. */
   sighandler[SIGHUP - 1] = handle_hup;
   sighandler[SIGPIPE - 1] = handle_sigpipe;
@@ -138,15 +149,61 @@ init_signal_handler (ed_buffer_t *ed)
 #endif
 
   /* Register handlers of interest. */
-  if (reliable_signal (SIGCHLD, SIG_DFL) == SIG_ERR
-      || reliable_signal (SIGHUP, signal_handler) == SIG_ERR
-      || reliable_signal (SIGINT, signal_handler) == SIG_ERR
-      || reliable_signal (SIGPIPE, signal_handler) == SIG_ERR
-      || reliable_signal (SIGQUIT, SIG_IGN) == SIG_ERR
+  if (reliable_signal(SIGCHLD, SIG_DFL, &mask) == SIG_ERR ||
+      reliable_signal(SIGHUP, signal_handler, &mask) == SIG_ERR ||
+      reliable_signal(SIGPIPE, signal_handler, &mask) == SIG_ERR
 #ifdef SIGWINCH
-      || (isatty (0) && reliable_signal (SIGWINCH, signal_handler) == SIG_ERR)
+      || (isatty(0) && reliable_signal(SIGWINCH, signal_handler, &mask) == SIG_ERR)
 #endif
-      )
+     )
+    {
+      fprintf (stderr, "%s\n", strerror (errno));
+      ed->exec->err = _("Signal error");
+      return ERR;
+    }
+
+#ifdef HAVE_SIGACTION
+  sigdelset (&mask, SIGINT);
+#endif
+  if (reliable_signal (SIGINT, signal_handler, &mask) == SIG_ERR)
+    {
+      fprintf (stderr, "%s\n", strerror (errno));
+      ed->exec->err = _("Signal error");
+      return ERR;
+    }
+
+#ifdef HAVE_SIGACTION
+  sigdelset (&mask, SIGQUIT);
+  sigaddset (&mask, SIGINT);
+#endif
+  if (reliable_signal (SIGQUIT, SIG_IGN, &mask) == SIG_ERR)
+    {
+      fprintf (stderr, "%s\n", strerror (errno));
+      ed->exec->err = _("Signal error");
+      return ERR;
+    }
+
+  return 0;
+}
+
+/*
+ * init_parent_signal_handler: Mask SIGCHLD; ignore SIGINT and
+ *     SIGQUIT.
+ */
+int
+init_parent_signal_handler (ed_buffer_t *ed)
+{
+#ifdef HAVE_SIGACTION
+  sigset_t mask;
+
+  sigemptyset (&mask);
+  sigaddset (&mask, SIGCHLD);
+#else
+    int mask = 0;
+#endif  /* !HAVE_SIGACTION */
+
+  if (reliable_signal (SIGINT, SIG_IGN, &mask) == SIG_ERR
+      || reliable_signal (SIGQUIT, SIG_IGN, &mask) == SIG_ERR)
     {
       fprintf (stderr, "%s\n", strerror (errno));
       ed->exec->err = _("Signal error");
@@ -155,8 +212,38 @@ init_signal_handler (ed_buffer_t *ed)
   return 0;
 }
 
+
+/*
+ * init_child_signal_handler: Restore signal defaults.
+ */
+int
+init_child_signal_handler (ed_buffer_t *ed)
+{
+#ifdef HAVE_SIGACTION
+  sigset_t mask;
+
+  sigemptyset (&mask);
+#else
+  int mask = 0;
+#endif  /* !HAVE_SIGACTION */
+
+  /* Restore defaults in child process. */
+  if (reliable_signal (SIGCHLD, SIG_DFL, &mask) == SIG_ERR
+      || reliable_signal (SIGHUP, SIG_DFL, &mask) == SIG_ERR
+      || reliable_signal (SIGINT, SIG_DFL, &mask) == SIG_ERR
+      || reliable_signal (SIGPIPE, SIG_DFL, &mask) == SIG_ERR
+      || reliable_signal (SIGQUIT, SIG_DFL, &mask) == SIG_ERR)
+    {
+      fprintf (stderr, "%s\n", strerror (errno));
+      ed->exec->err = _("Signal error");
+      return ERR;
+    }
+  return 0;
+}
+
+
 static signal_t
-reliable_signal (int signo, signal_t handler)
+reliable_signal (int signo, signal_t handler, void *mask)
 {
 #ifndef HAVE_SIGACTION
   return signal (signo, handler);
@@ -164,7 +251,7 @@ reliable_signal (int signo, signal_t handler)
   struct sigaction sa, osa;
 
   sa.sa_handler = handler;
-  sigemptyset (&sa.sa_mask);
+  sa.sa_mask = *(sigset_t *) mask;
   sa.sa_flags = 0;
 # ifdef SA_RESTART
   sa.sa_flags |= SA_RESTART;

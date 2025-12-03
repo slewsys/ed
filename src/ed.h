@@ -35,6 +35,12 @@ extern int errno;
 #include "pathmax.h"
 #include <setjmp.h>
 
+#ifdef HAVE_PATHS_H
+# include <paths.h>
+#else
+# define _PATH_BSHELL "/bin/sh"
+#endif  /* !HAVE_PATHS_H */
+
 #ifdef HAVE_SIGLONGJMP
 extern sigjmp_buf env;
 # define JMP_BUF   sigjmp_buf
@@ -106,9 +112,16 @@ extern int sys_nerr;
 #else
 extern int optind;
 extern char *optarg;
-char *mktemp ();
-int access ();
-int dup2 ();
+
+/* access syscall arguments. */
+#define	F_OK	0
+#define	X_OK	1
+#define	W_OK	2
+#define	R_OK	4
+
+int access (const char *, int);
+int dup2 (int, int);
+char *mktemp (char *);
 #endif  /* !HAVE_UNISTD_H */
 
 #ifdef HAVE_WCHAR_H
@@ -480,6 +493,7 @@ struct ed_execute
   char *address;                /* Initial address command list. */
   const char *err;              /* Error message. */
   char *prompt;                 /* Interactive command prompt. */
+  char *shell;                  /* Shell pathname. */
   off_t line_no;                /* Script line number. */
   int have_key;                 /* If set, encrypt I/O. */
   int first_pass;               /* If set, first global command iteration. */
@@ -928,6 +942,7 @@ int get_matching_node_address (const regex_t *, int, off_t *, ed_buffer_t *);
 size_t get_path_max (const char *);
 #define get_stdin_line(len, ed) get_stream_line (stdin, len, ed)
 char *get_stream_line (FILE *, size_t *, ed_buffer_t *);
+int init_child_signal_handler (ed_buffer_t *);
 
 #ifdef WANT_ED_ENCRYPTION
 void init_des_cipher (void);
@@ -936,6 +951,8 @@ void init_des_cipher (void);
 void init_ed_command (int, ed_buffer_t *);
 void init_ed_state (off_t, struct ed_state *);
 void init_global_buffer (ed_buffer_t *);
+int init_parent_signal_handler (ed_buffer_t *);
+
 #ifdef WANT_ED_REGISTER
 int init_register_buffer (int, ed_buffer_t *);
 #endif

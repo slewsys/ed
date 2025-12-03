@@ -64,7 +64,7 @@ read_file (const char *fn, off_t after, off_t *addr,
 #endif  /* WANT_FILE_LOCK */
 
       /* File does not exist. */
-      if ((status = access (fn, F_OK)) == -1)
+      if (access (fn, F_OK) == -1)
         {
           fprintf (stderr, "%s: %s\n", fn, strerror (errno));
           ed->exec->err = _("File does not exist");

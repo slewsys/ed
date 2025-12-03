@@ -35,6 +35,7 @@ static void ed_usage (int, ed_buffer_t *);
 static char **getenv_init_argv (const char *, int *, ed_buffer_t *);
 #endif
 
+static int is_valid_shell (const char *);
 static int next_edit (int, ed_buffer_t *);
 
 #ifdef WANT_ADDRESS_ARGUMENTS
@@ -67,6 +68,7 @@ main (int argc, char **argv)
       {"prompt",          required_argument, NULL, 'p'},
       {"regexp-extended", no_argument,       NULL, 'E'},
       {"regexp-extended", no_argument,       NULL, 'r'},
+      {"shell",           required_argument, NULL, 'S'},
       {"scripted",        no_argument,       NULL, 's'},
       {"traditional",     no_argument,       NULL, 'G'},
       {"verbose",         no_argument,       NULL, 'v'},
@@ -78,7 +80,7 @@ main (int argc, char **argv)
 #ifdef WANT_SCRIPT_FLAGS
     "e:f:i::"
 #endif
-    "Ghp:RrsVvw"
+    "Ghp:RrS:sVvw"
 #ifdef WANT_ED_ENCRYPTION
     "x"
 #endif
@@ -158,15 +160,13 @@ top:
       case 'p':                 /* Set ed command prompt. */
         ed->exec->opt |= PROMPT;
 
-        if ((cs = getenv ("COLUMNS")) == NULL || strcmp (cs, "") == 0
+        if ((cs = getenv ("COLUMNS")) == NULL
             || (l = strtol (cs, NULL, 10)) == 0)
           l = WS_COL;
 
         if ((len = strlen (optarg)) >= l - 1
             || !(ed->exec->prompt = realloc (ed->exec->prompt, len + 1)))
           script_die (3, ed);
-
-        /* Save prompt from longjmp(3). */
         strcpy (ed->exec->prompt, optarg);
         break;
       case 'R':                 /* Filter ANSI SGR (color) codes. */
@@ -174,6 +174,13 @@ top:
         break;
       case 'r':                 /* Enable extended regular expressions. */
         ed->exec->opt |= REGEX_EXTENDED;
+        break;
+      case 'S':                 /* Set shell for ! command. */
+        if (!is_valid_shell (optarg)
+            || (len = strlen (optarg)) > PATH_MAX - 1
+            || !(ed->exec->shell = realloc (ed->exec->shell, len + 1)))
+          script_die (3, ed);
+        strcpy (ed->exec->shell, optarg);
         break;
       case 's':                 /* Suppress interactive diagnostics. */
         ed->exec->opt |= SCRIPTED;
@@ -858,6 +865,7 @@ ed_usage (int status, ed_buffer_t *ed)
   -p, --prompt=STRING       Prompt for commands with STRING.\n\
   -R, --ansi-color          Enable support for ANSI color codes.\n\
   -r, --regexp-extended     Enable extended regular expression syntax.\n\
+  -S, --shell=SHELL         Execute shell commands (!) with SHELL.\n\
   -s, --script              Suppress interactive diagnostics.\n\
   -v, --verbose             Enable verbose diagnostics.\n\
   -V, --version             Display version information, then exit.\n\
@@ -877,6 +885,7 @@ Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"));
   -p, --prompt=STRING       Prompt for commands with STRING.\n\
   -R, --ansi-color          Enable support for ANSI color codes.\n\
   -r, --regexp-extended     Enable extended regular expression syntax.\n\
+  -S, --shell=SHELL         Execute shell commands (!) with SHELL.\n\
   -s, --script              Suppress interactive diagnostics.\n\
   -v, --verbose             Enable verbose diagnostics.\n\
   -V, --version             Display version information, then exit.\n\
@@ -891,6 +900,63 @@ Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"));
 #endif  /* !WANT_SCRIPT_FLAGS */
     }
   exit (status);
+}
+
+
+static int
+is_valid_shell (const char *path)
+{
+  FILE *fp;
+  char buf[PATH_MAX];
+  size_t len;
+  int is_valid = 0;
+
+  if ((len = strlen(path)) > PATH_MAX - 1)
+    return 0;
+  if (access ("/etc/shells", F_OK) == -1)
+    {
+      fprintf (stderr, "%s\n", strerror (errno));
+      ed->exec->err = _("/etc/shells: No such file");
+      return 0;
+    }
+  else if (!(fp = fopen ("/etc/shells", "r")))
+    {
+      fprintf (stderr, "%s\n", strerror (errno));
+      ed->exec->err = _("/etc/shells: File open error");
+      return 0;
+    }
+  while (fgets (buf, PATH_MAX, fp))
+    {
+      if ((len = strlen (buf)) == 0)
+        continue;
+      else if (buf[len - 1] == '\n')
+        buf[len - 1] = '\0';
+      if (!strcmp (path, buf))
+        {
+          is_valid = 1;
+          break;
+        }
+  }
+  if (ferror (fp))
+    {
+      fprintf (stderr, "%s\n", strerror (errno));
+      ed->exec->err = _("/etc/shells: File read error");
+      fclose (fp);
+      return 0;
+    }
+  fclose(fp);
+  if (!is_valid)
+    {
+      ed->exec->err = _("Invalid shell");
+      return 0;
+    }
+  else if (access (path, X_OK) == -1)
+    {
+      fprintf (stderr, "%s\n", strerror (errno));
+      ed->exec->err = _("Shell not executable");
+      return 0;
+    }
+  return 1;
 }
 
 

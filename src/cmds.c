@@ -306,11 +306,20 @@ int
 system_shell (const char *sc, ed_buffer_t *ed)
 {
   static char exit_status[BUFSIZ];
+  static char *shell_path = NULL;
+  static char *shell_name = NULL;
 
   int status = 0;
   int wstatus;
   pid_t shell_pid;
 
+  if (!shell_path)
+    {
+      shell_path = ed->exec->shell ? ed->exec->shell : _PATH_BSHELL;
+      shell_name = strrchr (shell_path, '/') + 1;
+    }
+
+  init_parent_signal_handler (ed);
   switch (shell_pid = vfork ())
     {
     case -1:
@@ -320,11 +329,8 @@ system_shell (const char *sc, ed_buffer_t *ed)
       goto err;
     case 0:
       /* Reset signals for shell. */
-      signal (SIGINT, SIG_DFL);
-      signal (SIGQUIT, SIG_DFL);
-      signal (SIGPIPE, SIG_DFL);
-
-      if (execl ("/bin/sh", "sh", "-c", sc, NULL) < 0)
+      init_child_signal_handler(ed);
+      if (execl (shell_path, shell_name, "-c", sc, NULL) < 0)
         {
           fprintf (stderr, "%s\n", strerror (errno));
           _exit (127 << 8);
@@ -349,7 +355,9 @@ system_shell (const char *sc, ed_buffer_t *ed)
       ed->exec->err = exit_status;
     }
 
- err:
+err:
+  /* Restore signal handlers. */
+  init_signal_handler (ed);
   return status;
 }
 #endif  /* HAVE_VFORK */

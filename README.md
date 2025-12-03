@@ -335,11 +335,11 @@ Utilities Verification Suite of IEEE Std 1003.1-2017* when either the
 environment variable **POSIXLY_CORRECT** is defined or `ed` is invoked
 with commnad-line option **-G**.
 
-None of the `ed` extensions discussed below are enabled by default.
-They can all be enabled with `configure` option
-**--enable-all-extensions**. Alternatively, individual extensions can
-be enabled (or if preceded by **--enable-all-extensions**, disabled) as
-described below.
+With the exception of some command-line switches, none of the `ed`
+extensions discussed below are enabled by default. They can all be
+enabled with `configure` option **--enable-all-extensions**.
+Alternatively, individual extensions can be enabled (or if preceded by
+**--enable-all-extensions**, disabled) as described below.
 
 ### Command-line address arguments
 
@@ -624,6 +624,8 @@ as follows:
                              back up the original if SUFFIX provided.
     --expression, -e COMMAND Add COMMAND to script input - implies -s.
     --file, -f SCRIPT        Read commands from file SCRIPT - implies -s.
+                             If SCRIPT is `-`, then commands are read
+                             from standard input.
 
 The flag **-f** enables stand-alone `ed` scripts.  For example:
 
