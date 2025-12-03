@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: coreutils 5.3.0\n"
 "Report-Msgid-Bugs-To: bug-gnulib@gnu.org\n"
-"POT-Creation-Date: 2025-02-20 15:27-0500\n"
+"POT-Creation-Date: 2025-12-02 19:15-0500\n"
 "PO-Revision-Date: 2005-03-14 04:17+0200\n"
 "Last-Translator: Deniz Akkus Kanca <deniz@arayan.com>\n"
 "Language-Team: Turkish <gnu-tr-u12a@lists.sourceforge.net>\n"
@@ -116,8 +116,8 @@ msgstr ""
 msgid "Invalid range end"
 msgstr "Geçersiz sayfa aralığı `%s'"
 
-#: lib/regcomp.c:158 src/buffer.c:436 src/buffer.c:583 src/io.c:325
-#: src/page.c:858 src/parse.c:270 src/parse.c:515 src/regexp.c:163
+#: lib/regcomp.c:158 src/buffer.c:436 src/buffer.c:583 src/exec.c:1896
+#: src/io.c:325 src/page.c:858 src/parse.c:270 src/parse.c:515 src/regexp.c:163
 #: src/register.c:372 src/undo.c:26
 #, fuzzy
 msgid "Memory exhausted"
@@ -153,13 +153,13 @@ msgid "dup2 error"
 msgstr "okuma hatası"
 
 #: src/buffer.c:136 src/io.c:96 src/io.c:167 src/io.c:650 src/io.c:701
-#: src/main.c:788 src/register.c:392
+#: src/main.c:797 src/register.c:392
 #, fuzzy
 #| msgid "write error"
 msgid "File open error"
 msgstr "yazma hatası"
 
-#: src/buffer.c:260 src/main.c:560 src/main.c:632
+#: src/buffer.c:260 src/main.c:569 src/main.c:641
 msgid "File name too long"
 msgstr ""
 
@@ -196,7 +196,7 @@ msgstr ""
 msgid "Buffer write error"
 msgstr "yazma hatası"
 
-#: src/buffer.c:500 src/exec.c:100 src/exec.c:129 src/exec.c:1864
+#: src/buffer.c:500 src/exec.c:100 src/exec.c:129 src/exec.c:1866
 #: src/page.c:301 src/parse.c:220
 #, fuzzy
 #| msgid "character out of range"
@@ -227,7 +227,7 @@ msgstr ""
 msgid "File read error"
 msgstr "yazma hatası"
 
-#: src/cmds.c:43 src/io.c:492 src/main.c:368 src/register.c:299
+#: src/cmds.c:43 src/io.c:492 src/main.c:377 src/register.c:299
 msgid "End-of-file unexpected"
 msgstr ""
 
@@ -236,33 +236,33 @@ msgstr ""
 msgid "Invalid address mark"
 msgstr "geçersiz karakter sınıfı `%s'"
 
-#: src/cmds.c:318 src/exec.c:1717 src/filter.c:90 src/filter.c:143
+#: src/cmds.c:327 src/exec.c:1719 src/filter.c:90 src/filter.c:143
 #, fuzzy
 msgid "Fork error"
 msgstr "okuma hatası"
 
-#: src/cmds.c:340 src/filter.c:25
+#: src/cmds.c:346 src/filter.c:25
 msgid "Child process error"
 msgstr ""
 
-#: src/cmds.c:347 src/filter.c:40 src/io.c:176 src/io.c:712
+#: src/cmds.c:353 src/filter.c:40 src/io.c:176 src/io.c:712
 #, c-format
 msgid "Exit status: %#x"
 msgstr ""
 
-#: src/ed.h:101
+#: src/ed.h:107
 #, fuzzy
 msgid "Unknown error"
 msgstr "Bilinmeyen sistem hatası"
 
-#: src/ed.h:773 src/ed.h:808 src/ed.h:843
+#: src/ed.h:787 src/ed.h:822 src/ed.h:857
 #, fuzzy
 #| msgid "character out of range"
 msgid "Numerical result out of range"
 msgstr "karakter kapsamdışı"
 
-#: src/exec.c:28 src/exec.c:503 src/exec.c:588 src/exec.c:614 src/exec.c:897
-#: src/exec.c:1009 src/exec.c:1369 src/exec.c:1381 src/exec.c:1389
+#: src/exec.c:28 src/exec.c:504 src/exec.c:589 src/exec.c:615 src/exec.c:898
+#: src/exec.c:1010 src/exec.c:1371 src/exec.c:1383 src/exec.c:1391
 msgid "Command suffix unexpected"
 msgstr ""
 
@@ -270,63 +270,63 @@ msgstr ""
 msgid "Destination address required"
 msgstr ""
 
-#: src/exec.c:338 src/exec.c:351 src/exec.c:363
+#: src/exec.c:339 src/exec.c:352 src/exec.c:364
 msgid "Command prefix unexpected"
 msgstr ""
 
-#: src/exec.c:494 src/exec.c:579 src/exec.c:686 src/exec.c:707 src/exec.c:946
-#: src/exec.c:988 src/exec.c:1333 src/exec.c:1526 src/exec.c:1726
+#: src/exec.c:495 src/exec.c:580 src/exec.c:687 src/exec.c:708 src/exec.c:947
+#: src/exec.c:989 src/exec.c:1335 src/exec.c:1528 src/exec.c:1728
 msgid "Address unexpected"
 msgstr ""
 
-#: src/exec.c:608
+#: src/exec.c:609
 #, fuzzy
 msgid "Invalid redirection"
 msgstr "%s: geçersiz düzenli ifade(regular expression): %s"
 
-#: src/exec.c:645 src/main.c:627
+#: src/exec.c:646 src/main.c:636
 msgid "File name not set"
 msgstr ""
 
-#: src/exec.c:659
+#: src/exec.c:660
 msgid "Recursive global command"
 msgstr ""
 
-#: src/exec.c:717
+#: src/exec.c:718
 #, fuzzy
 msgid "No previous error"
 msgstr "düzenli ifade (regular expression) aramasında hata oluştu"
 
-#: src/exec.c:827
+#: src/exec.c:828
 msgid "Invalid destination address"
 msgstr ""
 
-#: src/exec.c:872 src/exec.c:1319
+#: src/exec.c:873 src/exec.c:1321
 #, fuzzy
 #| msgid "invalid user"
 msgid "Invalid register"
 msgstr "kullanıcı geçersiz"
 
-#: src/exec.c:1164 src/exec.c:1227 src/exec.c:1545 src/exec.c:1604
-#: src/exec.c:1789 src/exec.c:1804
+#: src/exec.c:1166 src/exec.c:1229 src/exec.c:1547 src/exec.c:1606
+#: src/exec.c:1791 src/exec.c:1806
 #, fuzzy
 msgid "Unknown command"
 msgstr "Bilinmeyen sistem hatası"
 
-#: src/exec.c:1716
+#: src/exec.c:1718
 msgid "Cannot fork shell"
 msgstr ""
 
-#: src/exec.c:1804
+#: src/exec.c:1806
 #, fuzzy
 msgid "Invalid address"
 msgstr "%s: geçersiz düzenli ifade(regular expression): %s"
 
-#: src/exec.c:1822
+#: src/exec.c:1824
 msgid "Command too long"
 msgstr ""
 
-#: src/exec.c:1869
+#: src/exec.c:1871
 #, fuzzy
 msgid "Invalid address range"
 msgstr "Geçersiz sayfa aralığı `%s'"
@@ -352,7 +352,7 @@ msgstr "yazma hatası"
 msgid "No previous command"
 msgstr ""
 
-#: src/io.c:57 src/io.c:619 src/main.c:232 src/main.c:737 src/main.c:804
+#: src/io.c:57 src/io.c:619 src/main.c:239 src/main.c:746 src/main.c:813
 #: src/register.c:36 src/register.c:83 src/register.c:142 src/register.c:152
 #: src/register.c:211 src/register.c:220 src/register.c:247 src/register.c:283
 #: src/register.c:350 src/register.c:410 src/register.c:450 src/register.c:489
@@ -398,7 +398,7 @@ msgstr "yazma hatası"
 msgid "File too big"
 msgstr ""
 
-#: src/io.c:801 src/io.c:821 src/io.c:832 src/main.c:748 src/main.c:756
+#: src/io.c:801 src/io.c:821 src/io.c:832 src/main.c:757 src/main.c:765
 #, fuzzy
 #| msgid "write error"
 msgid "File write error"
@@ -418,50 +418,50 @@ msgstr ""
 msgid "File stat error"
 msgstr "yazma hatası"
 
-#: src/main.c:240
+#: src/main.c:247
 msgid "Option '-i' requires '-e' or '-f'"
 msgstr ""
 
-#: src/main.c:305
+#: src/main.c:314
 msgid "Interrupted"
 msgstr ""
 
-#: src/main.c:423
+#: src/main.c:432
 msgid "WARNING: Buffer modified since last write"
 msgstr ""
 
-#: src/main.c:681
+#: src/main.c:690
 msgid "Argument list full"
 msgstr ""
 
-#: src/main.c:825
+#: src/main.c:834
 #, c-format
 msgid ""
 "Usage: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE...]\n"
 msgstr ""
 
-#: src/main.c:827
+#: src/main.c:836
 #, c-format
 msgid ""
 "Usage: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE]\n"
 msgstr ""
 
-#: src/main.c:830
+#: src/main.c:839
 #, c-format
 msgid "Usage: %s [-] [-EGhRrsVvwx] [-p PROMPT] [FILE]\n"
 msgstr ""
 
-#: src/main.c:840
+#: src/main.c:849
 #, c-format
 msgid "Usage: %s [OPTION...] [FILE...]\n"
 msgstr ""
 
-#: src/main.c:843
+#: src/main.c:852
 #, c-format
 msgid "Usage: %s [OPTION...] [FILE]\n"
 msgstr ""
 
-#: src/main.c:849
+#: src/main.c:858
 #, c-format
 msgid ""
 "Options:\n"
@@ -475,6 +475,7 @@ msgid ""
 "  -p, --prompt=STRING       Prompt for commands with STRING.\n"
 "  -R, --ansi-color          Enable support for ANSI color codes.\n"
 "  -r, --regexp-extended     Enable extended regular expression syntax.\n"
+"  -S, --shell=SHELL         Execute shell commands (!) with SHELL.\n"
 "  -s, --script              Suppress interactive diagnostics.\n"
 "  -v, --verbose             Enable verbose diagnostics.\n"
 "  -V, --version             Display version information, then exit.\n"
@@ -488,7 +489,7 @@ msgid ""
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
 
-#: src/main.c:871
+#: src/main.c:881
 #, c-format
 msgid ""
 "Options:\n"
@@ -498,6 +499,7 @@ msgid ""
 "  -p, --prompt=STRING       Prompt for commands with STRING.\n"
 "  -R, --ansi-color          Enable support for ANSI color codes.\n"
 "  -r, --regexp-extended     Enable extended regular expression syntax.\n"
+"  -S, --shell=SHELL         Execute shell commands (!) with SHELL.\n"
 "  -s, --script              Suppress interactive diagnostics.\n"
 "  -v, --verbose             Enable verbose diagnostics.\n"
 "  -V, --version             Display version information, then exit.\n"
@@ -511,7 +513,33 @@ msgid ""
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
 
-#: src/main.c:902
+#: src/main.c:919
+msgid "/etc/shells: No such file"
+msgstr ""
+
+#: src/main.c:925
+#, fuzzy
+#| msgid "write error"
+msgid "/etc/shells: File open error"
+msgstr "yazma hatası"
+
+#: src/main.c:943
+#, fuzzy
+#| msgid "write error"
+msgid "/etc/shells: File read error"
+msgstr "yazma hatası"
+
+#: src/main.c:950
+#, fuzzy
+#| msgid "invalid user"
+msgid "Invalid shell"
+msgstr "kullanıcı geçersiz"
+
+#: src/main.c:956
+msgid "Shell not executable"
+msgstr ""
+
+#: src/main.c:970
 msgid "script, line %"
 msgstr ""
 
@@ -594,7 +622,8 @@ msgstr ""
 msgid "dup error"
 msgstr "okuma hatası"
 
-#: src/signal.c:152
+#: src/signal.c:161 src/signal.c:171 src/signal.c:182 src/signal.c:209
+#: src/signal.c:238
 #, fuzzy
 msgid "Signal error"
 msgstr "okuma hatası"
