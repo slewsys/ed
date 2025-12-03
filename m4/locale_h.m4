@@ -1,5 +1,5 @@
 # locale_h.m4
-# serial 36
+# serial 39
 dnl Copyright (C) 2007, 2009-2025 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -63,8 +63,8 @@ AC_DEFUN_ONCE([gl_LOCALE_H],
 
   dnl Check whether 'struct lconv' is complete.
   dnl Bionic libc's 'struct lconv' is just a dummy.
-  dnl On OpenBSD 4.9, HP-UX 11, IRIX 6.5, OSF/1 5.1, Solaris 9, Cygwin 1.5.x,
-  dnl mingw, MSVC 9, it lacks the int_p_* and int_n_* members.
+  dnl On OpenBSD 4.9, HP-UX 11, Solaris 9, Cygwin 1.5.x, mingw, MSVC 9,
+  dnl it lacks the int_p_* and int_n_* members.
   AC_CACHE_CHECK([whether struct lconv is properly defined],
     [gl_cv_sys_struct_lconv_ok],
     [AC_COMPILE_IFELSE(
@@ -190,15 +190,16 @@ AC_DEFUN([gl_LOCALE_H_REQUIRE_DEFAULTS],
 AC_DEFUN([gl_LOCALE_H_DEFAULTS],
 [
   dnl Assume proper GNU behavior unless another module says otherwise.
-  HAVE_NEWLOCALE=1;       AC_SUBST([HAVE_NEWLOCALE])
-  HAVE_DUPLOCALE=1;       AC_SUBST([HAVE_DUPLOCALE])
-  HAVE_FREELOCALE=1;      AC_SUBST([HAVE_FREELOCALE])
-  HAVE_GETLOCALENAME_L=1; AC_SUBST([HAVE_GETLOCALENAME_L])
-  REPLACE_LOCALECONV=0;   AC_SUBST([REPLACE_LOCALECONV])
-  REPLACE_SETLOCALE=0;    AC_SUBST([REPLACE_SETLOCALE])
-  REPLACE_NEWLOCALE=0;    AC_SUBST([REPLACE_NEWLOCALE])
-  REPLACE_DUPLOCALE=0;    AC_SUBST([REPLACE_DUPLOCALE])
-  REPLACE_FREELOCALE=0;   AC_SUBST([REPLACE_FREELOCALE])
-  REPLACE_STRUCT_LCONV=0; AC_SUBST([REPLACE_STRUCT_LCONV])
+  HAVE_NEWLOCALE=1;          AC_SUBST([HAVE_NEWLOCALE])
+  HAVE_DUPLOCALE=1;          AC_SUBST([HAVE_DUPLOCALE])
+  HAVE_FREELOCALE=1;         AC_SUBST([HAVE_FREELOCALE])
+  HAVE_GETLOCALENAME_L=1;    AC_SUBST([HAVE_GETLOCALENAME_L])
+  REPLACE_LOCALECONV=0;      AC_SUBST([REPLACE_LOCALECONV])
+  REPLACE_SETLOCALE=0;       AC_SUBST([REPLACE_SETLOCALE])
+  REPLACE_NEWLOCALE=0;       AC_SUBST([REPLACE_NEWLOCALE])
+  REPLACE_DUPLOCALE=0;       AC_SUBST([REPLACE_DUPLOCALE])
+  REPLACE_FREELOCALE=0;      AC_SUBST([REPLACE_FREELOCALE])
+  REPLACE_GETLOCALENAME_L=0; AC_SUBST([REPLACE_GETLOCALENAME_L])
+  REPLACE_STRUCT_LCONV=0;    AC_SUBST([REPLACE_STRUCT_LCONV])
   LOCALENAME_ENHANCE_LOCALE_FUNCS=0; AC_SUBST([LOCALENAME_ENHANCE_LOCALE_FUNCS])
 ])

@@ -90,3 +90,6 @@
 /windows-recmutex.h
 /windows-rwlock.c
 /windows-rwlock.h
+#/string.c
+#/string.in.h
+/strncpy.c

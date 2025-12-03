@@ -50,8 +50,9 @@
              - In a function declaration/definition with a storage-class
                specifier: between the storage-class specifier and the return
                type.
-        - Or after the parameter list,
-          ∙ but after ATTRIBUTE_NOTHROW if present.
+        - Or, in a function declaration:
+          after the parameter list,
+            ∙ but after ATTRIBUTE_NOTHROW if present.
 
    In other declarations, such as variable declarations:
 
@@ -85,10 +86,10 @@
    _GL_ATTRIBUTE_FALLTHROUGH, _GL_ATTRIBUTE_FORMAT, _GL_ATTRIBUTE_LEAF,
    _GL_ATTRIBUTE_MALLOC, _GL_ATTRIBUTE_MAY_ALIAS, _GL_ATTRIBUTE_MAYBE_UNUSED,
    _GL_ATTRIBUTE_NODISCARD, _GL_ATTRIBUTE_NOINLINE, _GL_ATTRIBUTE_NONNULL,
-   _GL_ATTRIBUTE_NONSTRING, _GL_ATTRIBUTE_NOTHROW, _GL_ATTRIBUTE_PACKED,
-   _GL_ATTRIBUTE_PURE, _GL_ATTRIBUTE_REPRODUCIBLE,
-   _GL_ATTRIBUTE_RETURNS_NONNULL, _GL_ATTRIBUTE_SENTINEL,
-   _GL_ATTRIBUTE_UNSEQUENCED.  */
+   _GL_ATTRIBUTE_NONNULL_IF_NONZERO, _GL_ATTRIBUTE_NONSTRING,
+   _GL_ATTRIBUTE_NOTHROW, _GL_ATTRIBUTE_PACKED, _GL_ATTRIBUTE_PURE,
+   _GL_ATTRIBUTE_REPRODUCIBLE, _GL_ATTRIBUTE_RETURNS_NONNULL,
+   _GL_ATTRIBUTE_SENTINEL, _GL_ATTRIBUTE_UNSEQUENCED.  */
 #if !_GL_CONFIG_H_INCLUDED
  #error "Please include config.h first."
 #endif
@@ -170,6 +171,12 @@
 /* Applies to: functions.  */
 #define ATTRIBUTE_NONNULL(args) _GL_ATTRIBUTE_NONNULL (args)
 
+/* ATTRIBUTE_NONNULL_IF_NONZERO (NP, NI) - Argument NP (a pointer)
+   must not be NULL if the argument NI (an integer) is != 0.  */
+/* Applies to: functions.  */
+#define ATTRIBUTE_NONNULL_IF_NONZERO(np, ni) _GL_ATTRIBUTE_NONNULL_IF_NONZERO (np, ni)
+
+
 /* The function's return value is a non-NULL pointer.  */
 /* Applies to: functions.  */
 #define ATTRIBUTE_RETURNS_NONNULL _GL_ATTRIBUTE_RETURNS_NONNULL
@@ -250,7 +257,7 @@
    calls to the function with the same arguments, so long as the state
    addressed by its arguments is the same.
    This attribute is safe for a function that is effectless, idempotent,
-   stateless, and independent; see ISO C 23 § 6.7.12.7 for a definition of
+   stateless, and independent; see ISO C 23 § 6.7.13.8 for a definition of
    these terms.
    (This attribute is stricter than REPRODUCIBLE because the function
    must be stateless and independent.  It is looser than ATTRIBUTE_CONST
@@ -259,7 +266,7 @@
    See also <https://www.open-std.org/jtc1/sc22/wg14/www/docs/n2956.htm> and
    <https://stackoverflow.com/questions/76847905/>.
    ATTENTION! Efforts are underway to change the meaning of this attribute.
-   See <https://www.open-std.org/jtc1/sc22/wg14/www/docs/n3424.htm>.  */
+   See <https://www.open-std.org/jtc1/sc22/wg14/www/docs/n3494.htm>.  */
 /* Applies to: functions, pointer to functions, function type.  */
 #define UNSEQUENCED _GL_ATTRIBUTE_UNSEQUENCED
 
@@ -280,7 +287,7 @@
    addressed by its arguments is the same and is updated in time for
    the rest of the program.
    This attribute is safe for a function that is effectless and idempotent; see
-   ISO C 23 § 6.7.12.7 for a definition of these terms.
+   ISO C 23 § 6.7.13.8 for a definition of these terms.
    (This attribute is looser than UNSEQUENCED because the function need
    not be stateless and idempotent.  It is looser than ATTRIBUTE_PURE
    because the function need not return exactly once and can affect
@@ -288,7 +295,7 @@
    See also <https://www.open-std.org/jtc1/sc22/wg14/www/docs/n2956.htm> and
    <https://stackoverflow.com/questions/76847905/>.
    ATTENTION! Efforts are underway to change the meaning of this attribute.
-   See <https://www.open-std.org/jtc1/sc22/wg14/www/docs/n3424.htm>.  */
+   See <https://www.open-std.org/jtc1/sc22/wg14/www/docs/n3494.htm>.  */
 /* Applies to: functions, pointer to functions, function type.  */
 #define REPRODUCIBLE _GL_ATTRIBUTE_REPRODUCIBLE
 
