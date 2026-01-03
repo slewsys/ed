@@ -529,6 +529,7 @@ quit (int n, ed_buffer_t *ed)
   _exit (n);
 }
 
+
 static char **
 dup_argv (int argc, char **argv, ed_buffer_t *ed)
 {
@@ -551,6 +552,7 @@ dup_argv (int argc, char **argv, ed_buffer_t *ed)
     }
   return pathv_p;
 }
+
 
 /* realloc_buffer: Increase size, *n, of buffer, *b, to at least i. */
 void *

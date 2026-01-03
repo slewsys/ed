@@ -467,7 +467,7 @@ top:
 static char **
 collect_address_args (int *argc_p, char **argv, ed_buffer_t *ed)
 {
-  static char *argv_new = NULL;    /* argument vector buffer */
+  static char **argv_new = NULL;   /* argument vector buffer */
   static size_t argv_new_size = 0; /* argv_new buffer size */
 
   int argc_new = 0;
@@ -480,9 +480,10 @@ collect_address_args (int *argc_p, char **argv, ed_buffer_t *ed)
     {
       if (argv[i][0] != '+')
         {
+          ++argc_new;
           REALLOC_THROW (argv_new, argv_new_size,
-                         (++argc_new + 1) * sizeof (char *), NULL, ed);
-          *((char **) argv_new + argc_new - 1) = argv[i];
+                         (argc_new + 1) * sizeof (char *), NULL, ed);
+          argv_new[argc_new - 1] = argv[i];
           continue;
         }
 
@@ -504,9 +505,10 @@ collect_address_args (int *argc_p, char **argv, ed_buffer_t *ed)
           /* Reject, e.g., `+33a'. */
           if (*endp != '\0')
             {
+              ++argc_new;
               REALLOC_THROW (argv_new, argv_new_size,
-                             (++argc_new + 1) * sizeof (char *), NULL, ed);
-              *((char **) argv_new + argc_new - 1) = argv[i];
+                             (argc_new + 1) * sizeof (char *), NULL, ed);
+              argv_new[argc_new - 1] = argv[i];
               continue;
             }
           else if (append_address_command (argv[i] + 1, ed) < 0)
@@ -525,18 +527,20 @@ collect_address_args (int *argc_p, char **argv, ed_buffer_t *ed)
           free (regexp);
           if (regexp_len != argv_len)
             {
+              ++argc_new;
               REALLOC_THROW (argv_new, argv_new_size,
-                             (++argc_new + 1) * sizeof (char *), NULL, ed);
-              *((char **) argv_new + argc_new - 1) = argv[i];
+                             (argc_new + 1) * sizeof (char *), NULL, ed);
+              argv_new[argc_new - 1] = argv[i];
               continue;
             }
           else if (append_address_command (argv[i] + 1, ed) < 0)
             script_die (3, ed);
           break;
         default:
+          ++argc_new;
           REALLOC_THROW (argv_new, argv_new_size,
-                         (++argc_new + 1) * sizeof (char *), NULL, ed);
-          *((char **) argv_new + argc_new - 1) = argv[i];
+                         (argc_new + 1) * sizeof (char *), NULL, ed);
+          argv_new[argc_new - 1] = argv[i];
           break;
         }
     }
@@ -545,9 +549,9 @@ collect_address_args (int *argc_p, char **argv, ed_buffer_t *ed)
     REALLOC_THROW (argv_new, argv_new_size,
                    sizeof (char *), NULL, ed);
 
-  *((char **) argv_new + argc_new) = NULL;
+  argv_new[argc_new] = NULL;
   *argc_p = argc_new;
-  return (char **) argv_new;
+  return argv_new;
 }
 #endif  /* WANT_ADDRESS_ARGUMENTS */
 
@@ -668,7 +672,7 @@ save_edit (int status, ed_buffer_t *ed)
 static char **
 getenv_init_argv (const char *s, int *argc, ed_buffer_t *ed)
 {
-  static char *argv;            /* argument vector buffer */
+  static char **argv;           /* argument vector buffer */
   static char *env;             /* copy of environment variable */
   static size_t argv_size = 0;  /* argv buffer size */
   static size_t env_size = 0;   /* env buffer size */
@@ -692,12 +696,12 @@ getenv_init_argv (const char *s, int *argc, ed_buffer_t *ed)
             }
           REALLOC_THROW (argv, argv_size,
                          (*argc + 2) * sizeof (char *), NULL, ed);
-          *((char **) argv + ++*argc) = v;
+          argv[++*argc] = v;
         }
-      *((char **) argv + ++*argc) = NULL;
-      *((char **) argv) = (char *) s;
+      argv[++*argc] = NULL;
+      argv[0] = (char *) s;
     }
-  return (char **) (*argc ? argv : 0);
+  return *argc ? argv : (char **) 0;
 }
 #endif /* WANT_ED_ENVAR */
 
