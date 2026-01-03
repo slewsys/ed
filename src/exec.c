@@ -1347,12 +1347,14 @@ w_cmd (ed_buffer_t *ed)
   off_t addr = 0;
   off_t size = 0;
   size_t len = 0;
+  char *filename = NULL;
   char *fn = NULL;
   int status = 0;               /* Return status */
   int is_default = 0;
   int c = *(ed->input - 1);
   int cx = 0;
   int cy = 0;
+  char mode = 0;                /* File write mode (i.e., 'a' || 'w'). */
 
   /*
    * Allow writing an empty buffer provided no addresses are
@@ -1440,12 +1442,17 @@ w_cmd (ed_buffer_t *ed)
        * by SUSv4, if default file name is not set, trivially
        * succeed by writing to `/dev/null'.
        */
+      filename =
+            is_default ? ed->file->name : (*fn != '\0' ? fn : "/dev/null");
+
+      /*
+       * In case of filename == "/dev/null", it cannot be truncated,
+       * so set write-mode to 'a'.
+       */
+      mode = c == 'W' || !strcmp (filename, "/dev/null") ? 'a' : 'w';
       if ((status =
-           write_file (is_default ? ed->file->name
-                       : (*fn != '\0' ? fn : "/dev/null"),
-                       is_default, ed->exec->region->start,
-                       ed->exec->region->end,
-                       &addr, &size, (c == 'W' ? "a" : "w"), ed)) < 0)
+           write_file (filename, is_default, ed->exec->region->start,
+                       ed->exec->region->end, &addr, &size, &mode, ed)) < 0)
         return status;
 
       /*
