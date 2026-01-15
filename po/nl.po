@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnulib-20241209\n"
 "Report-Msgid-Bugs-To: bug-gnulib@gnu.org\n"
-"POT-Creation-Date: 2025-12-02 19:15-0500\n"
+"POT-Creation-Date: 2026-02-23 00:42-0500\n"
 "PO-Revision-Date: 2025-02-13 10:09+0000\n"
 "Last-Translator: Benno Schulenberg <vertaling@coevern.nl>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
@@ -112,8 +112,8 @@ msgstr "Ongeldige inhoud van \\{\\}"
 msgid "Invalid range end"
 msgstr "Ongeldig bereikeinde"
 
-#: lib/regcomp.c:158 src/buffer.c:436 src/buffer.c:583 src/exec.c:1896
-#: src/io.c:325 src/page.c:858 src/parse.c:270 src/parse.c:515 src/regexp.c:163
+#: lib/regcomp.c:158 src/buffer.c:436 src/buffer.c:585 src/exec.c:1901
+#: src/io.c:325 src/page.c:861 src/parse.c:270 src/parse.c:515 src/regexp.c:163
 #: src/register.c:372 src/undo.c:26
 msgid "Memory exhausted"
 msgstr "Onvoldoende geheugen beschikbaar"
@@ -142,12 +142,12 @@ msgstr "Geen eerdere reguliere expressie"
 msgid "dup2 error"
 msgstr "dup2 error"
 
-#: src/buffer.c:136 src/io.c:96 src/io.c:167 src/io.c:650 src/io.c:701
-#: src/main.c:797 src/register.c:392
+#: src/buffer.c:136 src/io.c:96 src/io.c:167 src/io.c:652 src/io.c:703
+#: src/main.c:801 src/register.c:392
 msgid "File open error"
 msgstr "Fout bij openen bestand"
 
-#: src/buffer.c:260 src/main.c:569 src/main.c:641
+#: src/buffer.c:260 src/main.c:573 src/main.c:645
 msgid "File name too long"
 msgstr "Bestandsnaam is te lang"
 
@@ -179,12 +179,12 @@ msgstr "Buffer vol"
 msgid "Buffer write error"
 msgstr "Fout bij schrijven buffer"
 
-#: src/buffer.c:500 src/exec.c:100 src/exec.c:129 src/exec.c:1866
+#: src/buffer.c:500 src/exec.c:100 src/exec.c:129 src/exec.c:1871
 #: src/page.c:301 src/parse.c:220
 msgid "Address out of range"
 msgstr "Adres buiten bereik"
 
-#: src/buffer.c:576
+#: src/buffer.c:578
 msgid "Memory request too big"
 msgstr "Geheugenverzoek is te groot"
 
@@ -200,7 +200,7 @@ msgstr "Decoderen mislukt (blokkeren beschadigd)"
 msgid "Decryption failed (incomplete block)"
 msgstr "Decodering mislukt (onvolledig blok)"
 
-#: src/cbc.c:384 src/io.c:570 src/io.c:842
+#: src/cbc.c:384 src/io.c:570 src/io.c:844
 msgid "File read error"
 msgstr "Fout bij het lezen van het bestand"
 
@@ -212,7 +212,7 @@ msgstr "Eindvan-bestand onverwacht"
 msgid "Invalid address mark"
 msgstr "Ongeldig adresteken"
 
-#: src/cmds.c:327 src/exec.c:1719 src/filter.c:90 src/filter.c:143
+#: src/cmds.c:327 src/exec.c:1724 src/filter.c:90 src/filter.c:143
 msgid "Fork error"
 msgstr "Proces vork fout"
 
@@ -220,7 +220,7 @@ msgstr "Proces vork fout"
 msgid "Child process error"
 msgstr "Onderliggend proces fout"
 
-#: src/cmds.c:353 src/filter.c:40 src/io.c:176 src/io.c:712
+#: src/cmds.c:353 src/filter.c:40 src/io.c:176 src/io.c:714
 #, c-format
 msgid "Exit status: %#x"
 msgstr "Status afsluiten: %#x"
@@ -234,7 +234,7 @@ msgid "Numerical result out of range"
 msgstr "Numeriek resultaat buiten bereik"
 
 #: src/exec.c:28 src/exec.c:504 src/exec.c:589 src/exec.c:615 src/exec.c:898
-#: src/exec.c:1010 src/exec.c:1371 src/exec.c:1383 src/exec.c:1391
+#: src/exec.c:1010 src/exec.c:1373 src/exec.c:1385 src/exec.c:1393
 msgid "Command suffix unexpected"
 msgstr "Opdracht achtervoegsel onverwacht"
 
@@ -247,7 +247,7 @@ msgid "Command prefix unexpected"
 msgstr "Commando prefix niet verwacht"
 
 #: src/exec.c:495 src/exec.c:580 src/exec.c:687 src/exec.c:708 src/exec.c:947
-#: src/exec.c:989 src/exec.c:1335 src/exec.c:1528 src/exec.c:1728
+#: src/exec.c:989 src/exec.c:1335 src/exec.c:1533 src/exec.c:1733
 msgid "Address unexpected"
 msgstr "Adres onverwacht"
 
@@ -255,7 +255,7 @@ msgstr "Adres onverwacht"
 msgid "Invalid redirection"
 msgstr "Ongeldige omleiding"
 
-#: src/exec.c:646 src/main.c:636
+#: src/exec.c:646 src/main.c:640
 msgid "File name not set"
 msgstr "Bestandsnaam niet ingesteld"
 
@@ -275,24 +275,24 @@ msgstr "Ongeldig bestemmingsadres"
 msgid "Invalid register"
 msgstr "Ongeldig register"
 
-#: src/exec.c:1166 src/exec.c:1229 src/exec.c:1547 src/exec.c:1606
-#: src/exec.c:1791 src/exec.c:1806
+#: src/exec.c:1166 src/exec.c:1229 src/exec.c:1552 src/exec.c:1611
+#: src/exec.c:1796 src/exec.c:1811
 msgid "Unknown command"
 msgstr "Onbekend commando"
 
-#: src/exec.c:1718
+#: src/exec.c:1723
 msgid "Cannot fork shell"
 msgstr "Kan shell niet forken"
 
-#: src/exec.c:1806
+#: src/exec.c:1811
 msgid "Invalid address"
 msgstr "Ongeldig adres"
 
-#: src/exec.c:1824
+#: src/exec.c:1829
 msgid "Command too long"
 msgstr "Opdracht te lang"
 
-#: src/exec.c:1871
+#: src/exec.c:1876
 msgid "Invalid address range"
 msgstr "Ongeldig adresbereik"
 
@@ -312,7 +312,7 @@ msgstr "Leiding sluiten fout"
 msgid "No previous command"
 msgstr "Geen vorige opdracht"
 
-#: src/io.c:57 src/io.c:619 src/main.c:239 src/main.c:746 src/main.c:813
+#: src/io.c:57 src/io.c:621 src/main.c:239 src/main.c:750 src/main.c:817
 #: src/register.c:36 src/register.c:83 src/register.c:142 src/register.c:152
 #: src/register.c:211 src/register.c:220 src/register.c:247 src/register.c:283
 #: src/register.c:350 src/register.c:410 src/register.c:450 src/register.c:489
@@ -323,12 +323,12 @@ msgstr "Bestandszoekfout"
 msgid "File does not exist"
 msgstr "Bestand bestaat niet"
 
-#: src/io.c:119 src/io.c:664
+#: src/io.c:119 src/io.c:666
 #, c-format
 msgid "%s: File already locked\n"
 msgstr "%s: Bestand is al vergrendeld\n"
 
-#: src/io.c:143 src/io.c:641 src/io.c:679
+#: src/io.c:143 src/io.c:643 src/io.c:681
 msgid "File close error"
 msgstr "Fout bij sluiten bestand"
 
@@ -342,31 +342,31 @@ msgstr "Nieuwe regel ingevoegd\n"
 msgid "Newline appended\n"
 msgstr "Newline toegevoegd\n"
 
-#: src/io.c:556 src/io.c:795
+#: src/io.c:556 src/io.c:797
 msgid "Broken pipe"
 msgstr "Kapotte buis"
 
-#: src/io.c:626 src/register.c:254
+#: src/io.c:628 src/register.c:254
 msgid "File truncate error"
 msgstr "Fout bij afkappen bestand"
 
-#: src/io.c:748
+#: src/io.c:750
 msgid "File too big"
 msgstr "Bestand is te groot"
 
-#: src/io.c:801 src/io.c:821 src/io.c:832 src/main.c:757 src/main.c:765
+#: src/io.c:803 src/io.c:823 src/io.c:834 src/main.c:761 src/main.c:769
 msgid "File write error"
 msgstr "Fout bij het schrijven van het bestand"
 
-#: src/io.c:865 src/parse.c:502
+#: src/io.c:867 src/parse.c:502
 msgid "File status error"
 msgstr "Bestandstatusfout"
 
-#: src/io.c:872
+#: src/io.c:874
 msgid "Access restricted to regular files"
 msgstr "Toegang beperkt tot reguliere bestanden"
 
-#: src/io.c:941
+#: src/io.c:943
 msgid "File stat error"
 msgstr "Bestandsstatistiekfout"
 
@@ -382,11 +382,11 @@ msgstr "Onderbroken"
 msgid "WARNING: Buffer modified since last write"
 msgstr "WAARSCHUWING: Buffer gewijzigd sinds laatste schrijven"
 
-#: src/main.c:690
+#: src/main.c:694
 msgid "Argument list full"
 msgstr "Argumentlijst vol"
 
-#: src/main.c:834
+#: src/main.c:838
 #, c-format
 msgid ""
 "Usage: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE...]\n"
@@ -394,29 +394,29 @@ msgstr ""
 "Gebruik: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] "
 "[FILE...]\n"
 
-#: src/main.c:836
+#: src/main.c:840
 #, c-format
 msgid ""
 "Usage: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE]\n"
 msgstr ""
 "Gebruik: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE]\n"
 
-#: src/main.c:839
+#: src/main.c:843
 #, c-format
 msgid "Usage: %s [-] [-EGhRrsVvwx] [-p PROMPT] [FILE]\n"
 msgstr "Gebruik: %s [-] [-EGhRrsVvwx] [-p PROMPT] [FILE]\n"
 
-#: src/main.c:849
+#: src/main.c:853
 #, c-format
 msgid "Usage: %s [OPTION...] [FILE...]\n"
 msgstr "Gebruik: %s [OPTION...] [FILE...]\n"
 
-#: src/main.c:852
+#: src/main.c:856
 #, c-format
 msgid "Usage: %s [OPTION...] [FILE]\n"
 msgstr "Gebruik: %s [OPTION...] [FILE]\n"
 
-#: src/main.c:858
+#: src/main.c:862
 #, fuzzy, c-format
 #| msgid ""
 #| "Options:\n"
@@ -494,7 +494,7 @@ msgstr ""
 "Gelieve problemen in te dienen of pull requests tot: <https://github.com/"
 "slewsys/ed>\n"
 
-#: src/main.c:881
+#: src/main.c:885
 #, fuzzy, c-format
 #| msgid ""
 #| "Options:\n"
@@ -557,33 +557,33 @@ msgstr ""
 "Gelieve problemen in te dienen of pull requests tot: <https://github.com/"
 "slewsys/ed>\n"
 
-#: src/main.c:919
+#: src/main.c:923
 msgid "/etc/shells: No such file"
 msgstr ""
 
-#: src/main.c:925
+#: src/main.c:929
 #, fuzzy
 #| msgid "File open error"
 msgid "/etc/shells: File open error"
 msgstr "Fout bij openen bestand"
 
-#: src/main.c:943
+#: src/main.c:947
 #, fuzzy
 #| msgid "File open error"
 msgid "/etc/shells: File read error"
 msgstr "Fout bij openen bestand"
 
-#: src/main.c:950
+#: src/main.c:954
 #, fuzzy
 #| msgid "Invalid key"
 msgid "Invalid shell"
 msgstr "Ongeldige sleutel"
 
-#: src/main.c:956
+#: src/main.c:960
 msgid "Shell not executable"
 msgstr ""
 
-#: src/main.c:970
+#: src/main.c:974
 msgid "script, line %"
 msgstr "script, lijn %"
 
@@ -668,7 +668,7 @@ msgstr "Onbekende opdrachtachtervoegsel"
 msgid "No previous substitution"
 msgstr "Geen vorige vervanging"
 
-#: src/subst.c:463 src/subst.c:597
+#: src/subst.c:464 src/subst.c:601
 msgid "Too many regex subexpressions"
 msgstr "Te veel regex subexpressies"
 

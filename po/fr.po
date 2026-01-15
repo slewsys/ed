@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: standard-unix-text-editor\n"
 "Report-Msgid-Bugs-To: bug-gnulib@gnu.org\n"
-"POT-Creation-Date: 2025-12-02 19:15-0500\n"
+"POT-Creation-Date: 2026-02-23 00:42-0500\n"
 "PO-Revision-Date: 2025-12-03 00:19+0000\n"
 "Last-Translator: Stéphane Aulery <lkppo@free.fr>\n"
 "Language-Team: French\n"
@@ -111,8 +111,8 @@ msgstr "Le contenu de \\{\\} n'est pas valable"
 msgid "Invalid range end"
 msgstr "Borne finale de l'intervalle non valable"
 
-#: lib/regcomp.c:158 src/buffer.c:436 src/buffer.c:583 src/exec.c:1896
-#: src/io.c:325 src/page.c:858 src/parse.c:270 src/parse.c:515 src/regexp.c:163
+#: lib/regcomp.c:158 src/buffer.c:436 src/buffer.c:585 src/exec.c:1901
+#: src/io.c:325 src/page.c:861 src/parse.c:270 src/parse.c:515 src/regexp.c:163
 #: src/register.c:372 src/undo.c:26
 msgid "Memory exhausted"
 msgstr "Mémoire épuisée"
@@ -141,12 +141,12 @@ msgstr "Pas d'expression rationnelle précédente"
 msgid "dup2 error"
 msgstr "Erreur du dup2"
 
-#: src/buffer.c:136 src/io.c:96 src/io.c:167 src/io.c:650 src/io.c:701
-#: src/main.c:797 src/register.c:392
+#: src/buffer.c:136 src/io.c:96 src/io.c:167 src/io.c:652 src/io.c:703
+#: src/main.c:801 src/register.c:392
 msgid "File open error"
 msgstr "Erreur d'ouverture de fichier"
 
-#: src/buffer.c:260 src/main.c:569 src/main.c:641
+#: src/buffer.c:260 src/main.c:573 src/main.c:645
 msgid "File name too long"
 msgstr "Nom de fichier trop long"
 
@@ -178,12 +178,12 @@ msgstr "Tampon plein"
 msgid "Buffer write error"
 msgstr "Erreur d'écriture du tampon"
 
-#: src/buffer.c:500 src/exec.c:100 src/exec.c:129 src/exec.c:1866
+#: src/buffer.c:500 src/exec.c:100 src/exec.c:129 src/exec.c:1871
 #: src/page.c:301 src/parse.c:220
 msgid "Address out of range"
 msgstr "Adresse hors limites"
 
-#: src/buffer.c:576
+#: src/buffer.c:578
 msgid "Memory request too big"
 msgstr "Requête de mémoire trop grande"
 
@@ -199,7 +199,7 @@ msgstr "Le déchiffrement a échoué (bloc corrompu)"
 msgid "Decryption failed (incomplete block)"
 msgstr "Le déchiffrement a échoué (bloc incomplet)"
 
-#: src/cbc.c:384 src/io.c:570 src/io.c:842
+#: src/cbc.c:384 src/io.c:570 src/io.c:844
 msgid "File read error"
 msgstr "Erreur de lecture du fichier"
 
@@ -211,7 +211,7 @@ msgstr "Fin de fichier inattendu"
 msgid "Invalid address mark"
 msgstr "Marque d'adresse non valable"
 
-#: src/cmds.c:327 src/exec.c:1719 src/filter.c:90 src/filter.c:143
+#: src/cmds.c:327 src/exec.c:1724 src/filter.c:90 src/filter.c:143
 msgid "Fork error"
 msgstr "Erreur de fork"
 
@@ -219,7 +219,7 @@ msgstr "Erreur de fork"
 msgid "Child process error"
 msgstr "Erreur de sous-processus"
 
-#: src/cmds.c:353 src/filter.c:40 src/io.c:176 src/io.c:712
+#: src/cmds.c:353 src/filter.c:40 src/io.c:176 src/io.c:714
 #, c-format
 msgid "Exit status: %#x"
 msgstr "État de sortie : %#x"
@@ -233,7 +233,7 @@ msgid "Numerical result out of range"
 msgstr "Résultat numérique hors limites"
 
 #: src/exec.c:28 src/exec.c:504 src/exec.c:589 src/exec.c:615 src/exec.c:898
-#: src/exec.c:1010 src/exec.c:1371 src/exec.c:1383 src/exec.c:1391
+#: src/exec.c:1010 src/exec.c:1373 src/exec.c:1385 src/exec.c:1393
 msgid "Command suffix unexpected"
 msgstr "Suffixe de commande inattendu"
 
@@ -246,7 +246,7 @@ msgid "Command prefix unexpected"
 msgstr "Préfixe de commande inattendu"
 
 #: src/exec.c:495 src/exec.c:580 src/exec.c:687 src/exec.c:708 src/exec.c:947
-#: src/exec.c:989 src/exec.c:1335 src/exec.c:1528 src/exec.c:1728
+#: src/exec.c:989 src/exec.c:1335 src/exec.c:1533 src/exec.c:1733
 msgid "Address unexpected"
 msgstr "Adresse inattendue"
 
@@ -254,7 +254,7 @@ msgstr "Adresse inattendue"
 msgid "Invalid redirection"
 msgstr "Redirection non valable"
 
-#: src/exec.c:646 src/main.c:636
+#: src/exec.c:646 src/main.c:640
 msgid "File name not set"
 msgstr "Nom du fichier non défini"
 
@@ -274,24 +274,24 @@ msgstr "Adresse de destination non valable"
 msgid "Invalid register"
 msgstr "Registre non valable"
 
-#: src/exec.c:1166 src/exec.c:1229 src/exec.c:1547 src/exec.c:1606
-#: src/exec.c:1791 src/exec.c:1806
+#: src/exec.c:1166 src/exec.c:1229 src/exec.c:1552 src/exec.c:1611
+#: src/exec.c:1796 src/exec.c:1811
 msgid "Unknown command"
 msgstr "Commande inconnue"
 
-#: src/exec.c:1718
+#: src/exec.c:1723
 msgid "Cannot fork shell"
 msgstr "Impossible de bifurquer le shell"
 
-#: src/exec.c:1806
+#: src/exec.c:1811
 msgid "Invalid address"
 msgstr "Adresse non valable"
 
-#: src/exec.c:1824
+#: src/exec.c:1829
 msgid "Command too long"
 msgstr "Commande trop longue"
 
-#: src/exec.c:1871
+#: src/exec.c:1876
 msgid "Invalid address range"
 msgstr "Intervalle d'adresses non valable"
 
@@ -311,7 +311,7 @@ msgstr "Erreur de fermeture du tuyau"
 msgid "No previous command"
 msgstr "Aucune commande précédente"
 
-#: src/io.c:57 src/io.c:619 src/main.c:239 src/main.c:746 src/main.c:813
+#: src/io.c:57 src/io.c:621 src/main.c:239 src/main.c:750 src/main.c:817
 #: src/register.c:36 src/register.c:83 src/register.c:142 src/register.c:152
 #: src/register.c:211 src/register.c:220 src/register.c:247 src/register.c:283
 #: src/register.c:350 src/register.c:410 src/register.c:450 src/register.c:489
@@ -322,12 +322,12 @@ msgstr "Erreur de recherche de fichier"
 msgid "File does not exist"
 msgstr "Fichier n'existe pas"
 
-#: src/io.c:119 src/io.c:664
+#: src/io.c:119 src/io.c:666
 #, c-format
 msgid "%s: File already locked\n"
 msgstr "%s: Fichier déjà verrouillé\n"
 
-#: src/io.c:143 src/io.c:641 src/io.c:679
+#: src/io.c:143 src/io.c:643 src/io.c:681
 msgid "File close error"
 msgstr "Erreur de fermeture du fichier"
 
@@ -341,31 +341,31 @@ msgstr "Nouvelle ligne insérée\n"
 msgid "Newline appended\n"
 msgstr "Nouvelle ligne ajoutée\n"
 
-#: src/io.c:556 src/io.c:795
+#: src/io.c:556 src/io.c:797
 msgid "Broken pipe"
 msgstr "Tuyau cassé"
 
-#: src/io.c:626 src/register.c:254
+#: src/io.c:628 src/register.c:254
 msgid "File truncate error"
 msgstr "Erreur de tronquage du fichier"
 
-#: src/io.c:748
+#: src/io.c:750
 msgid "File too big"
 msgstr "Fichier trop gros"
 
-#: src/io.c:801 src/io.c:821 src/io.c:832 src/main.c:757 src/main.c:765
+#: src/io.c:803 src/io.c:823 src/io.c:834 src/main.c:761 src/main.c:769
 msgid "File write error"
 msgstr "Erreur d'écriture du fichier"
 
-#: src/io.c:865 src/parse.c:502
+#: src/io.c:867 src/parse.c:502
 msgid "File status error"
 msgstr "Erreur d'état du fichier"
 
-#: src/io.c:872
+#: src/io.c:874
 msgid "Access restricted to regular files"
 msgstr "Accès restreint aux fichiers réguliers"
 
-#: src/io.c:941
+#: src/io.c:943
 msgid "File stat error"
 msgstr "Erreur de stat de fichier"
 
@@ -381,11 +381,11 @@ msgstr "Interrompue"
 msgid "WARNING: Buffer modified since last write"
 msgstr "AVERTISSEMENT : Tampon modifié depuis la dernière écriture"
 
-#: src/main.c:690
+#: src/main.c:694
 msgid "Argument list full"
 msgstr "Liste d'arguments pleine"
 
-#: src/main.c:834
+#: src/main.c:838
 #, c-format
 msgid ""
 "Usage: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE...]\n"
@@ -393,7 +393,7 @@ msgstr ""
 "Utilisation : %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] "
 "[FILE...]\n"
 
-#: src/main.c:836
+#: src/main.c:840
 #, c-format
 msgid ""
 "Usage: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE]\n"
@@ -401,22 +401,22 @@ msgstr ""
 "Utilisation : %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] "
 "[FILE]\n"
 
-#: src/main.c:839
+#: src/main.c:843
 #, c-format
 msgid "Usage: %s [-] [-EGhRrsVvwx] [-p PROMPT] [FILE]\n"
 msgstr "Utilisation : %s [-] [-EGhRrsVvwx] [-p PROMPT] [FILE]\n"
 
-#: src/main.c:849
+#: src/main.c:853
 #, c-format
 msgid "Usage: %s [OPTION...] [FILE...]\n"
 msgstr "Utilisation : %s [OPTION...] [FILE...]\n"
 
-#: src/main.c:852
+#: src/main.c:856
 #, c-format
 msgid "Usage: %s [OPTION...] [FILE]\n"
 msgstr "Utilisation : %s [OPTION...] [FICHIER]\n"
 
-#: src/main.c:858
+#: src/main.c:862
 #, fuzzy, c-format
 #| msgid ""
 #| "Options:\n"
@@ -499,7 +499,7 @@ msgstr ""
 "Veuillez soumettre des problèmes ou des demandes d'extraction à : <https://"
 "github.com/slewsys/ed>\n"
 
-#: src/main.c:881
+#: src/main.c:885
 #, fuzzy, c-format
 #| msgid ""
 #| "Options:\n"
@@ -567,32 +567,32 @@ msgstr ""
 "Veuillez soumettre des problèmes ou des demandes d'extraction à : <https://"
 "github.com/slewsys/ed>\n"
 
-#: src/main.c:919
+#: src/main.c:923
 msgid "/etc/shells: No such file"
 msgstr ""
 
-#: src/main.c:925
+#: src/main.c:929
 #, fuzzy
 #| msgid "File open error"
 msgid "/etc/shells: File open error"
 msgstr "Erreur d'ouverture de fichier"
 
-#: src/main.c:943
+#: src/main.c:947
 #, fuzzy
 msgid "/etc/shells: File read error"
 msgstr "/etc/shells: Erreur de lecture du fichier"
 
-#: src/main.c:950
+#: src/main.c:954
 #, fuzzy
 #| msgid "Invalid key"
 msgid "Invalid shell"
 msgstr "Clé non valable"
 
-#: src/main.c:956
+#: src/main.c:960
 msgid "Shell not executable"
 msgstr ""
 
-#: src/main.c:970
+#: src/main.c:974
 msgid "script, line %"
 msgstr "script, ligne %"
 
@@ -677,7 +677,7 @@ msgstr "Suffixe de commande inconnu"
 msgid "No previous substitution"
 msgstr "Aucune substitution précédente"
 
-#: src/subst.c:463 src/subst.c:597
+#: src/subst.c:464 src/subst.c:601
 msgid "Too many regex subexpressions"
 msgstr "Trop de sous-expressions régulières"
 

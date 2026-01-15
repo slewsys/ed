@@ -24,7 +24,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnulib 20241209\n"
 "Report-Msgid-Bugs-To: bug-gnulib@gnu.org\n"
-"POT-Creation-Date: 2025-12-02 19:15-0500\n"
+"POT-Creation-Date: 2026-02-23 00:42-0500\n"
 "PO-Revision-Date: 2025-02-14 01:31+0000\n"
 "Last-Translator: Remus-Gabriel Chelu <remusgabriel.chelu@disroot.org>\n"
 "Language-Team: Romanian <translation-team-ro@lists.sourceforge.net>\n"
@@ -125,8 +125,8 @@ msgstr "Conținut nevalid al \\{\\}"
 msgid "Invalid range end"
 msgstr "Sfârșit de interval nevalid"
 
-#: lib/regcomp.c:158 src/buffer.c:436 src/buffer.c:583 src/exec.c:1896
-#: src/io.c:325 src/page.c:858 src/parse.c:270 src/parse.c:515 src/regexp.c:163
+#: lib/regcomp.c:158 src/buffer.c:436 src/buffer.c:585 src/exec.c:1901
+#: src/io.c:325 src/page.c:861 src/parse.c:270 src/parse.c:515 src/regexp.c:163
 #: src/register.c:372 src/undo.c:26
 msgid "Memory exhausted"
 msgstr "Memorie epuizată"
@@ -155,12 +155,12 @@ msgstr "Nu există o expresie regulată precedentă"
 msgid "dup2 error"
 msgstr "Eroare dup2"
 
-#: src/buffer.c:136 src/io.c:96 src/io.c:167 src/io.c:650 src/io.c:701
-#: src/main.c:797 src/register.c:392
+#: src/buffer.c:136 src/io.c:96 src/io.c:167 src/io.c:652 src/io.c:703
+#: src/main.c:801 src/register.c:392
 msgid "File open error"
 msgstr "Eroare la deschiderea fișierului"
 
-#: src/buffer.c:260 src/main.c:569 src/main.c:641
+#: src/buffer.c:260 src/main.c:573 src/main.c:645
 msgid "File name too long"
 msgstr "Numele fișierului este prea lung"
 
@@ -192,12 +192,12 @@ msgstr "Tampon plin"
 msgid "Buffer write error"
 msgstr "Eroare de scriere în tampon"
 
-#: src/buffer.c:500 src/exec.c:100 src/exec.c:129 src/exec.c:1866
+#: src/buffer.c:500 src/exec.c:100 src/exec.c:129 src/exec.c:1871
 #: src/page.c:301 src/parse.c:220
 msgid "Address out of range"
 msgstr "Adresă în afara intervalului"
 
-#: src/buffer.c:576
+#: src/buffer.c:578
 msgid "Memory request too big"
 msgstr "Solicitare memorie prea mare"
 
@@ -213,7 +213,7 @@ msgstr "Decriptare eșuată (blocare coruptă)"
 msgid "Decryption failed (incomplete block)"
 msgstr "Decriptare eșuată (bloc incomplet)"
 
-#: src/cbc.c:384 src/io.c:570 src/io.c:842
+#: src/cbc.c:384 src/io.c:570 src/io.c:844
 msgid "File read error"
 msgstr "Eroare de citire a fișierului"
 
@@ -225,7 +225,7 @@ msgstr "Sfârșit de fișier neașteptat"
 msgid "Invalid address mark"
 msgstr "Marcare de adresă nevalidă"
 
-#: src/cmds.c:327 src/exec.c:1719 src/filter.c:90 src/filter.c:143
+#: src/cmds.c:327 src/exec.c:1724 src/filter.c:90 src/filter.c:143
 msgid "Fork error"
 msgstr "Eroare de furcă"
 
@@ -233,7 +233,7 @@ msgstr "Eroare de furcă"
 msgid "Child process error"
 msgstr "Eroare de proces copil"
 
-#: src/cmds.c:353 src/filter.c:40 src/io.c:176 src/io.c:712
+#: src/cmds.c:353 src/filter.c:40 src/io.c:176 src/io.c:714
 #, c-format
 msgid "Exit status: %#x"
 msgstr "Stare ieşire: %#x"
@@ -247,7 +247,7 @@ msgid "Numerical result out of range"
 msgstr "Rezultat numeric în afara intervalului"
 
 #: src/exec.c:28 src/exec.c:504 src/exec.c:589 src/exec.c:615 src/exec.c:898
-#: src/exec.c:1010 src/exec.c:1371 src/exec.c:1383 src/exec.c:1391
+#: src/exec.c:1010 src/exec.c:1373 src/exec.c:1385 src/exec.c:1393
 msgid "Command suffix unexpected"
 msgstr "Sufix de comandă neașteptat"
 
@@ -260,7 +260,7 @@ msgid "Command prefix unexpected"
 msgstr "Prefixul comenzii neașteptat"
 
 #: src/exec.c:495 src/exec.c:580 src/exec.c:687 src/exec.c:708 src/exec.c:947
-#: src/exec.c:989 src/exec.c:1335 src/exec.c:1528 src/exec.c:1728
+#: src/exec.c:989 src/exec.c:1335 src/exec.c:1533 src/exec.c:1733
 msgid "Address unexpected"
 msgstr "Adresa neașteptată"
 
@@ -268,7 +268,7 @@ msgstr "Adresa neașteptată"
 msgid "Invalid redirection"
 msgstr "Redirecționare nevalidă"
 
-#: src/exec.c:646 src/main.c:636
+#: src/exec.c:646 src/main.c:640
 msgid "File name not set"
 msgstr "Numele fișierului nu este setat"
 
@@ -288,24 +288,24 @@ msgstr "Adresă de destinație nevalidă"
 msgid "Invalid register"
 msgstr "Registru invalid"
 
-#: src/exec.c:1166 src/exec.c:1229 src/exec.c:1547 src/exec.c:1606
-#: src/exec.c:1791 src/exec.c:1806
+#: src/exec.c:1166 src/exec.c:1229 src/exec.c:1552 src/exec.c:1611
+#: src/exec.c:1796 src/exec.c:1811
 msgid "Unknown command"
 msgstr "Comandă necunoscută"
 
-#: src/exec.c:1718
+#: src/exec.c:1723
 msgid "Cannot fork shell"
 msgstr "Nu se poate furca proiectil"
 
-#: src/exec.c:1806
+#: src/exec.c:1811
 msgid "Invalid address"
 msgstr "Adresă invalidă"
 
-#: src/exec.c:1824
+#: src/exec.c:1829
 msgid "Command too long"
 msgstr "Comanda prea lungă"
 
-#: src/exec.c:1871
+#: src/exec.c:1876
 msgid "Invalid address range"
 msgstr "Interval de adrese nevalid"
 
@@ -325,7 +325,7 @@ msgstr "Eroare de închidere a conductei"
 msgid "No previous command"
 msgstr "Nici o comandă anterioară"
 
-#: src/io.c:57 src/io.c:619 src/main.c:239 src/main.c:746 src/main.c:813
+#: src/io.c:57 src/io.c:621 src/main.c:239 src/main.c:750 src/main.c:817
 #: src/register.c:36 src/register.c:83 src/register.c:142 src/register.c:152
 #: src/register.c:211 src/register.c:220 src/register.c:247 src/register.c:283
 #: src/register.c:350 src/register.c:410 src/register.c:450 src/register.c:489
@@ -336,12 +336,12 @@ msgstr "Eroare de căutare a fișierului"
 msgid "File does not exist"
 msgstr "Fișierul nu există"
 
-#: src/io.c:119 src/io.c:664
+#: src/io.c:119 src/io.c:666
 #, c-format
 msgid "%s: File already locked\n"
 msgstr "%s: Fişier deja blocat\n"
 
-#: src/io.c:143 src/io.c:641 src/io.c:679
+#: src/io.c:143 src/io.c:643 src/io.c:681
 msgid "File close error"
 msgstr "Eroare la închiderea fișierului"
 
@@ -359,31 +359,31 @@ msgstr "Nouă anexată la\n"
 # mi s-a părut cea mai bună descriere a
 # termenilor din mesaj.
 # - Idei?
-#: src/io.c:556 src/io.c:795
+#: src/io.c:556 src/io.c:797
 msgid "Broken pipe"
 msgstr "Conductă ruptă"
 
-#: src/io.c:626 src/register.c:254
+#: src/io.c:628 src/register.c:254
 msgid "File truncate error"
 msgstr "Eroare de trunchiere a fișierului"
 
-#: src/io.c:748
+#: src/io.c:750
 msgid "File too big"
 msgstr "Fişier prea mare"
 
-#: src/io.c:801 src/io.c:821 src/io.c:832 src/main.c:757 src/main.c:765
+#: src/io.c:803 src/io.c:823 src/io.c:834 src/main.c:761 src/main.c:769
 msgid "File write error"
 msgstr "Eroare de scriere a fișierului"
 
-#: src/io.c:865 src/parse.c:502
+#: src/io.c:867 src/parse.c:502
 msgid "File status error"
 msgstr "Eroare de stare a fișierului"
 
-#: src/io.c:872
+#: src/io.c:874
 msgid "Access restricted to regular files"
 msgstr "Acces restricționat la fișiere obișnuite"
 
-#: src/io.c:941
+#: src/io.c:943
 msgid "File stat error"
 msgstr "Eroare de statistică a fișierului"
 
@@ -399,11 +399,11 @@ msgstr "Întreruptă"
 msgid "WARNING: Buffer modified since last write"
 msgstr "AVERTISMENT: Buffer modificat de la ultima scriere"
 
-#: src/main.c:690
+#: src/main.c:694
 msgid "Argument list full"
 msgstr "Lista de argumente plină"
 
-#: src/main.c:834
+#: src/main.c:838
 #, c-format
 msgid ""
 "Usage: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE...]\n"
@@ -411,7 +411,7 @@ msgstr ""
 "Utilizare: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] "
 "[FILE...]\n"
 
-#: src/main.c:836
+#: src/main.c:840
 #, c-format
 msgid ""
 "Usage: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE]\n"
@@ -419,22 +419,22 @@ msgstr ""
 "Utilizare: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] "
 "[FILE]\n"
 
-#: src/main.c:839
+#: src/main.c:843
 #, c-format
 msgid "Usage: %s [-] [-EGhRrsVvwx] [-p PROMPT] [FILE]\n"
 msgstr "Utilizare: %s [-] [-EGhRrsVvwx] [-p PROMPT] [FILE]\n"
 
-#: src/main.c:849
+#: src/main.c:853
 #, c-format
 msgid "Usage: %s [OPTION...] [FILE...]\n"
 msgstr "Utilizare: %s [OPTION...] [FILE...]\n"
 
-#: src/main.c:852
+#: src/main.c:856
 #, c-format
 msgid "Usage: %s [OPTION...] [FILE]\n"
 msgstr "Utilizare: %s [OPTION...] [FILE]\n"
 
-#: src/main.c:858
+#: src/main.c:862
 #, fuzzy, c-format
 #| msgid ""
 #| "Options:\n"
@@ -511,7 +511,7 @@ msgstr ""
 "Vă rugăm să trimiteți probleme sau pull requests către: <https://github.com/"
 "slewsys/ed>\n"
 
-#: src/main.c:881
+#: src/main.c:885
 #, fuzzy, c-format
 #| msgid ""
 #| "Options:\n"
@@ -574,33 +574,33 @@ msgstr ""
 "Vă rugăm să trimiteți probleme sau pull requests către: <https://github.com/"
 "slewsys/ed>\n"
 
-#: src/main.c:919
+#: src/main.c:923
 msgid "/etc/shells: No such file"
 msgstr ""
 
-#: src/main.c:925
+#: src/main.c:929
 #, fuzzy
 #| msgid "File open error"
 msgid "/etc/shells: File open error"
 msgstr "Eroare la deschiderea fișierului"
 
-#: src/main.c:943
+#: src/main.c:947
 #, fuzzy
 #| msgid "File open error"
 msgid "/etc/shells: File read error"
 msgstr "Eroare la deschiderea fișierului"
 
-#: src/main.c:950
+#: src/main.c:954
 #, fuzzy
 #| msgid "Invalid key"
 msgid "Invalid shell"
 msgstr "Cheie invalidă"
 
-#: src/main.c:956
+#: src/main.c:960
 msgid "Shell not executable"
 msgstr ""
 
-#: src/main.c:970
+#: src/main.c:974
 msgid "script, line %"
 msgstr "script, linie %"
 
@@ -685,7 +685,7 @@ msgstr "Sufix de comandă necunoscut"
 msgid "No previous substitution"
 msgstr "Nici o înlocuire anterioară"
 
-#: src/subst.c:463 src/subst.c:597
+#: src/subst.c:464 src/subst.c:601
 msgid "Too many regex subexpressions"
 msgstr "Prea multe subexpresii regex"
 
