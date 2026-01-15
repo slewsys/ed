@@ -586,8 +586,10 @@ get_stream_line (FILE *fp, size_t *len, ed_buffer_t *ed)
       *(tb + *len) = '\n';
       *(tb + ++*len) = '\0';
     }
-  if (ed->state->is_utf8)
-    ed->state->is_utf8 = is_utf8_str (tb, *len);
+  /*
+   * if (ed->state->is_utf8)
+   *   ed->state->is_utf8 = is_utf8_str (tb, *len);
+   */
   return tb;
 }
 
