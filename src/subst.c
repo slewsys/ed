@@ -449,6 +449,7 @@ substitute_matching (const regex_t *re, const ed_line_node_t *lp,
   int matched_prev = 0;
   int nil_prev;
   int nil_next = 1;
+  int is_utf8 = -1;
   int status;
 #ifdef REG_STARTEND
   int eflag = REG_STARTEND;
@@ -503,7 +504,9 @@ substitute_matching (const regex_t *re, const ed_line_node_t *lp,
         {
           if (!*txt)
             break;
-          if (!ed->state->is_utf8 || (j = utf8_char_size (txt, eot - txt)) == 0)
+          if (is_utf8 < 0)
+            is_utf8 = is_utf8_str (txt, eot - txt);
+          if (!is_utf8 || (j = utf8_char_size (txt, eot - txt)) == 0)
             j = 1;
           REALLOC_THROW (rb, rb_size, *len + j, ERR, ed);
 #ifndef REG_STARTEND
@@ -539,8 +542,9 @@ substitute_matching (const regex_t *re, const ed_line_node_t *lp,
         {
           if (nil_next && !*txt)
             break;
-          if (!j && (!ed->state->is_utf8
-                     || (j = utf8_char_size (txt, eot - txt)) == 0))
+          if (is_utf8 < 0)
+            is_utf8 = is_utf8_str (txt, eot - txt);
+          if (!j && (!is_utf8 || (j = utf8_char_size (txt, eot - txt)) == 0))
             j = 1;
           REALLOC_THROW (rb, rb_size, *len + j, ERR, ed);
 #ifndef REG_STARTEND

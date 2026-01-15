@@ -479,7 +479,7 @@ display_lines (off_t from, off_t to, ed_buffer_t *ed)
    : (*s) == '\r' ? -(c)                                                      \
    : (*s) == '\t' ? TAB_WIDTH - ((c) - ((c) / TAB_WIDTH) * TAB_WIDTH)         \
    : ((unsigned char) *s) < '\040' ? 0                                        \
-   : ed->state->is_utf8 ? utf8_char_display_width (s, len)                    \
+   : is_utf8 ? utf8_char_display_width (s, len)                               \
    : 1)
 
 /* FB_PUTS: Add string, s, to frame buffer. */
@@ -511,6 +511,7 @@ put_frame_buffer_line (ed_line_node_t *lp, off_t addr,
   unsigned int sgr_len = 0;     /* Length of ANSI SGR sequence. */
   int form_feed = 0;
   int csize = 1;                /* UTF-8 byte width. */
+  int is_utf8 = 0;
 
   /*
    * Per SUSv4, 2013, the `$' (dollar sign) character is output by the
@@ -568,11 +569,13 @@ put_frame_buffer_line (ed_line_node_t *lp, off_t addr,
   if (!(s = get_buffer_line (lp, ed)))
     return ERR;
 
+  is_utf8 = is_utf8_str (s, lp->len);
+
   if (ed->display->dio_f & OFFB)
     s += fb->row[fb->row_i]->offset;
 
   if (ed->display->overflow && fb->prev_first
-      && fb->prev_first->lp == lp && ed->state->is_utf8)
+      && fb->prev_first->lp == lp && is_utf8)
 
     /*
      * XXX: For multibyte streams, adjust fb->rem_chars upward.
@@ -605,7 +608,7 @@ put_frame_buffer_line (ed_line_node_t *lp, off_t addr,
               continue;
             }
 
-          if (!ed->state->is_utf8) {
+          if (!is_utf8) {
             if (fb_putc (*s, fb, ed) < 0)
               return ERR;
           } else if (fb_putwc (s, fb->rem_chars, fb, ed) < 0)
@@ -643,7 +646,7 @@ put_frame_buffer_line (ed_line_node_t *lp, off_t addr,
         }
 
       /* Convert fb->rem_chars to units of wide chars. */
-      len = ed->state->is_utf8 ? utf8_strlen (s, fb->rem_chars) : fb->rem_chars;
+      len = is_utf8 ? utf8_strlen (s, fb->rem_chars) : fb->rem_chars;
 
       /*
        * When listing text -- i.e., ed->display->dio_f & LIST --
@@ -667,7 +670,7 @@ put_frame_buffer_line (ed_line_node_t *lp, off_t addr,
           col = 0;
         }
 
-      csize = ed->state->is_utf8 ? utf8_char_size (s, fb->rem_chars) : 1;
+      csize = is_utf8 ? utf8_char_size (s, fb->rem_chars) : 1;
     }
 
   if (!(ed->display->dio_f & LIST) && !fb->rem_chars)
