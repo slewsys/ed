@@ -14,6 +14,7 @@
       - [Debian/Ubuntu](#debianubuntu)
       - [FreeBSD](#freebsd)
       - [OpenBSD](#openbsd)
+      - [macOS](#macos)
    - [Building from Source](#building-from-source)
    - [Building from Git](#building-from-git)
    - [Building RPM and Debian packages](#building-rpm-and-debian-packages)
@@ -224,6 +225,21 @@ export AUTOCONF_VERSION=2.72
 export AUTOMAKE_VERSION=1.16
 ```
 
+#### macOS
+
+With Apple's Xcode and Command-line Utilities installed, along with a
+package manager like [MacPorts](https://www.macports.org/) (for
+multi-user systems) or [Homebrew](https://brew.sh/), run:
+
+```
+PKGMGR install autoconf automake bash gettext groff openssl \
+    libtool pkgconf texinfo texlive zstd
+hash -r
+```
+
+where **PKGMGR** should be replaced with `sudo port` for MacPorts and
+`brew` for HomeBrew.
+
 ### Building from Source
 
 GitHub's provided "Source code" downloads are missing the GNU
@@ -239,13 +255,20 @@ curl -sSL https://github.com/slewsys/ed/releases/download/v2.1.1/ed-2.1.1.tar.zs
     tar --zstd -xf -
 ```
 
-Then configure, compile and test, e.g.:
+On systems other than macOS, configure, compile and test, e.g.:
 
 ```
 cd ./ed-2.1.1
 ./configure --prefix=/usr --enable-all-extensions
 gmake
 gmake check
+```
+
+On macOS, change the `./configure ..` line above to:
+
+```
+./configure --enable-all-extensions CFLAGS="$(pkgconf --cflags libssl)" \
+    LDFLAGS="$(pkgconf --libs libssl)"
 ```
 
 Extensions can be individually enabled or disabled. To enable all
@@ -258,15 +281,22 @@ extensions except encryption, for example, run `configure` as follows:
 
 ### Building from Git
 
-With prerequisites installed per above, run:
+With prerequisites installed per above, on systems other than macOS, run:
 
 ```shell
 git clone https://github.com/slewsys/ed.git
 cd ./ed
 ./autogen.sh
-./configure --prefix=/usr --enable-all-extensions --with-included-regex
+./configure --prefix=/usr --enable-all-extensions
 gmake
 gmake check
+```
+
+On macOS, change the `./configure ..` line above to:
+
+```
+./configure --enable-all-extensions CFLAGS="$(pkgconf --cflags libssl)" \
+    LDFLAGS="$(pkgconf --libs libssl)"
 ```
 
 Install with root privileges:
