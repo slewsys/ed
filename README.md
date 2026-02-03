@@ -98,7 +98,7 @@ running (with root privileges):
 
 ```shell
 dnf config-manager --set-enabled crb
-dnf install -y --refresh autoconf automake gcc gettext-devel git \
+dnf install -y --refresh autoconf automake gawk gcc gettext-devel git \
     glibc-gconv-extra groff libtool openssl-devel texinfo \
     texinfo-tex zstd
 ```
@@ -110,9 +110,9 @@ root privileges):
 
 ```shell
 dnf update --refresh
-dnf install -y autoconf automake gcc gettext-devel git \
+dnf install -y autoconf automake gcc gettext-devel gawk git \
     glibc-gconv-extra groff libtool openssl-devel texinfo \
-    texinfo-tex
+    texinfo-tex zstd
 ```
 
 #### RHEL
@@ -124,24 +124,50 @@ Begin by installing what is available (with root privileges):
 ```
 dnf install -y \
     https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
-dnf install -y --refresh autoconf automake gcc gettext-devel git \
+dnf install -y --refresh autoconf automake curl gawk gcc gettext-devel git \
     glibc-gconv-extra groff libtool ncurses-devel openssl-devel \
     texlive-scheme-basic zstd
 ```
 
-Now build `perl` and `Texinfo` (preferably) as a non-privileged user:
+Now build `perl` and `Texinfo` (preferably) as a non-privileged user.
+In the following, this is done by installing the asdf version manager.
+If golang is already installed, run:
+
+```shell
+go install github.com/asdf-vm/asdf/cmd/asdf@latest
+export PATH=$(go env GOBIN):${PATH}
+```
+
+Otherwise, run:
+
+```shell
+asdf_url=https://github.com/asdf-vm/asdf
+latest_version=$(
+    git ls-remote --sort="-v:refname" "$asdf_url" |
+        sed -e '1{s^.*/^^; q}'
+        )
+release_url=${asdf_url}/releases/download/${latest_version}/asdf-${latest_version}-linux-amd64.tar.gz
+mkdir -p "${HOME}/bin"
+curl -sSL "$release_url" | tar -C "${HOME}/bin" -zxf -
+export PATH=${HOME}/.asdf/shims:${PATH}:${HOME}/bin
+```
+
+Then use `asdf` to install `perl`:
 
 ```
-git clone https://github.com/asdf-vm/asdf.git ~/.asdf
-source ~/.asdf/asdf.sh
 asdf plugin add perl
 latest=$(asdf latest perl)
 asdf install perl $latest
-asdf global perl $latest
-curl -sSLO https://ftp.gnu.org/gnu/texinfo/texinfo-7.2.tar.xz
-tar -C ~/ -Jxf ${PWD}/texinfo-7.2.tar.xz
-cd ~/texinfo-7.2
-./configure --prefix=/usr
+(cd ~; asdf set perl $latest)
+```
+
+To build `Texinfo`, run:
+
+```
+git clone https://git.savannah.gnu.org/git/texinfo.git
+cd ./texinfo
+./autogen.sh
+./configure
 make -j$(nproc)
 ```
 
@@ -252,14 +278,15 @@ With prerequisites installed per above, download and extract the `ed` source arc
 
 ```
 curl -sSL https://github.com/slewsys/ed/releases/download/v2.1.1/ed-2.1.1.tar.zst |
-    tar --zstd -xf -
+   zstd -dc - |
+   tar -xf -
 ```
 
 On systems other than macOS, configure, compile and test, e.g.:
 
 ```
 cd ./ed-2.1.1
-./configure --prefix=/usr --enable-all-extensions
+./configure --enable-all-extensions
 gmake
 gmake check
 ```
@@ -275,7 +302,7 @@ Extensions can be individually enabled or disabled. To enable all
 extensions except encryption, for example, run `configure` as follows:
 
 ```
-./configure --prefix=/usr --enable-all-extensions \
+./configure --enable-all-extensions \
     --disable-ed-encryption
 ```
 
@@ -287,7 +314,7 @@ With prerequisites installed per above, on systems other than macOS, run:
 git clone https://github.com/slewsys/ed.git
 cd ./ed
 ./autogen.sh
-./configure --prefix=/usr --enable-all-extensions
+./configure --enable-all-extensions
 gmake
 gmake check
 ```
