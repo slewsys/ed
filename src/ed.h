@@ -207,34 +207,34 @@ int stat (const char *, struct stat *);
 
 /* UTF-8 character constants. */
 enum utf8_char_constant
-  {
-    BELL = '\a',
-    BACKSPACE = '\b',
-    CHARACTER_TABULATION = '\t',
-    LINE_FEED = '\n',
-    LINE_TABULATION = '\v',
-    FORM_FEED = '\f',
-    CARRIAGE_RETURN = '\r',
-    ESCAPE = '\033',
-    SPACE = ' ',
-    EXCLAMATION_MARK = '!',
-    QUOTATION_MARK = '\"',
-    DOLLAR_SIGN = '$',
-    PERCENT_SIGN = '%',
-    PLUS_SIGN = '+',
-    COMMA = ',',
-    APOSTROPHE = '\'',
-    FULL_STOP = '.',
-    SOLIDUS = '/',
-    COLON = ':',
-    SEMICOLON = ';',
-    EQUALS_SIGN = '=',
-    QUESTION_MARK = '\?',
-    LEFT_SQUARE_BRACKET = '[',
-    REVERSE_SOLIDUS = '\\',
-    RIGHT_SQUARE_BRACKET = ']',
-    CIRCUMFLEX_ACCENT = '^'
-  };
+{
+  BELL = '\a',
+  BACKSPACE = '\b',
+  CHARACTER_TABULATION = '\t',
+  LINE_FEED = '\n',
+  LINE_TABULATION = '\v',
+  FORM_FEED = '\f',
+  CARRIAGE_RETURN = '\r',
+  ESCAPE = '\033',
+  SPACE = ' ',
+  EXCLAMATION_MARK = '!',
+  QUOTATION_MARK = '\"',
+  DOLLAR_SIGN = '$',
+  PERCENT_SIGN = '%',
+  PLUS_SIGN = '+',
+  COMMA = ',',
+  APOSTROPHE = '\'',
+  FULL_STOP = '.',
+  SOLIDUS = '/',
+  COLON = ':',
+  SEMICOLON = ';',
+  EQUALS_SIGN = '=',
+  QUESTION_MARK = '\?',
+  LEFT_SQUARE_BRACKET = '[',
+  REVERSE_SOLIDUS = '\\',
+  RIGHT_SQUARE_BRACKET = ']',
+  CIRCUMFLEX_ACCENT = '^'
+};
 
 /*
  * Approximate upper bound for strlen (OFF_T_MAX) from relations:
@@ -324,12 +324,12 @@ typedef struct ed_text_node
 
 /* Undo nodes types - inverse derived by toggling least-significant bit. */
 typedef enum ed_undo_op
-  {
-    UADD = 0x00,
-    UDEL = 0x01,
-    UMOV = 0x10,
-    URET = 0x11
-  } ed_undo_op_t;
+{
+  UADD = 0x00,
+  UDEL = 0x01,
+  UMOV = 0x10,
+  URET = 0x11
+} ed_undo_op_t;
 
 /* Undo node. */
 typedef struct ed_undo_node
@@ -368,10 +368,10 @@ typedef struct ed_path
 #ifdef WANT_ED_REGISTER
 /* Register I/O flags. */
 enum register_io_flags
-  {
-    REGISTER_READ  = 0x01,
-    REGISTER_WRITE = 0x02
-  };
+{
+  REGISTER_READ  = 0x01,
+  REGISTER_WRITE = 0x02
+};
 
 #define REGBUF_MAX  11          /* Max registers, including default. */
 
@@ -436,10 +436,10 @@ struct ed_core
 
 /* Default display size. */
 enum default_window_size
-  {
-    WS_ROW = 24,                /* Height in characters. */
-    WS_COL = 80                 /* Width in characters. */
-  };
+{
+  WS_ROW = 24,                /* Height in characters. */
+  WS_COL = 80                 /* Width in characters. */
+};
 
 /* Display parameters */
 struct ed_display
@@ -555,62 +555,62 @@ typedef int (*ed_command_t) (ed_buffer_t *);
 
 /* Ed command-modifier flags. */
 enum ed_modifier_flags
-  {
-    LIST = 0x00001,             /* Print chars graphically, e.g.,
-                                   `jl'. */
-    NMBR = 0x00002,             /* Print with line numbers, e.g.,
-                                   `jn'. */
-    PRNT = 0x00004,             /* Print resulting dot, e.g.,
-                                   `jp'. */
-    PRSW = 0x00008,             /* Printing switch. */
-    SMLR = 0x00010,             /* Last match relative, e.g.,
-                                   s/old/new/g$-3. */
-    SNLR = 0x00020,             /* Last match relative, e.g.,
-                                   s/old/new/$-1. */
-    GSUB = 0x00040,             /* Substitute all, e.g.,
-                                   `s/old/new/g'. */
-    GSFQ = 0x00080,             /* Substitution frequency, e.g.,
-                                   `s/old/new/g3'. */
-    TGSG = 0x00100,             /* Toggle global substitution, e.g.,
-                                   `sg'. */
-    TGSF = 0x00200,             /* Toggle substitution frequency, e.g.,
-                                   `sg3'. */
-    TGSP = 0x00400,             /* Toggle print substitution, e.g.,
-                                   `sp'. */
-    TGSR = 0x00800,             /* Use pattern from last search, e.g.,
-                                   `sr'. */
-    SGPR = 0x01000,             /* Repeat last substitution, e.g.,
-                                   `s'. */
-    GLBL = 0x02000,             /* Global command, i.e.,
-                                   'G', 'g', 'V' or 'v'. */
-    GLBI = 0x04000,             /* Global interactive command, e.g.,
-                                   'G' or 'V'. */
-    ZFWD = 0x08000,             /* Scroll forward one screen, i.e.,
-                                   `z'. */
-    ZBWD = 0x10000,             /* Scroll backward one screen, i.e.,
-                                   `Z'. */
-    ZHFW = 0x20000,             /* Scroll forward one half screen, i.e.,
-                                   `]'. */
-    ZHBW = 0x40000,             /* Scroll backward one half screen, i.e.,
-                                   `['. */
-    OFFB = 0x80000              /* Frame buffer text offset. */
-  };
+{
+  LIST = 0x00001,             /* Print chars graphically, e.g.,
+                                 `jl'. */
+  NMBR = 0x00002,             /* Print with line numbers, e.g.,
+                                 `jn'. */
+  PRNT = 0x00004,             /* Print resulting dot, e.g.,
+                                 `jp'. */
+  PRSW = 0x00008,             /* Printing switch. */
+  SMLR = 0x00010,             /* Last match relative, e.g.,
+                                 s/old/new/g$-3. */
+  SNLR = 0x00020,             /* Last match relative, e.g.,
+                                 s/old/new/$-1. */
+  GSUB = 0x00040,             /* Substitute all, e.g.,
+                                 `s/old/new/g'. */
+  GSFQ = 0x00080,             /* Substitution frequency, e.g.,
+                                 `s/old/new/g3'. */
+  TGSG = 0x00100,             /* Toggle global substitution, e.g.,
+                                 `sg'. */
+  TGSF = 0x00200,             /* Toggle substitution frequency, e.g.,
+                                 `sg3'. */
+  TGSP = 0x00400,             /* Toggle print substitution, e.g.,
+                                 `sp'. */
+  TGSR = 0x00800,             /* Use pattern from last search, e.g.,
+                                 `sr'. */
+  SGPR = 0x01000,             /* Repeat last substitution, e.g.,
+                                 `s'. */
+  GLBL = 0x02000,             /* Global command, i.e.,
+                                 'G', 'g', 'V' or 'v'. */
+  GLBI = 0x04000,             /* Global interactive command, e.g.,
+                                 'G' or 'V'. */
+  ZFWD = 0x08000,             /* Scroll forward one screen, i.e.,
+                                 `z'. */
+  ZBWD = 0x10000,             /* Scroll backward one screen, i.e.,
+                                 `Z'. */
+  ZHFW = 0x20000,             /* Scroll forward one half screen, i.e.,
+                                 `]'. */
+  ZHBW = 0x40000,             /* Scroll backward one half screen, i.e.,
+                                 `['. */
+  OFFB = 0x80000              /* Frame buffer text offset. */
+};
 
 /* Ed error flags. */
 enum ed_command_error
-  {
+{
 #ifndef EOF
-    EOF      = -001,
+  EOF      = -001,
 #endif
-    ERR      = -002,
-    EMOD     = -003,
-    FATAL    = -004,
-    EOF_NEXT = -005,
-    EOF_PREV = -006,
+  ERR      = -002,
+  EMOD     = -003,
+  FATAL    = -004,
+  EOF_NEXT = -005,
+  EOF_PREV = -006,
 #ifdef WANT_SAFE_WRITE
-    EOF_GLOB = -007
+  EOF_GLOB = -007
 #endif
-  };
+};
 
 #ifdef HAVE_REG_SYNTAX_T
   /*
@@ -649,10 +649,10 @@ enum ed_command_error
 
 /* Types of regexes. */
 enum search_type
-  {
-    RE_SEARCH = 0,
-    RE_SUBST = 1
-  };
+{
+  RE_SEARCH = 0,
+  RE_SUBST = 1
+};
 
 #define TAB_WIDTH 8             /* Console tab width. */
 

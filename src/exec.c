@@ -377,7 +377,7 @@ exec_command (ed_buffer_t *ed)
     case '#':
       return comment_cmd (ed);
     default:
-      return (c >= ED_KEY_FIRST ? ed_cmd[(c - ED_KEY_FIRST) & ED_KEY_MASK](ed)
+      return (c >= ED_KEY_FIRST ? ed_cmd[(c - ED_KEY_FIRST) & ED_KEY_MASK] (ed)
               : invalid_cmd (ed));
     }
 }
