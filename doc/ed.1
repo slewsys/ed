@@ -861,8 +861,9 @@ The current address is set to the resultant line.
 .Cm k Ar lc
 .Xc
 .Sm on
-Marks a line with a lower case letter
-.Ar lc .
+Marks the addressed line with a lower case letter
+.Ar lc
+without changing the current address.
 The line can then be addressed as
 .Cm \&' Ns Ar lc
 (i.e.\&, a single quote followed by
@@ -874,7 +875,8 @@ The mark is not cleared until the line is deleted or otherwise modified.
 .Cm l
 .Xc
 .Sm on
-Prints the addressed lines unambiguously.
+Prints the addressed lines unambiguously. The current address is set
+to the last line printed.
 .Sm off
 .It No \&( Cm \&. , Cm \&. No \&) Xo
 .Cm m No \&( Cm \&. No \&)

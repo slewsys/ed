@@ -648,15 +648,15 @@ buffer and replaced by a single line containing their joined text. The
 current address is set to the resultant line.
 
 @item (.)k@var{lc}
-Marks a line with a lower case letter @var{lc}. The line can then be
+Marks the addressed line with a lower case letter @var{lc} without
+changing the current address. The line can then be
 addressed as @kbd{'@var{lc}} (i.e., a single quote followed by
 @var{lc}) in subsequent commands. The mark is not cleared until the
 line is deleted or otherwise modified.
 
 @item (.,.)l
-Prints the addressed lines unambiguously. If invoked from a terminal,
-@command{ed} pauses at the end of each page until a @key{RET} is
-entered. The current address is set to the last line printed.
+Prints the addressed lines unambiguously. The current address is set to
+the last line printed.
 
 @item (.,.)m(.)
 Moves lines in the buffer. The addressed lines are moved to after the
