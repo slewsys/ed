@@ -15,11 +15,30 @@
 int
 append_lines (off_t after, ed_buffer_t *ed)
 {
+  static char *arg = NULL;
+  static size_t arg_size = 0;
+
   char *s;
   size_t len;
   ed_line_node_t *lp;
   ed_undo_node_t *up = NULL;
   int status;
+  int have_arg = *ed->input != '\0';
+
+#ifdef WANT_ED_MACRO
+  if ((!ed->exec->global || ed->core->sp) && have_arg)
+#else
+  if (!ed->exec->global && have_arg)
+#endif
+    {
+      s = get_extended_line (&len, 0, 1, 0, ed);
+
+      /* Append ".\n". */
+      REALLOC_THROW (arg, arg_size, len + 3, ERR, ed);
+      strcpy (arg, s);
+      strcpy (arg + len, ".\n");
+      ed->input = arg;
+    }
 
   ed->state->input_is_binary = 0;
   for (ed->state->dot = after;;)
@@ -30,7 +49,12 @@ append_lines (off_t after, ed_buffer_t *ed)
       if (!ed->exec->global)
 #endif
         {
-          if (!(ed->input = get_stdin_line (&len, ed)))
+          if (have_arg)
+            {
+              s = strchr (ed->input, '\n');
+              len = s - ed->input + 1;
+            }
+          else if (!(ed->input = get_stdin_line (&len, ed)))
             {
               /* Permit EOF (i.e., key stroke: CTL + D) at beginning of
                  line as alternative to `.' */
