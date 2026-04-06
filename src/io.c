@@ -447,7 +447,11 @@ read_stream_r (FILE *fp, off_t after, off_t *size, ed_buffer_t *ed)
 
 /*
  * get_extended_line: Get an extended line from stdin. Return pointer
- *   to static buffer.
+ *   to static buffer. Parameters:
+ *
+ *   nonl   - If set, strip trailing newline.
+ *   escape - If set, escape trailing backslashes.
+ *   nt     - If set, then ed->input is expected to be null-terminated.
  */
 char *
 get_extended_line (size_t *len, int nonl, int escape, int nt, ed_buffer_t *ed)
