@@ -33,6 +33,38 @@
     }                                                                         \
   while (*(ed)->input++ != '\n')
 
+/*
+ * COMMAND_SUFFIX_WITH_ARG: Get command suffix from the command
+ *   buffer. Set ed->input to beginning of command argument, if any.
+ */
+#define COMMAND_SUFFIX_WITH_ARG(io_f, ed)                                     \
+  do                                                                          \
+    {                                                                         \
+      switch (*(ed)->input)                                                   \
+        {                                                                     \
+        case 'p':                                                             \
+          io_f |= PRNT;                                                       \
+          break;                                                              \
+        case 'l':                                                             \
+          io_f |= LIST;                                                       \
+          break;                                                              \
+        case 'n':                                                             \
+          io_f |= NMBR;                                                       \
+          break;                                                              \
+        default:                                                              \
+          if (!isspace(*(ed)->input))                                         \
+            {                                                                 \
+              (ed)->exec->err = _("Command suffix unexpected");               \
+              return ERR;                                                     \
+            }                                                                 \
+          SKIP_WHITESPACE (ed);                                               \
+          if (*(ed)->input != '\n')                                           \
+            goto have_arg;                                                    \
+        }                                                                     \
+    }                                                                         \
+  while (*(ed)->input++ != '\n');                                             \
+  have_arg:
+
 
 /*
  * FILE_NAME: Get shell command or file name or file glob from the
@@ -393,7 +425,7 @@ a_cmd (ed_buffer_t *ed)
    */
   if (!ed->state->is_empty || !ed->state->lines)
     {
-      COMMAND_SUFFIX (ed->display->dio_f, ed);
+      COMMAND_SUFFIX_WITH_ARG (ed->display->dio_f, ed);
       if (!(ed->exec->global || ed->core->sp))
         reset_undo_queue (ed);
       if ((status = append_lines (ed->exec->region->end, ed)) < 0)
@@ -413,7 +445,7 @@ c_cmd (ed_buffer_t *ed)
   ed->exec->region->end += !ed->exec->region->end;
   if ((status = is_valid_range (ed->state->dot, ed->state->dot, ed)) < 0)
     return status;
-  COMMAND_SUFFIX (ed->display->dio_f, ed);
+  COMMAND_SUFFIX_WITH_ARG (ed->display->dio_f, ed);
   if (!(ed->exec->global || ed->core->sp))
     reset_undo_queue (ed);
   spl1 ();
@@ -726,7 +758,7 @@ i_cmd (ed_buffer_t *ed)
 
   /* Per SUSv4, 2013, 0i => 1i. */
   ed->exec->region->end += !ed->exec->region->end;
-  COMMAND_SUFFIX (ed->display->dio_f, ed);
+  COMMAND_SUFFIX_WITH_ARG (ed->display->dio_f, ed);
   if (!(ed->exec->global || ed->core->sp))
     reset_undo_queue (ed);
   if ((status = append_lines (ed->exec->region->end - 1, ed)) < 0)
