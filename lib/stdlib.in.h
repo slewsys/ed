@@ -1,6 +1,6 @@
 /* A GNU-like <stdlib.h>.
 
-   Copyright (C) 1995, 2001-2004, 2006-2025 Free Software Foundation, Inc.
+   Copyright (C) 1995, 2001-2004, 2006-2026 Free Software Foundation, Inc.
 
    This file is free software: you can redistribute it and/or modify
    it under the terms of the GNU Lesser General Public License as
@@ -68,6 +68,11 @@
    <sys/loadavg.h>.  */
 # include <sys/time.h>
 # include <sys/loadavg.h>
+#endif
+
+/* QNX declares getprogname() in <sys/process.h>.  */
+#if (@GNULIB_GETPROGNAME@ || defined GNULIB_POSIXCHECK) && @HAVE_SYS_PROCESS_H@
+# include <sys/process.h>
 #endif
 
 /* Native Windows platforms declare _mktemp() in <io.h>.  */
@@ -752,7 +757,7 @@ _GL_WARN_ON_USE (malloc, "malloc is not POSIX compliant everywhere - "
 #if @REPLACE_MB_CUR_MAX@
 # if !GNULIB_defined_MB_CUR_MAX
 _GL_STDLIB_INLINE size_t
-gl_MB_CUR_MAX (void)
+_gl_MB_CUR_MAX (void)
 {
 #  if 0 < @REPLACE_MB_CUR_MAX@
   return @REPLACE_MB_CUR_MAX@;
@@ -763,7 +768,7 @@ gl_MB_CUR_MAX (void)
 #  endif
 }
 #  undef MB_CUR_MAX
-#  define MB_CUR_MAX gl_MB_CUR_MAX ()
+#  define MB_CUR_MAX _gl_MB_CUR_MAX ()
 #  define GNULIB_defined_MB_CUR_MAX 1
 # endif
 #endif

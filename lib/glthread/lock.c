@@ -1,5 +1,5 @@
 /* Locking in multithreaded situations.
-   Copyright (C) 2005-2025 Free Software Foundation, Inc.
+   Copyright (C) 2005-2026 Free Software Foundation, Inc.
 
    This file is free software: you can redistribute it and/or modify
    it under the terms of the GNU Lesser General Public License as
@@ -20,6 +20,8 @@
 #include <config.h>
 
 #include "glthread/lock.h"
+
+#include <errno.h>
 
 /* ========================================================================= */
 
@@ -261,9 +263,7 @@ int
 glthread_rwlock_init_for_glibc (pthread_rwlock_t *lock)
 {
   pthread_rwlockattr_t attributes;
-  int err;
-
-  err = pthread_rwlockattr_init (&attributes);
+  int err = pthread_rwlockattr_init (&attributes);
   if (err != 0)
     return err;
   /* Note: PTHREAD_RWLOCK_PREFER_WRITER_NONRECURSIVE_NP is the only value that
@@ -286,9 +286,7 @@ glthread_rwlock_init_for_glibc (pthread_rwlock_t *lock)
 int
 glthread_rwlock_init_multithreaded (gl_rwlock_t *lock)
 {
-  int err;
-
-  err = pthread_rwlock_init (&lock->rwlock, NULL);
+  int err = pthread_rwlock_init (&lock->rwlock, NULL);
   if (err != 0)
     return err;
   lock->initialized = 1;
@@ -300,9 +298,7 @@ glthread_rwlock_rdlock_multithreaded (gl_rwlock_t *lock)
 {
   if (!lock->initialized)
     {
-      int err;
-
-      err = pthread_mutex_lock (&lock->guard);
+      int err = pthread_mutex_lock (&lock->guard);
       if (err != 0)
         return err;
       if (!lock->initialized)
@@ -326,9 +322,7 @@ glthread_rwlock_wrlock_multithreaded (gl_rwlock_t *lock)
 {
   if (!lock->initialized)
     {
-      int err;
-
-      err = pthread_mutex_lock (&lock->guard);
+      int err = pthread_mutex_lock (&lock->guard);
       if (err != 0)
         return err;
       if (!lock->initialized)
@@ -358,11 +352,9 @@ glthread_rwlock_unlock_multithreaded (gl_rwlock_t *lock)
 int
 glthread_rwlock_destroy_multithreaded (gl_rwlock_t *lock)
 {
-  int err;
-
   if (!lock->initialized)
     return EINVAL;
-  err = pthread_rwlock_destroy (&lock->rwlock);
+  int err = pthread_rwlock_destroy (&lock->rwlock);
   if (err != 0)
     return err;
   lock->initialized = 0;
@@ -376,9 +368,7 @@ glthread_rwlock_destroy_multithreaded (gl_rwlock_t *lock)
 int
 glthread_rwlock_init_multithreaded (gl_rwlock_t *lock)
 {
-  int err;
-
-  err = pthread_mutex_init (&lock->lock, NULL);
+  int err = pthread_mutex_init (&lock->lock, NULL);
   if (err != 0)
     return err;
   err = pthread_cond_init (&lock->waiting_readers, NULL);
@@ -395,9 +385,7 @@ glthread_rwlock_init_multithreaded (gl_rwlock_t *lock)
 int
 glthread_rwlock_rdlock_multithreaded (gl_rwlock_t *lock)
 {
-  int err;
-
-  err = pthread_mutex_lock (&lock->lock);
+  int err = pthread_mutex_lock (&lock->lock);
   if (err != 0)
     return err;
   /* Test whether only readers are currently running, and whether the runcount
@@ -422,9 +410,7 @@ glthread_rwlock_rdlock_multithreaded (gl_rwlock_t *lock)
 int
 glthread_rwlock_wrlock_multithreaded (gl_rwlock_t *lock)
 {
-  int err;
-
-  err = pthread_mutex_lock (&lock->lock);
+  int err = pthread_mutex_lock (&lock->lock);
   if (err != 0)
     return err;
   /* Test whether no readers or writers are currently running.  */
@@ -449,9 +435,7 @@ glthread_rwlock_wrlock_multithreaded (gl_rwlock_t *lock)
 int
 glthread_rwlock_unlock_multithreaded (gl_rwlock_t *lock)
 {
-  int err;
-
-  err = pthread_mutex_lock (&lock->lock);
+  int err = pthread_mutex_lock (&lock->lock);
   if (err != 0)
     return err;
   if (lock->runcount < 0)
@@ -505,9 +489,7 @@ glthread_rwlock_unlock_multithreaded (gl_rwlock_t *lock)
 int
 glthread_rwlock_destroy_multithreaded (gl_rwlock_t *lock)
 {
-  int err;
-
-  err = pthread_mutex_destroy (&lock->lock);
+  int err = pthread_mutex_destroy (&lock->lock);
   if (err != 0)
     return err;
   err = pthread_cond_destroy (&lock->waiting_readers);
@@ -531,9 +513,7 @@ int
 glthread_recursive_lock_init_multithreaded (gl_recursive_lock_t *lock)
 {
   pthread_mutexattr_t attributes;
-  int err;
-
-  err = pthread_mutexattr_init (&attributes);
+  int err = pthread_mutexattr_init (&attributes);
   if (err != 0)
     return err;
   err = pthread_mutexattr_settype (&attributes, PTHREAD_MUTEX_RECURSIVE);
@@ -560,9 +540,7 @@ int
 glthread_recursive_lock_init_multithreaded (gl_recursive_lock_t *lock)
 {
   pthread_mutexattr_t attributes;
-  int err;
-
-  err = pthread_mutexattr_init (&attributes);
+  int err = pthread_mutexattr_init (&attributes);
   if (err != 0)
     return err;
   err = pthread_mutexattr_settype (&attributes, PTHREAD_MUTEX_RECURSIVE);
@@ -589,9 +567,7 @@ glthread_recursive_lock_lock_multithreaded (gl_recursive_lock_t *lock)
 {
   if (!lock->initialized)
     {
-      int err;
-
-      err = pthread_mutex_lock (&lock->guard);
+      int err = pthread_mutex_lock (&lock->guard);
       if (err != 0)
         return err;
       if (!lock->initialized)
@@ -621,11 +597,9 @@ glthread_recursive_lock_unlock_multithreaded (gl_recursive_lock_t *lock)
 int
 glthread_recursive_lock_destroy_multithreaded (gl_recursive_lock_t *lock)
 {
-  int err;
-
   if (!lock->initialized)
     return EINVAL;
-  err = pthread_mutex_destroy (&lock->recmutex);
+  int err = pthread_mutex_destroy (&lock->recmutex);
   if (err != 0)
     return err;
   lock->initialized = 0;
@@ -639,9 +613,7 @@ glthread_recursive_lock_destroy_multithreaded (gl_recursive_lock_t *lock)
 int
 glthread_recursive_lock_init_multithreaded (gl_recursive_lock_t *lock)
 {
-  int err;
-
-  err = pthread_mutex_init (&lock->mutex, NULL);
+  int err = pthread_mutex_init (&lock->mutex, NULL);
   if (err != 0)
     return err;
   lock->owner = (pthread_t) 0;
@@ -655,9 +627,7 @@ glthread_recursive_lock_lock_multithreaded (gl_recursive_lock_t *lock)
   pthread_t self = pthread_self ();
   if (lock->owner != self)
     {
-      int err;
-
-      err = pthread_mutex_lock (&lock->mutex);
+      int err = pthread_mutex_lock (&lock->mutex);
       if (err != 0)
         return err;
       lock->owner = self;

@@ -68,7 +68,6 @@
 /stdint.in.h
 #/stdlib.c
 /stdlib.in.h
-/streq.h
 /sys_types.in.h
 #/time.in.h
 /unistd.c
@@ -93,3 +92,6 @@
 #/string.c
 #/string.in.h
 /strncpy.c
+#/stdcountof.in.h
+#/streq-opt.h
+#/streq.c

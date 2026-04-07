@@ -103,7 +103,7 @@ lib/stddef.in.h
 lib/stdint.in.h
 lib/stdlib.c
 lib/stdlib.in.h
-lib/streq.h
+#lib/streq.h
 lib/sys_types.in.h
 lib/time.in.h
 lib/unistd.c

@@ -1,5 +1,5 @@
 /* Once-only initialization in multithreaded situations.
-   Copyright (C) 2005-2025 Free Software Foundation, Inc.
+   Copyright (C) 2005-2026 Free Software Foundation, Inc.
 
    This file is free software: you can redistribute it and/or modify
    it under the terms of the GNU Lesser General Public License as
@@ -39,7 +39,6 @@
  #error "Please include config.h first."
 #endif
 
-#include <errno.h>
 #include <stdlib.h>
 
 #if !defined c11_threads_in_use

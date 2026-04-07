@@ -1,5 +1,5 @@
 /* Convenience header for conditional use of GNU <libintl.h>.
-   Copyright (C) 1995-2025 Free Software Foundation, Inc.
+   Copyright (C) 1995-2026 Free Software Foundation, Inc.
 
    This file is free software: you can redistribute it and/or modify
    it under the terms of the GNU Lesser General Public License as
@@ -178,6 +178,11 @@ dcgettext (const char *domain, const char *msgid, int category)
    The letter 'p' stands for 'particular' or 'special'.  */
 
 #include <locale.h> /* for LC_MESSAGES */
+/* The LC_MESSAGES locale category is specified in POSIX, but not in ISO C.
+   On systems that don't define it, use the same value as GNU libintl.  */
+#if !defined LC_MESSAGES
+# define LC_MESSAGES 1729
+#endif
 
 #ifdef DEFAULT_TEXT_DOMAIN
 # define pgettext(Msgctxt, Msgid) \
@@ -298,12 +303,11 @@ dcpgettext_expr (const char *domain,
   if (msg_ctxt_id != NULL)
 #endif
     {
-      int found_translation;
       memcpy (msg_ctxt_id, msgctxt, msgctxt_len - 1);
       msg_ctxt_id[msgctxt_len - 1] = '\004';
       memcpy (msg_ctxt_id + msgctxt_len, msgid, msgid_len);
       translation = dcgettext (domain, msg_ctxt_id, category);
-      found_translation = (translation != msg_ctxt_id);
+      int found_translation = (translation != msg_ctxt_id);
 #if !_LIBGETTEXT_HAVE_VARIABLE_SIZE_ARRAYS
       if (msg_ctxt_id != buf)
         free (msg_ctxt_id);
@@ -346,12 +350,11 @@ dcnpgettext_expr (const char *domain,
   if (msg_ctxt_id != NULL)
 #endif
     {
-      int found_translation;
       memcpy (msg_ctxt_id, msgctxt, msgctxt_len - 1);
       msg_ctxt_id[msgctxt_len - 1] = '\004';
       memcpy (msg_ctxt_id + msgctxt_len, msgid, msgid_len);
       translation = dcngettext (domain, msg_ctxt_id, msgid_plural, n, category);
-      found_translation = !(translation == msg_ctxt_id || translation == msgid_plural);
+      int found_translation = !(translation == msg_ctxt_id || translation == msgid_plural);
 #if !_LIBGETTEXT_HAVE_VARIABLE_SIZE_ARRAYS
       if (msg_ctxt_id != buf)
         free (msg_ctxt_id);

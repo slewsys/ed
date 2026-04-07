@@ -833,29 +833,17 @@ ed_usage (int status, ed_buffer_t *ed)
 {
   extern char version_string[]; /* From version.c */
   char *err_usage =
-#ifdef WANT_SCRIPT_FLAGS
-# ifdef WANT_FILE_GLOB
-    _("Usage: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE...]\n");
-# else
-    _("Usage: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE]\n");
-# endif /* !WANT_FILE_GLOB */
-#else
-    _("Usage: %s [-] [-EGhRrsVvwx] [-p PROMPT] [FILE]\n");
-#endif  /* !WANT_SCRIPT_FLAGS */
-
-  if (status)
-    printf (err_usage, ed->exec->opt & RESTRICTED ? "red" : "ed");
-  else if (ed->exec->opt & PRINT_VERSION)
-    printf ("ed %s\n%s", version_string, CONFIGURE_ARGS);
-  else if (ed->exec->opt & PRINT_HELP)
-    {
 #ifdef WANT_FILE_GLOB
-      printf (_("Usage: %s [OPTION...] [FILE...]\n"),
-              (ed->exec->opt & RESTRICTED ? "red" : "ed"));
+    _("Usage: %s [-] [OPTION...] [FILE...]\n");
 #else
-      printf (_("Usage: %s [OPTION...] [FILE]\n"),
-              (ed->exec->opt & RESTRICTED ? "red" : "ed"));
-#endif  /* !WANT_FILE_GLOB */
+    _("Usage: %s [-] [OPTION...] [FILE]\n");
+#endif /* !WANT_FILE_GLOB */
+
+  if (ed->exec->opt & PRINT_VERSION)
+    printf ("ed %s\n%s", version_string, CONFIGURE_ARGS);
+  else
+    {
+      printf (err_usage, (ed->exec->opt & RESTRICTED ? "red" : "ed"));
   /* TODO: Implement configured-feature-based help. Take all-or-none
      approach for now. */
 #ifdef WANT_SCRIPT_FLAGS

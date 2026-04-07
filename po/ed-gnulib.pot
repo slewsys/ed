@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ed 2.1.99\n"
 "Report-Msgid-Bugs-To: bug-gnulib@gnu.org\n"
-"POT-Creation-Date: 2026-02-23 00:42-0500\n"
+"POT-Creation-Date: 2026-04-06 23:21-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,27 +17,27 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: lib/getopt.c:282
+#: lib/getopt.c:283
 #, c-format
 msgid "%s: option '%s%s' is ambiguous\n"
 msgstr ""
 
-#: lib/getopt.c:288
+#: lib/getopt.c:289
 #, c-format
 msgid "%s: option '%s%s' is ambiguous; possibilities:"
 msgstr ""
 
-#: lib/getopt.c:322
+#: lib/getopt.c:323
 #, c-format
 msgid "%s: unrecognized option '%s%s'\n"
 msgstr ""
 
-#: lib/getopt.c:348
+#: lib/getopt.c:349
 #, c-format
 msgid "%s: option '%s%s' doesn't allow an argument\n"
 msgstr ""
 
-#: lib/getopt.c:363
+#: lib/getopt.c:364
 #, c-format
 msgid "%s: option '%s%s' requires an argument\n"
 msgstr ""
@@ -130,7 +130,7 @@ msgstr ""
 msgid "dup2 error"
 msgstr ""
 
-#: src/buffer.c:136 src/io.c:96 src/io.c:167 src/io.c:652 src/io.c:703
+#: src/buffer.c:136 src/io.c:96 src/io.c:167 src/io.c:656 src/io.c:707
 #: src/main.c:801 src/register.c:392
 msgid "File open error"
 msgstr ""
@@ -188,11 +188,11 @@ msgstr ""
 msgid "Decryption failed (incomplete block)"
 msgstr ""
 
-#: src/cbc.c:384 src/io.c:570 src/io.c:844
+#: src/cbc.c:384 src/io.c:574 src/io.c:848
 msgid "File read error"
 msgstr ""
 
-#: src/cmds.c:43 src/io.c:492 src/main.c:377 src/register.c:299
+#: src/cmds.c:43 src/io.c:496 src/main.c:377 src/register.c:299
 msgid "End-of-file unexpected"
 msgstr ""
 
@@ -208,7 +208,7 @@ msgstr ""
 msgid "Child process error"
 msgstr ""
 
-#: src/cmds.c:353 src/filter.c:40 src/io.c:176 src/io.c:714
+#: src/cmds.c:353 src/filter.c:40 src/io.c:176 src/io.c:718
 #, c-format
 msgid "Exit status: %#x"
 msgstr ""
@@ -300,7 +300,7 @@ msgstr ""
 msgid "No previous command"
 msgstr ""
 
-#: src/io.c:57 src/io.c:621 src/main.c:239 src/main.c:750 src/main.c:817
+#: src/io.c:57 src/io.c:625 src/main.c:239 src/main.c:750 src/main.c:817
 #: src/register.c:36 src/register.c:83 src/register.c:142 src/register.c:152
 #: src/register.c:211 src/register.c:220 src/register.c:247 src/register.c:283
 #: src/register.c:350 src/register.c:410 src/register.c:450 src/register.c:489
@@ -311,12 +311,12 @@ msgstr ""
 msgid "File does not exist"
 msgstr ""
 
-#: src/io.c:119 src/io.c:666
+#: src/io.c:119 src/io.c:670
 #, c-format
 msgid "%s: File already locked\n"
 msgstr ""
 
-#: src/io.c:143 src/io.c:643 src/io.c:681
+#: src/io.c:143 src/io.c:647 src/io.c:685
 msgid "File close error"
 msgstr ""
 
@@ -330,31 +330,31 @@ msgstr ""
 msgid "Newline appended\n"
 msgstr ""
 
-#: src/io.c:556 src/io.c:797
+#: src/io.c:560 src/io.c:801
 msgid "Broken pipe"
 msgstr ""
 
-#: src/io.c:628 src/register.c:254
+#: src/io.c:632 src/register.c:254
 msgid "File truncate error"
 msgstr ""
 
-#: src/io.c:750
+#: src/io.c:754
 msgid "File too big"
 msgstr ""
 
-#: src/io.c:803 src/io.c:823 src/io.c:834 src/main.c:761 src/main.c:769
+#: src/io.c:807 src/io.c:827 src/io.c:838 src/main.c:761 src/main.c:769
 msgid "File write error"
 msgstr ""
 
-#: src/io.c:867 src/parse.c:502
+#: src/io.c:871 src/parse.c:502
 msgid "File status error"
 msgstr ""
 
-#: src/io.c:874
+#: src/io.c:878
 msgid "Access restricted to regular files"
 msgstr ""
 
-#: src/io.c:943
+#: src/io.c:947
 msgid "File stat error"
 msgstr ""
 
@@ -374,34 +374,17 @@ msgstr ""
 msgid "Argument list full"
 msgstr ""
 
-#: src/main.c:838
+#: src/main.c:837
 #, c-format
-msgid ""
-"Usage: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE...]\n"
+msgid "Usage: %s [-] [OPTION...] [FILE...]\n"
 msgstr ""
 
-#: src/main.c:840
+#: src/main.c:839
 #, c-format
-msgid ""
-"Usage: %s [-] [-EGhiRrsVvwx] [-e COMMAND] [-f SCRIPT] [-p PROMPT] [FILE]\n"
+msgid "Usage: %s [-] [OPTION...] [FILE]\n"
 msgstr ""
 
-#: src/main.c:843
-#, c-format
-msgid "Usage: %s [-] [-EGhRrsVvwx] [-p PROMPT] [FILE]\n"
-msgstr ""
-
-#: src/main.c:853
-#, c-format
-msgid "Usage: %s [OPTION...] [FILE...]\n"
-msgstr ""
-
-#: src/main.c:856
-#, c-format
-msgid "Usage: %s [OPTION...] [FILE]\n"
-msgstr ""
-
-#: src/main.c:862
+#: src/main.c:850
 #, c-format
 msgid ""
 "Options:\n"
@@ -429,7 +412,7 @@ msgid ""
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
 
-#: src/main.c:885
+#: src/main.c:873
 #, c-format
 msgid ""
 "Options:\n"
@@ -453,27 +436,27 @@ msgid ""
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
 
-#: src/main.c:923
+#: src/main.c:911
 msgid "/etc/shells: No such file"
 msgstr ""
 
-#: src/main.c:929
+#: src/main.c:917
 msgid "/etc/shells: File open error"
 msgstr ""
 
-#: src/main.c:947
+#: src/main.c:935
 msgid "/etc/shells: File read error"
 msgstr ""
 
-#: src/main.c:954
+#: src/main.c:942
 msgid "Invalid shell"
 msgstr ""
 
-#: src/main.c:960
+#: src/main.c:948
 msgid "Shell not executable"
 msgstr ""
 
-#: src/main.c:974
+#: src/main.c:962
 msgid "script, line %"
 msgstr ""
 
