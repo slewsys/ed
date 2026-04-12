@@ -59,6 +59,8 @@ append_lines (off_t after, ed_buffer_t *ed)
         {
           if (have_arg)
             {
+              if (*ed->input == '\0')
+                return 0;
               s = strchr (ed->input, '\n');
               len = s - ed->input + 1;
             }
