@@ -461,7 +461,7 @@ get_extended_line (size_t *len, int nonl, int escape, int nt, ed_buffer_t *ed)
 
   size_t n, p;
 
-  /* If null-terminated (nt), allow embedded newlines in ed->input. */
+  /* If NUL-terminated (nt), allow embedded newlines in ed->input. */
   if (nt)
     for (*len = 0; *(ed->input + *len) != '\0';)
       ++*len;
