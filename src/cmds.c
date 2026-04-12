@@ -31,12 +31,20 @@ append_lines (off_t after, ed_buffer_t *ed)
   if (!ed->exec->global && have_arg)
 #endif
     {
-      s = get_extended_line (&len, 0, 1, 0, ed);
+      if (!(s = get_extended_line (&len, 0, 1, 1, ed)))
+        {
+          if (feof (stdin))
+            ed->exec->err = _("End-of-file unexpected");
+          clearerr (stdin);
+          return ERR;
+        }
 
-      /* Append ".\n". */
       REALLOC_THROW (arg, arg_size, len + 3, ERR, ed);
       strcpy (arg, s);
-      strcpy (arg + len, ".\n");
+
+      /* Append ".\n" if not in global context. */
+      if (!ed->exec->global)
+        strcpy (arg + len, ".\n");
       ed->input = arg;
     }
 
