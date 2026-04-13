@@ -89,6 +89,8 @@ exec_global (ed_buffer_t *ed)
    */
   if (!interactive && !(ed->input = get_extended_line (&len, 0, 1, 0, ed)))
     {
+      if (feof (stdin))
+        ed->exec->err = _("End-of-file unexpected");
       clearerr (stdin);
       return ERR;
     }
