@@ -96,7 +96,7 @@ main (int argc, char **argv)
   int argc_prev = 0;
   int c;
   int status = 0;
-  int signal_status = 0;
+  volatile int signal_status = 0;
 
   if ((ed = alloc_ed_buffer ()) == NULL)
       exit (1);

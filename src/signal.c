@@ -30,8 +30,8 @@ static signal_t reliable_signal (int, signal_t, void *);
 
 
 /* Global declarations */
-int _sigactive = 0;
-int _sigflags = 0;
+static volatile int _sigactive = 0;
+static volatile int _sigflags = 0;
 
 
 void
@@ -137,7 +137,7 @@ init_signal_handler (ed_buffer_t *ed)
   sigaddset (&mask, SIGINT);
   sigaddset (&mask, SIGQUIT);
 #else
-    int mask = 0;
+  int mask = 0;
 #endif  /* !HAVE_SIGACTION */
 
   /* Override signo-indexed LUT for handlers of interest. */
@@ -262,7 +262,7 @@ reliable_signal (int signo, signal_t handler, void *mask)
 
 
 /* Global declarations */
-int _mutex = 0;
+static volatile int _mutex = 0;
 
 
 /* signal_handler: If signaling blocked (see spl1), register for
