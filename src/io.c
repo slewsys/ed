@@ -476,6 +476,7 @@ get_extended_line (size_t *len, int nonl, int escape, int nt, ed_buffer_t *ed)
   /*
    * Shell escapes set nonl, so we are only interested in a trailing
    * escapes in this case.
+   * Assert: *len > 0 since ed->input has trailing newline.
    */
   p = trailing_escapes (xl, xl + *len - 1);
   while (nonl ? *len > 1 && *(xl + *len - 2) == '\\' : p % 2)
@@ -533,14 +534,19 @@ get_stream_line (FILE *fp, size_t *len, ed_buffer_t *ed)
 
  top:
 #ifdef WANT_ED_ENCRYPTION
-  for (; (c = (ed->exec->have_key && fp != stdin ? get_des_char (fp, ed)
-               : getc (fp))) != EOF && c != '\n'; ++*len)
+  while ((c = (ed->exec->have_key && fp != stdin ? get_des_char (fp, ed)
+               : getc (fp))) != EOF && c != '\n')
 #else
-  for (; (c = getc (fp)) != EOF && c != '\n'; ++*len)
+  while ((c = getc (fp)) != EOF && c != '\n')
 #endif  /* !WANT_ED_ENCRYPTION */
     {
       REALLOC_THROW (tb, tb_size, *len + 1, NULL, ed);
       ed->state->input_is_binary |= !(*(tb + *len) = c);
+      if (++*len >= SIZE_T_MAX - 2)
+        {
+          ed->exec->err = _("Line too long");
+          return NULL;
+        }
     }
   if (feof (fp))
     {
