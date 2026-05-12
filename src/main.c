@@ -525,7 +525,10 @@ collect_address_args (int *argc_p, char **argv, ed_buffer_t *ed)
                regular_expression (delim, &regexp_len, ed)) == NULL)
             script_die (3, ed);
           free (regexp);
-          if (regexp_len != argv_len)
+          if (regexp_len
+                  && !(regexp_len == argv_len
+                       || (regexp_len == argv_len - 1
+                           && argv[i][argv_len + 1] == delim)))
             {
               ++argc_new;
               REALLOC_THROW (argv_new, argv_new_size,
