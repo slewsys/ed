@@ -301,7 +301,7 @@ unmark_line_node (const ed_line_node_t *lp, ed_buffer_t *ed)
       }
 }
 
-#ifdef HAVE_VFORK
+#ifdef HAVE_FORK
 int
 system_shell (const char *sc, ed_buffer_t *ed)
 {
@@ -319,8 +319,9 @@ system_shell (const char *sc, ed_buffer_t *ed)
       shell_name = strrchr (shell_path, '/') + 1;
     }
 
-  init_parent_signal_handler (ed);
-  switch (shell_pid = vfork ())
+  if ((status = init_parent_signal_handler (ed)) < 0)
+    return status;
+  switch (shell_pid = fork ())
     {
     case -1:
       fprintf (stderr, "%s\n", strerror (errno));
@@ -329,8 +330,8 @@ system_shell (const char *sc, ed_buffer_t *ed)
       goto err;
     case 0:
       /* Reset signals for shell. */
-      init_child_signal_handler(ed);
-      if (execl (shell_path, shell_name, "-c", sc, NULL) < 0)
+      if (init_child_signal_handler(ed) < 0
+          || execl (shell_path, shell_name, "-c", sc, NULL) < 0)
         {
           fprintf (stderr, "%s\n", strerror (errno));
           _exit (127 << 8);
@@ -360,4 +361,4 @@ err:
   init_signal_handler (ed);
   return status;
 }
-#endif  /* HAVE_VFORK */
+#endif  /* HAVE_FORK */
