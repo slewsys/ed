@@ -38,7 +38,7 @@
  * FILE_NAME: Get shell command or file name or file glob from the
  *    command buffer.
  */
-#define FILE_NAME(fn, len, cm, replace, uniquely, ed)                         \
+#define FILE_NAME(fn, len, adjacent, replace, unique, ed)                     \
   do                                                                          \
     {                                                                         \
       int _subs;                                                              \
@@ -55,7 +55,7 @@
         }                                                                     \
       else if (!((fn) =                                                       \
                  ((ed)->file->is_glob                                         \
-                  ? file_glob (&(len), (cm), (replace), (uniquely), (ed))     \
+                  ? file_glob (&(len), (adjacent), (replace), (unique), (ed)) \
                   : file_name (&(len), (ed)))))                               \
         {                                                                     \
           /* EOF should always flag an error here. */                         \
@@ -1882,8 +1882,8 @@ is_valid_range (off_t from, off_t to, ed_buffer_t *ed)
 static int
 is_short_form_substitution (ed_buffer_t *ed)
 {
-  static regex_t *re = NULL;    /* Short-form modifiers regexp. */
-  static char re_err[BUFSIZ];   /* regex error message buffer */
+  static regex_t *re = NULL;          /* Short-form modifiers regexp. */
+  static char re_err[100] = { '\0' }; /* regex error message buffer */
 
   int status = 0;
   char *s = strdup (ed->input);

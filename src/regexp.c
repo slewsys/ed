@@ -18,7 +18,7 @@ get_compiled_regex (unsigned dc, int re_type, ed_buffer_t *ed)
   regex_t *re = NULL;
 
 #ifndef HAVE_REG_SYNTAX_T
-  static char re_err[BUFSIZ];   /* regex error message buffer */
+  static char re_err[100];   /* regex error message buffer */
 #endif
 
   char *pattern = NULL;
