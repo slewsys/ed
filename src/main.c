@@ -49,36 +49,37 @@ static void script_die (int, ed_buffer_t *);
 int
 main (int argc, char **argv)
 {
-  struct option long_opts[16] =
+  struct option long_opts[17] =
     {
-      {"ansi-color",      no_argument,       NULL, 'R'},
+      {"ansi-color",         no_argument,       NULL, 'R'},
 
 #ifdef WANT_SCRIPT_FLAGS
-      {"expression",      required_argument, NULL, 'e'},
-      {"file",            required_argument, NULL, 'f'},
+      {"expression",         required_argument, NULL, 'e'},
+      {"file",               required_argument, NULL, 'f'},
+      {"in-place",           optional_argument, NULL, 'i'},
+      {"mask-exit-on-error", no_argument,       NULL, 'm'},
 #endif
 
-      {"help",            no_argument,       NULL, 'h'},
+      {"help",               no_argument,       NULL, 'h'},
 
 #ifdef WANT_ED_ENCRYPTION
-      {"crypt",           no_argument,       NULL, 'x'},
+      {"crypt",              no_argument,       NULL, 'x'},
 #endif
 
-      {"in-place",        optional_argument, NULL, 'i'},
-      {"prompt",          required_argument, NULL, 'p'},
-      {"regexp-extended", no_argument,       NULL, 'E'},
-      {"regexp-extended", no_argument,       NULL, 'r'},
-      {"shell",           required_argument, NULL, 'S'},
-      {"scripted",        no_argument,       NULL, 's'},
-      {"traditional",     no_argument,       NULL, 'G'},
-      {"verbose",         no_argument,       NULL, 'v'},
-      {"version",         no_argument,       NULL, 'V'},
-      {"write",           no_argument,       NULL, 'w'},
-      {0,                 0,                 0,    0}
+      {"prompt",             required_argument, NULL, 'p'},
+      {"regexp-extended",    no_argument,       NULL, 'E'},
+      {"regexp-extended",    no_argument,       NULL, 'r'},
+      {"shell",              required_argument, NULL, 'S'},
+      {"scripted",           no_argument,       NULL, 's'},
+      {"traditional",        no_argument,       NULL, 'G'},
+      {"verbose",            no_argument,       NULL, 'v'},
+      {"version",            no_argument,       NULL, 'V'},
+      {"write",              no_argument,       NULL, 'w'},
+      {0,                    0,                 0,    0}
     };
   const char *short_opts = "E"
 #ifdef WANT_SCRIPT_FLAGS
-    "e:f:i::"
+    "e:f:i::m"
 #endif
     "Ghp:RrS:sVvw"
 #ifdef WANT_ED_ENCRYPTION
@@ -156,7 +157,10 @@ top:
             strcpy (ed->file->suffix, optarg);
           }
         break;
-#endif
+      case 'm':                 /* Mask exit on error. */
+        ed->exec->opt |= MASK_EXIT_ON_ERROR;
+        break;
+#endif          /*  WANT_SCRIPT_FLAGS */
       case 'p':                 /* Set ed command prompt. */
         ed->exec->opt |= PROMPT;
 
@@ -851,21 +855,22 @@ ed_usage (int status, ed_buffer_t *ed)
      approach for now. */
 #ifdef WANT_SCRIPT_FLAGS
       printf (_("Options:\n\
-  -E, --regexp-extended     Enable extended regular expression syntax.\n\
-  -e, --expression=COMMAND  Add COMMAND to scripted input - implies `-s'.\n\
-  -f, --file=SCRIPT         Read commands from file SCRIPT - implies `-s'.\n\
-  -G, --traditional         Enable backward compatibility.\n\
-  -h, --help                Display (this) help, then exit.\n\
-  -i, --in-place[=SUFFIX]   Write file before closing and optionally backup.\n\
-  -p, --prompt=STRING       Prompt for commands with STRING.\n\
-  -R, --ansi-color          Enable support for ANSI color codes.\n\
-  -r, --regexp-extended     Enable extended regular expression syntax.\n\
-  -S, --shell=SHELL         Execute shell commands (!) with SHELL.\n\
-  -s, --script              Suppress interactive diagnostics.\n\
-  -v, --verbose             Enable verbose diagnostics.\n\
-  -V, --version             Display version information, then exit.\n\
-  -w, --write               Enable writing to process substitution.\n\
-  -x, --crypt               Enable I/O encryption.\n\
+  --regexp-extended, -E     Enable extended regular expression syntax.\n\
+  --expression, -e COMMAND  Add COMMAND to scripted input - implies `-s'.\n\
+  --file, -f SCRIPT         Read commands from file SCRIPT - implies `-s'.\n\
+  --traditional, -G         Enable backward compatibility.\n\
+  --help, -h                Display (this) help, then exit.\n\
+  --in-place, -i [SUFFIX]   Write file before closing and optionally backup.\n\
+  --mask-exit-on-error, -m  Mask exit on error.\n\
+  --prompt, -p STRING       Prompt for commands with STRING.\n\
+  --ansi-color, -R          Enable support for ANSI color codes.\n\
+  --regexp-extended, -r     Enable extended regular expression syntax.\n\
+  --shell, -S SHELL         Execute shell commands (!) with SHELL.\n\
+  --script, -s              Suppress interactive diagnostics.\n\
+  --verbose, -v             Enable verbose diagnostics.\n\
+  --version, -V             Display version information, then exit.\n\
+  --write, -w               Enable writing to process substitution.\n\
+  --crypt, -x               Enable I/O encryption.\n\
 \n\
 If FILE is given, read it for editing.  From within ed, run:\n\
   !info ed-intro RET\n\
@@ -874,18 +879,18 @@ for a tutorial introduction to ed.\n\
 Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"));
 #else
       printf (_("Options:\n\
-  -E, --regexp-extended     Enable extended regular expression syntax.\n\
-  -G, --traditional         Enable backward compatibility.\n\
-  -h, --help                Dispaly (this) help, then exit.\n\
-  -p, --prompt=STRING       Prompt for commands with STRING.\n\
-  -R, --ansi-color          Enable support for ANSI color codes.\n\
-  -r, --regexp-extended     Enable extended regular expression syntax.\n\
-  -S, --shell=SHELL         Execute shell commands (!) with SHELL.\n\
-  -s, --script              Suppress interactive diagnostics.\n\
-  -v, --verbose             Enable verbose diagnostics.\n\
-  -V, --version             Display version information, then exit.\n\
-  -w, --write               Enable writing to process substitution.\n\
-  -x, --crypt               Enable I/O encryption.\n\
+  --regexp-extended, -E     Enable extended regular expression syntax.\n\
+  --traditional, -G         Enable backward compatibility.\n\
+  --help, -h                Display (this) help, then exit.\n\
+  --prompt, -p STRING       Prompt for commands with STRING.\n\
+  --ansi-color, -R          Enable support for ANSI color codes.\n\
+  --regexp-extended, -r     Enable extended regular expression syntax.\n\
+  --shell, -S SHELL         Execute shell commands (!) with SHELL.\n\
+  --script, -s              Suppress interactive diagnostics.\n\
+  --verbose, -v             Enable verbose diagnostics.\n\
+  --version, -V             Display version information, then exit.\n\
+  --write, -w               Enable writing to process substitution.\n\
+  --crypt, -x               Enable I/O encryption.\n\
 \n\
 If FILE is given, read it for editing.  From within ed, run:\n\
   !info ed-intro RET\n\

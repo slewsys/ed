@@ -521,22 +521,23 @@ struct ed_file
 /* Ed command-line flags. */
 enum ed_command_flags
 {
-  ANSI_COLOR        = 0x0001,   /* If set, filter ANSI color codes. */
-  EXIT_ON_ERROR     = 0x0002,   /* If set, exit on errors. */
-  IN_PLACE          = 0x0004,   /* If set, write file on EOF. */
-  POSIXLY_CORRECT   = 0x0008,   /* If set, adhere to SUSv4, 2013 standards. */
-  PRINT_CONFIG      = 0x0010,   /* If set, display configuration info. */
-  PRINT_FIRST_FILE  = 0x0020,   /* If set, print first filename in a list. */
-  PRINT_HELP        = 0x0040,   /* If set, display help. */
-  PRINT_VERSION     = 0x0080,   /* If set, print ed version. */
-  PROMPT            = 0x0100,   /* If set, print command prompt. */
-  REGEX_EXTENDED    = 0x0200,   /* If set, use extended regexps. */
-  RESTRICTED        = 0x0400,   /* If set, restricted mode enabled. */
-  FSCRIPT           = 0x0800,   /* If set, script via option `-f'.. */
-  SCRIPTED          = 0x1000,   /* If set, script mode enabled. */
-  TRADITIONAL       = 0x2000,   /* If set, be backward compatible. */
-  VERBOSE           = 0x4000,   /* If set, print error diagnostics. */
-  WRITE_ONLY        = 0x8000    /* If set, open file in write-only mode. */
+  ANSI_COLOR         = 0x00001,  /* If set, filter ANSI color codes. */
+  EXIT_ON_ERROR      = 0x00002,  /* If set, exit on errors. */
+  IN_PLACE           = 0x00004,  /* If set, write file on EOF. */
+  MASK_EXIT_ON_ERROR = 0x00008,  /* If set, mask exit on error. */
+  POSIXLY_CORRECT    = 0x00010,  /* If set, adhere to SUSv4, 2013 standards. */
+  PRINT_CONFIG       = 0x00020,  /* If set, display configuration info. */
+  PRINT_FIRST_FILE   = 0x00040,  /* If set, print first filename in a list. */
+  PRINT_HELP         = 0x00080,  /* If set, display help. */
+  PRINT_VERSION      = 0x00100,  /* If set, print ed version. */
+  PROMPT             = 0x00200,  /* If set, print command prompt. */
+  REGEX_EXTENDED     = 0x00400,  /* If set, use extended regexps. */
+  RESTRICTED         = 0x00800,  /* If set, restricted mode enabled. */
+  FSCRIPT            = 0x01000,  /* If set, script via option `-f'.. */
+  SCRIPTED           = 0x02000,  /* If set, script mode enabled. */
+  TRADITIONAL        = 0x04000,  /* If set, be backward compatible. */
+  VERBOSE            = 0x08000,  /* If set, print error diagnostics. */
+  WRITE_ONLY         = 0x10000   /* If set, open file in write-only mode. */
 };
 
 /* Ed state parameters. */

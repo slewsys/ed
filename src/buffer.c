@@ -159,7 +159,8 @@ init_stdio (ed_buffer_t *ed)
 
   /* If nominal standard input is seekable - i.e., from a file as
      opposed a pipe - and not a tty, then exit on errors. */
-  if (lseek (0, 0, SEEK_CUR) != -1 && !isatty (0))
+  if (lseek (0, 0, SEEK_CUR) != -1 && !isatty (0)
+      && !(ed->exec->opt & MASK_EXIT_ON_ERROR))
     ed->exec->opt |= EXIT_ON_ERROR;
 
   return 0;
