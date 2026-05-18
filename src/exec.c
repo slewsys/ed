@@ -540,7 +540,7 @@ E_cmd (ed_buffer_t *ed)
       if (*fn != '\0')
         {
           REALLOC_THROW (ed->file->name, ed->file->name_size, len + 1, ERR, ed);
-          strcpy (ed->file->name, fn);
+          memcpy (ed->file->name, fn, len + 1);
           ++is_default;
         }
       else if (ed->file->name && *ed->file->name != '\0')
