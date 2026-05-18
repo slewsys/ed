@@ -232,7 +232,7 @@ check_address_bounds (off_t addr, ed_buffer_t *ed)
    pattern is empty, the next name of previous expansion (may be
    NULL). */
 char *
-file_glob (size_t *len, int cm, int replace, int uniquely, ed_buffer_t *ed)
+file_glob (size_t *len, int adjacent, int replace, int unique, ed_buffer_t *ed)
 {
   static glob_t *one_time_glob = NULL;  /* one-time file glob */
 
@@ -256,7 +256,7 @@ file_glob (size_t *len, int cm, int replace, int uniquely, ed_buffer_t *ed)
   ed->input += *len + 1;
 
   /* Process xl for zero or more whitespace-delimited file globs.
-     Whitespace within a file glob must be back slash-escaped (\). */
+     Whitespace within a file glob must be backslash-escaped (\). */
   if ((pattern = strtok_with_delimiters (xl, WHITE_SPACE)))
     {
       /* Not updating file->glob, so use  one_time_glob instead. */
@@ -315,7 +315,7 @@ file_glob (size_t *len, int cm, int replace, int uniquely, ed_buffer_t *ed)
                 }
               return NULL;
             }
-          if (uniquely && gp->gl_pathc > 1)
+          if (unique && gp->gl_pathc > 1)
             {
               ed->exec->err = _("Too many file names");
               return NULL;
@@ -326,7 +326,7 @@ file_glob (size_t *len, int cm, int replace, int uniquely, ed_buffer_t *ed)
     }
   /* Select from existing file list. */
   else
-    switch (cm)
+    switch (adjacent)
       {
       case 'n':
         if (!ed->file->list->gl_pathv
@@ -555,8 +555,8 @@ expand_glob (char *pattern, int append, glob_t *gp, ed_buffer_t *ed)
 static char *
 is_valid_name (const char *name, ed_buffer_t *ed)
 {
-  static char *fn;
-  static size_t fn_size;
+  static char *fn = NULL;
+  static size_t fn_size = 0;
 
   char *s;
   size_t len;

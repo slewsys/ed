@@ -451,7 +451,7 @@ top:
           break;
         }
 
-      /* Only reset exit_status explicitly. */
+      /* Only reset exit status explicitly. */
       if (status)
         ed->exec->status = -status;
     }
@@ -675,8 +675,8 @@ save_edit (int status, ed_buffer_t *ed)
 static char **
 getenv_init_argv (const char *s, int *argc, ed_buffer_t *ed)
 {
-  static char **argv;           /* argument vector buffer */
-  static char *env;             /* copy of environment variable */
+  static char **argv = NULL;    /* argument vector buffer */
+  static char *env = NULL;      /* copy of environment variable */
   static size_t argv_size = 0;  /* argv buffer size */
   static size_t env_size = 0;   /* env buffer size */
 

@@ -54,7 +54,7 @@
 int
 filter_lines (off_t from, off_t to, const char *sc, ed_buffer_t *ed)
 {
-  static char exit_status[BUFSIZ];
+  static char exit_status[100] = { '\0' };
 
   FILE *ipp, *opp;
   ed_line_node_t *lp = get_line_node (from, ed);

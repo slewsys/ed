@@ -693,7 +693,7 @@ append_text_node (ed_text_node_t *th, const char *tb, const size_t len)
 char *
 pop_text_node (ed_text_node_t *th, size_t *len)
 {
-  static char *s;
+  static char *s = NULL;
 
   ed_text_node_t *tq = th->q_back;
 
@@ -718,7 +718,7 @@ pop_text_node (ed_text_node_t *th, size_t *len)
 char *
 shift_text_node (ed_text_node_t *th, size_t *len)
 {
-  static char *s;
+  static char *s = NULL;
 
   ed_text_node_t *tp = th->q_forw;
 

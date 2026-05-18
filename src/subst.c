@@ -172,9 +172,9 @@ substitution_lhs (regex_t **lhs_p, unsigned *sgpr_f, ed_buffer_t *ed)
 
 
 /* Global declarations */
-static char *rhs;                 /* Substitution template buffer */
-static size_t rhs_size;           /* Substitution template buffer size */
-static size_t rhs_i;              /* Substitution template buffer index */
+static char *rhs = NULL;        /* Substitution template buffer */
+static size_t rhs_size = 0;     /* Substitution template buffer size */
+static size_t rhs_i = 0;        /* Substitution template buffer index */
 
 
 /* substitution_rhs: Get substitution rhs (template) from command
@@ -356,8 +356,8 @@ save_substitute (regex_t *lhs, unsigned s_f, off_t s_nth,
 
 
 /* Global declarations */
-static char *rb;                       /* Substitution text buffer */
-static size_t rb_size;                 /* Substitution text buffer size */
+static char *rb = NULL;         /* Substitution text buffer */
+static size_t rb_size = 0;      /* Substitution text buffer size */
 
 /* substitute_lines: For each line in a range, replace text matching a
    pattern per substitution template; return status. */

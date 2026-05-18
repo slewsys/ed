@@ -154,7 +154,7 @@ int
 read_pipe (const char *fn, off_t after, off_t *addr,
            off_t *size, ed_buffer_t *ed)
 {
-  static char exit_status[BUFSIZ];
+  static char exit_status[100] = { '\0' };
 
   FILE *fp;
   int status;
@@ -476,9 +476,10 @@ get_extended_line (size_t *len, int nonl, int escape, int nt, ed_buffer_t *ed)
   /*
    * Shell escapes set nonl, so we are only interested in a trailing
    * escapes in this case.
-   * Assert: *len > 0 since ed->input has trailing newline.
    */
-  p = trailing_escapes (xl, xl + *len - 1);
+  p = trailing_escapes (xl, xl + *len - 1); /* Assert: *len > 0 since
+                                               ed->input is always
+                                               newline-terminated. */
   while (nonl ? *len > 1 && *(xl + *len - 2) == '\\' : p % 2)
     {
       /*
@@ -700,7 +701,7 @@ int
 write_pipe (const char *fn, off_t from, off_t to, off_t *addr,
             off_t *size, ed_buffer_t *ed)
 {
-  static char exit_status[BUFSIZ];
+  static char exit_status[100] = { '\0' };
 
   FILE *fp;
   ed_line_node_t *lp = get_line_node (from, ed);

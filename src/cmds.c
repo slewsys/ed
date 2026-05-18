@@ -150,7 +150,7 @@ int
 join_lines (off_t from, off_t to, ed_buffer_t *ed)
 {
   static char *lj = NULL;       /* line join buffer */
-  static size_t lj_size;        /* buffer size */
+  static size_t lj_size = 0;    /* buffer size */
 
   ed_line_node_t *lp = get_line_node (from, ed);
   off_t n = from ? to - from + 1 : 0;
@@ -305,7 +305,7 @@ unmark_line_node (const ed_line_node_t *lp, ed_buffer_t *ed)
 int
 system_shell (const char *sc, ed_buffer_t *ed)
 {
-  static char exit_status[BUFSIZ];
+  static char exit_status[100] = { '\0' };
   static char *shell_path = NULL;
   static char *shell_name = NULL;
 
