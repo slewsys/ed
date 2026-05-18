@@ -677,12 +677,13 @@ Command-line flags adopted from `sed` for scripting are enabled by the
 `configure` option ***--enable-script-flags***. These are summarized
 as follows:
 
-    --in-place, -i [SUFFIX]  Write file before closing, optionally
-                             back up the original if SUFFIX provided.
-    --expression, -e COMMAND Add COMMAND to script input - implies -s.
-    --file, -f SCRIPT        Read commands from file SCRIPT - implies -s.
-                             If SCRIPT is `-`, then commands are read
-                             from standard input.
+    --in-place, -i [SUFFIX]   Write file before closing, optionally
+                              back up the original if SUFFIX provided.
+    --expression, -e COMMAND  Add COMMAND to script input - implies -s.
+    --file, -f SCRIPT         Read commands from file SCRIPT - implies -s.
+                              If SCRIPT is `-`, then commands are read
+                              from standard input.
+    --mask-exit-on-error, -m  Mask exit on error.
 
 The flag **-f** enables stand-alone `ed` scripts.  For example:
 
@@ -725,7 +726,8 @@ cat tac.ed | ./tac.ed
 ```
 
 The reason is that `ed` interprets input from pipes as `ed` scripts,
-not text to edited (like `sed`).  In fact, the following are equivalent:
+not text to edited (like `sed`). In fact, the following are equivalent
+(more or less, as explained below):
 
 ```
 ./tac.ed tac.ed
@@ -738,7 +740,6 @@ To run `ed` in a filter context, use process substitution instead, e.g.:
 ```
 ./tac.ed <(cat tac.ed)
 ```
-
 
 The `ed` flags **-i** and **-e** are used in the same manner as with
 `sed`. The `sed` command:
@@ -755,6 +756,29 @@ ed -i -e ',s/old/new/' file
 
 Note the difference: `sed` commands are applied to every input
 line by default, whereas `ed` requires an explicit range.
+
+Furthermore, the `ed` version exits with an error if no line in *file*
+matches the (basic) regular expression `/old/`. The traditional,
+undocumented way around this is to have `ed` read the script from a
+pipe:
+
+```shell
+printf ',s/old/new/\n\wq\n' | ed - file
+```
+
+When run this way, diagnostics can be provided (with command-line
+option `-v`), but errors don't terminate the script. If an error
+occurs, then after completing the script `ed` still exits with an
+error code.
+
+The `ed` flag **-m** explicitly masks exit on error for scripting.
+
+```shell
+ed -mi -e ',s/old/new/' file
+```
+
+now behaves like the `sed` version. This is useful, e.g., when
+processing multiple files, some of which might not contain a match.
 
 Each `ed` expression argument is placed on a line by itself. So the
 `ed` script:
