@@ -156,8 +156,8 @@ read_pipe (const char *fn, off_t after, off_t *addr,
 {
   static char exit_status[100] = { '\0' };
 
-  FILE *fp;
-  int status;
+  FILE *fp = NULL;
+  int status = 0;
 
   *addr = 0;
 
@@ -210,8 +210,8 @@ read_stream (FILE *fp, off_t after, off_t *size, ed_buffer_t *ed)
 {
   ed_line_node_t *lp = get_line_node (after, ed);
   ed_undo_node_t *up = NULL;
-  char *tb;
-  size_t len;
+  char *tb = NULL;
+  size_t len = 0;
   int newline_inserted = 0;
   /*
    * int newline_appended_already = ed->state->newline_appended;
@@ -335,10 +335,10 @@ read_stream_r (FILE *fp, off_t after, off_t *size, ed_buffer_t *ed)
 {
   static ed_text_node_t th;     /* text deque head */
 
-  ed_line_node_t *lp;
+  ed_line_node_t *lp = NULL;
   ed_undo_node_t *up = NULL;
-  char *s;
-  char *t;
+  char *s = NULL;
+  char *t = NULL;
   size_t len = 0;
   int newline_inserted = 0;
   /*
@@ -459,7 +459,8 @@ get_extended_line (size_t *len, int nonl, int escape, int nt, ed_buffer_t *ed)
   static char *xl = NULL;       /* extended line buffer */
   static size_t xl_size = 0;    /* buffer size */
 
-  size_t n, p;
+  size_t n = 0;
+  size_t p = 0;
 
   /* If NUL-terminated (nt), allow embedded newlines in ed->input. */
   if (nt)
@@ -520,10 +521,10 @@ get_stream_line (FILE *fp, size_t *len, ed_buffer_t *ed)
   static char *tb = NULL;       /* text buffer */
   static size_t tb_size = 0;    /* buffer size */
 
-  int c;
+  int c = 0;
 #ifdef F_GETPATH
-  char fb[PATH_MAX];
-  char *fn;
+  char fb[PATH_MAX] = { '\0' };
+  char *fn = NULL;
 #endif
 
   /*
@@ -610,12 +611,12 @@ int
 write_file (const char *fn, int is_default, off_t from, off_t to,
             off_t *addr, off_t *size, const char *mode, ed_buffer_t *ed)
 {
-  FILE *fp;
+  FILE *fp = NULL;
   ed_line_node_t *lp = get_line_node (from, ed);
   off_t n = from ? to - from + 1 : 0;
   INO_T inode;
   int file_already_open = 0;
-  int status;
+  int status = 0;
 
 #ifdef WANT_FILE_LOCK
   if (get_inode (fn, &inode, ed) < 0)
@@ -703,10 +704,10 @@ write_pipe (const char *fn, off_t from, off_t to, off_t *addr,
 {
   static char exit_status[100] = { '\0' };
 
-  FILE *fp;
+  FILE *fp = NULL;
   ed_line_node_t *lp = get_line_node (from, ed);
   off_t n = from ? to - from + 1 : 0;
-  int status;
+  int status = 0;
 
   if (!(fp = popen (fn + 1, "w")))
     {
@@ -738,8 +739,8 @@ int
 write_stream (FILE *fp, ed_line_node_t *lp, off_t n,
               off_t *size, ed_buffer_t *ed)
 {
-  size_t len;
-  char *s;
+  char *s = NULL;
+  size_t len = 0;
   int append_newline = 0;
   int status = 0;
 
@@ -823,8 +824,8 @@ put_stream_line (FILE *fp, const char *s, size_t len, ed_buffer_t *ed)
 int
 append_stream (FILE *dest_fp, FILE *src_fp, size_t *size, ed_buffer_t *ed)
 {
-  char buf[BUFSIZ];
-  size_t rsize;
+  char buf[BUFSIZ] = { '\0' };
+  size_t rsize = 0;
   size_t wsize = 0;
 
   for  (*size = 0; (rsize = fread(buf, 1, BUFSIZ, src_fp)) > 0; *size += wsize)
