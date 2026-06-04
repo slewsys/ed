@@ -1,0 +1,21 @@
+# proto.fails-at.in: Autotest template for the ed testsuite.
+#
+# Process this file with autotest to create testsuite (see also Makefile.am).
+
+AT_SETUP([Fail: @SCRIPT_NAME@.errs])
+
+cat >script-@SCRIPT_NAME@ <<_ATEOF_ED
+H
+r @SCRIPT_SRC@.errs
+$(test -s @SCRIPT_SRC@.errs &&
+cat @SCRIPT_SRC@.errs ||
+echo "@SCRIPT_NAME@")
+_ATEOF_ED
+
+>@SCRIPT_NAME@.rso
+
+AT_SKIP_IF([! ed --version | grep -q 'script-flags'])
+AT_CHECK([ed -i -f script-@SCRIPT_NAME@ @SCRIPT_NAME@.rso && exit 255 || exit 0],
+0, [ignore], [ignore], [], [])
+
+AT_CLEANUP()
