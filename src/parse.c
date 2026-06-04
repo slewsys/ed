@@ -27,10 +27,12 @@ address_range (ed_buffer_t *ed)
 {
   /* Per SUSv4, 2013, intermediate addresses may exceed
      ed->state->lines or be negative, so use signed types. */
-  off_t addr;
-  off_t first, second, dot;
-  int have_dc;                  /* If set, have address delimiter char. */
-  int status;
+  off_t addr = 0;
+  off_t first;
+  off_t second = 0;
+  off_t dot = 0;
+  int have_dc = 0;                  /* If set, have address delimiter char. */
+  int status = 0;
 
   ed->exec->region->addrs = 0;
   first = second = dot = ed->state->dot;
@@ -96,8 +98,8 @@ address_range (ed_buffer_t *ed)
 int
 next_address (off_t *addr, ed_buffer_t *ed)
 {
-  char *input_prev;
-  int status;
+  char *input_prev = NULL;
+  int status = 0;
 
   SKIP_WHITESPACE (ed);
   input_prev = ed->input;
@@ -112,7 +114,7 @@ next_address (off_t *addr, ed_buffer_t *ed)
 static int
 line_address (off_t *addr, ed_buffer_t *ed)
 {
-  int c;
+  int c = 0;
   int status = 0;
 
   switch (c = *ed->input)
@@ -237,9 +239,9 @@ file_glob (size_t *len, int adjacent, int replace, int unique, ed_buffer_t *ed)
   static glob_t *one_time_glob = NULL;  /* one-time file glob */
 
   glob_t *gp = NULL;
-  char *pattern;
-  char *xl;
-  char *s;
+  char *pattern = NULL;
+  char *xl = NULL;
+  char *s = NULL;
   off_t offs = 0;
 
   if (!(xl = get_extended_line (len, 1, 0, 0, ed)))
@@ -392,7 +394,7 @@ strtok_with_delimiters (char *s, const char *delims)
 {
   static char *t = NULL;
 
-  char *tok;
+  char *tok = NULL;
 
   if (s)
     t = s;
@@ -433,7 +435,7 @@ expand_glob (char *pattern, int append, glob_t *gp, ed_buffer_t *ed)
   char **pv = NULL;
   char *basename = NULL;
   char *pathname = NULL;
-  size_t len;
+  size_t len = 0;
   int gloff = gp->gl_pathc;
   int status = 0;
 
@@ -558,8 +560,8 @@ is_valid_name (const char *name, ed_buffer_t *ed)
   static char *fn = NULL;
   static size_t fn_size = 0;
 
-  char *s;
-  size_t len;
+  char *s = NULL;
+  size_t len = 0;
 
   /* Push file name onto command buffer. Append newline if missing. */
   len = strlen (ed->input = (char *) name);
@@ -586,7 +588,7 @@ file_name (size_t *len, ed_buffer_t *ed)
   static char *fn = NULL;       /* File name buffer */
   static size_t fn_size = 0;    /* Buffer size */
 
-  char *xl;
+  char *xl = NULL;
 
   if (!(xl = get_extended_line (len, 1, 0, 1, ed)))
 
@@ -655,7 +657,8 @@ regular_expression (unsigned dc, size_t *len, ed_buffer_t *ed)
 static char *
 character_class (const char *s, ed_buffer_t *ed)
 {
-  unsigned c, d;
+  unsigned char c = 0;
+  unsigned char d = 0;
 
   if (*s == '^')
     ++s;
