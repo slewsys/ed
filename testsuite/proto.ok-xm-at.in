@@ -14,6 +14,7 @@ wq @SCRIPT_NAME@.o
 _ATEOF_ED
 
 AT_SKIP_IF([! ed --version | grep -q 'ed-macro'])
+AT_SKIP_IF([! ed --version | grep -q 'file-glob'])
 AT_CHECK([ed - <script-@SCRIPT_NAME@ &&
 diff -u @SCRIPT_SRC@.r @SCRIPT_NAME@.o],
 0, [ignore], [ignore], [], [])
