@@ -19,6 +19,7 @@
    - [Building from Git](#building-from-git)
    - [Building RPM and Debian packages](#building-rpm-and-debian-packages)
 - [Tutorials](#tutorials)
+   - [Command-line editing and history](#command-line-editing-and-history)
 - [Extensions to the POSIX.1-2024 standard](#extensions-to-the-posix1-2024-standard)
    - [Command-line address arguments](#command-line-address-arguments)
    - [Scrolling](#scrolling)
@@ -35,6 +36,7 @@
    - [Piped Input](#piped-input)
    - [SunOS Dialect](#sunos-dialect)
 - [Deviations from the POSIX.1-2024 standard](#deviations-from-the-posix1-2024-standard)
+   - [Input Command Arguments](#input-command-arguments)
    - [Extended Regular Expressions](#extended-regular-expressions)
    - [Pattern delimiters](#pattern-delimiters)
    - [Undo within global command](#undo-within-global-command)
@@ -385,6 +387,18 @@ type:
 ! info ed <RET> m tutorial <RET>
 ```
 
+### Command-line editing and history
+
+For historical compatibility, `ed` does not provide command-line
+editing and history. An easy workaround is to define a shell alias and
+leverage the excellent [rlwrap](https://github.com/hanslub42/rlwrap)
+utility. For instance, **Bash** users can add the following line to
+the file *~/.bashrc* or *~/.bash_aliases*:
+
+```
+alias ed="rlwrap -c -s 10000 -H ~/.edrc ed"
+```
+
 ## Extensions to the POSIX.1-2024 standard
 
 This implementation of `ed` scores 100% on *The Open Group Shell and
@@ -668,8 +682,35 @@ ed -e 'g;.;s;_*;.;gp'  <(cal 1 395)
 ```
 
 However, global commands (`G`, `g`, `V`, or `v`) cannot be nested,
-whereas macros can. Global commands can call macros, though. See the
-[Examples](#examples) section for more demonstrations.
+whereas macros can. Global commands can call macros, though.
+
+Note that macros called from global commands are run in a different
+context from the global command list itself. In particular, the lines
+in the macro should not be separated with a line-extension characters
+(i.e., trailing backslashes). For instance, to replace the global
+command list with a macro in `ed` global command:
+
+```
+g/regexp/s//replacment/\
+a line1\
+line2
+```
+
+the macro in, say, register 1 would be:
+
+```
+s//replacment/
+a line1\
+line2
+```
+
+and the global command becomes:
+
+```
+g/regexp/@1
+```
+
+See the [Examples](#examples) section for more demonstrations.
 
 ### Script Flags
 
@@ -726,32 +767,33 @@ cat tac.ed | ./tac.ed
 ```
 
 The reason is that `ed` interprets input from pipes as `ed` scripts,
-not text to edited (like `sed`). In fact, the following are equivalent
-(more or less, as explained below):
-
-```
-./tac.ed tac.ed
-cat tac.ed | ed - tac.ed
-ed -f tac.ed tac.ed
-```
-
-To run `ed` in a filter context, use process substitution instead, e.g.:
+not text to be edited (like `sed`). To run `ed` in a filter context,
+use process substitution instead, e.g.:
 
 ```
 ./tac.ed <(cat tac.ed)
+```
+
+The following are equivalent (more or less, as explained below):
+
+```
+./tac.ed tac.ed
+./tac.ed <(cat tac.ed)
+cat tac.ed | ed - tac.ed
+ed -f tac.ed tac.ed
 ```
 
 The `ed` flags **-i** and **-e** are used in the same manner as with
 `sed`. The `sed` command:
 
 ```shell
-sed -i -e 's/old/new/' file
+sed -i -e 's/old/new/' file [...]
 ```
 
 in `ed` dialect becomes:
 
 ```shell
-ed -i -e ',s/old/new/' file
+ed -i -e ',s/old/new/' file [...]
 ```
 
 Note the difference: `sed` commands are applied to every input
@@ -774,7 +816,7 @@ error code.
 The `ed` flag **-m** explicitly masks exit on error for scripting.
 
 ```shell
-ed -mi -e ',s/old/new/' file
+ed -mi -e ',s/old/new/' file [...]
 ```
 
 now behaves like the `sed` version. This is useful, e.g., when
@@ -910,6 +952,23 @@ invoked as `red`. This limits editing of files in the local directory
 only and prohibits shell commands.
 
 ## Deviations from the POSIX.1-2024 standard
+
+### Input Command Arguments
+
+The input commands `a`, `i` and `c` accept arguments, e.g.:
+
+```
+ed -e 'ap hello, world!'
+```
+> hello, world!
+
+This works for extended lines too:
+
+```
+ed -e 'a All things in moderation,\' -e 'including moderation.' -e ,p
+```
+> All things in moderation,
+> including moderation.
 
 ### Extended Regular Expressions
 

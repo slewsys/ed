@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnulib 4.0.0.2567\n"
 "Report-Msgid-Bugs-To: bug-gnulib@gnu.org\n"
-"POT-Creation-Date: 2026-05-18 19:46-0400\n"
+"POT-Creation-Date: 2026-06-05 23:57-0400\n"
 "PO-Revision-Date: 2025-02-13 10:11+0000\n"
 "Last-Translator: Lauri Nurmi <lanurmi@iki.fi>\n"
 "Language-Team: Finnish <translation-team-fi@lists.sourceforge.net>\n"
@@ -109,8 +109,8 @@ msgstr "Virheellinen \\{\\}:n sisältö"
 msgid "Invalid range end"
 msgstr "Virheellinen välin loppu"
 
-#: lib/regcomp.c:158 src/buffer.c:437 src/buffer.c:586 src/exec.c:1897
-#: src/io.c:325 src/page.c:861 src/parse.c:270 src/parse.c:515 src/regexp.c:163
+#: lib/regcomp.c:158 src/buffer.c:437 src/buffer.c:586 src/exec.c:1936
+#: src/io.c:325 src/page.c:861 src/parse.c:272 src/parse.c:517 src/regexp.c:163
 #: src/register.c:372 src/undo.c:26
 msgid "Memory exhausted"
 msgstr "Muisti lopussa"
@@ -139,7 +139,7 @@ msgstr "Ei edellistä säännöllistä lauseketta"
 msgid "dup2 error"
 msgstr "dup2 virhe"
 
-#: src/buffer.c:136 src/io.c:96 src/io.c:167 src/io.c:663 src/io.c:714
+#: src/buffer.c:136 src/io.c:96 src/io.c:167 src/io.c:664 src/io.c:715
 #: src/main.c:808 src/register.c:392
 msgid "File open error"
 msgstr "Tiedoston avaamisvirhe"
@@ -176,8 +176,8 @@ msgstr "Puskuri täynnä"
 msgid "Buffer write error"
 msgstr "Puskurin kirjoitusvirhe"
 
-#: src/buffer.c:501 src/exec.c:100 src/exec.c:129 src/exec.c:1867
-#: src/page.c:301 src/parse.c:220
+#: src/buffer.c:501 src/exec.c:139 src/exec.c:168 src/exec.c:1906
+#: src/page.c:301 src/parse.c:222
 msgid "Address out of range"
 msgstr "Osoite kantaman ulkopuolella"
 
@@ -197,27 +197,28 @@ msgstr "Salauksen purku epäonnistui (lukitus vioittunut)"
 msgid "Decryption failed (incomplete block)"
 msgstr "Salauksen purku epäonnistui (keskeneräinen lohko)"
 
-#: src/cbc.c:384 src/io.c:581 src/io.c:855
+#: src/cbc.c:384 src/io.c:582 src/io.c:856
 msgid "File read error"
 msgstr "Tiedoston lukuvirhe"
 
-#: src/cmds.c:43 src/io.c:498 src/main.c:381 src/register.c:299
+#: src/cmds.c:37 src/cmds.c:77 src/global.c:93 src/io.c:499 src/main.c:381
+#: src/register.c:299
 msgid "End-of-file unexpected"
 msgstr "Tiedostonloppu odottamaton"
 
-#: src/cmds.c:251 src/cmds.c:267
+#: src/cmds.c:285 src/cmds.c:301
 msgid "Invalid address mark"
 msgstr "Virheellinen osoitemerkki"
 
-#: src/cmds.c:328 src/exec.c:1720 src/filter.c:90 src/filter.c:143
+#: src/cmds.c:362 src/exec.c:1759 src/filter.c:90 src/filter.c:143
 msgid "Fork error"
 msgstr "Haarukan virhe"
 
-#: src/cmds.c:347 src/filter.c:25
+#: src/cmds.c:381 src/filter.c:25
 msgid "Child process error"
 msgstr "Lapsenprosessinvirhe"
 
-#: src/cmds.c:354 src/filter.c:40 src/io.c:176 src/io.c:725
+#: src/cmds.c:388 src/filter.c:40 src/io.c:176 src/io.c:726
 #, c-format
 msgid "Exit status: %#x"
 msgstr "Poistu tila: %#x"
@@ -230,66 +231,67 @@ msgstr "Tuntematon virhe"
 msgid "Numerical result out of range"
 msgstr "Numeerinen tulos alueen ulkopuolella"
 
-#: src/exec.c:28 src/exec.c:504 src/exec.c:589 src/exec.c:615 src/exec.c:898
-#: src/exec.c:1010 src/exec.c:1373 src/exec.c:1385 src/exec.c:1393
+#: src/exec.c:28 src/exec.c:58 src/exec.c:543 src/exec.c:628 src/exec.c:654
+#: src/exec.c:937 src/exec.c:1049 src/exec.c:1412 src/exec.c:1424
+#: src/exec.c:1432
 msgid "Command suffix unexpected"
 msgstr "Komennon jälkiliite odottamaton"
 
-#: src/exec.c:95 src/exec.c:124
+#: src/exec.c:134 src/exec.c:163
 msgid "Destination address required"
 msgstr "Määräpaikan osoite vaaditaan"
 
-#: src/exec.c:339 src/exec.c:352 src/exec.c:364
+#: src/exec.c:378 src/exec.c:391 src/exec.c:403
 msgid "Command prefix unexpected"
 msgstr "Komennon etuliite odottamaton"
 
-#: src/exec.c:495 src/exec.c:580 src/exec.c:687 src/exec.c:708 src/exec.c:947
-#: src/exec.c:989 src/exec.c:1335 src/exec.c:1533 src/exec.c:1729
+#: src/exec.c:534 src/exec.c:619 src/exec.c:726 src/exec.c:747 src/exec.c:986
+#: src/exec.c:1028 src/exec.c:1374 src/exec.c:1572 src/exec.c:1768
 msgid "Address unexpected"
 msgstr "Osoite odottamaton"
 
-#: src/exec.c:609
+#: src/exec.c:648
 msgid "Invalid redirection"
 msgstr "Virheellinen uudelleenohjaus"
 
-#: src/exec.c:646 src/main.c:647
+#: src/exec.c:685 src/main.c:647
 msgid "File name not set"
 msgstr "Tiedoston nimeä ei ole määritetty"
 
-#: src/exec.c:660
+#: src/exec.c:699
 msgid "Recursive global command"
 msgstr "Rekursiivinen globaali komento"
 
-#: src/exec.c:718
+#: src/exec.c:757
 msgid "No previous error"
 msgstr "Ei aikaisempaa virhettä"
 
-#: src/exec.c:828
+#: src/exec.c:867
 msgid "Invalid destination address"
 msgstr "Virheellinen kohdeosoite"
 
-#: src/exec.c:873 src/exec.c:1321
+#: src/exec.c:912 src/exec.c:1360
 msgid "Invalid register"
 msgstr "Virheellinen rekisteri"
 
-#: src/exec.c:1166 src/exec.c:1229 src/exec.c:1552 src/exec.c:1611
-#: src/exec.c:1792 src/exec.c:1807
+#: src/exec.c:1205 src/exec.c:1268 src/exec.c:1591 src/exec.c:1650
+#: src/exec.c:1831 src/exec.c:1846
 msgid "Unknown command"
 msgstr "Tuntematon komento"
 
-#: src/exec.c:1719
+#: src/exec.c:1758
 msgid "Cannot fork shell"
 msgstr "Ei voi forkata tulkkia"
 
-#: src/exec.c:1807
+#: src/exec.c:1846
 msgid "Invalid address"
 msgstr "Virheellinen osoite"
 
-#: src/exec.c:1825
+#: src/exec.c:1864
 msgid "Command too long"
 msgstr "Komento liian pitkä"
 
-#: src/exec.c:1872
+#: src/exec.c:1911
 msgid "Invalid address range"
 msgstr "Virheellinen osoitealue"
 
@@ -305,11 +307,11 @@ msgstr "Putken auki-virhe"
 msgid "Pipe close error"
 msgstr "Putkien sulkemisvirhe"
 
-#: src/global.c:135
+#: src/global.c:137
 msgid "No previous command"
 msgstr "Ei edellistä komentoa"
 
-#: src/io.c:57 src/io.c:632 src/main.c:243 src/main.c:757 src/main.c:824
+#: src/io.c:57 src/io.c:633 src/main.c:243 src/main.c:757 src/main.c:824
 #: src/register.c:36 src/register.c:83 src/register.c:142 src/register.c:152
 #: src/register.c:211 src/register.c:220 src/register.c:247 src/register.c:283
 #: src/register.c:350 src/register.c:410 src/register.c:450 src/register.c:489
@@ -320,12 +322,12 @@ msgstr "Tiedostonhakuvirhe"
 msgid "File does not exist"
 msgstr "Tiedostoa ei ole olemassa"
 
-#: src/io.c:119 src/io.c:677
+#: src/io.c:119 src/io.c:678
 #, c-format
 msgid "%s: File already locked\n"
 msgstr ""
 
-#: src/io.c:143 src/io.c:654 src/io.c:692
+#: src/io.c:143 src/io.c:655 src/io.c:693
 msgid "File close error"
 msgstr "Tiedoston sulkemisvirhe"
 
@@ -339,37 +341,37 @@ msgstr "Uusi kohta\n"
 msgid "Newline appended\n"
 msgstr "Uusi rivi lisättiin\n"
 
-#: src/io.c:548
+#: src/io.c:549
 #, fuzzy
 #| msgid "File name too long"
 msgid "Line too long"
 msgstr "Tiedoston nimi liian pitkä"
 
-#: src/io.c:567 src/io.c:808
+#: src/io.c:568 src/io.c:809
 msgid "Broken pipe"
 msgstr "Rikkinäinen putki"
 
-#: src/io.c:639 src/register.c:254
+#: src/io.c:640 src/register.c:254
 msgid "File truncate error"
 msgstr "Tiedoston katkaisuvirhe"
 
-#: src/io.c:761
+#: src/io.c:762
 msgid "File too big"
 msgstr "Tiedosto liian suuri"
 
-#: src/io.c:814 src/io.c:834 src/io.c:845 src/main.c:768 src/main.c:776
+#: src/io.c:815 src/io.c:835 src/io.c:846 src/main.c:768 src/main.c:776
 msgid "File write error"
 msgstr "Tiedoston kirjoitusvirhe"
 
-#: src/io.c:878 src/parse.c:502
+#: src/io.c:879 src/parse.c:504
 msgid "File status error"
 msgstr "Tiedoston tilavirhe"
 
-#: src/io.c:885
+#: src/io.c:886
 msgid "Access restricted to regular files"
 msgstr "Pääsy rajoitettu tavallisiin tiedostoihin"
 
-#: src/io.c:954
+#: src/io.c:955
 msgid "File stat error"
 msgstr "Tiedoston stat-virhe"
 
@@ -573,47 +575,47 @@ msgstr ""
 msgid "script, line %"
 msgstr "skripti, rivi %"
 
-#: src/parse.c:253 src/parse.c:599
+#: src/parse.c:255 src/parse.c:601
 msgid "Access restricted to working directory"
 msgstr "Pääsy rajoitettu työhakemistoon"
 
-#: src/parse.c:320
+#: src/parse.c:322
 msgid "Too many file names"
 msgstr "Liian monta tiedostonimeä"
 
-#: src/parse.c:335 src/parse.c:348 src/parse.c:375
+#: src/parse.c:337 src/parse.c:350 src/parse.c:377
 msgid "No more files"
 msgstr "Ei enempää tiedostoja"
 
-#: src/parse.c:443
+#: src/parse.c:445
 msgid "File glob too long"
 msgstr "Tiedoston lokero liian pitkä"
 
-#: src/parse.c:464 src/parse.c:468 src/parse.c:488
+#: src/parse.c:466 src/parse.c:470 src/parse.c:490
 msgid "Pathname expansion error"
 msgstr "Taudinimen laajennusvirhe"
 
-#: src/parse.c:484
+#: src/parse.c:486
 msgid "No such file or directory"
 msgstr "Ei sellaista tiedostoa tai kansiota"
 
-#: src/parse.c:574
+#: src/parse.c:576
 msgid "Invalid file name"
 msgstr "Virheellinen tiedostonimi"
 
-#: src/parse.c:629
+#: src/parse.c:631
 msgid "Brackets ([]) unbalanced"
 msgstr "Sulut ([]) epätasapainoiset"
 
-#: src/parse.c:636
+#: src/parse.c:638
 msgid "Backslash (\\) unexpected"
 msgstr "Takaisinviiva (\\) odottamaton"
 
-#: src/parse.c:693
+#: src/parse.c:696
 msgid "Shell access restricted"
 msgstr "Komentotulkin käyttö rajoitettu"
 
-#: src/parse.c:759
+#: src/parse.c:762
 msgid "No previous shell command"
 msgstr "Ei aikaisempaa shell-komentoa"
 

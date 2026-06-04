@@ -12,9 +12,12 @@ r ! if test -f @SCRIPT_SRC@.d.zst; then \\
         cat @SCRIPT_SRC@.d \\
     fi
 f @SCRIPT_SRC@.d
-$(test -s @SCRIPT_SRC@.t &&
-cat @SCRIPT_SRC@.t ||
-echo "w @SCRIPT_NAME@.o")
+_ATEOF_ED
+
+# Retain any trailing newlines.
+cat @SCRIPT_SRC@.t >>script-@SCRIPT_NAME@
+
+cat >>script-@SCRIPT_NAME@ <<_ATEOF_ED
 wq @SCRIPT_NAME@.o
 _ATEOF_ED
 

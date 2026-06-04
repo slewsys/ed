@@ -96,7 +96,9 @@ Makefile
 /testsuite/testsuite.log
 /testsuite/*.ok-at
 /testsuite/*.err-at
+/testsuite/*.errs-at
 /testsuite/*.fail-at
+/testsuite/*.fails-at
 /testsuite/*.ok-co-at
 /testsuite/*.ok-ef-at
 /testsuite/*.ok-mf-at
