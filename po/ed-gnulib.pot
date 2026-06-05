@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ed 2.1.99\n"
 "Report-Msgid-Bugs-To: bug-gnulib@gnu.org\n"
-"POT-Creation-Date: 2026-05-18 19:46-0400\n"
+"POT-Creation-Date: 2026-06-04 22:01-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -100,8 +100,8 @@ msgstr ""
 msgid "Invalid range end"
 msgstr ""
 
-#: lib/regcomp.c:158 src/buffer.c:437 src/buffer.c:586 src/exec.c:1897
-#: src/io.c:325 src/page.c:861 src/parse.c:270 src/parse.c:515 src/regexp.c:163
+#: lib/regcomp.c:158 src/buffer.c:437 src/buffer.c:586 src/exec.c:1929
+#: src/io.c:325 src/page.c:861 src/parse.c:272 src/parse.c:517 src/regexp.c:163
 #: src/register.c:372 src/undo.c:26
 msgid "Memory exhausted"
 msgstr ""
@@ -130,7 +130,7 @@ msgstr ""
 msgid "dup2 error"
 msgstr ""
 
-#: src/buffer.c:136 src/io.c:96 src/io.c:167 src/io.c:663 src/io.c:714
+#: src/buffer.c:136 src/io.c:96 src/io.c:167 src/io.c:664 src/io.c:715
 #: src/main.c:808 src/register.c:392
 msgid "File open error"
 msgstr ""
@@ -167,8 +167,8 @@ msgstr ""
 msgid "Buffer write error"
 msgstr ""
 
-#: src/buffer.c:501 src/exec.c:100 src/exec.c:129 src/exec.c:1867
-#: src/page.c:301 src/parse.c:220
+#: src/buffer.c:501 src/exec.c:132 src/exec.c:161 src/exec.c:1899
+#: src/page.c:301 src/parse.c:222
 msgid "Address out of range"
 msgstr ""
 
@@ -188,27 +188,28 @@ msgstr ""
 msgid "Decryption failed (incomplete block)"
 msgstr ""
 
-#: src/cbc.c:384 src/io.c:581 src/io.c:855
+#: src/cbc.c:384 src/io.c:582 src/io.c:856
 msgid "File read error"
 msgstr ""
 
-#: src/cmds.c:43 src/io.c:498 src/main.c:381 src/register.c:299
+#: src/cmds.c:37 src/cmds.c:77 src/global.c:93 src/io.c:499 src/main.c:381
+#: src/register.c:299
 msgid "End-of-file unexpected"
 msgstr ""
 
-#: src/cmds.c:251 src/cmds.c:267
+#: src/cmds.c:285 src/cmds.c:301
 msgid "Invalid address mark"
 msgstr ""
 
-#: src/cmds.c:328 src/exec.c:1720 src/filter.c:90 src/filter.c:143
+#: src/cmds.c:362 src/exec.c:1752 src/filter.c:90 src/filter.c:143
 msgid "Fork error"
 msgstr ""
 
-#: src/cmds.c:347 src/filter.c:25
+#: src/cmds.c:381 src/filter.c:25
 msgid "Child process error"
 msgstr ""
 
-#: src/cmds.c:354 src/filter.c:40 src/io.c:176 src/io.c:725
+#: src/cmds.c:388 src/filter.c:40 src/io.c:176 src/io.c:726
 #, c-format
 msgid "Exit status: %#x"
 msgstr ""
@@ -221,66 +222,67 @@ msgstr ""
 msgid "Numerical result out of range"
 msgstr ""
 
-#: src/exec.c:28 src/exec.c:504 src/exec.c:589 src/exec.c:615 src/exec.c:898
-#: src/exec.c:1010 src/exec.c:1373 src/exec.c:1385 src/exec.c:1393
+#: src/exec.c:28 src/exec.c:57 src/exec.c:536 src/exec.c:621 src/exec.c:647
+#: src/exec.c:930 src/exec.c:1042 src/exec.c:1405 src/exec.c:1417
+#: src/exec.c:1425
 msgid "Command suffix unexpected"
 msgstr ""
 
-#: src/exec.c:95 src/exec.c:124
+#: src/exec.c:127 src/exec.c:156
 msgid "Destination address required"
 msgstr ""
 
-#: src/exec.c:339 src/exec.c:352 src/exec.c:364
+#: src/exec.c:371 src/exec.c:384 src/exec.c:396
 msgid "Command prefix unexpected"
 msgstr ""
 
-#: src/exec.c:495 src/exec.c:580 src/exec.c:687 src/exec.c:708 src/exec.c:947
-#: src/exec.c:989 src/exec.c:1335 src/exec.c:1533 src/exec.c:1729
+#: src/exec.c:527 src/exec.c:612 src/exec.c:719 src/exec.c:740 src/exec.c:979
+#: src/exec.c:1021 src/exec.c:1367 src/exec.c:1565 src/exec.c:1761
 msgid "Address unexpected"
 msgstr ""
 
-#: src/exec.c:609
+#: src/exec.c:641
 msgid "Invalid redirection"
 msgstr ""
 
-#: src/exec.c:646 src/main.c:647
+#: src/exec.c:678 src/main.c:647
 msgid "File name not set"
 msgstr ""
 
-#: src/exec.c:660
+#: src/exec.c:692
 msgid "Recursive global command"
 msgstr ""
 
-#: src/exec.c:718
+#: src/exec.c:750
 msgid "No previous error"
 msgstr ""
 
-#: src/exec.c:828
+#: src/exec.c:860
 msgid "Invalid destination address"
 msgstr ""
 
-#: src/exec.c:873 src/exec.c:1321
+#: src/exec.c:905 src/exec.c:1353
 msgid "Invalid register"
 msgstr ""
 
-#: src/exec.c:1166 src/exec.c:1229 src/exec.c:1552 src/exec.c:1611
-#: src/exec.c:1792 src/exec.c:1807
+#: src/exec.c:1198 src/exec.c:1261 src/exec.c:1584 src/exec.c:1643
+#: src/exec.c:1824 src/exec.c:1839
 msgid "Unknown command"
 msgstr ""
 
-#: src/exec.c:1719
+#: src/exec.c:1751
 msgid "Cannot fork shell"
 msgstr ""
 
-#: src/exec.c:1807
+#: src/exec.c:1839
 msgid "Invalid address"
 msgstr ""
 
-#: src/exec.c:1825
+#: src/exec.c:1857
 msgid "Command too long"
 msgstr ""
 
-#: src/exec.c:1872
+#: src/exec.c:1904
 msgid "Invalid address range"
 msgstr ""
 
@@ -296,11 +298,11 @@ msgstr ""
 msgid "Pipe close error"
 msgstr ""
 
-#: src/global.c:135
+#: src/global.c:137
 msgid "No previous command"
 msgstr ""
 
-#: src/io.c:57 src/io.c:632 src/main.c:243 src/main.c:757 src/main.c:824
+#: src/io.c:57 src/io.c:633 src/main.c:243 src/main.c:757 src/main.c:824
 #: src/register.c:36 src/register.c:83 src/register.c:142 src/register.c:152
 #: src/register.c:211 src/register.c:220 src/register.c:247 src/register.c:283
 #: src/register.c:350 src/register.c:410 src/register.c:450 src/register.c:489
@@ -311,12 +313,12 @@ msgstr ""
 msgid "File does not exist"
 msgstr ""
 
-#: src/io.c:119 src/io.c:677
+#: src/io.c:119 src/io.c:678
 #, c-format
 msgid "%s: File already locked\n"
 msgstr ""
 
-#: src/io.c:143 src/io.c:654 src/io.c:692
+#: src/io.c:143 src/io.c:655 src/io.c:693
 msgid "File close error"
 msgstr ""
 
@@ -330,35 +332,35 @@ msgstr ""
 msgid "Newline appended\n"
 msgstr ""
 
-#: src/io.c:548
+#: src/io.c:549
 msgid "Line too long"
 msgstr ""
 
-#: src/io.c:567 src/io.c:808
+#: src/io.c:568 src/io.c:809
 msgid "Broken pipe"
 msgstr ""
 
-#: src/io.c:639 src/register.c:254
+#: src/io.c:640 src/register.c:254
 msgid "File truncate error"
 msgstr ""
 
-#: src/io.c:761
+#: src/io.c:762
 msgid "File too big"
 msgstr ""
 
-#: src/io.c:814 src/io.c:834 src/io.c:845 src/main.c:768 src/main.c:776
+#: src/io.c:815 src/io.c:835 src/io.c:846 src/main.c:768 src/main.c:776
 msgid "File write error"
 msgstr ""
 
-#: src/io.c:878 src/parse.c:502
+#: src/io.c:879 src/parse.c:504
 msgid "File status error"
 msgstr ""
 
-#: src/io.c:885
+#: src/io.c:886
 msgid "Access restricted to regular files"
 msgstr ""
 
-#: src/io.c:954
+#: src/io.c:955
 msgid "File stat error"
 msgstr ""
 
@@ -465,47 +467,47 @@ msgstr ""
 msgid "script, line %"
 msgstr ""
 
-#: src/parse.c:253 src/parse.c:599
+#: src/parse.c:255 src/parse.c:601
 msgid "Access restricted to working directory"
 msgstr ""
 
-#: src/parse.c:320
+#: src/parse.c:322
 msgid "Too many file names"
 msgstr ""
 
-#: src/parse.c:335 src/parse.c:348 src/parse.c:375
+#: src/parse.c:337 src/parse.c:350 src/parse.c:377
 msgid "No more files"
 msgstr ""
 
-#: src/parse.c:443
+#: src/parse.c:445
 msgid "File glob too long"
 msgstr ""
 
-#: src/parse.c:464 src/parse.c:468 src/parse.c:488
+#: src/parse.c:466 src/parse.c:470 src/parse.c:490
 msgid "Pathname expansion error"
 msgstr ""
 
-#: src/parse.c:484
+#: src/parse.c:486
 msgid "No such file or directory"
 msgstr ""
 
-#: src/parse.c:574
+#: src/parse.c:576
 msgid "Invalid file name"
 msgstr ""
 
-#: src/parse.c:629
+#: src/parse.c:631
 msgid "Brackets ([]) unbalanced"
 msgstr ""
 
-#: src/parse.c:636
+#: src/parse.c:638
 msgid "Backslash (\\) unexpected"
 msgstr ""
 
-#: src/parse.c:693
+#: src/parse.c:696
 msgid "Shell access restricted"
 msgstr ""
 
-#: src/parse.c:759
+#: src/parse.c:762
 msgid "No previous shell command"
 msgstr ""
 
