@@ -184,7 +184,6 @@
       (ed)->core->regbuf->rio_f |= REGISTER_READ;                             \
       (ed)->core->regbuf->read_idx =                                          \
         isdigit (*(ed)->input) ? *(ed)->input++ - '0' : REGBUF_MAX - 1;       \
-      SKIP_WHITESPACE (ed);                                                   \
     }                                                                         \
   while (0)
 #endif
@@ -349,6 +348,7 @@ exec_command (ed_buffer_t *ed)
         return invalid_cmd (ed);
       ++ed->input;
       GET_INPUT_REGISTER (ed);
+      SKIP_WHITESPACE (ed);
       break;
 #endif  /* WANT_ED_REGISTER */
 #ifdef WANT_FILE_GLOB
@@ -924,20 +924,15 @@ macro_cmd (ed_buffer_t *ed)
   static size_t saved_input_size = 0;
 
   int status = 0;               /* Return status */
+  int io_f = 0;                 /* Print suffix */
 
   /* case '@': */
   if ((status = is_valid_range (ed->state->dot, ed->state->dot, ed)) < 0)
     return status;
   if (!ed->core->regbuf->rio_f)
     GET_INPUT_REGISTER (ed);
-  else
-    SKIP_WHITESPACE (ed);
-  if (*ed->input != '\n')
-    {
-      ed->exec->err = _("Command suffix unexpected");
-      return ERR;
-    }
-  else if (ed->exec->global && *(++ed->input) != '\0')
+  COMMAND_SUFFIX (io_f, ed);
+  if (ed->exec->global && *(ed->input) != '\0')
     {
       REALLOC_THROW (saved_input, saved_input_size,
                      strlen (ed->input) + 1, ERR, ed);
@@ -947,8 +942,9 @@ macro_cmd (ed_buffer_t *ed)
     return status;
   else if (ed->exec->global)
     ed->input = saved_input;
-
-  return status;
+  return (ed->display->dio_f = io_f)
+      ? display_lines (ed->state->dot, ed->state->dot, ed)
+      : status;
 }
 #endif  /* WANT_ED_MACRO */
 
