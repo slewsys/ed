@@ -373,15 +373,15 @@ enum register_io_flags
   REGISTER_WRITE = 0x02
 };
 
-#define REGBUF_MAX  11          /* Max registers, including default. */
+#define REGBUF_MAX  101         /* Max registers, including default. */
 
 /* Register buffers. */
 struct ed_register
 {
   FILE *fp[REGBUF_MAX];         /* Register buffers. */
   ed_path_t path[REGBUF_MAX];   /* Register pathanmes. */
-  int read_idx;                 /* Input register index. */
-  int write_idx;                /* Output register index. */
+  long read_idx;                /* Input register index. */
+  long write_idx;               /* Output register index. */
   int rio_f;                    /* Register I/O flags. */
 };
 #endif  /* WANT_ED_REGISTER */

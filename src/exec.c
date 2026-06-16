@@ -116,13 +116,16 @@
                                                                               \
       /* Parse "write register" command variation. */                         \
       if (!((ed)->exec->opt & (POSIXLY_CORRECT | TRADITIONAL))                \
-          && *ed->input == '>')                                               \
+          && *(ed)->input == '>')                                             \
         {                                                                     \
-          ed->core->regbuf->rio_f |= REGISTER_WRITE;                          \
-          if ((append = *++ed->input == '>'))                                 \
-            ++ed->input;                                                      \
-          ed->core->regbuf->write_idx =                                       \
-            isdigit (*ed->input) ? *ed->input++ - '0' : REGBUF_MAX - 1;       \
+          (ed)->core->regbuf->rio_f |= REGISTER_WRITE;                        \
+          if ((append = *++(ed)->input == '>'))                               \
+            ++(ed)->input;                                                    \
+          if (isdigit (*(ed)->input))                                         \
+            STRTOL_THROW ((ed)->core->regbuf->write_idx,                      \
+                          (ed)->input, &(ed)->input, ERR);                    \
+          else                                                                \
+            (ed)->core->regbuf->write_idx = REGBUF_MAX - 1;                   \
         }                                                                     \
       else                                                                    \
         {                                                                     \
@@ -182,8 +185,11 @@
   do                                                                          \
     {                                                                         \
       (ed)->core->regbuf->rio_f |= REGISTER_READ;                             \
-      (ed)->core->regbuf->read_idx =                                          \
-        isdigit (*(ed)->input) ? *(ed)->input++ - '0' : REGBUF_MAX - 1;       \
+      if (isdigit (*(ed)->input))                                             \
+        STRTOL_THROW ((ed)->core->regbuf->read_idx,                           \
+                      (ed)->input, &(ed)->input, ERR);                        \
+      else                                                                    \
+        (ed)->core->regbuf->read_idx = REGBUF_MAX - 1;                        \
     }                                                                         \
   while (0)
 #endif

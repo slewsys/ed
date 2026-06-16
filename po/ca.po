@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mailutils 0.6.90\n"
 "Report-Msgid-Bugs-To: bug-gnulib@gnu.org\n"
-"POT-Creation-Date: 2026-06-05 23:57-0400\n"
+"POT-Creation-Date: 2026-06-16 18:33-0400\n"
 "PO-Revision-Date: 2005-05-21 04:10+0200\n"
 "Last-Translator: Jordi Mallach <jordi@gnu.org>\n"
 "Language-Team: Catalan <ca@dodds.net>\n"
@@ -114,7 +114,7 @@ msgstr "L'opció no és vàlida -- %s"
 msgid "Invalid range end"
 msgstr "el rang de pàgines no és vàlid: «%s»"
 
-#: lib/regcomp.c:158 src/buffer.c:437 src/buffer.c:586 src/exec.c:1936
+#: lib/regcomp.c:158 src/buffer.c:437 src/buffer.c:586 src/exec.c:1944
 #: src/io.c:325 src/page.c:861 src/parse.c:272 src/parse.c:517 src/regexp.c:163
 #: src/register.c:372 src/undo.c:26
 #, fuzzy
@@ -193,7 +193,7 @@ msgstr ""
 msgid "Buffer write error"
 msgstr "error d'escriptura"
 
-#: src/buffer.c:501 src/exec.c:139 src/exec.c:168 src/exec.c:1906
+#: src/buffer.c:501 src/exec.c:146 src/exec.c:175 src/exec.c:1914
 #: src/page.c:301 src/parse.c:222
 #, fuzzy
 #| msgid "character out of range"
@@ -234,7 +234,7 @@ msgstr ""
 msgid "Invalid address mark"
 msgstr "la classe de caràcters «%s» no és vàlida"
 
-#: src/cmds.c:362 src/exec.c:1759 src/filter.c:90 src/filter.c:143
+#: src/cmds.c:362 src/exec.c:1767 src/filter.c:90 src/filter.c:143
 #, fuzzy
 msgid "Fork error"
 msgstr "error de lectura"
@@ -259,73 +259,72 @@ msgstr "S'ha produït un error desconegut del sistema"
 msgid "Numerical result out of range"
 msgstr "el caràcter es troba fora del rang"
 
-#: src/exec.c:28 src/exec.c:58 src/exec.c:543 src/exec.c:628 src/exec.c:654
-#: src/exec.c:937 src/exec.c:1049 src/exec.c:1412 src/exec.c:1424
-#: src/exec.c:1432
+#: src/exec.c:28 src/exec.c:58 src/exec.c:557 src/exec.c:642 src/exec.c:668
+#: src/exec.c:1057 src/exec.c:1420 src/exec.c:1432 src/exec.c:1440
 msgid "Command suffix unexpected"
 msgstr ""
 
-#: src/exec.c:134 src/exec.c:163
+#: src/exec.c:141 src/exec.c:170
 msgid "Destination address required"
 msgstr ""
 
-#: src/exec.c:378 src/exec.c:391 src/exec.c:403
+#: src/exec.c:392 src/exec.c:405 src/exec.c:417
 msgid "Command prefix unexpected"
 msgstr ""
 
-#: src/exec.c:534 src/exec.c:619 src/exec.c:726 src/exec.c:747 src/exec.c:986
-#: src/exec.c:1028 src/exec.c:1374 src/exec.c:1572 src/exec.c:1768
+#: src/exec.c:548 src/exec.c:633 src/exec.c:740 src/exec.c:761 src/exec.c:994
+#: src/exec.c:1036 src/exec.c:1382 src/exec.c:1580 src/exec.c:1776
 msgid "Address unexpected"
 msgstr ""
 
-#: src/exec.c:648
+#: src/exec.c:662
 #, fuzzy
 msgid "Invalid redirection"
 msgstr "%s: l'expressió regular no és vàlida: %s"
 
-#: src/exec.c:685 src/main.c:647
+#: src/exec.c:699 src/main.c:647
 msgid "File name not set"
 msgstr ""
 
-#: src/exec.c:699
+#: src/exec.c:713
 msgid "Recursive global command"
 msgstr ""
 
-#: src/exec.c:757
+#: src/exec.c:771
 #, fuzzy
 msgid "No previous error"
 msgstr "error en la recerca de l'expressió regular"
 
-#: src/exec.c:867
+#: src/exec.c:881
 msgid "Invalid destination address"
 msgstr ""
 
-#: src/exec.c:912 src/exec.c:1360
+#: src/exec.c:926 src/exec.c:1368
 #, fuzzy
 #| msgid "invalid user"
 msgid "Invalid register"
 msgstr "l'usuari no és vàlid"
 
-#: src/exec.c:1205 src/exec.c:1268 src/exec.c:1591 src/exec.c:1650
-#: src/exec.c:1831 src/exec.c:1846
+#: src/exec.c:1213 src/exec.c:1276 src/exec.c:1599 src/exec.c:1658
+#: src/exec.c:1839 src/exec.c:1854
 #, fuzzy
 msgid "Unknown command"
 msgstr "S'ha produït un error desconegut del sistema"
 
-#: src/exec.c:1758
+#: src/exec.c:1766
 msgid "Cannot fork shell"
 msgstr ""
 
-#: src/exec.c:1846
+#: src/exec.c:1854
 #, fuzzy
 msgid "Invalid address"
 msgstr "%s: l'expressió regular no és vàlida: %s"
 
-#: src/exec.c:1864
+#: src/exec.c:1872
 msgid "Command too long"
 msgstr ""
 
-#: src/exec.c:1911
+#: src/exec.c:1919
 #, fuzzy
 msgid "Invalid address range"
 msgstr "el rang de pàgines no és vàlid: «%s»"

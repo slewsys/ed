@@ -479,8 +479,8 @@ evidently the redirection operator **<** reads from the default
 register and **>** writes to the default register.
 
 Numbered registers are also supported: **<n** reads from register *n*,
-where *n* is an integer in the range [**0** ... **9**], and **>n** writes to
-register *n*.
+where *n* is an integer in the range [**0** ... **99**], and **>n**
+writes to register *n*.
 
 Lines can be appended to registers using the syntax **>>n** or **>>**,
 in the case of the default register.
@@ -1186,7 +1186,23 @@ remove the backslashes.
 > and another line
 
 To avoid removing backslashes within lines, ending backslashes can
-first be replaced with an arbitrary token, e.g., **<@>**.
+first be replaced with an arbitrary token, e.g., **⩿🝪⪀**. Here is a
+scripted version:
+
+```
+#!/usr/bin/env -S ed -Ef
+#
+# @(#) join-extended-lines
+#
+# SYNOPSIS
+#   join-extended-lines file [...]
+#
+g;\\$;s;;⩿🝪⪀;
+g;⩿🝪⪀;.,/([^⪀]|[^🝪]⪀|[^⩿]🝪⪀)$/j\
+s;⩿🝪⪀;;g
+# Save the result with suffix .joined
+w ! cat >%.joined
+```
 
 ---
 
@@ -1227,7 +1243,7 @@ each line with a number of spaces given by:
 ```
 
 ```
-#!/usr/bin/ed -f
+#!/usr/bin/env -S ed -f
 #
 # @(#) center-lines
 #
@@ -1275,7 +1291,7 @@ Goal: Increment each number in given files.
 Command-line option -E is used to enable extended regular expression syntax.
 
 ```
-#!/usr/bin/ed -Ef
+#!/usr/bin/env -S ed -Ef
 #
 # @(#) increment-numbers
 #
@@ -1311,11 +1327,11 @@ file.
 Goal: Reverse lines characterwise.
 
 ```
-#!/usr/bin/ed -f
+#!/usr/bin/env -S ed -f
 ,! rev
 ```
 
-That's cheating, but it also happens to be three times faster
+That's cheating, but it also happens to be several times faster
 than `sed`. Actually `ed` can reverse strings the "intuitive" way:
 
 ```
@@ -1324,7 +1340,7 @@ ed -e 's;.;&\' -e ';g' -e 'g/./m0' -e ',jp' <(echo 'hello, world!')
 
 > !dlrow ,olleh
 
-but this is admittedly very slow even compared to `sed`'s version.
+
 
 #### Adding Headers
 
@@ -1332,21 +1348,29 @@ Like GNU `sed`, `ed` can be used to safely modify multiple files at
 once:
 
 ```
-ed -i -e '1i' -e '/* Copyright © FOO BAR */ -e '.' *.c
+ed -i -e '1i /* Copyright © FOO BAR */' *.c
 ```
 
-To include multiple lines, either make each line a separate expression
-or use the shell's special string syntax $'any ANSI C escape'.  The
-following produce the same result:
+The input commands, `a`, `i` and `c` all accept an argument on the
+same line as the command itself. Space following the first after the
+input command is preserved. This is an extension to historical `ed`,
+but has precedent in GNU `sed`. Newlines can be embedded by prefixing
+them with backslashes (\\), e.g.:
 
 ```
-ed -i -e '1i' -e '/*'  \
-              -e ' * Copyright © FOO BAR' \
-              -e ' * Created by ...' \
-              -e ' */' *.c
+ed -i -e '1i /*\
+ * Copyright © FOO BAR\
+ * Created by ...\
+ */' -e ,p
 ```
 
-and
+> /* \
+>  * Copyright © FOO BAR \
+>  * Created by ... \
+>  */
+
+Alternatively, the shell's special string syntax $'any ANSI C escape'
+can be used, e.g.:
 
 ```
 ed -i -e '1i' -e $'/*\n * Copyright (C) FOO BAR\n * Created by ...\n */' *.c
@@ -1363,7 +1387,7 @@ ed -i -e '0r LICENSE.txt' *.c *.h
 Goal: Reverse the order of lines in given files.
 
 ```
-#!/usr/bin/ed -f
+#!/usr/bin/env -S ed -f
 g/./m0
 w ! cat >%.tac
 ```
@@ -1373,7 +1397,7 @@ w ! cat >%.tac
 Goal: Add line numbers to files.
 
 ```
-#!/usr/bin/ed -f
+#!/usr/bin/env -S ed -f
 ,n
 ```
 
