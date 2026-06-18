@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnulib 20241209\n"
 "Report-Msgid-Bugs-To: bug-gnulib@gnu.org\n"
-"POT-Creation-Date: 2026-06-16 18:33-0400\n"
+"POT-Creation-Date: 2026-06-18 17:56-0400\n"
 "PO-Revision-Date: 2024-12-11 13:13-0300\n"
 "Last-Translator: Rafael Fontenelle <rafaelff@gnome.org>\n"
 "Language-Team: Brazilian Portuguese <ldpbr-"
@@ -61,83 +61,83 @@ msgstr "%s: opção inválida -- \"%c\"\n"
 msgid "%s: option requires an argument -- '%c'\n"
 msgstr "%s: a opção exige um argumento -- \"%c\"\n"
 
-#: lib/regcomp.c:122
+#: lib/regcomp.c:128
 msgid "Success"
 msgstr "Sucesso"
 
-#: lib/regcomp.c:125 src/regexp.c:287 src/subst.c:427
+#: lib/regcomp.c:131 src/regexp.c:287 src/subst.c:427
 msgid "No match"
 msgstr "Nenhuma ocorrência do padrão"
 
 # , c-format
-#: lib/regcomp.c:128
+#: lib/regcomp.c:134
 msgid "Invalid regular expression"
 msgstr "Expressão regular inválida"
 
 # , c-format
-#: lib/regcomp.c:131
+#: lib/regcomp.c:137
 msgid "Invalid collation character"
 msgstr "Caractere de combinação inválido"
 
 # , c-format
-#: lib/regcomp.c:134
+#: lib/regcomp.c:140
 msgid "Invalid character class name"
 msgstr "Nome inválido de classe de caracteres"
 
-#: lib/regcomp.c:137
+#: lib/regcomp.c:143
 msgid "Trailing backslash"
 msgstr "Barra invertida no final"
 
-#: lib/regcomp.c:140
+#: lib/regcomp.c:146
 msgid "Invalid back reference"
 msgstr "Retrorreferência inválida"
 
-#: lib/regcomp.c:143
+#: lib/regcomp.c:149
 msgid "Unmatched [, [^, [:, [., or [="
 msgstr "[, [^, [:, [., ou [= sem correspondente"
 
-#: lib/regcomp.c:146
+#: lib/regcomp.c:152
 msgid "Unmatched ( or \\("
 msgstr "( ou \\( sem correspondente"
 
-#: lib/regcomp.c:149
+#: lib/regcomp.c:155
 msgid "Unmatched \\{"
 msgstr "\\{ sem correspondente"
 
-#: lib/regcomp.c:152
+#: lib/regcomp.c:158
 msgid "Invalid content of \\{\\}"
 msgstr "Conteúdo inválido de \\{\\}"
 
 # , c-format
-#: lib/regcomp.c:155
+#: lib/regcomp.c:161
 msgid "Invalid range end"
 msgstr "Fim de intervalo inválido"
 
-#: lib/regcomp.c:158 src/buffer.c:437 src/buffer.c:586 src/exec.c:1944
+#: lib/regcomp.c:164 src/buffer.c:437 src/buffer.c:586 src/exec.c:1936
 #: src/io.c:325 src/page.c:861 src/parse.c:272 src/parse.c:517 src/regexp.c:163
 #: src/register.c:372 src/undo.c:26
 msgid "Memory exhausted"
 msgstr "Memória esgotada"
 
 # , c-format
-#: lib/regcomp.c:161
+#: lib/regcomp.c:167
 msgid "Invalid preceding regular expression"
 msgstr "A expressão regular precedente é inválida"
 
-#: lib/regcomp.c:164
+#: lib/regcomp.c:170
 msgid "Premature end of regular expression"
 msgstr "Fim prematuro da expressão regular"
 
 # , c-format
-#: lib/regcomp.c:167
+#: lib/regcomp.c:173
 msgid "Regular expression too big"
 msgstr "Expressão regular grande demais"
 
-#: lib/regcomp.c:170
+#: lib/regcomp.c:176
 msgid "Unmatched ) or \\)"
 msgstr ") ou \\) sem correspondente"
 
-#: lib/regcomp.c:650
+#: lib/regcomp.c:669
 msgid "No previous regular expression"
 msgstr "Nenhuma expressão regular anterior"
 
@@ -204,7 +204,7 @@ msgid "Buffer write error"
 msgstr "erro de escrita"
 
 # , c-format
-#: src/buffer.c:501 src/exec.c:146 src/exec.c:175 src/exec.c:1914
+#: src/buffer.c:501 src/exec.c:142 src/exec.c:171 src/exec.c:1906
 #: src/page.c:301 src/parse.c:222
 #, fuzzy
 #| msgid "character out of range"
@@ -247,7 +247,7 @@ msgstr ""
 msgid "Invalid address mark"
 msgstr "Nome inválido de classe de caracteres"
 
-#: src/cmds.c:362 src/exec.c:1767 src/filter.c:90 src/filter.c:143
+#: src/cmds.c:362 src/exec.c:1759 src/filter.c:90 src/filter.c:143
 #, fuzzy
 #| msgid "program error"
 msgid "Fork error"
@@ -276,82 +276,82 @@ msgstr "Erro desconhecido"
 msgid "Numerical result out of range"
 msgstr "caractere fora do intervalo"
 
-#: src/exec.c:28 src/exec.c:58 src/exec.c:557 src/exec.c:642 src/exec.c:668
-#: src/exec.c:1057 src/exec.c:1420 src/exec.c:1432 src/exec.c:1440
+#: src/exec.c:28 src/exec.c:58 src/exec.c:549 src/exec.c:634 src/exec.c:660
+#: src/exec.c:1049 src/exec.c:1412 src/exec.c:1424 src/exec.c:1432
 msgid "Command suffix unexpected"
 msgstr ""
 
-#: src/exec.c:141 src/exec.c:170
+#: src/exec.c:137 src/exec.c:166
 msgid "Destination address required"
 msgstr ""
 
-#: src/exec.c:392 src/exec.c:405 src/exec.c:417
+#: src/exec.c:384 src/exec.c:397 src/exec.c:409
 msgid "Command prefix unexpected"
 msgstr ""
 
-#: src/exec.c:548 src/exec.c:633 src/exec.c:740 src/exec.c:761 src/exec.c:994
-#: src/exec.c:1036 src/exec.c:1382 src/exec.c:1580 src/exec.c:1776
+#: src/exec.c:540 src/exec.c:625 src/exec.c:732 src/exec.c:753 src/exec.c:986
+#: src/exec.c:1028 src/exec.c:1374 src/exec.c:1572 src/exec.c:1768
 msgid "Address unexpected"
 msgstr ""
 
 # , c-format
-#: src/exec.c:662
+#: src/exec.c:654
 #, fuzzy
 #| msgid "Invalid regular expression"
 msgid "Invalid redirection"
 msgstr "Expressão regular inválida"
 
-#: src/exec.c:699 src/main.c:647
+#: src/exec.c:691 src/main.c:647
 msgid "File name not set"
 msgstr ""
 
-#: src/exec.c:713
+#: src/exec.c:705
 msgid "Recursive global command"
 msgstr ""
 
-#: src/exec.c:771
+#: src/exec.c:763
 #, fuzzy
 #| msgid "No previous regular expression"
 msgid "No previous error"
 msgstr "Nenhuma expressão regular anterior"
 
 # , c-format
-#: src/exec.c:881
+#: src/exec.c:873
 #, fuzzy
 #| msgid "Invalid collation character"
 msgid "Invalid destination address"
 msgstr "Caractere de combinação inválido"
 
-#: src/exec.c:926 src/exec.c:1368
+#: src/exec.c:918 src/exec.c:1360
 #, fuzzy
 #| msgid "invalid user"
 msgid "Invalid register"
 msgstr "usuário inválido"
 
-#: src/exec.c:1213 src/exec.c:1276 src/exec.c:1599 src/exec.c:1658
-#: src/exec.c:1839 src/exec.c:1854
+#: src/exec.c:1205 src/exec.c:1268 src/exec.c:1591 src/exec.c:1650
+#: src/exec.c:1831 src/exec.c:1846
 #, fuzzy
 #| msgid "Unknown error"
 msgid "Unknown command"
 msgstr "Erro desconhecido"
 
-#: src/exec.c:1766
+#: src/exec.c:1758
 msgid "Cannot fork shell"
 msgstr ""
 
 # , c-format
-#: src/exec.c:1854
+#: src/exec.c:1846
 #, fuzzy
 #| msgid "Invalid regular expression"
 msgid "Invalid address"
 msgstr "Expressão regular inválida"
 
-#: src/exec.c:1872
+#: src/exec.c:1864
 msgid "Command too long"
 msgstr ""
 
 # , c-format
-#: src/exec.c:1919
+#: src/exec.c:1911
 #, fuzzy
 #| msgid "Invalid range end"
 msgid "Invalid address range"

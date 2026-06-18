@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnulib 4.0.0.2567\n"
 "Report-Msgid-Bugs-To: bug-gnulib@gnu.org\n"
-"POT-Creation-Date: 2026-06-16 18:33-0400\n"
+"POT-Creation-Date: 2026-06-18 17:56-0400\n"
 "PO-Revision-Date: 2025-02-13 10:11+0000\n"
 "Last-Translator: Lauri Nurmi <lanurmi@iki.fi>\n"
 "Language-Team: Finnish <translation-team-fi@lists.sourceforge.net>\n"
@@ -61,77 +61,77 @@ msgstr "%s: virheellinen valitsin -- ”%c”\n"
 msgid "%s: option requires an argument -- '%c'\n"
 msgstr "%s: valitsin vaatii argumentin -- ”%c”\n"
 
-#: lib/regcomp.c:122
+#: lib/regcomp.c:128
 msgid "Success"
 msgstr "Onnistui"
 
-#: lib/regcomp.c:125 src/regexp.c:287 src/subst.c:427
+#: lib/regcomp.c:131 src/regexp.c:287 src/subst.c:427
 msgid "No match"
 msgstr "Ei täsmäävyyttä"
 
-#: lib/regcomp.c:128
+#: lib/regcomp.c:134
 msgid "Invalid regular expression"
 msgstr "Virheellinen säännöllinen lauseke"
 
-#: lib/regcomp.c:131
+#: lib/regcomp.c:137
 msgid "Invalid collation character"
 msgstr "Virheellinen vertailumerkki"
 
-#: lib/regcomp.c:134
+#: lib/regcomp.c:140
 msgid "Invalid character class name"
 msgstr "Virheellinen merkkiluokan nimi"
 
-#: lib/regcomp.c:137
+#: lib/regcomp.c:143
 msgid "Trailing backslash"
 msgstr "Kenoviiva lopussa"
 
-#: lib/regcomp.c:140
+#: lib/regcomp.c:146
 msgid "Invalid back reference"
 msgstr "Virheellinen takaisinviittaus"
 
-#: lib/regcomp.c:143
+#: lib/regcomp.c:149
 msgid "Unmatched [, [^, [:, [., or [="
 msgstr "Pariton [, [^, [:, [. tai [="
 
-#: lib/regcomp.c:146
+#: lib/regcomp.c:152
 msgid "Unmatched ( or \\("
 msgstr "Pariton ( tai \\("
 
-#: lib/regcomp.c:149
+#: lib/regcomp.c:155
 msgid "Unmatched \\{"
 msgstr "Pariton \\{"
 
-#: lib/regcomp.c:152
+#: lib/regcomp.c:158
 msgid "Invalid content of \\{\\}"
 msgstr "Virheellinen \\{\\}:n sisältö"
 
-#: lib/regcomp.c:155
+#: lib/regcomp.c:161
 msgid "Invalid range end"
 msgstr "Virheellinen välin loppu"
 
-#: lib/regcomp.c:158 src/buffer.c:437 src/buffer.c:586 src/exec.c:1944
+#: lib/regcomp.c:164 src/buffer.c:437 src/buffer.c:586 src/exec.c:1936
 #: src/io.c:325 src/page.c:861 src/parse.c:272 src/parse.c:517 src/regexp.c:163
 #: src/register.c:372 src/undo.c:26
 msgid "Memory exhausted"
 msgstr "Muisti lopussa"
 
-#: lib/regcomp.c:161
+#: lib/regcomp.c:167
 msgid "Invalid preceding regular expression"
 msgstr "Virheellinen edeltävä säännöllinen lauseke"
 
-#: lib/regcomp.c:164
+#: lib/regcomp.c:170
 msgid "Premature end of regular expression"
 msgstr "Ennenaikainen säännöllisen lausekkeen loppu"
 
-#: lib/regcomp.c:167
+#: lib/regcomp.c:173
 msgid "Regular expression too big"
 msgstr "Säännöllinen lauseke on liian suuri"
 
-#: lib/regcomp.c:170
+#: lib/regcomp.c:176
 msgid "Unmatched ) or \\)"
 msgstr "Pariton ) tai \\)"
 
-#: lib/regcomp.c:650
+#: lib/regcomp.c:669
 msgid "No previous regular expression"
 msgstr "Ei edellistä säännöllistä lauseketta"
 
@@ -176,7 +176,7 @@ msgstr "Puskuri täynnä"
 msgid "Buffer write error"
 msgstr "Puskurin kirjoitusvirhe"
 
-#: src/buffer.c:501 src/exec.c:146 src/exec.c:175 src/exec.c:1914
+#: src/buffer.c:501 src/exec.c:142 src/exec.c:171 src/exec.c:1906
 #: src/page.c:301 src/parse.c:222
 msgid "Address out of range"
 msgstr "Osoite kantaman ulkopuolella"
@@ -210,7 +210,7 @@ msgstr "Tiedostonloppu odottamaton"
 msgid "Invalid address mark"
 msgstr "Virheellinen osoitemerkki"
 
-#: src/cmds.c:362 src/exec.c:1767 src/filter.c:90 src/filter.c:143
+#: src/cmds.c:362 src/exec.c:1759 src/filter.c:90 src/filter.c:143
 msgid "Fork error"
 msgstr "Haarukan virhe"
 
@@ -231,66 +231,66 @@ msgstr "Tuntematon virhe"
 msgid "Numerical result out of range"
 msgstr "Numeerinen tulos alueen ulkopuolella"
 
-#: src/exec.c:28 src/exec.c:58 src/exec.c:557 src/exec.c:642 src/exec.c:668
-#: src/exec.c:1057 src/exec.c:1420 src/exec.c:1432 src/exec.c:1440
+#: src/exec.c:28 src/exec.c:58 src/exec.c:549 src/exec.c:634 src/exec.c:660
+#: src/exec.c:1049 src/exec.c:1412 src/exec.c:1424 src/exec.c:1432
 msgid "Command suffix unexpected"
 msgstr "Komennon jälkiliite odottamaton"
 
-#: src/exec.c:141 src/exec.c:170
+#: src/exec.c:137 src/exec.c:166
 msgid "Destination address required"
 msgstr "Määräpaikan osoite vaaditaan"
 
-#: src/exec.c:392 src/exec.c:405 src/exec.c:417
+#: src/exec.c:384 src/exec.c:397 src/exec.c:409
 msgid "Command prefix unexpected"
 msgstr "Komennon etuliite odottamaton"
 
-#: src/exec.c:548 src/exec.c:633 src/exec.c:740 src/exec.c:761 src/exec.c:994
-#: src/exec.c:1036 src/exec.c:1382 src/exec.c:1580 src/exec.c:1776
+#: src/exec.c:540 src/exec.c:625 src/exec.c:732 src/exec.c:753 src/exec.c:986
+#: src/exec.c:1028 src/exec.c:1374 src/exec.c:1572 src/exec.c:1768
 msgid "Address unexpected"
 msgstr "Osoite odottamaton"
 
-#: src/exec.c:662
+#: src/exec.c:654
 msgid "Invalid redirection"
 msgstr "Virheellinen uudelleenohjaus"
 
-#: src/exec.c:699 src/main.c:647
+#: src/exec.c:691 src/main.c:647
 msgid "File name not set"
 msgstr "Tiedoston nimeä ei ole määritetty"
 
-#: src/exec.c:713
+#: src/exec.c:705
 msgid "Recursive global command"
 msgstr "Rekursiivinen globaali komento"
 
-#: src/exec.c:771
+#: src/exec.c:763
 msgid "No previous error"
 msgstr "Ei aikaisempaa virhettä"
 
-#: src/exec.c:881
+#: src/exec.c:873
 msgid "Invalid destination address"
 msgstr "Virheellinen kohdeosoite"
 
-#: src/exec.c:926 src/exec.c:1368
+#: src/exec.c:918 src/exec.c:1360
 msgid "Invalid register"
 msgstr "Virheellinen rekisteri"
 
-#: src/exec.c:1213 src/exec.c:1276 src/exec.c:1599 src/exec.c:1658
-#: src/exec.c:1839 src/exec.c:1854
+#: src/exec.c:1205 src/exec.c:1268 src/exec.c:1591 src/exec.c:1650
+#: src/exec.c:1831 src/exec.c:1846
 msgid "Unknown command"
 msgstr "Tuntematon komento"
 
-#: src/exec.c:1766
+#: src/exec.c:1758
 msgid "Cannot fork shell"
 msgstr "Ei voi forkata tulkkia"
 
-#: src/exec.c:1854
+#: src/exec.c:1846
 msgid "Invalid address"
 msgstr "Virheellinen osoite"
 
-#: src/exec.c:1872
+#: src/exec.c:1864
 msgid "Command too long"
 msgstr "Komento liian pitkä"
 
-#: src/exec.c:1919
+#: src/exec.c:1911
 msgid "Invalid address range"
 msgstr "Virheellinen osoitealue"
 
