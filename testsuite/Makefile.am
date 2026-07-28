@@ -134,7 +134,7 @@ ED_SCRIPTS_OK_SO =							      \
 ED_SCRIPTS_OK_XM =							      \
 	mac01.txm mac02.txm mac03.txm mac04.txm mac05.txm mac06.txm           \
 	mac07.txm mac08.txm mac09.txm mac10.txm mac11.txm mac12.txm           \
-	mac13.txm mac14.txm
+	mac13.txm mac14.txm mac15.txm
 
 # Ed scripts which should complete, but with non-zero exit status.
 ED_SCRIPTS_ERR =							      \

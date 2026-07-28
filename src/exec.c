@@ -933,7 +933,16 @@ macro_cmd (ed_buffer_t *ed)
   int io_f = 0;                 /* Print suffix */
 
   /* case '@': */
-  if ((status = is_valid_range (ed->state->dot, ed->state->dot, ed)) < 0)
+  /*
+   * Allow running macro in empty buffer, provided no addresses are
+   * specified.
+   */
+  if (!(ed->exec->region->addrs || ed->state->lines))
+    {
+      ed->exec->region->start = 0;
+      ed->exec->region->end = 0;
+    }
+  else if ((status = is_valid_range (ed->state->dot, ed->state->dot, ed)) < 0)
     return status;
   if (!ed->core->regbuf->rio_f)
     GET_INPUT_REGISTER (ed);
@@ -968,8 +977,7 @@ n_cmd (ed_buffer_t *ed)
       ed->exec->region->start = 0;
       ed->exec->region->end = 0;
     }
-  else if ((status = is_valid_range (ed->state->dot, ed->state->dot, ed))
-           < 0)
+  else if ((status = is_valid_range (ed->state->dot, ed->state->dot, ed)) < 0)
     return status;
   COMMAND_SUFFIX (ed->display->dio_f, ed);
   if (ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL))

@@ -217,7 +217,7 @@ address_offset (off_t *addr, ed_buffer_t *ed)
 static int
 check_address_bounds (off_t addr, ed_buffer_t *ed)
 {
-  if (addr < 0 || ed->state->lines < addr)
+  if (!(0 <= addr && addr <= ed->state->lines))
     {
       ed->exec->err = _("Address out of range");
       return ERR;
