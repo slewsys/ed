@@ -386,36 +386,36 @@ substitute_lines (off_t from, off_t to, regex_t *re, off_t s_nth,
       if ((status =
            substitute_matching (re, lp, &len, s_nth, s_mod, s_f, ed)) < 0)
         return status;
-      if (len)
+      else if (!len)
+        continue;
+
+      spl1 ();
+      up = NULL;
+      if (delete_lines (ed->state->dot, ed->state->dot, ed) < 0)
         {
-          spl1 ();
-          up = NULL;
-          if (delete_lines (ed->state->dot, ed->state->dot, ed) < 0)
+          spl0 ();
+          return ERR;
+        }
+      txt = rb;
+      eot = rb + len;
+      do
+        {
+          for (s = txt; *s++ != '\n';)
+            ;
+          if (!(txt = put_buffer_line (txt, s - txt, ed)))
             {
               spl0 ();
               return ERR;
             }
-          txt = rb;
-          eot = rb + len;
-          do
-            {
-              for (s = txt; *s++ != '\n';)
-                ;
-              if (!(txt = put_buffer_line (txt, s - txt, ed)))
-                {
-                  spl0 ();
-                  return ERR;
-                }
-              mp = get_line_node (ed->state->dot, ed);
-              transfer_marks (mp, lp, ed);
-              APPEND_UNDO_NODE (mp, up, ed->state->dot, ed);
-            }
-          while (txt != eot);
-          ++nsubs;
-          dot = ed->state->dot;
-          ed->state->is_binary |= ed->state->input_is_binary;
-          spl0 ();
+          mp = get_line_node (ed->state->dot, ed);
+          transfer_marks (mp, lp, ed);
+          APPEND_UNDO_NODE (mp, up, ed->state->dot, ed);
         }
+      while (txt != eot);
+      ++nsubs;
+      dot = ed->state->dot;
+      ed->state->is_binary |= ed->state->input_is_binary;
+      spl0 ();
     }
   ed->state->dot = dot;
 
