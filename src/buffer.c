@@ -201,7 +201,6 @@ init_ed_command (int init_glob, ed_buffer_t *ed)
 
   ed->file->handle = NULL;
   ed->file->inode = 0;
-  ed->file->is_writable = 0;
 #endif  /* WANT_FILE_LOCK */
 
 }

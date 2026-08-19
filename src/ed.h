@@ -515,7 +515,6 @@ struct ed_file
   size_t name_size;             /* Size of name buffer. */
   char *suffix;                 /* Filename suffix for option `-i'.  */
   int is_glob;                  /* Glob filename? */
-  int is_writable;              /* If set, file open read-write. */
 };
 
 /* Ed command-line flags. */

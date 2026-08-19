@@ -39,7 +39,7 @@ read_file (const char *fn, off_t after, off_t *addr,
   INO_T inode;
   int status = 0;
   int already_open = 0;         /* File already open. */
-  int already_locked = 0;         /* File already locked. */
+  int already_locked = 0;       /* File already locked. */
   int read_only = 0;            /* File access permissions. */
   int unlockable = 0;           /* Exclusive lock capability. */
 
@@ -105,12 +105,11 @@ read_file (const char *fn, off_t after, off_t *addr,
       spl1 ();
       ed->file->inode = inode;
       ed->file->handle = fp;
-      ed->file->is_writable = !read_only;
       spl0 ();
     }
 
   /* Assert: File lock released on file close. */
-  if (!status && set_file_lock (fp, 1) != 0)
+  if (!unlockable && set_file_lock (fp, 1) != 0)
     already_locked = 1;
 
   if (already_locked && isatty (0)
@@ -124,14 +123,12 @@ read_file (const char *fn, off_t after, off_t *addr,
     return status;
   *addr = ed->state->dot - after;
 
-  if (read_only
-      && !(ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL)))
+  if (read_only && !(ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL)))
     fprintf (stderr, (ed->exec->opt & VERBOSE
                       ? "%s: File is read-only\n" : ""), fn);
 
 #ifdef WANT_FILE_LOCK
-  if (unlockable
-      && !(ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL)))
+  if (unlockable && !(ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL)))
     fprintf (stderr, (ed->exec->opt & VERBOSE
                       ? "%s: Exclusive lock not set\n" : ""), fn);
 
@@ -622,9 +619,15 @@ write_file (const char *fn, int is_default, off_t from, off_t to,
   if (get_inode (fn, &inode, ed) < 0)
     return ERR;
 
-  /* File already open and writable. */
+  /* File already open, check write access in case of change since open. */
   if ((file_already_open = (inode && inode == ed->file->inode))
-      && ed->file->is_writable)
+      && (status = access (fn, W_OK)) == -1)
+    {
+      fprintf (stderr, "%s: %s\n", ed->file->name, "Permission denied");
+      ed->exec->err = _("File write error");
+      return ERR;
+    }
+  else if (file_already_open)
     {
       if (FSEEK (fp = ed->file->handle, 0L,
                  *mode == 'a' ? SEEK_END : SEEK_SET) == -1)
@@ -641,23 +644,13 @@ write_file (const char *fn, int is_default, off_t from, off_t to,
           return ERR;
         }
     }
-
-  /*
-   * XXX Potential race: Reopening file for writing may lose lock.
-   *
-   * File-locking requires file write access, so this case should not
-   * be reached.
-   */
-  else if (file_already_open
-           && (fclose (ed->file->handle) < 0 || !(ed->file->handle = NULL)))
-    {
-      fprintf (stderr, "%s: %s\n", ed->file->name, strerror (errno));
-      ed->exec->err = _("File close error");
-      return ERR;
-    }
   else
     {
 #endif  /* WANT_FILE_LOCK */
+
+      /*
+       * XXX Potential race: Reopening file for writing may lose lock.
+       */
       if (!(fp = fopen (fn, mode)))
         {
           fprintf (stderr, "%s: %s\n", fn, strerror (errno));
@@ -670,7 +663,6 @@ write_file (const char *fn, int is_default, off_t from, off_t to,
           spl1 ();
           ed->file->inode = inode;
           ed->file->handle = fp;
-          ed->file->is_writable = 1;
           spl0 ();
         }
       if (set_file_lock (fp, 1) != 0 && isatty (0))
