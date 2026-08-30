@@ -1100,7 +1100,7 @@ r_cmd (ed_buffer_t *ed)
   else
     {
       /* Save filename as default iff ed->file->name not set. */
-      if (!ed->file->name && *fn != '\0')
+      if (!ed->file->name)
         {
           REALLOC_THROW (ed->file->name, ed->file->name_size, len + 1, ERR, ed);
           strcpy (ed->file->name, fn);
