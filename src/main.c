@@ -633,18 +633,18 @@ save_edit (int status, ed_buffer_t *ed)
       break;
     }
 
+  /* If name is empty (""), write trivially succeeds to /dev/null. */
   name = (*ed->file->list->gl_pathv != NULL
-          && **ed->file->list->gl_pathv != '\0'
           && **ed->file->list->gl_pathv != '!'
           ? *ed->file->list->gl_pathv
           : (ed->file->name != NULL
-             && *ed->file->name != '\0'
-             && *ed->file->name != '!' ? ed->file->name
-             : NULL));
+             && *ed->file->name != '!'
+             ? ed->file->name : ""));
 
-  if (!name)
+  /* Avoid error loop with early permissions check. */
+  if (*suffix == '\0' && access (name, W_OK) == -1)
     {
-      ed->exec->err = _("File name not set");
+      ed->exec->err = _("File write error");
       return FATAL;
     }
   else if ((len = strlen (name) + strlen (suffix)) >= get_path_max (name))
