@@ -665,7 +665,7 @@ f_cmd (ed_buffer_t *ed)
   else
     {
       FILE_NAME (fn, len, cy, 1, 0, ed);
-      REALLOC_THROW (ed->file->name, ed->file->name_size, len+1, ERR, ed);
+      REALLOC_THROW (ed->file->name, ed->file->name_size, len + 1, ERR, ed);
       strcpy (ed->file->name, fn);
     }
 
@@ -929,6 +929,7 @@ macro_cmd (ed_buffer_t *ed)
   static char *saved_input = NULL;
   static size_t saved_input_size = 0;
 
+  size_t len = 0;
   int status = 0;               /* Return status */
   int io_f = 0;                 /* Print suffix */
 
@@ -949,8 +950,8 @@ macro_cmd (ed_buffer_t *ed)
   COMMAND_SUFFIX (io_f, ed);
   if (ed->exec->global && *(ed->input) != '\0')
     {
-      REALLOC_THROW (saved_input, saved_input_size,
-                     strlen (ed->input) + 1, ERR, ed);
+      len = strlen (ed->input);
+      REALLOC_THROW (saved_input, saved_input_size, len + 1, ERR, ed);
       strcpy (saved_input, ed->input);
     }
   if ((status = exec_macro (ed)) < 0)
@@ -1865,16 +1866,13 @@ normalize_frame_buffer (ed_buffer_t *ed)
   static size_t buf_size = 0;
 
   char *modifier = ed->input;
+  size_t modifier_len = strlen (modifier);
   size_t len;
   int status;
 
   /* Allocate for `start,end' + `Z' + modifier. */
-  if ((len = 2 * OFF_T_LEN + strlen (modifier) + 3) >= INT_MAX)
-    {
-      ed->exec->err = _("Command too long");
-      return ERR;
-    }
-  REALLOC_THROW (buf, buf_size, len, ERR, ed);
+  REALLOC_THROW (buf, buf_size, 2 * OFF_T_LEN + modifier_len + 3, ERR, ed);
+  len = 2 * OFF_T_LEN + modifier_len + 3;
 
   /* Always use default address range. */
   snprintf (buf, len,

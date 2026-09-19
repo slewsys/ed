@@ -541,7 +541,7 @@ get_stream_line (FILE *fp, size_t *len, ed_buffer_t *ed)
     {
       REALLOC_THROW (tb, tb_size, *len + 1, NULL, ed);
       ed->state->input_is_binary |= !(*(tb + *len) = c);
-      if (++*len >= SIZE_T_MAX - 2)
+      if (++*len >= SIZE_MAX - 2)
         {
           ed->exec->err = _("Line too long");
           return NULL;

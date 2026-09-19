@@ -253,14 +253,14 @@ create_disk_buffer (FILE **fp, char **name, size_t *name_size, ed_buffer_t *ed)
     s = "/tmp/";
   s_size = strlen (s);
   add_path_sep = *(s + s_size - 1) != '/';
-  path_size = s_size + add_path_sep + sizeof template;
-  if (path_size >= get_path_max (s))
+  if (s_size >= get_path_max (s) - (add_path_sep + sizeof template))
     {
       fprintf (stderr, add_path_sep ? "%s/%s: %s\n" : "%s%s: %s\n",
                s, template, _("File name too long"));
       ed->exec->err = _("Invalid buffer name");
       return ERR;
     }
+  path_size = s_size + add_path_sep + sizeof template;
   REALLOC_THROW (*name, *name_size, path_size + 1, ERR, ed);
   strcpy (*name, s);
   strcpy (*name + s_size, add_path_sep ? "/" : "");
@@ -546,9 +546,9 @@ dup_argv (int argc, char **argv, ed_buffer_t *ed)
 
   for (i = 0, pathv_p[i] = NULL; i < argc; ++i, pathv_p[i] = NULL, len = 0)
     {
-      sz = strlen (argv[i]) + 1;
-      REALLOC_THROW (pathv_p[i], len, sz, NULL, ed);
-      memmove (pathv_p[i], argv[i], sz);
+      sz = strlen (argv[i]);
+      REALLOC_THROW (pathv_p[i], len, sz + 1, NULL, ed);
+      memmove (pathv_p[i], argv[i], sz + 1);
     }
   return pathv_p;
 }
@@ -569,9 +569,9 @@ realloc_buffer (void **b, size_t *n, size_t i, ed_buffer_t *ed)
     return *b;
   if (i < BUFSIZ)
     _ti = BUFSIZ;
-  else if (i >> BUFSIZ_LOG2 <= SIZE_T_MAX >> (BUFSIZ_LOG2 + 1))
+  else if (i >> BUFSIZ_LOG2 <= SIZE_MAX >> (BUFSIZ_LOG2 + 1))
     _ti = (size_t) (i >> BUFSIZ_LOG2 << (BUFSIZ_LOG2 + 1));
-  else if (i <= SIZE_T_MAX)
+  else if (i <= SIZE_MAX)
     _ti = (size_t) i;
   else
     {
