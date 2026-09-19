@@ -49,7 +49,7 @@ static void script_die (int, ed_buffer_t *);
 int
 main (int argc, char **argv)
 {
-  struct option long_opts[17] =
+  struct option long_opts[18] =
     {
       {"ansi-color",         no_argument,       NULL, 'R'},
 
@@ -72,6 +72,7 @@ main (int argc, char **argv)
       {"shell",              required_argument, NULL, 'S'},
       {"scripted",           no_argument,       NULL, 's'},
       {"traditional",        no_argument,       NULL, 'G'},
+      {"unsafe-names",       no_argument,       NULL, 'u'},
       {"verbose",            no_argument,       NULL, 'v'},
       {"version",            no_argument,       NULL, 'V'},
       {"write",              no_argument,       NULL, 'w'},
@@ -81,7 +82,7 @@ main (int argc, char **argv)
 #ifdef WANT_SCRIPT_FLAGS
     "e:f:i::m"
 #endif
-    "Ghp:RrS:sVvw"
+    "Ghp:RrS:suVvw"
 #ifdef WANT_ED_ENCRYPTION
     "x"
 #endif
@@ -188,6 +189,9 @@ top:
         break;
       case 's':                 /* Suppress interactive diagnostics. */
         ed->exec->opt |= SCRIPTED;
+        break;
+      case 'u':                 /* Allow unsafe file names. */
+        ed->exec->opt |= UNSAFE_NAMES;
         break;
       case 'V':                 /* Print version, then exit. */
         ed->exec->opt |= PRINT_VERSION;
@@ -867,6 +871,7 @@ ed_usage (int status, ed_buffer_t *ed)
   --regexp-extended, -r     Enable extended regular expression syntax.\n\
   --shell, -S SHELL         Execute shell commands (!) with SHELL.\n\
   --script, -s              Suppress interactive diagnostics.\n\
+  --unsafe-names, -u        Quote file name expansion in shell commands.\n\
   --verbose, -v             Enable verbose diagnostics.\n\
   --version, -V             Display version information, then exit.\n\
   --write, -w               Enable writing to process substitution.\n\
@@ -887,6 +892,7 @@ Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"));
   --regexp-extended, -r     Enable extended regular expression syntax.\n\
   --shell, -S SHELL         Execute shell commands (!) with SHELL.\n\
   --script, -s              Suppress interactive diagnostics.\n\
+  --unsafe-names, -u        Quote file name expansion in shell commands.\n\
   --verbose, -v             Enable verbose diagnostics.\n\
   --version, -V             Display version information, then exit.\n\
   --write, -w               Enable writing to process substitution.\n\

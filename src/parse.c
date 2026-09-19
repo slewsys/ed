@@ -14,6 +14,7 @@ static int check_address_bounds (off_t, ed_buffer_t *);
 static glob_t *expand_glob (char *, int, glob_t *, ed_buffer_t *);
 static char *is_valid_name (const char *, ed_buffer_t *);
 static int line_address (off_t *, ed_buffer_t *);
+static char *shell_quote (const char *, ed_buffer_t *);
 static char *strtok_with_delimiters (char *, const char *);
 
 
@@ -680,15 +681,16 @@ char *
 expand_shell_command (size_t *len, int *subs, ed_buffer_t *ed)
 {
   static char *gl = NULL;
-  static char *sc = NULL;         /* Shell command buffer */
-  static char *sc_curr = NULL;    /* Current command buffer */
-  static char *sc_prev = NULL;    /* Previous command buffer */
+  static char *sc = NULL;            /* Shell command buffer */
+  static char *sc_curr = NULL;       /* Current command buffer */
+  static char *sc_prev = NULL;       /* Previous command buffer */
   static size_t gl_size = 0;
-  static size_t sc_size = 0;      /* Buffer size */
-  static size_t sc_prev_size = 0; /* Buffer size */
-  static size_t sc_curr_size = 0; /* Buffer size */
+  static size_t sc_size = 0;         /* Buffer size */
+  static size_t sc_prev_size = 0;    /* Buffer size */
+  static size_t sc_curr_size = 0;    /* Buffer size */
 
-  char *xl, *s, *fn = NULL;
+  char *xl, *s;
+  char *fn = NULL;
   size_t m, n;
 
   if (ed->exec->opt & RESTRICTED)
@@ -742,6 +744,10 @@ expand_shell_command (size_t *len, int *subs, ed_buffer_t *ed)
         else
 #endif
           fn = ed->file->name ? ed->file->name : "";
+
+        if (ed->exec->opt & UNSAFE_NAMES && (fn = shell_quote (fn, ed)) == NULL)
+          return NULL;
+
         m = strlen (fn);
         REALLOC_THROW (sc, sc_size, *len + m + 1, NULL, ed);
         memcpy (sc + *len, fn, m);
@@ -787,6 +793,79 @@ expand_shell_command (size_t *len, int *subs, ed_buffer_t *ed)
   memcpy (sc_prev, sc_curr, sc_curr_size);
   *(sc + *len) = '\0';
   return sc;
+}
+
+/* shell_quote: Return pointer shell-quoted fn: 'lo y'all' => \''lo y'\''all'\' */
+static char *
+shell_quote (const char *fn, ed_buffer_t *ed)
+{
+  static char *quoted = NULL;
+  static size_t quoted_size = 0;
+
+  size_t len = strlen (fn);
+
+  REALLOC_THROW (quoted, quoted_size, len + 3, NULL, ed);
+
+  size_t quoted_len = len + 2; /* 'fn' */
+  size_t idx = 0;
+
+  if (!len)
+    {
+      quoted[idx++] = '\'';
+      quoted[idx++] = '\'';
+      quoted[idx] = '\0';
+      return quoted;
+    }
+
+  while (*fn == '\'')
+    {
+      REALLOC_THROW (quoted, quoted_size, quoted_len + 2, NULL, ed);
+      quoted_len += 1;
+      quoted[idx++] = '\\';
+      quoted[idx++] = '\'';
+      ++fn;
+    }
+
+  if (*fn)
+    quoted[idx++] = '\'';
+
+  for (; *fn; ++fn)
+    {
+      if (*fn == '\'')
+        {
+          if (*(fn + 1))
+            {
+              REALLOC_THROW (quoted, quoted_size, quoted_len + 4, NULL, ed);
+              quoted_len += 3;
+              quoted[idx++] = '\'';
+              quoted[idx++] = '\\';
+              quoted[idx++] = '\'';
+              quoted[idx++] = '\'';
+            }
+          else
+            {
+              REALLOC_THROW (quoted, quoted_size, quoted_len + 3, NULL, ed);
+              quoted_len += 2;
+              quoted[idx++] = '\'';
+              quoted[idx++] = '\\';
+              quoted[idx++] = '\'';
+            }
+        }
+      else
+        {
+          if (*(fn + 1))
+            {
+              quoted[idx++] = *fn;
+            }
+          else
+            {
+              quoted[idx++] = *fn;
+              quoted[idx++] = '\'';
+            }
+        }
+    }
+  quoted[idx] = '\0';
+  return quoted;
 }
 
 

@@ -539,8 +539,9 @@ enum ed_command_flags
   FSCRIPT            = 0x01000,  /* If set, script via option `-f'.. */
   SCRIPTED           = 0x02000,  /* If set, script mode enabled. */
   TRADITIONAL        = 0x04000,  /* If set, be backward compatible. */
-  VERBOSE            = 0x08000,  /* If set, print error diagnostics. */
-  WRITE_ONLY         = 0x10000   /* If set, open file in write-only mode. */
+  UNSAFE_NAMES       = 0x08000,  /* If set, quote file names in shell commands. */
+  VERBOSE            = 0x10000,  /* If set, print error diagnostics. */
+  WRITE_ONLY         = 0x20000   /* If set, open file in write-only mode. */
 };
 
 /* Ed state parameters. */
