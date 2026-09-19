@@ -350,6 +350,7 @@ AC_DEFUN([gl_INIT],
       gl_UCHAR_MODULE_INDICATOR([btoc32])
       gl_gnulib_enabled_btoc32=true
       func_gl_gnulib_m4code_btowc
+      func_gl_gnulib_m4code_30838f5439487421042f2225bed3af76
       func_gl_gnulib_m4code_mbrtoc32
       func_gl_gnulib_m4code_mbszero
       func_gl_gnulib_m4code_b23db3d13804e83c7005523c7ac2726c
@@ -718,6 +719,9 @@ AC_DEFUN([gl_INIT],
       gl_gnulib_enabled_c32rtomb=true
       if test $HAVE_C32RTOMB = 0 || test $REPLACE_C32RTOMB = 1; then
         func_gl_gnulib_m4code_attribute
+      fi
+      if test $HAVE_C32RTOMB = 0 || test $REPLACE_C32RTOMB = 1; then
+        func_gl_gnulib_m4code_30838f5439487421042f2225bed3af76
       fi
       if { test $HAVE_C32RTOMB = 0 || test $REPLACE_C32RTOMB = 1; } && test $SMALL_WCHAR_T = 1; then
         func_gl_gnulib_m4code_localcharset
@@ -1590,6 +1594,9 @@ AC_DEFUN([gl_INIT],
       ])
       gl_WCHAR_MODULE_INDICATOR([wcrtomb])
       gl_gnulib_enabled_wcrtomb=true
+      if test $HAVE_WCRTOMB = 0 || test $REPLACE_WCRTOMB = 1; then
+        func_gl_gnulib_m4code_30838f5439487421042f2225bed3af76
+      fi
       if test $HAVE_WCRTOMB = 0 || test $REPLACE_WCRTOMB = 1; then
         func_gl_gnulib_m4code_mbsinit
       fi
