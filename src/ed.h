@@ -7,6 +7,10 @@
 
 #include "config.h"
 
+#ifdef HAVE_STDINT_H
+#include <stdint.h>
+#endif
+
 #include <ctype.h>
 #include <errno.h>
 
@@ -183,11 +187,11 @@ int stat (const char *, struct stat *);
 # define ULONG_MAX ((unsigned long) ~(unsigned long) 0)
 #endif
 
-#ifndef SIZE_T_MAX
-# define SIZE_T_MAX ((size_t) (~(size_t) 0))
+#ifndef SIZE_MAX
+# define SIZE_MAX ((size_t) (~(size_t) 0))
 #endif
 
-#define LINECHARS SIZE_T_MAX    /* Max chars per line, including NULs. */
+#define LINECHARS SIZE_MAX    /* Max chars per line, including NULs. */
 
 #ifndef LLONG_MAX
 # define LLONG_MAX                                                            \
@@ -238,7 +242,7 @@ enum utf8_char_constant
 
 /*
  * Approximate upper bound for strlen (OFF_T_MAX) from relations:
- *     2 ^ (8 * sizeof (off_t)) < 10 ^ strlen (OFF_T_MAX)
+ *     2 ^ (8 * sizeof (off_t)) ≈ 10 ^ strlen (OFF_T_MAX)
  *     10 ^ strlen (OFF_T_MAX)   <  2 ^ (10 * sizeof (off_t))
  */
 #define OFF_T_LEN (3 * sizeof (off_t))
@@ -757,11 +761,16 @@ enum search_type
   while (0)
 
 /* REALLOC_THROW: Assure minimum size `i' for buffer `b' with size `n'. */
-#define REALLOC_THROW(b, n, i, err, ed)                                       \
+#define REALLOC_THROW(b, n, i, _err, ed)                                       \
   do                                                                          \
     {                                                                         \
-      if (!realloc_buffer ((void **) &(b), &(n), (size_t) (i), (ed)))         \
-        return (err);                                                         \
+      if (((long double)i) > SIZE_MAX)                                        \
+        {                                                                     \
+          (ed)->exec->err = _ ("Memory request too big");                     \
+          return (_err);                                                       \
+        }                                                                     \
+      else if (!realloc_buffer ((void **)&(b), &(n), (size_t)(i), (ed)))      \
+        return (_err);                                                         \
     }                                                                         \
   while (0)
 
