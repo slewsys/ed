@@ -232,6 +232,28 @@ AC_CHECK_FUNCS_ONCE([arc4random_buf dup2 flock ftruncate mkstemp memmove pathcon
   sigaction siglongjmp setbuffer setlocale stat64 strchr strerror strtol \
   strtoul strtoll])
 
+AC_MSG_CHECKING([whether __builtin_uaddl_overflow is available])
+AC_LINK_IFELSE(
+  [AC_LANG_PROGRAM([#include <string.h>], [
+    unsigned long a = 0, b = 0, c = 0;
+    return __builtin_uaddl_overflow(a, b, &c) ? 1 : 0;
+   ])],
+  [AC_MSG_RESULT([yes])
+   AC_DEFINE([HAVE___BUILTIN_UADDL_OVERFLOW], [1], [Define to 1 if __builtin_uaddl_overflow is available.])],
+  [AC_MSG_RESULT([no])]
+)
+
+AC_MSG_CHECKING([whether __builtin_umull_overflow is available])
+AC_LINK_IFELSE(
+  [AC_LANG_PROGRAM([#include <string.h>], [
+    unsigned long a = 0, b = 0, c = 0;
+    return __builtin_umull_overflow(a, b, &c) ? 1 : 0;
+   ])],
+  [AC_MSG_RESULT([yes])
+   AC_DEFINE([HAVE___BUILTIN_UMULL_OVERFLOW], [1], [Define to 1 if __builtin_umull_overflow is available.])],
+  [AC_MSG_RESULT([no])]
+)
+
 #
 # Checks feature requests.
 #

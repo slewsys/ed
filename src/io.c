@@ -466,7 +466,11 @@ get_extended_line (size_t *len, int nonl, int escape, int nt, ed_buffer_t *ed)
   else
     for (*len = 0; *(ed->input + (*len)++) != '\n';)
       ;
+#ifdef HAVE___BUILTIN_UADDL_OVERFLOW
+  REALLOC_ADD_THROW (xl, xl_size, *len, 1, NULL, ed);
+#else
   REALLOC_THROW (xl, xl_size, *len + 1, NULL, ed);
+#endif  /* !HAVE___BUILTIN_UADDL_OVERFLOW */
 
   /* NB: Don't assume that ed->input is NUL-terminated. */
   memcpy (xl, ed->input, *len);
@@ -487,16 +491,22 @@ get_extended_line (size_t *len, int nonl, int escape, int nt, ed_buffer_t *ed)
       *len -= escape ? (p + 1) / 2 : 1;
       *(xl + *len - 1) = '\n';
 
+      /* get_stdin_line != NULL => n > 0  */
       if (!(ed->input = get_stdin_line (&n, ed)))
 
         /* Propagate stream status - don't call clearerr(3). */
         return NULL;
+
       if (*(ed->input + n - 1) != '\n')
         {
           ed->exec->err = _("End-of-file unexpected");
           return NULL;
         }
+#ifdef HAVE___BUILTIN_UADDL_OVERFLOW
+      REALLOC_ADD_THROW (xl, xl_size, *len, (n + 1), NULL, ed);
+#else
       REALLOC_THROW (xl, xl_size, *len + n + 1, NULL, ed);
+#endif  /* !HAVE___BUILTIN_UADDL_OVERFLOW */
       memcpy (xl + *len, ed->input, n);
       *len += n;
       ++ed->exec->line_no;
@@ -526,7 +536,7 @@ get_stream_line (FILE *fp, size_t *len, ed_buffer_t *ed)
 
   /*
    * NB: stdin is not buffered to avoid I/O contention (see buf.c),
-   * but other file I/O is buffered.
+   *     but other file I/O is buffered.
    */
 
   *len = 0;
@@ -539,7 +549,11 @@ get_stream_line (FILE *fp, size_t *len, ed_buffer_t *ed)
   while ((c = getc (fp)) != EOF && c != '\n')
 #endif  /* !WANT_ED_ENCRYPTION */
     {
+#ifdef HAVE___BUILTIN_UADDL_OVERFLOW
+      REALLOC_ADD_THROW (tb, tb_size, *len, 1, NULL, ed);
+#else
       REALLOC_THROW (tb, tb_size, *len + 1, NULL, ed);
+#endif  /* !HAVE___BUILTIN_UADDL_OVERFLOW */
       ed->state->input_is_binary |= !(*(tb + *len) = c);
       if (++*len >= SIZE_MAX - 2)
         {
@@ -582,7 +596,11 @@ get_stream_line (FILE *fp, size_t *len, ed_buffer_t *ed)
         return NULL;
       }
 
+#ifdef HAVE___BUILTIN_UADDL_OVERFLOW
+  REALLOC_ADD_THROW (tb, tb_size, *len, 2, NULL, ed);
+#else
   REALLOC_THROW (tb, tb_size, *len + 2, NULL, ed);
+#endif  /* !HAVE___BUILTIN_UADDL_OVERFLOW */
   if (fp == stdin)
     {
       *(tb + *len) = '\n';

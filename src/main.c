@@ -489,8 +489,13 @@ collect_address_args (int *argc_p, char **argv, ed_buffer_t *ed)
       if (argv[i][0] != '+')
         {
           ++argc_new;
+#ifdef HAVE___BUILTIN_UMULL_OVERFLOW
+          REALLOC_MUL_THROW (argv_new, argv_new_size,
+                             (argc_new + 1), sizeof (char *), NULL, ed);
+#else
           REALLOC_THROW (argv_new, argv_new_size,
                          (argc_new + 1) * sizeof (char *), NULL, ed);
+#endif  /* !HAVE___BUILTIN_UMULL_OVERFLOW */
           argv_new[argc_new - 1] = argv[i];
           continue;
         }
@@ -514,8 +519,13 @@ collect_address_args (int *argc_p, char **argv, ed_buffer_t *ed)
           if (*endp != '\0')
             {
               ++argc_new;
+#ifdef HAVE___BUILTIN_UMULL_OVERFLOW
+              REALLOC_MUL_THROW (argv_new, argv_new_size,
+                                 (argc_new + 1), sizeof (char *), NULL, ed);
+#else
               REALLOC_THROW (argv_new, argv_new_size,
                              (argc_new + 1) * sizeof (char *), NULL, ed);
+#endif  /* !HAVE___BUILTIN_UMULL_OVERFLOW */
               argv_new[argc_new - 1] = argv[i];
               continue;
             }
@@ -524,7 +534,11 @@ collect_address_args (int *argc_p, char **argv, ed_buffer_t *ed)
           break;
         case '/':
         case '?':
+#ifdef HAVE___BUILTIN_UADDL_OVERFLOW
+          REALLOC_ADD_THROW (regexp, regexp_size, argv_len, 2, NULL, ed);
+#else
           REALLOC_THROW (regexp, regexp_size, argv_len + 2, NULL, ed);
+#endif  /* !HAVE___BUILTIN_UADDL_OVERFLOW */
           strncpy (regexp, argv[i] + 2, argv_len);
           regexp[argv_len] = '\n';
           regexp[argv_len + 1] = '\0';
@@ -539,8 +553,13 @@ collect_address_args (int *argc_p, char **argv, ed_buffer_t *ed)
                            && argv[i][argv_len + 1] == delim)))
             {
               ++argc_new;
+#ifdef HAVE___BUILTIN_UMULL_OVERFLOW
+              REALLOC_MUL_THROW (argv_new, argv_new_size,
+                                 (argc_new + 1), sizeof (char *), NULL, ed);
+#else
               REALLOC_THROW (argv_new, argv_new_size,
                              (argc_new + 1) * sizeof (char *), NULL, ed);
+#endif  /* !HAVE___BUILTIN_UMULL_OVERFLOW */
               argv_new[argc_new - 1] = argv[i];
               continue;
             }
@@ -549,16 +568,20 @@ collect_address_args (int *argc_p, char **argv, ed_buffer_t *ed)
           break;
         default:
           ++argc_new;
+#ifdef HAVE___BUILTIN_UMULL_OVERFLOW
+          REALLOC_MUL_THROW (argv_new, argv_new_size,
+                             (argc_new + 1), sizeof (char *), NULL, ed);
+#else
           REALLOC_THROW (argv_new, argv_new_size,
                          (argc_new + 1) * sizeof (char *), NULL, ed);
+#endif  /* !HAVE___BUILTIN_UMULL_OVERFLOW */
           argv_new[argc_new - 1] = argv[i];
           break;
         }
     }
 
   if (!argv_new)
-    REALLOC_THROW (argv_new, argv_new_size,
-                   sizeof (char *), NULL, ed);
+    REALLOC_THROW (argv_new, argv_new_size, sizeof (char *), NULL, ed);
 
   argv_new[argc_new] = NULL;
   *argc_p = argc_new;
@@ -586,7 +609,11 @@ next_edit (int status, ed_buffer_t *ed)
     }
 
   /* Allocate for string `r <filename>\n\0' */
+#ifdef HAVE___BUILTIN_UADDL_OVERFLOW
+  REALLOC_ADD_THROW (buf, buf_size, len, 4, ERR, ed);
+#else
   REALLOC_THROW (buf, buf_size, len + 4, ERR, ed);
+#endif  /* !HAVE___BUILTIN_UADDL_OVERFLOW */
 
 #ifdef WANT_FILE_GLOB
   sprintf (ed->input = buf,
@@ -658,7 +685,11 @@ save_edit (int status, ed_buffer_t *ed)
     }
 
   /* Allocate for string `w <filename>\n\0' */
+#ifdef HAVE___BUILTIN_UADDL_OVERFLOW
+  REALLOC_ADD_THROW (buf, buf_size, len, 4, ERR, ed);
+#else
   REALLOC_THROW (buf, buf_size, len + 4, ERR, ed);
+#endif  /* !HAVE___BUILTIN_UADDL_OVERFLOW */
 
   sprintf (ed->input = buf, "w %s%s\n", name, suffix);
 
@@ -695,7 +726,11 @@ getenv_init_argv (const char *s, int *argc, ed_buffer_t *ed)
   *argc = 0;
   if ((u = getenv (s)) && (len = strlen (u)) > 0)
     {
+#ifdef HAVE___BUILTIN_UADDL_OVERFLOW
+      REALLOC_ADD_THROW (env, env_size, len, 1, NULL, ed);
+#else
       REALLOC_THROW (env, env_size, len + 1, NULL, ed);
+#endif  /* !HAVE___BUILTIN_UADDL_OVERFLOW */
       strcpy (env, u);
       for (v = strtok (env, sep); v; v = strtok (NULL, sep))
         {
@@ -705,8 +740,13 @@ getenv_init_argv (const char *s, int *argc, ed_buffer_t *ed)
               ed->exec->err = _("Argument list full");
               return NULL;
             }
-          REALLOC_THROW (argv, argv_size,
-                         (*argc + 2) * sizeof (char *), NULL, ed);
+#ifdef HAVE___BUILTIN_UMULL_OVERFLOW
+          REALLOC_MUL_THROW (argv, argv_size, (*argc + 2), sizeof (char *),
+                             NULL, ed);
+#else
+          REALLOC_THROW (argv, argv_size, (*argc + 2) * sizeof (char *),
+                         NULL, ed);
+#endif  /* !HAVE___BUILTIN_UMULL_OVERFLOW */
           argv[++*argc] = v;
         }
       argv[++*argc] = NULL;
@@ -727,8 +767,18 @@ append_address_command (const char *s, ed_buffer_t *ed)
 
   size_t len = strlen(s);
 
+  if (len > SIZE_MAX - 2)
+    {
+      ed->exec->err = _ ("Memory request too big");
+      return ERR;
+    }
+#ifdef HAVE___BUILTIN_UADDL_OVERFLOW
+  REALLOC_ADD_THROW (ed->exec->address, address_size, previous_len, (len + 2),
+                     ERR, ed);
+#else
   REALLOC_THROW (ed->exec->address, address_size,
-                        previous_len + len + 2, ERR, ed);
+                 previous_len + len + 2, ERR, ed);
+#endif  /* !HAVE___BUILTIN_UADDL_OVERFLOW */
   strncpy (ed->exec->address + previous_len, s, len);
   previous_len += len + 1;
   ed->exec->address[previous_len - 1] = '\n';
@@ -801,8 +851,13 @@ append_script_file (char *fn, ed_buffer_t *ed)
   /* Conditionally save filename of script. */
   if (len && !ed->exec->script_pathname)
       {
+#ifdef HAVE___BUILTIN_UADDL_OVERFLOW
+        REALLOC_ADD_THROW (ed->exec->script_pathname,
+                           ed->exec->script_pathname_size, len, 1, ERR, ed);
+#else
         REALLOC_THROW (ed->exec->script_pathname,
                        ed->exec->script_pathname_size, len + 1, ERR, ed);
+#endif  /* !HAVE___BUILTIN_UADDL_OVERFLOW */
         strcpy (ed->exec->script_pathname, filename);
       }
 

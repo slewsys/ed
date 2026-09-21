@@ -242,7 +242,11 @@ substitution_template (unsigned dc, ed_buffer_t *ed)
 
   for (rhs_i = 0; *ed->input != dc; ++rhs_i, ++ed->input)
     {
+#ifdef HAVE___BUILTIN_UADDL_OVERFLOW
+      REALLOC_ADD_THROW (rhs, rhs_size, rhs_i, 2, ERR, ed);
+#else
       REALLOC_THROW (rhs, rhs_size, rhs_i + 2, ERR, ed);
+#endif  /* !HAVE___BUILTIN_UADDL_OVERFLOW */
 
       /* Only process escape sequences of the form `\dc' or `\\' here. */
       if ((*(rhs + rhs_i) = *ed->input) == '\n' &&  *(ed->input + 1) == '\0')
@@ -254,7 +258,11 @@ substitution_template (unsigned dc, ed_buffer_t *ed)
       else if (*(ed->input + 1) == '\\')
         *(rhs + ++rhs_i) = *++ed->input;
     }
+#ifdef HAVE___BUILTIN_UADDL_OVERFLOW
+  REALLOC_ADD_THROW (rhs, rhs_size, rhs_i, 1, ERR, ed);
+#else
   REALLOC_THROW (rhs, rhs_size, rhs_i + 1, ERR, ed);
+#endif  /* !HAVE___BUILTIN_UADDL_OVERFLOW */
   *(rhs + rhs_i) = '\0';
   return 0;
 }
@@ -465,8 +473,13 @@ substitute_matching (const regex_t *re, const ed_line_node_t *lp,
       return ERR;
     }
   else
+#ifdef HAVE___BUILTIN_UMULL_OVERFLOW
+    REALLOC_MUL_THROW (rm, rm_size,
+                   (re->re_nsub + 1), sizeof(regmatch_t), ERR, ed);
+#else
     REALLOC_THROW (rm, rm_size,
                    (re->re_nsub + 1) * sizeof(regmatch_t), ERR, ed);
+#endif  /* !HAVE___BUILTIN_UMULL_OVERFLOW */
 
   /* If match-relative and requested match (s_nth) > available (n),
      then nothing to do. */
@@ -508,7 +521,12 @@ substitute_matching (const regex_t *re, const ed_line_node_t *lp,
             is_utf8 = is_utf8_str (txt, eot - txt);
           if (!is_utf8 || (j = utf8_char_size (txt, eot - txt)) == 0)
             j = 1;
+#ifdef HAVE___BUILTIN_UADDL_OVERFLOW
+          REALLOC_ADD_THROW (rb, rb_size, *len, j, ERR, ed);
+#else
           REALLOC_THROW (rb, rb_size, *len + j, ERR, ed);
+#endif /* !HAVE___BUILTIN_UADDL_OVERFLOW */
+
 #ifndef REG_STARTEND
           if (ed->state->is_binary)
             NEWLINE_TO_NUL (txt, j);
@@ -523,7 +541,12 @@ substitute_matching (const regex_t *re, const ed_line_node_t *lp,
       else if ((!nil_next || nil_prev) && ++k >= s_nth
                && !((k - s_nth)  % s_mod))
         {
+#ifdef HAVE___BUILTIN_UADDL_OVERFLOW
+          REALLOC_ADD_THROW (rb, rb_size, *len, i, ERR, ed);
+#else
           REALLOC_THROW (rb, rb_size, *len + i, ERR, ed);
+#endif
+
 #ifndef REG_STARTEND
           if (ed->state->is_binary)
             NEWLINE_TO_NUL (txt, j);
@@ -546,7 +569,12 @@ substitute_matching (const regex_t *re, const ed_line_node_t *lp,
             is_utf8 = is_utf8_str (txt, eot - txt);
           if (!j && (!is_utf8 || (j = utf8_char_size (txt, eot - txt)) == 0))
             j = 1;
+#ifdef HAVE___BUILTIN_UADDL_OVERFLOW
+          REALLOC_ADD_THROW (rb, rb_size, *len, j, ERR, ed);
+#else
           REALLOC_THROW (rb, rb_size, *len + j, ERR, ed);
+#endif /* !HAVE___BUILTIN_UADDL_OVERFLOW */
+
 #ifndef REG_STARTEND
           if (ed->state->is_binary)
             NEWLINE_TO_NUL (txt, j);
@@ -559,7 +587,12 @@ substitute_matching (const regex_t *re, const ed_line_node_t *lp,
   if (!changed)
     return *len = 0;
   i = eot > txt ? eot - txt : 0;
+#ifdef HAVE___BUILTIN_UADDL_OVERFLOW
+  REALLOC_ADD_THROW (rb, rb_size, *len, (i + 2), ERR, ed);
+#else
   REALLOC_THROW (rb, rb_size, *len + i + 2, ERR, ed);
+#endif /* !HAVE___BUILTIN_UADDL_OVERFLOW */
+
 #ifndef REG_STARTEND
   if (ed->state->is_binary)
     NEWLINE_TO_NUL (txt, i);
@@ -602,8 +635,13 @@ count_matches (const regex_t *re, const char *txt, int len,
       return ERR;
     }
   else
+#ifdef HAVE___BUILTIN_UMULL_OVERFLOW
+    REALLOC_MUL_THROW (rm, rm_size,
+                       (re->re_nsub + 1), sizeof(regmatch_t), ERR, ed);
+#else
     REALLOC_THROW (rm, rm_size,
                    (re->re_nsub + 1) * sizeof(regmatch_t), ERR, ed);
+#endif  /* !HAVE___BUILTIN_UMULL_OVERFLOW */
 
 #ifndef REG_STARTEND
   if (ed->state->is_binary)
@@ -665,7 +703,11 @@ apply_subst_template (const char *boln, const regmatch_t *rm,
   int change_once = 0;
 
   if (cc_size < rhs_i / 2 + 1)
+#ifdef HAVE___BUILTIN_UADDL_OVERFLOW
+    REALLOC_ADD_THROW (cc, cc_size, (rhs_i / 2), 1, ERR, ed);
+#else
     REALLOC_THROW (cc, cc_size, rhs_i /  2 + 1, ERR, ed);
+#endif  /* !HAVE___BUILTIN_UADDL_OVERFLOW */
   cc[cc_top++] = 0;
 
   for (; sub < rhs + rhs_i; ++sub)
@@ -673,7 +715,11 @@ apply_subst_template (const char *boln, const regmatch_t *rm,
       {
         j = rm->rm_so;
         k = rm->rm_eo;
+#ifdef HAVE___BUILTIN_UADDL_OVERFLOW
+        REALLOC_ADD_THROW (rb, rb_size, *len, (k - j), ERR, ed);
+#else
         REALLOC_THROW (rb, rb_size, *len + k - j, ERR, ed);
+#endif  /* !HAVE___BUILTIN_UADDL_OVERFLOW */
         while (j < k)
           {
             *(rb + (*len)++) = ((cc[cc_top - 1] > 0 || change_once > 0)
@@ -693,7 +739,11 @@ apply_subst_template (const char *boln, const regmatch_t *rm,
             {
               j = rm[n].rm_so;
               k = rm[n].rm_eo;
+#ifdef HAVE___BUILTIN_UADDL_OVERFLOW
+              REALLOC_ADD_THROW (rb, rb_size, *len, (k - j), ERR, ed);
+#else
               REALLOC_THROW (rb, rb_size, *len + k - j, ERR, ed);
+#endif  /* !HAVE___BUILTIN_UADDL_OVERFLOW */
               while (j < k)
                 {
                   *(rb + (*len)++) = ((cc[cc_top - 1] > 0 || change_once > 0)
@@ -722,7 +772,11 @@ apply_subst_template (const char *boln, const regmatch_t *rm,
             --cc_top;
           break;
         default:
+#ifdef HAVE___BUILTIN_UADDL_OVERFLOW
+          REALLOC_ADD_THROW (rb, rb_size, *len, 1, ERR, ed);
+#else
           REALLOC_THROW (rb, rb_size, *len + 1, ERR, ed);
+#endif  /* !HAVE___BUILTIN_UADDL_OVERFLOW */
           *(rb + (*len)++) = ((cc[cc_top - 1] > 0 || change_once > 0)
                               ?  toupper (*sub)
                               : (cc[cc_top - 1] < 0 || change_once < 0)
@@ -733,7 +787,11 @@ apply_subst_template (const char *boln, const regmatch_t *rm,
         }
     else
       {
+#ifdef HAVE___BUILTIN_UADDL_OVERFLOW
+        REALLOC_ADD_THROW (rb, rb_size, *len, 1, ERR, ed);
+#else
         REALLOC_THROW (rb, rb_size, *len + 1, ERR, ed);
+#endif  /* !HAVE___BUILTIN_UADDL_OVERFLOW */
         *(rb + (*len)++) = ((cc[cc_top - 1] > 0 || change_once > 0)
                             ?  toupper (*sub)
                             : (cc[cc_top - 1] < 0 || change_once < 0)
@@ -741,7 +799,11 @@ apply_subst_template (const char *boln, const regmatch_t *rm,
                             : *sub);
         change_once = 0;
       }
+#ifdef HAVE___BUILTIN_UADDL_OVERFLOW
+  REALLOC_ADD_THROW (rb, rb_size, *len, 1, ERR, ed);
+#else
   REALLOC_THROW (rb, rb_size, *len + 1, ERR, ed);
+#endif  /* !HAVE___BUILTIN_UADDL_OVERFLOW */
   *(rb + *len) = '\0';
   return 0;
 }
