@@ -575,9 +575,12 @@ get_stream_line (FILE *fp, size_t *len, ed_buffer_t *ed)
   if (feof (fp))
     {
       if (!*len)
+        {
+          ed->exec->err = _("End-of-file unexpected");
 
         /* Propagate stream status - don't call clearerr(3). */
-        return NULL;
+          return NULL;
+        }
     }
   else if (ferror (fp))
     switch (errno)
