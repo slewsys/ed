@@ -584,11 +584,8 @@ E_cmd (ed_buffer_t *ed)
       /* Per SUSv4, file name changes unconditionally. */
       if (*fn != '\0')
         {
-#ifdef HAVE___BUILTIN_UADDL_OVERFLOW
-          REALLOC_ADD_THROW (ed->file->name, ed->file->name_size, len, 1, ERR, ed);
-#else
-          REALLOC_THROW (ed->file->name, ed->file->name_size, len + 1, ERR, ed);
-#endif  /* !HAVE___BUILTIN_UADDL_OVERFLOW */
+          REALLOC_ADD_THROW (ed->file->name, ed->file->name_size, len, 1,
+                             ERR, ed);
           strcpy (ed->file->name, fn);
           ++is_default;
         }
@@ -669,11 +666,7 @@ f_cmd (ed_buffer_t *ed)
   else
     {
       FILE_NAME (fn, len, cy, 1, 0, ed);
-#ifdef HAVE___BUILTIN_UADDL_OVERFLOW
       REALLOC_ADD_THROW (ed->file->name, ed->file->name_size, len, 1, ERR, ed);
-#else
-      REALLOC_THROW (ed->file->name, ed->file->name_size, len + 1, ERR, ed);
-#endif  /* !HAVE___BUILTIN_UADDL_OVERFLOW */
       strcpy (ed->file->name, fn);
     }
 
@@ -959,11 +952,7 @@ macro_cmd (ed_buffer_t *ed)
   if (ed->exec->global && *(ed->input) != '\0')
     {
       len = strlen (ed->input);
-#ifdef HAVE___BUILTIN_UADDL_OVERFLOW
       REALLOC_ADD_THROW (saved_input, saved_input_size, len, 1, ERR, ed);
-#else
-      REALLOC_THROW (saved_input, saved_input_size, len + 1, ERR, ed);
-#endif  /* !HAVE___BUILTIN_UADDL_OVERFLOW */
       strcpy (saved_input, ed->input);
     }
   if ((status = exec_macro (ed)) < 0)
@@ -1115,11 +1104,7 @@ r_cmd (ed_buffer_t *ed)
       /* Save filename as default iff ed->file->name not set. */
       if (!ed->file->name)
         {
-#ifdef HAVE___BUILTIN_UADDL_OVERFLOW
           REALLOC_ADD_THROW (ed->file->name, ed->file->name_size, len, 1, ERR, ed);
-#else
-          REALLOC_THROW (ed->file->name, ed->file->name_size, len + 1, ERR, ed);
-#endif  /* !HAVE___BUILTIN_UADDL_OVERFLOW */
           strcpy (ed->file->name, fn);
           ++is_default;
         }
@@ -1495,13 +1480,8 @@ w_cmd (ed_buffer_t *ed)
         /* Save filename as default iff ed->file->name not set. */
         if (!ed->file->name && *fn != '\0')
           {
-#ifdef HAVE___BUILTIN_UADDL_OVERFLOW
             REALLOC_ADD_THROW (ed->file->name, ed->file->name_size,
                                len, 1, ERR, ed);
-#else
-            REALLOC_THROW (ed->file->name, ed->file->name_size,
-                           len + 1, ERR, ed);
-#endif  /* !HAVE___BUILTIN_UADDL_OVERFLOW */
             strcpy (ed->file->name, fn);
             ++is_default;
           }
@@ -1893,11 +1873,7 @@ normalize_frame_buffer (ed_buffer_t *ed)
 
   /* Allocate for `start,end' + `Z' + modifier. */
   len = 2 * OFF_T_LEN + 3;
-#ifdef HAVE___BUILTIN_UADDL_OVERFLOW
   REALLOC_ADD_THROW (buf, buf_size, len, modifier_len, ERR, ed);
-#else
-  REALLOC_THROW (buf, buf_size, len + modifier_len, ERR, ed);
-#endif  /* !HAVE___BUILTIN_UADDL_OVERFLOW */
   len += modifier_len;
 
   /* Always use default address range. */

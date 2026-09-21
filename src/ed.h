@@ -762,53 +762,68 @@ enum search_type
   while (0)
 
 #ifdef HAVE___BUILTIN_UADDL_OVERFLOW
-/* REALLOC_THROW: Assure minimum size `i + j' for buffer `b' with size `n'. */
+/*
+ * REALLOC_ADD_THROW: Assure minimum size `i + j' for buffer `b' with size `n'.
+ */
 # define REALLOC_ADD_THROW(_b, _n, _i, _j, _err, _ed)                         \
   do                                                                          \
     {                                                                         \
       size_t _k = 0;                                                          \
-      if (__builtin_uaddl_overflow (_i, _j, &_k))                             \
+      if (__builtin_uaddl_overflow ((_i), (_j), &_k))                         \
         {                                                                     \
           (_ed)->exec->err = _ ("Memory request too big");                    \
           return (_err);                                                      \
         }                                                                     \
-      else if (!realloc_buffer ((void **)&(_b), &(_n), (size_t)(_k), (_ed)))  \
+      else if (!realloc_buffer ((void **)&(_b), &(_n), _k, (_ed)))            \
         return (_err);                                                        \
     }                                                                         \
   while (0)
-#endif  /* HAVE___BUILTIN_UADDL_OVERFLOW */
+#else
+# define REALLOC_ADD_THROW(_b, _n, _i, _j, _err, _ed)                         \
+  do                                                                          \
+    {                                                                         \
+      if ((size_t)(_i) > SIZE_MAX - (_j))                                     \
+        {                                                                     \
+          (_ed)->exec->err = _ ("Memory request too big");                    \
+          return (_err);                                                      \
+        }                                                                     \
+      else if (!realloc_buffer ((void **)&(_b), &(_n), (_i) + (_j), (_ed)))   \
+        return (_err);                                                        \
+    }                                                                         \
+  while (0)
+#endif  /* !HAVE___BUILTIN_UADDL_OVERFLOW */
 
 #ifdef HAVE___BUILTIN_UMULL_OVERFLOW
-/* REALLOC_THROW: Assure minimum size `i * j' for buffer `b' with size `n'. */
+/*
+ * REALLOC_MUL_THROW: Assure minimum size `i * j' for buffer `b' with size `n'.
+ */
 # define REALLOC_MUL_THROW(_b, _n, _i, _j, _err, _ed)                         \
   do                                                                          \
     {                                                                         \
       size_t _k = 0;                                                          \
-      if (__builtin_umull_overflow (_i, _j, &_k))                             \
+      if (__builtin_umull_overflow ((_i), (_j), &_k))                         \
         {                                                                     \
           (_ed)->exec->err = _ ("Memory request too big");                    \
           return (_err);                                                      \
         }                                                                     \
-      else if (!realloc_buffer ((void **)&(_b), &(_n), (size_t)(_k), (_ed)))  \
+      else if (!realloc_buffer ((void **)&(_b), &(_n), _k, (_ed)))            \
         return (_err);                                                        \
     }                                                                         \
   while (0)
-#endif  /* HAVE___BUILTIN_UMULL_OVERFLOW */
-
-#define REALLOC_THROW(_b, _n, _i, _err, _ed)                                  \
+#else
+# define REALLOC_MUL_THROW(_b, _n, _i, _j, _err, _ed)                         \
   do                                                                          \
     {                                                                         \
-      if (((long double)_i) > SIZE_MAX)  /* requires extended precision! */   \
+      if ((size_t)(_i) > SIZE_MAX / (_j))                                     \
         {                                                                     \
           (_ed)->exec->err = _ ("Memory request too big");                    \
           return (_err);                                                      \
         }                                                                     \
-      else if (!realloc_buffer ((void **)&(_b), &(_n), (size_t)(_i), (_ed)))  \
+      else if (!realloc_buffer ((void **)&(_b), &(_n), (_i) * (_j), (_ed)))   \
         return (_err);                                                        \
     }                                                                         \
   while (0)
-
-
+#endif  /* !HAVE___BUILTIN_UMULL_OVERFLOW */
 
 /* SKIP_WHITESPACE: Scan command buffer for next non-space char. */
 #define SKIP_WHITESPACE(ed)                                                   \

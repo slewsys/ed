@@ -695,11 +695,7 @@ fb_putc (int c, ed_frame_buffer_t *fb, ed_buffer_t *ed)
 {
   ed_frame_node_t *rp = fb->row[fb->row_i];
 
-#ifdef HAVE___BUILTIN_UADDL_OVERFLOW
   REALLOC_ADD_THROW (rp->text, rp->text_size, rp->text_i, 1, ERR, ed);
-#else
-  REALLOC_THROW (rp->text, rp->text_size, rp->text_i + 1, ERR, ed);
-#endif  /* !HAVE___BUILTIN_UADDL_OVERFLOW */
 
   /* Don't return c, which might be signed. */
   rp->text[rp->text_i++] = c;
@@ -717,11 +713,7 @@ fb_putwc (char *s, size_t len, ed_frame_buffer_t *fb, ed_buffer_t *ed)
   if ((i = utf8_char_size (s, len)) == 0)
     return ERR;
 
-#ifdef HAVE___BUILTIN_UADDL_OVERFLOW
   REALLOC_ADD_THROW (rp->text, rp->text_size, rp->text_i, i, ERR, ed);
-#else
-  REALLOC_THROW (rp->text, rp->text_size, rp->text_i + i, ERR, ed);
-#endif  /* !HAVE___BUILTIN_UADDL_OVERFLOW */
 
   /* Don't return char, which might be signed. */
   while (i--)
@@ -813,21 +805,14 @@ init_frame_buffer (ed_frame_buffer_t *fb, ed_buffer_t *ed)
             free (fb->row[n]->text);
             init_frame_node (fb->row[n]);
           }
-#ifdef HAVE___BUILTIN_UMULL_OVERFLOW
-      REALLOC_MUL_THROW (fp, fp_size,
-                     (ed->display->ws_row - 1), sizeof (ed_frame_node_t *),
-                     ERR, ed);
-#else
-      REALLOC_THROW (fp, fp_size,
-                     (ed->display->ws_row - 1) * sizeof (ed_frame_node_t *),
-                     ERR, ed);
-#endif  /* !HAVE___BUILTIN_UMULL_OVERFLOW */
+      REALLOC_MUL_THROW (fp, fp_size, ed->display->ws_row - 1,
+                         sizeof (ed_frame_node_t *), ERR, ed);
       fb->row = (ed_frame_node_t **) fp;
       for (n = max (0, fb->rows - 1); n < ed->display->ws_row - 1; ++n)
         {
           size = 0;
           fb->row[n] = NULL;
-          REALLOC_THROW (fb->row[n], size, sizeof (ed_frame_node_t), ERR, ed);
+          REALLOC_ADD_THROW (fb->row[n], size, sizeof (ed_frame_node_t), 0, ERR, ed);
           init_frame_node (fb->row[n]);
         }
 

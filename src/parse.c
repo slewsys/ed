@@ -568,11 +568,7 @@ is_valid_name (const char *name, ed_buffer_t *ed)
   len = strlen (ed->input = (char *) name);
   if (name[len - 1] != '\n')
     {
-#ifdef HAVE___BUILTIN_UADDL_OVERFLOW
       REALLOC_ADD_THROW (fn, fn_size, len, 2, NULL, ed);
-#else
-      REALLOC_THROW (fn, fn_size, len + 2, NULL, ed);
-#endif  /* !HAVE___BUILTIN_UADDL_OVERFLOW */
       strcpy (ed->input = fn, name);
       strcpy (fn + len, "\n");
     }
@@ -607,11 +603,7 @@ file_name (size_t *len, ed_buffer_t *ed)
       return NULL;
     }
   ed->input += *len + 1;
-#ifdef HAVE___BUILTIN_UADDL_OVERFLOW
   REALLOC_ADD_THROW (fn, fn_size, *len, 1, NULL, ed);
-#else
-  REALLOC_THROW (fn, fn_size, *len + 1, NULL, ed);
-#endif  /* !HAVE___BUILTIN_UADDL_OVERFLOW */
   strcpy (fn, xl);
   return fn;
 }
@@ -651,11 +643,7 @@ regular_expression (unsigned dc, size_t *len, ed_buffer_t *ed)
       }
 
   *len = ed->input - s;
-#if defined HAVE___BUILTIN_UADDL_OVERFLOW
   REALLOC_ADD_THROW (lhs, lhs_size, *len, 1, NULL, ed);
-#else
-  REALLOC_THROW (lhs, lhs_size, *len + 1, NULL, ed);
-#endif  /* !HAVE___BUILTIN_UADDL_OVERFLOW */
   memcpy (lhs, s, *len);
   *(lhs + *len) = '\0';
 #if !defined REG_PEND && !defined HAVE_REG_SYNTAX_T
@@ -717,11 +705,7 @@ expand_shell_command (size_t *len, int *subs, ed_buffer_t *ed)
       if ((s = strchr (ed->input, '\n')) == NULL)
         return NULL;
       n = s - ed->input;
-#ifdef HAVE___BUILTIN_UADDL_OVERFLOW
       REALLOC_ADD_THROW (gl, gl_size, n, 1, NULL, ed);
-#else
-      REALLOC_THROW (gl, gl_size, n + 1, NULL, ed);
-#endif  /* !HAVE___BUILTIN_UADDL_OVERFLOW */
       strncpy (gl, ed->input, n);
       *(gl + n) = '\0';
       xl = gl;
@@ -733,11 +717,7 @@ expand_shell_command (size_t *len, int *subs, ed_buffer_t *ed)
 
   /* Preserve unexpanded command so that `%' and `%%' get expanded to
      current file name when repeated via `!!'. */
-#ifdef HAVE___BUILTIN_UADDL_OVERFLOW
   REALLOC_ADD_THROW (sc_curr, sc_curr_size, n, 1, NULL, ed);
-#else
-  REALLOC_THROW (sc_curr, sc_curr_size, n + 1, NULL, ed);
-#endif  /* !HAVE___BUILTIN_UADDL_OVERFLOW */
   strcpy (sc_curr, xl);
 
   ed->input += n + 1;
@@ -745,11 +725,7 @@ expand_shell_command (size_t *len, int *subs, ed_buffer_t *ed)
     switch (*xl)
       {
       default:
-#ifdef HAVE___BUILTIN_UADDL_OVERFLOW
         REALLOC_ADD_THROW (sc, sc_size, *len, 1, NULL, ed);
-#else
-        REALLOC_THROW (sc, sc_size, *len + 1, NULL, ed);
-#endif
 
         /* Substitute '\%' with `%'. */
         *(sc + (*len)++) = *xl == '\\' && *(xl + 1) == '%' ? *++xl : *xl;
@@ -771,13 +747,12 @@ expand_shell_command (size_t *len, int *subs, ed_buffer_t *ed)
 
         if (ed->exec->opt & UNSAFE_NAMES && (fn = shell_quote (fn, ed)) == NULL)
           return NULL;
-
-        m = strlen (fn);
-#ifdef HAVE___BUILTIN_UADDL_OVERFLOW
-        REALLOC_ADD_THROW (sc, sc_size, *len, (m + 1), NULL, ed);
-#else
-        REALLOC_THROW (sc, sc_size, *len + m + 1, NULL, ed);
-#endif  /* !HAVE___BUILTIN_UADDL_OVERFLOW */
+        else if ((m = strlen (fn)) > SIZE_MAX - 1)
+          {
+            ed->exec->err = _("Memory request too big");
+            return NULL;
+          }
+        REALLOC_ADD_THROW (sc, sc_size, *len, m + 1, NULL, ed);
         memcpy (sc + *len, fn, m);
         *len += m;
         ++*subs;
@@ -787,11 +762,7 @@ expand_shell_command (size_t *len, int *subs, ed_buffer_t *ed)
         /* Replace only leading `!!' with previous `!command'. */
         if (*len || *(xl + 1) != '!')
           {
-#ifdef HAVE___BUILTIN_UADDL_OVERFLOW
             REALLOC_ADD_THROW (sc, sc_size, *len, 1, NULL, ed);
-#else
-            REALLOC_THROW (sc, sc_size, *len + 1, NULL, ed);
-#endif  /* !HAVE___BUILTIN_UADDL_OVERFLOW */
             *(sc + (*len)++) = *xl;
           }
         else if (!sc_prev || (ed->exec->opt & (POSIXLY_CORRECT | TRADITIONAL)
@@ -806,22 +777,14 @@ expand_shell_command (size_t *len, int *subs, ed_buffer_t *ed)
             m = strlen (sc_prev);
 
             /* Append sc_curr without `!!' prefix to sc_prev. */
-#ifdef HAVE___BUILTIN_UADDL_OVERFLOW
-            REALLOC_ADD_THROW (sc_curr, sc_curr_size, n, (m - 1), NULL, ed);
-#else
-            REALLOC_THROW (sc_curr, sc_curr_size, n + m - 1, NULL, ed);
-#endif  /* !HAVE___BUILTIN_UADDL_OVERFLOW */
+            REALLOC_ADD_THROW (sc_curr, sc_curr_size, n, m - 1, NULL, ed);
             memmove (sc_curr + m, sc_curr + 2, n - 1);
             memcpy (sc_curr, sc_prev, m);
             xl = sc_curr;
             n += m - 2;         /* Update (unused) strlen of xl. */
 
             /* Assert: xl now begins with a single `!'. */
-#ifdef HAVE___BUILTIN_UADDL_OVERFLOW
             REALLOC_ADD_THROW (sc, sc_size, *len, 1, NULL, ed);
-#else
-            REALLOC_THROW (sc, sc_size, *len + 1, NULL, ed);
-#endif  /* !HAVE___BUILTIN_UADDL_OVERFLOW */
             *(sc + (*len)++) = *xl;
             ++*subs;
           }
@@ -829,7 +792,7 @@ expand_shell_command (size_t *len, int *subs, ed_buffer_t *ed)
       }
 
   /* Preserve current (unexpanded) shell command. */
-  REALLOC_THROW (sc_prev, sc_prev_size, sc_curr_size, NULL, ed);
+  REALLOC_ADD_THROW (sc_prev, sc_prev_size, sc_curr_size, 0, NULL, ed);
   memcpy (sc_prev, sc_curr, sc_curr_size);
   *(sc + *len) = '\0';
   return sc;
@@ -844,11 +807,7 @@ shell_quote (const char *fn, ed_buffer_t *ed)
 
   size_t len = strlen (fn);
 
-#ifdef HAVE___BUILTIN_UADDL_OVERFLOW
   REALLOC_ADD_THROW (quoted, quoted_size, len, 3, NULL, ed);
-#else
-  REALLOC_THROW (quoted, quoted_size, len + 3, NULL, ed);
-#endif /* !HAVE___BUILTIN_UADDL_OVERFLOW */
 
   size_t quoted_len = len + 2; /* 'fn' */
   size_t idx = 0;
@@ -863,11 +822,7 @@ shell_quote (const char *fn, ed_buffer_t *ed)
 
   while (*fn == '\'')
     {
-#ifdef HAVE___BUILTIN_UADDL_OVERFLOW
       REALLOC_ADD_THROW (quoted, quoted_size, quoted_len, 2, NULL, ed);
-#else
-      REALLOC_THROW (quoted, quoted_size, quoted_len + 2, NULL, ed);
-#endif /* !HAVE___BUILTIN_UADDL_OVERFLOW */
       quoted_len += 1;
       quoted[idx++] = '\\';
       quoted[idx++] = '\'';
@@ -883,11 +838,7 @@ shell_quote (const char *fn, ed_buffer_t *ed)
         {
           if (*(fn + 1))
             {
-#ifdef HAVE___BUILTIN_UADDL_OVERFLOW
               REALLOC_ADD_THROW (quoted, quoted_size, quoted_len, 4, NULL, ed);
-#else
-              REALLOC_THROW (quoted, quoted_size, quoted_len + 4, NULL, ed);
-#endif /* !HAVE___BUILTIN_UADDL_OVERFLOW */
               quoted_len += 3;
               quoted[idx++] = '\'';
               quoted[idx++] = '\\';
@@ -896,11 +847,7 @@ shell_quote (const char *fn, ed_buffer_t *ed)
             }
           else
             {
-#ifdef HAVE___BUILTIN_UADDL_OVERFLOW
               REALLOC_ADD_THROW (quoted, quoted_size, quoted_len, 3, NULL, ed);
-#else
-              REALLOC_THROW (quoted, quoted_size, quoted_len + 3, NULL, ed);
-#endif /* !HAVE___BUILTIN_UADDL_OVERFLOW */
               quoted_len += 2;
               quoted[idx++] = '\'';
               quoted[idx++] = '\\';

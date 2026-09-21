@@ -461,16 +461,34 @@ get_extended_line (size_t *len, int nonl, int escape, int nt, ed_buffer_t *ed)
 
   /* If NUL-terminated (nt), allow embedded newlines in ed->input. */
   if (nt)
-    for (*len = 0; *(ed->input + *len) != '\0';)
-      ++*len;
+    {
+      for (*len = 0; *(ed->input + *len) != '\0'; ++*len)
+        {
+          /* Input already validated - can't overflow here.  */
+          /*
+           * if (++*len >= SIZE_MAX - 1)
+           *   {
+           *     ed->exec->err = _("Memory request too big");
+           *     return NULL;
+           *   }
+           */
+        }
+    }
   else
-    for (*len = 0; *(ed->input + (*len)++) != '\n';)
-      ;
-#ifdef HAVE___BUILTIN_UADDL_OVERFLOW
+    {
+      for (*len = 0; *(ed->input + (*len)++) != '\n';)
+        {
+          /* Input already validated - can't overflow here.  */
+          /*
+           * if (*len >= SIZE_MAX - 1)
+           *   {
+           *     ed->exec->err = _("Memory request too big");
+           *     return NULL;
+           *   }
+           */
+        }
+    }
   REALLOC_ADD_THROW (xl, xl_size, *len, 1, NULL, ed);
-#else
-  REALLOC_THROW (xl, xl_size, *len + 1, NULL, ed);
-#endif  /* !HAVE___BUILTIN_UADDL_OVERFLOW */
 
   /* NB: Don't assume that ed->input is NUL-terminated. */
   memcpy (xl, ed->input, *len);
@@ -479,13 +497,11 @@ get_extended_line (size_t *len, int nonl, int escape, int nt, ed_buffer_t *ed)
    * Shell escapes set nonl, so we are only interested in a trailing
    * escapes in this case.
    */
-  p = trailing_escapes (xl, xl + *len - 1); /* Assert: *len > 0 since
-                                               ed->input is always
-                                               newline-terminated. */
+  p = *len ? trailing_escapes (xl, xl + *len - 1) : 0;
   while (nonl ? *len > 1 && *(xl + *len - 2) == '\\' : p % 2)
     {
       /*
-       * Escape trailing backslashes (i.e., replace `\\' pairs with `\'),
+       * Unescape trailing backslashes (i.e., replace `\\' pairs with `\'),
        * and strip trailing backslash.
        */
       *len -= escape ? (p + 1) / 2 : 1;
@@ -493,20 +509,19 @@ get_extended_line (size_t *len, int nonl, int escape, int nt, ed_buffer_t *ed)
 
       /* get_stdin_line != NULL => n > 0  */
       if (!(ed->input = get_stdin_line (&n, ed)))
-
         /* Propagate stream status - don't call clearerr(3). */
         return NULL;
-
-      if (*(ed->input + n - 1) != '\n')
+      else if (*(ed->input + n - 1) != '\n')
         {
           ed->exec->err = _("End-of-file unexpected");
           return NULL;
         }
-#ifdef HAVE___BUILTIN_UADDL_OVERFLOW
-      REALLOC_ADD_THROW (xl, xl_size, *len, (n + 1), NULL, ed);
-#else
-      REALLOC_THROW (xl, xl_size, *len + n + 1, NULL, ed);
-#endif  /* !HAVE___BUILTIN_UADDL_OVERFLOW */
+      else if (n > SIZE_MAX - 1)
+        {
+          ed->exec->err = _("Memory request too big");
+          return NULL;
+        }
+      REALLOC_ADD_THROW (xl, xl_size, *len, n + 1, NULL, ed);
       memcpy (xl + *len, ed->input, n);
       *len += n;
       ++ed->exec->line_no;
@@ -549,11 +564,7 @@ get_stream_line (FILE *fp, size_t *len, ed_buffer_t *ed)
   while ((c = getc (fp)) != EOF && c != '\n')
 #endif  /* !WANT_ED_ENCRYPTION */
     {
-#ifdef HAVE___BUILTIN_UADDL_OVERFLOW
       REALLOC_ADD_THROW (tb, tb_size, *len, 1, NULL, ed);
-#else
-      REALLOC_THROW (tb, tb_size, *len + 1, NULL, ed);
-#endif  /* !HAVE___BUILTIN_UADDL_OVERFLOW */
       ed->state->input_is_binary |= !(*(tb + *len) = c);
       if (++*len >= SIZE_MAX - 2)
         {
@@ -596,11 +607,8 @@ get_stream_line (FILE *fp, size_t *len, ed_buffer_t *ed)
         return NULL;
       }
 
-#ifdef HAVE___BUILTIN_UADDL_OVERFLOW
   REALLOC_ADD_THROW (tb, tb_size, *len, 2, NULL, ed);
-#else
-  REALLOC_THROW (tb, tb_size, *len + 2, NULL, ed);
-#endif  /* !HAVE___BUILTIN_UADDL_OVERFLOW */
+
   if (fp == stdin)
     {
       *(tb + *len) = '\n';

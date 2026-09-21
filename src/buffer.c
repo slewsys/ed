@@ -261,11 +261,7 @@ create_disk_buffer (FILE **fp, char **name, size_t *name_size, ed_buffer_t *ed)
       return ERR;
     }
   path_size = s_size + add_path_sep + sizeof template;
-#ifdef HAVE___BUILTIN_UADDL_OVERFLOW
   REALLOC_ADD_THROW (*name, *name_size, path_size, 1, ERR, ed);
-#else
-  REALLOC_THROW (*name, *name_size, path_size + 1, ERR, ed);
-#endif  /* !HAVE___BUILTIN_UADDL_OVERFLOW */
   strcpy (*name, s);
   strcpy (*name + s_size, add_path_sep ? "/" : "");
   strcpy (*name + s_size + add_path_sep, template);
@@ -335,7 +331,7 @@ get_buffer_line (const ed_line_node_t *lp, ed_buffer_t *ed)
   /* Permit writing the "contents" ('\n') of an empty buffer. */
   if (lp == ed->core->line_head)
     {
-      REALLOC_THROW (tb, tb_size, 1, NULL, ed);
+      REALLOC_ADD_THROW (tb, tb_size, 1, 0, NULL, ed);
       tb[0] = '\0';
       return tb;
     }
@@ -354,11 +350,7 @@ get_buffer_line (const ed_line_node_t *lp, ed_buffer_t *ed)
     }
 
   /* Allocate lp->len + '\0' (or '\n', as per write_stream ()). */
-#ifdef HAVE___BUILTIN_UADDL_OVERFLOW
   REALLOC_ADD_THROW (tb, tb_size, lp->len, 1, NULL, ed);
-#else
-  REALLOC_THROW (tb, tb_size, lp->len + 1, NULL, ed);
-#endif /* !HAVE___BUILTIN_UADDL_OVERFLOW */
   if (fread (tb, sizeof (char), lp->len, ed->core->fp) != lp->len)
     {
       fprintf (stderr, "%s: %s\n", ed->core->pathname, strerror (errno));
@@ -548,24 +540,13 @@ dup_argv (int argc, char **argv, ed_buffer_t *ed)
   size_t len = 0;
   int i;
 
-#ifdef HAVE___BUILTIN_UMULL_OVERFLOW
-  REALLOC_MUL_THROW (pathv_p, pathv_p_size,
-                     (argc + 1), sizeof (char *),
+  REALLOC_MUL_THROW (pathv_p, pathv_p_size, argc + 1, sizeof (char *),
                      NULL, ed);
-#else
-  REALLOC_THROW (pathv_p, pathv_p_size,
-                 (argc + 1) * sizeof (char *),
-                 NULL, ed);
-#endif  /* !HAVE___BUILTIN_UMULL_OVERFLOW */
 
   for (i = 0, pathv_p[i] = NULL; i < argc; ++i, pathv_p[i] = NULL, len = 0)
     {
       sz = strlen (argv[i]);
-#ifdef HAVE___BUILTIN_UADDL_OVERFLOW
       REALLOC_ADD_THROW (pathv_p[i], len, sz, 1, NULL, ed);
-#else
-      REALLOC_THROW (pathv_p[i], len, sz + 1, NULL, ed);
-#endif  /* !HAVE___BUILTIN_UADDL_OVERFLOW */
       memmove (pathv_p[i], argv[i], sz + 1);
     }
   return pathv_p;

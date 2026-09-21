@@ -39,11 +39,7 @@ append_lines (off_t after, ed_buffer_t *ed)
           return ERR;
         }
 
-#ifdef HAVE___BUILTIN_UADDL_OVERFLOW
       REALLOC_ADD_THROW (arg, arg_size, len, 3, ERR, ed);
-#else
-      REALLOC_THROW (arg, arg_size, len + 3, ERR, ed);
-#endif  /* !HAVE___BUILTIN_UADDL_OVERFLOW */
       strcpy (arg, s);
 
       /* Append ".\n" if not in global context. */
@@ -199,19 +195,11 @@ join_lines (off_t from, off_t to, ed_buffer_t *ed)
     {
       if (!(s = get_buffer_line (lp, ed)))
         return ERR;
-#ifdef HAVE___BUILTIN_UADDL_OVERFLOW
       REALLOC_ADD_THROW (lj, lj_size, len, lp->len, ERR, ed);
-#else
-      REALLOC_THROW (lj, lj_size, len + lp->len, ERR, ed);
-#endif  /* !HAVE___BUILTIN_UADDL_OVERFLOW */
       memcpy (lj + len, s, lp->len);
       len += lp->len;
     }
-#ifdef HAVE___BUILTIN_UADDL_OVERFLOW
   REALLOC_ADD_THROW (lj, lj_size, len, 2, ERR, ed);
-#else
-  REALLOC_THROW (lj, lj_size, len + 2, ERR, ed);
-#endif  /* HAVE___BUILTIN_UADDL_OVERFLOW */
   memcpy (lj + len++, "\n", 2);
   spl1 ();
   if (delete_lines (from, to, ed) < 0)

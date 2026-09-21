@@ -141,11 +141,7 @@ exec_global (ed_buffer_t *ed)
       else
         {
           /* get_extended_line () isn't reentrant, so save ed->input. */
-#ifdef HAVE___BUILTIN_UADDL_OVERFLOW
           REALLOC_ADD_THROW (gcb, gcb_size, len, 1, ERR, ed);
-#else
-          REALLOC_THROW (gcb, gcb_size, len + 1, ERR, ed);
-#endif  /* !HAVE___BUILTIN_UADDL_OVERFLOW */
 
           /* Assert: ed->input is NUL-terminated! */
           strcpy (gcb, ed->input);
@@ -170,15 +166,8 @@ append_global_line (const ed_line_node_t *lp, ed_buffer_t *ed)
 {
   ed_global_buffer_t *gb = ed->core->global_buffer;
 
-#ifdef HAVE___BUILTIN_UMULL_OVERFLOW
-  REALLOC_MUL_THROW (gb->lbuf, gb->size,
-                     (gb->last + 1), sizeof (ed_line_node_t *),
-                     ERR, ed);
-#else
-  REALLOC_THROW (gb->lbuf, gb->size,
-                 (gb->last + 1) * sizeof (ed_line_node_t *),
-                 ERR, ed);
-#endif  /* !HAVE___BUILTIN_UMULL_OVERFLOW */
+  REALLOC_MUL_THROW (gb->lbuf, gb->size, gb->last + 1,
+                     sizeof (ed_line_node_t *), ERR, ed);
   gb->lbuf[gb->last++] = (ed_line_node_t *) lp;
   return 0;
 }
