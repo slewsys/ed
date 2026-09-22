@@ -805,18 +805,18 @@ shell_quote (const char *fn, ed_buffer_t *ed)
   static char *quoted = NULL;
   static size_t quoted_size = 0;
 
-  size_t len = strlen (fn);
-
-  REALLOC_ADD_THROW (quoted, quoted_size, len, 3, NULL, ed);
-
-  size_t quoted_len = len + 2; /* 'fn' */
   size_t idx = 0;
+  size_t quoted_len = strlen (fn);
 
-  if (!len)
+  /* Allocate for 'fn' plus terminating NULL. */
+  REALLOC_ADD_THROW (quoted, quoted_size, quoted_len, 3, NULL, ed);
+
+  /* fn == '' */
+  if ((quoted_len += 2) == 2)
     {
-      quoted[idx++] = '\'';
-      quoted[idx++] = '\'';
-      quoted[idx] = '\0';
+      *(quoted + idx++) = '\'';
+      *(quoted + idx++) = '\'';
+      *(quoted + idx) = '\0';
       return quoted;
     }
 
@@ -824,13 +824,13 @@ shell_quote (const char *fn, ed_buffer_t *ed)
     {
       REALLOC_ADD_THROW (quoted, quoted_size, quoted_len, 2, NULL, ed);
       quoted_len += 1;
-      quoted[idx++] = '\\';
-      quoted[idx++] = '\'';
+      *(quoted + idx++) = '\\';
+      *(quoted + idx++) = '\'';
       ++fn;
     }
 
   if (*fn)
-    quoted[idx++] = '\'';
+    *(quoted + idx++) = '\'';
 
   for (; *fn; ++fn)
     {
@@ -840,34 +840,34 @@ shell_quote (const char *fn, ed_buffer_t *ed)
             {
               REALLOC_ADD_THROW (quoted, quoted_size, quoted_len, 4, NULL, ed);
               quoted_len += 3;
-              quoted[idx++] = '\'';
-              quoted[idx++] = '\\';
-              quoted[idx++] = '\'';
-              quoted[idx++] = '\'';
+              *(quoted + idx++) = '\'';
+              *(quoted + idx++) = '\\';
+              *(quoted + idx++) = '\'';
+              *(quoted + idx++) = '\'';
             }
           else
             {
               REALLOC_ADD_THROW (quoted, quoted_size, quoted_len, 3, NULL, ed);
               quoted_len += 2;
-              quoted[idx++] = '\'';
-              quoted[idx++] = '\\';
-              quoted[idx++] = '\'';
+              *(quoted + idx++) = '\'';
+              *(quoted + idx++) = '\\';
+              *(quoted + idx++) = '\'';
             }
         }
       else
         {
           if (*(fn + 1))
             {
-              quoted[idx++] = *fn;
+              *(quoted + idx++) = *fn;
             }
           else
             {
-              quoted[idx++] = *fn;
-              quoted[idx++] = '\'';
+              *(quoted + idx++) = *fn;
+              *(quoted + idx++) = '\'';
             }
         }
     }
-  quoted[idx] = '\0';
+  *(quoted + idx) = '\0';
   return quoted;
 }
 
