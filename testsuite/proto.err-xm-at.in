@@ -1,0 +1,21 @@
+# proto.err-xm-at.in: Autotest template for the ed testsuite.
+#
+# Process this file with autotest to create testsuite (see also Makefile.am).
+
+AT_SETUP([Pipe: @SCRIPT_NAME@.err-xm])
+
+cat >script-@SCRIPT_NAME@ <<_ATEOF_ED
+H
+~e @SCRIPT_SRC@.?.d
+$(test -s @SCRIPT_SRC@.err-xm &&
+cat @SCRIPT_SRC@.err-xm ||
+echo "w @SCRIPT_NAME@.ro")
+wq @SCRIPT_NAME@.ro
+_ATEOF_ED
+
+AT_SKIP_IF([! ed --version | grep -q 'ed-macro'])
+AT_SKIP_IF([! ed --version | grep -q 'file-glob'])
+AT_CHECK([cat script-@SCRIPT_NAME@ | ed - && exit 255 ||
+diff -u @SCRIPT_SRC@.rr @SCRIPT_NAME@.ro],
+0, [ignore], [ignore], [], [])
+AT_CLEANUP()

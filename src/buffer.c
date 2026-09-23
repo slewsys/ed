@@ -183,6 +183,7 @@ init_ed_command (int init_glob, ed_buffer_t *ed)
   /* Global command state */
   ed->exec->first_pass = 0;
   ed->exec->global = 0;
+  ed->exec->macro_in_global = 0;
 
   /* Set default file list */
   if (init_glob)

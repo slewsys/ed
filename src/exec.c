@@ -703,7 +703,7 @@ global_cmd (ed_buffer_t *ed)
 
   if (ed->exec->global)
     {
-      ed->exec->err = _("Recursive global command");
+      ed->exec->err = _("Nested global command");
       return ERR;
     }
   if ((status = is_valid_range (1, ed->state->lines, ed)) < 0
@@ -949,19 +949,34 @@ macro_cmd (ed_buffer_t *ed)
   if (!ed->core->regbuf->rio_f)
     GET_INPUT_REGISTER (ed);
   COMMAND_SUFFIX (io_f, ed);
-  if (ed->exec->global && *(ed->input) != '\0')
+
+  /*
+   * Save any global context only first time macro encountered, and
+   * set macro_in_global flag to allow extended lines in macros (see
+   * substitution_rhs).
+   */
+  if (!ed->exec->macro_in_global && (ed->exec->macro_in_global = ed->exec->global))
     {
       len = strlen (ed->input);
       REALLOC_ADD_THROW (saved_input, saved_input_size, len, 1, ERR, ed);
       strcpy (saved_input, ed->input);
     }
+
   if ((status = exec_macro (ed)) < 0)
-    return status;
-  else if (ed->exec->global)
-    ed->input = saved_input;
-  return (ed->display->dio_f = io_f)
-      ? display_lines (ed->state->dot, ed->state->dot, ed)
-      : status;
+    {
+      ed->exec->macro_in_global = 0;
+      ed->input = saved_input;
+      return status;
+    }
+  else if (ed->exec->macro_in_global)
+    {
+      ed->exec->global = ed->exec->macro_in_global;
+      ed->exec->macro_in_global = 0;
+      ed->input = saved_input;
+    }
+  return ((ed->display->dio_f = io_f)
+          ? display_lines (ed->state->dot, ed->state->dot, ed)
+          : status);
 }
 #endif  /* WANT_ED_MACRO */
 

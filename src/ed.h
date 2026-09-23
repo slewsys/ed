@@ -401,7 +401,7 @@ typedef struct ed_stack_frame
 
 # define ED_STACK_FRAME_T_SIZE (sizeof (ed_stack_frame_t))
 
-# define STACK_FRAMES_MAX 50    /* Max stack frames in script buffer. */
+# define STACK_FRAMES_MAX 100    /* Max stack frames in script buffer. */
 #endif /* WANT_ED_MACRO */
 
 #define MARK_MAX 26             /* Max line markers. */
@@ -502,6 +502,7 @@ struct ed_execute
   int have_key;                 /* If set, encrypt I/O. */
   int first_pass;               /* If set, first global command iteration. */
   int global;                   /* If set, global command (GLBL [| GLBI]). */
+  int macro_in_global;          /* If set, macro in global command. */
   int opt;                      /* Command-line options. */
   int status;                   /* Command status. */
 };

@@ -192,8 +192,9 @@ substitution_rhs (off_t *s_nth, off_t *s_mod, unsigned *s_f,
   ed->state->input_is_binary = 0; /* Value used in substitute_lines(). */
 
 
-  /* Don't clobber command buffer if any ed->exec->global set. */
-  if (!ed->exec->global && !(ed->input = get_extended_line (&len, 0, 0, 0, ed)))
+  /* Don't clobber command buffer if ed->exec->global set. */
+  if ((!ed->exec->global || ed->exec->macro_in_global)
+      && !(ed->input = get_extended_line (&len, 0, 0, 0, ed)))
     {
       /* EOF here always flags error. */
       status = ERR;

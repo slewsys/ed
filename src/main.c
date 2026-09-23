@@ -319,6 +319,7 @@ top:
  */
       /* Any global command is terminated. */
       ed->exec->global = 0;
+      ed->exec->macro_in_global = 0;
       ed->exec->err = _("Interrupted");
       goto error;
     }

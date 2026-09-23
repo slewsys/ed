@@ -267,7 +267,7 @@ exec_macro (ed_buffer_t *ed)
   size_t len;
   int status = 0;
 
-  if (!ed->core->sp && !ed->exec->global)
+  if (!(ed->core->sp || ed->exec->global))
     reset_undo_queue (ed);
   if ((status = script_from_register (ed)) < 0 || !ed->exec->fp)
     goto err;

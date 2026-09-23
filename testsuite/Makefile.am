@@ -10,22 +10,26 @@ ED_SCRIPTSdir = $(srcdir)
 @VALGRIND_CHECK_RULES@
 
 # Templates for generating autotest .at scripts.
-AT_PROTO_OK    = $(ED_SCRIPTSdir)/proto.ok-at.in
-AT_PROTO_OK_CO = $(ED_SCRIPTSdir)/proto.ok-co-at.in
-AT_PROTO_OK_EF = $(ED_SCRIPTSdir)/proto.ok-ef-at.in
-AT_PROTO_OK_MF = $(ED_SCRIPTSdir)/proto.ok-mf-at.in
-AT_PROTO_OK_R  = $(ED_SCRIPTSdir)/proto.ok-r-at.in
-AT_PROTO_OK_SO = $(ED_SCRIPTSdir)/proto.ok-so-at.in
-AT_PROTO_OK_XM = $(ED_SCRIPTSdir)/proto.ok-xm-at.in
-AT_PROTO_ERR   = $(ED_SCRIPTSdir)/proto.err-at.in
-AT_PROTO_ERRS  = $(ED_SCRIPTSdir)/proto.errs-at.in
-AT_PROTO_FAIL  = $(ED_SCRIPTSdir)/proto.fail-at.in
-AT_PROTO_FAILS = $(ED_SCRIPTSdir)/proto.fails-at.in
+AT_PROTO_OK	 = $(ED_SCRIPTSdir)/proto.ok-at.in
+AT_PROTO_OK_CO	 = $(ED_SCRIPTSdir)/proto.ok-co-at.in
+AT_PROTO_OK_EF	 = $(ED_SCRIPTSdir)/proto.ok-ef-at.in
+AT_PROTO_OK_MF	 = $(ED_SCRIPTSdir)/proto.ok-mf-at.in
+AT_PROTO_OK_R	 = $(ED_SCRIPTSdir)/proto.ok-r-at.in
+AT_PROTO_OK_SO	 = $(ED_SCRIPTSdir)/proto.ok-so-at.in
+AT_PROTO_OK_XM	 = $(ED_SCRIPTSdir)/proto.ok-xm-at.in
+AT_PROTO_ERR	 = $(ED_SCRIPTSdir)/proto.err-at.in
+AT_PROTO_ERR_XM	 = $(ED_SCRIPTSdir)/proto.err-xm-at.in
+AT_PROTO_ERRS	 = $(ED_SCRIPTSdir)/proto.errs-at.in
+AT_PROTO_FAIL	 = $(ED_SCRIPTSdir)/proto.fail-at.in
+AT_PROTO_FAIL_XM = $(ED_SCRIPTSdir)/proto.fail-xm-at.in
+AT_PROTO_FAILS	 = $(ED_SCRIPTSdir)/proto.fails-at.in
 
 
-SUFFIXES = .t .tco .tef .tmf .tr .tso .txm .err .errs .ok-at		      \
-	   .ok-co-at .ok-ef-at .ok-mf-at .ok-r-at .ok-so-at		      \
-	   .ok-xm-at .err-at .errs-at .fail-at .fails-at
+
+SUFFIXES = .t .tco .tef .tmf .tr .tso .txm .err .err-xm .errs		      \
+	   .ok-at .ok-co-at .ok-ef-at .ok-mf-at .ok-r-at .ok-so-at	      \
+	   .ok-xm-at .err-at .err-xm-at .errs-at .fail-at		      \
+	   .fail-xm-at .fails-at
 
 # The following GNU make rules generate a location-independent version
 # of testsuite which is invoked from $(builddir) via:
@@ -80,6 +84,12 @@ SUFFIXES = .t .tco .tef .tmf .tr .tso .txm .err .errs .ok-at		      \
 	    >"$@".tmp
 	mv "$@".tmp "$@"
 
+.err-xm.err-xm-at:
+	sed -e "s^@SCRIPT_NAME@^$*^g"					      \
+	    -e "s^@SCRIPT_SRC@^$(abs_srcdir)/$*^g" "$(AT_PROTO_ERR_XM)"	      \
+	    >"$@".tmp
+	mv "$@".tmp "$@"
+
 .errs.errs-at:
 	sed -e "s^@SCRIPT_NAME@^$*^g"					      \
 	    -e "s^@SCRIPT_SRC@^$(abs_srcdir)/$*^g" "$(AT_PROTO_ERRS)"	      \
@@ -89,6 +99,12 @@ SUFFIXES = .t .tco .tef .tmf .tr .tso .txm .err .errs .ok-at		      \
 .err.fail-at:
 	sed -e "s^@SCRIPT_NAME@^$$(basename $*)^g"			      \
 	    -e "s^@SCRIPT_SRC@^$(abs_srcdir)/$*^g" "$(AT_PROTO_FAIL)"	      \
+	    >"$@".tmp
+	mv "$@".tmp "$@"
+
+.err-xm.fail-xm-at:
+	sed -e "s^@SCRIPT_NAME@^$$(basename $*)^g"			      \
+	    -e "s^@SCRIPT_SRC@^$(abs_srcdir)/$*^g" "$(AT_PROTO_FAIL_XM)"      \
 	    >"$@".tmp
 	mv "$@".tmp "$@"
 
@@ -132,17 +148,20 @@ ED_SCRIPTS_OK_SO =							      \
 
 # Ed scripts which should complete sucessfully if macros are available.
 ED_SCRIPTS_OK_XM =							      \
-	mac01.txm mac02.txm mac03.txm mac04.txm mac05.txm mac06.txm           \
-	mac07.txm mac08.txm mac09.txm mac10.txm mac11.txm mac12.txm           \
-	mac13.txm mac14.txm mac15.txm
+	mac01.txm mac02.txm mac03.txm mac04.txm mac05.txm mac06.txm	      \
+	mac07.txm mac08.txm mac09.txm mac10.txm mac11.txm mac12.txm	      \
+	mac13.txm mac14.txm mac15.txm mac16.txm
 
 # Ed scripts which should complete, but with non-zero exit status.
 ED_SCRIPTS_ERR =							      \
 	a2.err addr1.err addr2.err bang1.err c1.err d.err		      \
-	e1.err e2.err e3.err f1.err f2.err g1.err g2.err g3.err h.err	      \
-	i2.err k2.err k3.err k4.err m.err q1.err r2.err s1.err s10.err	      \
-	s3.err s4.err s5.err s6.err s7.err s8.err t1.err t2.err		      \
-	u.err w1.err w2.err w3.err z.err
+	e1.err e2.err e3.err f1.err f2.err g1.err g2.err g3.err		      \
+	h.err i2.err k2.err k3.err k4.err m.err q1.err r2.err		      \
+	s1.err s10.err s3.err s4.err s5.err s6.err s7.err s8.err	      \
+	t1.err t2.err u.err w1.err w2.err w3.err z.err
+
+ED_SCRIPTS_ERR_XM =							      \
+	mac1.err-xm mac2.err-xm mac3.err-xm
 
 # Ed scripts which should complete, but with non-zero exit status if
 # scripting flags available.
@@ -151,6 +170,9 @@ ED_SCRIPTS_ERRS =							      \
 
 # Ed scripts which should fail.
 ED_SCRIPTS_FAIL = $(ED_SCRIPTS_ERR)
+
+# Ed scripts which should fail if macros are available.
+ED_SCRIPTS_FAIL_XM = $(ED_SCRIPTS_ERR_XM)
 
 # Ed scripts which should fail, if scripting flags available.
 ED_SCRIPTS_FAILS = $(ED_SCRIPTS_ERRS)
@@ -175,8 +197,10 @@ AT_SCRIPTS_OK_R	   = $(ED_SCRIPTS_OK_R:.tr=.ok-r-at)
 AT_SCRIPTS_OK_SO   = $(ED_SCRIPTS_OK_SO:.tso=.ok-so-at)
 AT_SCRIPTS_OK_XM   = $(ED_SCRIPTS_OK_XM:.txm=.ok-xm-at)
 AT_SCRIPTS_ERR	   = $(ED_SCRIPTS_ERR:.err=.err-at)
-AT_SCRIPTS_ERRS    = $(ED_SCRIPTS_ERRS:.errs=.errs-at)
+AT_SCRIPTS_ERR_XM  = $(ED_SCRIPTS_ERR_XM:.err-xm=.err-xm-at)
+AT_SCRIPTS_ERRS	   = $(ED_SCRIPTS_ERRS:.errs=.errs-at)
 AT_SCRIPTS_FAIL	   = $(ED_SCRIPTS_ERR:.err=.fail-at)
+AT_SCRIPTS_FAIL_XM = $(ED_SCRIPTS_ERR_XM:.err-xm=.fail-xm-at)
 AT_SCRIPTS_FAILS   = $(ED_SCRIPTS_ERRS:.errs=.fails-at)
 
 # Dynamically generated data.
@@ -190,10 +214,11 @@ EXTRA_DIST =								      \
 	$(AT_PROTO_FAIL) $(AT_PROTO_FAILS) $(ED_SCRIPTS_OK)		      \
 	$(ED_SCRIPTS_OK_CO) $(ED_SCRIPTS_OK_EF) $(ED_SCRIPTS_OK_MF)	      \
 	$(ED_SCRIPTS_OK_R) $(ED_SCRIPTS_OK_SO) $(ED_SCRIPTS_OK_XM)	      \
-	$(ED_SCRIPTS_ERR) $(ED_SCRIPTS_ERRS) $(ED_SCRIPTS_FAIL)		      \
-	$(ED_SCRIPTS_FAILS) $(ED_SCRIPTS_DATA)				      \
-	$(ED_SCRIPTS_DATA_COMPRESSED) $(ED_SCRIPTS_RESULTS)		      \
-	$(ED_SCRIPTS_RESULTS_COMPRESSED) $(ED_SCRIPTS_RESULTS_PIPED)
+	$(ED_SCRIPTS_ERR) $(ED_SCRIPTS_ERR_XM) $(ED_SCRIPTS_ERRS)	      \
+	$(ED_SCRIPTS_FAIL) $(ED_SCRIPTS_FAIL_XM) $(ED_SCRIPTS_FAILS)	      \
+	$(ED_SCRIPTS_DATA) $(ED_SCRIPTS_DATA_COMPRESSED)		      \
+	$(ED_SCRIPTS_RESULTS) $(ED_SCRIPTS_RESULTS_COMPRESSED)		      \
+	$(ED_SCRIPTS_RESULTS_PIPED)
 
 .PHONY: build-and-run-testsuite build-and-run-valgrind
 
@@ -237,8 +262,9 @@ $(TESTSUITE): $(TESTSUITE_AT) $(PACKAGE_M4)
 
 $(TESTSUITE_AT): $(AT_SCRIPTS_OK) $(AT_SCRIPTS_OK_CO) $(AT_SCRIPTS_OK_EF)     \
 		 $(AT_SCRIPTS_OK_MF) $(AT_SCRIPTS_OK_R) $(AT_SCRIPTS_OK_SO)   \
-		 $(AT_SCRIPTS_OK_XM) $(AT_SCRIPTS_ERR) $(AT_SCRIPTS_ERRS)     \
-		 $(AT_SCRIPTS_FAIL) $(AT_SCRIPTS_FAILS)
+		 $(AT_SCRIPTS_OK_XM) $(AT_SCRIPTS_ERR) $(AT_SCRIPTS_ERR_XM)   \
+		 $(AT_SCRIPTS_ERRS) $(AT_SCRIPTS_FAIL) $(AT_SCRIPTS_FAIL_XM)  \
+		 $(AT_SCRIPTS_FAILS)
 	{								      \
 	  echo 'AT_INIT';						      \
 	  echo 'AT_TESTED([ed])';					      \
@@ -247,7 +273,8 @@ $(TESTSUITE_AT): $(AT_SCRIPTS_OK) $(AT_SCRIPTS_OK_CO) $(AT_SCRIPTS_OK_EF)     \
 		    $(AT_SCRIPTS_OK_EF) $(AT_SCRIPTS_OK_MF)		      \
 		    $(AT_SCRIPTS_OK_R)	$(AT_SCRIPTS_OK_SO)		      \
 		    $(AT_SCRIPTS_OK_XM) $(AT_SCRIPTS_ERR)		      \
-		    $(AT_SCRIPTS_ERRS) $(AT_SCRIPTS_FAIL)		      \
+		    $(AT_SCRIPTS_ERR_XM) $(AT_SCRIPTS_ERRS)		      \
+		    $(AT_SCRIPTS_FAIL) $(AT_SCRIPTS_FAIL_XM)		      \
 		    $(AT_SCRIPTS_FAILS); do				      \
 	  echo "m4_include([$$scpt])";					      \
 	done >>"$@".tmp
@@ -269,8 +296,8 @@ install-data-am:
 
 clean-local:
 	rm -rf *.ok-at *.ok-co-at *.ok-ef-at *.ok-mf-at *.ok-r-at	      \
-	       *.ok-so-at *.ok-xm-at *.err-at *.errs-at *.fail-at	      \
-	       *.fails-at *.log *.dir tmpwrk*
+	       *.ok-so-at *.ok-xm-at *.err-at *.err-xm-at *.errs-at	      \
+	       *.fail-at *.fail-xm-at *.fails-at *.log *.dir tmpwrk*
 	rm -f $(PACKAGE_M4) $(TESTSUITE_AT) $(TESTSUITE)
 	rm -f $(AT_SCRIPTS_OK_CO_D) $(AT_SCRIPTS_OK_SO_R)
 
