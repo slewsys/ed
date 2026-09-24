@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnulib 3.0.0.6062.a6b16\n"
 "Report-Msgid-Bugs-To: bug-gnulib@gnu.org\n"
-"POT-Creation-Date: 2026-09-21 15:09-0400\n"
+"POT-Creation-Date: 2026-09-23 23:00-0400\n"
 "PO-Revision-Date: 2014-06-25 19:51+0200\n"
 "Last-Translator: Balázs Úr <urbalazs@gmail.com>\n"
 "Language-Team: Hungarian <translation-team-hu@lists.sourceforge.net>\n"
@@ -65,7 +65,7 @@ msgstr "%s: a kapcsoló egy argumentumot igényel -- „%c”\n"
 msgid "Success"
 msgstr "Sikerült"
 
-#: lib/regcomp.c:131 src/regexp.c:287 src/subst.c:427
+#: lib/regcomp.c:131 src/regexp.c:287 src/subst.c:428
 msgid "No match"
 msgstr "Nincs találat"
 
@@ -111,7 +111,7 @@ msgstr "A \\{\\} tartalma érvénytelen"
 msgid "Invalid range end"
 msgstr "Érvénytelen tartományvég"
 
-#: lib/regcomp.c:164 src/buffer.c:436 src/buffer.c:580 src/exec.c:1946
+#: lib/regcomp.c:164 src/buffer.c:437 src/buffer.c:581 src/exec.c:1961
 #: src/io.c:322 src/page.c:860 src/parse.c:273 src/parse.c:518 src/regexp.c:163
 #: src/register.c:372 src/undo.c:26
 msgid "Memory exhausted"
@@ -144,57 +144,57 @@ msgid "dup2 error"
 msgstr "Buszhiba"
 
 #: src/buffer.c:136 src/io.c:96 src/io.c:164 src/io.c:686 src/io.c:736
-#: src/main.c:815 src/register.c:392
+#: src/main.c:816 src/register.c:392
 #, fuzzy
 #| msgid "write error"
 msgid "File open error"
 msgstr "írási hiba"
 
-#: src/buffer.c:259 src/main.c:583 src/main.c:655
+#: src/buffer.c:260 src/main.c:584 src/main.c:656
 msgid "File name too long"
 msgstr ""
 
-#: src/buffer.c:260
+#: src/buffer.c:261
 #, fuzzy
 #| msgid "Invalid back reference"
 msgid "Invalid buffer name"
 msgstr "Érvénytelen visszahivatkozás"
 
-#: src/buffer.c:281 src/buffer.c:296
+#: src/buffer.c:282 src/buffer.c:297
 #, fuzzy
 #| msgid "Bus error"
 msgid "Buffer open error"
 msgstr "Buszhiba"
 
-#: src/buffer.c:312
+#: src/buffer.c:313
 #, fuzzy
 #| msgid "Bus error"
 msgid "Buffer close error"
 msgstr "Buszhiba"
 
-#: src/buffer.c:347 src/buffer.c:383
+#: src/buffer.c:348 src/buffer.c:384
 #, fuzzy
 #| msgid "Bus error"
 msgid "Buffer seek error"
 msgstr "Buszhiba"
 
-#: src/buffer.c:357
+#: src/buffer.c:358
 #, fuzzy
 #| msgid "Bus error"
 msgid "Buffer read error"
 msgstr "Buszhiba"
 
-#: src/buffer.c:397 src/buffer.c:427
+#: src/buffer.c:398 src/buffer.c:428
 msgid "Buffer full"
 msgstr ""
 
-#: src/buffer.c:404
+#: src/buffer.c:405
 #, fuzzy
 #| msgid "write error"
 msgid "Buffer write error"
 msgstr "írási hiba"
 
-#: src/buffer.c:500 src/exec.c:142 src/exec.c:171 src/exec.c:1916
+#: src/buffer.c:501 src/exec.c:142 src/exec.c:171 src/exec.c:1931
 #: src/page.c:301 src/parse.c:223
 #, fuzzy
 #| msgid "character out of range"
@@ -221,7 +221,7 @@ msgstr ""
 msgid "File read error"
 msgstr "írási hiba"
 
-#: src/cmds.c:37 src/cmds.c:77 src/io.c:516 src/io.c:579 src/main.c:385
+#: src/cmds.c:37 src/cmds.c:77 src/io.c:516 src/io.c:579 src/main.c:386
 #: src/register.c:299
 msgid "End-of-file unexpected"
 msgstr ""
@@ -232,7 +232,7 @@ msgstr ""
 msgid "Invalid address mark"
 msgstr "Érvénytelen karakterosztálynév"
 
-#: src/cmds.c:362 src/exec.c:1771 src/filter.c:90 src/filter.c:143
+#: src/cmds.c:362 src/exec.c:1786 src/filter.c:90 src/filter.c:143
 #, fuzzy
 #| msgid "program error"
 msgid "Fork error"
@@ -253,19 +253,19 @@ msgstr ""
 msgid "Unknown error"
 msgstr "Ismeretlen hiba"
 
-#: src/ed.h:774 src/ed.h:787 src/ed.h:806 src/ed.h:819 src/io.c:521
-#: src/main.c:730 src/parse.c:752 src/subst.c:567
+#: src/ed.h:775 src/ed.h:788 src/ed.h:807 src/ed.h:820 src/io.c:521
+#: src/main.c:731 src/parse.c:752 src/subst.c:568
 msgid "Memory request too big"
 msgstr ""
 
-#: src/ed.h:847 src/ed.h:882 src/ed.h:917
+#: src/ed.h:848 src/ed.h:883 src/ed.h:918
 #, fuzzy
 #| msgid "character out of range"
 msgid "Numerical result out of range"
 msgstr "tartományon kívüli karakter"
 
 #: src/exec.c:28 src/exec.c:58 src/exec.c:549 src/exec.c:635 src/exec.c:661
-#: src/exec.c:1061 src/exec.c:1424 src/exec.c:1436 src/exec.c:1444
+#: src/exec.c:1076 src/exec.c:1439 src/exec.c:1451 src/exec.c:1459
 msgid "Command suffix unexpected"
 msgstr ""
 
@@ -277,8 +277,8 @@ msgstr ""
 msgid "Command prefix unexpected"
 msgstr ""
 
-#: src/exec.c:540 src/exec.c:626 src/exec.c:733 src/exec.c:754 src/exec.c:998
-#: src/exec.c:1040 src/exec.c:1386 src/exec.c:1584 src/exec.c:1780
+#: src/exec.c:540 src/exec.c:626 src/exec.c:733 src/exec.c:754 src/exec.c:1013
+#: src/exec.c:1055 src/exec.c:1401 src/exec.c:1599 src/exec.c:1795
 msgid "Address unexpected"
 msgstr ""
 
@@ -293,8 +293,10 @@ msgid "File name not set"
 msgstr ""
 
 #: src/exec.c:706
-msgid "Recursive global command"
-msgstr ""
+#, fuzzy
+#| msgid "No previous regular expression"
+msgid "Nested global command"
+msgstr "Nincs megelőző szabályos kifejezés"
 
 #: src/exec.c:764
 #, fuzzy
@@ -308,30 +310,30 @@ msgstr "Nincs megelőző szabályos kifejezés"
 msgid "Invalid destination address"
 msgstr "Érvénytelen leválogatási karakter"
 
-#: src/exec.c:919 src/exec.c:1372
+#: src/exec.c:919 src/exec.c:1387
 #, fuzzy
 #| msgid "invalid user"
 msgid "Invalid register"
 msgstr "érvénytelen felhasználó"
 
-#: src/exec.c:1217 src/exec.c:1280 src/exec.c:1603 src/exec.c:1662
-#: src/exec.c:1843 src/exec.c:1858
+#: src/exec.c:1232 src/exec.c:1295 src/exec.c:1618 src/exec.c:1677
+#: src/exec.c:1858 src/exec.c:1873
 #, fuzzy
 #| msgid "Unknown error"
 msgid "Unknown command"
 msgstr "Ismeretlen hiba"
 
-#: src/exec.c:1770
+#: src/exec.c:1785
 msgid "Cannot fork shell"
 msgstr ""
 
-#: src/exec.c:1858
+#: src/exec.c:1873
 #, fuzzy
 #| msgid "Invalid regular expression"
 msgid "Invalid address"
 msgstr "Érvénytelen szabályos kifejezés"
 
-#: src/exec.c:1921
+#: src/exec.c:1936
 #, fuzzy
 #| msgid "Invalid range end"
 msgid "Invalid address range"
@@ -359,7 +361,7 @@ msgstr "írási hiba"
 msgid "No previous command"
 msgstr ""
 
-#: src/io.c:57 src/io.c:665 src/main.c:247 src/main.c:764 src/main.c:831
+#: src/io.c:57 src/io.c:665 src/main.c:247 src/main.c:765 src/main.c:832
 #: src/register.c:36 src/register.c:83 src/register.c:142 src/register.c:152
 #: src/register.c:211 src/register.c:220 src/register.c:247 src/register.c:283
 #: src/register.c:350 src/register.c:410 src/register.c:450 src/register.c:489
@@ -399,8 +401,8 @@ msgstr ""
 msgid "Broken pipe"
 msgstr "Megszakadt csővezeték"
 
-#: src/io.c:656 src/io.c:836 src/io.c:856 src/io.c:867 src/main.c:650
-#: src/main.c:775 src/main.c:783
+#: src/io.c:656 src/io.c:836 src/io.c:856 src/io.c:867 src/main.c:651
+#: src/main.c:776 src/main.c:784
 #, fuzzy
 #| msgid "write error"
 msgid "File write error"
@@ -436,33 +438,33 @@ msgstr "írási hiba"
 msgid "Option '-i' requires '-e' or '-f'"
 msgstr ""
 
-#: src/main.c:322
+#: src/main.c:323
 #, fuzzy
 #| msgid "Interrupt"
 msgid "Interrupted"
 msgstr "Megszakítás"
 
-#: src/main.c:440
+#: src/main.c:441
 msgid "WARNING: Buffer modified since last write"
 msgstr ""
 
-#: src/main.c:703
+#: src/main.c:704
 #, fuzzy
 #| msgid "Argument buffer too small"
 msgid "Argument list full"
 msgstr "A paraméterpuffer túl kicsi"
 
-#: src/main.c:851
+#: src/main.c:852
 #, c-format
 msgid "Usage: %s [-] [OPTION...] [FILE...]\n"
 msgstr ""
 
-#: src/main.c:853
+#: src/main.c:854
 #, c-format
 msgid "Usage: %s [-] [OPTION...] [FILE]\n"
 msgstr ""
 
-#: src/main.c:864
+#: src/main.c:865
 #, c-format
 msgid ""
 "Options:\n"
@@ -492,7 +494,7 @@ msgid ""
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
 
-#: src/main.c:889
+#: src/main.c:890
 #, c-format
 msgid ""
 "Options:\n"
@@ -517,33 +519,33 @@ msgid ""
 "Please submit issues or pull requests to: <https://github.com/slewsys/ed>\n"
 msgstr ""
 
-#: src/main.c:928
+#: src/main.c:929
 msgid "/etc/shells: No such file"
 msgstr ""
 
-#: src/main.c:934
+#: src/main.c:935
 #, fuzzy
 #| msgid "write error"
 msgid "/etc/shells: File open error"
 msgstr "írási hiba"
 
-#: src/main.c:952
+#: src/main.c:953
 #, fuzzy
 #| msgid "write error"
 msgid "/etc/shells: File read error"
 msgstr "írási hiba"
 
-#: src/main.c:959
+#: src/main.c:960
 #, fuzzy
 #| msgid "invalid user"
 msgid "Invalid shell"
 msgstr "érvénytelen felhasználó"
 
-#: src/main.c:965
+#: src/main.c:966
 msgid "Shell not executable"
 msgstr ""
 
-#: src/main.c:979
+#: src/main.c:980
 msgid "script, line %"
 msgstr ""
 
@@ -642,13 +644,13 @@ msgstr "olvasási hiba"
 msgid "Unknown command suffix"
 msgstr ""
 
-#: src/subst.c:167 src/subst.c:237
+#: src/subst.c:167 src/subst.c:238
 #, fuzzy
 #| msgid "No previous regular expression"
 msgid "No previous substitution"
 msgstr "Nincs megelőző szabályos kifejezés"
 
-#: src/subst.c:464 src/subst.c:610
+#: src/subst.c:465 src/subst.c:611
 msgid "Too many regex subexpressions"
 msgstr ""
 
